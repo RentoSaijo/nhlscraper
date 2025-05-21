@@ -7,7 +7,7 @@
 #' @export
 
 get_player_game_log <- function(player_id, season, game_type=2) {
-  path <- sprintf('player/%s/game-log/%s/%s', player_id, season, gametype)
+  path <- sprintf('v1/player/%s/game-log/%s/%s', player_id, season, game_type)
   out <- req_nhl(path)
-  return(tibble::as_tibble(out$data$gameLog))
+  return(tibble::as_tibble(out$gameLog))
 }
