@@ -1,0 +1,10 @@
+Package: NHLScraper
+Title: Public scraper for NHL data on R
+Version: 0.0.0.9000
+Authors@R: 
+    person('Rento', 'Saijo', , 'rentosaijo0527@gmail.com', role = c('author'))
+Description: This package makes it easy to access NHL data.
+License: MIT + file LICENSE
+Encoding: UTF-8
+Roxygen: list(markdown=T)
+RoxygenNote: 7.3.2
