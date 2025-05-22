@@ -20,7 +20,7 @@ get_player_game_log <- function(player_id, season, game_type=2) {
 #' @return dataframe with one row per player
 #' @export
 
-get_nhl_players <- function(start_year=1917, end_year=2025) {
+get_players <- function(start_year=1917, end_year=2025) {
   # build seasons
   seasons <- paste0(
     start_year:(end_year-1),
