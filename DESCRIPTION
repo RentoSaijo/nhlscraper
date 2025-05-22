@@ -12,4 +12,5 @@ Imports:
   httr,
   jsonlite,
   memoise,
-  rlang
+  rlang,
+  tidyverse
