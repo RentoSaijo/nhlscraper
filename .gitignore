@@ -2,3 +2,9 @@
 .Rhistory
 .RData
 .Ruserdata
+<<<<<<< HEAD
+=======
+LICENSE
+NHLSCraper.RProj
+.gitignore
+>>>>>>> dadb3b17fa4a2ae07372d9442d48e8eae9f7c9a0
