@@ -162,3 +162,13 @@ get_goalie_leaders <- function(
   out <- req_nhl(path, list(categories=category, limit=limit))
   return(tibble::as_tibble(out[[category]]))
 }
+
+#' Get 'spotlight' players
+#'
+#' @return tibble with one row per skater
+#' @export
+
+get_spotlight_players <- function() {
+  out <- req_nhl('player-spotlight')
+  return(out)
+}

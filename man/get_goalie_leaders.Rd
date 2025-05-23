@@ -16,8 +16,8 @@ get_goalie_leaders(
 
 \item{game_type}{integer 2=regular, 3=playoffs}
 
-\item{category}{string e.g. wins, (note that some are only
-available in recent years)}
+\item{category}{string e.g. wins, shutouts, savePctg, goalsAgainstAverage
+(note that some are only available in recent years)}
 }
 \value{
 tibble with one row per skater

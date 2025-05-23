@@ -17,8 +17,8 @@ get_skater_leaders(
 \item{game_type}{integer 2=regular, 3=playoffs}
 
 \item{category}{string e.g. assists, goals, goalsSh, goalsPp, points,
-penaltyMins, toi, plusMinus, faceoffLeaders (note that some are only
-available in recent years)}
+penaltyMins, toi, plusMinus, faceoffLeaders
+(note that some are only available in recent years)}
 }
 \value{
 tibble with one row per skater
