@@ -1,8 +1,10 @@
 Package: NHLScraper
 Title: Public scraper for NHL data on R
 Version: 0.0.0.9000
-Authors@R: 
-    person('Rento', 'Saijo', , 'rentosaijo0527@gmail.com', role = c('author'))
+Authors@R: c(
+  person('Rento', 'Saijo', email='rentosaijo0527@gmail.com', role='author'),
+  person('Lars', 'Skytte', email='lars.sunesen.skytte@gmail.com', role='mentor')
+  )
 Description: NHLRScraper makes it easy to access NHL data.
 License: MIT + file LICENSE
 Encoding: UTF-8
@@ -13,4 +15,7 @@ Imports:
   jsonlite,
   memoise,
   rlang,
-  tidyverse
+  dplyr,
+  purrr,
+  tibble,
+  magrittr
