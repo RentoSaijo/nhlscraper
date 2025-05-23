@@ -2,4 +2,6 @@
 .Rhistory
 .RData
 .Ruserdata
-LICENSE.md
+LICENSE
+NHLSCraper.RProj
+.gitignore

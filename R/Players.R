@@ -1,5 +1,5 @@
 #' Get all players' ids, first and last names, and multiplicities from
-#' specified seasons
+#' specified seasons (who have at least scored 1 point)
 #' 
 #' @importFrom magrittr %>%
 #' @param start_year integer Year to start search
@@ -26,16 +26,16 @@ get_players <- function(start_year=1917, end_year=2025) {
         rp
       )
       # hit API
-      toi <- req_nhl(path, list(categories='toi', limit=-1))$toi
+      pts <- req_nhl(path, list(categories='pts', limit=-1))$pts
       # skip if empty
-      if (is.null(toi) || nrow(toi) == 0) {
+      if (is.null(pts) || nrow(pts) == 0) {
         next
       }
       # tibble for this batch
       df <- tibble::tibble(
-        PlayerID=toi$id,
-        FirstName=toi$`firstName.default`,
-        LastName=toi$`lastName.default`
+        PlayerID=pts$id,
+        FirstName=pts$`firstName.default`,
+        LastName=pts$`lastName.default`
       )
       # append to all_players
       all_players[[length(all_players)+1]] <- df
