@@ -14,7 +14,7 @@ get_skaters <- function(start_year=1917, end_year=2025) {
   all_skaters <- list()
   season_chunks <- split(
     seasons,
-    ceiling(seq_along(seasons)/20)
+    ceiling(seq_along(seasons)/25)
   )
   for (chunk in season_chunks) {
     min_season <- min(as.integer(chunk))
@@ -55,7 +55,7 @@ get_goalies <- function(start_year=1917, end_year=2025) {
   all_skaters <- list()
   season_chunks <- split(
     seasons,
-    ceiling(seq_along(seasons)/20)
+    ceiling(seq_along(seasons)/25)
   )
   for (chunk in season_chunks) {
     min_season <- min(as.integer(chunk))
