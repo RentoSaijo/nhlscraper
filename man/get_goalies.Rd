@@ -2,8 +2,7 @@
 % Please edit documentation in R/Players.R
 \name{get_goalies}
 \alias{get_goalies}
-\title{Get all goalies' ids, first and last names, and multiplicities from
-specified seasons (who have at least earned 1 win)}
+\title{Get all goalies' biographies from a range of years}
 \usage{
 get_goalies(start_year = 1917, end_year = 2025)
 }
@@ -16,6 +15,5 @@ get_goalies(start_year = 1917, end_year = 2025)
 dataframe with one row per player
 }
 \description{
-Get all goalies' ids, first and last names, and multiplicities from
-specified seasons (who have at least earned 1 win)
+Get all goalies' biographies from a range of years
 }

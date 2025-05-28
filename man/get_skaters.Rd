@@ -2,8 +2,7 @@
 % Please edit documentation in R/Players.R
 \name{get_skaters}
 \alias{get_skaters}
-\title{Get all skaters' ids, first and last names, and multiplicities from
-specified seasons (who have at least scored 1 point)}
+\title{Get all skaters' biographies from a range of years}
 \usage{
 get_skaters(start_year = 1917, end_year = 2025)
 }
@@ -16,6 +15,5 @@ get_skaters(start_year = 1917, end_year = 2025)
 dataframe with one row per player
 }
 \description{
-Get all skaters' ids, first and last names, and multiplicities from
-specified seasons (who have at least scored 1 point)
+Get all skaters' biographies from a range of years
 }
