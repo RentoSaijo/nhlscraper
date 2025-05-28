@@ -5,8 +5,13 @@
 #' @return parsed JSON
 #' @keywords internal
 
-req_nhl <- function(path, query=list()) {
-  base <- 'https://api-web.nhle.com/v1/'
+nhl_api <- function(path, query=list(), stats_rest=F) {
+  if (stats_rest) {
+    base <- 'https://api.nhle.com/stats/rest/en/'
+  }
+  else {
+    base <- 'https://api-web.nhle.com/v1/'
+  }
   url <- paste0(base, path)
   resp <- httr::GET(url, query=query)
   json <- httr::content(resp, as='text', encoding='UTF-8')
