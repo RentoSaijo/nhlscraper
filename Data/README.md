@@ -1,1 +1,0 @@
-These data are obtained from running get_skaters() and get_goalies(), but since they take long time to run, it's better to have these historical ones already stored. I will make it such that the get_players() and get_goalies() only look after the 2024-2025 season for run-time sake.
