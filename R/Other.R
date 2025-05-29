@@ -27,3 +27,32 @@ get_partner_odds <- function(country='US') {
   )
   return(tibble::as_tibble(out$games))
 }
+
+#' Get all seasons
+#' 
+#' @return tibble with one row per season
+#' @export
+
+get_seasons <- function() {
+  out <- nhl_api(
+    path='season',
+    query=list(),
+    stats_rest=F
+  )
+  return(tibble::as_tibble(out))
+}
+
+#' Get glossary
+#' 
+#' @return ???
+#' @export
+
+get_glossary <- function() {
+  out <- nhl_api(
+    path='glossary',
+    query=list(),
+    stats_rest=T
+  )
+  return(tibble::as_tibble(out$data))
+}
+

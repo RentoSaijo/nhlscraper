@@ -33,19 +33,34 @@ get_scoreboards <- function(date='2025-01-01') {
   $games[[1]]))
 }
 
-#' Get play-by-play by game
+#' Get GameCenter (GC) play-by-play by game
 #' 
 #' @param game_id integer Game ID
 #' @return tibble with one row per play
 #' @export
 
-get_play_by_play <- function(game_id=2024020602) {
+get_gc_play_by_play <- function(game_id=2024020602) {
   out <- nhl_api(
     path=sprintf('gamecenter/%s/play-by-play', game_id),
     query=list(),
     stats_rest=F
   )
   return(tibble::as_tibble(out$plays))
+}
+
+#' Get World Showcase (WSC) play-by-play by game
+#' 
+#' @param game_id integer Game ID
+#' @return tibble with one row per play
+#' @export
+
+get_wsc_play_by_play <- function(game_id=2024020602) {
+  out <- nhl_api(
+    path=sprintf('wsc/play-by-play/%s', game_id),
+    query=list(),
+    stats_rest=F
+  )
+  return(out)
 }
 
 #' Get boxscore by game, team, and player-type
@@ -66,7 +81,9 @@ get_game_boxscore <- function(
     query=list(),
     stats_rest=F
   )
-  return(out$playerByGameStats[[paste0(team, 'Team')]][[player_type]])
+  return(tibble::as_tibble(
+    out$playerByGameStats[[paste0(team, 'Team')]][[player_type]])
+  )
 }
 
 #' Get landing by game

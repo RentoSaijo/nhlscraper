@@ -103,4 +103,3 @@ get_team_schedule <- function(team='BOS', season=20242025) {
   )
   return(tibble::as_tibble(out$games))
 }
-

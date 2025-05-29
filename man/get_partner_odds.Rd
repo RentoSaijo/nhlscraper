@@ -10,7 +10,7 @@ get_partner_odds(country = "US")
 \item{country}{string Country code e.g. 'US'}
 }
 \value{
-???
+tibble with one row per game
 }
 \description{
 Get partner odds now
