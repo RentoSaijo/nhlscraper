@@ -12,6 +12,10 @@ get_game_boxscore(
 }
 \arguments{
 \item{game_id}{integer Game ID}
+
+\item{team}{string Team whether 'home' or 'away'}
+
+\item{player_type}{string Player-type of 'forwards', 'defensemen', or 'goalies'}
 }
 \value{
 tibble with one row per player

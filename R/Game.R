@@ -48,6 +48,27 @@ get_play_by_play <- function(game_id=2024020602) {
   return(tibble::as_tibble(out$plays))
 }
 
+#' Get boxscore by game, team, and player-type
+#' 
+#' @param game_id integer Game ID
+#' @param team string Team whether 'home' or 'away'
+#' @param player_type string Player-type of 'forwards', 'defensemen', or 'goalies'
+#' @return tibble with one row per player
+#' @export
+
+get_game_boxscore <- function(
+    game_id=2024020602,
+    team='home',
+    player_type='forwards'
+) {
+  out <- nhl_api(
+    path=sprintf('gamecenter/%s/boxscore', game_id),
+    query=list(),
+    stats_rest=F
+  )
+  return(out$playerByGameStats[[paste0(team, 'Team')]][[player_type]])
+}
+
 #' Get landing by game
 #' 
 #' @param game_id integer Game ID
@@ -63,23 +84,17 @@ get_game_landing <- function(game_id=2024020602) {
   return(out)
 }
 
-#' Get boxscore by game, team, and player-type
+#' Get game story by game
 #' 
 #' @param game_id integer Game ID
-#' @param team string Team whether 'home' or 'away'
-#' @param player_type string Player-type of 'forwards', 'defensemen', or 'goalies'
-#' @return tibble with one row per player
+#' @return list of 24 items
 #' @export
 
-get_game_boxscore <- function(
-    game_id=2024020602,
-    team='home',
-    player_type='forwards'
-  ) {
+get_game_story <- function(game_id=2024020602) {
   out <- nhl_api(
-    path=sprintf('gamecenter/%s/boxscore', game_id),
+    path=sprintf('wsc/game-story/%s', game_id),
     query=list(),
     stats_rest=F
   )
-  return(out$playerByGameStats[[paste0(team, 'Team')]][[player_type]])
+  return(out)
 }
