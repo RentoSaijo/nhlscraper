@@ -27,3 +27,17 @@ get_standings_information <- function() {
   return(tibble::as_tibble(out$seasons))
 }
 
+#' Get schedule for week by date
+#' 
+#' @param date string Date in 'YYYY-MM-DD'
+#' @return list of 8 items
+#' @export
+
+get_schedule <- function(date='2025-01-01') {
+  out <- nhl_api(
+    path=sprintf('schedule/%s', date),
+    query=list(),
+    stats_rest=F
+  )
+  return(out)
+}
