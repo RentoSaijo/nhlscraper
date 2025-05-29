@@ -6,8 +6,11 @@
 \usage{
 get_schedule(date = "2025-01-01")
 }
+\arguments{
+\item{date}{string Date in 'YYYY-MM-DD'}
+}
 \value{
-tibble with one row per season
+list of 8 items
 }
 \description{
 Get schedule for week by date

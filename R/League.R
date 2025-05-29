@@ -41,3 +41,17 @@ get_schedule <- function(date='2025-01-01') {
   )
   return(out)
 }
+
+#' Get streams
+#' 
+#' @return tibble with one row per stream
+#' @export
+
+get_streams <- function() {
+  out <- nhl_api(
+    path='where-to-watch',
+    query=list(),
+    stats_rest=F
+  )
+  return(tibble::as_tibble(out))
+}
