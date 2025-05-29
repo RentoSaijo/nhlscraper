@@ -26,3 +26,4 @@ get_standings_information <- function() {
   )
   return(tibble::as_tibble(out$seasons))
 }
+

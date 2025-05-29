@@ -72,3 +72,35 @@ get_team_roster <- function(
   return(tibble::as_tibble(out[[player_type]]))
 }
 
+#' Get team prospects by player-type
+#' 
+#' @param team string Team in 3-letter code
+#' @param player_type string Player-type of 'forwards', 'defensemen', or 'goalies'
+#' @return tibble with one row per player
+#' @export
+
+get_team_prospects <- function(team='BOS', player_type='forwards') {
+  out <- nhl_api(
+    path=sprintf('prospects/%s', team),
+    query=list(),
+    stats_rest=F
+  )
+  return(tibble::as_tibble(out[[player_type]]))
+}
+
+#' Get team schedule by season
+#' 
+#' @param team string Team in 3-letter code
+#' @param season integer Season in YYYYYYYY
+#' @return tibble with one row per game
+#' @export
+
+get_team_schedule <- function(team='BOS', season=20242025) {
+  out <- nhl_api(
+    path=sprintf('club-schedule-season/%s/%s', team, season),
+    query=list(),
+    stats_rest=F
+  )
+  return(tibble::as_tibble(out$games))
+}
+
