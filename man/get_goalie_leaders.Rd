@@ -4,12 +4,7 @@
 \alias{get_goalie_leaders}
 \title{Get goalie stats leaders for a season}
 \usage{
-get_goalie_leaders(
-  season = 20242025,
-  game_type = 2,
-  category = "wins",
-  limit = -1
-)
+get_goalie_leaders(season = 20242025, game_type = 2, category = "wins")
 }
 \arguments{
 \item{season}{string Season in 'YYYYYYYY' e.g. 20242025}

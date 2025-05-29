@@ -4,12 +4,7 @@
 \alias{get_skater_leaders}
 \title{Get skater stats leaders for a season}
 \usage{
-get_skater_leaders(
-  season = 20242025,
-  game_type = 2,
-  category = "points",
-  limit = -1
-)
+get_skater_leaders(season = 20242025, game_type = 2, category = "points")
 }
 \arguments{
 \item{season}{string Season in 'YYYYYYYY' e.g. 20242025}
