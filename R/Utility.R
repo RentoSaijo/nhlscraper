@@ -1,6 +1,6 @@
 #' Internal: call NHL API
 #' 
-#' @param path string API path
+#' @param path String API path
 #' @param query list Query parameters
 #' @return parsed JSON
 #' @keywords internal

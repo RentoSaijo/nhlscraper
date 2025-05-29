@@ -3,7 +3,7 @@
 #' @importFrom magrittr %>%
 #' @param start_year integer Year to start search
 #' @param end_year integer Year to end search
-#' @return dataframe with one row per player
+#' @return tibble with one row per skater
 #' @export
 
 get_skaters <- function(start_year=1917, end_year=2025) {
@@ -41,11 +41,9 @@ get_skaters <- function(start_year=1917, end_year=2025) {
 
 #' Get skater stats leaders for a season
 #' 
-#' @param season string Season in 'YYYYYYYY' e.g. 20242025
-#' @param game_type integer 2=regular, 3=playoffs
-#' @param category string e.g. assists, goals, goalsSh, goalsPp, points,
-#' penaltyMins, toi, plusMinus, faceoffLeaders
-#' (note that some are only available in recent years)
+#' @param season integer Season in YYYYYYYY
+#' @param game_type integer GameType where 2=regular and 3=playoffs
+#' @param category string e.g. assists, goals, goalsSh, goalsPp, points, penaltyMins, toi, plusMinus, faceoffLeaders
 #' @return tibble with one row per skater
 #' @export
 
@@ -53,7 +51,7 @@ get_skater_leaders <- function(
     season=20242025,
     game_type=2,
     category='points'
-) {
+  ) {
   out <- nhl_api(
     path=sprintf('skater-stats-leaders/%s/%s', season, game_type),
     query=list(categories=category, limit=-1),

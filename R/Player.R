@@ -1,8 +1,8 @@
 #' Get a player's game log for a season
 #' 
-#' @param player_id integer NHL player ID
-#' @param season string Season in 'YYYYYYYY' e.g. 20242025
-#' @param game_type integer 2=regular, 3=playoffs
+#' @param player_id integer Player ID
+#' @param season integer Season in YYYYYYYY
+#' @param game_type integer Game-type where 2=regular and 3=playoffs
 #' @return tibble with one row per game
 #' @export
 
@@ -17,7 +17,7 @@ get_player_game_log <- function(player_id, season=20242025, game_type=2) {
 
 #' Get a player's information
 #' 
-#' @param player_id integer NHL player ID
+#' @param player_id integer Player ID
 #' @return list with 36 items
 #' @export
 
@@ -32,7 +32,7 @@ get_player_information <- function(player_id) {
 
 #' Get 'spotlight' players
 #'
-#' @return tibble with one row per skater
+#' @return tibble with one row per player
 #' @export
 
 get_spotlight_players <- function() {
@@ -41,5 +41,5 @@ get_spotlight_players <- function() {
     query=list(),
     stats_rest=F
   )
-  return(out)
+  return(tibble::as_tibble(out))
 }
