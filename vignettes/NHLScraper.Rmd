@@ -17,3 +17,21 @@ knitr::opts_chunk$set(
 ```{r setup}
 library(NHLScraper)
 ```
+
+## Draft Data
+```{r draft}
+draft_rankings_2025 <- get_draft_rankings()
+draft_picks_2024 <- get_draft_picks(round='all')
+```
+
+## Game Data
+```{r game}
+scores_2024_12_31 <- get_scores(date='2024-12-31')
+gc_pbp_2024020602 <- get_gc_play_by_play()
+boxscore_2024020602 <- get_game_boxscore()
+```
+
+## Goalie Data
+```{r goalie}
+
+```
