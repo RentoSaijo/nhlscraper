@@ -9,37 +9,52 @@
 get_goalies <- function(start_year=1917, end_year=2025) {
   seasons <- paste0(
     start_year:(end_year-1),
-    sprintf('%04d', (start_year:(end_year-1))+1)
+    sprintf("%04d", (start_year:(end_year-1))+1)
   )
-  all_goalies <- list()
-  season_chunks <- split(
-    seasons,
-    ceiling(seq_along(seasons)/25)
-  )
+  season_chunks <- split(seasons, ceiling(seq_along(seasons)/10))
+  all_pages <- list()
   for (chunk in season_chunks) {
     min_season <- min(as.integer(chunk))
     max_season <- max(as.integer(chunk))
-    cayenne <- sprintf('seasonId>=%d and seasonId<=%d', min_season, max_season)
     out <- nhl_api(
-      path='goalie/bios',
+      path="goalie/bios",
       query=list(
         limit=-1,
         start=0,
-        sort='playerId',
-        cayenneExp=cayenne
+        sort="playerId",
+        cayenneExp=sprintf("seasonId>=%d and seasonId<=%d", min_season, max_season)
       ),
       stats_rest=T
     )
     df <- tibble::as_tibble(out$data)
     if (nrow(df)>0) {
-      all_goalies[[length(all_goalies)+1]] <- df
+      df$max_season_chunk <- max_season
+      all_pages[[length(all_pages)+1]] <- df
     }
   }
-  dplyr::bind_rows(all_goalies) %>%
-    dplyr::distinct(playerId, .keep_all=T)
+  combined <- dplyr::bind_rows(all_pages)
+  stats_sum <- combined %>%
+    dplyr::group_by(playerId) %>%
+    dplyr::summarise(
+      gamesPlayed=sum(gamesPlayed, na.rm=T),
+      losses=sum(losses, na.rm=T),
+      otLosses=sum(otLosses, na.rm=T),
+      shutouts=sum(shutouts, na.rm=T),
+      ties=sum(ties, na.rm=T),
+      wins=sum(wins, na.rm=T),
+      .groups="drop"
+    )
+  latest <- combined %>%
+    dplyr::group_by(playerId) %>%
+    dplyr::slice_max(order_by=max_season_chunk, n=1 , with_ties=F) %>%
+    dplyr::ungroup() %>%
+    dplyr::select(-gamesPlayed, -losses, -otLosses, -shutouts, -ties, -wins)
+  final <- latest %>%
+    dplyr::left_join(stats_sum, by="playerId")
+  return(final)
 }
 
-#' Get goalie stats leaders for a season
+#' Get goalie stats leaders by season and game-type
 #' 
 #' @param season integer Season in YYYYYYYY
 #' @param game_type integer Game-type where 2=regular and 3=playoffs
@@ -58,4 +73,18 @@ get_goalie_leaders <- function(
     stats_rest=F
   )
   return(tibble::as_tibble(out[[category]]))
+}
+
+#' Get goalie milestones
+#' 
+#' @return tibble with one row per goalie
+#' @export
+
+get_goalie_milestones <- function() {
+  out <- nhl_api(
+    path='milestones/goalies',
+    query=list(),
+    stats_rest=T
+  )
+  return(tibble::as_tibble(out$data))
 }
