@@ -44,7 +44,7 @@ get_team_statistics <- function(
 
 get_team_scoreboard <- function(team='BOS') {
   out <- nhl_api(
-    path=sprintf('scorebaord/%s/now', team),
+    path=sprintf('scoreboard/%s/now', team),
     query=list(),
     stats_rest=F
   )
