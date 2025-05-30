@@ -1,18 +1,19 @@
 ---
 title: "NHLScraper"
-author: "Rento Saijo, Lars Skytte"
-date: "2025-05-30"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Vignette Title}
+  %\VignetteIndexEntry{NHLScraper}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
 
-```{r setup, include = FALSE}
+```{r, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>"
 )
 ```
 
+```{r setup}
+library(NHLScraper)
+```
