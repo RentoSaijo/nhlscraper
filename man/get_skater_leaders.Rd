@@ -2,7 +2,7 @@
 % Please edit documentation in R/Skater.R
 \name{get_skater_leaders}
 \alias{get_skater_leaders}
-\title{Get skater stats leaders for a season}
+\title{Get skater statistics leaders by season and game-type}
 \usage{
 get_skater_leaders(season = 20242025, game_type = 2, category = "points")
 }
@@ -17,5 +17,5 @@ get_skater_leaders(season = 20242025, game_type = 2, category = "points")
 tibble with one row per skater
 }
 \description{
-Get skater stats leaders for a season
+Get skater statistics leaders by season and game-type
 }

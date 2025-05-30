@@ -2,7 +2,7 @@
 % Please edit documentation in R/Goalie.R
 \name{get_goalie_leaders}
 \alias{get_goalie_leaders}
-\title{Get goalie stats leaders for a season}
+\title{Get goalie stats leaders by season and game-type}
 \usage{
 get_goalie_leaders(season = 20242025, game_type = 2, category = "wins")
 }
@@ -17,5 +17,5 @@ get_goalie_leaders(season = 20242025, game_type = 2, category = "wins")
 tibble with one row per goalie
 }
 \description{
-Get goalie stats leaders for a season
+Get goalie stats leaders by season and game-type
 }

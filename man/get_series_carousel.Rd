@@ -8,6 +8,8 @@ get_series_carousel(season = 20242025, round = 1)
 }
 \arguments{
 \item{season}{integer Season in YYYYYYYY}
+
+\item{round}{integer Round from 1:4}
 }
 \value{
 tibble with one row per match-up
