@@ -9,7 +9,7 @@
 get_skaters <- function(start_year=1917, end_year=2025) {
   seasons <- paste0(
     start_year:(end_year-1),
-    sprintf("%04d", (start_year:(end_year-1))+1)
+    sprintf('%04d', (start_year:(end_year-1))+1)
   )
   season_chunks <- split(seasons, ceiling(seq_along(seasons)/10))
   all_pages <- list()
@@ -17,12 +17,13 @@ get_skaters <- function(start_year=1917, end_year=2025) {
     min_season <- min(as.integer(chunk))
     max_season <- max(as.integer(chunk))
     out <- nhl_api(
-      path="skater/bios",
+      path='skater/bios',
       query=list(
+        isAggregate=T,
         limit=-1,
         start=0,
-        sort="playerId",
-        cayenneExp=sprintf("seasonId>=%d and seasonId<=%d", min_season, max_season)
+        sort='playerId',
+        cayenneExp=sprintf('seasonId>=%d and seasonId<=%d', min_season, max_season)
       ),
       stats_rest=T
     )
@@ -40,7 +41,7 @@ get_skaters <- function(start_year=1917, end_year=2025) {
       gamesPlayed=sum(gamesPlayed, na.rm=T),
       goals=sum(goals, na.rm=T),
       points=sum(points, na.rm=T),
-      .groups="drop"
+      .groups='drop'
     )
   latest <- combined %>%
     dplyr::group_by(playerId) %>%
@@ -48,7 +49,7 @@ get_skaters <- function(start_year=1917, end_year=2025) {
     dplyr::ungroup() %>%
     dplyr::select(-assists, -gamesPlayed, -goals, -points, -max_season_chunk)
   final <- latest %>%
-    dplyr::left_join(stats_sum, by="playerId")
+    dplyr::left_join(stats_sum, by='playerId')
   return(final)
 }
 
@@ -87,11 +88,63 @@ get_skater_milestones <- function() {
   return(tibble::as_tibble(out$data))
 }
 
-#' Get skater statistics by c
+#' Get skater statistics by season
 #' 
-#' @param report string Report e.g. bios and skaters
-#' 
-#' @return tibble with one row per skater/game
+#' @param season integer Season in YYYYYYYY
+#' @param report string Report e.g. 'summary' and 'bios' (forced to 'summary' if
+#'               `is_game`=T)
+#' @param teams vector of integers TeamID(s)
+#' @param is_aggregate boolean isAggregate where T=regular and playoffs combined
+#'                     from multiple teams, if applicable
+#' @param is_game boolean isGame where T=rows by games and F=rows by players
+#' @param dates vector of strings Date(s) in 'YYYY-MM-DD' (only if paired with
+#'              `is_game`)
+#' @return tibble with one row per skater or game
 #' @export
 
-
+get_skater_statistics <- function(
+  season=20242025,
+  report='summary',
+  teams=1:100,
+  is_aggregate=F,
+  is_game=F,
+  dates=c('2025-01-01')
+  ) {
+  if (is_game) {
+    for (date in dates) {
+      if (!grepl('^\\d{4}-\\d{2}-\\d{2}$', date)) {
+        stop('date in `dates` must be in \'YYYY-MM-DD\' format', call.=F)
+      }
+    }
+    out <- nhl_api(
+      path='skater/summary',
+      query=list(
+        limit=-1,
+        isGame=T,
+        cayenneExp=sprintf(
+        'seasonId=%s and gameDate in (%s) and teamId in (%s)',
+        season,
+        paste0('\'', dates, '\'', collapse=','),
+        paste(teams, collapse=',')
+        )
+      ),
+      stats_rest=T
+    )
+  }
+  else {
+    out <- nhl_api(
+      path=sprintf('skater/%s', report),
+      query=list(
+        limit=-1,
+        isAggregate=is_aggregate,
+        cayenneExp=sprintf(
+          'seasonId=%s and teamId in (%s)',
+          season,
+          paste(teams, collapse=',')
+        )
+      ),
+      stats_rest=T
+    )
+  }
+  return(tibble::as_tibble(out$data))
+}

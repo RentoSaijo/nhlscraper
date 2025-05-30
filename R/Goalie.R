@@ -19,6 +19,7 @@ get_goalies <- function(start_year=1917, end_year=2025) {
     out <- nhl_api(
       path="goalie/bios",
       query=list(
+        isAggregate=T,
         limit=-1,
         start=0,
         sort="playerId",
@@ -86,5 +87,66 @@ get_goalie_milestones <- function() {
     query=list(),
     stats_rest=T
   )
+  return(tibble::as_tibble(out$data))
+}
+
+#' Get skater statistics by season
+#' 
+#' @param season integer Season in YYYYYYYY
+#' @param report string Report e.g. 'summary' and 'bios' (forced to 'summary' if
+#'               `is_game`=T)
+#' @param teams vector of integers TeamID(s)
+#' @param is_aggregate boolean isAggregate where T=regular and playoffs combined
+#'                     from multiple teams, if applicable
+#' @param is_game boolean isGame where T=rows by games and F=rows by players
+#' @param dates vector of strings Date(s) in 'YYYY-MM-DD' (only if paired with
+#'              `is_game`)
+#' @return tibble with one row per skater or game
+#' @export
+
+get_goalie_statistics <- function(
+    season=20242025,
+    report='summary',
+    teams=1:100,
+    is_aggregate=F,
+    is_game=F,
+    dates=c('2025-01-01')
+) {
+  if (is_game) {
+    for (date in dates) {
+      if (!grepl('^\\d{4}-\\d{2}-\\d{2}$', date)) {
+        stop('date in `dates` must be in \'YYYY-MM-DD\' format', call.=F)
+      }
+    }
+    out <- nhl_api(
+      path='goalie/summary',
+      query=list(
+        limit=-1,
+        isGame=T,
+        cayenneExp=sprintf(
+          'seasonId=%s and gameDate in (%s) and teamId in (%s)',
+          season,
+          paste0('\'', dates, '\'', collapse=','),
+          paste(teams, collapse=',')
+        )
+      ),
+      stats_rest=T
+    )
+  }
+  else {
+    out <- nhl_api(
+      path=sprintf('goalie/%s', report),
+      query=list(
+        limit=-1,
+        isAggregate=is_aggregate,
+        cayenneExp=sprintf(
+          'seasonId=%s and teamId in (%s)',
+          season,
+          paste(teams, collapse=',')
+        )
+      ),
+      stats_rest=T
+    )
+  }
   return(tibble::as_tibble(out$data))
 }

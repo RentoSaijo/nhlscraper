@@ -2,7 +2,7 @@
 % Please edit documentation in R/Team.R
 \name{get_team_roster}
 \alias{get_team_roster}
-\title{Get team roster by season and player-type}
+\title{Get team roster by season and player-type.}
 \usage{
 get_team_roster(team = "BOS", season = 20242025, player_type = "forwards")
 }
@@ -17,5 +17,5 @@ get_team_roster(team = "BOS", season = 20242025, player_type = "forwards")
 tibble with one row per player
 }
 \description{
-Get team roster by season and player-type
+Get team roster by season and player-type.
 }

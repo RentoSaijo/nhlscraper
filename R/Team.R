@@ -56,7 +56,7 @@ get_team_scoreboard <- function(team='BOS') {
   $games[[1]]))
 }
 
-#' Get team roster by season and player-type
+#' Get team roster by season and player-type.
 #' 
 #' @param team string Team in 3-letter code
 #' @param season integer Season in YYYYYYYY
