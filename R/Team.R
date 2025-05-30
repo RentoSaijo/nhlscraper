@@ -48,7 +48,12 @@ get_team_scoreboard <- function(team='BOS') {
     query=list(),
     stats_rest=F
   )
-  return(out)
+  return(tibble::as_tibble(out$gamesByDate[
+    out$gamesByDate$date==out$focusedDate,
+    ,
+    drop=F
+  ]
+  $games[[1]]))
 }
 
 #' Get team roster by season and player-type
