@@ -2,21 +2,18 @@ Package: NHLScraper
 Title: Public scraper for NHL data on R
 Version: 0.0.0.9000
 Authors@R: c(
-  person('Rento', 'Saijo', email='rentosaijo0527@gmail.com', role='author'),
-  person('Lars', 'Skytte', email='lars.sunesen.skytte@gmail.com', role='mentor')
+  person('Rento', 'Saijo', email='rentosaijo0527@gmail.com', role=c('aut', 'cre')),
+  person('Lars', 'Skytte', email='lars.sunesen.skytte@gmail.com', role='ctb')
   )
 Description: NHLRScraper makes it easy to access NHL data.
-License: MIT + file LICENSE
+License: MIT + file LICENSE.md
 Encoding: UTF-8
 Roxygen: list(markdown=T)
 RoxygenNote: 7.3.2
 Imports:
   httr,
   jsonlite,
-  memoise,
-  rlang,
   dplyr,
-  purrr,
   tibble,
   magrittr
 Suggests: 
@@ -25,3 +22,5 @@ Suggests:
     testthat (>= 3.0.0)
 Config/testthat/edition: 3
 VignetteBuilder: knitr
+URL: https://github.com/RentoSaijo/NHLScraper
+BugReports: https://github.com/RentoSaijo/NHLScraper/issues
