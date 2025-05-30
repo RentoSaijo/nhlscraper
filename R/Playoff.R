@@ -1,6 +1,7 @@
 #' Get playoff series carousel by season and round
 #' 
 #' @param season integer Season in YYYYYYYY
+#' @param round integer Round from 1:4
 #' @return tibble with one row per match-up
 #' @export
 
