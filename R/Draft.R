@@ -43,3 +43,17 @@ get_draft_tracker <- function() {
   )
   return(tibble::as_tibble(out$picks))
 }
+
+#' Get draft information for each season
+#' 
+#' @return tibble with one row per season
+#' @export
+
+get_draft_information <- function() {
+  out <- nhl_api(
+    path='draft',
+    query=list(limit=-1),
+    stats_rest=T
+  )
+  return(tibble::as_tibble(out$data))
+}
