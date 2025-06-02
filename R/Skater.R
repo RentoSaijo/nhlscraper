@@ -91,14 +91,13 @@ get_skater_milestones <- function() {
 #' Get skater statistics by season
 #' 
 #' @param season integer Season in YYYYYYYY
-#' @param report string Report e.g. 'summary' and 'bios' (forced to 'summary' if
-#'               `is_game`=T)
+#' @param report string Report (check `get_configuration()` for possible inputs)
 #' @param teams vector of integers TeamID(s)
 #' @param is_aggregate boolean isAggregate where T=regular and playoffs combined
 #'                     from multiple teams, if applicable
 #' @param is_game boolean isGame where T=rows by games and F=rows by players
 #' @param dates vector of strings Date(s) in 'YYYY-MM-DD' (only if paired with
-#'              `is_game`)
+#'              `is_game`; too many dates will result in incomplete data)
 #' @return tibble with one row per skater or game
 #' @export
 
@@ -118,7 +117,7 @@ get_skater_statistics <- function(
       }
     }
     out <- nhl_api(
-      path='skater/summary',
+      path=sprintf('skater/%s', report),
       query=list(
         limit=-1,
         isGame=T,

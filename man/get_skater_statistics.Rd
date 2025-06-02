@@ -17,8 +17,7 @@ get_skater_statistics(
 \arguments{
 \item{season}{integer Season in YYYYYYYY}
 
-\item{report}{string Report e.g. 'summary' and 'bios' (forced to 'summary' if
-\code{is_game}=T)}
+\item{report}{string Report (check \code{get_configuration()} for possible inputs)}
 
 \item{teams}{vector of integers TeamID(s)}
 
@@ -28,7 +27,7 @@ from multiple teams, if applicable}
 \item{is_game}{boolean isGame where T=rows by games and F=rows by players}
 
 \item{dates}{vector of strings Date(s) in 'YYYY-MM-DD' (only if paired with
-\code{is_game})}
+\code{is_game}; too many dates will result in incomplete data)}
 }
 \value{
 tibble with one row per skater or game
