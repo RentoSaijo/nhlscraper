@@ -7,7 +7,7 @@
 get_glossary()
 }
 \value{
-???
+tibble with one row per terminology
 }
 \description{
 Get glossary

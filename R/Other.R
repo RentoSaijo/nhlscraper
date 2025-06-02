@@ -28,23 +28,9 @@ get_partner_odds <- function(country='US') {
   return(tibble::as_tibble(out$games))
 }
 
-#' Get all seasons
-#' 
-#' @return tibble with one row per season
-#' @export
-
-get_seasons <- function() {
-  out <- nhl_api(
-    path='season',
-    query=list(),
-    stats_rest=F
-  )
-  return(tibble::as_tibble(out))
-}
-
 #' Get glossary
 #' 
-#' @return ???
+#' @return tibble with one row per terminology
 #' @export
 
 get_glossary <- function() {
@@ -56,3 +42,58 @@ get_glossary <- function() {
   return(tibble::as_tibble(out$data))
 }
 
+#' Get latest season
+#' 
+#' @return tibble with one row
+#' @export
+
+get_season_now <- function() {
+  out <- nhl_api(
+    path='componentSeason',
+    query=list(),
+    stats_rest=T
+  )
+  return(tibble::as_tibble(out$data))
+}
+
+#' Get configuration
+#' 
+#' @return list with 5 items
+#' @export
+
+get_configuration <- function() {
+  out <- nhl_api(
+    path='config',
+    query=list(),
+    stats_rest=T
+  )
+  return(out)
+}
+
+#' Ping
+#' 
+#' @return boolean T=status is okay and F=status is not okay
+#' @export
+
+ping <- function() {
+  out <- nhl_api(
+    path='ping',
+    query=list(),
+    stats_rest=T
+  )
+  return(length(out)==0)
+}
+
+#' Get all countries
+#' 
+#' @return tibble with one row per country
+#' @export
+
+get_countries <- function() {
+  out <- nhl_api(
+    path='country',
+    query=list(),
+    stats_rest=T
+  )
+  return(tibble::as_tibble(out$data))
+}
