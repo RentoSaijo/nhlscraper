@@ -17,8 +17,7 @@ get_goalie_statistics(
 \arguments{
 \item{season}{integer Season in YYYYYYYY}
 
-\item{report}{string Report e.g. 'summary' and 'bios' (forced to 'summary' if
-\code{is_game}=T)}
+\item{report}{string Report (check \code{get_configuration()} for possible inputs)}
 
 \item{teams}{vector of integers TeamID(s)}
 

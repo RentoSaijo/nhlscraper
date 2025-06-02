@@ -93,8 +93,7 @@ get_goalie_milestones <- function() {
 #' Get skater statistics by season
 #' 
 #' @param season integer Season in YYYYYYYY
-#' @param report string Report e.g. 'summary' and 'bios' (forced to 'summary' if
-#'               `is_game`=T)
+#' @param report string Report (check `get_configuration()` for possible inputs)
 #' @param teams vector of integers TeamID(s)
 #' @param is_aggregate boolean isAggregate where T=regular and playoffs combined
 #'                     (or multiple seasons) from multiple teams, if applicable
@@ -120,7 +119,7 @@ get_goalie_statistics <- function(
       }
     }
     out <- nhl_api(
-      path='goalie/summary',
+      path=sprintf('goalie/%s', report),
       query=list(
         limit=-1,
         isGame=T,
