@@ -13,7 +13,7 @@ get_team_seasons <- function(team='BOS') {
   return(tibble::as_tibble(out))
 }
 
-#' Get team statistics by season, game-type, and player-type
+#' Get team roster statistics by season, game-type, and player-type
 #' 
 #' @param team string Team in 3-letter code
 #' @param season integer Season in YYYYYYYY
@@ -22,7 +22,7 @@ get_team_seasons <- function(team='BOS') {
 #' @return tibble with one row per player
 #' @export
 
-get_team_statistics <- function(
+get_team_roster_statistics <- function(
     team='BOS',
     season=20242025,
     game_type=2,
@@ -120,5 +120,74 @@ get_teams <- function() {
     query=list(limit=-1),
     stats_rest=T
   )
+  return(tibble::as_tibble(out$data))
+}
+
+#' Get all franchises
+#' 
+#' @return tibble with one row per game
+#' @export
+
+get_franchises <- function() {
+  out <- nhl_api(
+    path='franchise',
+    query=list(limit=-1),
+    stats_rest=T
+  )
+  return(tibble::as_tibble(out$data))
+}
+
+#' Get team statistics by season
+#' 
+#' @param season integer Season in YYYYYYYY
+#' @param is_aggregate boolean isAggregate where T=regular and playoffs combined
+#'                     from multiple teams, if applicable
+#' @param is_game boolean isGame where T=rows by games and F=rows by players
+#' @param dates vector of strings Date(s) in 'YYYY-MM-DD' (only if paired with
+#'              `is_game`)
+#' @return tibble with one row per skater or game
+#' @export
+
+get_team_statistics <- function(
+    season=20242025,
+    is_game=F,
+    dates=c('2025-01-01'),
+    game_types=1:3
+) {
+  if (is_game) {
+    for (date in dates) {
+      if (!grepl('^\\d{4}-\\d{2}-\\d{2}$', date)) {
+        stop('date in `dates` must be in \'YYYY-MM-DD\' format', call.=F)
+      }
+    }
+    out <- nhl_api(
+      path='team/summary',
+      query=list(
+        limit=-1,
+        isGame=T,
+        cayenneExp=sprintf(
+          'seasonId=%s and gameDate in (%s) and gameTypeId in (%s)',
+          season,
+          paste0('\'', dates, '\'', collapse=','),
+          paste(game_types, collapse=',')
+        )
+      ),
+      stats_rest=T
+    )
+  }
+  else {
+    out <- nhl_api(
+      path='team/summary',
+      query=list(
+        limit=-1,
+        cayenneExp=sprintf(
+          'seasonId=%s and gameTypeId in (%s)',
+          season,
+          paste(game_types, collapse=',')
+        )
+      ),
+      stats_rest=T
+    )
+  }
   return(tibble::as_tibble(out$data))
 }

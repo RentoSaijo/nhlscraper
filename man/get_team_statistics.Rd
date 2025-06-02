@@ -2,27 +2,29 @@
 % Please edit documentation in R/Team.R
 \name{get_team_statistics}
 \alias{get_team_statistics}
-\title{Get team statistics by season, game-type, and player-type}
+\title{Get team statistics by season}
 \usage{
 get_team_statistics(
-  team = "BOS",
   season = 20242025,
-  game_type = 2,
-  player_type = "skaters"
+  is_game = F,
+  dates = c("2025-01-01"),
+  game_types = 1:3
 )
 }
 \arguments{
-\item{team}{string Team in 3-letter code}
-
 \item{season}{integer Season in YYYYYYYY}
 
-\item{game_type}{integer Game-type where 2=regular and 3=playoffs}
+\item{is_game}{boolean isGame where T=rows by games and F=rows by players}
 
-\item{player_type}{string Player-type of 'skaters' or 'goalies'}
+\item{dates}{vector of strings Date(s) in 'YYYY-MM-DD' (only if paired with
+\code{is_game})}
+
+\item{is_aggregate}{boolean isAggregate where T=regular and playoffs combined
+from multiple teams, if applicable}
 }
 \value{
-tibble with one row per player
+tibble with one row per skater or game
 }
 \description{
-Get team statistics by season, game-type, and player-type
+Get team statistics by season
 }
