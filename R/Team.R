@@ -24,7 +24,7 @@ get_team_seasons <- function(team='BOS') {
 
 get_team_roster_statistics <- function(
     team='BOS',
-    season=20242025,
+    season=get_season_now()$seasonId,
     game_type=2,
     player_type='skaters'
   ) {
@@ -66,7 +66,7 @@ get_team_scoreboard <- function(team='BOS') {
 
 get_team_roster <- function(
     team='BOS',
-    season=20242025,
+    season=get_season_now()$seasonId,
     player_type='forwards'
   ) {
   out <- nhl_api(
@@ -100,7 +100,7 @@ get_team_prospects <- function(team='BOS', player_type='forwards') {
 #' @return tibble with one row per game
 #' @export
 
-get_team_schedule <- function(team='BOS', season=20242025) {
+get_team_schedule <- function(team='BOS', season=get_season_now()$seasonId) {
   out <- nhl_api(
     path=sprintf('club-schedule-season/%s/%s', team, season),
     query=list(),
@@ -140,16 +140,19 @@ get_franchises <- function() {
 #' Get team statistics by season
 #' 
 #' @param season integer Season in YYYYYYYY
+#' @param report string Report (check `get_configuration()` for possible inputs)
 #' @param is_aggregate boolean isAggregate where T=regular and playoffs combined
 #'                     from multiple teams, if applicable
 #' @param is_game boolean isGame where T=rows by games and F=rows by players
 #' @param dates vector of strings Date(s) in 'YYYY-MM-DD' (only if paired with
-#'              `is_game`)
-#' @return tibble with one row per skater or game
+#'              `is_game`; too many dates will result in incomplete data)
+#' @return tibble with one row per team or game
 #' @export
 
 get_team_statistics <- function(
     season=20242025,
+    report='summary',
+    is_aggregate=F,
     is_game=F,
     dates=c('2025-01-01'),
     game_types=1:3
@@ -161,7 +164,7 @@ get_team_statistics <- function(
       }
     }
     out <- nhl_api(
-      path='team/summary',
+      path=sprintf('team/%s', report),
       query=list(
         limit=-1,
         isGame=T,
@@ -177,9 +180,10 @@ get_team_statistics <- function(
   }
   else {
     out <- nhl_api(
-      path='team/summary',
+      path=sprintf('team/%s', report),
       query=list(
         limit=-1,
+        isAggregate=is_aggregate,
         cayenneExp=sprintf(
           'seasonId=%s and gameTypeId in (%s)',
           season,

@@ -55,3 +55,17 @@ get_streams <- function() {
   )
   return(tibble::as_tibble(out))
 }
+
+#' Get all seasons
+#' 
+#' @return tibble with one row per season
+#' @export
+
+get_seasons <- function() {
+  out <- nhl_api(
+    path='season',
+    query=list(),
+    stats_rest=T
+  )
+  return(tibble::as_tibble(out$data))
+}

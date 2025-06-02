@@ -7,7 +7,12 @@
 
 nhl_api <- function(path, query=list(), stats_rest=F) {
   if (stats_rest) {
-    base <- 'https://api.nhle.com/stats/rest/en/'
+    if (path=='ping') {
+      base <- 'https://api.nhle.com/stats/rest/'
+    }
+    else {
+      base <- 'https://api.nhle.com/stats/rest/en/'
+    }
   }
   else {
     base <- 'https://api-web.nhle.com/v1/'
