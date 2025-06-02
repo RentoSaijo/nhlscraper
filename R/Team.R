@@ -108,3 +108,17 @@ get_team_schedule <- function(team='BOS', season=20242025) {
   )
   return(tibble::as_tibble(out$games))
 }
+
+#' Get all teams
+#' 
+#' @return tibble with one row per game
+#' @export
+
+get_teams <- function() {
+  out <- nhl_api(
+    path='team',
+    query=list(limit=-1),
+    stats_rest=T
+  )
+  return(tibble::as_tibble(out$data))
+}
