@@ -1,4 +1,4 @@
-#' Get all skaters' biographies from a range of years
+#' Get all skaters' biographies from a range of years.
 #' 
 #' @importFrom magrittr %>%
 #' @param start_year integer Year to start search
