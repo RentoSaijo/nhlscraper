@@ -4,7 +4,7 @@
 \alias{get_team_schedule}
 \title{Get team schedule by season}
 \usage{
-get_team_schedule(team = "BOS", season = 20242025)
+get_team_schedule(team = "BOS", season = get_season_now()$seasonId)
 }
 \arguments{
 \item{team}{string Team in 3-letter code}

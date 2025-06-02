@@ -4,14 +4,10 @@
 \alias{get_game_boxscore}
 \title{Get boxscore by game, team, and player-type}
 \usage{
-get_game_boxscore(
-  game_id = 2024020602,
-  team = "home",
-  player_type = "forwards"
-)
+get_game_boxscore(game = 2024020602, team = "home", player_type = "forwards")
 }
 \arguments{
-\item{game_id}{integer Game ID}
+\item{game}{integer Game ID}
 
 \item{team}{string Team whether 'home' or 'away'}
 

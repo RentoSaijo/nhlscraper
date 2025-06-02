@@ -35,13 +35,13 @@ get_scoreboards <- function(date='2025-01-01') {
 
 #' Get GameCenter (GC) play-by-play by game
 #' 
-#' @param game_id integer Game ID
+#' @param game integer Game ID
 #' @return tibble with one row per play
 #' @export
 
-get_gc_play_by_play <- function(game_id=2024020602) {
+get_gc_play_by_play <- function(game=2024020602) {
   out <- nhl_api(
-    path=sprintf('gamecenter/%s/play-by-play', game_id),
+    path=sprintf('gamecenter/%s/play-by-play', game),
     query=list(),
     stats_rest=F
   )
@@ -50,13 +50,13 @@ get_gc_play_by_play <- function(game_id=2024020602) {
 
 #' Get World Showcase (WSC) play-by-play by game
 #' 
-#' @param game_id integer Game ID
+#' @param game integer Game ID
 #' @return tibble with one row per play
 #' @export
 
-get_wsc_play_by_play <- function(game_id=2024020602) {
+get_wsc_play_by_play <- function(game=2024020602) {
   out <- nhl_api(
-    path=sprintf('wsc/play-by-play/%s', game_id),
+    path=sprintf('wsc/play-by-play/%s', game),
     query=list(),
     stats_rest=F
   )
@@ -65,19 +65,19 @@ get_wsc_play_by_play <- function(game_id=2024020602) {
 
 #' Get boxscore by game, team, and player-type
 #' 
-#' @param game_id integer Game ID
+#' @param game integer Game ID
 #' @param team string Team whether 'home' or 'away'
 #' @param player_type string Player-type of 'forwards', 'defensemen', or 'goalies'
 #' @return tibble with one row per player
 #' @export
 
 get_game_boxscore <- function(
-    game_id=2024020602,
+    game=2024020602,
     team='home',
     player_type='forwards'
 ) {
   out <- nhl_api(
-    path=sprintf('gamecenter/%s/boxscore', game_id),
+    path=sprintf('gamecenter/%s/boxscore', game),
     query=list(),
     stats_rest=F
   )
@@ -88,13 +88,13 @@ get_game_boxscore <- function(
 
 #' Get landing by game
 #' 
-#' @param game_id integer Game ID
+#' @param game integer Game ID
 #' @return list of 24 items
 #' @export
 
-get_game_landing <- function(game_id=2024020602) {
+get_game_landing <- function(game=2024020602) {
   out <- nhl_api(
-    path=sprintf('gamecenter/%s/landing', game_id),
+    path=sprintf('gamecenter/%s/landing', game),
     query=list(),
     stats_rest=F
   )
@@ -103,15 +103,44 @@ get_game_landing <- function(game_id=2024020602) {
 
 #' Get game story by game
 #' 
-#' @param game_id integer Game ID
+#' @param game integer Game ID
 #' @return list of 24 items
 #' @export
 
-get_game_story <- function(game_id=2024020602) {
+get_game_story <- function(game=2024020602) {
   out <- nhl_api(
-    path=sprintf('wsc/game-story/%s', game_id),
+    path=sprintf('wsc/game-story/%s', game),
     query=list(),
     stats_rest=F
   )
   return(out)
+}
+
+#' Get all games
+#' 
+#' @return tibble with one row per game
+#' @export
+
+get_games <- function() {
+  out <- nhl_api(
+    path='game',
+    query=list(),
+    stats_rest=T
+  )
+  return(tibble::as_tibble(out$data))
+}
+
+#' Get shift charts
+#' 
+#' @param game integer Game ID
+#' @return tibble with one row per game
+#' @export
+
+get_shift_charts <- function(game=2024020602) {
+  out <- nhl_api(
+    path='shiftcharts',
+    query=list(cayenneExp=sprintf('gameId=%s', game)),
+    stats_rest=T
+  )
+  return(tibble::as_tibble(out$data))
 }

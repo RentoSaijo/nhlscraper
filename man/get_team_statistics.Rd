@@ -6,6 +6,8 @@
 \usage{
 get_team_statistics(
   season = 20242025,
+  report = "summary",
+  is_aggregate = F,
   is_game = F,
   dates = c("2025-01-01"),
   game_types = 1:3
@@ -14,16 +16,18 @@ get_team_statistics(
 \arguments{
 \item{season}{integer Season in YYYYYYYY}
 
-\item{is_game}{boolean isGame where T=rows by games and F=rows by players}
-
-\item{dates}{vector of strings Date(s) in 'YYYY-MM-DD' (only if paired with
-\code{is_game})}
+\item{report}{string Report (check \code{get_configuration()} for possible inputs)}
 
 \item{is_aggregate}{boolean isAggregate where T=regular and playoffs combined
 from multiple teams, if applicable}
+
+\item{is_game}{boolean isGame where T=rows by games and F=rows by players}
+
+\item{dates}{vector of strings Date(s) in 'YYYY-MM-DD' (only if paired with
+\code{is_game}; too many dates will result in incomplete data)}
 }
 \value{
-tibble with one row per skater or game
+tibble with one row per team or game
 }
 \description{
 Get team statistics by season

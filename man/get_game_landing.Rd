@@ -4,10 +4,10 @@
 \alias{get_game_landing}
 \title{Get landing by game}
 \usage{
-get_game_landing(game_id = 2024020602)
+get_game_landing(game = 2024020602)
 }
 \arguments{
-\item{game_id}{integer Game ID}
+\item{game}{integer Game ID}
 }
 \value{
 list of 24 items

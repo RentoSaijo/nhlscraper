@@ -6,7 +6,7 @@
 \usage{
 get_team_roster_statistics(
   team = "BOS",
-  season = 20242025,
+  season = get_season_now()$seasonId,
   game_type = 2,
   player_type = "skaters"
 )

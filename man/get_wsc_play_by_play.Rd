@@ -4,10 +4,10 @@
 \alias{get_wsc_play_by_play}
 \title{Get World Showcase (WSC) play-by-play by game}
 \usage{
-get_wsc_play_by_play(game_id = 2024020602)
+get_wsc_play_by_play(game = 2024020602)
 }
 \arguments{
-\item{game_id}{integer Game ID}
+\item{game}{integer Game ID}
 }
 \value{
 tibble with one row per play
