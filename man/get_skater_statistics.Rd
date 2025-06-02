@@ -10,7 +10,8 @@ get_skater_statistics(
   teams = 1:100,
   is_aggregate = F,
   is_game = F,
-  dates = c("2025-01-01")
+  dates = c("2025-01-01"),
+  game_types = 1:3
 )
 }
 \arguments{
