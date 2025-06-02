@@ -97,7 +97,7 @@ get_goalie_milestones <- function() {
 #'               `is_game`=T)
 #' @param teams vector of integers TeamID(s)
 #' @param is_aggregate boolean isAggregate where T=regular and playoffs combined
-#'                     from multiple teams, if applicable
+#'                     (or multiple seasons) from multiple teams, if applicable
 #' @param is_game boolean isGame where T=rows by games and F=rows by players
 #' @param dates vector of strings Date(s) in 'YYYY-MM-DD' (only if paired with
 #'              `is_game`)
@@ -110,7 +110,8 @@ get_goalie_statistics <- function(
     teams=1:100,
     is_aggregate=F,
     is_game=F,
-    dates=c('2025-01-01')
+    dates=c('2025-01-01'),
+    game_types=1:3
 ) {
   if (is_game) {
     for (date in dates) {
@@ -124,10 +125,11 @@ get_goalie_statistics <- function(
         limit=-1,
         isGame=T,
         cayenneExp=sprintf(
-          'seasonId=%s and gameDate in (%s) and teamId in (%s)',
+          'seasonId=%s and gameDate in (%s) and teamId in (%s) and gameTypeId in (%s)',
           season,
           paste0('\'', dates, '\'', collapse=','),
-          paste(teams, collapse=',')
+          paste(teams, collapse=','),
+          paste(game_types, collapse=',')
         )
       ),
       stats_rest=T
@@ -140,9 +142,10 @@ get_goalie_statistics <- function(
         limit=-1,
         isAggregate=is_aggregate,
         cayenneExp=sprintf(
-          'seasonId=%s and teamId in (%s)',
+          'seasonId=%s and teamId in (%s) and gameTypeId in (%s)',
           season,
-          paste(teams, collapse=',')
+          paste(teams, collapse=','),
+          paste(game_types, collapse=',')
         )
       ),
       stats_rest=T

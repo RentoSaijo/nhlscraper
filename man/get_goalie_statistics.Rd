@@ -10,7 +10,8 @@ get_goalie_statistics(
   teams = 1:100,
   is_aggregate = F,
   is_game = F,
-  dates = c("2025-01-01")
+  dates = c("2025-01-01"),
+  game_types = 1:3
 )
 }
 \arguments{
@@ -22,7 +23,7 @@ get_goalie_statistics(
 \item{teams}{vector of integers TeamID(s)}
 
 \item{is_aggregate}{boolean isAggregate where T=regular and playoffs combined
-from multiple teams, if applicable}
+(or multiple seasons) from multiple teams, if applicable}
 
 \item{is_game}{boolean isGame where T=rows by games and F=rows by players}
 
