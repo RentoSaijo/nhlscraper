@@ -24,3 +24,4 @@ Config/testthat/edition: 3
 VignetteBuilder: knitr
 URL: https://github.com/RentoSaijo/NHLScraper
 BugReports: https://github.com/RentoSaijo/NHLScraper/issues
+LICENSE: MIT
