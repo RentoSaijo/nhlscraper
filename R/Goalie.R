@@ -11,7 +11,7 @@ get_goalies <- function(start_year=1917, end_year=2025) {
     start_year:(end_year-1),
     sprintf("%04d", (start_year:(end_year-1))+1)
   )
-  season_chunks <- split(seasons, ceiling(seq_along(seasons)/10))
+  season_chunks <- split(seasons, ceiling(seq_along(seasons)/25))
   all_pages <- list()
   for (chunk in season_chunks) {
     min_season <- min(as.integer(chunk))
