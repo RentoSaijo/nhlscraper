@@ -4,12 +4,13 @@
 \alias{get_draft_rankings}
 \title{Get draft rankings by year and player-type}
 \usage{
-get_draft_rankings(year = 2025, player_type = 1)
+get_draft_rankings(year = get_season_now()$seasonId\%\%10000, player_type = 1)
 }
 \arguments{
 \item{year}{integer Year in YYYY}
 
-\item{player_type}{integer Player-type where 1=NA Skaters, 2=Int. Skaters, 3=NA Goalies, and 4=Int. Goalies}
+\item{player_type}{integer Player-type where 1=NA Skaters, 2=Int. Skaters,
+3=NA Goalies, and 4=Int. Goalies}
 }
 \value{
 tibble with one row per player

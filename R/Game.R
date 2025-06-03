@@ -5,6 +5,9 @@
 #' @export
 
 get_scores <- function(date='2025-01-01') {
+  if (!grepl('^\\d{4}-\\d{2}-\\d{2}$', date)) {
+    stop('`date` must be in YYYY-MM-DD format', call.=F)
+  }
   out <- nhl_api(
     path=sprintf('score/%s', date),
     query=list(),
@@ -20,17 +23,19 @@ get_scores <- function(date='2025-01-01') {
 #' @export
 
 get_scoreboards <- function(date='2025-01-01') {
+  if (!grepl('^\\d{4}-\\d{2}-\\d{2}$', date)) {
+    stop('`date` must be in YYYY-MM-DD format', call.=F)
+  }
   out <- nhl_api(
     path=sprintf('scoreboard/%s', date),
     query=list(),
     stats_rest=F
   )
-  return(tibble::as_tibble(out$gamesByDate[
-    out$gamesByDate$date==date,
-    ,
-    drop=F
-  ]
-  $games[[1]]))
+  sub <- out$gamesByDate[out$gamesByDate$date==date, , drop=F]
+  if (nrow(sub)==0) {
+    return(tibble::tibble())
+  }
+  tibble::as_tibble(sub$games[[1]])
 }
 
 #' Get GameCenter (GC) play-by-play by game
@@ -60,6 +65,10 @@ get_wsc_play_by_play <- function(game=2024020602) {
     query=list(),
     stats_rest=F
   )
+  out <- tibble::as_tibble(out)
+  if (ncol(out)==4) {
+    return(tibble::tibble())
+  }
   return(out)
 }
 
@@ -75,7 +84,7 @@ get_game_boxscore <- function(
     game=2024020602,
     team='home',
     player_type='forwards'
-) {
+  ) {
   out <- nhl_api(
     path=sprintf('gamecenter/%s/boxscore', game),
     query=list(),
@@ -86,7 +95,7 @@ get_game_boxscore <- function(
   )
 }
 
-#' Get landing by game
+#' Get GC game landing by game
 #' 
 #' @param game integer Game ID
 #' @return list of 24 items
@@ -98,10 +107,13 @@ get_game_landing <- function(game=2024020602) {
     query=list(),
     stats_rest=F
   )
+  if (length(out)==4) {
+    return(list())
+  }
   return(out)
 }
 
-#' Get game story by game
+#' Get WSC game story by game
 #' 
 #' @param game integer Game ID
 #' @return list of 24 items
@@ -113,6 +125,9 @@ get_game_story <- function(game=2024020602) {
     query=list(),
     stats_rest=F
   )
+  if (length(out)==4) {
+    return(list())
+  }
   return(out)
 }
 
@@ -133,7 +148,7 @@ get_games <- function() {
 #' Get shift charts
 #' 
 #' @param game integer Game ID
-#' @return tibble with one row per game
+#' @return tibble with one row per shift
 #' @export
 
 get_shift_charts <- function(game=2024020602) {

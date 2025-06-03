@@ -2,7 +2,7 @@
 % Please edit documentation in R/Game.R
 \name{get_game_landing}
 \alias{get_game_landing}
-\title{Get landing by game}
+\title{Get GC game landing by game}
 \usage{
 get_game_landing(game = 2024020602)
 }
@@ -13,5 +13,5 @@ get_game_landing(game = 2024020602)
 list of 24 items
 }
 \description{
-Get landing by game
+Get GC game landing by game
 }

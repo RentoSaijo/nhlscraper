@@ -2,7 +2,7 @@
 % Please edit documentation in R/Draft.R
 \name{get_draft_tracker}
 \alias{get_draft_tracker}
-\title{Get draft tracker now}
+\title{Get draft tracker as of now}
 \usage{
 get_draft_tracker()
 }
@@ -10,5 +10,5 @@ get_draft_tracker()
 tibble with one row per pick
 }
 \description{
-Get draft tracker now
+Get draft tracker as of now
 }

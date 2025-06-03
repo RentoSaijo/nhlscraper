@@ -2,7 +2,7 @@
 % Please edit documentation in R/Draft.R
 \name{get_draft_information}
 \alias{get_draft_information}
-\title{Get draft information for each season}
+\title{Get draft information for all seasons}
 \usage{
 get_draft_information()
 }
@@ -10,5 +10,5 @@ get_draft_information()
 tibble with one row per season
 }
 \description{
-Get draft information for each season
+Get draft information for all seasons
 }

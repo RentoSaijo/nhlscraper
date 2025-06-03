@@ -2,7 +2,7 @@
 % Please edit documentation in R/Game.R
 \name{get_game_story}
 \alias{get_game_story}
-\title{Get game story by game}
+\title{Get WSC game story by game}
 \usage{
 get_game_story(game = 2024020602)
 }
@@ -13,5 +13,5 @@ get_game_story(game = 2024020602)
 list of 24 items
 }
 \description{
-Get game story by game
+Get WSC game story by game
 }

@@ -4,12 +4,12 @@
 \alias{get_draft_picks}
 \title{Get draft picks by year (and round)}
 \usage{
-get_draft_picks(year = 2024, round = 1)
+get_draft_picks(year = get_season_now()$seasonId\%\%10000 - 1, round = "all")
 }
 \arguments{
 \item{year}{integer Year in YYYY}
 
-\item{round}{integer/string Round of 1:7 or 'all'}
+\item{round}{integer or string Round of 1:7 or 'all'}
 }
 \value{
 tibble with one row per pick
