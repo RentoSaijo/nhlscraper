@@ -2,7 +2,7 @@
 % Please edit documentation in R/Team.R
 \name{get_team_roster}
 \alias{get_team_roster}
-\title{Get team roster by season and player-type.}
+\title{Get team roster by season and player-type}
 \usage{
 get_team_roster(
   team = "BOS",
@@ -11,7 +11,7 @@ get_team_roster(
 )
 }
 \arguments{
-\item{team}{string Team in 3-letter code}
+\item{team}{string 3-letter team code}
 
 \item{season}{integer Season in YYYYYYYY}
 
@@ -21,5 +21,5 @@ get_team_roster(
 tibble with one row per player
 }
 \description{
-Get team roster by season and player-type.
+Get team roster by season and player-type
 }

@@ -2,16 +2,16 @@
 % Please edit documentation in R/Team.R
 \name{get_team_seasons}
 \alias{get_team_seasons}
-\title{Get which year(s) a team played in regular season and/or playoffs}
+\title{Get which season(s) a team played in regular season and/or playoffs}
 \usage{
 get_team_seasons(team = "BOS")
 }
 \arguments{
-\item{team}{string Team in 3-letter code}
+\item{team}{string 3-letter team code}
 }
 \value{
 tibble with one row per season
 }
 \description{
-Get which year(s) a team played in regular season and/or playoffs
+Get which season(s) a team played in regular season and/or playoffs
 }

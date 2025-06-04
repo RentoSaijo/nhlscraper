@@ -12,7 +12,7 @@ get_team_roster_statistics(
 )
 }
 \arguments{
-\item{team}{string Team in 3-letter code}
+\item{team}{string 3-letter team code}
 
 \item{season}{integer Season in YYYYYYYY}
 

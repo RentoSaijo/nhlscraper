@@ -31,6 +31,9 @@ get_scoreboards <- function(date='2025-01-01') {
     query=list(),
     stats_rest=F
   )
+  if (is.null(out$gamesByDate)) {
+    return(tibble::tibble())
+  }
   sub <- out$gamesByDate[out$gamesByDate$date==date, , drop=F]
   if (nrow(sub)==0) {
     return(tibble::tibble())

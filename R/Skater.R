@@ -57,8 +57,7 @@ get_skaters <- function(
     dplyr::ungroup() %>%
     dplyr::select(-assists, -gamesPlayed, -goals, -points, -max_season_chunk)
   final <- latest %>%
-    dplyr::left_join(stats_sum, by='playerId') %>% 
-    dplyr::select(-max_season_chunk)
+    dplyr::left_join(stats_sum, by='playerId')
   return(final)
 }
 
@@ -71,7 +70,7 @@ get_skaters <- function(
 #' @export
 
 get_skater_leaders <- function(
-    season=20242025,
+    season=get_season_now()$seasonId,
     game_type=2,
     category='points'
   ) {
@@ -101,12 +100,14 @@ get_skater_milestones <- function() {
 #' 
 #' @param season integer Season in YYYYYYYY
 #' @param report string Report (check `get_configuration()` for possible inputs)
-#' @param teams vector of integers TeamID(s)
+#' @param teams vector of integers Team ID(s)
 #' @param is_aggregate boolean isAggregate where T=regular and playoffs combined
-#'                     from multiple teams, if applicable
-#' @param is_game boolean isGame where T=rows by games and F=rows by players
+#'                     (or multiple seasons) from multiple teams, if applicable
+#' @param is_game boolean isGame where T=rows by games and F=rows by skaters
 #' @param dates vector of strings Date(s) in 'YYYY-MM-DD' (only if paired with
-#'              `is_game`; too many dates will result in incomplete data)
+#'              `is_game`)
+#' @param game_types vector of integers Game-type(s) where 1=pre-season,
+#'                   2=regular, and 3=playoffs
 #' @return tibble with one row per skater or game
 #' @export
 
@@ -130,6 +131,7 @@ get_skater_statistics <- function(
       query=list(
         limit=-1,
         isGame=T,
+        isAggregate=is_aggregate,
         cayenneExp=sprintf(
         'seasonId=%s and gameDate in (%s) and teamId in (%s) and gameTypeId in (%s)',
         season,

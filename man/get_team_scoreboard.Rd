@@ -2,16 +2,16 @@
 % Please edit documentation in R/Team.R
 \name{get_team_scoreboard}
 \alias{get_team_scoreboard}
-\title{Get team scoreboard now}
+\title{Get team scoreboard as of now}
 \usage{
 get_team_scoreboard(team = "BOS")
 }
 \arguments{
-\item{team}{string Team in 3-letter code}
+\item{team}{string 3-letter team code}
 }
 \value{
-???
+tibble with one row per game
 }
 \description{
-Get team scoreboard now
+Get team scoreboard as of now
 }
