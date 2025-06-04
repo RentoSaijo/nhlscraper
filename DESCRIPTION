@@ -6,7 +6,7 @@ Authors@R: c(
   person('Lars', 'Skytte', email='lars.sunesen.skytte@gmail.com', role='ctb')
   )
 Description: NHLRScraper makes it easy to access NHL data.
-License: MIT
+License: MIT + file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown=T)
 RoxygenNote: 7.3.2
