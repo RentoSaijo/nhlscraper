@@ -22,5 +22,5 @@ Suggests:
     testthat (>= 3.0.0)
 Config/testthat/edition: 3
 VignetteBuilder: knitr
-URL: https://github.com/RentoSaijo/NHLScraper
+URL: https://github.com/RentoSaijo/NHLScraper, https://rentosaijo.github.io/NHLScraper/
 BugReports: https://github.com/RentoSaijo/NHLScraper/issues
