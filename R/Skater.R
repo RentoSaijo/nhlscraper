@@ -1,12 +1,17 @@
-#' Get all skaters' biographies from a range of years
+#' Get all skaters' biographies from a range of seasons
 #' 
 #' @importFrom magrittr %>%
-#' @param start_year integer Year to start search
-#' @param end_year integer Year to end search
+#' @param start_season integer Season to start search in YYYYYYYY
+#' @param end_season integer Season to end search in YYYYYYYY
 #' @return tibble with one row per skater
 #' @export
 
-get_skaters <- function(start_year=1917, end_year=2025) {
+get_skaters <- function(
+    start_season=19171918,
+    end_season=get_season_now()$seasonId
+  ) {
+  start_year <- start_season %/% 10000
+  end_year <- end_season %% 10000
   seasons <- paste0(
     start_year:(end_year-1),
     sprintf('%04d', (start_year:(end_year-1))+1)
@@ -34,6 +39,9 @@ get_skaters <- function(start_year=1917, end_year=2025) {
     }
   }
   combined <- dplyr::bind_rows(all_pages)
+  if (nrow(combined)==0) {
+    return(tibble::tibble())
+  }
   stats_sum <- combined %>%
     dplyr::group_by(playerId) %>%
     dplyr::summarise(
@@ -49,7 +57,8 @@ get_skaters <- function(start_year=1917, end_year=2025) {
     dplyr::ungroup() %>%
     dplyr::select(-assists, -gamesPlayed, -goals, -points, -max_season_chunk)
   final <- latest %>%
-    dplyr::left_join(stats_sum, by='playerId')
+    dplyr::left_join(stats_sum, by='playerId') %>% 
+    dplyr::select(-max_season_chunk)
   return(final)
 }
 
