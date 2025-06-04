@@ -1,5 +1,8 @@
 # NHLScraper: Scraper for NHL Data on R
 
+## Overview
+NHLScraper is a public scraper for NHL data on R; with this, you will have relatively easy access to all sorts of data from high-level multi-season statistics to low-level play-by-play statistics.
+
 ## Installation
 You can install the development version of NHLScraper from GitHub with:
 ```
