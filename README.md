@@ -1,4 +1,4 @@
-### NHLScraper: Public Scraper for NHL Data on R
+# NHLScraper: Public Scraper for NHL Data on R
 
 ## Installation
 You can install the development version of NHLScraper from GitHub with:
@@ -10,13 +10,13 @@ devtools::install_github('RentoSaijo/NHLScraper')
 ## Example
 This is a basic example which shows you how to use some of the functions.
 
-# League Data
+### League Data
 ```{r league}
 standings_2025_01_01 <- get_standings()
 schedule_2025_01_01 <- get_schedule()
 ```
 
-# Team Data
+### Team Data
 ```{r team}
 COL_seasons <- get_team_seasons(team='COL')
 COL_skater_statistics_20242025 <- get_team_roster_statistics(
@@ -43,14 +43,14 @@ playoff_team_statistics_20242025 <- get_team_statistics(
 )
 ```
 
-# Player Data
+### Player Data
 ```{r player}
 Martin_Necas_game_log_20242025 <- get_player_game_log(season=20242025)
 Martin_Necas_landing <- get_player_landing()
 spotlight_players <- get_spotlight_players()
 ```
 
-# Skater Data
+### Skater Data
 ```{r skater}
 skaters_20242025 <- get_skaters(
   start_season=20242025, end_season=20242025
@@ -67,7 +67,7 @@ playoff_skater_statistics_20242025 <- get_skater_statistics(
 )
 ```
 
-# Goalie Data
+### Goalie Data
 ```{r goalie}
 goalies_20242025 <- get_goalies(
   start_season=20242025, end_season=20242025
@@ -84,7 +84,7 @@ playoff_goalie_statistics_20242025 <- get_goalie_statistics(
 )
 ```
 
-# Game Data
+### Game Data
 ```{r game}
 scores_2025_01_01 <- get_scores()
 gc_pbp_2024020602 <- get_gc_play_by_play()
@@ -93,20 +93,20 @@ game_story_2024020602 <- get_game_story()
 shift_charts_2024020602 <- get_shift_charts()
 ```
 
-# Playoff Data
+### Playoff Data
 ```{r playoff}
 series_carousel_20242025_1 <- get_series_carousel(season=20242025)
 playoff_schedule_TOR_OTT_20242025 <- get_series_schedule(season=20242025)
 playoff_bracket_2025 <- get_playoff_bracket(year=2025)
 ```
 
-# Draft Data
+### Draft Data
 ```{r draft}
 draft_rankings_2025 <- get_draft_rankings(year=2025)
 draft_picks_2024 <- get_draft_picks(year=2024, round='all')
 ```
 
-# Other Data
+### Other Data
 ```{r other}
 tv_schedule_2025_01_01 <- get_tv_schedule()
 partner_odds_latest <- get_partner_odds()
