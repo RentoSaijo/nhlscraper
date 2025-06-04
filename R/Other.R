@@ -100,3 +100,17 @@ get_countries <- function() {
   )
   return(tibble::as_tibble(out$data))
 }
+
+#' Get streams
+#' 
+#' @return tibble with one row per stream
+#' @export
+
+get_streams <- function() {
+  out <- nhl_api(
+    path='where-to-watch',
+    query=list(),
+    stats_rest=F
+  )
+  return(tibble::as_tibble(out))
+}
