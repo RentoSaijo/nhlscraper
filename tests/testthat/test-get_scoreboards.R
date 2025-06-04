@@ -14,6 +14,6 @@ test_that('get_scoreboards(\'2025-1-1\') returns error', {
   skip_if_offline()
   expect_error(
     get_scoreboards('2025-1-1'),
-    '`date` must be in YYYY-MM-DD format'
+    '`date` must be in \'YYYY-MM-DD\' format'
   )
 })
