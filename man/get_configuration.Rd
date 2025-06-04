@@ -2,7 +2,7 @@
 % Please edit documentation in R/Other.R
 \name{get_configuration}
 \alias{get_configuration}
-\title{Get configuration}
+\title{Get configuration for skater, goalie, and team statistics}
 \usage{
 get_configuration()
 }
@@ -10,5 +10,5 @@ get_configuration()
 list with 5 items
 }
 \description{
-Get configuration
+Get configuration for skater, goalie, and team statistics
 }

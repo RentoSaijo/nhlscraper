@@ -2,7 +2,7 @@
 % Please edit documentation in R/League.R
 \name{get_schedule}
 \alias{get_schedule}
-\title{Get schedule for week by date}
+\title{Get schedule by date}
 \usage{
 get_schedule(date = "2025-01-01")
 }
@@ -10,8 +10,8 @@ get_schedule(date = "2025-01-01")
 \item{date}{string Date in 'YYYY-MM-DD'}
 }
 \value{
-list of 8 items
+tibble with one row per game
 }
 \description{
-Get schedule for week by date
+Get schedule by date
 }

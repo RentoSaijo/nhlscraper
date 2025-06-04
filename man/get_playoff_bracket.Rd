@@ -4,7 +4,7 @@
 \alias{get_playoff_bracket}
 \title{Get playoff bracket by year}
 \usage{
-get_playoff_bracket(year = 2025)
+get_playoff_bracket(year = get_season_now()$seasonId\%\%10000)
 }
 \arguments{
 \item{year}{integer Year in YYYY}

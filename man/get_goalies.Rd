@@ -2,18 +2,18 @@
 % Please edit documentation in R/Goalie.R
 \name{get_goalies}
 \alias{get_goalies}
-\title{Get all goalies' biographies from a range of years}
+\title{Get all goalies' biographies from a range of seasons}
 \usage{
-get_goalies(start_year = 1917, end_year = 2025)
+get_goalies(start_season = 19171918, end_season = get_season_now()$seasonId)
 }
 \arguments{
-\item{start_year}{integer Year to start search}
+\item{start_season}{integer Season to start search in YYYYYYYY}
 
-\item{end_year}{integer Year to end search}
+\item{end_season}{integer Season to end search in YYYYYYYY}
 }
 \value{
 tibble with one row per goalie
 }
 \description{
-Get all goalies' biographies from a range of years
+Get all goalies' biographies from a range of seasons
 }

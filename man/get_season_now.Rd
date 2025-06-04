@@ -2,7 +2,7 @@
 % Please edit documentation in R/Other.R
 \name{get_season_now}
 \alias{get_season_now}
-\title{Get latest season}
+\title{Get season as of now}
 \usage{
 get_season_now()
 }
@@ -10,5 +10,5 @@ get_season_now()
 tibble with one row
 }
 \description{
-Get latest season
+Get season as of now
 }

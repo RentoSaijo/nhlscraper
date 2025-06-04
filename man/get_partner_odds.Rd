@@ -2,16 +2,16 @@
 % Please edit documentation in R/Other.R
 \name{get_partner_odds}
 \alias{get_partner_odds}
-\title{Get partner odds now}
+\title{Get partner odds as of now}
 \usage{
 get_partner_odds(country = "US")
 }
 \arguments{
-\item{country}{string Country code e.g. 'US'}
+\item{country}{string 2-letter country code e.g. 'US'}
 }
 \value{
 tibble with one row per game
 }
 \description{
-Get partner odds now
+Get partner odds as of now
 }

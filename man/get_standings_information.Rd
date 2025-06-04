@@ -2,7 +2,7 @@
 % Please edit documentation in R/League.R
 \name{get_standings_information}
 \alias{get_standings_information}
-\title{Get standings information for each season}
+\title{Get standings information for all seasons}
 \usage{
 get_standings_information()
 }
@@ -10,5 +10,5 @@ get_standings_information()
 tibble with one row per season
 }
 \description{
-Get standings information for each season
+Get standings information for all seasons
 }

@@ -2,20 +2,25 @@
 % Please edit documentation in R/Goalie.R
 \name{get_goalie_leaders}
 \alias{get_goalie_leaders}
-\title{Get goalie stats leaders by season and game-type}
+\title{Get goalie statistics leaders by season and game-type}
 \usage{
-get_goalie_leaders(season = 20242025, game_type = 2, category = "wins")
+get_goalie_leaders(
+  season = get_season_now()$seasonId,
+  game_type = 2,
+  category = "wins"
+)
 }
 \arguments{
 \item{season}{integer Season in YYYYYYYY}
 
 \item{game_type}{integer Game-type where 2=regular and 3=playoffs}
 
-\item{category}{string Category e.g. wins, shutouts, savePctg, goalsAgainstAverage}
+\item{category}{string Category e.g. wins, shutouts, savePctg,
+and goalsAgainstAverage}
 }
 \value{
 tibble with one row per goalie
 }
 \description{
-Get goalie stats leaders by season and game-type
+Get goalie statistics leaders by season and game-type
 }

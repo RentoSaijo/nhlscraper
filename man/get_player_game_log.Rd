@@ -4,7 +4,11 @@
 \alias{get_player_game_log}
 \title{Get a player's game log for a season}
 \usage{
-get_player_game_log(player_id, season = 20242025, game_type = 2)
+get_player_game_log(
+  player_id = 8480039,
+  season = get_season_now()$seasonId,
+  game_type = 2
+)
 }
 \arguments{
 \item{player_id}{integer Player ID}

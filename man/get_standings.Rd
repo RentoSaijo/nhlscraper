@@ -4,7 +4,7 @@
 \alias{get_standings}
 \title{Get standings by date}
 \usage{
-get_standings(date = "now")
+get_standings(date = "2025-01-01")
 }
 \arguments{
 \item{date}{string Date in 'YYYY-MM-DD'}

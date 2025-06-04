@@ -4,7 +4,7 @@
 \alias{get_series_schedule}
 \title{Get playoff series schedule}
 \usage{
-get_series_schedule(season = 20242025, series = "a")
+get_series_schedule(season = get_season_now()$seasonId, series = "a")
 }
 \arguments{
 \item{season}{integer Season in YYYYYYYY}

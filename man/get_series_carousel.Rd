@@ -4,12 +4,12 @@
 \alias{get_series_carousel}
 \title{Get playoff series carousel by season and round}
 \usage{
-get_series_carousel(season = 20242025, round = 1)
+get_series_carousel(season = get_season_now()$seasonId, round = 1)
 }
 \arguments{
 \item{season}{integer Season in YYYYYYYY}
 
-\item{round}{integer Round from 1:4}
+\item{round}{integer Round of 1:4}
 }
 \value{
 tibble with one row per match-up
