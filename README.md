@@ -1,4 +1,4 @@
-# NHLScraper: Public Scraper for NHL Data on R
+# NHLScraper: Scraper for NHL Data on R
 
 ## Installation
 You can install the development version of NHLScraper from GitHub with:
