@@ -3,6 +3,8 @@ template:
   bootstrap: 5
   
 reference:
+- title: Functions reference
+  contents:
 - title: League Data
   desc: >
     Functions to retrieve data about the league
