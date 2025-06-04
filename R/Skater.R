@@ -112,7 +112,7 @@ get_skater_milestones <- function() {
 #' @export
 
 get_skater_statistics <- function(
-  season=20242025,
+  season=get_season_now()$seasonId,
   report='summary',
   teams=1:100,
   is_aggregate=F,

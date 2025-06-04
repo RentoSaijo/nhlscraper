@@ -158,7 +158,7 @@ get_franchises <- function() {
 #' @export
 
 get_team_statistics <- function(
-    season=20242025,
+    season=get_season_now()$seasonId,
     report='summary',
     is_aggregate=F,
     is_game=F,
