@@ -24,7 +24,7 @@ get_goalie_statistics(
 \item{is_aggregate}{boolean isAggregate where T=regular and playoffs combined
 (or multiple seasons) from multiple teams, if applicable}
 
-\item{is_game}{boolean isGame where T=rows by games and F=rows by players}
+\item{is_game}{boolean isGame where T=rows by games and F=rows by goalies}
 
 \item{dates}{vector of strings Date(s) in 'YYYY-MM-DD' (only if paired with
 \code{is_game})}
@@ -33,7 +33,7 @@ get_goalie_statistics(
 2=regular, and 3=playoffs}
 }
 \value{
-tibble with one row per skater or game
+tibble with one row per goalie or game
 }
 \description{
 Get goalie statistics by season

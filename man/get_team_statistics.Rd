@@ -21,10 +21,13 @@ get_team_statistics(
 \item{is_aggregate}{boolean isAggregate where T=regular and playoffs combined
 from multiple teams, if applicable}
 
-\item{is_game}{boolean isGame where T=rows by games and F=rows by players}
+\item{is_game}{boolean isGame where T=rows by games and F=rows by teams}
 
 \item{dates}{vector of strings Date(s) in 'YYYY-MM-DD' (only if paired with
 \code{is_game}; too many dates will result in incomplete data)}
+
+\item{game_types}{vector of integers Game-type(s) where 1=pre-season,
+2=regular, and 3=playoffs}
 }
 \value{
 tibble with one row per team or game

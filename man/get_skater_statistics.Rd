@@ -24,7 +24,7 @@ get_skater_statistics(
 \item{is_aggregate}{boolean isAggregate where T=regular and playoffs combined
 (or multiple seasons) from multiple teams, if applicable}
 
-\item{is_game}{boolean isGame where T=rows by games and F=rows by players}
+\item{is_game}{boolean isGame where T=rows by games and F=rows by skaters}
 
 \item{dates}{vector of strings Date(s) in 'YYYY-MM-DD' (only if paired with
 \code{is_game})}

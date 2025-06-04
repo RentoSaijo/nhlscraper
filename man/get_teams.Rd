@@ -7,7 +7,7 @@
 get_teams()
 }
 \value{
-tibble with one row per game
+tibble with one row per team
 }
 \description{
 Get all teams

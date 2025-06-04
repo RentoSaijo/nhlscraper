@@ -7,7 +7,7 @@
 get_franchises()
 }
 \value{
-tibble with one row per game
+tibble with one row per franchise
 }
 \description{
 Get all franchises
