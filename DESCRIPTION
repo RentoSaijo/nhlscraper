@@ -5,7 +5,7 @@ Authors@R: c(
   person('Rento', 'Saijo', email='rentosaijo0527@gmail.com', role=c('aut', 'cre')),
   person('Lars', 'Skytte', email='lars.sunesen.skytte@gmail.com', role='ctb')
   )
-Description: NHLRScraper makes it easy to access NHL data.
+Description: NHLScraper makes it easy to access NHL data.
 License: MIT + file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown=T)
