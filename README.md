@@ -9,7 +9,7 @@ devtools::install_github('RentoSaijo/NHLScraper')
 I am submitting it to CRAN soon.
 
 ## Example
-This is a basic example that shows you how to use some of the functions.
+Below are basic examples that show you how to use some of the functions.
 
 ### League Data
 ```
