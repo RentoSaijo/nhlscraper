@@ -6,7 +6,7 @@ Authors@R: c(
   person('Lars', 'Skytte', email='lars.sunesen.skytte@gmail.com', role='ctb')
   )
 Description: NHLRScraper makes it easy to access NHL data.
-License: MIT + file LICENSE.md
+License: MIT
 Encoding: UTF-8
 Roxygen: list(markdown=T)
 RoxygenNote: 7.3.2
@@ -24,4 +24,3 @@ Config/testthat/edition: 3
 VignetteBuilder: knitr
 URL: https://github.com/RentoSaijo/NHLScraper
 BugReports: https://github.com/RentoSaijo/NHLScraper/issues
-LICENSE: MIT
