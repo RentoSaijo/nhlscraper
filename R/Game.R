@@ -6,7 +6,7 @@
 
 get_scores <- function(date='2025-01-01') {
   if (!grepl('^\\d{4}-\\d{2}-\\d{2}$', date)) {
-    stop('`date` must be in YYYY-MM-DD format', call.=F)
+    stop('`date` must be in \'YYYY-MM-DD\' format', call.=F)
   }
   out <- nhl_api(
     path=sprintf('score/%s', date),
@@ -24,7 +24,7 @@ get_scores <- function(date='2025-01-01') {
 
 get_scoreboards <- function(date='2025-01-01') {
   if (!grepl('^\\d{4}-\\d{2}-\\d{2}$', date)) {
-    stop('`date` must be in YYYY-MM-DD format', call.=F)
+    stop('`date` must be in \'YYYY-MM-DD\' format', call.=F)
   }
   out <- nhl_api(
     path=sprintf('scoreboard/%s', date),

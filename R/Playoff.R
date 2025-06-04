@@ -1,11 +1,11 @@
 #' Get playoff series carousel by season and round
 #' 
 #' @param season integer Season in YYYYYYYY
-#' @param round integer Round from 1:4
+#' @param round integer Round of 1:4
 #' @return tibble with one row per match-up
 #' @export
 
-get_series_carousel <- function(season=20242025, round=1) {
+get_series_carousel <- function(season=get_season_now()$seasonId, round=1) {
   out <- nhl_api(
     path=sprintf('playoff-series/carousel/%s/', season),
     query=list(),
@@ -21,7 +21,7 @@ get_series_carousel <- function(season=20242025, round=1) {
 #' @return tibble with one row per game
 #' @export
 
-get_series_schedule <- function(season=20242025, series='a') {
+get_series_schedule <- function(season=get_season_now()$seasonId, series='a') {
   out <- nhl_api(
     path=sprintf('schedule/playoff-series/%s/%s', season, series),
     query=list(),
@@ -36,7 +36,7 @@ get_series_schedule <- function(season=20242025, series='a') {
 #' @return tibble with one row per match-up
 #' @export
 
-get_playoff_bracket <- function(year=2025) {
+get_playoff_bracket <- function(year=get_season_now()$seasonId%%10000) {
   out <- nhl_api(
     path=sprintf('playoff-bracket/%s', year),
     query=list(),

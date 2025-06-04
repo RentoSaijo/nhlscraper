@@ -5,6 +5,9 @@
 #' @export
 
 get_tv_schedule <- function(date='2025-01-01') {
+  if (!grepl('^\\d{4}-\\d{2}-\\d{2}$', date)) {
+    stop('`date` must be in \'YYYY-MM-DD\' format', call.=F)
+  }
   out <- nhl_api(
     path=sprintf('network/tv-schedule/%s', date),
     query=list(),
@@ -13,9 +16,9 @@ get_tv_schedule <- function(date='2025-01-01') {
   return(tibble::as_tibble(out$broadcasts))
 }
 
-#' Get partner odds now
+#' Get partner odds as of now
 #' 
-#' @param country string Country code e.g. 'US'
+#' @param country string 2-letter country code e.g. 'US'
 #' @return tibble with one row per game
 #' @export
 
@@ -42,7 +45,7 @@ get_glossary <- function() {
   return(tibble::as_tibble(out$data))
 }
 
-#' Get latest season
+#' Get season as of now
 #' 
 #' @return tibble with one row
 #' @export
@@ -56,7 +59,7 @@ get_season_now <- function() {
   return(tibble::as_tibble(out$data))
 }
 
-#' Get configuration
+#' Get configuration for skater, goalie, and team statistics
 #' 
 #' @return list with 5 items
 #' @export

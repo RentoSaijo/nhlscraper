@@ -6,7 +6,11 @@
 #' @return tibble with one row per game
 #' @export
 
-get_player_game_log <- function(player_id, season=20242025, game_type=2) {
+get_player_game_log <- function(
+    player_id=8480039,
+    season=get_season_now()$seasonId,
+    game_type=2
+  ) {
   out <- nhl_api(
     path=sprintf('player/%s/game-log/%s/%s', player_id, season, game_type),
     query=list(),
@@ -15,18 +19,21 @@ get_player_game_log <- function(player_id, season=20242025, game_type=2) {
   return(tibble::as_tibble(out$gameLog))
 }
 
-#' Get a player's information
+#' Get a player's landing
 #' 
 #' @param player_id integer Player ID
 #' @return list with 36 items
 #' @export
 
-get_player_information <- function(player_id) {
+get_player_landing <- function(player_id=8480039) {
   out <- nhl_api(
     path=sprintf('player/%s/landing', player_id),
     query=list(),
     stats_rest=F
   )
+  if (length(out)==4) {
+    return(list())
+  }
   return(out)
 }
 
