@@ -6,6 +6,7 @@ You can install the development version of NHLScraper from GitHub with:
 #install.packages('devtools')
 devtools::install_github('RentoSaijo/NHLScraper')
 ```
+I am submitting it to CRAN soon.
 
 ## Example
 This is a basic example which shows you how to use some of the functions.
