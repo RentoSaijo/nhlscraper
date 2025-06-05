@@ -2,7 +2,7 @@
 % Please edit documentation in R/Skater.R
 \name{get_skater_leaders}
 \alias{get_skater_leaders}
-\title{Get skater statistics leaders by season and game-type}
+\title{Get skater statistics leaders by season, game-type, and category}
 \usage{
 get_skater_leaders(
   season = get_season_now()$seasonId,
@@ -15,11 +15,20 @@ get_skater_leaders(
 
 \item{game_type}{integer GameType where 2=regular and 3=playoffs}
 
-\item{category}{string e.g. assists, goals, goalsSh, goalsPp, points, penaltyMins, toi, plusMinus, faceoffLeaders}
+\item{category}{string e.g. assists, goals, goalsSh, goalsPp, points,
+penaltyMins, toi, plusMinus, faceoffLeaders}
 }
 \value{
 tibble with one row per skater
 }
 \description{
-Get skater statistics leaders by season and game-type
+Get skater statistics leaders by season, game-type, and category
+}
+\examples{
+playoff_toi_leaders_20242025 <- get_skater_leaders(
+  season=20242025,
+  game_type=3,
+  category='toi'
+)
+
 }

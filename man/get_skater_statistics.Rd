@@ -38,3 +38,11 @@ tibble with one row per skater or game
 \description{
 Get skater statistics by season
 }
+\examples{
+regular_skater_shootout_20242025 <- get_skater_statistics(
+  season=20242025,
+  report='shootout',
+  game_types=c(2)
+)
+
+}

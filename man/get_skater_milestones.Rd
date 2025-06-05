@@ -12,3 +12,7 @@ tibble with one row per skater
 \description{
 Get skater milestones
 }
+\examples{
+skater_milestones <- get_skater_milestones()
+
+}

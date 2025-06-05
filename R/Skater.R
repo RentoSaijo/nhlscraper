@@ -1,9 +1,12 @@
-#' Get all skaters' biographies from a range of seasons
+#' Get all skaters' biographies by range of seasons
 #' 
 #' @importFrom magrittr %>%
 #' @param start_season integer Season to start search in YYYYYYYY
 #' @param end_season integer Season to end search in YYYYYYYY
 #' @return tibble with one row per skater
+#' @examples
+#' skaters_2000s <- get_skaters(start_season=20002001, end_season=20242025)
+#' 
 #' @export
 
 get_skaters <- function(
@@ -28,7 +31,11 @@ get_skaters <- function(
         limit=-1,
         start=0,
         sort='playerId',
-        cayenneExp=sprintf('seasonId>=%d and seasonId<=%d', min_season, max_season)
+        cayenneExp=sprintf(
+          'seasonId>=%d and seasonId<=%d',
+          min_season,
+          max_season
+        )
       ),
       stats_rest=T
     )
@@ -61,12 +68,20 @@ get_skaters <- function(
   return(final)
 }
 
-#' Get skater statistics leaders by season and game-type
+#' Get skater statistics leaders by season, game-type, and category
 #' 
 #' @param season integer Season in YYYYYYYY
 #' @param game_type integer GameType where 2=regular and 3=playoffs
-#' @param category string e.g. assists, goals, goalsSh, goalsPp, points, penaltyMins, toi, plusMinus, faceoffLeaders
+#' @param category string e.g. assists, goals, goalsSh, goalsPp, points,
+#'                 penaltyMins, toi, plusMinus, faceoffLeaders
 #' @return tibble with one row per skater
+#' @examples
+#' playoff_toi_leaders_20242025 <- get_skater_leaders(
+#'   season=20242025,
+#'   game_type=3,
+#'   category='toi'
+#' )
+#' 
 #' @export
 
 get_skater_leaders <- function(
@@ -85,6 +100,9 @@ get_skater_leaders <- function(
 #' Get skater milestones
 #' 
 #' @return tibble with one row per skater
+#' @examples
+#' skater_milestones <- get_skater_milestones()
+#' 
 #' @export
 
 get_skater_milestones <- function() {
@@ -109,6 +127,13 @@ get_skater_milestones <- function() {
 #' @param game_types vector of integers Game-type(s) where 1=pre-season,
 #'                   2=regular, and 3=playoffs
 #' @return tibble with one row per skater or game
+#' @examples
+#' regular_skater_shootout_20242025 <- get_skater_statistics(
+#'   season=20242025,
+#'   report='shootout',
+#'   game_types=c(2)
+#' )
+#' 
 #' @export
 
 get_skater_statistics <- function(
