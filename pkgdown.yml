@@ -3,7 +3,7 @@ pkgdown: 2.1.3
 pkgdown_sha: ~
 articles:
   NHLScraper: NHLScraper.html
-last_built: 2025-06-05T02:54Z
+last_built: 2025-06-05T02:56Z
 urls:
-  reference: https://rentosaijo.github.io/NHLScraper/reference
-  article: https://rentosaijo.github.io/NHLScraper/articles
+  reference: https://rentosaijo.github.io/nhlscraper/reference
+  article: https://rentosaijo.github.io/nhlscraper/articles
