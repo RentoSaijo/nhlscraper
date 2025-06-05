@@ -3,6 +3,7 @@
 #' @param path String API path
 #' @param query list Query parameters
 #' @return parsed JSON
+#' 
 #' @keywords internal
 
 nhl_api <- function(path, query=list(), stats_rest=F) {
