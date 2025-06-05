@@ -7,6 +7,6 @@
 # * https://testthat.r-lib.org/articles/special-files.html
 
 library(testthat)
-library(NHLScraper)
+library(nhlscraper)
 
-test_check("NHLScraper")
+test_check('nhlscraper')
