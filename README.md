@@ -10,7 +10,7 @@ Install the development version from [GitHub](https://github.com/) with:
 devtools::install_github('RentoSaijo/nhlscraper')
 ```
 
-Install the official version from CRAN with:
+Install the official version from [CRAN](https://cran.r-project.org) with:
 ```
 install.packages('nhlscraper')
 ```
