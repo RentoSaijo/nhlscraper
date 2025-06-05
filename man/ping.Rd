@@ -12,3 +12,7 @@ boolean T=status is okay and F=status is not okay
 \description{
 Ping
 }
+\examples{
+online <- ping()
+
+}

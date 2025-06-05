@@ -12,3 +12,7 @@ tibble with one row per terminology
 \description{
 Get glossary
 }
+\examples{
+glossary <- get_glossary()
+
+}

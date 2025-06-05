@@ -12,3 +12,7 @@ list with 5 items
 \description{
 Get configuration for skater, goalie, and team statistics
 }
+\examples{
+config <- get_configuration()
+
+}

@@ -1,7 +1,10 @@
 #' Get TV schedule by date
 #' 
 #' @param date string Date in 'YYYY-MM-DD'
-#' @return tibble with one row per broadcast
+#' @return tibble with one row per program
+#' @examples
+#' tv_schedule_2025_01_02 <- get_tv_schedule(date='2025-01-02')
+#' 
 #' @export
 
 get_tv_schedule <- function(date='2025-01-01') {
@@ -20,6 +23,9 @@ get_tv_schedule <- function(date='2025-01-01') {
 #' 
 #' @param country string 2-letter country code e.g. 'US'
 #' @return tibble with one row per game
+#' @examples
+#' partner_odds_now_CA <- get_partner_odds('CA')
+#' 
 #' @export
 
 get_partner_odds <- function(country='US') {
@@ -34,6 +40,9 @@ get_partner_odds <- function(country='US') {
 #' Get glossary
 #' 
 #' @return tibble with one row per terminology
+#' @examples
+#' glossary <- get_glossary()
+#' 
 #' @export
 
 get_glossary <- function() {
@@ -48,6 +57,9 @@ get_glossary <- function() {
 #' Get season as of now
 #' 
 #' @return tibble with one row
+#' @examples
+#' season_now <- get_season_now()
+#' 
 #' @export
 
 get_season_now <- function() {
@@ -62,6 +74,9 @@ get_season_now <- function() {
 #' Get configuration for skater, goalie, and team statistics
 #' 
 #' @return list with 5 items
+#' @examples
+#' config <- get_configuration()
+#' 
 #' @export
 
 get_configuration <- function() {
@@ -76,6 +91,9 @@ get_configuration <- function() {
 #' Ping
 #' 
 #' @return boolean T=status is okay and F=status is not okay
+#' @examples
+#' online <- ping()
+#' 
 #' @export
 
 ping <- function() {

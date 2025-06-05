@@ -10,8 +10,12 @@ get_tv_schedule(date = "2025-01-01")
 \item{date}{string Date in 'YYYY-MM-DD'}
 }
 \value{
-tibble with one row per broadcast
+tibble with one row per program
 }
 \description{
 Get TV schedule by date
+}
+\examples{
+tv_schedule_2025_01_02 <- get_tv_schedule(date='2025-01-02')
+
 }
