@@ -18,8 +18,8 @@ get_team_statistics(
 
 \item{report}{string Report (check \code{get_configuration()} for possible inputs)}
 
-\item{is_aggregate}{boolean isAggregate where T=regular and playoffs combined
-from multiple teams, if applicable}
+\item{is_aggregate}{boolean isAggregate where T=regular and playoffs
+combined, if applicable}
 
 \item{is_game}{boolean isGame where T=rows by games and F=rows by teams}
 
@@ -34,4 +34,12 @@ tibble with one row per team or game
 }
 \description{
 Get team statistics by season
+}
+\examples{
+playoff_team_stf_20242025 <- get_team_statistics(
+  season=20242025,
+  report='scoretrailfirst',
+  game_types=c(3)
+)
+
 }

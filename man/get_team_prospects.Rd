@@ -2,7 +2,7 @@
 % Please edit documentation in R/Team.R
 \name{get_team_prospects}
 \alias{get_team_prospects}
-\title{Get team prospects by player-type}
+\title{Get prospects by team and player-type}
 \usage{
 get_team_prospects(team = "BOS", player_type = "forwards")
 }
@@ -16,5 +16,12 @@ get_team_prospects(team = "BOS", player_type = "forwards")
 tibble with one row per player
 }
 \description{
-Get team prospects by player-type
+Get prospects by team and player-type
+}
+\examples{
+COL_defensemen_prospects <- get_team_prospects(
+  team='COL',
+  player_type='defensemen'
+)
+
 }

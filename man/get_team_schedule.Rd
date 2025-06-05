@@ -2,7 +2,7 @@
 % Please edit documentation in R/Team.R
 \name{get_team_schedule}
 \alias{get_team_schedule}
-\title{Get team schedule by season}
+\title{Get schedule by team and season}
 \usage{
 get_team_schedule(team = "BOS", season = get_season_now()$seasonId)
 }
@@ -15,5 +15,9 @@ get_team_schedule(team = "BOS", season = get_season_now()$seasonId)
 tibble with one row per game
 }
 \description{
-Get team schedule by season
+Get schedule by team and season
+}
+\examples{
+COL_schedule_20242025 <- get_team_schedule(team='COL', season=20242025)
+
 }

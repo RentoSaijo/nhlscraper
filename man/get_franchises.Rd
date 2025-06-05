@@ -12,3 +12,7 @@ tibble with one row per franchise
 \description{
 Get all franchises
 }
+\examples{
+all_franchises <- get_franchises()
+
+}

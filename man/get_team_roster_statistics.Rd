@@ -2,7 +2,7 @@
 % Please edit documentation in R/Team.R
 \name{get_team_roster_statistics}
 \alias{get_team_roster_statistics}
-\title{Get team roster statistics by season, game-type, and player-type}
+\title{Get roster statistics by team, season, game-type, and player-type}
 \usage{
 get_team_roster_statistics(
   team = "BOS",
@@ -24,5 +24,14 @@ get_team_roster_statistics(
 tibble with one row per player
 }
 \description{
-Get team roster statistics by season, game-type, and player-type
+Get roster statistics by team, season, game-type, and player-type
+}
+\examples{
+regular_COL_goalies_statistics_20242025 <- get_team_roster_statistics(
+  team='COL',
+  season=20242025,
+  game_type=2,
+  player_type='goalies'
+)
+
 }

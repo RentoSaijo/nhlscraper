@@ -1,7 +1,10 @@
-#' Get which season(s) a team played in regular season and/or playoffs
+#' Get season(s) for which team played in regular season and/or playoffs
 #' 
 #' @param team string 3-letter team code
 #' @return tibble with one row per season
+#' @examples
+#' COL_seasons <- get_team_seasons(team='COL')
+#' 
 #' @export
 
 get_team_seasons <- function(team='BOS') {
@@ -16,13 +19,21 @@ get_team_seasons <- function(team='BOS') {
   return(tibble::as_tibble(out))
 }
 
-#' Get team roster statistics by season, game-type, and player-type
+#' Get roster statistics by team, season, game-type, and player-type
 #' 
 #' @param team string 3-letter team code
 #' @param season integer Season in YYYYYYYY
 #' @param game_type integer Game-type where 2=regular and 3=playoffs
 #' @param player_type string Player-type of 'skaters' or 'goalies'
 #' @return tibble with one row per player
+#' @examples
+#' regular_COL_goalies_statistics_20242025 <- get_team_roster_statistics(
+#'   team='COL',
+#'   season=20242025,
+#'   game_type=2,
+#'   player_type='goalies'
+#' )
+#' 
 #' @export
 
 get_team_roster_statistics <- function(
@@ -43,6 +54,9 @@ get_team_roster_statistics <- function(
 #' 
 #' @param team string 3-letter team code
 #' @return tibble with one row per game
+#' @examples
+#' FLA_scoreboard_now <- get_team_scoreboard(team='FLA')
+#' 
 #' @export
 
 get_team_scoreboard <- function(team='BOS') {
@@ -61,12 +75,20 @@ get_team_scoreboard <- function(team='BOS') {
   tibble::as_tibble(sub$games[[1]])
 }
 
-#' Get team roster by season and player-type
+#' Get roster by team, season, and player-type
 #' 
 #' @param team string 3-letter team code
 #' @param season integer Season in YYYYYYYY
-#' @param player_type string Player-type of 'forwards', 'defensemen', or 'goalies'
+#' @param player_type string Player-type of 'forwards', 'defensemen', or
+#'                    'goalies'
 #' @return tibble with one row per player
+#' @examples
+#' COL_defensemen_20242025 <- get_team_roster(
+#'   team='COL',
+#'   season=20242025,
+#'   player_type='defensemen'
+#' )
+#' 
 #' @export
 
 get_team_roster <- function(
@@ -82,12 +104,18 @@ get_team_roster <- function(
   return(tibble::as_tibble(out[[player_type]]))
 }
 
-#' Get team prospects by player-type
+#' Get prospects by team and player-type
 #' 
 #' @param team string 3-letter team code
 #' @param player_type string Player-type of 'forwards', 'defensemen', or
 #'                    'goalies'
 #' @return tibble with one row per player
+#' @examples
+#' COL_defensemen_prospects <- get_team_prospects(
+#'   team='COL',
+#'   player_type='defensemen'
+#' )
+#' 
 #' @export
 
 get_team_prospects <- function(team='BOS', player_type='forwards') {
@@ -99,11 +127,14 @@ get_team_prospects <- function(team='BOS', player_type='forwards') {
   return(tibble::as_tibble(out[[player_type]]))
 }
 
-#' Get team schedule by season
+#' Get schedule by team and season
 #' 
 #' @param team string 3-letter team code
 #' @param season integer Season in YYYYYYYY
 #' @return tibble with one row per game
+#' @examples
+#' COL_schedule_20242025 <- get_team_schedule(team='COL', season=20242025)
+#' 
 #' @export
 
 get_team_schedule <- function(team='BOS', season=get_season_now()$seasonId) {
@@ -118,6 +149,9 @@ get_team_schedule <- function(team='BOS', season=get_season_now()$seasonId) {
 #' Get all teams
 #' 
 #' @return tibble with one row per team
+#' @examples
+#' all_teams <- get_teams()
+#' 
 #' @export
 
 get_teams <- function() {
@@ -132,6 +166,9 @@ get_teams <- function() {
 #' Get all franchises
 #' 
 #' @return tibble with one row per franchise
+#' @examples
+#' all_franchises <- get_franchises()
+#' 
 #' @export
 
 get_franchises <- function() {
@@ -147,14 +184,21 @@ get_franchises <- function() {
 #' 
 #' @param season integer Season in YYYYYYYY
 #' @param report string Report (check `get_configuration()` for possible inputs)
-#' @param is_aggregate boolean isAggregate where T=regular and playoffs combined
-#'                     from multiple teams, if applicable
+#' @param is_aggregate boolean isAggregate where T=regular and playoffs
+#'                     combined, if applicable
 #' @param is_game boolean isGame where T=rows by games and F=rows by teams
 #' @param dates vector of strings Date(s) in 'YYYY-MM-DD' (only if paired with
 #'              `is_game`; too many dates will result in incomplete data)
 #' @param game_types vector of integers Game-type(s) where 1=pre-season,
 #'                   2=regular, and 3=playoffs
 #' @return tibble with one row per team or game
+#' @examples
+#' playoff_team_stf_20242025 <- get_team_statistics(
+#'   season=20242025,
+#'   report='scoretrailfirst',
+#'   game_types=c(3)
+#' )
+#' 
 #' @export
 
 get_team_statistics <- function(

@@ -12,3 +12,7 @@ tibble with one row per team
 \description{
 Get all teams
 }
+\examples{
+all_teams <- get_teams()
+
+}

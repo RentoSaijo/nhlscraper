@@ -2,7 +2,7 @@
 % Please edit documentation in R/Team.R
 \name{get_team_seasons}
 \alias{get_team_seasons}
-\title{Get which season(s) a team played in regular season and/or playoffs}
+\title{Get season(s) for which team played in regular season and/or playoffs}
 \usage{
 get_team_seasons(team = "BOS")
 }
@@ -13,5 +13,9 @@ get_team_seasons(team = "BOS")
 tibble with one row per season
 }
 \description{
-Get which season(s) a team played in regular season and/or playoffs
+Get season(s) for which team played in regular season and/or playoffs
+}
+\examples{
+COL_seasons <- get_team_seasons(team='COL')
+
 }
