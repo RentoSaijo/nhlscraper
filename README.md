@@ -99,7 +99,7 @@ scores_2025_01_02 <- get_scores(date='2025-01-02')
 boxscore_2024030411_FLA_defensemen <- get_game_boxscore(
   game=2024030411,
   team='away',
-  player_type='defensemen'
+  player_type='defense'
 )
 gc_pbp_2024030411 <- get_gc_play_by_play(game=2024030411)
 shift_charts_2024030411 <- get_shift_charts(game=2024030411)

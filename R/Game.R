@@ -91,13 +91,13 @@ get_wsc_play_by_play <- function(game=2024020602) {
 #' 
 #' @param game integer Game ID
 #' @param team string Team of 'home' or 'away'
-#' @param player_type string Player-type of 'forwards', 'defensemen', or 'goalies'
+#' @param player_type string Player-type of 'forwards', 'defense', or 'goalies'
 #' @return tibble with one row per player
 #' @examples
 #' boxscore_2024030411_FLA_defensemen <- get_game_boxscore(
 #'   game=2024030411,
 #'   team='away',
-#'   player_type='defensemen'
+#'   player_type='defense'
 #' )
 #' 
 #' @export
