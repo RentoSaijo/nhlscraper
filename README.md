@@ -18,6 +18,11 @@ install.packages('nhlscraper')
 ## Example
 Below are basic examples that show you how to use some of the functions.
 
+### Setup
+```
+library(nhlscraper)
+```
+
 ### League Data
 ```
 schedule_2025_01_02 <- get_schedule(date='2025-01-02')

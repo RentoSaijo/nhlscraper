@@ -16,7 +16,6 @@ knitr::opts_chunk$set(
 
 ### Setup
 ```{r setup}
-#install.packages('nhlscraper')
 library(nhlscraper)
 ```
 
