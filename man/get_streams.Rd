@@ -12,3 +12,7 @@ tibble with one row per stream
 \description{
 Get streams
 }
+\examples{
+all_streams <- get_streams()
+
+}

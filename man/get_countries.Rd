@@ -12,3 +12,7 @@ tibble with one row per country
 \description{
 Get all countries
 }
+\examples{
+all_countries <- get_countries()
+
+}

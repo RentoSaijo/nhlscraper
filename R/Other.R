@@ -108,6 +108,9 @@ ping <- function() {
 #' Get all countries
 #' 
 #' @return tibble with one row per country
+#' @examples
+#' all_countries <- get_countries()
+#' 
 #' @export
 
 get_countries <- function() {
@@ -122,6 +125,9 @@ get_countries <- function() {
 #' Get streams
 #' 
 #' @return tibble with one row per stream
+#' @examples
+#' all_streams <- get_streams()
+#' 
 #' @export
 
 get_streams <- function() {
