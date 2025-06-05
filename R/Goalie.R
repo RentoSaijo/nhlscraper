@@ -4,6 +4,9 @@
 #' @param start_season integer Season to start search in YYYYYYYY
 #' @param end_season integer Season to end search in YYYYYYYY
 #' @return tibble with one row per goalie
+#' @examples
+#' goalies_2000s <- get_goalies(start_season=20002001, end_season=20242025)
+#' 
 #' @export
 
 get_goalies <- function(
@@ -28,7 +31,11 @@ get_goalies <- function(
         limit=-1,
         start=0,
         sort='playerId',
-        cayenneExp=sprintf('seasonId>=%d and seasonId<=%d', min_season, max_season)
+        cayenneExp=sprintf(
+          'seasonId>=%d and seasonId<=%d',
+          min_season,
+          max_season
+        )
       ),
       stats_rest=T
     )
@@ -76,8 +83,13 @@ get_goalies <- function(
 #' @param season integer Season in YYYYYYYY
 #' @param game_type integer Game-type where 2=regular and 3=playoffs
 #' @param category string Category e.g. wins, shutouts, savePctg,
-#'                 and goalsAgainstAverage
+#'                 goalsAgainstAverage
 #' @return tibble with one row per goalie
+#' @examples
+#' playoff_savePctg_leaders_20242025 <- get_goalie_leaders(
+#'   season=20242025, category='savePctg'
+#' )
+#' 
 #' @export
 
 get_goalie_leaders <- function(
@@ -96,6 +108,9 @@ get_goalie_leaders <- function(
 #' Get goalie milestones
 #' 
 #' @return tibble with one row per goalie
+#' @examples
+#' goalie_milestones <- get_goalie_milestones()
+#' 
 #' @export
 
 get_goalie_milestones <- function() {
@@ -120,6 +135,13 @@ get_goalie_milestones <- function() {
 #' @param game_types vector of integers Game-type(s) where 1=pre-season,
 #'                   2=regular, and 3=playoffs
 #' @return tibble with one row per goalie or game
+#' @examples
+#' playoff_goalie_svr_20242025 <- get_goalie_statistics(
+#'   season=20242025,
+#'   report='startedVsRelieved',
+#'   game_types=c(3)
+#' )
+#' 
 #' @export
 
 get_goalie_statistics <- function(

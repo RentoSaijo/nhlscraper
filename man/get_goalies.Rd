@@ -17,3 +17,7 @@ tibble with one row per goalie
 \description{
 Get all goalies' biographies from a range of seasons
 }
+\examples{
+goalies_2000s <- get_goalies(start_season=20002001, end_season=20242025)
+
+}

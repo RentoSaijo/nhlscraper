@@ -16,11 +16,17 @@ get_goalie_leaders(
 \item{game_type}{integer Game-type where 2=regular and 3=playoffs}
 
 \item{category}{string Category e.g. wins, shutouts, savePctg,
-and goalsAgainstAverage}
+goalsAgainstAverage}
 }
 \value{
 tibble with one row per goalie
 }
 \description{
 Get goalie statistics leaders by season and game-type
+}
+\examples{
+playoff_savePctg_leaders_20242025 <- get_goalie_leaders(
+  season=20242025, category='savePctg'
+)
+
 }

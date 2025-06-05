@@ -38,3 +38,11 @@ tibble with one row per goalie or game
 \description{
 Get goalie statistics by season
 }
+\examples{
+playoff_goalie_svr_20242025 <- get_goalie_statistics(
+  season=20242025,
+  report='startedVsRelieved',
+  game_types=c(3)
+)
+
+}

@@ -12,3 +12,7 @@ tibble with one row per goalie
 \description{
 Get goalie milestones
 }
+\examples{
+goalie_milestones <- get_goalie_milestones()
+
+}
