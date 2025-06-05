@@ -1,11 +1,8 @@
-Package: NHLScraper
-Title: Public scraper for NHL data on R
+Package: nhlscraper
+Title: Scraper for NHL Data
 Version: 0.0.0.9000
-Authors@R: c(
-  person('Rento', 'Saijo', email='rentosaijo0527@gmail.com', role=c('aut', 'cre')),
-  person('Lars', 'Skytte', email='lars.sunesen.skytte@gmail.com', role='ctb')
-  )
-Description: NHLScraper makes it easy to access NHL data.
+Authors@R: c(person('Rento', 'Saijo', email='rentosaijo0527@gmail.com', role=c('aut', 'cre')), person('Lars', 'Skytte', email='lars.sunesen.skytte@gmail.com', role='ctb'))
+Description: Scrape data from the 'NHL API'
 License: MIT + file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown=T)
