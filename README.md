@@ -20,102 +20,107 @@ Below are basic examples that show you how to use some of the functions.
 
 ### League Data
 ```
-standings_2025_01_01 <- get_standings()
-schedule_2025_01_01 <- get_schedule()
+schedule_2025_01_02 <- get_schedule(date='2025-01-02')
+standings_2025_01_02 <- get_standings(date='2025-01-02')
 ```
 
 ### Team Data
 ```
 COL_seasons <- get_team_seasons(team='COL')
-COL_skater_statistics_20242025 <- get_team_roster_statistics(
-  team='COL',
+playoff_team_stf_20242025 <- get_team_statistics(
   season=20242025,
+  report='scoretrailfirst',
+  game_types=c(3)
 )
 COL_defensemen_20242025 <- get_team_roster(
   team='COL',
   season=20242025,
   player_type='defensemen'
 )
-COL_goalie_prospects <- get_team_prospects(
+regular_COL_goalies_statistics_20242025 <- get_team_roster_statistics(
   team='COL',
+  season=20242025,
+  game_type=2,
   player_type='goalies'
 )
-COL_schedule_20242025 <- get_team_schedule(
+COL_defensemen_prospects <- get_team_prospects(
   team='COL',
-  season=20242025
+  player_type='defensemen'
 )
-playoff_team_statistics_20242025 <- get_team_statistics(
-  season=20242025,
-  is_aggregate=T,
-  game_types=c(3)
-)
+COL_schedule_20242025 <- get_team_schedule(team='COL', season=20242025)
 ```
 
 ### Player Data
 ```
-Martin_Necas_game_log_20242025 <- get_player_game_log(season=20242025)
-Martin_Necas_landing <- get_player_landing()
-spotlight_players <- get_spotlight_players()
+playoff_Mikko_Rantanen_gl_20242025 <- get_player_game_log(
+  player=8478420,
+  season=20242025,
+  game_type=3
+)
+Mikko_Rantanen_landing <- get_player_landing(player=8478420)
+spotlight_players_now <- get_spotlight_players()
 ```
 
 ### Skater Data
 ```
-skaters_20242025 <- get_skaters(
-  start_season=20242025, end_season=20242025
+skaters_2000s <- get_skaters(start_season=20002001, end_season=20242025)
+regular_skater_shootout_20242025 <- get_skater_statistics(
+  season=20242025,
+  report='shootout',
+  game_types=c(2)
 )
 playoff_toi_leaders_20242025 <- get_skater_leaders(
-  season=20242025, category='toi'
+  season=20242025,
+  game_type=3,
+  category='toi'
 )
 skater_milestones <- get_skater_milestones()
-playoff_skater_statistics_20242025 <- get_skater_statistics(
-  season=20242025,
-  is_game=T,
-  dates=c('2025-05-21', '2025-05-22', '2025-05-23', '2025-05-24', '2025-05-25'),
-  game_types=c(3)
-)
 ```
 
 ### Goalie Data
 ```
-goalies_20242025 <- get_goalies(
-  start_season=20242025, end_season=20242025
-)
-playoff_savePctg_leaders_20242025 <- get_goalie_leaders(
-  season=20242025, category='savePctg'
-)
-goalie_milestones <- get_goalie_milestones()
-playoff_goalie_statistics_20242025 <- get_goalie_statistics(
+goalies_2000s <- get_goalies(start_season=20002001, end_season=20242025)
+playoff_goalie_svr_20242025 <- get_goalie_statistics(
   season=20242025,
-  is_game=T,
-  dates=c('2025-05-21', '2025-05-22', '2025-05-23', '2025-05-24', '2025-05-25'),
+  report='startedVsRelieved',
   game_types=c(3)
 )
+playoff_savePctg_leaders_20242025 <- get_goalie_leaders(
+  season=20242025,
+  game_type=3,
+  category='savePctg'
+)
+goalie_milestones <- get_goalie_milestones()
 ```
 
 ### Game Data
 ```
-scores_2025_01_01 <- get_scores()
-gc_pbp_2024020602 <- get_gc_play_by_play()
-boxscore_2024020602 <- get_game_boxscore()
-game_story_2024020602 <- get_game_story()
-shift_charts_2024020602 <- get_shift_charts()
+scores_2025_01_02 <- get_scores(date='2025-01-02')
+boxscore_2024020602_FLA_defensemen <- get_game_boxscore(
+  game=2024020602,
+  team='away',
+  player_type='defensemen'
+)
+gc_pbp_2024030411 <- get_gc_play_by_play(game=2024030411)
+shift_charts_2024020602 <- get_shift_charts(game=2024020602)
+game_story_2024020602 <- get_game_story(game=2024020602)
 ```
 
 ### Playoff Data
 ```
-series_carousel_20242025_1 <- get_series_carousel(season=20242025)
-playoff_schedule_TOR_OTT_20242025 <- get_series_schedule(season=20242025)
-playoff_bracket_2025 <- get_playoff_bracket(year=2025)
+bracket_2025 <- get_playoff_bracket(year=2025)
+COL_DAL_schedule_20242025 <- get_series_schedule(season=20242025, series='f')
+carousel_20242025_2 <- get_series_carousel(season=20242025, round=2)
 ```
 
 ### Draft Data
 ```
-draft_rankings_2025 <- get_draft_rankings(year=2025)
 draft_picks_2024 <- get_draft_picks(year=2024, round='all')
+draft_rankings_2025 <- get_draft_rankings(year=2025)
 ```
 
 ### Other Data
 ```
-tv_schedule_2025_01_01 <- get_tv_schedule()
-partner_odds_latest <- get_partner_odds()
+tv_schedule_2025_01_02 <- get_tv_schedule(date='2025-01-02')
+partner_odds_now_CA <- get_partner_odds(country='CA')
 ```
