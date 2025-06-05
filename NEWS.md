@@ -1,3 +1,5 @@
+# nhlscraper 0.1.0
+
 # nhlscraper 0.0.0.9000
 
 I'm almost ready to release the first official version!
