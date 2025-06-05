@@ -18,3 +18,7 @@ tibble with one row per player
 \description{
 Get draft rankings by year and player-type
 }
+\examples{
+draft_rankings_2025 <- get_draft_rankings(year=2025)
+
+}

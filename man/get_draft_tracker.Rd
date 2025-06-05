@@ -12,3 +12,7 @@ tibble with one row per pick
 \description{
 Get draft tracker as of now
 }
+\examples{
+draft_tracker <- get_draft_tracker()
+
+}

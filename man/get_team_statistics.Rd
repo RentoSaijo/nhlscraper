@@ -5,7 +5,7 @@
 \title{Get team statistics by season}
 \usage{
 get_team_statistics(
-  season = 20242025,
+  season = get_season_now()$seasonId,
   report = "summary",
   is_aggregate = F,
   is_game = F,

@@ -5,7 +5,7 @@
 \title{Get skater statistics by season}
 \usage{
 get_skater_statistics(
-  season = 20242025,
+  season = get_season_now()$seasonId,
   report = "summary",
   teams = 1:100,
   is_aggregate = F,

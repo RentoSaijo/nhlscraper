@@ -2,6 +2,9 @@
 #' 
 #' @param date string Date in 'YYYY-MM-DD'
 #' @return tibble with one row per game
+#' @examples
+#' scores_2025_01_02 <- get_scores(date='2025-01-02')
+#' 
 #' @export
 
 get_scores <- function(date='2025-01-01') {
@@ -20,6 +23,9 @@ get_scores <- function(date='2025-01-01') {
 #' 
 #' @param date string Date in 'YYYY-MM-DD'
 #' @return tibble with one row per game
+#' @examples
+#' scoreboards_2025_01_02 <- get_scoreboards(date='2025-01-02')
+#' 
 #' @export
 
 get_scoreboards <- function(date='2025-01-01') {

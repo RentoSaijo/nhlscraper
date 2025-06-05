@@ -4,6 +4,9 @@
 #' @param player_type integer Player-type where 1=NA Skaters, 2=Int. Skaters, 
 #'                    3=NA Goalies, and 4=Int. Goalies
 #' @return tibble with one row per player
+#' @examples
+#' draft_rankings_2025 <- get_draft_rankings(year=2025)
+#' 
 #' @export
 
 get_draft_rankings <- function(
@@ -23,6 +26,9 @@ get_draft_rankings <- function(
 #' @param year integer Year in YYYY
 #' @param round integer or string Round of 1:7 or 'all'
 #' @return tibble with one row per pick
+#' @examples
+#' draft_picks_2024 <- get_draft_picks(year=2024, round='all')
+#' 
 #' @export
 
 get_draft_picks <- function(
@@ -40,6 +46,9 @@ get_draft_picks <- function(
 #' Get draft tracker as of now
 #' 
 #' @return tibble with one row per pick
+#' @examples
+#' draft_tracker <- get_draft_tracker()
+#' 
 #' @export
 
 get_draft_tracker <- function() {
@@ -54,6 +63,9 @@ get_draft_tracker <- function() {
 #' Get draft information for all seasons
 #' 
 #' @return tibble with one row per season
+#' @examples
+#' draft_info <- get_draft_information()
+#' 
 #' @export
 
 get_draft_information <- function() {

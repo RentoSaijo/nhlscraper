@@ -15,3 +15,7 @@ tibble with one row per game
 \description{
 Get score(s) by date
 }
+\examples{
+scores_2025_01_02 <- get_scores(date='2025-01-02')
+
+}
