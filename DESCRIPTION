@@ -2,7 +2,7 @@ Package: nhlscraper
 Title: Scraper for NHL Data
 Version: 0.0.0.9000
 Authors@R: c(person('Rento', 'Saijo', email='rentosaijo0527@gmail.com', role=c('aut', 'cre')), person('Lars', 'Skytte', email='lars.sunesen.skytte@gmail.com', role='ctb'))
-Description: Scrape data from the 'NHL API'
+Description: Scrape data from the 'NHL API'. Uses endpoints and queries documented by Zach M. <https://github.com/Zmalski/NHL-API-Reference>
 License: MIT + file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown=T)
