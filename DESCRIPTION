@@ -2,8 +2,8 @@ Package: nhlscraper
 Title: Scraper for NHL Data
 Version: 0.0.0.9000
 Authors@R: c(person('Rento', 'Saijo', email='rentosaijo0527@gmail.com', role=c('aut', 'cre', 'cph'), comment=c(ORCID='0009-0008-4919-7349')), person('Lars', 'Skytte', email='lars.sunesen.skytte@gmail.com', role='ctb'))
-Description: Scrapes data from the 'NHL' API into 'tibble's. It primarily wraps endpoints documented by Zach M. (https://github.com/Zmalski/NHL-API-Reference)
-License: MIT + file LICENSE
+Description: Scrapes data from the 'NHL' API into 'tibble's. It primarily wraps endpoints documented by Zach M. (https://github.com/Zmalski/NHL-API-Reference).
+License: MIT
 Encoding: UTF-8
 Roxygen: list(markdown=T)
 RoxygenNote: 7.3.2
