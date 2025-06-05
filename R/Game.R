@@ -94,8 +94,8 @@ get_wsc_play_by_play <- function(game=2024020602) {
 #' @param player_type string Player-type of 'forwards', 'defensemen', or 'goalies'
 #' @return tibble with one row per player
 #' @examples
-#' boxscore_2024020602_FLA_defensemen <- get_game_boxscore(
-#'   game=2024020602,
+#' boxscore_2024030411_FLA_defensemen <- get_game_boxscore(
+#'   game=2024030411,
 #'   team='away',
 #'   player_type='defensemen'
 #' )
@@ -122,7 +122,7 @@ get_game_boxscore <- function(
 #' @param game integer Game ID
 #' @return list of 24 items
 #' @examples
-#' game_landing_2024020602 <- get_game_landing(game=2024020602)
+#' game_landing_2024030411 <- get_game_landing(game=2024030411)
 #' 
 #' @export
 
@@ -143,7 +143,7 @@ get_game_landing <- function(game=2024020602) {
 #' @param game integer Game ID
 #' @return list of 24 items
 #' @examples
-#' game_story_2024020602 <- get_game_story(game=2024020602)
+#' game_story_2024030411 <- get_game_story(game=2024030411)
 #' 
 #' @export
 
@@ -181,7 +181,7 @@ get_games <- function() {
 #' @param game integer Game ID
 #' @return tibble with one row per shift
 #' @examples
-#' shift_charts_2024020602 <- get_shift_charts(game=2024020602)
+#' shift_charts_2024030411 <- get_shift_charts(game=2024030411)
 #' 
 #' @export
 
