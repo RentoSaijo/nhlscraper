@@ -2,6 +2,9 @@
 #' 
 #' @param date string Date in 'YYYY-MM-DD'
 #' @return tibble with one row per team
+#' @examples
+#' standings_2025_01_02 <- get_standings(date='2025-01-02')
+#' 
 #' @export
 
 get_standings <- function(date='2025-01-01') {
@@ -19,6 +22,9 @@ get_standings <- function(date='2025-01-01') {
 #' Get standings information for all seasons
 #' 
 #' @return tibble with one row per season
+#' @examples
+#' standings_info <- get_standings_information()
+#' 
 #' @export
 
 get_standings_information <- function() {
@@ -34,6 +40,9 @@ get_standings_information <- function() {
 #' 
 #' @param date string Date in 'YYYY-MM-DD'
 #' @return tibble with one row per game
+#' @examples
+#' schedule_2025_01_02 <- get_schedule(date='2025-01-02')
+#' 
 #' @export
 
 get_schedule <- function(date='2025-01-01') {
@@ -58,6 +67,9 @@ get_schedule <- function(date='2025-01-01') {
 #' Get all seasons
 #' 
 #' @return tibble with one row per season
+#' @examples
+#' all_seasons <- get_seasons()
+#' 
 #' @export
 
 get_seasons <- function() {

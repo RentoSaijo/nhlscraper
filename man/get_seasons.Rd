@@ -12,3 +12,7 @@ tibble with one row per season
 \description{
 Get all seasons
 }
+\examples{
+all_seasons <- get_seasons()
+
+}
