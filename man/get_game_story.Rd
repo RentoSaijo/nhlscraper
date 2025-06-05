@@ -15,3 +15,7 @@ list of 24 items
 \description{
 Get WSC game story by game
 }
+\examples{
+game_story_2024020602 <- get_game_story(game=2024020602)
+
+}

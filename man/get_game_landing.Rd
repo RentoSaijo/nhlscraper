@@ -15,3 +15,7 @@ list of 24 items
 \description{
 Get GC game landing by game
 }
+\examples{
+game_landing_2024020602 <- get_game_landing(game=2024020602)
+
+}

@@ -12,3 +12,7 @@ tibble with one row per game
 \description{
 Get all games
 }
+\examples{
+all_games <- get_games()
+
+}

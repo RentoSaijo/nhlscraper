@@ -51,6 +51,9 @@ get_scoreboards <- function(date='2025-01-01') {
 #' 
 #' @param game integer Game ID
 #' @return tibble with one row per play
+#' @examples
+#' gc_pbp_2024030411 <- get_gc_play_by_play(game=2024030411)
+#' 
 #' @export
 
 get_gc_play_by_play <- function(game=2024020602) {
@@ -66,6 +69,9 @@ get_gc_play_by_play <- function(game=2024020602) {
 #' 
 #' @param game integer Game ID
 #' @return tibble with one row per play
+#' @examples
+#' wsc_pbp_2024030411 <- get_wsc_play_by_play(game=2024030411)
+#' 
 #' @export
 
 get_wsc_play_by_play <- function(game=2024020602) {
@@ -84,9 +90,16 @@ get_wsc_play_by_play <- function(game=2024020602) {
 #' Get boxscore by game, team, and player-type
 #' 
 #' @param game integer Game ID
-#' @param team string Team whether 'home' or 'away'
+#' @param team string Team of 'home' or 'away'
 #' @param player_type string Player-type of 'forwards', 'defensemen', or 'goalies'
 #' @return tibble with one row per player
+#' @examples
+#' boxscore_2024020602_FLA_defensemen <- get_game_boxscore(
+#'   game=2024020602,
+#'   team='away',
+#'   player_type='defensemen'
+#' )
+#' 
 #' @export
 
 get_game_boxscore <- function(
@@ -108,6 +121,9 @@ get_game_boxscore <- function(
 #' 
 #' @param game integer Game ID
 #' @return list of 24 items
+#' @examples
+#' game_landing_2024020602 <- get_game_landing(game=2024020602)
+#' 
 #' @export
 
 get_game_landing <- function(game=2024020602) {
@@ -126,6 +142,9 @@ get_game_landing <- function(game=2024020602) {
 #' 
 #' @param game integer Game ID
 #' @return list of 24 items
+#' @examples
+#' game_story_2024020602 <- get_game_story(game=2024020602)
+#' 
 #' @export
 
 get_game_story <- function(game=2024020602) {
@@ -143,6 +162,9 @@ get_game_story <- function(game=2024020602) {
 #' Get all games
 #' 
 #' @return tibble with one row per game
+#' @examples
+#' all_games <- get_games()
+#' 
 #' @export
 
 get_games <- function() {
@@ -158,6 +180,9 @@ get_games <- function() {
 #' 
 #' @param game integer Game ID
 #' @return tibble with one row per shift
+#' @examples
+#' shift_charts_2024020602 <- get_shift_charts(game=2024020602)
+#' 
 #' @export
 
 get_shift_charts <- function(game=2024020602) {

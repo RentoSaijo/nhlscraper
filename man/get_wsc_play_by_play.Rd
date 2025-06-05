@@ -15,3 +15,7 @@ tibble with one row per play
 \description{
 Get World Showcase (WSC) play-by-play by game
 }
+\examples{
+wsc_pbp_2024030411 <- get_wsc_play_by_play(game=2024030411)
+
+}
