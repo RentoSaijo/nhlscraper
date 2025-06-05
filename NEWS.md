@@ -1,6 +1,6 @@
 # nhlscraper 0.0.0.9000
 
-I'm almost ready to release the first version of nhlscraper!
+I'm almost ready to release the first official version!
 
 - Added a `News.md` file to track changes to the package.
 - Functions:
