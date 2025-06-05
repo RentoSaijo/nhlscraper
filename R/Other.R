@@ -122,7 +122,7 @@ get_countries <- function() {
   return(tibble::as_tibble(out$data))
 }
 
-#' Get streams
+#' Get all streams
 #' 
 #' @return tibble with one row per stream
 #' @examples

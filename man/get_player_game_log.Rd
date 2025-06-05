@@ -2,16 +2,16 @@
 % Please edit documentation in R/Player.R
 \name{get_player_game_log}
 \alias{get_player_game_log}
-\title{Get a player's game log for a season}
+\title{Get game-log by player, season, and game-type}
 \usage{
 get_player_game_log(
-  player_id = 8480039,
+  player = 8480039,
   season = get_season_now()$seasonId,
   game_type = 2
 )
 }
 \arguments{
-\item{player_id}{integer Player ID}
+\item{player}{integer Player ID}
 
 \item{season}{integer Season in YYYYYYYY}
 
@@ -21,5 +21,13 @@ get_player_game_log(
 tibble with one row per game
 }
 \description{
-Get a player's game log for a season
+Get game-log by player, season, and game-type
+}
+\examples{
+playoff_Mikko_Rantanen_gl_20242025 <- get_player_game_log(
+  player=8478420,
+  season=20242025,
+  game_type=3
+)
+
 }

@@ -2,16 +2,20 @@
 % Please edit documentation in R/Player.R
 \name{get_player_landing}
 \alias{get_player_landing}
-\title{Get a player's landing}
+\title{Get landing by player}
 \usage{
-get_player_landing(player_id = 8480039)
+get_player_landing(player = 8480039)
 }
 \arguments{
-\item{player_id}{integer Player ID}
+\item{player}{integer Player ID}
 }
 \value{
 list with 36 items
 }
 \description{
-Get a player's landing
+Get landing by player
+}
+\examples{
+Mikko_Rantanen_landing <- get_player_landing(player=8478420)
+
 }

@@ -2,7 +2,7 @@
 % Please edit documentation in R/Player.R
 \name{get_spotlight_players}
 \alias{get_spotlight_players}
-\title{Get 'spotlight' players}
+\title{Get 'spotlight' players as of now}
 \usage{
 get_spotlight_players()
 }
@@ -10,5 +10,9 @@ get_spotlight_players()
 tibble with one row per player
 }
 \description{
-Get 'spotlight' players
+Get 'spotlight' players as of now
+}
+\examples{
+spotlight_players_now <- get_spotlight_players()
+
 }

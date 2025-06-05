@@ -2,7 +2,7 @@
 % Please edit documentation in R/Other.R
 \name{get_streams}
 \alias{get_streams}
-\title{Get streams}
+\title{Get all streams}
 \usage{
 get_streams()
 }
@@ -10,7 +10,7 @@ get_streams()
 tibble with one row per stream
 }
 \description{
-Get streams
+Get all streams
 }
 \examples{
 all_streams <- get_streams()
