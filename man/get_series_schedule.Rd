@@ -9,11 +9,15 @@ get_series_schedule(season = get_season_now()$seasonId, series = "a")
 \arguments{
 \item{season}{integer Season in YYYYYYYY}
 
-\item{series}{string Series code e.g. 'a'}
+\item{series}{string 1-letter series code}
 }
 \value{
 tibble with one row per game
 }
 \description{
 Get playoff series schedule
+}
+\examples{
+COL_DAL_schedule_20242025 <- get_series_schedule(season=20242025, series='f')
+
 }

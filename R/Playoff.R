@@ -3,6 +3,9 @@
 #' @param season integer Season in YYYYYYYY
 #' @param round integer Round of 1:4
 #' @return tibble with one row per match-up
+#' @examples
+#' 20242025_1_carousel <- get_series_carousel(season=20242025, round=1)
+#' 
 #' @export
 
 get_series_carousel <- function(season=get_season_now()$seasonId, round=1) {
@@ -17,8 +20,11 @@ get_series_carousel <- function(season=get_season_now()$seasonId, round=1) {
 #' Get playoff series schedule
 #' 
 #' @param season integer Season in YYYYYYYY
-#' @param series string Series code e.g. 'a'
+#' @param series string 1-letter series code
 #' @return tibble with one row per game
+#' @examples
+#' COL_DAL_schedule_20242025 <- get_series_schedule(season=20242025, series='f')
+#' 
 #' @export
 
 get_series_schedule <- function(season=get_season_now()$seasonId, series='a') {
@@ -34,6 +40,9 @@ get_series_schedule <- function(season=get_season_now()$seasonId, series='a') {
 #' 
 #' @param year integer Year in YYYY
 #' @return tibble with one row per match-up
+#' @examples
+#' bracket_2025 <- get_playoff_bracket(year=2025)
+#' 
 #' @export
 
 get_playoff_bracket <- function(year=get_season_now()$seasonId%%10000) {

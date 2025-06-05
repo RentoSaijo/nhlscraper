@@ -15,3 +15,7 @@ tibble with one row per match-up
 \description{
 Get playoff bracket by year
 }
+\examples{
+bracket_2025 <- get_playoff_bracket(year=2025)
+
+}
