@@ -4,12 +4,16 @@
 NHLScraper is a public scraper for NHL data on R; with this, you will have relatively easy access to all sorts of data from high-level multi-season statistics to low-level play-by-play statistics.
 
 ## Installation
-You can install the development version of NHLScraper from GitHub with:
+Install the development version from [GitHub](https://github.com/) with:
 ```
 #install.packages('devtools')
 devtools::install_github('RentoSaijo/nhlscraper')
 ```
-I am submitting it to CRAN soon.
+
+Install the official version from CRAN with:
+```
+install.packages('nhlscraper')
+```
 
 ## Example
 Below are basic examples that show you how to use some of the functions.
