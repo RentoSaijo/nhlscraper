@@ -16,7 +16,8 @@ knitr::opts_chunk$set(
 
 ### Setup
 ```{r setup}
-library(NHLScraper)
+#install.packages('nhlscraper')
+library(nhlscraper)
 ```
 
 ### League Data

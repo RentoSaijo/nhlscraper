@@ -2,8 +2,8 @@ Package: nhlscraper
 Title: Scraper for NHL Data
 Version: 0.0.0.9000
 Authors@R: c(person('Rento', 'Saijo', email='rentosaijo0527@gmail.com', role=c('aut', 'cre', 'cph')), person('Lars', 'Skytte', email='lars.sunesen.skytte@gmail.com', role='ctb'))
-Description: Scrape data from the 'NHL API'. Uses endpoints and queries documented by Zach M. <https://github.com/Zmalski/NHL-API-Reference>
-License: MIT + file LICENSE
+Description: Scrapes data from the 'NHL' API into 'tibble's. Wraps endpoints documented by Zach M. (https://github.com/Zmalski/NHL-API-Reference)
+License: MIT
 Encoding: UTF-8
 Roxygen: list(markdown=T)
 RoxygenNote: 7.3.2
@@ -13,7 +13,7 @@ Imports:
   dplyr,
   tibble,
   magrittr
-Suggests: 
+Suggests:
     knitr,
     rmarkdown,
     testthat (>= 3.0.0)
@@ -21,3 +21,4 @@ Config/testthat/edition: 3
 VignetteBuilder: knitr
 URL: https://github.com/RentoSaijo/nhlscraper, https://rentosaijo.github.io/nhlscraper/
 BugReports: https://github.com/RentoSaijo/nhlscraper/issues
+Copyright: Copyright: NHL is registered trademark of the National Hockey League
