@@ -55,7 +55,7 @@
 
 
 <dt id="arg-team">team<a class="anchor" aria-label="anchor" href="#arg-team"></a></dt>
-<dd><p>string Team whether 'home' or 'away'</p></dd>
+<dd><p>string Team of 'home' or 'away'</p></dd>
 
 
 <dt id="arg-player-type">player_type<a class="anchor" aria-label="anchor" href="#arg-player-type"></a></dt>
@@ -67,6 +67,16 @@
     <p>tibble with one row per player</p>
     </div>
 
+    <div class="section level2">
+    <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">boxscore_2024020602_FLA_defensemen</span> <span class="op">&lt;-</span> <span class="fu">get_game_boxscore</span><span class="op">(</span></span></span>
+<span class="r-in"><span>  game<span class="op">=</span><span class="fl">2024020602</span>,</span></span>
+<span class="r-in"><span>  team<span class="op">=</span><span class="st">'away'</span>,</span></span>
+<span class="r-in"><span>  player_type<span class="op">=</span><span class="st">'defensemen'</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+</code></pre></div>
+    </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside></div>
 
