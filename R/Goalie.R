@@ -1,4 +1,4 @@
-#' Get all goalies' biographies from a range of seasons
+#' Get all goalies' biographies by range of seasons
 #' 
 #' @importFrom magrittr %>%
 #' @param start_season integer Season to start search in YYYYYYYY
@@ -78,7 +78,7 @@ get_goalies <- function(
   return(final)
 }
 
-#' Get goalie statistics leaders by season and game-type
+#' Get goalie statistics leaders by season, game-type, and category
 #' 
 #' @param season integer Season in YYYYYYYY
 #' @param game_type integer Game-type where 2=regular and 3=playoffs
@@ -87,7 +87,9 @@ get_goalies <- function(
 #' @return tibble with one row per goalie
 #' @examples
 #' playoff_savePctg_leaders_20242025 <- get_goalie_leaders(
-#'   season=20242025, category='savePctg'
+#'   season=20242025,
+#'   game_type=3,
+#'   category='savePctg'
 #' )
 #' 
 #' @export

@@ -2,7 +2,7 @@
 % Please edit documentation in R/Goalie.R
 \name{get_goalie_leaders}
 \alias{get_goalie_leaders}
-\title{Get goalie statistics leaders by season and game-type}
+\title{Get goalie statistics leaders by season, game-type, and category}
 \usage{
 get_goalie_leaders(
   season = get_season_now()$seasonId,
@@ -22,11 +22,13 @@ goalsAgainstAverage}
 tibble with one row per goalie
 }
 \description{
-Get goalie statistics leaders by season and game-type
+Get goalie statistics leaders by season, game-type, and category
 }
 \examples{
 playoff_savePctg_leaders_20242025 <- get_goalie_leaders(
-  season=20242025, category='savePctg'
+  season=20242025,
+  game_type=3,
+  category='savePctg'
 )
 
 }

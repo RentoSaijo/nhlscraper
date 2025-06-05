@@ -2,7 +2,7 @@
 % Please edit documentation in R/Goalie.R
 \name{get_goalies}
 \alias{get_goalies}
-\title{Get all goalies' biographies from a range of seasons}
+\title{Get all goalies' biographies by range of seasons}
 \usage{
 get_goalies(start_season = 19171918, end_season = get_season_now()$seasonId)
 }
@@ -15,7 +15,7 @@ get_goalies(start_season = 19171918, end_season = get_season_now()$seasonId)
 tibble with one row per goalie
 }
 \description{
-Get all goalies' biographies from a range of seasons
+Get all goalies' biographies by range of seasons
 }
 \examples{
 goalies_2000s <- get_goalies(start_season=20002001, end_season=20242025)
