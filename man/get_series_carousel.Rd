@@ -18,6 +18,6 @@ tibble with one row per match-up
 Get playoff series carousel by season and round
 }
 \examples{
-20242025_1_carousel <- get_series_carousel(season=20242025, round=1)
+carousel_20242025_2 <- get_series_carousel(season=20242025, round=2)
 
 }

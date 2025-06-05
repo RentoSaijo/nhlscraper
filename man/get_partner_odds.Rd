@@ -16,6 +16,6 @@ tibble with one row per game
 Get partner odds as of now
 }
 \examples{
-partner_odds_now_CA <- get_partner_odds('CA')
+partner_odds_now_CA <- get_partner_odds(country='CA')
 
 }

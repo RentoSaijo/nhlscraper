@@ -24,7 +24,7 @@ get_tv_schedule <- function(date='2025-01-01') {
 #' @param country string 2-letter country code e.g. 'US'
 #' @return tibble with one row per game
 #' @examples
-#' partner_odds_now_CA <- get_partner_odds('CA')
+#' partner_odds_now_CA <- get_partner_odds(country='CA')
 #' 
 #' @export
 
