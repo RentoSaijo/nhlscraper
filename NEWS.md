@@ -1,4 +1,4 @@
-# NHLScraper 0.0.0.9000
+# nhlscraper 0.0.0.9000
 
 I'm almost ready to release the first version of NHLScraper!
 

@@ -2,7 +2,7 @@
 title: "nhlscraper"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{NHLScraper}
+  %\VignetteIndexEntry{nhlscraper}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
