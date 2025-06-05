@@ -7,7 +7,7 @@ NHLScraper is a public scraper for NHL data on R; with this, you will have relat
 You can install the development version of NHLScraper from GitHub with:
 ```
 #install.packages('devtools')
-devtools::install_github('RentoSaijo/NHLScraper')
+devtools::install_github('RentoSaijo/nhlscraper')
 ```
 I am submitting it to CRAN soon.
 

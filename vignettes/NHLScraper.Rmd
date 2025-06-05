@@ -1,5 +1,5 @@
 ---
-title: "nhlscraper"
+title: 'nhlscraper'
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{nhlscraper}
@@ -10,7 +10,7 @@ vignette: >
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
-  comment = "#>"
+  comment = '#>'
 )
 ```
 
