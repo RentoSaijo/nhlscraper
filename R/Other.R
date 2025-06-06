@@ -85,7 +85,7 @@ get_configuration <- function() {
 
 #' Ping
 #' 
-#' @return boolean T=status is okay and F=status is not okay
+#' @return boolean TRUE=status is okay and FALSE=status is not okay
 #' @examples
 #' online <- ping()
 #' @export

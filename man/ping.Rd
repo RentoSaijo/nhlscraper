@@ -7,7 +7,7 @@
 ping()
 }
 \value{
-boolean T=status is okay and F=status is not okay
+boolean TRUE=status is okay and FALSE=status is not okay
 }
 \description{
 Ping
