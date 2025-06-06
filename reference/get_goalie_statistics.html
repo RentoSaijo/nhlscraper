@@ -44,8 +44,8 @@
 <span>  season <span class="op">=</span> <span class="fu"><a href="get_season_now.html">get_season_now</a></span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="va">seasonId</span>,</span>
 <span>  report <span class="op">=</span> <span class="st">"summary"</span>,</span>
 <span>  teams <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">100</span>,</span>
-<span>  is_aggregate <span class="op">=</span> <span class="cn">F</span>,</span>
-<span>  is_game <span class="op">=</span> <span class="cn">F</span>,</span>
+<span>  is_aggregate <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  is_game <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  dates <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"2025-01-01"</span><span class="op">)</span>,</span>
 <span>  game_types <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">3</span></span>
 <span><span class="op">)</span></span></code></pre></div>
@@ -68,12 +68,14 @@
 
 
 <dt id="arg-is-aggregate">is_aggregate<a class="anchor" aria-label="anchor" href="#arg-is-aggregate"></a></dt>
-<dd><p>boolean isAggregate where T=regular and playoffs combined
-(or multiple seasons) from multiple teams, if applicable</p></dd>
+<dd><p>boolean isAggregate where TRUE=regular and playoffs
+combined (or multiple seasons) from multiple teams,
+if applicable</p></dd>
 
 
 <dt id="arg-is-game">is_game<a class="anchor" aria-label="anchor" href="#arg-is-game"></a></dt>
-<dd><p>boolean isGame where T=rows by games and F=rows by goalies</p></dd>
+<dd><p>boolean isGame where TRUE=rows by games and FALSE=rows by
+goalies</p></dd>
 
 
 <dt id="arg-dates">dates<a class="anchor" aria-label="anchor" href="#arg-dates"></a></dt>
@@ -98,7 +100,6 @@
 <span class="r-in"><span>  report<span class="op">=</span><span class="st">'startedVsRelieved'</span>,</span></span>
 <span class="r-in"><span>  game_types<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">3</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
