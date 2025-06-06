@@ -11,7 +11,7 @@ get_game_boxscore(game = 2024020602, team = "home", player_type = "forwards")
 
 \item{team}{string Team of 'home' or 'away'}
 
-\item{player_type}{string Player-type of 'forwards', 'defensemen', or 'goalies'}
+\item{player_type}{string Player-type of 'forwards', 'defense', or 'goalies'}
 }
 \value{
 tibble with one row per player
@@ -20,10 +20,10 @@ tibble with one row per player
 Get boxscore by game, team, and player-type
 }
 \examples{
-boxscore_2024020602_FLA_defensemen <- get_game_boxscore(
-  game=2024020602,
+boxscore_2024030411_FLA_defensemen <- get_game_boxscore(
+  game=2024030411,
   team='away',
-  player_type='defensemen'
+  player_type='defense'
 )
 
 }

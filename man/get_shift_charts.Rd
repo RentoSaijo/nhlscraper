@@ -16,6 +16,6 @@ tibble with one row per shift
 Get shift charts
 }
 \examples{
-shift_charts_2024020602 <- get_shift_charts(game=2024020602)
+shift_charts_2024030411 <- get_shift_charts(game=2024030411)
 
 }
