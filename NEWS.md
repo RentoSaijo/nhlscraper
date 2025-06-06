@@ -1,3 +1,7 @@
+# nhlscraper 0.1.1
+
+Fixed some documentation (mainly, examples) and tidied up various functions.
+
 # nhlscraper 0.1.0
 
 I just submitted to CRAN; we'll see what happens!
