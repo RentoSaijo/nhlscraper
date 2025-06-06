@@ -14,5 +14,4 @@ Get configuration for skater, goalie, and team statistics
 }
 \examples{
 config <- get_configuration()
-
 }

@@ -33,5 +33,4 @@ regular_COL_goalies_statistics_20242025 <- get_team_roster_statistics(
   game_type=2,
   player_type='goalies'
 )
-
 }

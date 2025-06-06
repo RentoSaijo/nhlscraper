@@ -17,5 +17,4 @@ Get team scoreboard as of now
 }
 \examples{
 FLA_scoreboard_now <- get_team_scoreboard(team='FLA')
-
 }

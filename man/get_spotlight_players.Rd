@@ -14,5 +14,4 @@ Get 'spotlight' players as of now
 }
 \examples{
 spotlight_players_now <- get_spotlight_players()
-
 }

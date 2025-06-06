@@ -30,5 +30,4 @@ playoff_toi_leaders_20242025 <- get_skater_leaders(
   game_type=3,
   category='toi'
 )
-
 }

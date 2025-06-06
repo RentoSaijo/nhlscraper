@@ -14,5 +14,4 @@ Get all streams
 }
 \examples{
 all_streams <- get_streams()
-
 }

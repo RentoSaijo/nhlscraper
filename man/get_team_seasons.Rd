@@ -17,5 +17,4 @@ Get season(s) for which team played in regular season and/or playoffs
 }
 \examples{
 COL_seasons <- get_team_seasons(team='COL')
-
 }

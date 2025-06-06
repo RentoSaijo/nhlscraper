@@ -6,7 +6,6 @@
 #' @return tibble with one row per skater
 #' @examples
 #' skaters_2000s <- get_skaters(start_season=20002001, end_season=20242025)
-#' 
 #' @export
 
 get_skaters <- function(
@@ -27,7 +26,7 @@ get_skaters <- function(
     out <- nhl_api(
       path='skater/bios',
       query=list(
-        isAggregate=T,
+        isAggregate=TRUE,
         limit=-1,
         start=0,
         sort='playerId',
@@ -37,7 +36,7 @@ get_skaters <- function(
           max_season
         )
       ),
-      stats_rest=T
+      stats_rest=TRUE
     )
     df <- tibble::as_tibble(out$data)
     if (nrow(df)>0) {
@@ -52,15 +51,15 @@ get_skaters <- function(
   stats_sum <- combined %>%
     dplyr::group_by(playerId) %>%
     dplyr::summarise(
-      assists=sum(assists, na.rm=T),
-      gamesPlayed=sum(gamesPlayed, na.rm=T),
-      goals=sum(goals, na.rm=T),
-      points=sum(points, na.rm=T),
+      assists=sum(assists, na.rm=TRUE),
+      gamesPlayed=sum(gamesPlayed, na.rm=TRUE),
+      goals=sum(goals, na.rm=TRUE),
+      points=sum(points, na.rm=TRUE),
       .groups='drop'
     )
   latest <- combined %>%
     dplyr::group_by(playerId) %>%
-    dplyr::slice_max(order_by=max_season_chunk, n=1 , with_ties=F) %>%
+    dplyr::slice_max(order_by=max_season_chunk, n=1 , with_ties=FALSE) %>%
     dplyr::ungroup() %>%
     dplyr::select(-assists, -gamesPlayed, -goals, -points, -max_season_chunk)
   final <- latest %>%
@@ -81,7 +80,6 @@ get_skaters <- function(
 #'   game_type=3,
 #'   category='toi'
 #' )
-#' 
 #' @export
 
 get_skater_leaders <- function(
@@ -92,7 +90,7 @@ get_skater_leaders <- function(
   out <- nhl_api(
     path=sprintf('skater-stats-leaders/%s/%s', season, game_type),
     query=list(categories=category, limit=-1),
-    stats_rest=F
+    stats_rest=FALSE
   )
   return(tibble::as_tibble(out[[category]]))
 }
@@ -102,14 +100,13 @@ get_skater_leaders <- function(
 #' @return tibble with one row per skater
 #' @examples
 #' skater_milestones <- get_skater_milestones()
-#' 
 #' @export
 
 get_skater_milestones <- function() {
   out <- nhl_api(
     path='milestones/skaters',
     query=list(),
-    stats_rest=T
+    stats_rest=TRUE
   )
   return(tibble::as_tibble(out$data))
 }
@@ -119,9 +116,11 @@ get_skater_milestones <- function() {
 #' @param season integer Season in YYYYYYYY
 #' @param report string Report (check `get_configuration()` for possible inputs)
 #' @param teams vector of integers Team ID(s)
-#' @param is_aggregate boolean isAggregate where T=regular and playoffs combined
-#'                     (or multiple seasons) from multiple teams, if applicable
-#' @param is_game boolean isGame where T=rows by games and F=rows by skaters
+#' @param is_aggregate boolean isAggregate where TRUE=regular and playoffs
+#'                     combined (or multiple seasons) from multiple teams, if
+#'                     applicable
+#' @param is_game boolean isGame where TRUE=rows by games and FALSE=rows by
+#'                skaters
 #' @param dates vector of strings Date(s) in 'YYYY-MM-DD' (only if paired with
 #'              `is_game`)
 #' @param game_types vector of integers Game-type(s) where 1=pre-season,
@@ -133,14 +132,13 @@ get_skater_milestones <- function() {
 #'   report='shootout',
 #'   game_types=c(2)
 #' )
-#' 
 #' @export
 
 get_skater_statistics <- function(
   season=get_season_now()$seasonId,
   report='summary',
   teams=1:100,
-  is_aggregate=F,
+  is_aggregate=FALSE,
   is_game=F,
   dates=c('2025-01-01'),
   game_types=1:3
@@ -148,14 +146,14 @@ get_skater_statistics <- function(
   if (is_game) {
     for (date in dates) {
       if (!grepl('^\\d{4}-\\d{2}-\\d{2}$', date)) {
-        stop('date in `dates` must be in \'YYYY-MM-DD\' format', call.=F)
+        stop('date in `dates` must be in \'YYYY-MM-DD\' format', call.=FALSE)
       }
     }
     out <- nhl_api(
       path=sprintf('skater/%s', report),
       query=list(
         limit=-1,
-        isGame=T,
+        isGame=TRUE,
         isAggregate=is_aggregate,
         cayenneExp=sprintf(
         'seasonId=%s and gameDate in (%s) and teamId in (%s) and gameTypeId in (%s)',
@@ -165,7 +163,7 @@ get_skater_statistics <- function(
         paste(game_types, collapse=',')
         )
       ),
-      stats_rest=T
+      stats_rest=TRUE
     )
   }
   else {
@@ -181,7 +179,7 @@ get_skater_statistics <- function(
           paste(game_types, collapse=',')
         )
       ),
-      stats_rest=T
+      stats_rest=TRUE
     )
   }
   return(tibble::as_tibble(out$data))

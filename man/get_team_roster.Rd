@@ -30,5 +30,4 @@ COL_defensemen_20242025 <- get_team_roster(
   season=20242025,
   player_type='defensemen'
 )
-
 }

@@ -14,5 +14,4 @@ Get all seasons
 }
 \examples{
 all_seasons <- get_seasons()
-
 }

@@ -23,5 +23,4 @@ COL_defensemen_prospects <- get_team_prospects(
   team='COL',
   player_type='defensemen'
 )
-
 }

@@ -29,5 +29,4 @@ playoff_Mikko_Rantanen_gl_20242025 <- get_player_game_log(
   season=20242025,
   game_type=3
 )
-
 }

@@ -19,5 +19,4 @@ Get playoff series carousel by season and round
 }
 \examples{
 carousel_20242025_2 <- get_series_carousel(season=20242025, round=2)
-
 }

@@ -14,5 +14,4 @@ Get standings information for all seasons
 }
 \examples{
 standings_info <- get_standings_information()
-
 }

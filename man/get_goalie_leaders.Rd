@@ -30,5 +30,4 @@ playoff_savePctg_leaders_20242025 <- get_goalie_leaders(
   game_type=3,
   category='savePctg'
 )
-
 }

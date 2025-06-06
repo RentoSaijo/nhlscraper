@@ -14,5 +14,4 @@ Get all franchises
 }
 \examples{
 all_franchises <- get_franchises()
-
 }

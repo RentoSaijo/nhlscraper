@@ -14,5 +14,4 @@ Get all teams
 }
 \examples{
 all_teams <- get_teams()
-
 }

@@ -17,5 +17,4 @@ Get standings by date
 }
 \examples{
 standings_2025_01_02 <- get_standings(date='2025-01-02')
-
 }

@@ -14,5 +14,4 @@ Get all countries
 }
 \examples{
 all_countries <- get_countries()
-
 }

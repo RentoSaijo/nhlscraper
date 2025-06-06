@@ -17,5 +17,4 @@ Get WSC game story by game
 }
 \examples{
 game_story_2024030411 <- get_game_story(game=2024030411)
-
 }

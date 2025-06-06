@@ -8,7 +8,7 @@ get_skater_statistics(
   season = get_season_now()$seasonId,
   report = "summary",
   teams = 1:100,
-  is_aggregate = F,
+  is_aggregate = FALSE,
   is_game = F,
   dates = c("2025-01-01"),
   game_types = 1:3
@@ -21,10 +21,12 @@ get_skater_statistics(
 
 \item{teams}{vector of integers Team ID(s)}
 
-\item{is_aggregate}{boolean isAggregate where T=regular and playoffs combined
-(or multiple seasons) from multiple teams, if applicable}
+\item{is_aggregate}{boolean isAggregate where TRUE=regular and playoffs
+combined (or multiple seasons) from multiple teams, if
+applicable}
 
-\item{is_game}{boolean isGame where T=rows by games and F=rows by skaters}
+\item{is_game}{boolean isGame where TRUE=rows by games and FALSE=rows by
+skaters}
 
 \item{dates}{vector of strings Date(s) in 'YYYY-MM-DD' (only if paired with
 \code{is_game})}
@@ -44,5 +46,4 @@ regular_skater_shootout_20242025 <- get_skater_statistics(
   report='shootout',
   game_types=c(2)
 )
-
 }

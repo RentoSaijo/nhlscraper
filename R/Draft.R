@@ -6,7 +6,6 @@
 #' @return tibble with one row per player
 #' @examples
 #' draft_rankings_2025 <- get_draft_rankings(year=2025)
-#' 
 #' @export
 
 get_draft_rankings <- function(
@@ -16,7 +15,7 @@ get_draft_rankings <- function(
   out <- nhl_api(
     path=sprintf('draft/rankings/%s/%s', year, player_type),
     query=list(),
-    stats_rest=F
+    stats_rest=FALSE
   )
   return(tibble::as_tibble(out$rankings))
 }
@@ -28,7 +27,6 @@ get_draft_rankings <- function(
 #' @return tibble with one row per pick
 #' @examples
 #' draft_picks_2024 <- get_draft_picks(year=2024, round='all')
-#' 
 #' @export
 
 get_draft_picks <- function(
@@ -38,7 +36,7 @@ get_draft_picks <- function(
   out <- nhl_api(
     path=sprintf('draft/picks/%s/%s', year, round),
     query=list(),
-    stats_rest=F
+    stats_rest=FALSE
   )
   return(tibble::as_tibble(out$picks))
 }
@@ -48,14 +46,13 @@ get_draft_picks <- function(
 #' @return tibble with one row per pick
 #' @examples
 #' draft_tracker <- get_draft_tracker()
-#' 
 #' @export
 
 get_draft_tracker <- function() {
   out <- nhl_api(
     path='draft-tracker/picks/now',
     query=list(),
-    stats_rest=F
+    stats_rest=FALSE
   )
   return(tibble::as_tibble(out$picks))
 }
@@ -65,14 +62,13 @@ get_draft_tracker <- function() {
 #' @return tibble with one row per season
 #' @examples
 #' draft_info <- get_draft_information()
-#' 
 #' @export
 
 get_draft_information <- function() {
   out <- nhl_api(
     path='draft',
     query=list(limit=-1),
-    stats_rest=T
+    stats_rest=TRUE
   )
   return(tibble::as_tibble(out$data))
 }

@@ -17,5 +17,4 @@ Get shift charts
 }
 \examples{
 shift_charts_2024030411 <- get_shift_charts(game=2024030411)
-
 }

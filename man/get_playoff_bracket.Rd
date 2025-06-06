@@ -17,5 +17,4 @@ Get playoff bracket by year
 }
 \examples{
 bracket_2025 <- get_playoff_bracket(year=2025)
-
 }

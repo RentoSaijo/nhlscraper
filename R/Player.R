@@ -10,7 +10,6 @@
 #'   season=20242025,
 #'   game_type=3
 #' )
-#' 
 #' @export
 
 get_player_game_log <- function(
@@ -21,7 +20,7 @@ get_player_game_log <- function(
   out <- nhl_api(
     path=sprintf('player/%s/game-log/%s/%s', player, season, game_type),
     query=list(),
-    stats_rest=F
+    stats_rest=FALSE
   )
   return(tibble::as_tibble(out$gameLog))
 }
@@ -32,14 +31,13 @@ get_player_game_log <- function(
 #' @return list with 36 items
 #' @examples
 #' Mikko_Rantanen_landing <- get_player_landing(player=8478420)
-#' 
 #' @export
 
 get_player_landing <- function(player=8480039) {
   out <- nhl_api(
     path=sprintf('player/%s/landing', player),
     query=list(),
-    stats_rest=F
+    stats_rest=FALSE
   )
   if (length(out)==4) {
     return(list())
@@ -52,14 +50,13 @@ get_player_landing <- function(player=8480039) {
 #' @return tibble with one row per player
 #' @examples
 #' spotlight_players_now <- get_spotlight_players()
-#' 
 #' @export
 
 get_spotlight_players <- function() {
   out <- nhl_api(
     path='player-spotlight',
     query=list(),
-    stats_rest=F
+    stats_rest=FALSE
   )
   return(tibble::as_tibble(out))
 }

@@ -14,5 +14,4 @@ Get draft information for all seasons
 }
 \examples{
 draft_info <- get_draft_information()
-
 }

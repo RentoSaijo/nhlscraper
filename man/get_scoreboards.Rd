@@ -17,5 +17,4 @@ Get scoreboard(s) by date
 }
 \examples{
 scoreboards_2025_01_02 <- get_scoreboards(date='2025-01-02')
-
 }

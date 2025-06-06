@@ -19,5 +19,4 @@ Get draft picks by year (and round)
 }
 \examples{
 draft_picks_2024 <- get_draft_picks(year=2024, round='all')
-
 }

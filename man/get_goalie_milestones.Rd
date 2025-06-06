@@ -14,5 +14,4 @@ Get goalie milestones
 }
 \examples{
 goalie_milestones <- get_goalie_milestones()
-
 }

@@ -19,5 +19,4 @@ Get schedule by team and season
 }
 \examples{
 COL_schedule_20242025 <- get_team_schedule(team='COL', season=20242025)
-
 }

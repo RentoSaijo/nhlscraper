@@ -19,5 +19,4 @@ Get all skaters' biographies by range of seasons
 }
 \examples{
 skaters_2000s <- get_skaters(start_season=20002001, end_season=20242025)
-
 }

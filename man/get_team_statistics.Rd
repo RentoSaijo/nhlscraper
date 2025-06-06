@@ -7,8 +7,8 @@
 get_team_statistics(
   season = get_season_now()$seasonId,
   report = "summary",
-  is_aggregate = F,
-  is_game = F,
+  is_aggregate = FALSE,
+  is_game = FALSE,
   dates = c("2025-01-01"),
   game_types = 1:3
 )
@@ -18,10 +18,11 @@ get_team_statistics(
 
 \item{report}{string Report (check \code{get_configuration()} for possible inputs)}
 
-\item{is_aggregate}{boolean isAggregate where T=regular and playoffs
+\item{is_aggregate}{boolean isAggregate where TRUE=regular and playoffs
 combined, if applicable}
 
-\item{is_game}{boolean isGame where T=rows by games and F=rows by teams}
+\item{is_game}{boolean isGame where TRUE=rows by games and FALSE=rows by
+teams}
 
 \item{dates}{vector of strings Date(s) in 'YYYY-MM-DD' (only if paired with
 \code{is_game}; too many dates will result in incomplete data)}

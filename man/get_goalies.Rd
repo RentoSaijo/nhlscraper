@@ -19,5 +19,4 @@ Get all goalies' biographies by range of seasons
 }
 \examples{
 goalies_2000s <- get_goalies(start_season=20002001, end_season=20242025)
-
 }

@@ -25,5 +25,4 @@ boxscore_2024030411_FLA_defensemen <- get_game_boxscore(
   team='away',
   player_type='defense'
 )
-
 }

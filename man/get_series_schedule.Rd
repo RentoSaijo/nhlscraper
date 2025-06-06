@@ -19,5 +19,4 @@ Get playoff series schedule
 }
 \examples{
 COL_DAL_schedule_20242025 <- get_series_schedule(season=20242025, series='f')
-
 }

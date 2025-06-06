@@ -17,5 +17,4 @@ Get landing by player
 }
 \examples{
 Mikko_Rantanen_landing <- get_player_landing(player=8478420)
-
 }

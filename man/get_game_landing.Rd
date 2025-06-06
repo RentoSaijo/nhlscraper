@@ -17,5 +17,4 @@ Get GC game landing by game
 }
 \examples{
 game_landing_2024030411 <- get_game_landing(game=2024030411)
-
 }

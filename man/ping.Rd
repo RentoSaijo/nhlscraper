@@ -14,5 +14,4 @@ Ping
 }
 \examples{
 online <- ping()
-
 }

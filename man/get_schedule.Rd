@@ -17,5 +17,4 @@ Get schedule by date
 }
 \examples{
 schedule_2025_01_02 <- get_schedule(date='2025-01-02')
-
 }

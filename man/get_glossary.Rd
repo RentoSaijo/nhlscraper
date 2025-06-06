@@ -14,5 +14,4 @@ Get glossary
 }
 \examples{
 glossary <- get_glossary()
-
 }

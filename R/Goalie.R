@@ -6,7 +6,6 @@
 #' @return tibble with one row per goalie
 #' @examples
 #' goalies_2000s <- get_goalies(start_season=20002001, end_season=20242025)
-#' 
 #' @export
 
 get_goalies <- function(
@@ -27,7 +26,7 @@ get_goalies <- function(
     out <- nhl_api(
       path='goalie/bios',
       query=list(
-        isAggregate=T,
+        isAggregate=TRUE,
         limit=-1,
         start=0,
         sort='playerId',
@@ -37,7 +36,7 @@ get_goalies <- function(
           max_season
         )
       ),
-      stats_rest=T
+      stats_rest=TRUE
     )
     df <- tibble::as_tibble(out$data)
     if (nrow(df)>0) {
@@ -52,17 +51,17 @@ get_goalies <- function(
   stats_sum <- combined %>%
     dplyr::group_by(playerId) %>%
     dplyr::summarise(
-      gamesPlayed=sum(gamesPlayed, na.rm=T),
-      losses=sum(losses, na.rm=T),
-      otLosses=sum(otLosses, na.rm=T),
-      shutouts=sum(shutouts, na.rm=T),
-      ties=sum(ties, na.rm=T),
-      wins=sum(wins, na.rm=T),
+      gamesPlayed=sum(gamesPlayed, na.rm=TRUE),
+      losses=sum(losses, na.rm=TRUE),
+      otLosses=sum(otLosses, na.rm=TRUE),
+      shutouts=sum(shutouts, na.rm=TRUE),
+      ties=sum(ties, na.rm=TRUE),
+      wins=sum(wins, na.rm=TRUE),
       .groups='drop'
     )
   latest <- combined %>%
     dplyr::group_by(playerId) %>%
-    dplyr::slice_max(order_by=max_season_chunk, n=1 , with_ties=F) %>%
+    dplyr::slice_max(order_by=max_season_chunk, n=1 , with_ties=FALSE) %>%
     dplyr::ungroup() %>%
     dplyr::select(
       -gamesPlayed,
@@ -91,7 +90,6 @@ get_goalies <- function(
 #'   game_type=3,
 #'   category='savePctg'
 #' )
-#' 
 #' @export
 
 get_goalie_leaders <- function(
@@ -102,7 +100,7 @@ get_goalie_leaders <- function(
   out <- nhl_api(
     path=sprintf('goalie-stats-leaders/%s/%s', season, game_type),
     query=list(categories=category, limit=-1),
-    stats_rest=F
+    stats_rest=FALSE
   )
   return(tibble::as_tibble(out[[category]]))
 }
@@ -112,14 +110,13 @@ get_goalie_leaders <- function(
 #' @return tibble with one row per goalie
 #' @examples
 #' goalie_milestones <- get_goalie_milestones()
-#' 
 #' @export
 
 get_goalie_milestones <- function() {
   out <- nhl_api(
     path='milestones/goalies',
     query=list(),
-    stats_rest=T
+    stats_rest=TRUE
   )
   return(tibble::as_tibble(out$data))
 }
@@ -129,9 +126,11 @@ get_goalie_milestones <- function() {
 #' @param season integer Season in YYYYYYYY
 #' @param report string Report (check `get_configuration()` for possible inputs)
 #' @param teams vector of integers Team ID(s)
-#' @param is_aggregate boolean isAggregate where T=regular and playoffs combined
-#'                     (or multiple seasons) from multiple teams, if applicable
-#' @param is_game boolean isGame where T=rows by games and F=rows by goalies
+#' @param is_aggregate boolean isAggregate where TRUE=regular and playoffs
+#'                     combined (or multiple seasons) from multiple teams,
+#'                     if applicable
+#' @param is_game boolean isGame where TRUE=rows by games and FALSE=rows by
+#'                goalies
 #' @param dates vector of strings Date(s) in 'YYYY-MM-DD' (only if paired with
 #'              `is_game`)
 #' @param game_types vector of integers Game-type(s) where 1=pre-season,
@@ -143,29 +142,28 @@ get_goalie_milestones <- function() {
 #'   report='startedVsRelieved',
 #'   game_types=c(3)
 #' )
-#' 
 #' @export
 
 get_goalie_statistics <- function(
     season=get_season_now()$seasonId,
     report='summary',
     teams=1:100,
-    is_aggregate=F,
-    is_game=F,
+    is_aggregate=FALSE,
+    is_game=FALSE,
     dates=c('2025-01-01'),
     game_types=1:3
   ) {
   if (is_game) {
     for (date in dates) {
       if (!grepl('^\\d{4}-\\d{2}-\\d{2}$', date)) {
-        stop('date in `dates` must be in \'YYYY-MM-DD\' format', call.=F)
+        stop('date in `dates` must be in \'YYYY-MM-DD\' format', call.=FALSE)
       }
     }
     out <- nhl_api(
       path=sprintf('goalie/%s', report),
       query=list(
         limit=-1,
-        isGame=T,
+        isGame=TRUE,
         isAggregate=is_aggregate,
         cayenneExp=sprintf(
           'seasonId=%s and gameDate in (%s) and teamId in (%s) and gameTypeId in (%s)',
@@ -175,7 +173,7 @@ get_goalie_statistics <- function(
           paste(game_types, collapse=',')
         )
       ),
-      stats_rest=T
+      stats_rest=TRUE
     )
   }
   else {
@@ -191,7 +189,7 @@ get_goalie_statistics <- function(
           paste(game_types, collapse=',')
         )
       ),
-      stats_rest=T
+      stats_rest=TRUE
     )
   }
   return(tibble::as_tibble(out$data))

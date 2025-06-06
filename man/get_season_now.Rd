@@ -14,5 +14,4 @@ Get season as of now
 }
 \examples{
 season_now <- get_season_now()
-
 }

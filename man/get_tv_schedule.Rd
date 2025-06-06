@@ -17,5 +17,4 @@ Get TV schedule by date
 }
 \examples{
 tv_schedule_2025_01_02 <- get_tv_schedule(date='2025-01-02')
-
 }
