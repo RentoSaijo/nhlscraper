@@ -1,6 +1,4 @@
-```
-https://cranlogs.r-pkg.org/badges/grand-total/nhlscraper
-```
+![Downloads](https://cranlogs.r-pkg.org/badges/grand-total/nhlscraper)
 
 # nhlscraper: Scraper for NHL Data
 
