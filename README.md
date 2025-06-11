@@ -1,5 +1,5 @@
 ![Downloads](https://cranlogs.r-pkg.org/badges/grand-total/nhlscraper)
-# nhlscraper: Scraper for NHL Data
+# nhlscraper: Scraper for National Hockey League (NHL) Data
 
 ## Overview
 nhlscraper is a public scraper for NHL data on R; with this, you will have relatively easy access to all sorts of data from high-level multi-season summaries to low-level play-by-play logs.
