@@ -1,3 +1,5 @@
+# nhlscraper (development version)
+
 # nhlscraper 0.1.1
 
 Fixed some documentation (mainly, examples) and tidied up various functions.
