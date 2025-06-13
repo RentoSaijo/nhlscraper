@@ -1,4 +1,6 @@
-# nhlscraper (development version)
+# nhlscraper 0.1.1.9000
+
+Adding information from NHL Records API...
 
 # nhlscraper 0.1.1
 
