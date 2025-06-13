@@ -1,3 +1,4 @@
+[![CRAN Status](https://www.r-pkg.org/badges/version/nhlscraper)](https://CRAN.R-project.org/package=nhlscraper)
 ![Downloads](https://cranlogs.r-pkg.org/badges/grand-total/nhlscraper)
 
 # nhlscraper: Scraper for National Hockey League (NHL) Data
