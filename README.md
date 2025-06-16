@@ -5,7 +5,7 @@
 # nhlscraper: Scraper for National Hockey League (NHL) Data
 
 ## Overview
-nhlscraper is a public scraper for NHL data on R; with this, you will have relatively easy access to all sorts of data from high-level multi-season summaries to low-level play-by-play logs.
+nhlscraper is a CRAN-approved R-package for scraping NHL data from the NHL API. It primarily wraps [endpoints documented by Zach Maludzinski](https://github.com/Zmalski/NHL-API-Reference). It covers data from high-level multi-season summaries to low-level play-by-play logs. Since the API endpoints got reworked in 2023, many of the earlier scrapers became deprecated; this one should be updated for the new endpoints.
 
 ## Prerequisite
 
