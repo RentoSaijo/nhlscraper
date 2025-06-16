@@ -19,7 +19,7 @@ install.packages('nhlscraper')
 
 Install the development version from [GitHub](https://github.com/) with:
 ```
-#install.packages('devtools')
+install.packages('devtools')
 devtools::install_github('RentoSaijo/nhlscraper')
 ```
 
