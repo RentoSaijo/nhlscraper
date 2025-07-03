@@ -1,6 +1,6 @@
 # nhlscraper 0.1.1.9000
 
-Adding information from NHL Records API...
+Adding information from NHL Records API and ESPN Public API...
 
 # nhlscraper 0.1.1
 
