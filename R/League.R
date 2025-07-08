@@ -76,3 +76,21 @@ get_seasons <- function() {
   )
   return(tibble::as_tibble(out$data))
 }
+
+#' Get transactions by season
+#' 
+#' @param season integer Season in YYYYYYYY
+#' @return nested tibble with one row per team and one row per player
+#' @examples
+#' transactions_20242025 <- get_transactions(20242025)
+#' @export
+
+get_transactions <- function(season=get_season_now()$seasonId) {
+  out <- espn_api(
+    path='transactions',
+    query=list(limit=1000, season=season%/%10000),
+    stats_rest=TRUE
+  )
+  return(tibble::as_tibble(out$transactions))
+}
+
