@@ -86,11 +86,21 @@ get_seasons <- function() {
 #' @export
 
 get_transactions <- function(season=get_season_now()$seasonId) {
-  out <- espn_api(
-    path='transactions',
-    query=list(limit=1000, season=season%/%10000),
-    stats_rest=TRUE
-  )
-  return(tibble::as_tibble(out$transactions))
+  season <- season %/% 10000
+  page <- 1
+  all_transactions <- list()
+  repeat {
+    out <- espn_api(
+      path='transactions',
+      query=list(limit=1000, season=season, page=page),
+      type=1
+    )
+    df <- tibble::as_tibble(out$transactions)
+    all_transactions[[page+1]] <- df
+    if (nrow(df) < 1000) {
+      break
+    }
+    page <- page + 1
+  }
+  return(dplyr::bind_rows(all_transactions))
 }
-
