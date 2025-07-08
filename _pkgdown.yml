@@ -11,6 +11,7 @@ reference:
     - get_schedule
     - get_standings_information
     - get_standings
+    - get_transactions
 - title: Team Data
   desc: >
     Functions to retrieve data about teams
