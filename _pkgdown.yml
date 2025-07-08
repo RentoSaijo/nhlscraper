@@ -12,6 +12,7 @@ reference:
     - get_standings_information
     - get_standings
     - get_transactions
+    - get_injuries
 - title: Team Data
   desc: >
     Functions to retrieve data about teams
