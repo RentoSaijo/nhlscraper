@@ -10,7 +10,7 @@ get_transactions(season = get_season_now()$seasonId)
 \item{season}{integer Season in YYYYYYYY}
 }
 \value{
-nested tibble with one row per team and one row per player
+tibble with one row per transaction
 }
 \description{
 Get transactions by season

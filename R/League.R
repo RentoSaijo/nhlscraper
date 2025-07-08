@@ -80,7 +80,7 @@ get_seasons <- function() {
 #' Get transactions by season
 #' 
 #' @param season integer Season in YYYYYYYY
-#' @return nested tibble with one row per team and one row per player
+#' @return tibble with one row per transaction
 #' @examples
 #' transactions_20242025 <- get_transactions(20242025)
 #' @export
@@ -103,4 +103,20 @@ get_transactions <- function(season=get_season_now()$seasonId) {
     page <- page + 1
   }
   return(dplyr::bind_rows(all_transactions))
+}
+
+#' Get injury reports as of now
+#' 
+#' @return nested tibble with one row per team and one row per player
+#' @examples
+#' injuries_now <- get_injuries()
+#' @export
+
+get_injuries <- function() {
+  out <- espn_api(
+    path='injuries',
+    query=list(limit=1000),
+    type=1
+  )
+  return(tibble::as_tibble(out$injuries))
 }
