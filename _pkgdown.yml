@@ -80,7 +80,7 @@ reference:
   desc: >
     Functions to retrieve data about drafts
   contents:
-    - get_draft_information
+    - get_drafts
     - get_draft_picks
     - get_draft_rankings
     - get_draft_tracker
