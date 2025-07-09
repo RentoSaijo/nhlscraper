@@ -8,7 +8,7 @@ navbar:
   title: 'nhlscraper'
   structure:
     left: [intro, reference, news]
-    right: [search, light-switch, github, linkedin]
+    right: [search, github, linkedin, lightswitch]
   components:
     intro:
       icon: fa-home fa-lg
