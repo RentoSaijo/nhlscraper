@@ -2,7 +2,30 @@ url: https://rentosaijo.github.io/nhlscraper/
 template:
   bootstrap: 5
   bootswatch: cosmo
+  light-switch: true
 
+navbar:
+  title: 'nhlscraper'
+  structure:
+    left: [intro, reference, news]
+    right: [search, light-switch, github, linkedin]
+  components:
+    intro:
+      icon: fa-home fa-lg
+      href: index.html
+    reference:
+      text: 'Functions'
+      href: reference/index.html
+    news:
+      text: 'News'
+      href: news/index.html
+    github:
+      icon: fa-github
+      href: https://github.com/RentoSaijo/nhlscraper
+    linkedin:
+      icon: fa-linkedin
+      href: https://www.linkedin.com/in/rentosaijo/
+      
 reference:
 - title: League Data
   desc: >

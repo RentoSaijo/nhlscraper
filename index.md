@@ -1,9 +1,13 @@
-# nhlscraper <a href="https://rentosaijo.github.io/nhlscraper/"><img src="man/figures/logo.png" align="right" width="20%" min-width="100" alt="nhlscraper website" /></a>
 [![CRAN Status](https://www.r-pkg.org/badges/version/nhlscraper)](https://CRAN.R-project.org/package=nhlscraper)
 [![Dev Version](https://img.shields.io/badge/dev%20ver-0.1.1.9000-red.svg)](https://github.com/nhlscraper)
 ![Downloads](https://cranlogs.r-pkg.org/badges/grand-total/nhlscraper)
 
-## Overview
+<br>
+
+<div style="text-align:left">
+<span><a href="https://rentosaijo.github.io/nhlscraper/">
+<img src="man/figures/logo.png" width=100 alt="nhlscraper Logo"/> </a><h2><strong>nhlscraper</strong></h2>
+</div>
 
 nhlscraper is a CRAN-approved R-package for scraping NHL data using the NHL API. It primarily wraps [endpoints documented by Zach Maludzinski](https://github.com/Zmalski/NHL-API-Reference). It covers data from high-level multi-season summaries to low-level play-by-play logs. Since the API endpoints got reworked in 2023, many of the earlier scrapers became deprecated; this one should be updated for the new endpoints.
 
