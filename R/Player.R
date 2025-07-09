@@ -19,7 +19,6 @@ get_player_game_log <- function(
   ) {
   out <- nhl_api(
     path=sprintf('player/%s/game-log/%s/%s', player, season, game_type),
-    query=list(),
     type=1
   )
   return(tibble::as_tibble(out$gameLog))
@@ -36,7 +35,6 @@ get_player_game_log <- function(
 get_player_landing <- function(player=8480039) {
   out <- nhl_api(
     path=sprintf('player/%s/landing', player),
-    query=list(),
     type=1
   )
   if (length(out)==4) {
@@ -55,7 +53,6 @@ get_player_landing <- function(player=8480039) {
 get_spotlight_players <- function() {
   out <- nhl_api(
     path='player-spotlight',
-    query=list(),
     type=1
   )
   return(tibble::as_tibble(out))
@@ -71,7 +68,6 @@ get_spotlight_players <- function() {
 get_players <- function() {
   out <- nhl_api(
     path='player',
-    query=list(),
     type=3
   )
   return(tibble::as_tibble(out$data))
