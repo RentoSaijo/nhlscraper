@@ -196,3 +196,18 @@ get_officials <- function() {
   )
   return(tibble::as_tibble(out$data))
 }
+
+#' Get attendance for all seasons
+#' 
+#' @return tibble with one row per season
+#' @examples
+#' all_attendance <- get_attendance()
+#' @export
+
+get_attendance <- function() {
+  out <- nhl_api(
+    path='attendance',
+    type=3
+  )
+  return(tibble::as_tibble(out$data))
+}

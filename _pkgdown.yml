@@ -91,6 +91,7 @@ reference:
     - get_configuration
     - get_transactions
     - get_injuries
+    - get_attendance
     - get_officials
     - get_venues
     - get_countries
