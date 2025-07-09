@@ -30,6 +30,7 @@ reference:
   desc: >
     Functions to retrieve data about players
   contents:
+    - get_players
     - get_player_game_log
     - get_player_landing
     - get_spotlight_players
