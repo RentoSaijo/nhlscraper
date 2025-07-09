@@ -1,6 +1,13 @@
 url: https://rentosaijo.github.io/nhlscraper/
 template:
+  package: tidytemplate
   bootstrap: 5
+  includes:
+    in_header: |
+      <script defer data-domain="https://rentosaijo.github.io/nhlscraper/,all.tidyverse.org" src="https://plausible.io/js/plausible.js"></script>
+
+development:
+  mode: auto
 
 reference:
 - title: League Data
