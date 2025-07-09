@@ -14,7 +14,6 @@ get_draft_rankings <- function(
   ) {
   out <- nhl_api(
     path=sprintf('draft/rankings/%s/%s', year, player_type),
-    query=list(),
     type=1
   )
   return(tibble::as_tibble(out$rankings))
@@ -35,7 +34,6 @@ get_draft_picks <- function(
   ) {
   out <- nhl_api(
     path=sprintf('draft/picks/%s/%s', year, round),
-    query=list(),
     type=1
   )
   return(tibble::as_tibble(out$picks))
@@ -51,24 +49,32 @@ get_draft_picks <- function(
 get_draft_tracker <- function() {
   out <- nhl_api(
     path='draft-tracker/picks/now',
-    query=list(),
     type=1
   )
   return(tibble::as_tibble(out$picks))
 }
 
-#' Get draft information for all seasons
+#' Get all drafts
 #' 
-#' @return tibble with one row per season
+#' @importFrom magrittr %>%
+#' @return tibble with one row per draft
 #' @examples
-#' draft_info <- get_draft_information()
+#' all_drafts <- get_drafts()
 #' @export
 
-get_draft_information <- function() {
+get_drafts <- function() {
   out <- nhl_api(
     path='draft',
     query=list(limit=-1),
     type=2
   )
-  return(tibble::as_tibble(out$data))
+  out <- out$data %>% 
+    dplyr::select(-id)
+  out2 <- nhl_api(
+    path='draft-master',
+    type=3
+  )
+  merged <- out2$data %>% 
+    dplyr::left_join(out, by='draftYear')
+  return(tibble::as_tibble(merged))
 }
