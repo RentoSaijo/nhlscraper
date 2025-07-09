@@ -15,7 +15,7 @@ get_draft_rankings <- function(
   out <- nhl_api(
     path=sprintf('draft/rankings/%s/%s', year, player_type),
     query=list(),
-    stats_rest=FALSE
+    type=1
   )
   return(tibble::as_tibble(out$rankings))
 }
@@ -36,7 +36,7 @@ get_draft_picks <- function(
   out <- nhl_api(
     path=sprintf('draft/picks/%s/%s', year, round),
     query=list(),
-    stats_rest=FALSE
+    type=1
   )
   return(tibble::as_tibble(out$picks))
 }
@@ -52,7 +52,7 @@ get_draft_tracker <- function() {
   out <- nhl_api(
     path='draft-tracker/picks/now',
     query=list(),
-    stats_rest=FALSE
+    type=1
   )
   return(tibble::as_tibble(out$picks))
 }
@@ -68,7 +68,7 @@ get_draft_information <- function() {
   out <- nhl_api(
     path='draft',
     query=list(limit=-1),
-    stats_rest=TRUE
+    type=2
   )
   return(tibble::as_tibble(out$data))
 }

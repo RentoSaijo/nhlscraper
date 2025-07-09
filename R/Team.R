@@ -10,7 +10,7 @@ get_team_seasons <- function(team='BOS') {
   out <- nhl_api(
     path=sprintf('club-stats-season/%s', team),
     query=list(),
-    stats_rest=FALSE
+    type=1
   )
   if (length(out)==4) {
     return(tibble::tibble())
@@ -43,7 +43,7 @@ get_team_roster_statistics <- function(
   out <- nhl_api(
     path=sprintf('club-stats/%s/%s/%s', team, season, game_type),
     query=list(),
-    stats_rest=FALSE
+    type=1
   )
   return(tibble::as_tibble(out[[player_type]]))
 }
@@ -60,7 +60,7 @@ get_team_scoreboard <- function(team='BOS') {
   out <- nhl_api(
     path=sprintf('scoreboard/%s/now', team),
     query=list(),
-    stats_rest=FALSE
+    type=1
   )
   if (is.null(out$gamesByDate)) {
     return(tibble::tibble())
@@ -95,7 +95,7 @@ get_team_roster <- function(
   out <- nhl_api(
     path=sprintf('roster/%s/%s', team, season),
     query=list(),
-    stats_rest=FALSE
+    type=1
   )
   return(tibble::as_tibble(out[[player_type]]))
 }
@@ -117,7 +117,7 @@ get_team_prospects <- function(team='BOS', player_type='forwards') {
   out <- nhl_api(
     path=sprintf('prospects/%s', team),
     query=list(),
-    stats_rest=FALSE
+    type=1
   )
   return(tibble::as_tibble(out[[player_type]]))
 }
@@ -135,7 +135,7 @@ get_team_schedule <- function(team='BOS', season=get_season_now()$seasonId) {
   out <- nhl_api(
     path=sprintf('club-schedule-season/%s/%s', team, season),
     query=list(),
-    stats_rest=FALSE
+    type=1
   )
   return(tibble::as_tibble(out$games))
 }
@@ -151,7 +151,7 @@ get_teams <- function() {
   out <- nhl_api(
     path='team',
     query=list(limit=-1),
-    stats_rest=TRUE
+    type=2
   )
   return(tibble::as_tibble(out$data))
 }
@@ -167,7 +167,7 @@ get_franchises <- function() {
   out <- nhl_api(
     path='franchise',
     query=list(limit=-1),
-    stats_rest=TRUE
+    type=2
   )
   return(tibble::as_tibble(out$data))
 }
@@ -221,7 +221,7 @@ get_team_statistics <- function(
           paste(game_types, collapse=',')
         )
       ),
-      stats_rest=TRUE
+      type=2
     )
   }
   else {
@@ -236,7 +236,7 @@ get_team_statistics <- function(
           paste(game_types, collapse=',')
         )
       ),
-      stats_rest=TRUE
+      type=2
     )
   }
   return(tibble::as_tibble(out$data))

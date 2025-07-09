@@ -13,7 +13,7 @@ get_standings <- function(date='2025-01-01') {
   out <- nhl_api(
     path=sprintf('standings/%s', date),
     query=list(),
-    stats_rest=FALSE
+    type=1
   )
   return(tibble::as_tibble(out$standings))
 }
@@ -29,7 +29,7 @@ get_standings_information <- function() {
   out <- nhl_api(
     path='standings-season',
     query=list(),
-    stats_rest=FALSE
+    type=1
   )
   return(tibble::as_tibble(out$seasons))
 }
@@ -49,7 +49,7 @@ get_schedule <- function(date='2025-01-01') {
   out <- nhl_api(
     path=sprintf('schedule/%s', date),
     query=list(),
-    stats_rest=FALSE
+    type=1
   )
   if (is.null(out$gameWeek)) {
     return(tibble::tibble())
@@ -72,7 +72,7 @@ get_seasons <- function() {
   out <- nhl_api(
     path='season',
     query=list(),
-    stats_rest=TRUE
+    type=2
   )
   return(tibble::as_tibble(out$data))
 }

@@ -4,15 +4,14 @@
 \alias{nhl_api}
 \title{Internal: call NHL API}
 \usage{
-nhl_api(path, query = list(), stats_rest = FALSE)
+nhl_api(path, query = list(), type)
 }
 \arguments{
 \item{path}{String API path}
 
 \item{query}{list Query parameters}
 
-\item{stats_rest}{boolean isStatsRest where TRUE=NHL's REST API and FALSE=
-NHL's standard API}
+\item{type}{integer Type where 1=api-web, 2=api.nhle, and 3=records.nhl}
 }
 \value{
 parsed JSON

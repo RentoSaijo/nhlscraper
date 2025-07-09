@@ -36,7 +36,7 @@ get_goalies <- function(
           max_season
         )
       ),
-      stats_rest=TRUE
+      type=2
     )
     df <- tibble::as_tibble(out$data)
     if (nrow(df)>0) {
@@ -100,7 +100,7 @@ get_goalie_leaders <- function(
   out <- nhl_api(
     path=sprintf('goalie-stats-leaders/%s/%s', season, game_type),
     query=list(categories=category, limit=-1),
-    stats_rest=FALSE
+    type=1
   )
   return(tibble::as_tibble(out[[category]]))
 }
@@ -116,7 +116,7 @@ get_goalie_milestones <- function() {
   out <- nhl_api(
     path='milestones/goalies',
     query=list(),
-    stats_rest=TRUE
+    type=2
   )
   return(tibble::as_tibble(out$data))
 }
@@ -173,7 +173,7 @@ get_goalie_statistics <- function(
           paste(game_types, collapse=',')
         )
       ),
-      stats_rest=TRUE
+      type=2
     )
   }
   else {
@@ -189,7 +189,7 @@ get_goalie_statistics <- function(
           paste(game_types, collapse=',')
         )
       ),
-      stats_rest=TRUE
+      type=2
     )
   }
   return(tibble::as_tibble(out$data))

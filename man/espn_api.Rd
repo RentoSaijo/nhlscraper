@@ -4,14 +4,14 @@
 \alias{espn_api}
 \title{Internal: call ESPN API}
 \usage{
-espn_api(path, query = list(), type = 1)
+espn_api(path, query = list(), type)
 }
 \arguments{
 \item{path}{String API path}
 
 \item{query}{list Query parameters}
 
-\item{type}{integer where 1=site.api and 2=sports.core}
+\item{type}{integer Type where 1=site.api and 2=sports.core}
 }
 \value{
 parsed JSON

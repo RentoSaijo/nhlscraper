@@ -13,7 +13,7 @@ get_tv_schedule <- function(date='2025-01-01') {
   out <- nhl_api(
     path=sprintf('network/tv-schedule/%s', date),
     query=list(),
-    stats_rest=FALSE
+    type=1
   )
   return(tibble::as_tibble(out$broadcasts))
 }
@@ -30,7 +30,7 @@ get_partner_odds <- function(country='US') {
   out <- nhl_api(
     path=sprintf('partner-game/%s/now', country),
     query=list(),
-    stats_rest=FALSE
+    type=1
   )
   return(tibble::as_tibble(out$games))
 }
@@ -46,7 +46,7 @@ get_glossary <- function() {
   out <- nhl_api(
     path='glossary',
     query=list(),
-    stats_rest=TRUE
+    type=2
   )
   return(tibble::as_tibble(out$data))
 }
@@ -62,7 +62,7 @@ get_season_now <- function() {
   out <- nhl_api(
     path='componentSeason',
     query=list(),
-    stats_rest=TRUE
+    type=2
   )
   return(tibble::as_tibble(out$data))
 }
@@ -78,7 +78,7 @@ get_configuration <- function() {
   out <- nhl_api(
     path='config',
     query=list(),
-    stats_rest=TRUE
+    type=2
   )
   return(out)
 }
@@ -94,7 +94,7 @@ ping <- function() {
   out <- nhl_api(
     path='ping',
     query=list(),
-    stats_rest=TRUE
+    type=2
   )
   return(length(out)==0)
 }
@@ -110,7 +110,7 @@ get_countries <- function() {
   out <- nhl_api(
     path='country',
     query=list(),
-    stats_rest=TRUE
+    type=2
   )
   return(tibble::as_tibble(out$data))
 }
@@ -126,7 +126,7 @@ get_streams <- function() {
   out <- nhl_api(
     path='where-to-watch',
     query=list(),
-    stats_rest=FALSE
+    type=1
   )
   return(tibble::as_tibble(out))
 }

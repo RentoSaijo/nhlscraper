@@ -11,7 +11,7 @@ get_series_carousel <- function(season=get_season_now()$seasonId, round=1) {
   out <- nhl_api(
     path=sprintf('playoff-series/carousel/%s/', season),
     query=list(),
-    stats_rest=FALSE
+    type=1
   )
   return(tibble::as_tibble(out$rounds$series[[round]]))
 }
@@ -29,7 +29,7 @@ get_series_schedule <- function(season=get_season_now()$seasonId, series='a') {
   out <- nhl_api(
     path=sprintf('schedule/playoff-series/%s/%s', season, series),
     query=list(),
-    stats_rest=FALSE
+    type=1
   )
   return(tibble::as_tibble(out$games))
 }
@@ -46,7 +46,7 @@ get_playoff_bracket <- function(year=get_season_now()$seasonId%%10000) {
   out <- nhl_api(
     path=sprintf('playoff-bracket/%s', year),
     query=list(),
-    stats_rest=FALSE
+    type=1
   )
   return(tibble::as_tibble(out$series))
 }

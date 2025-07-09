@@ -36,7 +36,7 @@ get_skaters <- function(
           max_season
         )
       ),
-      stats_rest=TRUE
+      type=2
     )
     df <- tibble::as_tibble(out$data)
     if (nrow(df)>0) {
@@ -90,7 +90,7 @@ get_skater_leaders <- function(
   out <- nhl_api(
     path=sprintf('skater-stats-leaders/%s/%s', season, game_type),
     query=list(categories=category, limit=-1),
-    stats_rest=FALSE
+    type=1
   )
   return(tibble::as_tibble(out[[category]]))
 }
@@ -106,7 +106,7 @@ get_skater_milestones <- function() {
   out <- nhl_api(
     path='milestones/skaters',
     query=list(),
-    stats_rest=TRUE
+    type=2
   )
   return(tibble::as_tibble(out$data))
 }
@@ -163,7 +163,7 @@ get_skater_statistics <- function(
         paste(game_types, collapse=',')
         )
       ),
-      stats_rest=TRUE
+      type=2
     )
   }
   else {
@@ -179,7 +179,7 @@ get_skater_statistics <- function(
           paste(game_types, collapse=',')
         )
       ),
-      stats_rest=TRUE
+      type=2
     )
   }
   return(tibble::as_tibble(out$data))

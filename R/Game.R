@@ -13,7 +13,7 @@ get_scores <- function(date='2025-01-01') {
   out <- nhl_api(
     path=sprintf('score/%s', date),
     query=list(),
-    stats_rest=FALSE
+    type=1
   )
   return(tibble::as_tibble(out$games))
 }
@@ -33,7 +33,7 @@ get_scoreboards <- function(date='2025-01-01') {
   out <- nhl_api(
     path=sprintf('scoreboard/%s', date),
     query=list(),
-    stats_rest=FALSE
+    type=1
   )
   if (is.null(out$gamesByDate)) {
     return(tibble::tibble())
@@ -57,7 +57,7 @@ get_gc_play_by_play <- function(game=2024020602) {
   out <- nhl_api(
     path=sprintf('gamecenter/%s/play-by-play', game),
     query=list(),
-    stats_rest=FALSE
+    type=1
   )
   return(tibble::as_tibble(out$plays))
 }
@@ -74,7 +74,7 @@ get_wsc_play_by_play <- function(game=2024020602) {
   out <- nhl_api(
     path=sprintf('wsc/play-by-play/%s', game),
     query=list(),
-    stats_rest=FALSE
+    type=1
   )
   out <- tibble::as_tibble(out)
   if (ncol(out)==4) {
@@ -105,7 +105,7 @@ get_game_boxscore <- function(
   out <- nhl_api(
     path=sprintf('gamecenter/%s/boxscore', game),
     query=list(),
-    stats_rest=FALSE
+    type=1
   )
   return(tibble::as_tibble(
     out$playerByGameStats[[paste0(team, 'Team')]][[player_type]])
@@ -124,7 +124,7 @@ get_game_landing <- function(game=2024020602) {
   out <- nhl_api(
     path=sprintf('gamecenter/%s/landing', game),
     query=list(),
-    stats_rest=FALSE
+    type=1
   )
   if (length(out)==4) {
     return(list())
@@ -144,7 +144,7 @@ get_game_story <- function(game=2024020602) {
   out <- nhl_api(
     path=sprintf('wsc/game-story/%s', game),
     query=list(),
-    stats_rest=FALSE
+    type=1
   )
   if (length(out)==4) {
     return(list())
@@ -163,7 +163,7 @@ get_games <- function() {
   out <- nhl_api(
     path='game',
     query=list(),
-    stats_rest=TRUE
+    type=2
   )
   return(tibble::as_tibble(out$data))
 }
@@ -180,7 +180,7 @@ get_shift_charts <- function(game=2024020602) {
   out <- nhl_api(
     path='shiftcharts',
     query=list(cayenneExp=sprintf('gameId=%s', game)),
-    stats_rest=TRUE
+    type=2
   )
   return(tibble::as_tibble(out$data))
 }
