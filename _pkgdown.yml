@@ -1,6 +1,7 @@
 url: https://rentosaijo.github.io/nhlscraper/
 template:
   bootstrap: 5
+  bootswatch: cosmo
 
 reference:
 - title: League Data
