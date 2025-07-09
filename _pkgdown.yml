@@ -70,6 +70,12 @@ reference:
     - get_playoff_bracket
     - get_series_schedule
     - get_series_carousel
+- title: Award Data
+  desc: >
+    Functions to retrieve data about awards
+  contents:
+    - get_awards
+    - get_award_winners
 - title: Draft Data
   desc: >
     Functions to retrieve data about drafts
