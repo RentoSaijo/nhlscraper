@@ -17,7 +17,6 @@ Suggests:
     knitr,
     rmarkdown,
     testthat (>= 3.0.0)
-Config/Needs/website: tidyverse/tidytemplate
 Config/testthat/edition: 3
 VignetteBuilder: knitr
 URL: https://github.com/RentoSaijo/nhlscraper, https://rentosaijo.github.io/nhlscraper/
