@@ -60,3 +60,19 @@ get_spotlight_players <- function() {
   )
   return(tibble::as_tibble(out))
 }
+
+#' Get all players
+#'
+#' @return tibble with one row per player
+#' @examples
+#' all_players <- get_players()
+#' @export
+
+get_players <- function() {
+  out <- nhl_api(
+    path='player',
+    query=list(),
+    type=3
+  )
+  return(tibble::as_tibble(out$data))
+}
