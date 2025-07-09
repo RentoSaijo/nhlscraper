@@ -137,3 +137,62 @@ get_venues <- function() {
   )
   return(tibble::as_tibble(out$data))
 }
+
+#' Get transactions by season
+#' 
+#' @param season integer Season in YYYYYYYY
+#' @return tibble with one row per transaction
+#' @examples
+#' transactions_20242025 <- get_transactions(20242025)
+#' @export
+
+get_transactions <- function(season=get_season_now()$seasonId) {
+  season <- season %/% 10000
+  page <- 1
+  all_transactions <- list()
+  repeat {
+    out <- espn_api(
+      path='transactions',
+      query=list(limit=1000, season=season, page=page),
+      type=1
+    )
+    df <- tibble::as_tibble(out$transactions)
+    all_transactions[[page+1]] <- df
+    if (nrow(df) < 1000) {
+      break
+    }
+    page <- page + 1
+  }
+  return(dplyr::bind_rows(all_transactions))
+}
+
+#' Get injury reports as of now
+#' 
+#' @return nested tibble with one row per team and one row per player
+#' @examples
+#' injuries_now <- get_injuries()
+#' @export
+
+get_injuries <- function() {
+  out <- espn_api(
+    path='injuries',
+    query=list(limit=1000),
+    type=1
+  )
+  return(tibble::as_tibble(out$injuries))
+}
+
+#' Get all officials
+#' 
+#' @return tibble with one row per official
+#' @examples
+#' all_officials <- get_officials()
+#' @export
+
+get_officials <- function() {
+  out <- nhl_api(
+    path='officials',
+    type=3
+  )
+  return(tibble::as_tibble(out$data))
+}
