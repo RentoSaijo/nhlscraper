@@ -130,3 +130,18 @@ get_streams <- function() {
   )
   return(tibble::as_tibble(out))
 }
+
+#' Get all venues
+#' 
+#' @return tibble with one row per venue
+#' @examples
+#' all_venues <- get_venues()
+#' @export
+
+get_venues <- function() {
+  out <- nhl_api(
+    path='venue',
+    type=3
+  )
+  return(tibble::as_tibble(out$data))
+}
