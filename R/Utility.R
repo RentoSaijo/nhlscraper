@@ -8,7 +8,7 @@
 
 nhl_api <- function(path, query=list(), type) {
   if (type==1) {
-    'https://api-web.nhle.com/v1/'
+    base <- 'https://api-web.nhle.com/v1/'
   } else if (type==2) {
     base <- 'https://api.nhle.com/stats/rest/'
     if (path!='ping') {
