@@ -1,4 +1,4 @@
-# nhlscraper <a href="https://rentosaijo.github.io/nhlscraper/"><img src="man/figures/logo.png" align="right" height="138" alt="nhlscraper website" /></a>
+# nhlscraper <a href="https://rentosaijo.github.io/nhlscraper/"><img src="man/figures/logo.png" align="right" width="20%" min-width="100" alt="nhlscraper website" /></a>
 [![CRAN Status](https://www.r-pkg.org/badges/version/nhlscraper)](https://CRAN.R-project.org/package=nhlscraper)
 [![Dev Version](https://img.shields.io/badge/dev%20ver-0.1.1.9000-red.svg)](https://github.com/nhlscraper)
 ![Downloads](https://cranlogs.r-pkg.org/badges/grand-total/nhlscraper)
