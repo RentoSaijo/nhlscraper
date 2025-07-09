@@ -2,6 +2,8 @@
 [![Dev Version](https://img.shields.io/badge/dev%20ver-0.1.1.9000-red.svg)](https://github.com/nhlscraper)
 ![Downloads](https://cranlogs.r-pkg.org/badges/grand-total/nhlscraper)
 
+# nhlscraper <a href="https://rentosaijo.github.io/nhlscraper/"><img src="man/figures/logo.png" align="right" height="120" alt="nhlscraper website" /></a>
+
 # nhlscraper: Scraper for National Hockey League (NHL) Data
 
 ## Overview
