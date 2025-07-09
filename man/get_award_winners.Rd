@@ -7,7 +7,7 @@
 get_award_winners()
 }
 \value{
-tibble with one row per award
+tibble with one row per winner/finalist
 }
 \description{
 Get all award winners/finalists

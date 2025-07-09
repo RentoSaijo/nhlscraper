@@ -15,7 +15,7 @@ get_awards <- function() {
 
 #' Get all award winners/finalists
 #' 
-#' @return tibble with one row per award
+#' @return tibble with one row per winner/finalist
 #' @examples
 #' all_awards <- get_awards()
 #' @export
