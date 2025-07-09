@@ -11,7 +11,7 @@
 <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
 <link rel="icon" sizes="any" href="favicon.ico">
 <link rel="manifest" href="site.webmanifest">
-<script src="deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<script src="lightswitch.js"></script><script src="deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
 <script src="deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
 <link href="deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
@@ -24,7 +24,7 @@
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
 
 
-    <nav class="navbar navbar-expand-lg fixed-top bg-primary" data-bs-theme="dark" aria-label="Site navigation"><div class="container">
+    <nav class="navbar navbar-expand-lg fixed-top " aria-label="Site navigation"><div class="container">
 
     <a class="navbar-brand me-2" href="index.html">nhlscraper</a>
 
@@ -37,15 +37,16 @@
 
     <div id="navbar" class="collapse navbar-collapse ms-3">
       <ul class="navbar-nav me-auto">
-<li class="nav-item"><a class="nav-link" href="articles/nhlscraper.html">Get started</a></li>
-<li class="nav-item"><a class="nav-link" href="reference/index.html">Reference</a></li>
-<li class="nav-item"><a class="nav-link" href="news/index.html">Changelog</a></li>
+<li class="active nav-item"><a class="nav-link" href="index.html"><span class="fa fa-home fa-lg"></span></a></li>
+<li class="nav-item"><a class="nav-link" href="reference/index.html">Functions</a></li>
+<li class="nav-item"><a class="nav-link" href="news/index.html">News</a></li>
       </ul>
 <ul class="navbar-nav">
 <li class="nav-item"><form class="form-inline" role="search">
  <input class="form-control" type="search" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Search for" data-search-index="search.json">
 </form></li>
-<li class="nav-item"><a class="external-link nav-link" href="https://github.com/RentoSaijo/nhlscraper/" aria-label="GitHub"><span class="fa fab fa-github fa-lg"></span></a></li>
+<li class="nav-item"><a class="external-link nav-link" href="https://github.com/RentoSaijo/nhlscraper"><span class="fa fa-github"></span></a></li>
+<li class="nav-item"><a class="external-link nav-link" href="https://www.linkedin.com/in/rentosaijo/"><span class="fa fa-linkedin"></span></a></li>
       </ul>
 </div>
 
@@ -53,18 +54,16 @@
   </div>
 </nav><div class="container template-home">
 <div class="row">
-  <main id="main" class="col-md-9"><div class="section level1">
-<div class="page-header">
-<img src="logo.png" class="logo" alt=""><h1 id="nhlscraper-">nhlscraper 
-<a class="anchor" aria-label="anchor" href="#nhlscraper-"></a>
-</h1>
-</div>
-<p><a href="https://CRAN.R-project.org/package=nhlscraper" class="external-link"><img src="https://www.r-pkg.org/badges/version/nhlscraper" alt="CRAN Status"></a> <a href="https://github.com/nhlscraper" class="external-link"><img src="https://img.shields.io/badge/dev%20ver-0.1.1.9000-red.svg" alt="Dev Version"></a> <img src="https://cranlogs.r-pkg.org/badges/grand-total/nhlscraper" alt="Downloads"></p>
-<div class="section level2">
-<h2 id="overview">Overview<a class="anchor" aria-label="anchor" href="#overview"></a>
+  <main id="main" class="col-md-9">
+<p><br></p>
+<div style="text-align:left">
+<span><a href="https://rentosaijo.github.io/nhlscraper/"> <img src="reference/figures/logo.png" width="100" alt="nhlscraper Logo"></a>
+<h2>
+<strong>nhlscraper</strong>
 </h2>
-<p>nhlscraper is a CRAN-approved R-package for scraping NHL data using the NHL API. It primarily wraps <a href="https://github.com/Zmalski/NHL-API-Reference" class="external-link">endpoints documented by Zach Maludzinski</a>. It covers data from high-level multi-season summaries to low-level play-by-play logs. Since the API endpoints got reworked in 2023, many of the earlier scrapers became deprecated; this one should be updated for the new endpoints.</p>
+</span>
 </div>
+<p>nhlscraper is a CRAN-approved R-package for scraping NHL data using the NHL API. It primarily wraps <a href="https://github.com/Zmalski/NHL-API-Reference" class="external-link">endpoints documented by Zach Maludzinski</a>. It covers data from high-level multi-season summaries to low-level play-by-play logs. Since the API endpoints got reworked in 2023, many of the earlier scrapers became deprecated; this one should be updated for the new endpoints.</p>
 <div class="section level2">
 <h2 id="prerequisite">Prerequisite<a class="anchor" aria-label="anchor" href="#prerequisite"></a>
 </h2>
@@ -198,7 +197,7 @@
 <span><span class="va">partner_odds_now_CA</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/get_partner_odds.html">get_partner_odds</a></span><span class="op">(</span>country<span class="op">=</span><span class="st">'CA'</span><span class="op">)</span></span></code></pre>
 </div>
 </div>
-</div>
+
   </main><aside class="col-md-3"><div class="links">
 <h2 data-toc-skip>Links</h2>
 <ul class="list-unstyled">
@@ -232,7 +231,13 @@
 </ul>
 </div>
 
-
+<div class="dev-status">
+<h2 data-toc-skip>Dev status</h2>
+<ul class="list-unstyled">
+<li><a href="https://CRAN.R-project.org/package=nhlscraper" class="external-link"><img src="https://www.r-pkg.org/badges/version/nhlscraper" alt="CRAN Status"></a></li>
+<li><a href="https://github.com/nhlscraper" class="external-link"><img src="https://img.shields.io/badge/dev%20ver-0.1.1.9000-red.svg" alt="Dev Version"></a></li>
+</ul>
+</div>
 
   </aside>
 </div>
