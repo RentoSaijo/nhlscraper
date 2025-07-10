@@ -2,7 +2,7 @@
 % Please edit documentation in R/Utility.R
 \name{espn_api}
 \alias{espn_api}
-\title{Internal: call ESPN API}
+\title{Call ESPN API}
 \usage{
 espn_api(path, query = list(), type)
 }
@@ -17,6 +17,6 @@ espn_api(path, query = list(), type)
 parsed JSON
 }
 \description{
-Internal: call ESPN API
+Call ESPN API
 }
 \keyword{internal}

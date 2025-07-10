@@ -2,7 +2,7 @@
 % Please edit documentation in R/Utility.R
 \name{nhl_api}
 \alias{nhl_api}
-\title{Internal: call NHL API}
+\title{Call NHL API}
 \usage{
 nhl_api(path, query = list(), type)
 }
@@ -17,6 +17,6 @@ nhl_api(path, query = list(), type)
 parsed JSON
 }
 \description{
-Internal: call NHL API
+Call NHL API
 }
 \keyword{internal}
