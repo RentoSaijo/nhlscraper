@@ -2,21 +2,16 @@
 % Please edit documentation in R/Draft.R
 \name{get_draft_picks}
 \alias{get_draft_picks}
-\title{Get draft picks by year (and round)}
+\title{Get all draft picks}
 \usage{
-get_draft_picks(year = get_season_now()$seasonId\%\%10000 - 1, round = "all")
-}
-\arguments{
-\item{year}{integer Year in YYYY}
-
-\item{round}{integer or string Round of 1:7 or 'all'}
+get_draft_picks()
 }
 \value{
 tibble with one row per pick
 }
 \description{
-Get draft picks by year (and round)
+Get all draft picks
 }
 \examples{
-draft_picks_2024 <- get_draft_picks(year=2024, round='all')
+all_draft_picks <- get_draft_picks()
 }
