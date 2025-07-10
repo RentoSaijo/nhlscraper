@@ -17,3 +17,18 @@ get_franchise_vs_franchise <- function(game_type=2) {
   )
   return(tibble::as_tibble(out$data))
 }
+
+#' Get all franchises' teams' totals
+#' 
+#' @return tibble with one row per team
+#' @examples
+#' all_franchise_team_totals <- get_franchise_team_totals()
+#' @export
+
+get_franchise_team_totals <- function() {
+  out <- nhl_api(
+    path='franchise-team-totals',
+    type=3
+  )
+  return(tibble::as_tibble(out$data))
+}
