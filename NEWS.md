@@ -1,6 +1,17 @@
 # nhlscraper 0.1.1.9000
 
-Adding information from NHL Records API and ESPN Public API...
+Adding information from NHL Records API and ESPN Public API.
+
+- Functions:
+    - `get_players()`
+    - `get_awards()`
+    - `get_award_winners()`
+    - `get_drafts()`
+    - `get_transactions()`
+    - `get_injuries()`
+    - `get_attendance()`
+    - `get_officials()`
+    - `get_venues()`
 
 # nhlscraper 0.1.1
 
