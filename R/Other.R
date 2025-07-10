@@ -195,3 +195,26 @@ get_attendance <- function() {
   )
   return(tibble::as_tibble(out$data))
 }
+
+#' Look up team or player by ESPN ID
+#' 
+#' @param year integer Year in YYYY (start of season)
+#' @param type string Type of 'team' or 'player'
+#' @param id integer ESPN ID
+#' @return list with various items
+#' @examples
+#' espn_20252026_FLA <- espn_lookup(2025, 'team', 26)
+#' @export
+
+espn_lookup <- function(
+    year=nhl_season_to_espn_season(get_season_now$seasonId), 
+    type='teams', 
+    id=1
+  ) {
+  out <- espn_api(
+    path=sprintf('seasons/%s/%ss/%s', year, type, id),
+    query=list(lang='en', region='us', limit=1000),
+    type=2
+  )
+  return(out)
+}
