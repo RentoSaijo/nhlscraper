@@ -22,7 +22,6 @@
  <input class="form-control" type="search" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Search for" data-search-index="../search.json"></form></li>
 <li class="nav-item"><a class="external-link nav-link" href="https://github.com/RentoSaijo/nhlscraper"><span class="fa fa-github"></span></a></li>
 <li class="nav-item"><a class="external-link nav-link" href="https://www.instagram.com/nhlscraper/"><span class="fa fa-instagram"></span></a></li>
-<li class="nav-item"><a class="external-link nav-link" href="https://www.linkedin.com/in/rentosaijo/"><span class="fa fa-linkedin"></span></a></li>
 <li class="nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-lightswitch" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true" aria-label="Light switch"><span class="fa fa-sun"></span></button>
   <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdown-lightswitch"><li><button class="dropdown-item" data-bs-theme-value="light"><span class="fa fa-sun"></span> Light</button></li>
@@ -93,12 +92,6 @@
         <dd>Get all teams</dd>
       </dl><dl><dt>
 
-          <code><a href="get_franchises.html">get_franchises()</a></code>
-
-        </dt>
-        <dd>Get all franchises</dd>
-      </dl><dl><dt>
-
           <code><a href="get_team_seasons.html">get_team_seasons()</a></code>
 
         </dt>
@@ -139,6 +132,18 @@
 
         </dt>
         <dd>Get team scoreboard as of now</dd>
+      </dl><dl><dt>
+
+          <code><a href="get_franchises.html">get_franchises()</a></code>
+
+        </dt>
+        <dd>Get all franchises</dd>
+      </dl><dl><dt>
+
+          <code><a href="get_franchise_season_by_season.html">get_franchise_season_by_season()</a></code>
+
+        </dt>
+        <dd>Get all franchises' season-by-season results</dd>
       </dl></div><div class="section level2">
       <h2 id="player-data">Player Data<a class="anchor" aria-label="anchor" href="#player-data"></a></h2>
 
@@ -383,7 +388,7 @@
           <code><a href="get_draft_picks.html">get_draft_picks()</a></code>
 
         </dt>
-        <dd>Get draft picks by year (and round)</dd>
+        <dd>Get all draft picks</dd>
       </dl><dl><dt>
 
           <code><a href="get_draft_rankings.html">get_draft_rankings()</a></code>
@@ -396,6 +401,52 @@
 
         </dt>
         <dd>Get draft tracker as of now</dd>
+      </dl></div><div class="section level2">
+      <h2 id="record-data">Record Data<a class="anchor" aria-label="anchor" href="#record-data"></a></h2>
+
+      <div class="section-desc"><p>Functions to retrieve data about records</p></div>
+
+
+    </div><div class="section level2">
+
+
+
+
+      <dl><dt>
+
+          <code><a href="get_franchise_team_totals.html">get_franchise_team_totals()</a></code>
+
+        </dt>
+        <dd>Get all franchises' teams' totals</dd>
+      </dl><dl><dt>
+
+          <code><a href="get_franchise_vs_franchise.html">get_franchise_vs_franchise()</a></code>
+
+        </dt>
+        <dd>Get all franchises' all-time records versus other franchises</dd>
+      </dl></div><div class="section level2">
+      <h2 id="betting-data">Betting Data<a class="anchor" aria-label="anchor" href="#betting-data"></a></h2>
+
+      <div class="section-desc"><p>Functions to retrieve data about betting</p></div>
+
+
+    </div><div class="section level2">
+
+
+
+
+      <dl><dt>
+
+          <code><a href="get_partner_odds.html">get_partner_odds()</a></code>
+
+        </dt>
+        <dd>Get NHL partner odds as of now</dd>
+      </dl><dl><dt>
+
+          <code><a href="get_futures.html">get_futures()</a></code>
+
+        </dt>
+        <dd>Get ESPN futures by season</dd>
       </dl></div><div class="section level2">
       <h2 id="other-data">Other Data<a class="anchor" aria-label="anchor" href="#other-data"></a></h2>
 
@@ -413,6 +464,12 @@
 
         </dt>
         <dd>Ping</dd>
+      </dl><dl><dt>
+
+          <code><a href="espn_lookup.html">espn_lookup()</a></code>
+
+        </dt>
+        <dd>Look up team or player by ESPN ID</dd>
       </dl><dl><dt>
 
           <code><a href="get_glossary.html">get_glossary()</a></code>
@@ -473,12 +530,6 @@
 
         </dt>
         <dd>Get TV schedule by date</dd>
-      </dl><dl><dt>
-
-          <code><a href="get_partner_odds.html">get_partner_odds()</a></code>
-
-        </dt>
-        <dd>Get partner odds as of now</dd>
       </dl><dl><dt>
 
           <code><a href="get_season_now.html">get_season_now()</a></code>

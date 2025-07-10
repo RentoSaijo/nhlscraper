@@ -8,6 +8,7 @@
 <url><loc>https://rentosaijo.github.io/nhlscraper/index.html</loc></url>
 <url><loc>https://rentosaijo.github.io/nhlscraper/news/index.html</loc></url>
 <url><loc>https://rentosaijo.github.io/nhlscraper/reference/espn_api.html</loc></url>
+<url><loc>https://rentosaijo.github.io/nhlscraper/reference/espn_lookup.html</loc></url>
 <url><loc>https://rentosaijo.github.io/nhlscraper/reference/get_attendance.html</loc></url>
 <url><loc>https://rentosaijo.github.io/nhlscraper/reference/get_award_winners.html</loc></url>
 <url><loc>https://rentosaijo.github.io/nhlscraper/reference/get_awards.html</loc></url>
@@ -17,7 +18,11 @@
 <url><loc>https://rentosaijo.github.io/nhlscraper/reference/get_draft_rankings.html</loc></url>
 <url><loc>https://rentosaijo.github.io/nhlscraper/reference/get_draft_tracker.html</loc></url>
 <url><loc>https://rentosaijo.github.io/nhlscraper/reference/get_drafts.html</loc></url>
+<url><loc>https://rentosaijo.github.io/nhlscraper/reference/get_franchise_season_by_season.html</loc></url>
+<url><loc>https://rentosaijo.github.io/nhlscraper/reference/get_franchise_team_totals.html</loc></url>
+<url><loc>https://rentosaijo.github.io/nhlscraper/reference/get_franchise_vs_franchise.html</loc></url>
 <url><loc>https://rentosaijo.github.io/nhlscraper/reference/get_franchises.html</loc></url>
+<url><loc>https://rentosaijo.github.io/nhlscraper/reference/get_futures.html</loc></url>
 <url><loc>https://rentosaijo.github.io/nhlscraper/reference/get_game_boxscore.html</loc></url>
 <url><loc>https://rentosaijo.github.io/nhlscraper/reference/get_game_landing.html</loc></url>
 <url><loc>https://rentosaijo.github.io/nhlscraper/reference/get_game_story.html</loc></url>
@@ -65,6 +70,7 @@
 <url><loc>https://rentosaijo.github.io/nhlscraper/reference/get_wsc_play_by_play.html</loc></url>
 <url><loc>https://rentosaijo.github.io/nhlscraper/reference/index.html</loc></url>
 <url><loc>https://rentosaijo.github.io/nhlscraper/reference/nhl_api.html</loc></url>
+<url><loc>https://rentosaijo.github.io/nhlscraper/reference/nhl_season_to_espn_season.html</loc></url>
 <url><loc>https://rentosaijo.github.io/nhlscraper/reference/ping.html</loc></url>
 </urlset>
 

@@ -22,7 +22,6 @@
  <input class="form-control" type="search" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Search for" data-search-index="../search.json"></form></li>
 <li class="nav-item"><a class="external-link nav-link" href="https://github.com/RentoSaijo/nhlscraper"><span class="fa fa-github"></span></a></li>
 <li class="nav-item"><a class="external-link nav-link" href="https://www.instagram.com/nhlscraper/"><span class="fa fa-instagram"></span></a></li>
-<li class="nav-item"><a class="external-link nav-link" href="https://www.linkedin.com/in/rentosaijo/"><span class="fa fa-linkedin"></span></a></li>
 <li class="nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-lightswitch" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true" aria-label="Light switch"><span class="fa fa-sun"></span></button>
   <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdown-lightswitch"><li><button class="dropdown-item" data-bs-theme-value="light"><span class="fa fa-sun"></span> Light</button></li>
@@ -44,15 +43,24 @@
 <h2 class="pkg-version" data-toc-text="0.1.1.9000" id="nhlscraper-0119000">nhlscraper 0.1.1.9000<a class="anchor" aria-label="anchor" href="#nhlscraper-0119000"></a></h2>
 <ul><li>Overhauled the documentation website.</li>
 <li>Added new functions (using NHL Records and ESPN APIs):
-<ul><li><code><a href="../reference/get_players.html">get_players()</a></code></li>
+<ul><li><code><a href="../reference/get_franchise_season_by_season.html">get_franchise_season_by_season()</a></code></li>
+<li><code><a href="../reference/get_players.html">get_players()</a></code></li>
 <li><code><a href="../reference/get_awards.html">get_awards()</a></code></li>
 <li><code><a href="../reference/get_award_winners.html">get_award_winners()</a></code></li>
 <li><code><a href="../reference/get_drafts.html">get_drafts()</a></code></li>
+<li><code>get_franchise_team_totals</code></li>
+<li><code>get_franchise_vs_franchise</code></li>
+<li><code>get_futures</code></li>
+<li><code>espn_lookup</code></li>
 <li><code><a href="../reference/get_transactions.html">get_transactions()</a></code></li>
 <li><code><a href="../reference/get_injuries.html">get_injuries()</a></code></li>
 <li><code><a href="../reference/get_attendance.html">get_attendance()</a></code></li>
 <li><code><a href="../reference/get_officials.html">get_officials()</a></code></li>
 <li><code><a href="../reference/get_venues.html">get_venues()</a></code></li>
+</ul></li>
+<li>Modified functions:
+<ul><li><code><a href="../reference/get_franchises.html">get_franchises()</a></code></li>
+<li><code><a href="../reference/get_draft_picks.html">get_draft_picks()</a></code></li>
 </ul></li>
 <li>Deprecated function (replaced):
 <ul><li><code>get_draft_information()</code></li>
