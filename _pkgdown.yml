@@ -113,6 +113,11 @@ reference:
   contents:
     - get_franchise_team_totals
     - get_franchise_vs_franchise
+- title: Betting Data
+  desc: >
+    Functions to retrieve data about betting
+  contents:
+    - get_partner_odds
 - title: Other Data
   desc: >
     Functions to retrieve any other data
@@ -128,5 +133,4 @@ reference:
     - get_countries
     - get_streams
     - get_tv_schedule
-    - get_partner_odds
     - get_season_now
