@@ -124,6 +124,7 @@ reference:
     Functions to retrieve any other data
   contents:
     - ping
+    - espn_lookup
     - get_glossary
     - get_configuration
     - get_transactions

@@ -10,6 +10,7 @@
   - `get_franchise_team_totals`
   - `get_franchise_vs_franchise`
   - `get_futures`
+  - `espn_lookup`
   - `get_transactions()`
   - `get_injuries()`
   - `get_attendance()`
