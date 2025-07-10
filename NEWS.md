@@ -1,8 +1,7 @@
 # nhlscraper 0.1.1.9000
 
-Adding information from NHL Records API and ESPN Public API.
-
-- Functions:
+- Overhauled the documentation website.
+- Added new functions (using NHL Records and ESPN APIs):
     - `get_players()`
     - `get_awards()`
     - `get_award_winners()`
@@ -15,18 +14,17 @@ Adding information from NHL Records API and ESPN Public API.
 
 # nhlscraper 0.1.1
 
-Fixed some documentation (mainly, examples) and tidied up various functions.
+- Fixed some documentation (mainly, examples).
+- Tidied up various functions.
 
 # nhlscraper 0.1.0
 
-I just submitted to CRAN; we'll see what happens!
+- Submitted to CRAN.
 
 # nhlscraper 0.0.0.9000
 
-I'm almost ready to release the first official version!
-
-- Added a `News.md` file to track changes to the package.
-- Functions:
+- Added `News.md` file to track changes to the package.
+- Added new functions:
     - `get_seasons()`
     - `get_schedule()`
     - `get_standings_information()`
