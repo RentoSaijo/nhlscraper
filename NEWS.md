@@ -2,17 +2,17 @@
 
 - Overhauled the documentation website.
 - Added new functions (using NHL Records and ESPN APIs):
-    - `get_players()`
-    - `get_awards()`
-    - `get_award_winners()`
-    - `get_drafts()`
-    - `get_transactions()`
-    - `get_injuries()`
-    - `get_attendance()`
-    - `get_officials()`
-    - `get_venues()`
+  - `get_players()`
+  - `get_awards()`
+  - `get_award_winners()`
+  - `get_drafts()`
+  - `get_transactions()`
+  - `get_injuries()`
+  - `get_attendance()`
+  - `get_officials()`
+  - `get_venues()`
 - Deprecated function (replaced):
-    - `get_draft_information()`
+  - `get_draft_information()`
 
 # nhlscraper 0.1.1
 
