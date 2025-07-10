@@ -8,7 +8,7 @@ navbar:
   title: 'nhlscraper'
   structure:
     left: [intro, reference, news]
-    right: [search, github, linkedin, lightswitch]
+    right: [search, github, instagram, linkedin, lightswitch]
   components:
     intro:
       icon: fa-home fa-lg
@@ -22,6 +22,9 @@ navbar:
     github:
       icon: fa-github
       href: https://github.com/RentoSaijo/nhlscraper
+    instagram:
+      icon: fa-instagram
+      href: https://www.instagram.com/nhlscraper/
     linkedin:
       icon: fa-linkedin
       href: https://www.linkedin.com/in/rentosaijo/
