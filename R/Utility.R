@@ -35,7 +35,7 @@ espn_api <- function(path, query=list(), type) {
   if (type==1) {
     base <- 'https://site.api.espn.com/apis/site/v2/sports/hockey/nhl/'
   }
-  else if (type==2){
+  else if (type==2) {
     base <- 'https://sports.core.api.espn.com/v2/sports/hockey/leagues/nhl/'
   }
   url <- paste0(base, path)
