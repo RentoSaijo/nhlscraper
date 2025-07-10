@@ -158,6 +158,7 @@ get_teams <- function() {
 
 #' Get all franchises
 #' 
+#' @importFrom magrittr %>%
 #' @return tibble with one row per franchise
 #' @examples
 #' all_franchises <- get_franchises()
@@ -166,8 +167,30 @@ get_teams <- function() {
 get_franchises <- function() {
   out <- nhl_api(
     path='franchise',
-    query=list(limit=-1),
-    type=2
+    type=3
+  )
+  out <- out$data %>% 
+    dplyr::select(-firstSeasonId, -mostRecentTeamId, -teamAbbrev)
+  out2 <- nhl_api(
+    path='franchise-detail',
+    type=3
+  )
+  merged <- out2$data %>% 
+    dplyr::left_join(out, by='id')
+  return(tibble::as_tibble(merged))
+}
+
+#' Get all franchises' season-by-season results
+#' 
+#' @return tibble with one row per franchise's season
+#' @examples
+#' all_franchise_sbs <- get_franchise_season_by_season()
+#' @export
+
+get_franchise_season_by_season <- function() {
+  out <- nhl_api(
+    path='franchise-season-results',
+    type=3
   )
   return(tibble::as_tibble(out$data))
 }
