@@ -111,6 +111,7 @@ reference:
   desc: >
     Functions to retrieve data about records
   contents:
+    - get_franchise_team_totals
     - get_franchise_vs_franchise
 - title: Other Data
   desc: >
