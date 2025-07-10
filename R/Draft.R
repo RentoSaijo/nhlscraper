@@ -19,24 +19,19 @@ get_draft_rankings <- function(
   return(tibble::as_tibble(out$rankings))
 }
 
-#' Get draft picks by year (and round)
+#' Get all draft picks
 #' 
-#' @param year integer Year in YYYY
-#' @param round integer or string Round of 1:7 or 'all'
 #' @return tibble with one row per pick
 #' @examples
-#' draft_picks_2024 <- get_draft_picks(year=2024, round='all')
+#' all_draft_picks <- get_draft_picks()
 #' @export
 
-get_draft_picks <- function(
-    year=get_season_now()$seasonId%%10000-1,
-    round='all'
-  ) {
+get_draft_picks <- function() {
   out <- nhl_api(
-    path=sprintf('draft/picks/%s/%s', year, round),
-    type=1
+    path='draft',
+    type=3
   )
-  return(tibble::as_tibble(out$picks))
+  return(tibble::as_tibble(out$data))
 }
 
 #' Get draft tracker as of now
