@@ -118,6 +118,7 @@ reference:
     Functions to retrieve data about betting
   contents:
     - get_partner_odds
+    - get_futures
 - title: Other Data
   desc: >
     Functions to retrieve any other data
