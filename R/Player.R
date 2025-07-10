@@ -27,7 +27,7 @@ get_player_game_log <- function(
 #' Get landing by player
 #' 
 #' @param player integer Player ID
-#' @return list with 36 items
+#' @return list with various items
 #' @examples
 #' Mikko_Rantanen_landing <- get_player_landing(player=8478420)
 #' @export

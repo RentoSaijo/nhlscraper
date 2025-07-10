@@ -10,7 +10,7 @@ get_player_landing(player = 8480039)
 \item{player}{integer Player ID}
 }
 \value{
-list with 36 items
+list with various items
 }
 \description{
 Get landing by player
