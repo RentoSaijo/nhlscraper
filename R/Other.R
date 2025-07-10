@@ -131,7 +131,7 @@ get_venues <- function() {
 #' @export
 
 get_transactions <- function(season=get_season_now()$seasonId) {
-  season <- season %/% 10000
+  season <- nhl_season_to_espn_season(season)
   page <- 1
   all_transactions <- list()
   repeat {
