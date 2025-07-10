@@ -5,25 +5,16 @@
 \title{Get NHL partner odds as of now}
 \usage{
 get_partner_odds(country = "US")
-
-get_partner_odds(country = "US")
 }
 \arguments{
 \item{country}{string 2-letter country code e.g. 'US'}
-
-\item{season}{integer Season in YYYYYYY}
 }
 \value{
-tibble with one row per game
-
 tibble with one row per game
 }
 \description{
 Get NHL partner odds as of now
-
-Get ESPN futures by season
 }
 \examples{
-partner_odds_now_CA <- get_partner_odds(country='CA')
 partner_odds_now_CA <- get_partner_odds(country='CA')
 }
