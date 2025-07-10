@@ -28,5 +28,5 @@ get_futures <- function(season=get_season_now$seasonId) {
     query=list(lang='en', region='us', limit=1000),
     type=2
   )
-  return(tibble::as_tibble(out$games))
+  return(tibble::as_tibble(out$items))
 }
