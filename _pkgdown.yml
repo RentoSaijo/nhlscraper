@@ -8,7 +8,7 @@ navbar:
   title: 'nhlscraper'
   structure:
     left: [intro, reference, news]
-    right: [search, github, instagram, linkedin, lightswitch]
+    right: [search, github, instagram, lightswitch]
   components:
     intro:
       icon: fa-home fa-lg
@@ -25,9 +25,6 @@ navbar:
     instagram:
       icon: fa-instagram
       href: https://www.instagram.com/nhlscraper/
-    linkedin:
-      icon: fa-linkedin
-      href: https://www.linkedin.com/in/rentosaijo/
       
 reference:
 - title: League Data
@@ -43,7 +40,6 @@ reference:
     Functions to retrieve data about teams
   contents:
     - get_teams
-    - get_franchises
     - get_team_seasons
     - get_team_statistics
     - get_team_roster
@@ -51,6 +47,8 @@ reference:
     - get_team_prospects
     - get_team_schedule
     - get_team_scoreboard
+    - get_franchises
+    - get_franchise_season_by_season
 - title: Player Data
   desc: >
     Functions to retrieve data about players
@@ -109,6 +107,11 @@ reference:
     - get_draft_picks
     - get_draft_rankings
     - get_draft_tracker
+- title: Record Data
+  desc: >
+    Functions to retrieve data about records
+  contents:
+    - get_franchise_vs_franchise
 - title: Other Data
   desc: >
     Functions to retrieve any other data
@@ -126,4 +129,3 @@ reference:
     - get_tv_schedule
     - get_partner_odds
     - get_season_now
-    

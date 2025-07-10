@@ -2,15 +2,20 @@
 
 - Overhauled the documentation website.
 - Added new functions (using NHL Records and ESPN APIs):
+  - `get_franchise_season_by_season()`
   - `get_players()`
   - `get_awards()`
   - `get_award_winners()`
   - `get_drafts()`
+  - `get_franchise_vs_franchise`
   - `get_transactions()`
   - `get_injuries()`
   - `get_attendance()`
   - `get_officials()`
   - `get_venues()`
+- Modified functions:
+  - `get_franchises()`
+  - `get_draft_picks()`
 - Deprecated function (replaced):
   - `get_draft_information()`
 
