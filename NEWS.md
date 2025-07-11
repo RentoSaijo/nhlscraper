@@ -1,5 +1,6 @@
 # nhlscraper 0.1.1.9000
 
+- Testing/getting ready for another CRAN submission (v0.2).
 - Overhauled the documentation website.
 - Added new functions (using NHL Records and ESPN APIs):
   - `get_franchise_season_by_season()`
