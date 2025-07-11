@@ -8,7 +8,6 @@
 <url><loc>https://rentosaijo.github.io/nhlscraper/index.html</loc></url>
 <url><loc>https://rentosaijo.github.io/nhlscraper/news/index.html</loc></url>
 <url><loc>https://rentosaijo.github.io/nhlscraper/reference/espn_api.html</loc></url>
-<url><loc>https://rentosaijo.github.io/nhlscraper/reference/espn_lookup.html</loc></url>
 <url><loc>https://rentosaijo.github.io/nhlscraper/reference/get_attendance.html</loc></url>
 <url><loc>https://rentosaijo.github.io/nhlscraper/reference/get_award_winners.html</loc></url>
 <url><loc>https://rentosaijo.github.io/nhlscraper/reference/get_awards.html</loc></url>
@@ -18,11 +17,26 @@
 <url><loc>https://rentosaijo.github.io/nhlscraper/reference/get_draft_rankings.html</loc></url>
 <url><loc>https://rentosaijo.github.io/nhlscraper/reference/get_draft_tracker.html</loc></url>
 <url><loc>https://rentosaijo.github.io/nhlscraper/reference/get_drafts.html</loc></url>
+<url><loc>https://rentosaijo.github.io/nhlscraper/reference/get_espn_athlete.html</loc></url>
+<url><loc>https://rentosaijo.github.io/nhlscraper/reference/get_espn_athletes.html</loc></url>
+<url><loc>https://rentosaijo.github.io/nhlscraper/reference/get_espn_coach.html</loc></url>
+<url><loc>https://rentosaijo.github.io/nhlscraper/reference/get_espn_coach_career.html</loc></url>
+<url><loc>https://rentosaijo.github.io/nhlscraper/reference/get_espn_coaches.html</loc></url>
+<url><loc>https://rentosaijo.github.io/nhlscraper/reference/get_espn_event.html</loc></url>
+<url><loc>https://rentosaijo.github.io/nhlscraper/reference/get_espn_event_odds.html</loc></url>
+<url><loc>https://rentosaijo.github.io/nhlscraper/reference/get_espn_event_officials.html</loc></url>
+<url><loc>https://rentosaijo.github.io/nhlscraper/reference/get_espn_event_play_by_play.html</loc></url>
+<url><loc>https://rentosaijo.github.io/nhlscraper/reference/get_espn_event_stars.html</loc></url>
+<url><loc>https://rentosaijo.github.io/nhlscraper/reference/get_espn_events.html</loc></url>
+<url><loc>https://rentosaijo.github.io/nhlscraper/reference/get_espn_futures.html</loc></url>
+<url><loc>https://rentosaijo.github.io/nhlscraper/reference/get_espn_injuries.html</loc></url>
+<url><loc>https://rentosaijo.github.io/nhlscraper/reference/get_espn_team.html</loc></url>
+<url><loc>https://rentosaijo.github.io/nhlscraper/reference/get_espn_teams.html</loc></url>
+<url><loc>https://rentosaijo.github.io/nhlscraper/reference/get_espn_transactions.html</loc></url>
 <url><loc>https://rentosaijo.github.io/nhlscraper/reference/get_franchise_season_by_season.html</loc></url>
 <url><loc>https://rentosaijo.github.io/nhlscraper/reference/get_franchise_team_totals.html</loc></url>
 <url><loc>https://rentosaijo.github.io/nhlscraper/reference/get_franchise_vs_franchise.html</loc></url>
 <url><loc>https://rentosaijo.github.io/nhlscraper/reference/get_franchises.html</loc></url>
-<url><loc>https://rentosaijo.github.io/nhlscraper/reference/get_futures.html</loc></url>
 <url><loc>https://rentosaijo.github.io/nhlscraper/reference/get_game_boxscore.html</loc></url>
 <url><loc>https://rentosaijo.github.io/nhlscraper/reference/get_game_landing.html</loc></url>
 <url><loc>https://rentosaijo.github.io/nhlscraper/reference/get_game_story.html</loc></url>
@@ -33,7 +47,6 @@
 <url><loc>https://rentosaijo.github.io/nhlscraper/reference/get_goalie_milestones.html</loc></url>
 <url><loc>https://rentosaijo.github.io/nhlscraper/reference/get_goalie_statistics.html</loc></url>
 <url><loc>https://rentosaijo.github.io/nhlscraper/reference/get_goalies.html</loc></url>
-<url><loc>https://rentosaijo.github.io/nhlscraper/reference/get_injuries.html</loc></url>
 <url><loc>https://rentosaijo.github.io/nhlscraper/reference/get_officials.html</loc></url>
 <url><loc>https://rentosaijo.github.io/nhlscraper/reference/get_partner_odds.html</loc></url>
 <url><loc>https://rentosaijo.github.io/nhlscraper/reference/get_player_game_log.html</loc></url>
@@ -64,13 +77,11 @@
 <url><loc>https://rentosaijo.github.io/nhlscraper/reference/get_team_seasons.html</loc></url>
 <url><loc>https://rentosaijo.github.io/nhlscraper/reference/get_team_statistics.html</loc></url>
 <url><loc>https://rentosaijo.github.io/nhlscraper/reference/get_teams.html</loc></url>
-<url><loc>https://rentosaijo.github.io/nhlscraper/reference/get_transactions.html</loc></url>
 <url><loc>https://rentosaijo.github.io/nhlscraper/reference/get_tv_schedule.html</loc></url>
 <url><loc>https://rentosaijo.github.io/nhlscraper/reference/get_venues.html</loc></url>
 <url><loc>https://rentosaijo.github.io/nhlscraper/reference/get_wsc_play_by_play.html</loc></url>
 <url><loc>https://rentosaijo.github.io/nhlscraper/reference/index.html</loc></url>
 <url><loc>https://rentosaijo.github.io/nhlscraper/reference/nhl_api.html</loc></url>
-<url><loc>https://rentosaijo.github.io/nhlscraper/reference/nhl_season_to_espn_season.html</loc></url>
 <url><loc>https://rentosaijo.github.io/nhlscraper/reference/ping.html</loc></url>
 </urlset>
 
