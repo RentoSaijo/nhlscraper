@@ -43,13 +43,3 @@ espn_api <- function(path, query=list(), type) {
   json <- httr::content(resp, as='text', encoding='UTF-8')
   return(jsonlite::fromJSON(json, simplifyVector=TRUE, flatten=TRUE))
 }
-
-#' Convert NHL season to ESPN season
-#' 
-#' @param season integer Season in YYYYYYYY
-#' @return integer Season in YYYY
-#' @keywords internal
-
-nhl_season_to_espn_season <- function(season=get_season_now$seasonId) {
-  return(season%/%10000)
-}
