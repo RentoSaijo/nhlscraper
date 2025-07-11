@@ -30,131 +30,161 @@ reference:
 - title: "NHL API"
   desc: >
     Functions that call the NHL APIs
+
+- subtitle: "League Data"
+  desc: >
+    Functions to retrieve data about the league
   contents:
-  - subtitle: "League Data"
-    desc: Functions to retrieve data about the league
-    contents:
-      - get_seasons
-      - get_schedule
-      - get_standings_information
-      - get_standings
-  - subtitle: "Team Data"
-    desc: Functions to retrieve data about teams
-    contents:
-      - get_teams
-      - get_team_seasons
-      - get_team_statistics
-      - get_team_roster
-      - get_team_roster_statistics
-      - get_team_prospects
-      - get_team_schedule
-      - get_team_scoreboard
-      - get_franchises
-      - get_franchise_season_by_season
-  - subtitle: "Player Data"
-    desc: Functions to retrieve data about players
-    contents:
-      - get_players
-      - get_player_game_log
-      - get_player_landing
-      - get_spotlight_players
-  - subtitle: "Skater Data"
-    desc: Functions to retrieve data about skaters
-    contents:
-      - get_skaters
-      - get_skater_statistics
-      - get_skater_leaders
-      - get_skater_milestones
-  - subtitle: "Goalie Data"
-    desc: Functions to retrieve data about goalies
-    contents:
-      - get_goalies
-      - get_goalie_statistics
-      - get_goalie_leaders
-      - get_goalie_milestones
-  - subtitle: "Game Data"
-    desc: Functions to retrieve data about games
-    contents:
-      - get_games
-      - get_scores
-      - get_scoreboards
-      - get_game_boxscore
-      - get_gc_play_by_play
-      - get_wsc_play_by_play
-      - get_shift_charts
-      - get_game_landing
-      - get_game_story
-  - subtitle: "Playoff Data"
-    desc: Functions to retrieve data about the playoffs
-    contents:
-      - get_playoff_bracket
-      - get_series_schedule
-      - get_series_carousel
-  - subtitle: "Award Data"
-    desc: Functions to retrieve data about awards
-    contents:
-      - get_awards
-      - get_award_winners
-  - subtitle: "Draft Data"
-    desc: Functions to retrieve data about drafts
-    contents:
-      - get_drafts
-      - get_draft_picks
-      - get_draft_rankings
-      - get_draft_tracker
-  - subtitle: "Record Data"
-    desc: Functions to retrieve data about records
-    contents:
-      - get_franchise_team_totals
-      - get_franchise_vs_franchise
-  - subtitle: "Other Data"
-    desc: Functions to retrieve any other data
-    contents:
-      - ping
-      - get_glossary
-      - get_configuration
-      - get_attendance
-      - get_officials
-      - get_venues
-      - get_countries
-      - get_streams
-      - get_tv_schedule
-      - get_season_now
-      - get_partner_odds
+    - get_seasons
+    - get_schedule
+    - get_standings_information
+    - get_standings
+
+- subtitle: "Team Data"
+  desc: >
+    Functions to retrieve data about teams
+  contents:
+    - get_teams
+    - get_team_seasons
+    - get_team_statistics
+    - get_team_roster
+    - get_team_roster_statistics
+    - get_team_prospects
+    - get_team_schedule
+    - get_team_scoreboard
+    - get_franchises
+    - get_franchise_season_by_season
+
+- subtitle: "Player Data"
+  desc: >
+    Functions to retrieve data about players
+  contents:
+    - get_players
+    - get_player_game_log
+    - get_player_landing
+    - get_spotlight_players
+
+- subtitle: "Skater Data"
+  desc: >
+    Functions to retrieve data about skaters
+  contents:
+    - get_skaters
+    - get_skater_statistics
+    - get_skater_leaders
+    - get_skater_milestones
+
+- subtitle: "Goalie Data"
+  desc: >
+    Functions to retrieve data about goalies
+  contents:
+    - get_goalies
+    - get_goalie_statistics
+    - get_goalie_leaders
+    - get_goalie_milestones
+
+- subtitle: "Game Data"
+  desc: >
+    Functions to retrieve data about games
+  contents:
+    - get_games
+    - get_scores
+    - get_scoreboards
+    - get_game_boxscore
+    - get_gc_play_by_play
+    - get_wsc_play_by_play
+    - get_shift_charts
+    - get_game_landing
+    - get_game_story
+
+- subtitle: "Playoff Data"
+  desc: >
+    Functions to retrieve data about the playoffs
+  contents:
+    - get_playoff_bracket
+    - get_series_schedule
+    - get_series_carousel
+
+- subtitle: "Award Data"
+  desc: >
+    Functions to retrieve data about awards
+  contents:
+    - get_awards
+    - get_award_winners
+
+- subtitle: "Draft Data"
+  desc: >
+    Functions to retrieve data about drafts
+  contents:
+    - get_drafts
+    - get_draft_picks
+    - get_draft_rankings
+    - get_draft_tracker
+
+- subtitle: "Record Data"
+  desc: >
+    Functions to retrieve data about records
+  contents:
+    - get_franchise_team_totals
+    - get_franchise_vs_franchise
+
+- subtitle: "Other Data"
+  desc: >
+    Functions to retrieve any other data
+  contents:
+    - ping
+    - get_glossary
+    - get_configuration
+    - get_attendance
+    - get_officials
+    - get_venues
+    - get_countries
+    - get_streams
+    - get_tv_schedule
+    - get_season_now
+    - get_partner_odds
 
 - title: "ESPN API"
   desc: >
     Functions that call ESPN APIs
+
+- subtitle: "Team Data"
+  desc: >
+    Functions to retrieve data about teams
   contents:
-  - subtitle: "Team Data"
-    desc: Functions to retrieve data about teams
-    contents:
-      - get_espn_teams
-      - get_espn_team
-  - subtitle: "Athlete Data"
-    desc: Functions to retrieve data about athletes (players)
-    contents:
-      - get_espn_athletes
-      - get_espn_athlete
-  - subtitle: "Coach Data"
-    desc: Functions to retrieve data about coaches
-    contents:
-      - get_espn_coaches
-      - get_espn_coach
-      - get_espn_coach_career
-  - subtitle: "Event Data"
-    desc: Functions to retrieve data about events (games)
-    contents:
-      - get_espn_events
-      - get_espn_event
-      - get_espn_event_play_by_play
-      - get_espn_event_stars
-      - get_espn_event_officials
-      - get_espn_event_odds
-  - subtitle: "Other Data"
-    desc: Functions to retrieve any other data
-    contents:
-      - get_espn_transactions
-      - get_espn_injuries
-      - get_espn_futures
+    - get_espn_teams
+    - get_espn_team
+
+- subtitle: "Athlete Data"
+  desc: >
+    Functions to retrieve data about athletes (players)
+  contents:
+    - get_espn_athletes
+    - get_espn_athlete
+
+- subtitle: "Coach Data"
+  desc: >
+    Functions to retrieve data about coaches
+  contents:
+    - get_espn_coaches
+    - get_espn_coach
+    - get_espn_coach_career
+
+- subtitle: "Event Data"
+  desc: >
+    Functions to retrieve data about events (games)
+  contents:
+    - get_espn_events
+    - get_espn_event
+    - get_espn_event_play_by_play
+    - get_espn_event_stars
+    - get_espn_event_officials
+    - get_espn_event_odds
+
+- subtitle: "Other Data"
+  desc: >
+    Functions to retrieve any other data
+  contents:
+    - get_espn_transactions
+    - get_espn_injuries
+    - get_espn_futures
       
