@@ -4,5 +4,4 @@
 .Ruserdata
 inst/doc
 docs
-Test.R
-Instagram.R
+R/Test.R
