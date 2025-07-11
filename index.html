@@ -71,7 +71,7 @@
 </h2>
 </span>
 </div>
-<p>nhlscraper is a CRAN-approved R-package for scraping NHL data using the NHL API. It primarily wraps <a href="https://github.com/Zmalski/NHL-API-Reference" class="external-link">endpoints documented by Zach Maludzinski</a>. It covers data from high-level multi-season summaries to low-level play-by-play logs. Since the API endpoints got reworked in 2023, many of the earlier scrapers became deprecated; this one should be updated for the new endpoints.</p>
+<p>nhlscraper is a CRAN-approved R-package for scraping NHL data using the NHL and ESPN APIs. It primarily wraps <a href="https://github.com/Zmalski/NHL-API-Reference" class="external-link">endpoints documented by Zachary Maludzinski</a>, <a href="https://gitlab.com/dword4/nhlapi/" class="external-link">Drew Hynes</a>, and <a href="https://github.com/pseudo-r/Public-ESPN-API" class="external-link">Joseph Wilson</a>; it also includes newly discovered endpoints by myself. It covers data from high-level multi-season summaries and award winners to low-level play-by-play logs and sports books’ odds. Since the NHL API endpoints got reworked in 2023, many of the earlier scrapers became deprecated; this one should be updated for the new endpoints.</p>
 <div class="section level2">
 <h2 id="prerequisite">Prerequisite<a class="anchor" aria-label="anchor" href="#prerequisite"></a>
 </h2>
@@ -89,121 +89,9 @@
 <span><span class="fu">devtools</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">'RentoSaijo/nhlscraper'</span><span class="op">)</span></span></code></pre>
 </div>
 <div class="section level2">
-<h2 id="example">Example<a class="anchor" aria-label="anchor" href="#example"></a>
+<h2 id="setup-example-coming-soon">Setup (example coming soon…)<a class="anchor" aria-label="anchor" href="#setup-example-coming-soon"></a>
 </h2>
-<p>Below are basic examples that show you how to use some of the functions.</p>
-<div class="section level3">
-<h3 id="setup">Setup<a class="anchor" aria-label="anchor" href="#setup"></a>
-</h3>
 <pre><code><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/RentoSaijo/nhlscraper" class="external-link">nhlscraper</a></span><span class="op">)</span></span></code></pre>
-</div>
-<div class="section level3">
-<h3 id="league-data">League Data<a class="anchor" aria-label="anchor" href="#league-data"></a>
-</h3>
-<pre><code><span><span class="va">schedule_2025_01_02</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/get_schedule.html">get_schedule</a></span><span class="op">(</span>date<span class="op">=</span><span class="st">'2025-01-02'</span><span class="op">)</span></span>
-<span><span class="va">standings_2025_01_02</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/get_standings.html">get_standings</a></span><span class="op">(</span>date<span class="op">=</span><span class="st">'2025-01-02'</span><span class="op">)</span></span></code></pre>
-</div>
-<div class="section level3">
-<h3 id="team-data">Team Data<a class="anchor" aria-label="anchor" href="#team-data"></a>
-</h3>
-<pre><code><span><span class="va">COL_seasons</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/get_team_seasons.html">get_team_seasons</a></span><span class="op">(</span>team<span class="op">=</span><span class="st">'COL'</span><span class="op">)</span></span>
-<span><span class="va">playoff_team_stf_20242025</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/get_team_statistics.html">get_team_statistics</a></span><span class="op">(</span></span>
-<span>  season<span class="op">=</span><span class="fl">20242025</span>,</span>
-<span>  report<span class="op">=</span><span class="st">'scoretrailfirst'</span>,</span>
-<span>  game_types<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">3</span><span class="op">)</span></span>
-<span><span class="op">)</span></span>
-<span><span class="va">COL_defensemen_20242025</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/get_team_roster.html">get_team_roster</a></span><span class="op">(</span></span>
-<span>  team<span class="op">=</span><span class="st">'COL'</span>,</span>
-<span>  season<span class="op">=</span><span class="fl">20242025</span>,</span>
-<span>  player_type<span class="op">=</span><span class="st">'defensemen'</span></span>
-<span><span class="op">)</span></span>
-<span><span class="va">regular_COL_goalies_statistics_20242025</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/get_team_roster_statistics.html">get_team_roster_statistics</a></span><span class="op">(</span></span>
-<span>  team<span class="op">=</span><span class="st">'COL'</span>,</span>
-<span>  season<span class="op">=</span><span class="fl">20242025</span>,</span>
-<span>  game_type<span class="op">=</span><span class="fl">2</span>,</span>
-<span>  player_type<span class="op">=</span><span class="st">'goalies'</span></span>
-<span><span class="op">)</span></span>
-<span><span class="va">COL_defensemen_prospects</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/get_team_prospects.html">get_team_prospects</a></span><span class="op">(</span></span>
-<span>  team<span class="op">=</span><span class="st">'COL'</span>,</span>
-<span>  player_type<span class="op">=</span><span class="st">'defensemen'</span></span>
-<span><span class="op">)</span></span>
-<span><span class="va">COL_schedule_20242025</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/get_team_schedule.html">get_team_schedule</a></span><span class="op">(</span>team<span class="op">=</span><span class="st">'COL'</span>, season<span class="op">=</span><span class="fl">20242025</span><span class="op">)</span></span></code></pre>
-</div>
-<div class="section level3">
-<h3 id="player-data">Player Data<a class="anchor" aria-label="anchor" href="#player-data"></a>
-</h3>
-<pre><code><span><span class="va">playoff_Mikko_Rantanen_gl_20242025</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/get_player_game_log.html">get_player_game_log</a></span><span class="op">(</span></span>
-<span>  player<span class="op">=</span><span class="fl">8478420</span>,</span>
-<span>  season<span class="op">=</span><span class="fl">20242025</span>,</span>
-<span>  game_type<span class="op">=</span><span class="fl">3</span></span>
-<span><span class="op">)</span></span>
-<span><span class="va">Mikko_Rantanen_landing</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/get_player_landing.html">get_player_landing</a></span><span class="op">(</span>player<span class="op">=</span><span class="fl">8478420</span><span class="op">)</span></span>
-<span><span class="va">spotlight_players_now</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/get_spotlight_players.html">get_spotlight_players</a></span><span class="op">(</span><span class="op">)</span></span></code></pre>
-</div>
-<div class="section level3">
-<h3 id="skater-data">Skater Data<a class="anchor" aria-label="anchor" href="#skater-data"></a>
-</h3>
-<pre><code><span><span class="va">skaters_2000s</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/get_skaters.html">get_skaters</a></span><span class="op">(</span>start_season<span class="op">=</span><span class="fl">20002001</span>, end_season<span class="op">=</span><span class="fl">20242025</span><span class="op">)</span></span>
-<span><span class="va">regular_skater_shootout_20242025</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/get_skater_statistics.html">get_skater_statistics</a></span><span class="op">(</span></span>
-<span>  season<span class="op">=</span><span class="fl">20242025</span>,</span>
-<span>  report<span class="op">=</span><span class="st">'shootout'</span>,</span>
-<span>  game_types<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2</span><span class="op">)</span></span>
-<span><span class="op">)</span></span>
-<span><span class="va">playoff_toi_leaders_20242025</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/get_skater_leaders.html">get_skater_leaders</a></span><span class="op">(</span></span>
-<span>  season<span class="op">=</span><span class="fl">20242025</span>,</span>
-<span>  game_type<span class="op">=</span><span class="fl">3</span>,</span>
-<span>  category<span class="op">=</span><span class="st">'toi'</span></span>
-<span><span class="op">)</span></span>
-<span><span class="va">skater_milestones</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/get_skater_milestones.html">get_skater_milestones</a></span><span class="op">(</span><span class="op">)</span></span></code></pre>
-</div>
-<div class="section level3">
-<h3 id="goalie-data">Goalie Data<a class="anchor" aria-label="anchor" href="#goalie-data"></a>
-</h3>
-<pre><code><span><span class="va">goalies_2000s</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/get_goalies.html">get_goalies</a></span><span class="op">(</span>start_season<span class="op">=</span><span class="fl">20002001</span>, end_season<span class="op">=</span><span class="fl">20242025</span><span class="op">)</span></span>
-<span><span class="va">playoff_goalie_svr_20242025</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/get_goalie_statistics.html">get_goalie_statistics</a></span><span class="op">(</span></span>
-<span>  season<span class="op">=</span><span class="fl">20242025</span>,</span>
-<span>  report<span class="op">=</span><span class="st">'startedVsRelieved'</span>,</span>
-<span>  game_types<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">3</span><span class="op">)</span></span>
-<span><span class="op">)</span></span>
-<span><span class="va">playoff_savePctg_leaders_20242025</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/get_goalie_leaders.html">get_goalie_leaders</a></span><span class="op">(</span></span>
-<span>  season<span class="op">=</span><span class="fl">20242025</span>,</span>
-<span>  game_type<span class="op">=</span><span class="fl">3</span>,</span>
-<span>  category<span class="op">=</span><span class="st">'savePctg'</span></span>
-<span><span class="op">)</span></span>
-<span><span class="va">goalie_milestones</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/get_goalie_milestones.html">get_goalie_milestones</a></span><span class="op">(</span><span class="op">)</span></span></code></pre>
-</div>
-<div class="section level3">
-<h3 id="game-data">Game Data<a class="anchor" aria-label="anchor" href="#game-data"></a>
-</h3>
-<pre><code><span><span class="va">scores_2025_01_02</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/get_scores.html">get_scores</a></span><span class="op">(</span>date<span class="op">=</span><span class="st">'2025-01-02'</span><span class="op">)</span></span>
-<span><span class="va">boxscore_2024030411_FLA_defensemen</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/get_game_boxscore.html">get_game_boxscore</a></span><span class="op">(</span></span>
-<span>  game<span class="op">=</span><span class="fl">2024030411</span>,</span>
-<span>  team<span class="op">=</span><span class="st">'away'</span>,</span>
-<span>  player_type<span class="op">=</span><span class="st">'defense'</span></span>
-<span><span class="op">)</span></span>
-<span><span class="va">gc_pbp_2024030411</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/get_gc_play_by_play.html">get_gc_play_by_play</a></span><span class="op">(</span>game<span class="op">=</span><span class="fl">2024030411</span><span class="op">)</span></span>
-<span><span class="va">shift_charts_2024030411</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/get_shift_charts.html">get_shift_charts</a></span><span class="op">(</span>game<span class="op">=</span><span class="fl">2024030411</span><span class="op">)</span></span>
-<span><span class="va">game_story_2024030411</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/get_game_story.html">get_game_story</a></span><span class="op">(</span>game<span class="op">=</span><span class="fl">2024030411</span><span class="op">)</span></span></code></pre>
-</div>
-<div class="section level3">
-<h3 id="playoff-data">Playoff Data<a class="anchor" aria-label="anchor" href="#playoff-data"></a>
-</h3>
-<pre><code><span><span class="va">bracket_2025</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/get_playoff_bracket.html">get_playoff_bracket</a></span><span class="op">(</span>year<span class="op">=</span><span class="fl">2025</span><span class="op">)</span></span>
-<span><span class="va">COL_DAL_schedule_20242025</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/get_series_schedule.html">get_series_schedule</a></span><span class="op">(</span>season<span class="op">=</span><span class="fl">20242025</span>, series<span class="op">=</span><span class="st">'f'</span><span class="op">)</span></span>
-<span><span class="va">carousel_20242025_2</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/get_series_carousel.html">get_series_carousel</a></span><span class="op">(</span>season<span class="op">=</span><span class="fl">20242025</span>, round<span class="op">=</span><span class="fl">2</span><span class="op">)</span></span></code></pre>
-</div>
-<div class="section level3">
-<h3 id="draft-data">Draft Data<a class="anchor" aria-label="anchor" href="#draft-data"></a>
-</h3>
-<pre><code><span><span class="va">draft_picks_2024</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/get_draft_picks.html">get_draft_picks</a></span><span class="op">(</span>year<span class="op">=</span><span class="fl">2024</span>, round<span class="op">=</span><span class="st">'all'</span><span class="op">)</span></span>
-<span><span class="va">draft_rankings_2025</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/get_draft_rankings.html">get_draft_rankings</a></span><span class="op">(</span>year<span class="op">=</span><span class="fl">2025</span><span class="op">)</span></span></code></pre>
-</div>
-<div class="section level3">
-<h3 id="other-data">Other Data<a class="anchor" aria-label="anchor" href="#other-data"></a>
-</h3>
-<pre><code><span><span class="va">tv_schedule_2025_01_02</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/get_tv_schedule.html">get_tv_schedule</a></span><span class="op">(</span>date<span class="op">=</span><span class="st">'2025-01-02'</span><span class="op">)</span></span>
-<span><span class="va">partner_odds_now_CA</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/get_partner_odds.html">get_partner_odds</a></span><span class="op">(</span>country<span class="op">=</span><span class="st">'CA'</span><span class="op">)</span></span></code></pre>
-</div>
 </div>
 
   </main><aside class="col-md-3"><div class="links">
