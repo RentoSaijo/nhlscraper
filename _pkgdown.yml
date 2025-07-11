@@ -113,22 +113,13 @@ reference:
   contents:
     - get_franchise_team_totals
     - get_franchise_vs_franchise
-- title: Betting Data
-  desc: >
-    Functions to retrieve data about betting
-  contents:
-    - get_partner_odds
-    - get_futures
 - title: Other Data
   desc: >
     Functions to retrieve any other data
   contents:
     - ping
-    - espn_lookup
     - get_glossary
     - get_configuration
-    - get_transactions
-    - get_injuries
     - get_attendance
     - get_officials
     - get_venues
@@ -136,3 +127,40 @@ reference:
     - get_streams
     - get_tv_schedule
     - get_season_now
+    - get_partner_odds
+- title: ESPN Team Data
+  desc: >
+    Functions to retrieve ESPN data about teams
+  contents:
+    - get_espn_teams
+    - get_espn_team
+- title: ESPN Athlete Data
+  desc: >
+    Functions to retrieve ESPN data about athletes (players)
+  contents:
+    - get_espn_athletes
+    - get_espn_athlete
+- title: ESPN Coach Data
+  desc: >
+    Functions to retrieve ESPN data about coaches
+  contents:
+    - get_espn_coaches
+    - get_espn_coach
+    - get_espn_coach_career
+- title: ESPN Event Data
+  desc: >
+    Functions to retrieve ESPN data about events (games)
+  contents:
+    - get_espn_events
+    - get_espn_event
+    - get_espn_event_play_by_play
+    - get_espn_event_stars
+    - get_espn_event_officials
+    - get_espn_event_odds
+- title: ESPN Other Data
+  desc: >
+    Functions to retrieve any other ESPN data
+  contents:
+    - get_espn_transactions
+    - get_espn_injuries
+    - get_espn_futures

@@ -9,13 +9,25 @@
   - `get_drafts()`
   - `get_franchise_team_totals`
   - `get_franchise_vs_franchise`
-  - `get_futures`
-  - `espn_lookup`
-  - `get_transactions()`
-  - `get_injuries()`
   - `get_attendance()`
   - `get_officials()`
   - `get_venues()`
+  - `get_espn_teams()`
+  - `get_espn_team()`
+  - `get_espn_athletes()`
+  - `get_espn_athlete()`
+  - `get_espn_coaches()`
+  - `get_espn_coach()`
+  - `get_espn_coach_career()`
+  - `get_espn_events()`
+  - `get_espn_event()`
+  - `get_espn_event_play_by_play()`
+  - `get_espn_event_stars()`
+  - `get_espn_event_officials()`
+  - `get_espn_event_odds()`
+  - `get_espn_transactions()`
+  - `get_espn_injuries()`
+  - `get_espn_futures()`
 - Modified functions:
   - `get_franchises()`
   - `get_draft_picks()`

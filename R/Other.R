@@ -152,29 +152,6 @@ get_attendance <- function() {
   return(tibble::as_tibble(out$data))
 }
 
-#' Look up team, player, coach, or event (game) by ESPN ID
-#' 
-#' @param year integer Year in YYYY (start of season)
-#' @param type string Type of 'teams', 'players', 'coaches', or 'events'
-#' @param id integer ESPN ID
-#' @return list with various items
-#' @examples
-#' espn_20252026_FLA <- espn_lookup(2025, 'teams', 26)
-#' @export
-
-espn_lookup <- function(
-    year=nhl_season_to_espn_season(get_season_now$seasonId), 
-    type='teams', 
-    id=1
-  ) {
-  out <- espn_api(
-    path=sprintf('seasons/%s/%s/%s', year, type, id),
-    query=list(lang='en', region='us', limit=1000),
-    type=2
-  )
-  return(out)
-}
-
 #' Get partner odds as of now
 #' 
 #' @param country string 2-letter country code e.g. 'US'
