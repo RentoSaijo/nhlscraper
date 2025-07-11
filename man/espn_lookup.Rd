@@ -2,7 +2,7 @@
 % Please edit documentation in R/Other.R
 \name{espn_lookup}
 \alias{espn_lookup}
-\title{Look up team or player by ESPN ID}
+\title{Look up team, player, coach, or event (game) by ESPN ID}
 \usage{
 espn_lookup(
   year = nhl_season_to_espn_season(get_season_now$seasonId),
@@ -13,7 +13,7 @@ espn_lookup(
 \arguments{
 \item{year}{integer Year in YYYY (start of season)}
 
-\item{type}{string Type of 'team' or 'player'}
+\item{type}{string Type of 'teams', 'players', 'coaches', or 'events'}
 
 \item{id}{integer ESPN ID}
 }
@@ -21,8 +21,8 @@ espn_lookup(
 list with various items
 }
 \description{
-Look up team or player by ESPN ID
+Look up team, player, coach, or event (game) by ESPN ID
 }
 \examples{
-espn_20252026_FLA <- espn_lookup(2025, 'team', 26)
+espn_20252026_FLA <- espn_lookup(2025, 'teams', 26)
 }

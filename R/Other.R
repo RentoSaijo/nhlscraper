@@ -122,50 +122,6 @@ get_venues <- function() {
   return(tibble::as_tibble(out$data))
 }
 
-#' Get transactions by season
-#' 
-#' @param season integer Season in YYYYYYYY
-#' @return tibble with one row per transaction
-#' @examples
-#' transactions_20242025 <- get_transactions(20242025)
-#' @export
-
-get_transactions <- function(season=get_season_now()$seasonId) {
-  season <- nhl_season_to_espn_season(season)
-  page <- 1
-  all_transactions <- list()
-  repeat {
-    out <- espn_api(
-      path='transactions',
-      query=list(limit=1000, season=season, page=page),
-      type=1
-    )
-    df <- tibble::as_tibble(out$transactions)
-    all_transactions[[page+1]] <- df
-    if (nrow(df) < 1000) {
-      break
-    }
-    page <- page + 1
-  }
-  return(dplyr::bind_rows(all_transactions))
-}
-
-#' Get injury reports as of now
-#' 
-#' @return nested tibble with one row per team and one row per player
-#' @examples
-#' injuries_now <- get_injuries()
-#' @export
-
-get_injuries <- function() {
-  out <- espn_api(
-    path='injuries',
-    query=list(limit=1000),
-    type=1
-  )
-  return(tibble::as_tibble(out$injuries))
-}
-
 #' Get all officials
 #' 
 #' @return tibble with one row per official
@@ -196,14 +152,14 @@ get_attendance <- function() {
   return(tibble::as_tibble(out$data))
 }
 
-#' Look up team or player by ESPN ID
+#' Look up team, player, coach, or event (game) by ESPN ID
 #' 
 #' @param year integer Year in YYYY (start of season)
-#' @param type string Type of 'team' or 'player'
+#' @param type string Type of 'teams', 'players', 'coaches', or 'events'
 #' @param id integer ESPN ID
 #' @return list with various items
 #' @examples
-#' espn_20252026_FLA <- espn_lookup(2025, 'team', 26)
+#' espn_20252026_FLA <- espn_lookup(2025, 'teams', 26)
 #' @export
 
 espn_lookup <- function(
@@ -212,9 +168,25 @@ espn_lookup <- function(
     id=1
   ) {
   out <- espn_api(
-    path=sprintf('seasons/%s/%ss/%s', year, type, id),
+    path=sprintf('seasons/%s/%s/%s', year, type, id),
     query=list(lang='en', region='us', limit=1000),
     type=2
   )
   return(out)
+}
+
+#' Get partner odds as of now
+#' 
+#' @param country string 2-letter country code e.g. 'US'
+#' @return tibble with one row per game
+#' @examples
+#' partner_odds_now_CA <- get_partner_odds(country='CA')
+#' @export
+
+get_partner_odds <- function(country='US') {
+  out <- nhl_api(
+    path=sprintf('partner-game/%s/now', country),
+    type=1
+  )
+  return(tibble::as_tibble(out$games))
 }
