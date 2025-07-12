@@ -22,3 +22,6 @@ Install the development version from [GitHub](https://github.com/) with:
 install.packages('devtools')
 devtools::install_github('RentoSaijo/nhlscraper')
 ```
+
+### Acknowledgement
+Most, if not, all of these endpoints are unofficially documented (i.e. hidden); therefore, it is all of our responsibility to hit these endpoints with care. For example, endpoints that contain historical data and other mostly static data should only be hit once and stored in a MySQL database for further query. We do not know the exact rate limits for these APIs; don't ruin the fun for all of us!
