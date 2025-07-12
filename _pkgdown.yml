@@ -7,7 +7,7 @@ template:
 navbar:
   title: 'nhlscraper'
   structure:
-    left: [intro, reference, news]
+    left: [intro, reference, example, news]
     right: [search, github, instagram, lightswitch]
   components:
     intro:
@@ -16,6 +16,9 @@ navbar:
     reference:
       text: 'Functions'
       href: reference/index.html
+    example:
+      text: 'Example'
+      href: vignettes/nhlscraper.Rmd
     news:
       text: 'News'
       href: news/index.html

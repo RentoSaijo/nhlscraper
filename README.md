@@ -130,5 +130,5 @@ ggplot(attendance_pg_long, aes(x=seasonStart, y=attendance, color=type)) +
     legend.text=element_text(color='white', face='bold', size=12)
   )
 ```
-![Example1](Example1.png)
-![Example2](Example2.png)
+![Example1](vignettes/Example1.png)
+![Example2](vignettes/Example2.png)
