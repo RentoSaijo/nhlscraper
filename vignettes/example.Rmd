@@ -19,7 +19,7 @@ install.packages('scales')
 ```
 
 This example explores how one may create `ggplot2` line graphs for total attendance and attendance per game across all seasons. Please contact me with your cool examples, and I can add them here too!
-```{r example, echo=TRUE, results='hide'}
+```{r example, echo=TRUE, results='hide', message=FALSE, warning=FALSE, fig.show="hide"}
 # Load libraries.
 library(nhlscraper)
 library(tidyverse)
