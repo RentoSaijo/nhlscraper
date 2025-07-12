@@ -20,6 +20,7 @@ This example explores how one may create `ggplot2` line graphs for total attenda
 # Load libraries.
 library(nhlscraper)
 library(tidyverse)
+library(scales)
 
 # Set colors.
 charcoal <- '#202A35'
