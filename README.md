@@ -13,19 +13,19 @@ nhlscraper is a CRAN-approved R-package for scraping NHL data using the NHL and 
 
 ### Installation
 Install the official version from [CRAN](https://cran.r-project.org) with:
-```
+```r
 install.packages('nhlscraper')
 ```
 
 Install the development version from [GitHub](https://github.com/) with:
-```
+```r
 install.packages('devtools')
 devtools::install_github('RentoSaijo/nhlscraper')
 ```
 
 ### Example
 Create `ggplot2` line graphs for total attendance and attendance per game across all the seasons:
-```
+```r
 # Load libraries.
 library(nhlscraper)
 library(tidyverse)
@@ -72,7 +72,7 @@ attendance_pg_long <- all_attendance %>%
     values_to='attendance'
   )
 
-# Plot 1
+# Total Attendance
 ggplot(all_attendance_long, aes(x=seasonStart, y=attendance, color=type)) +
   geom_line(linewidth=3) +
   scale_color_manual(values=c(Regular=n_cyan, Playoffs=m_purple)) +
@@ -101,7 +101,7 @@ ggplot(all_attendance_long, aes(x=seasonStart, y=attendance, color=type)) +
     legend.text=element_text(color='white', face='bold', size=12)
   )
 
-# Plot 2
+# Attendance per Game
 ggplot(attendance_pg_long, aes(x=seasonStart, y=attendance, color=type)) +
   geom_line(linewidth=3) +
   scale_color_manual(values=c(Regular=n_cyan, Playoffs=m_purple)) +
