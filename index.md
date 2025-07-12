@@ -134,5 +134,11 @@ ggplot(attendance_pg_long, aes(x=seasonStart, y=attendance, color=type)) +
     legend.text=element_text(color='white', face='bold', size=12)
   )
 ```
-![Example1](Example1.png)
-![Example2](Example2.png)
+<div style="text-align:left">
+<span><a href="https://rentosaijo.github.io/nhlscraper/">
+<img src="Example1.png" width=1920 alt="Example1"/> </a><h2><strong>example1</strong></h2>
+</div>
+<div style="text-align:left">
+<span><a href="https://rentosaijo.github.io/nhlscraper/">
+<img src="Example2.png" width=1920 alt="Example2"/> </a><h2><strong>example1</strong></h2>
+</div>
