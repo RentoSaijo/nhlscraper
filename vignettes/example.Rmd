@@ -2,7 +2,7 @@
 title: 'Example'
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{example}
+  %\VignetteIndexEntry{Example}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -12,6 +12,7 @@ knitr::opts_chunk$set(
   collapse = TRUE,
   comment = '#>'
 )
+install.packages('tidyverse')
 ```
 
 This example explores how one may create `ggplot2` line graphs for total attendance and attendance per game across all seasons. Please contact me with your cool examples, and I can add them here too!
