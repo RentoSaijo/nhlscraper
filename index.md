@@ -136,9 +136,9 @@ ggplot(attendance_pg_long, aes(x=seasonStart, y=attendance, color=type)) +
 ```
 <div style="text-align:left">
 <span><a href="https://rentosaijo.github.io/nhlscraper/">
-<img src="Example1.png" width=1920 alt="Example1"/> </a><h2><strong>example1</strong></h2>
+<img src="Example1.png" width=1920 alt="Example1"/>
 </div>
 <div style="text-align:left">
 <span><a href="https://rentosaijo.github.io/nhlscraper/">
-<img src="Example2.png" width=1920 alt="Example2"/> </a><h2><strong>example1</strong></h2>
+<img src="Example2.png" width=1920 alt="Example2"/>
 </div>
