@@ -8,8 +8,8 @@
   - `get_awards()`
   - `get_award_winners()`
   - `get_drafts()`
-  - `get_franchise_team_totals`
-  - `get_franchise_vs_franchise`
+  - `get_franchise_team_totals()`
+  - `get_franchise_vs_franchise()`
   - `get_attendance()`
   - `get_officials()`
   - `get_venues()`
