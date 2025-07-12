@@ -62,7 +62,7 @@
   </div>
 </nav><div class="container template-home">
 <div class="row">
-  <main id="main" class="col-md-9">
+  <main id="main" class="col-md-9"><p><a href="https://CRAN.R-project.org/package=nhlscraper" class="external-link"><img src="https://www.r-pkg.org/badges/version/nhlscraper" alt="CRAN Status"></a> <a href="https://github.com/nhlscraper" class="external-link"><img src="https://img.shields.io/badge/dev%20ver-0.1.1.9000-red.svg" alt="Dev Version"></a> [<img src="https://cranlogs.r-pkg.org/badges/grand-total/nhlscraper" alt="Downloads"></p>
 <p><br></p>
 <div style="text-align:left">
 <span><a href="https://rentosaijo.github.io/nhlscraper/"> <img src="reference/figures/logo.png" width="100" alt="nhlscraper Logo"></a>
@@ -87,11 +87,114 @@
 <p>Install the development version from <a href="https://github.com/" class="external-link">GitHub</a> with:</p>
 <pre><code><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">'devtools'</span><span class="op">)</span></span>
 <span><span class="fu">devtools</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">'RentoSaijo/nhlscraper'</span><span class="op">)</span></span></code></pre>
+<div class="section level3">
+<h3 id="example">Example<a class="anchor" aria-label="anchor" href="#example"></a>
+</h3>
+<p>Create <code>ggplot2</code> line graphs for total attendance and attendance per game across all the seasons:</p>
+<pre><code><span><span class="co"># Load libraries.</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/RentoSaijo/nhlscraper" class="external-link">nhlscraper</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyverse.tidyverse.org" class="external-link">tidyverse</a></span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Set colors.</span></span>
+<span><span class="va">charcoal</span> <span class="op">&lt;-</span> <span class="st">'#202A35'</span></span>
+<span><span class="va">n_cyan</span> <span class="op">&lt;-</span> <span class="st">'#1EE6FF'</span></span>
+<span><span class="va">m_purple</span> <span class="op">&lt;-</span> <span class="st">'#D443FF'</span></span>
+<span></span>
+<span><span class="co"># Clean data.</span></span>
+<span><span class="va">all_seasons</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/get_seasons.html">get_seasons</a></span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
+<span>  <span class="fu">mutate</span><span class="op">(</span>seasonId<span class="op">=</span><span class="va">id</span><span class="op">)</span></span>
+<span><span class="va">all_attendance</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/get_attendance.html">get_attendance</a></span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
+<span>  <span class="fu">mutate</span><span class="op">(</span>seasonStart<span class="op">=</span><span class="va">seasonId</span><span class="op"><a href="https://rdrr.io/r/base/Arithmetic.html" class="external-link">%/%</a></span><span class="fl">10000</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
+<span>  <span class="fu">select</span><span class="op">(</span></span>
+<span>    <span class="va">seasonId</span>,</span>
+<span>    <span class="va">seasonStart</span>,</span>
+<span>    Regular<span class="op">=</span><span class="va">regularAttendance</span>,</span>
+<span>    Playoffs<span class="op">=</span><span class="va">playoffAttendance</span></span>
+<span>  <span class="op">)</span> <span class="op">%&gt;%</span></span>
+<span>  <span class="fu">left_join</span><span class="op">(</span><span class="va">all_seasons</span>, by<span class="op">=</span><span class="st">'seasonId'</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
+<span>  <span class="fu">mutate</span><span class="op">(</span></span>
+<span>    `Regular per Game`<span class="op">=</span><span class="va">Regular</span><span class="op">/</span><span class="va">totalRegularSeasonGames</span>,</span>
+<span>    `Playoffs per Game`<span class="op">=</span><span class="va">Playoffs</span><span class="op">/</span><span class="va">totalPlayoffGames</span></span>
+<span>  <span class="op">)</span> <span class="op">%&gt;%</span></span>
+<span>  <span class="fu">select</span><span class="op">(</span></span>
+<span>    <span class="va">seasonStart</span>,</span>
+<span>    <span class="va">Regular</span>,</span>
+<span>    <span class="va">Playoffs</span>,</span>
+<span>    <span class="va">`Regular per Game`</span>,</span>
+<span>    <span class="va">`Playoffs per Game`</span></span>
+<span>  <span class="op">)</span></span>
+<span><span class="va">all_attendance_long</span> <span class="op">&lt;-</span> <span class="va">all_attendance</span> <span class="op">%&gt;%</span></span>
+<span>  <span class="fu">pivot_longer</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">Regular</span>, <span class="va">Playoffs</span><span class="op">)</span>, names_to<span class="op">=</span><span class="st">'type'</span>, values_to<span class="op">=</span><span class="st">'attendance'</span><span class="op">)</span></span>
+<span><span class="va">attendance_pg_long</span> <span class="op">&lt;-</span> <span class="va">all_attendance</span> <span class="op">%&gt;%</span></span>
+<span>  <span class="fu">select</span><span class="op">(</span></span>
+<span>    <span class="va">seasonStart</span>,</span>
+<span>    Regular<span class="op">=</span><span class="va">`Regular per Game`</span>,</span>
+<span>    Playoffs<span class="op">=</span><span class="va">`Playoffs per Game`</span></span>
+<span>  <span class="op">)</span> <span class="op">%&gt;%</span></span>
+<span>  <span class="fu">pivot_longer</span><span class="op">(</span></span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">Regular</span>, <span class="va">Playoffs</span><span class="op">)</span>,</span>
+<span>    names_to<span class="op">=</span><span class="st">'type'</span>,</span>
+<span>    values_to<span class="op">=</span><span class="st">'attendance'</span></span>
+<span>  <span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Plot 1</span></span>
+<span><span class="fu">ggplot</span><span class="op">(</span><span class="va">all_attendance_long</span>, <span class="fu">aes</span><span class="op">(</span>x<span class="op">=</span><span class="va">seasonStart</span>, y<span class="op">=</span><span class="va">attendance</span>, color<span class="op">=</span><span class="va">type</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu">geom_line</span><span class="op">(</span>linewidth<span class="op">=</span><span class="fl">3</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu">scale_color_manual</span><span class="op">(</span>values<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>Regular<span class="op">=</span><span class="va">n_cyan</span>, Playoffs<span class="op">=</span><span class="va">m_purple</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu">scale_y_continuous</span><span class="op">(</span>labels<span class="op">=</span><span class="fu">comma_format</span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu">labs</span><span class="op">(</span></span>
+<span>    title<span class="op">=</span><span class="st">'Total Attendance by Season'</span>,</span>
+<span>    subtitle<span class="op">=</span><span class="st">'Data collected via `nhlscraper` R-package'</span>,</span>
+<span>    caption<span class="op">=</span><span class="st">'Source: NHL API'</span>,</span>
+<span>    x<span class="op">=</span><span class="st">'Season'</span>,</span>
+<span>    y<span class="op">=</span><span class="st">'Attendance (People)'</span>,</span>
+<span>    color<span class="op">=</span><span class="cn">NULL</span></span>
+<span>  <span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu">theme_minimal</span><span class="op">(</span>base_family<span class="op">=</span><span class="st">''</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu">theme</span><span class="op">(</span></span>
+<span>    panel.grid<span class="op">=</span><span class="fu">element_blank</span><span class="op">(</span><span class="op">)</span>,</span>
+<span>    plot.background<span class="op">=</span><span class="fu">element_rect</span><span class="op">(</span>fill<span class="op">=</span><span class="va">charcoal</span>, color<span class="op">=</span><span class="cn">NA</span><span class="op">)</span>,</span>
+<span>    panel.background<span class="op">=</span><span class="fu">element_rect</span><span class="op">(</span>fill<span class="op">=</span><span class="va">charcoal</span>, color<span class="op">=</span><span class="cn">NA</span><span class="op">)</span>,</span>
+<span>    legend.background<span class="op">=</span><span class="fu">element_rect</span><span class="op">(</span>fill<span class="op">=</span><span class="va">charcoal</span>, color<span class="op">=</span><span class="cn">NA</span><span class="op">)</span>,</span>
+<span>    legend.key<span class="op">=</span><span class="fu">element_rect</span><span class="op">(</span>fill<span class="op">=</span><span class="va">charcoal</span>, color<span class="op">=</span><span class="cn">NA</span><span class="op">)</span>,</span>
+<span>    text<span class="op">=</span><span class="fu">element_text</span><span class="op">(</span>color<span class="op">=</span><span class="st">'white'</span><span class="op">)</span>,</span>
+<span>    plot.title<span class="op">=</span><span class="fu">element_text</span><span class="op">(</span>color<span class="op">=</span><span class="st">'white'</span>, face<span class="op">=</span><span class="st">'bold'</span>, size<span class="op">=</span><span class="fl">24</span>, hjust<span class="op">=</span><span class="fl">0.5</span><span class="op">)</span>,</span>
+<span>    plot.subtitle<span class="op">=</span><span class="fu">element_text</span><span class="op">(</span>color<span class="op">=</span><span class="st">'white'</span>, face<span class="op">=</span><span class="st">'bold'</span>, size<span class="op">=</span><span class="fl">12</span>, hjust<span class="op">=</span><span class="fl">0.5</span><span class="op">)</span>,</span>
+<span>    plot.caption<span class="op">=</span><span class="fu">element_text</span><span class="op">(</span>color<span class="op">=</span><span class="st">'white'</span>, face<span class="op">=</span><span class="st">'bold'</span>, size<span class="op">=</span><span class="fl">12</span><span class="op">)</span>,</span>
+<span>    axis.text<span class="op">=</span><span class="fu">element_text</span><span class="op">(</span>color<span class="op">=</span><span class="st">'white'</span>, face<span class="op">=</span><span class="st">'bold'</span>, size<span class="op">=</span><span class="fl">12</span><span class="op">)</span>,</span>
+<span>    axis.title<span class="op">=</span><span class="fu">element_text</span><span class="op">(</span>color<span class="op">=</span><span class="st">'white'</span>, face<span class="op">=</span><span class="st">'bold'</span>, size<span class="op">=</span><span class="fl">18</span><span class="op">)</span>,</span>
+<span>    legend.text<span class="op">=</span><span class="fu">element_text</span><span class="op">(</span>color<span class="op">=</span><span class="st">'white'</span>, face<span class="op">=</span><span class="st">'bold'</span>, size<span class="op">=</span><span class="fl">12</span><span class="op">)</span></span>
+<span>  <span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Plot 2</span></span>
+<span><span class="fu">ggplot</span><span class="op">(</span><span class="va">attendance_pg_long</span>, <span class="fu">aes</span><span class="op">(</span>x<span class="op">=</span><span class="va">seasonStart</span>, y<span class="op">=</span><span class="va">attendance</span>, color<span class="op">=</span><span class="va">type</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu">geom_line</span><span class="op">(</span>linewidth<span class="op">=</span><span class="fl">3</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu">scale_color_manual</span><span class="op">(</span>values<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>Regular<span class="op">=</span><span class="va">n_cyan</span>, Playoffs<span class="op">=</span><span class="va">m_purple</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu">scale_y_continuous</span><span class="op">(</span>labels<span class="op">=</span><span class="fu">comma_format</span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu">labs</span><span class="op">(</span></span>
+<span>    title<span class="op">=</span><span class="st">'Attendance per Game by Season'</span>,</span>
+<span>    subtitle<span class="op">=</span><span class="st">'Data collected via `nhlscraper` R-package'</span>,</span>
+<span>    caption<span class="op">=</span><span class="st">'Source: NHL API'</span>,</span>
+<span>    x<span class="op">=</span><span class="st">'Season'</span>,</span>
+<span>    y<span class="op">=</span><span class="st">'Attendance (People)'</span>,</span>
+<span>    color<span class="op">=</span><span class="cn">NULL</span></span>
+<span>  <span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu">theme_minimal</span><span class="op">(</span>base_family<span class="op">=</span><span class="st">''</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu">theme</span><span class="op">(</span></span>
+<span>    panel.grid<span class="op">=</span><span class="fu">element_blank</span><span class="op">(</span><span class="op">)</span>,</span>
+<span>    plot.background<span class="op">=</span><span class="fu">element_rect</span><span class="op">(</span>fill<span class="op">=</span><span class="va">charcoal</span>, color<span class="op">=</span><span class="cn">NA</span><span class="op">)</span>,</span>
+<span>    panel.background<span class="op">=</span><span class="fu">element_rect</span><span class="op">(</span>fill<span class="op">=</span><span class="va">charcoal</span>, color<span class="op">=</span><span class="cn">NA</span><span class="op">)</span>,</span>
+<span>    legend.background<span class="op">=</span><span class="fu">element_rect</span><span class="op">(</span>fill<span class="op">=</span><span class="va">charcoal</span>, color<span class="op">=</span><span class="cn">NA</span><span class="op">)</span>,</span>
+<span>    legend.key<span class="op">=</span><span class="fu">element_rect</span><span class="op">(</span>fill<span class="op">=</span><span class="va">charcoal</span>, color<span class="op">=</span><span class="cn">NA</span><span class="op">)</span>,</span>
+<span>    text<span class="op">=</span><span class="fu">element_text</span><span class="op">(</span>color<span class="op">=</span><span class="st">'white'</span><span class="op">)</span>,</span>
+<span>    plot.title<span class="op">=</span><span class="fu">element_text</span><span class="op">(</span>color<span class="op">=</span><span class="st">'white'</span>, face<span class="op">=</span><span class="st">'bold'</span>, size<span class="op">=</span><span class="fl">24</span>, hjust<span class="op">=</span><span class="fl">0.5</span><span class="op">)</span>,</span>
+<span>    plot.subtitle<span class="op">=</span><span class="fu">element_text</span><span class="op">(</span>color<span class="op">=</span><span class="st">'white'</span>, face<span class="op">=</span><span class="st">'bold'</span>, size<span class="op">=</span><span class="fl">12</span>, hjust<span class="op">=</span><span class="fl">0.5</span><span class="op">)</span>,</span>
+<span>    plot.caption<span class="op">=</span><span class="fu">element_text</span><span class="op">(</span>color<span class="op">=</span><span class="st">'white'</span>, face<span class="op">=</span><span class="st">'bold'</span>, size<span class="op">=</span><span class="fl">12</span><span class="op">)</span>,</span>
+<span>    axis.text<span class="op">=</span><span class="fu">element_text</span><span class="op">(</span>color<span class="op">=</span><span class="st">'white'</span>, face<span class="op">=</span><span class="st">'bold'</span>, size<span class="op">=</span><span class="fl">12</span><span class="op">)</span>,</span>
+<span>    axis.title<span class="op">=</span><span class="fu">element_text</span><span class="op">(</span>color<span class="op">=</span><span class="st">'white'</span>, face<span class="op">=</span><span class="st">'bold'</span>, size<span class="op">=</span><span class="fl">18</span><span class="op">)</span>,</span>
+<span>    legend.text<span class="op">=</span><span class="fu">element_text</span><span class="op">(</span>color<span class="op">=</span><span class="st">'white'</span>, face<span class="op">=</span><span class="st">'bold'</span>, size<span class="op">=</span><span class="fl">12</span><span class="op">)</span></span>
+<span>  <span class="op">)</span></span></code></pre>
 </div>
-<div class="section level2">
-<h2 id="setup-example-coming-soon">Setup (example coming soon…)<a class="anchor" aria-label="anchor" href="#setup-example-coming-soon"></a>
-</h2>
-<pre><code><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/RentoSaijo/nhlscraper" class="external-link">nhlscraper</a></span><span class="op">)</span></span></code></pre>
 </div>
 
   </main><aside class="col-md-3"><div class="links">
@@ -127,13 +230,7 @@
 </ul>
 </div>
 
-<div class="dev-status">
-<h2 data-toc-skip>Dev status</h2>
-<ul class="list-unstyled">
-<li><a href="https://CRAN.R-project.org/package=nhlscraper" class="external-link"><img src="https://www.r-pkg.org/badges/version/nhlscraper" alt="CRAN Status"></a></li>
-<li><a href="https://github.com/nhlscraper" class="external-link"><img src="https://img.shields.io/badge/dev%20ver-0.1.1.9000-red.svg" alt="Dev Version"></a></li>
-</ul>
-</div>
+
 
   </aside>
 </div>
