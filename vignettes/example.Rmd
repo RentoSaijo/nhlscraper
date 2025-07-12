@@ -8,11 +8,11 @@ vignette: >
 ---
 
 ```{r, include = FALSE}
-knitr::opts_chunk$set(
-  collapse = TRUE,
-  comment = '#>'
-)
+knitr::opts_chunk$set(echo = T, results="hide")
+install.packages('devtools')
+devtools::install_github('RentoSaijo/nhlscraper')
 install.packages('tidyverse')
+install.packages('scales')
 ```
 
 This example explores how one may create `ggplot2` line graphs for total attendance and attendance per game across all seasons. Please contact me with your cool examples, and I can add them here too!
