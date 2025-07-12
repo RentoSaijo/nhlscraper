@@ -1,8 +1,8 @@
 ---
-title: 'nhlscraper'
+title: 'Example'
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{nhlscraper}
+  %\VignetteIndexEntry{example}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -14,8 +14,8 @@ knitr::opts_chunk$set(
 )
 ```
 
-Create `ggplot2` line graphs for total attendance and attendance per game across all the seasons:
-```r
+This example explores how one may create `ggplot2` line graphs for total attendance and attendance per game across all seasons. Please contact me with your cool examples, and I can add them here too!
+```{r example}
 # Load libraries.
 library(nhlscraper)
 library(tidyverse)
@@ -120,5 +120,5 @@ ggplot(attendance_pg_long, aes(x=seasonStart, y=attendance, color=type)) +
     legend.text=element_text(color='white', face='bold', size=12)
   )
 ```
-![Example1](vignettes/Example1.png)
-![Example2](vignettes/Example2.png)
+![Example1](Example1.png)
+![Example2](Example2.png)

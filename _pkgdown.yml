@@ -18,7 +18,7 @@ navbar:
       href: reference/index.html
     example:
       text: 'Example'
-      href: articles/nhlscraper.html
+      href: articles/example.html
     news:
       text: 'News'
       href: news/index.html
