@@ -29,6 +29,12 @@ navbar:
       icon: fa-instagram
       href: https://www.instagram.com/nhlscraper/
       
+authors:
+  Rento Saijo:
+    href: https://www.linkedin.com/in/rentosaijo/
+  Lars Skytte:
+    href: https://hockey-statistics.com
+      
 reference:
 - title: "NHL API"
   desc: >
