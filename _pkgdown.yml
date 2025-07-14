@@ -40,11 +40,11 @@ authors:
     roles: [aut, ctb]
       
 reference:
-- title: "NHL API"
+- title: 'NHL API'
   desc: >
     Functions that call the NHL APIs
 
-- subtitle: "League Data"
+- subtitle: 'League Data'
   desc: >
     Functions to retrieve data about the league
   contents:
@@ -53,7 +53,7 @@ reference:
     - get_standings_information
     - get_standings
 
-- subtitle: "Team Data"
+- subtitle: 'Team Data'
   desc: >
     Functions to retrieve data about teams
   contents:
@@ -68,7 +68,7 @@ reference:
     - get_franchises
     - get_franchise_season_by_season
 
-- subtitle: "Player Data"
+- subtitle: 'Player Data'
   desc: >
     Functions to retrieve data about players
   contents:
@@ -77,7 +77,7 @@ reference:
     - get_player_landing
     - get_spotlight_players
 
-- subtitle: "Skater Data"
+- subtitle: 'Skater Data'
   desc: >
     Functions to retrieve data about skaters
   contents:
@@ -86,7 +86,7 @@ reference:
     - get_skater_leaders
     - get_skater_milestones
 
-- subtitle: "Goalie Data"
+- subtitle: 'Goalie Data'
   desc: >
     Functions to retrieve data about goalies
   contents:
@@ -95,7 +95,7 @@ reference:
     - get_goalie_leaders
     - get_goalie_milestones
 
-- subtitle: "Game Data"
+- subtitle: 'Game Data'
   desc: >
     Functions to retrieve data about games
   contents:
@@ -109,7 +109,7 @@ reference:
     - get_game_landing
     - get_game_story
 
-- subtitle: "Playoff Data"
+- subtitle: 'Playoff Data'
   desc: >
     Functions to retrieve data about the playoffs
   contents:
@@ -117,14 +117,14 @@ reference:
     - get_series_schedule
     - get_series_carousel
 
-- subtitle: "Award Data"
+- subtitle: 'Award Data'
   desc: >
     Functions to retrieve data about awards
   contents:
     - get_awards
     - get_award_winners
 
-- subtitle: "Draft Data"
+- subtitle: 'Draft Data'
   desc: >
     Functions to retrieve data about drafts
   contents:
@@ -133,14 +133,14 @@ reference:
     - get_draft_rankings
     - get_draft_tracker
 
-- subtitle: "Record Data"
+- subtitle: 'Record Data'
   desc: >
     Functions to retrieve data about records
   contents:
     - get_franchise_team_totals
     - get_franchise_vs_franchise
 
-- subtitle: "Other Data"
+- subtitle: 'Other Data'
   desc: >
     Functions to retrieve any other data
   contents:
@@ -156,25 +156,25 @@ reference:
     - get_season_now
     - get_partner_odds
 
-- title: "ESPN API"
+- title: 'ESPN API'
   desc: >
     Functions that call ESPN APIs
 
-- subtitle: "Team Data"
+- subtitle: 'Team Data'
   desc: >
     Functions to retrieve data about teams
   contents:
     - get_espn_teams
     - get_espn_team
 
-- subtitle: "Athlete Data"
+- subtitle: 'Athlete Data'
   desc: >
     Functions to retrieve data about athletes (players)
   contents:
     - get_espn_athletes
     - get_espn_athlete
 
-- subtitle: "Coach Data"
+- subtitle: 'Coach Data'
   desc: >
     Functions to retrieve data about coaches
   contents:
@@ -182,7 +182,7 @@ reference:
     - get_espn_coach
     - get_espn_coach_career
 
-- subtitle: "Event Data"
+- subtitle: 'Event Data'
   desc: >
     Functions to retrieve data about events (games)
   contents:
@@ -193,7 +193,7 @@ reference:
     - get_espn_event_officials
     - get_espn_event_odds
 
-- subtitle: "Other Data"
+- subtitle: 'Other Data'
   desc: >
     Functions to retrieve any other data
   contents:
