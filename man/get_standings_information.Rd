@@ -10,7 +10,7 @@ get_standings_information()
 tibble with one row per season
 }
 \description{
-Get standings information for all seasons
+\code{get_standings_information()} retrieves information about each season, including but not limited to their ID; start and end dates for standings; and conference-division, win-tie-loss, and wildcard regulations. May merge with \code{get_seasons()}.
 }
 \examples{
 standings_info <- get_standings_information()

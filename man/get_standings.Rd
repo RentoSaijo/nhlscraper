@@ -7,13 +7,13 @@
 get_standings(date = "2025-01-01")
 }
 \arguments{
-\item{date}{string Date in 'YYYY-MM-DD'}
+\item{date}{string in 'YYYY-MM-DD'}
 }
 \value{
 tibble with one row per team
 }
 \description{
-Get standings by date
+\code{get_standings()} retrieves information about each team for a specified \code{date}, including but not limited to their ID; name; conference; division; season, recent, and home-away statistics; and waiver sequence.
 }
 \examples{
 standings_2025_01_02 <- get_standings(date='2025-01-02')

@@ -10,7 +10,7 @@ get_seasons()
 tibble with one row per season
 }
 \description{
-Get all seasons
+\code{get_seasons()} retrieves information about each season including but not limited to their ID; start and end dates; number of regular season and playoff games; Stanley Cup owner; Olympics participation; entry and supplemental draft, conference-division, win-tie-loss, and wildcard regulations.
 }
 \examples{
 all_seasons <- get_seasons()
