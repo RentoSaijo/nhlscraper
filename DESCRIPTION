@@ -17,4 +17,4 @@ Config/testthat/edition: 3
 VignetteBuilder: knitr
 URL: https://github.com/RentoSaijo/nhlscraper, https://rentosaijo.github.io/nhlscraper/
 BugReports: https://github.com/RentoSaijo/nhlscraper/issues
-Copyright: NHL is registered trademark of the National Hockey League
+Copyright: Copyright: NHL and the NHL Shield are registered trademarks of the National Hockey League. NHL and NHL team marks are the property of the NHL and its teams.
