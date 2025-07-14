@@ -1,6 +1,6 @@
 #' Get draft rankings by year and player-type
 #' 
-#' `get_draft_rankings()` retrieves information about each draft prospect, including but not limited to their name, midterm and final ranks, position, bio-metrics, and birth day and location.
+#' `get_draft_rankings()` retrieves information about each draft prospect for a specified `year` and `player_type`, including but not limited to their name, midterm and final ranks, position, bio-metrics, and birth day and location.
 #' 
 #' @param year integer in YYYY
 #' @param player_type integer where 1=North American Skaters, 
