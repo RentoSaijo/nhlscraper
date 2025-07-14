@@ -129,7 +129,7 @@ get_goalie_milestones <- function() {
 
 #' Get goalie statistics by season
 #' 
-#' `get_goalie_statistics()` retrieves information about each goalie or game for (a) specified `season`, `teams`, `game_types`, and `report`. Check `get_configuration()` for what information each combination of `report`, `is_aggregate` and `is_game` can provide; `get_teams()` for team IDs; and `get_seasons()` for date references. `dates` must be specified when paired with `is_game` as the default range will not return complete data; it will be ignored otherwise. Will soon be reworked for easier access.
+#' `get_goalie_statistics()` retrieves information about each goalie or game for (a) specified `season`, `teams`, `game_types`, and `report`. Check `get_configuration()` for what information each combination of `report`, `is_aggregate` and `is_game` can provide; `get_teams()` for team IDs; and `get_seasons()` for date references. `dates` must be specified when paired with `is_game` as the default range will return incomplete data (too wide); it will be ignored otherwise. Will soon be reworked for easier access.
 #' 
 #' @param season integer in YYYYYYYY
 #' @param teams vector of integers Team ID(s)

@@ -34,7 +34,7 @@ get_goalie_statistics(
 tibble with one row per goalie or game
 }
 \description{
-\code{get_goalie_statistics()} retrieves information about each goalie or game for (a) specified \code{season}, \code{teams}, \code{game_types}, and \code{report}. Check \code{get_configuration()} for what information each combination of \code{report}, \code{is_aggregate} and \code{is_game} can provide; \code{get_teams()} for team IDs; and \code{get_seasons()} for date references. \code{dates} must be specified when paired with \code{is_game} as the default range will not return complete data; it will be ignored otherwise. Will soon be reworked for easier access.
+\code{get_goalie_statistics()} retrieves information about each goalie or game for (a) specified \code{season}, \code{teams}, \code{game_types}, and \code{report}. Check \code{get_configuration()} for what information each combination of \code{report}, \code{is_aggregate} and \code{is_game} can provide; \code{get_teams()} for team IDs; and \code{get_seasons()} for date references. \code{dates} must be specified when paired with \code{is_game} as the default range will return incomplete data (too wide); it will be ignored otherwise. Will soon be reworked for easier access.
 }
 \examples{
 playoff_goalie_svr_20242025 <- get_goalie_statistics(
