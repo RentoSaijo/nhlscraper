@@ -7,13 +7,13 @@
 get_scores(date = "2025-01-01")
 }
 \arguments{
-\item{date}{string Date in 'YYYY-MM-DD'}
+\item{date}{string in 'YYYY-MM-DD'}
 }
 \value{
 tibble with one row per game
 }
 \description{
-Get score(s) by date
+\code{get_scores()} returns live information about each game, including but not limited to their ID; venue; start time; period and intermission clocks; and home and away teams' IDs, names, and scores.
 }
 \examples{
 scores_2025_01_02 <- get_scores(date='2025-01-02')

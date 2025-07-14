@@ -1,6 +1,8 @@
 #' Get score(s) by date
 #' 
-#' @param date string Date in 'YYYY-MM-DD'
+#' `get_scores()` returns live information about each game, including but not limited to their ID; venue; start time; period and intermission clocks; and home and away teams' IDs, names, and scores.
+#' 
+#' @param date string in 'YYYY-MM-DD'
 #' @return tibble with one row per game
 #' @examples
 #' scores_2025_01_02 <- get_scores(date='2025-01-02')
