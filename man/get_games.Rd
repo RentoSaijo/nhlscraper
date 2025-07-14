@@ -10,7 +10,7 @@ get_games()
 tibble with one row per game
 }
 \description{
-Get all games
+\code{get_games()} retrieves information about each game, including but not limited to their ID, season, type, date, start time, home and visiting teams' IDs and scores.
 }
 \examples{
 all_games <- get_games()

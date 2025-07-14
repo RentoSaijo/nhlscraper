@@ -9,15 +9,15 @@ get_game_boxscore(game = 2024020602, team = "home", player_type = "forwards")
 \arguments{
 \item{game}{integer Game ID}
 
-\item{team}{string Team of 'home' or 'away'}
+\item{team}{string of 'home' or 'away'}
 
-\item{player_type}{string Player-type of 'forwards', 'defense', or 'goalies'}
+\item{player_type}{string of 'forwards', 'defense', or 'goalies'}
 }
 \value{
 tibble with one row per player
 }
 \description{
-Get boxscore by game, team, and player-type
+\code{get_game_boxscore()} retrieves information about each player, including but not limited to their ID, name, sweater number, goals, assists, +/-, hits, blocks, shots-on-goal, giveaways, takeaways, time on ice, and number of shifts. There exists many methods to grab game IDs; the easiest is by using \code{get_games()}.
 }
 \examples{
 boxscore_2024030411_FLA_defensemen <- get_game_boxscore(

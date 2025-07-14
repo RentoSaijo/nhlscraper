@@ -7,13 +7,13 @@
 get_scoreboards(date = "2025-01-01")
 }
 \arguments{
-\item{date}{string Date in 'YYYY-MM-DD'}
+\item{date}{string in 'YYYY-MM-DD'}
 }
 \value{
 tibble with one row per game
 }
 \description{
-Get scoreboard(s) by date
+\code{get_scoreboards()} returns information about each game, including but not limited to their ID; type; venue; start time; tickets link; and home and away teams' IDs, names, and scores. Unable to conclude any major difference between this and \code{get_scores()}; may become deprecated in the future.
 }
 \examples{
 scoreboards_2025_01_02 <- get_scoreboards(date='2025-01-02')

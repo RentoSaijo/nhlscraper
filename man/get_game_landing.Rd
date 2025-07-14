@@ -2,7 +2,7 @@
 % Please edit documentation in R/Game.R
 \name{get_game_landing}
 \alias{get_game_landing}
-\title{Get GC game landing by game}
+\title{Get GameCenter (GC) game-landing by game}
 \usage{
 get_game_landing(game = 2024020602)
 }
@@ -10,10 +10,10 @@ get_game_landing(game = 2024020602)
 \item{game}{integer Game ID}
 }
 \value{
-list of 24 items
+list of various items
 }
 \description{
-Get GC game landing by game
+\code{get_game_landing()} retrieves GC-provided information about a game, including but not limited to its ID, type, venue, start time, clock, home and away teams, and TV broadcast(s). There exists many methods to grab game IDs; the easiest is by using \code{get_games()}.
 }
 \examples{
 game_landing_2024030411 <- get_game_landing(game=2024030411)
