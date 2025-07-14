@@ -34,6 +34,10 @@ authors:
     href: https://www.linkedin.com/in/rentosaijo/
   Lars Skytte:
     href: https://hockey-statistics.com
+  footer:
+    roles: [aut, ctb]
+  sidebar:
+    roles: [aut, ctb]
       
 reference:
 - title: "NHL API"
