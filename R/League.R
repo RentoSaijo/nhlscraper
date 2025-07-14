@@ -66,7 +66,7 @@ get_schedule <- function(date='2025-01-01') {
 
 #' Get all seasons
 #' 
-#' `get_seasons()` retrieves information about each season including but not limited to their ID; start and end dates; number of regular season and playoff games; Stanley Cup owner; Olympics participation; entry and supplemental draft, conference-division, win-tie-loss, and wildcard regulations.
+#' `get_seasons()` retrieves information about each season, including but not limited to their ID; start and end dates; number of regular season and playoff games; Stanley Cup owner; Olympics participation; entry and supplemental draft, conference-division, win-tie-loss, and wildcard regulations.
 #' 
 #' @return tibble with one row per season
 #' @examples
