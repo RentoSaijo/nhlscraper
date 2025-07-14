@@ -6,40 +6,41 @@
 \usage{
 get_goalie_statistics(
   season = get_season_now()$seasonId,
-  report = "summary",
   teams = 1:100,
-  is_aggregate = FALSE,
-  is_game = FALSE,
+  game_types = 1:3,
   dates = c("2025-01-01"),
-  game_types = 1:3
+  report = "summary",
+  is_aggregate = FALSE,
+  is_game = FALSE
 )
 }
 \arguments{
 \item{season}{integer in YYYYYYYY}
 
-\item{report}{string Report}
-
 \item{teams}{vector of integers Team ID(s)}
+
+\item{game_types}{vector of integers where 1=pre-season, 2=regular, and
+3=playoffs}
+
+\item{dates}{vector of strings in 'YYYY-MM-DD' *only if paired with \code{is_game}}
+
+\item{report}{string}
 
 \item{is_aggregate}{boolean}
 
 \item{is_game}{boolean}
-
-\item{dates}{vector of strings in 'YYYY-MM-DD' *only if paired with \code{is_game}}
-
-\item{game_types}{vector of integers where 1=pre-season, 2=regular, and
-3=playoffs}
 }
 \value{
 tibble with one row per goalie or game
 }
 \description{
-\code{get_goalie_statistics()} retrieves information about each goalie or game for (a) specified \code{season}, \code{report}, \code{teams}, \code{dates}, and \code{game_types}. Check \code{get_configuration()} for what information each combination of \code{report}, \code{is_aggregate} and \code{is_game} can provide; \code{get_teams()} for team IDs; and \code{get_seasons()} for date references. Will soon be reworked for easier access.
+\code{get_goalie_statistics()} retrieves information about each goalie or game for (a) specified \code{season}, \code{teams}, \code{game_types}, and \code{report}. Check \code{get_configuration()} for what information each combination of \code{report}, \code{is_aggregate} and \code{is_game} can provide; \code{get_teams()} for team IDs; and \code{get_seasons()} for date references. \code{dates} must be specified when paired with \code{is_game} as the default range will not return complete data; it will be ignored otherwise. Will soon be reworked for easier access.
 }
 \examples{
 playoff_goalie_svr_20242025 <- get_goalie_statistics(
   season=20242025,
-  report='startedVsRelieved',
-  game_types=c(3)
+  teams=1:100,
+  game_types=c(3),
+  report='startedVsRelieved'
 )
 }
