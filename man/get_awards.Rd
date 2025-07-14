@@ -10,7 +10,7 @@ get_awards()
 tibble with one row per award
 }
 \description{
-Get all awards
+\code{get_awards()} retrieves information about each award, including but not limited to their trophy ID, name, description, creation date, and image URL.
 }
 \examples{
 all_awards <- get_awards()
