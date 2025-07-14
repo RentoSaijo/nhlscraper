@@ -13,7 +13,7 @@ get_scores(date = "2025-01-01")
 tibble with one row per game
 }
 \description{
-\code{get_scores()} returns live information about each game, including but not limited to their ID; type; venue; start time; period and intermission clocks; and home and away teams' IDs, names, and scores.
+\code{get_scores()} returns live information about each game for a specified \code{date}, including but not limited to their ID; type; venue; start time; period and intermission clocks; and home and away teams' IDs, names, and scores.
 }
 \examples{
 scores_2025_01_02 <- get_scores(date='2025-01-02')
