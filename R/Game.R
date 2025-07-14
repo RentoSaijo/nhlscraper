@@ -1,6 +1,6 @@
 #' Get score(s) by date
 #' 
-#' `get_scores()` returns live information about each game for a specified `date`, including but not limited to their ID; type; venue; start time; period and intermission clocks; and home and away teams' IDs, names, and scores.
+#' `get_scores()` retrieves live information about each game for a specified `date`, including but not limited to their ID; type; venue; start time; period and intermission clocks; and home and away teams' IDs, names, and scores.
 #' 
 #' @param date string in 'YYYY-MM-DD'
 #' @return tibble with one row per game
@@ -21,7 +21,7 @@ get_scores <- function(date='2025-01-01') {
 
 #' Get scoreboard(s) by date
 #' 
-#' `get_scoreboards()` returns information about each game for a specified `date`, including but not limited to their ID; type; venue; start time; tickets link; and home and away teams' IDs, names, and scores. Unable to conclude any major difference between this and `get_scores()`; may become deprecated in the future.
+#' `get_scoreboards()` retrieves information about each game for a specified `date`, including but not limited to their ID; type; venue; start time; tickets link; and home and away teams' IDs, names, and scores. Unable to conclude any major difference between this and `get_scores()`; may become deprecated in the future.
 #' 
 #' @param date string in 'YYYY-MM-DD'
 #' @return tibble with one row per game
