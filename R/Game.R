@@ -119,7 +119,7 @@ get_game_boxscore <- function(
 
 #' Get GameCenter (GC) game-landing by game
 #' 
-#' `get_game_landing()` retrieves GC-provided information about a game, including but not limited to its ID, type, venue, start time, clock, home and away teams, and TV broadcast(s). There exists many methods to grab game IDs; the easiest is by using `get_games()`.
+#' `get_game_landing()` retrieves GC-provided information about a game, including but not limited to its type, venue, start time, clock, home and away teams, and TV broadcast(s). There exists many methods to grab game IDs; the easiest is by using `get_games()`.
 #' 
 #' @param game integer Game ID
 #' @return list of various items
@@ -140,7 +140,7 @@ get_game_landing <- function(game=2024020602) {
 
 #' Get World Showcase (WSC) game-story by game
 #' 
-#' `get_game_story()` retrieves WSC-provided information about a game, including but not limited to its ID, type, venue, start time, clock, home and away teams, and TV broadcast(s). There exists many methods to grab game IDs; the easiest is by using `get_games()`.
+#' `get_game_story()` retrieves WSC-provided information about a game, including but not limited to its type, venue, start time, clock, home and away teams, and TV broadcast(s). There exists many methods to grab game IDs; the easiest is by using `get_games()`.
 #' 
 #' @param game integer Game ID
 #' @return list of various items
@@ -178,7 +178,7 @@ get_games <- function() {
 
 #' Get shift charts
 #' 
-#' `get_shift_charts()` retrieves information about each shift, including but not limited to their ID, period, start and end times, and player's ID and name.
+#' `get_shift_charts()` retrieves information about each shift, including but not limited to their period, start and end times, and player's ID and name.
 #' 
 #' @param game integer Game ID
 #' @return tibble with one row per shift
