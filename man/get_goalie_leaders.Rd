@@ -11,18 +11,18 @@ get_goalie_leaders(
 )
 }
 \arguments{
-\item{season}{integer Season in YYYYYYYY}
+\item{season}{integer in YYYYYYYY}
 
-\item{game_type}{integer Game-type where 2=regular and 3=playoffs}
+\item{game_type}{integer where 2=regular and 3=playoffs}
 
-\item{category}{string Category e.g. wins, shutouts, savePctg,
-goalsAgainstAverage}
+\item{category}{string of 'wins', 'shutouts', 'savePctg', or
+'goalsAgainstAverage'}
 }
 \value{
 tibble with one row per goalie
 }
 \description{
-Get goalie statistics leaders by season, game-type, and category
+\code{get_goalie_leaders()} retrieves information about each goalie for a specified \code{season}, \code{game_type}, and \code{category}, including but not limited to their ID, name, and statistics.
 }
 \examples{
 playoff_savePctg_leaders_20242025 <- get_goalie_leaders(

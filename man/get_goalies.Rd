@@ -7,15 +7,15 @@
 get_goalies(start_season = 19171918, end_season = get_season_now()$seasonId)
 }
 \arguments{
-\item{start_season}{integer Season to start search in YYYYYYYY}
+\item{start_season}{integer in YYYYYYYY}
 
-\item{end_season}{integer Season to end search in YYYYYYYY}
+\item{end_season}{integer in YYYYYYYY}
 }
 \value{
 tibble with one row per goalie
 }
 \description{
-Get all goalies' biographies by range of seasons
+\code{get_goalies()} retrieves information about each goalie for a specified \code{start_season} and \code{end_season}, including but not limited to their ID, name, bio-metrics, and career statistics. This will soon become deprecated as \code{get_players()} can list all players and their IDs much quicker.
 }
 \examples{
 goalies_2000s <- get_goalies(start_season=20002001, end_season=20242025)

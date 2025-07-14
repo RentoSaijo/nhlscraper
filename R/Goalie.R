@@ -1,8 +1,10 @@
 #' Get all goalies' biographies by range of seasons
 #' 
+#' `get_goalies()` retrieves information about each goalie for a specified `start_season` and `end_season`, including but not limited to their ID, name, bio-metrics, and career statistics. This will soon become deprecated as `get_players()` can list all players and their IDs much quicker.
+#' 
 #' @importFrom magrittr %>%
-#' @param start_season integer Season to start search in YYYYYYYY
-#' @param end_season integer Season to end search in YYYYYYYY
+#' @param start_season integer in YYYYYYYY
+#' @param end_season integer in YYYYYYYY
 #' @return tibble with one row per goalie
 #' @examples
 #' goalies_2000s <- get_goalies(start_season=20002001, end_season=20242025)
@@ -79,10 +81,12 @@ get_goalies <- function(
 
 #' Get goalie statistics leaders by season, game-type, and category
 #' 
-#' @param season integer Season in YYYYYYYY
-#' @param game_type integer Game-type where 2=regular and 3=playoffs
-#' @param category string Category e.g. wins, shutouts, savePctg,
-#'                 goalsAgainstAverage
+#' `get_goalie_leaders()` retrieves information about each goalie for a specified `season`, `game_type`, and `category`, including but not limited to their ID, name, and statistics.
+#' 
+#' @param season integer in YYYYYYYY
+#' @param game_type integer where 2=regular and 3=playoffs
+#' @param category string of 'wins', 'shutouts', 'savePctg', or 
+#'                 'goalsAgainstAverage'
 #' @return tibble with one row per goalie
 #' @examples
 #' playoff_savePctg_leaders_20242025 <- get_goalie_leaders(
@@ -107,6 +111,8 @@ get_goalie_leaders <- function(
 
 #' Get goalie milestones
 #' 
+#' `get_goalie_milestones()` retrieves information about each goalie close to a milestone, including but not limited to their ID, name, and statistics.
+#' 
 #' @return tibble with one row per goalie
 #' @examples
 #' goalie_milestones <- get_goalie_milestones()
@@ -123,18 +129,16 @@ get_goalie_milestones <- function() {
 
 #' Get goalie statistics by season
 #' 
-#' @param season integer Season in YYYYYYYY
-#' @param report string Report (check `get_configuration()` for possible inputs)
+#' `get_goalie_statistics()` retrieves information about each goalie or game for (a) specified `season`, `report`, `teams`, `dates`, and `game_types`. Check `get_configuration()` for what information each combination of `report`, `is_aggregate` and `is_game` can provide; `get_teams()` for team IDs; and `get_seasons()` for date references. Will soon be reworked for easier access.
+#' 
+#' @param season integer in YYYYYYYY
+#' @param report string Report
 #' @param teams vector of integers Team ID(s)
-#' @param is_aggregate boolean isAggregate where TRUE=regular and playoffs
-#'                     combined (or multiple seasons) from multiple teams,
-#'                     if applicable
-#' @param is_game boolean isGame where TRUE=rows by games and FALSE=rows by
-#'                goalies
-#' @param dates vector of strings Date(s) in 'YYYY-MM-DD' (only if paired with
-#'              `is_game`)
-#' @param game_types vector of integers Game-type(s) where 1=pre-season,
-#'                   2=regular, and 3=playoffs
+#' @param dates vector of strings in 'YYYY-MM-DD' *only if paired with `is_game`
+#' @param game_types vector of integers where 1=pre-season, 2=regular, and 
+#'                   3=playoffs
+#' @param is_aggregate boolean
+#' @param is_game boolean
 #' @return tibble with one row per goalie or game
 #' @examples
 #' playoff_goalie_svr_20242025 <- get_goalie_statistics(

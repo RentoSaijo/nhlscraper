@@ -15,30 +15,26 @@ get_goalie_statistics(
 )
 }
 \arguments{
-\item{season}{integer Season in YYYYYYYY}
+\item{season}{integer in YYYYYYYY}
 
-\item{report}{string Report (check \code{get_configuration()} for possible inputs)}
+\item{report}{string Report}
 
 \item{teams}{vector of integers Team ID(s)}
 
-\item{is_aggregate}{boolean isAggregate where TRUE=regular and playoffs
-combined (or multiple seasons) from multiple teams,
-if applicable}
+\item{is_aggregate}{boolean}
 
-\item{is_game}{boolean isGame where TRUE=rows by games and FALSE=rows by
-goalies}
+\item{is_game}{boolean}
 
-\item{dates}{vector of strings Date(s) in 'YYYY-MM-DD' (only if paired with
-\code{is_game})}
+\item{dates}{vector of strings in 'YYYY-MM-DD' *only if paired with \code{is_game}}
 
-\item{game_types}{vector of integers Game-type(s) where 1=pre-season,
-2=regular, and 3=playoffs}
+\item{game_types}{vector of integers where 1=pre-season, 2=regular, and
+3=playoffs}
 }
 \value{
 tibble with one row per goalie or game
 }
 \description{
-Get goalie statistics by season
+\code{get_goalie_statistics()} retrieves information about each goalie or game for (a) specified \code{season}, \code{report}, \code{teams}, \code{dates}, and \code{game_types}. Check \code{get_configuration()} for what information each combination of \code{report}, \code{is_aggregate} and \code{is_game} can provide; \code{get_teams()} for team IDs; and \code{get_seasons()} for date references. Will soon be reworked for easier access.
 }
 \examples{
 playoff_goalie_svr_20242025 <- get_goalie_statistics(

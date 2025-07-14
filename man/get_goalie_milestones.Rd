@@ -10,7 +10,7 @@ get_goalie_milestones()
 tibble with one row per goalie
 }
 \description{
-Get goalie milestones
+\code{get_goalie_milestones()} retrieves information about each goalie close to a milestone, including but not limited to their ID, name, and statistics.
 }
 \examples{
 goalie_milestones <- get_goalie_milestones()
