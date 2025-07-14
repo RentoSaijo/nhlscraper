@@ -10,7 +10,7 @@ get_draft_tracker()
 tibble with one row per pick
 }
 \description{
-Get draft tracker as of now
+\code{get_draft_tracker()} retrieves live information about the latest draft, including but not limited to each pick's team ID, name, and overall number and selected player's name and position.
 }
 \examples{
 draft_tracker <- get_draft_tracker()

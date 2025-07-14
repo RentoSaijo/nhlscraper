@@ -4,20 +4,21 @@
 \alias{get_draft_rankings}
 \title{Get draft rankings by year and player-type}
 \usage{
-get_draft_rankings(year = get_season_now()$seasonId\%\%10000, player_type = 1)
+get_draft_rankings(year = get_season_now()$seasonId\%/\%10000, player_type = 1)
 }
 \arguments{
-\item{year}{integer Year in YYYY}
+\item{year}{integer in YYYY}
 
-\item{player_type}{integer Player-type where 1=NA Skaters, 2=Int. Skaters,
-3=NA Goalies, and 4=Int. Goalies}
+\item{player_type}{integer where 1=North American Skaters,
+2=International Skaters, 3=North American Goalies,
+and 4=International Goalies}
 }
 \value{
 tibble with one row per player
 }
 \description{
-Get draft rankings by year and player-type
+\code{get_draft_rankings()} retrieves information about each draft prospect, including but not limited to their name, midterm and final ranks, position, bio-metrics, and birth day and location.
 }
 \examples{
-draft_rankings_2025 <- get_draft_rankings(year=2025)
+draft_rankings_2025_1 <- get_draft_rankings(year=2025, player_type=1)
 }

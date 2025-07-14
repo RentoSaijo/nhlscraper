@@ -10,7 +10,7 @@ get_drafts()
 tibble with one row per draft
 }
 \description{
-Get all drafts
+\code{get_drafts()} retrieves information about each draft, including but not limited to their year, type, venue, minimum and maximum player ages, and number of rounds and picks.
 }
 \examples{
 all_drafts <- get_drafts()

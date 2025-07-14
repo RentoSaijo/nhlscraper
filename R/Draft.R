@@ -1,15 +1,18 @@
 #' Get draft rankings by year and player-type
 #' 
-#' @param year integer Year in YYYY
-#' @param player_type integer Player-type where 1=NA Skaters, 2=Int. Skaters, 
-#'                    3=NA Goalies, and 4=Int. Goalies
+#' `get_draft_rankings()` retrieves information about each draft prospect, including but not limited to their name, midterm and final ranks, position, bio-metrics, and birth day and location.
+#' 
+#' @param year integer in YYYY
+#' @param player_type integer where 1=North American Skaters, 
+#'                    2=International Skaters, 3=North American Goalies, 
+#'                    and 4=International Goalies
 #' @return tibble with one row per player
 #' @examples
-#' draft_rankings_2025 <- get_draft_rankings(year=2025)
+#' draft_rankings_2025_1 <- get_draft_rankings(year=2025, player_type=1)
 #' @export
 
 get_draft_rankings <- function(
-    year=get_season_now()$seasonId%%10000,
+    year=get_season_now()$seasonId%/%10000,
     player_type=1
   ) {
   out <- nhl_api(
@@ -20,6 +23,8 @@ get_draft_rankings <- function(
 }
 
 #' Get all draft picks
+#' 
+#' `get_draft_picks()` retrieves information about each draft selection, including but not limited to their player ID, name, draft year, overall number, bio-metrics, and the pick's team history.
 #' 
 #' @return tibble with one row per pick
 #' @examples
@@ -36,6 +41,8 @@ get_draft_picks <- function() {
 
 #' Get draft tracker as of now
 #' 
+#' `get_draft_tracker()` retrieves live information about the latest draft, including but not limited to each pick's team ID, name, and overall number and selected player's name and position.
+#' 
 #' @return tibble with one row per pick
 #' @examples
 #' draft_tracker <- get_draft_tracker()
@@ -50,6 +57,8 @@ get_draft_tracker <- function() {
 }
 
 #' Get all drafts
+#' 
+#' `get_drafts()` retrieves information about each draft, including but not limited to their year, type, venue, minimum and maximum player ages, and number of rounds and picks.
 #' 
 #' @importFrom magrittr %>%
 #' @return tibble with one row per draft

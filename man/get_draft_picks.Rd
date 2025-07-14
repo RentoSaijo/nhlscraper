@@ -10,7 +10,7 @@ get_draft_picks()
 tibble with one row per pick
 }
 \description{
-Get all draft picks
+\code{get_draft_picks()} retrieves information about each draft selection, including but not limited to their player ID, name, draft year, overall number, bio-metrics, and the pick's team history.
 }
 \examples{
 all_draft_picks <- get_draft_picks()
