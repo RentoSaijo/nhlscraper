@@ -10,7 +10,7 @@ get_skater_milestones()
 tibble with one row per skater
 }
 \description{
-Get skater milestones
+\code{get_skater_milestones()} retrieves information on each skater close to a milestone, including but not limited to their ID, name, and statistics.
 }
 \examples{
 skater_milestones <- get_skater_milestones()

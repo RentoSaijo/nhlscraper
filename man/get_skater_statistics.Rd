@@ -2,48 +2,44 @@
 % Please edit documentation in R/Skater.R
 \name{get_skater_statistics}
 \alias{get_skater_statistics}
-\title{Get skater statistics by season}
+\title{Get skater statistics}
 \usage{
 get_skater_statistics(
   season = get_season_now()$seasonId,
-  report = "summary",
   teams = 1:100,
-  is_aggregate = FALSE,
-  is_game = FALSE,
+  game_types = 1:3,
   dates = c("2025-01-01"),
-  game_types = 1:3
+  report = "summary",
+  is_aggregate = FALSE,
+  is_game = FALSE
 )
 }
 \arguments{
-\item{season}{integer Season in YYYYYYYY}
-
-\item{report}{string Report (check \code{get_configuration()} for possible inputs)}
+\item{season}{integer in YYYYYYYY}
 
 \item{teams}{vector of integers Team ID(s)}
 
-\item{is_aggregate}{boolean isAggregate where TRUE=regular and playoffs
-combined (or multiple seasons) from multiple teams, if
-applicable}
+\item{game_types}{vector of integers where 1=pre-season, 2=regular, and
+3=playoffs}
 
-\item{is_game}{boolean isGame where TRUE=rows by games and FALSE=rows by
-skaters}
+\item{dates}{vector of strings in 'YYYY-MM-DD' *only if paired with \code{is_game}}
 
-\item{dates}{vector of strings Date(s) in 'YYYY-MM-DD' (only if paired with
-\code{is_game})}
+\item{report}{string}
 
-\item{game_types}{vector of integers Game-type(s) where 1=pre-season,
-2=regular, and 3=playoffs}
+\item{is_aggregate}{boolean}
+
+\item{is_game}{boolean}
 }
 \value{
 tibble with one row per skater or game
 }
 \description{
-Get skater statistics by season
+\code{get_skater_statistics()} retrieves information on each skater or game for (a) given \code{season}, \code{teams}, \code{game_types}, and \code{report}. Check \code{get_configuration()} for what information each combination of \code{report}, \code{is_aggregate} and \code{is_game} can provide; \code{get_teams()} for team IDs; and \code{get_seasons()} for date references. \code{dates} must be given when paired with \code{is_game} as the default range will return incomplete data (too wide); it will be ignored otherwise. Will soon be reworked for easier access.
 }
 \examples{
 regular_skater_shootout_20242025 <- get_skater_statistics(
   season=20242025,
-  report='shootout',
-  game_types=c(2)
+  game_types=c(2),
+  report='shootout'
 )
 }

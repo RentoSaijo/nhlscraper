@@ -1,8 +1,10 @@
-#' Get all skaters' biographies by range of seasons
+#' Get skaters' biographies by range of seasons
+#' 
+#' `get_goalies()` retrieves information on each skater for a given `start_season` and `end_season`, including but not limited to their ID, name, bio-metrics, and career statistics. Will soon be deprecated as `get_players()` can list all players and their IDs much more efficiently.
 #' 
 #' @importFrom magrittr %>%
-#' @param start_season integer Season to start search in YYYYYYYY
-#' @param end_season integer Season to end search in YYYYYYYY
+#' @param start_season integer in YYYYYYYY
+#' @param end_season integer in YYYYYYYY
 #' @return tibble with one row per skater
 #' @examples
 #' skaters_2000s <- get_skaters(start_season=20002001, end_season=20242025)
@@ -67,82 +69,36 @@ get_skaters <- function(
   return(final)
 }
 
-#' Get skater statistics leaders by season, game-type, and category
+#' Get skater statistics
 #' 
-#' @param season integer Season in YYYYYYYY
-#' @param game_type integer GameType where 2=regular and 3=playoffs
-#' @param category string e.g. assists, goals, goalsSh, goalsPp, points,
-#'                 penaltyMins, toi, plusMinus, faceoffLeaders
-#' @return tibble with one row per skater
-#' @examples
-#' playoff_toi_leaders_20242025 <- get_skater_leaders(
-#'   season=20242025,
-#'   game_type=3,
-#'   category='toi'
-#' )
-#' @export
-
-get_skater_leaders <- function(
-    season=get_season_now()$seasonId,
-    game_type=2,
-    category='points'
-  ) {
-  out <- nhl_api(
-    path=sprintf('skater-stats-leaders/%s/%s', season, game_type),
-    query=list(categories=category, limit=-1),
-    type=1
-  )
-  return(tibble::as_tibble(out[[category]]))
-}
-
-#' Get skater milestones
+#' `get_skater_statistics()` retrieves information on each skater or game for (a) given `season`, `teams`, `game_types`, and `report`. Check `get_configuration()` for what information each combination of `report`, `is_aggregate` and `is_game` can provide; `get_teams()` for team IDs; and `get_seasons()` for date references. `dates` must be given when paired with `is_game` as the default range will return incomplete data (too wide); it will be ignored otherwise. Will soon be reworked for easier access.
 #' 
-#' @return tibble with one row per skater
-#' @examples
-#' skater_milestones <- get_skater_milestones()
-#' @export
-
-get_skater_milestones <- function() {
-  out <- nhl_api(
-    path='milestones/skaters',
-    query=list(),
-    type=2
-  )
-  return(tibble::as_tibble(out$data))
-}
-
-#' Get skater statistics by season
-#' 
-#' @param season integer Season in YYYYYYYY
-#' @param report string Report (check `get_configuration()` for possible inputs)
+#' @param season integer in YYYYYYYY
 #' @param teams vector of integers Team ID(s)
-#' @param is_aggregate boolean isAggregate where TRUE=regular and playoffs
-#'                     combined (or multiple seasons) from multiple teams, if
-#'                     applicable
-#' @param is_game boolean isGame where TRUE=rows by games and FALSE=rows by
-#'                skaters
-#' @param dates vector of strings Date(s) in 'YYYY-MM-DD' (only if paired with
-#'              `is_game`)
-#' @param game_types vector of integers Game-type(s) where 1=pre-season,
-#'                   2=regular, and 3=playoffs
+#' @param game_types vector of integers where 1=pre-season, 2=regular, and 
+#'                   3=playoffs
+#' @param dates vector of strings in 'YYYY-MM-DD' *only if paired with `is_game`
+#' @param report string
+#' @param is_aggregate boolean
+#' @param is_game boolean
 #' @return tibble with one row per skater or game
 #' @examples
 #' regular_skater_shootout_20242025 <- get_skater_statistics(
 #'   season=20242025,
-#'   report='shootout',
-#'   game_types=c(2)
+#'   game_types=c(2),
+#'   report='shootout'
 #' )
 #' @export
 
 get_skater_statistics <- function(
-  season=get_season_now()$seasonId,
-  report='summary',
-  teams=1:100,
-  is_aggregate=FALSE,
-  is_game=FALSE,
-  dates=c('2025-01-01'),
-  game_types=1:3
-  ) {
+    season=get_season_now()$seasonId,
+    teams=1:100,
+    game_types=1:3,
+    dates=c('2025-01-01'),
+    report='summary',
+    is_aggregate=FALSE,
+    is_game=FALSE
+) {
   if (is_game) {
     for (date in dates) {
       if (!grepl('^\\d{4}-\\d{2}-\\d{2}$', date)) {
@@ -156,11 +112,11 @@ get_skater_statistics <- function(
         isGame=TRUE,
         isAggregate=is_aggregate,
         cayenneExp=sprintf(
-        'seasonId=%s and gameDate in (%s) and teamId in (%s) and gameTypeId in (%s)',
-        season,
-        paste0('\'', dates, '\'', collapse=','),
-        paste(teams, collapse=','),
-        paste(game_types, collapse=',')
+          'seasonId=%s and gameDate in (%s) and teamId in (%s) and gameTypeId in (%s)',
+          season,
+          paste0('\'', dates, '\'', collapse=','),
+          paste(teams, collapse=','),
+          paste(game_types, collapse=',')
         )
       ),
       type=2
@@ -182,5 +138,52 @@ get_skater_statistics <- function(
       type=2
     )
   }
+  return(tibble::as_tibble(out$data))
+}
+
+#' Get skater statistics leaders by season, game-type, and category
+#' 
+#' `get_skater_leaders()` retrieves information on each skater for a given `season`, `game_type`, and `category`, including but not limited to their ID, name, and statistics.
+#' 
+#' @param season integer in YYYYYYYY
+#' @param game_type integer where 2=regular and 3=playoffs
+#' @param category string of 'assists', 'goals', 'goalsSh', 'goalsPp', 'points',
+#'                 'penaltyMins', 'toi', 'plusMinus', or 'faceoffLeaders'
+#' @return tibble with one row per skater
+#' @examples
+#' playoff_toi_leaders_20242025 <- get_skater_leaders(
+#'   season=20242025,
+#'   game_type=3,
+#'   category='toi'
+#' )
+#' @export
+
+get_skater_leaders <- function(
+    season=get_season_now()$seasonId,
+    game_type=2,
+    category='points'
+) {
+  out <- nhl_api(
+    path=sprintf('skater-stats-leaders/%s/%s', season, game_type),
+    query=list(categories=category, limit=-1),
+    type=1
+  )
+  return(tibble::as_tibble(out[[category]]))
+}
+
+#' Get skater milestones
+#' 
+#' `get_skater_milestones()` retrieves information on each skater close to a milestone, including but not limited to their ID, name, and statistics.
+#' 
+#' @return tibble with one row per skater
+#' @examples
+#' skater_milestones <- get_skater_milestones()
+#' @export
+
+get_skater_milestones <- function() {
+  out <- nhl_api(
+    path='milestones/skaters',
+    type=2
+  )
   return(tibble::as_tibble(out$data))
 }

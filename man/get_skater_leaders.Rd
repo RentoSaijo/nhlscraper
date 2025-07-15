@@ -11,18 +11,18 @@ get_skater_leaders(
 )
 }
 \arguments{
-\item{season}{integer Season in YYYYYYYY}
+\item{season}{integer in YYYYYYYY}
 
-\item{game_type}{integer GameType where 2=regular and 3=playoffs}
+\item{game_type}{integer where 2=regular and 3=playoffs}
 
-\item{category}{string e.g. assists, goals, goalsSh, goalsPp, points,
-penaltyMins, toi, plusMinus, faceoffLeaders}
+\item{category}{string of 'assists', 'goals', 'goalsSh', 'goalsPp', 'points',
+'penaltyMins', 'toi', 'plusMinus', or 'faceoffLeaders'}
 }
 \value{
 tibble with one row per skater
 }
 \description{
-Get skater statistics leaders by season, game-type, and category
+\code{get_skater_leaders()} retrieves information on each skater for a given \code{season}, \code{game_type}, and \code{category}, including but not limited to their ID, name, and statistics.
 }
 \examples{
 playoff_toi_leaders_20242025 <- get_skater_leaders(

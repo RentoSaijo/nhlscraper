@@ -2,20 +2,20 @@
 % Please edit documentation in R/Skater.R
 \name{get_skaters}
 \alias{get_skaters}
-\title{Get all skaters' biographies by range of seasons}
+\title{Get skaters' biographies by range of seasons}
 \usage{
 get_skaters(start_season = 19171918, end_season = get_season_now()$seasonId)
 }
 \arguments{
-\item{start_season}{integer Season to start search in YYYYYYYY}
+\item{start_season}{integer in YYYYYYYY}
 
-\item{end_season}{integer Season to end search in YYYYYYYY}
+\item{end_season}{integer in YYYYYYYY}
 }
 \value{
 tibble with one row per skater
 }
 \description{
-Get all skaters' biographies by range of seasons
+\code{get_goalies()} retrieves information on each skater for a given \code{start_season} and \code{end_season}, including but not limited to their ID, name, bio-metrics, and career statistics. Will soon be deprecated as \code{get_players()} can list all players and their IDs much more efficiently.
 }
 \examples{
 skaters_2000s <- get_skaters(start_season=20002001, end_season=20242025)
