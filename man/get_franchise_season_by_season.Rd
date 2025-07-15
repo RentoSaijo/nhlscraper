@@ -10,7 +10,7 @@ get_franchise_season_by_season()
 tibble with one row per franchise's season
 }
 \description{
-Get all franchises' season-by-season results
+\code{get_franchise_season_by_season()} retrieves information on each franchise's season, including but not limited to their ID, decision, final playoff round, and statistics.
 }
 \examples{
 all_franchise_sbs <- get_franchise_season_by_season()

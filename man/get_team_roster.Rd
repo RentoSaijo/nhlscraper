@@ -13,7 +13,7 @@ get_team_roster(
 \arguments{
 \item{team}{string 3-letter Code}
 
-\item{season}{integer Season in YYYYYYYY}
+\item{season}{integer in YYYYYYYY}
 
 \item{player_type}{string of 'forwards', 'defensemen', or 'goalies'}
 }
@@ -21,7 +21,7 @@ get_team_roster(
 tibble with one row per player
 }
 \description{
-Get roster by team, season, and player-type
+\code{get_team_roster()} retrieves information on each player for a given set of \code{team}, \code{season}, and \code{player_type}, including but not limited to their ID, name, bio-metrics, and birth date and location. Access \code{get_teams()} for \code{team} and \code{get_team_seasons()} for \code{season} references.
 }
 \examples{
 COL_defensemen_20242025 <- get_team_roster(

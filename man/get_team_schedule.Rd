@@ -15,7 +15,7 @@ get_team_schedule(team = "BOS", season = get_season_now()$seasonId)
 tibble with one row per game
 }
 \description{
-Get schedule by team and season
+\code{get_team_schedule()} retrieves information on each game for a given set of \code{team} and \code{season}, including but not limited to their ID, season, type, start date and time, and home and visiting teams' IDs and scores. Access \code{get_teams()} for \code{team} and \code{get_team_seasons()} for \code{season} references.
 }
 \examples{
 COL_schedule_20242025 <- get_team_schedule(team='COL', season=20242025)

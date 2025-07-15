@@ -10,7 +10,7 @@ get_franchises()
 tibble with one row per franchise
 }
 \description{
-Get all franchises
+\code{get_franchises()} retrieves information on each franchise, including but not limited to their ID; first and last seasons' IDs; captain, coach, and general manager histories; and retired numbers.
 }
 \examples{
 all_franchises <- get_franchises()

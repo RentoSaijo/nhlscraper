@@ -1,5 +1,7 @@
 #' Get all teams
 #' 
+#' `get_teams()` retrieves information on each team, including but not limited to their ID, name, and 3-letter code.
+#' 
 #' @return tibble with one row per team
 #' @examples
 #' all_teams <- get_teams()
@@ -16,6 +18,8 @@ get_teams <- function() {
 
 #' Get season(s) for which team played in regular season and/or playoffs
 #' 
+#' `get_team_seasons()` retrieves information on each season for a given `team`, including but not limited to their ID and game-type(s). Access `get_teams()` for `team` reference.
+#' 
 #' @param team 3-letter Code
 #' @return tibble with one row per season
 #' @examples
@@ -25,7 +29,6 @@ get_teams <- function() {
 get_team_seasons <- function(team='BOS') {
   out <- nhl_api(
     path=sprintf('club-stats-season/%s', team),
-    query=list(),
     type=1
   )
   if (length(out)==4) {
@@ -34,12 +37,14 @@ get_team_seasons <- function(team='BOS') {
   return(tibble::as_tibble(out))
 }
 
-#' Get team statistics by season
+#' Get team statistics
+#' 
+#' `get_team_statistics()` retrieves information on each team or game for a given set of `season`, `game_types`, and `report`. `dates` must be given when paired with `is_game` as the default range will return incomplete data (too wide).  Access `get_configuration()` for what information each combination of `report`, `is_aggregate` and `is_game` can provide. Access `get_team_seasons()` for `season` and `dates` references. Will soon be reworked for easier access.
 #' 
 #' @param season integer in YYYYYYYY
 #' @param game_types vector of integers where 1=pre-season, 2=regular, and 
 #'                   3=playoffs
-#' @param dates vector of strings in 'YYYY-MM-DD' *only if paired with `is_game`
+#' @param dates vector of strings in 'YYYY-MM-DD'
 #' @param report string
 #' @param is_aggregate boolean
 #' @param is_game boolean
@@ -103,8 +108,10 @@ get_team_statistics <- function(
 
 #' Get roster by team, season, and player-type
 #' 
+#' `get_team_roster()` retrieves information on each player for a given set of `team`, `season`, and `player_type`, including but not limited to their ID, name, bio-metrics, and birth date and location. Access `get_teams()` for `team` and `get_team_seasons()` for `season` references.
+#' 
 #' @param team string 3-letter Code
-#' @param season integer Season in YYYYYYYY
+#' @param season integer in YYYYYYYY
 #' @param player_type string of 'forwards', 'defensemen', or 'goalies'
 #' @return tibble with one row per player
 #' @examples
@@ -122,13 +129,14 @@ get_team_roster <- function(
 ) {
   out <- nhl_api(
     path=sprintf('roster/%s/%s', team, season),
-    query=list(),
     type=1
   )
   return(tibble::as_tibble(out[[player_type]]))
 }
 
 #' Get roster statistics by team, season, game-type, and player-type
+#' 
+#' `get_team_roster_statistics()` retrieves information on each player for a given set of `team`, `season`, `game_type` and `player_type`, including but not limited to their ID, name, and statistics. Access `get_teams()` for `team` and `get_team_seasons()` for `season` references.
 #' 
 #' @param team string 3-letter Code
 #' @param season integer in YYYYYYYY
@@ -152,13 +160,14 @@ get_team_roster_statistics <- function(
 ) {
   out <- nhl_api(
     path=sprintf('club-stats/%s/%s/%s', team, season, game_type),
-    query=list(),
     type=1
   )
   return(tibble::as_tibble(out[[player_type]]))
 }
 
 #' Get prospects by team and player-type
+#' 
+#' `get_team_prospects()` retrieves information on each prospect for a given set of `team` and `player_type`, including but not limited to their ID, name, bio-metrics, and birth date and location. Access `get_teams()` for `team` reference.
 #' 
 #' @param team string 3-letter Code
 #' @param player_type string of 'forwards', 'defensemen', or 'goalies'
@@ -173,13 +182,14 @@ get_team_roster_statistics <- function(
 get_team_prospects <- function(team='BOS', player_type='forwards') {
   out <- nhl_api(
     path=sprintf('prospects/%s', team),
-    query=list(),
     type=1
   )
   return(tibble::as_tibble(out[[player_type]]))
 }
 
 #' Get schedule by team and season
+#' 
+#' `get_team_schedule()` retrieves information on each game for a given set of `team` and `season`, including but not limited to their ID, season, type, start date and time, and home and visiting teams' IDs and scores. Access `get_teams()` for `team` and `get_team_seasons()` for `season` references.
 #' 
 #' @param team string 3-letter Code
 #' @param season integer in YYYYYYYY
@@ -191,13 +201,14 @@ get_team_prospects <- function(team='BOS', player_type='forwards') {
 get_team_schedule <- function(team='BOS', season=get_season_now()$seasonId) {
   out <- nhl_api(
     path=sprintf('club-schedule-season/%s/%s', team, season),
-    query=list(),
     type=1
   )
   return(tibble::as_tibble(out$games))
 }
 
 #' Get team scoreboard as of now
+#' 
+#' `get_team_scoreboard()` retrieves information on the current game for a given `team`, including but not limited to their ID, season, type, start date and time, and home and visiting teams' IDs and scores. Access `get_teams()` for `team` reference.
 #' 
 #' @param team string 3-letter Code
 #' @return tibble with one row per game
@@ -208,7 +219,6 @@ get_team_schedule <- function(team='BOS', season=get_season_now()$seasonId) {
 get_team_scoreboard <- function(team='BOS') {
   out <- nhl_api(
     path=sprintf('scoreboard/%s/now', team),
-    query=list(),
     type=1
   )
   if (is.null(out$gamesByDate)) {
@@ -222,6 +232,8 @@ get_team_scoreboard <- function(team='BOS') {
 }
 
 #' Get all franchises
+#' 
+#' `get_franchises()` retrieves information on each franchise, including but not limited to their ID; first and last seasons' IDs; captain, coach, and general manager histories; and retired numbers.
 #' 
 #' @importFrom magrittr %>%
 #' @return tibble with one row per franchise
@@ -246,6 +258,8 @@ get_franchises <- function() {
 }
 
 #' Get all franchises' season-by-season results
+#' 
+#' `get_franchise_season_by_season()` retrieves information on each franchise's season, including but not limited to their ID, decision, final playoff round, and statistics.
 #' 
 #' @return tibble with one row per franchise's season
 #' @examples

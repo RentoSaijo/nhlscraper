@@ -24,7 +24,7 @@ get_team_roster_statistics(
 tibble with one row per player
 }
 \description{
-Get roster statistics by team, season, game-type, and player-type
+\code{get_team_roster_statistics()} retrieves information on each player for a given set of \code{team}, \code{season}, \code{game_type} and \code{player_type}, including but not limited to their ID, name, and statistics. Access \code{get_teams()} for \code{team} and \code{get_team_seasons()} for \code{season} references.
 }
 \examples{
 regular_COL_goalies_statistics_20242025 <- get_team_roster_statistics(

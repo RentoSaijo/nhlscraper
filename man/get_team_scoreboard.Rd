@@ -13,7 +13,7 @@ get_team_scoreboard(team = "BOS")
 tibble with one row per game
 }
 \description{
-Get team scoreboard as of now
+\code{get_team_scoreboard()} retrieves information on the current game for a given \code{team}, including but not limited to their ID, season, type, start date and time, and home and visiting teams' IDs and scores. Access \code{get_teams()} for \code{team} reference.
 }
 \examples{
 FLA_scoreboard_now <- get_team_scoreboard(team='FLA')

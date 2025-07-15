@@ -13,7 +13,7 @@ get_team_seasons(team = "BOS")
 tibble with one row per season
 }
 \description{
-Get season(s) for which team played in regular season and/or playoffs
+\code{get_team_seasons()} retrieves information on each season for a given \code{team}, including but not limited to their ID and game-type(s). Access \code{get_teams()} for \code{team} reference.
 }
 \examples{
 COL_seasons <- get_team_seasons(team='COL')

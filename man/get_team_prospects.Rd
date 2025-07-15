@@ -15,7 +15,7 @@ get_team_prospects(team = "BOS", player_type = "forwards")
 tibble with one row per player
 }
 \description{
-Get prospects by team and player-type
+\code{get_team_prospects()} retrieves information on each prospect for a given set of \code{team} and \code{player_type}, including but not limited to their ID, name, bio-metrics, and birth date and location. Access \code{get_teams()} for \code{team} reference.
 }
 \examples{
 COL_defensemen_prospects <- get_team_prospects(

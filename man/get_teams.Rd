@@ -10,7 +10,7 @@ get_teams()
 tibble with one row per team
 }
 \description{
-Get all teams
+\code{get_teams()} retrieves information on each team, including but not limited to their ID, name, and 3-letter code.
 }
 \examples{
 all_teams <- get_teams()
