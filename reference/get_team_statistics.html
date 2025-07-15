@@ -62,31 +62,28 @@
 
 
 <dl><dt id="arg-season">season<a class="anchor" aria-label="anchor" href="#arg-season"></a></dt>
-<dd><p>integer Season in YYYYYYYY</p></dd>
+<dd><p>integer in YYYYYYYY</p></dd>
 
 
 <dt id="arg-report">report<a class="anchor" aria-label="anchor" href="#arg-report"></a></dt>
-<dd><p>string Report (check <code><a href="get_configuration.html">get_configuration()</a></code> for possible inputs)</p></dd>
+<dd><p>string</p></dd>
 
 
 <dt id="arg-is-aggregate">is_aggregate<a class="anchor" aria-label="anchor" href="#arg-is-aggregate"></a></dt>
-<dd><p>boolean isAggregate where TRUE=regular and playoffs
-combined, if applicable</p></dd>
+<dd><p>boolean</p></dd>
 
 
 <dt id="arg-is-game">is_game<a class="anchor" aria-label="anchor" href="#arg-is-game"></a></dt>
-<dd><p>boolean isGame where TRUE=rows by games and FALSE=rows by
-teams</p></dd>
+<dd><p>boolean</p></dd>
 
 
 <dt id="arg-dates">dates<a class="anchor" aria-label="anchor" href="#arg-dates"></a></dt>
-<dd><p>vector of strings Date(s) in 'YYYY-MM-DD' (only if paired with
-<code>is_game</code>; too many dates will result in incomplete data)</p></dd>
+<dd><p>vector of strings in 'YYYY-MM-DD' *only if paired with <code>is_game</code></p></dd>
 
 
 <dt id="arg-game-types">game_types<a class="anchor" aria-label="anchor" href="#arg-game-types"></a></dt>
-<dd><p>vector of integers Game-type(s) where 1=pre-season,
-2=regular, and 3=playoffs</p></dd>
+<dd><p>vector of integers where 1=pre-season, 2=regular, and
+3=playoffs</p></dd>
 
 </dl></div>
     <div class="section level2">
