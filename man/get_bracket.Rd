@@ -13,7 +13,7 @@ get_bracket(season = get_season_now()$seasonId - 1)
 tibble with one row per series
 }
 \description{
-\code{get_bracket()} retrieves information on each series for a given \code{season}, including but not limited to their title, abbreviation, 1-letter code, round, top and bottom seeds, and winning and losing teams' IDs.
+\code{get_bracket()} retrieves information on each series for a given \code{season}, including but not limited to their title, abbreviation, 1-letter code, round, top and bottom seeds, and winning and losing teams' IDs. Access \code{get_seasons()} for \code{season} reference.
 }
 \examples{
 bracket_20242025 <- get_bracket(season=20242025)

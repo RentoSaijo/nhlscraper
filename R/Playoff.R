@@ -1,6 +1,6 @@
 #' Get bracket by season
 #' 
-#' `get_bracket()` retrieves information on each series for a given `season`, including but not limited to their title, abbreviation, 1-letter code, round, top and bottom seeds, and winning and losing teams' IDs.
+#' `get_bracket()` retrieves information on each series for a given `season`, including but not limited to their title, abbreviation, 1-letter code, round, top and bottom seeds, and winning and losing teams' IDs. Access `get_seasons()` for `season` reference.
 #' 
 #' @param season integer in YYYYYYYY
 #' @return tibble with one row per series
@@ -18,7 +18,7 @@ get_bracket <- function(season=get_season_now()$seasonId-1) {
 
 #' Get series by season and round
 #' 
-#' `get_series()` retrieves information on each series for a given `season` and `round`, including but not limited to their label, 1-letter code, top and bottom seeds, and winning and losing teams' IDs.
+#' `get_series()` retrieves information on each series for a given set of `season` and `round`, including but not limited to their label, 1-letter code, top and bottom seeds, and winning and losing teams' IDs. Access `get_seasons()` for `season` reference.
 #' 
 #' @param season integer in YYYYYYYY
 #' @param round integer of 1:4
@@ -37,7 +37,7 @@ get_series <- function(season=get_season_now()$seasonId, round=1) {
 
 #' Get schedule by season and series
 #' 
-#' `get_series_schedule()` retrieves information on each game for a given `season` and `series`, including but not limited to their ID; venue; start date and time; and home and away teams' IDs, names, and scores.
+#' `get_series_schedule()` retrieves information on each game for a given set of `season` and `series`, including but not limited to their ID; venue; start date and time; and home and away teams' IDs, names, and scores. Access `get_seasons()` for `season` and `get_bracket()` for `series` references.
 #' 
 #' @param season integer in YYYYYYYY
 #' @param series string 1-letter Code

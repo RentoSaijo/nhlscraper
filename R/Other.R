@@ -85,7 +85,7 @@ get_venues <- function() {
 
 #' Get attendance for all seasons
 #' 
-#' `get_attendance()` retrieves information on each season, including but not limited to their ID and regular and playoff attendance. May merge with `get_seasons()`.
+#' `get_attendance()` retrieves information on each season, including but not limited to their ID and regular and playoff attendance. May soon be merged with `get_seasons()`.
 #' 
 #' @return tibble with one row per season
 #' @examples
@@ -136,7 +136,7 @@ get_streams <- function() {
 
 #' Get TV schedule by date
 #' 
-#' `get_tv_schedule()` retrieves information on each TV program for a given `date`, including but not limited to their title, description, start and end times, and broadcast status.
+#' `get_tv_schedule()` retrieves information on each TV program for a given `date`, including but not limited to their title, description, start and end times, and broadcast status. Access `get_seasons()` for `date` reference.
 #' 
 #' @param date string in 'YYYY-MM-DD'
 #' @return tibble with one row per program
@@ -174,7 +174,7 @@ get_season_now <- function() {
 
 #' Get partner odds as of now
 #' 
-#' `get_partner_odds()` retrieves partner-provided information on each game for a given `country`, including but not limited to their ID and home and away team odds.
+#' `get_partner_odds()` retrieves partner-provided information on each game for a given `country`, including but not limited to their ID and home and away team odds. Access `get_countries()` for `country` reference.
 #' 
 #' @param country string 2-letter Code
 #' @return tibble with one row per game

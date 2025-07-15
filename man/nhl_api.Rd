@@ -7,11 +7,11 @@
 nhl_api(path, query = list(), type)
 }
 \arguments{
-\item{path}{String API path}
+\item{path}{String}
 
-\item{query}{list Query parameters}
+\item{query}{list}
 
-\item{type}{integer Type where 1=api-web, 2=api.nhle, and 3=records.nhl}
+\item{type}{integer where 1=api-web, 2=api.nhle, and 3=records.nhl}
 }
 \value{
 parsed JSON

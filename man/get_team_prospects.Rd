@@ -7,10 +7,9 @@
 get_team_prospects(team = "BOS", player_type = "forwards")
 }
 \arguments{
-\item{team}{string 3-letter team code}
+\item{team}{string 3-letter Code}
 
-\item{player_type}{string Player-type of 'forwards', 'defensemen', or
-'goalies'}
+\item{player_type}{string of 'forwards', 'defensemen', or 'goalies'}
 }
 \value{
 tibble with one row per player

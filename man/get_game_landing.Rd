@@ -13,7 +13,7 @@ get_game_landing(game = 2024020602)
 list of various items
 }
 \description{
-\code{get_game_landing()} retrieves GC-provided information on a \code{game}, including but not limited to its type, venue, start time, clock, home and away teams, and TV broadcast(s). There exists many methods to grab game IDs; the easiest is by using \code{get_games()}.
+\code{get_game_landing()} retrieves GC-provided information on a \code{game}, including but not limited to its type, venue, start time, clock, home and away teams, and TV broadcast(s). Access \code{get_games()} for \code{game} reference.
 }
 \examples{
 game_landing_2024030411 <- get_game_landing(game=2024030411)

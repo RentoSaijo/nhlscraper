@@ -14,21 +14,18 @@ get_team_statistics(
 )
 }
 \arguments{
-\item{season}{integer Season in YYYYYYYY}
+\item{season}{integer in YYYYYYYY}
 
-\item{report}{string Report (check \code{get_configuration()} for possible inputs)}
+\item{report}{string}
 
-\item{is_aggregate}{boolean isAggregate where TRUE=regular and playoffs
-combined, if applicable}
+\item{is_aggregate}{boolean}
 
-\item{is_game}{boolean isGame where TRUE=rows by games and FALSE=rows by
-teams}
+\item{is_game}{boolean}
 
-\item{dates}{vector of strings Date(s) in 'YYYY-MM-DD' (only if paired with
-\code{is_game}; too many dates will result in incomplete data)}
+\item{dates}{vector of strings in 'YYYY-MM-DD' *only if paired with \code{is_game}}
 
-\item{game_types}{vector of integers Game-type(s) where 1=pre-season,
-2=regular, and 3=playoffs}
+\item{game_types}{vector of integers where 1=pre-season, 2=regular, and
+3=playoffs}
 }
 \value{
 tibble with one row per team or game

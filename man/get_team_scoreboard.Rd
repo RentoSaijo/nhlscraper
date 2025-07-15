@@ -7,7 +7,7 @@
 get_team_scoreboard(team = "BOS")
 }
 \arguments{
-\item{team}{string 3-letter team code}
+\item{team}{string 3-letter Code}
 }
 \value{
 tibble with one row per game

@@ -12,13 +12,13 @@ get_team_roster_statistics(
 )
 }
 \arguments{
-\item{team}{string 3-letter team code}
+\item{team}{string 3-letter Code}
 
-\item{season}{integer Season in YYYYYYYY}
+\item{season}{integer in YYYYYYYY}
 
-\item{game_type}{integer Game-type where 2=regular and 3=playoffs}
+\item{game_type}{integer where 2=regular and 3=playoffs}
 
-\item{player_type}{string Player-type of 'skaters' or 'goalies'}
+\item{player_type}{string of 'skaters' or 'goalies'}
 }
 \value{
 tibble with one row per player

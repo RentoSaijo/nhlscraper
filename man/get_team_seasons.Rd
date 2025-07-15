@@ -7,7 +7,7 @@
 get_team_seasons(team = "BOS")
 }
 \arguments{
-\item{team}{string 3-letter team code}
+\item{team}{3-letter Code}
 }
 \value{
 tibble with one row per season

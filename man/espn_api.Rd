@@ -7,11 +7,11 @@
 espn_api(path, query = list(), type)
 }
 \arguments{
-\item{path}{String API path}
+\item{path}{String}
 
-\item{query}{list Query parameters}
+\item{query}{list}
 
-\item{type}{integer Type where 1=site.api and 2=sports.core}
+\item{type}{integer where 1=site.api and 2=sports.core}
 }
 \value{
 parsed JSON

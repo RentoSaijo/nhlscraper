@@ -1,6 +1,6 @@
 #' Get skaters' biographies by range of seasons
 #' 
-#' `get_goalies()` retrieves information on each skater for a given `start_season` and `end_season`, including but not limited to their ID, name, bio-metrics, and career statistics. Will soon be deprecated as `get_players()` can list all players and their IDs much more efficiently.
+#' `get_skaters()` retrieves information on each skater for a given set of `start_season` and `end_season`, including but not limited to their ID, name, bio-metrics, and career statistics. Access `get_seasons()` for `start_season` and `end_season` references. Will soon be deprecated as `get_players()` can list all players and their IDs much more efficiently.
 #' 
 #' @importFrom magrittr %>%
 #' @param start_season integer in YYYYYYYY
@@ -13,7 +13,7 @@
 get_skaters <- function(
     start_season=19171918,
     end_season=get_season_now()$seasonId
-  ) {
+) {
   start_year <- start_season %/% 10000
   end_year <- end_season %% 10000
   seasons <- paste0(
@@ -71,7 +71,7 @@ get_skaters <- function(
 
 #' Get skater statistics
 #' 
-#' `get_skater_statistics()` retrieves information on each skater or game for (a) given `season`, `teams`, `game_types`, and `report`. Check `get_configuration()` for what information each combination of `report`, `is_aggregate` and `is_game` can provide; `get_teams()` for team IDs; and `get_seasons()` for date references. `dates` must be given when paired with `is_game` as the default range will return incomplete data (too wide); it will be ignored otherwise. Will soon be reworked for easier access.
+#' `get_skater_statistics()` retrieves information on each skater or game for a given set of `season`, `teams`, `game_types`, and `report`. `dates` must be given when paired with `is_game` as the default range will return incomplete data (too wide).  Access `get_configuration()` for what information each combination of `report`, `is_aggregate` and `is_game` can provide. Access `get_seasons()` for `season` and `dates` and `get_teams()` for `teams` references. Will soon be reworked for easier access.
 #' 
 #' @param season integer in YYYYYYYY
 #' @param teams vector of integers Team ID(s)
@@ -143,7 +143,7 @@ get_skater_statistics <- function(
 
 #' Get skater statistics leaders by season, game-type, and category
 #' 
-#' `get_skater_leaders()` retrieves information on each skater for a given `season`, `game_type`, and `category`, including but not limited to their ID, name, and statistics.
+#' `get_skater_leaders()` retrieves information on each skater for a given set of `season`, `game_type`, and `category`, including but not limited to their ID, name, and statistics. Access `get_seasons()` for `season` reference.
 #' 
 #' @param season integer in YYYYYYYY
 #' @param game_type integer where 2=regular and 3=playoffs

@@ -15,7 +15,7 @@ get_goalies(start_season = 19171918, end_season = get_season_now()$seasonId)
 tibble with one row per goalie
 }
 \description{
-\code{get_goalies()} retrieves information on each goalie for a given \code{start_season} and \code{end_season}, including but not limited to their ID, name, bio-metrics, and career statistics. Will soon be deprecated as \code{get_players()} can list all players and their IDs much more efficiently.
+\code{get_goalies()} retrieves information on each goalie for a given set of \code{start_season} and \code{end_season}, including but not limited to their ID, name, bio-metrics, and career statistics. Access \code{get_seasons()} for \code{start_season} and \code{end_season} references. Will soon be deprecated as \code{get_players()} can list all players and their IDs much more efficiently.
 }
 \examples{
 goalies_2000s <- get_goalies(start_season=20002001, end_season=20242025)

@@ -15,7 +15,7 @@ get_series(season = get_season_now()$seasonId, round = 1)
 tibble with one row per series
 }
 \description{
-\code{get_series()} retrieves information on each series for a given \code{season} and \code{round}, including but not limited to their label, 1-letter code, top and bottom seeds, and winning and losing teams' IDs.
+\code{get_series()} retrieves information on each series for a given set of \code{season} and \code{round}, including but not limited to their label, 1-letter code, top and bottom seeds, and winning and losing teams' IDs. Access \code{get_seasons()} for \code{season} reference.
 }
 \examples{
 CF_series_20242025 <- get_series(season=20242025, round=3)

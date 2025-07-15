@@ -21,7 +21,7 @@ get_player_game_log(
 tibble with one row per game
 }
 \description{
-\code{get_player_game_log()} retrieves information on each game for a given \code{player}, \code{season}, and \code{game_type}, including but not limited to their ID, date, and statistics.
+\code{get_player_game_log()} retrieves information on each game for a given set of \code{player}, \code{season}, and \code{game_type}, including but not limited to their ID, date, and statistics. Access \code{get_players()} for \code{player} and \code{get_seasons()} for \code{season} references.
 }
 \examples{
 playoff_Mikko_Rantanen_gl_20242025 <- get_player_game_log(

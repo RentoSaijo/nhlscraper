@@ -13,7 +13,7 @@ get_standings(date = "2025-01-01")
 tibble with one row per team
 }
 \description{
-\code{get_standings()} retrieves information on each team for a given \code{date}, including but not limited to their ID; name; conference; division; season, recent, and home-away statistics; and waiver sequence.
+\code{get_standings()} retrieves information on each team for a given \code{date}, including but not limited to their ID; name; conference; division; season, recent, and home-away statistics; and waiver sequence. Access \code{get_seasons()} for \code{date} reference.
 }
 \examples{
 standings_2025_01_02 <- get_standings(date='2025-01-02')

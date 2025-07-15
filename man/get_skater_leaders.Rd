@@ -22,7 +22,7 @@ get_skater_leaders(
 tibble with one row per skater
 }
 \description{
-\code{get_skater_leaders()} retrieves information on each skater for a given \code{season}, \code{game_type}, and \code{category}, including but not limited to their ID, name, and statistics.
+\code{get_skater_leaders()} retrieves information on each skater for a given set of \code{season}, \code{game_type}, and \code{category}, including but not limited to their ID, name, and statistics. Access \code{get_seasons()} for \code{season} reference.
 }
 \examples{
 playoff_toi_leaders_20242025 <- get_skater_leaders(

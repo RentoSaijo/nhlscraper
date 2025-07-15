@@ -10,7 +10,7 @@ get_attendance()
 tibble with one row per season
 }
 \description{
-\code{get_attendance()} retrieves information on each season, including but not limited to their ID and regular and playoff attendance. May merge with \code{get_seasons()}.
+\code{get_attendance()} retrieves information on each season, including but not limited to their ID and regular and playoff attendance. May soon be merged with \code{get_seasons()}.
 }
 \examples{
 all_attendance <- get_attendance()
