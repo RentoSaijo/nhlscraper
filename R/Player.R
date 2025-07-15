@@ -1,8 +1,27 @@
+#' Get all players
+#' 
+#' `get_players()` retrieves information on each player, including but not limited to their ID, name, bio-metrics, birth date and location, and hall-of-fame status.
+#'
+#' @return tibble with one row per player
+#' @examples
+#' all_players <- get_players()
+#' @export
+
+get_players <- function() {
+  out <- nhl_api(
+    path='player',
+    type=3
+  )
+  return(tibble::as_tibble(out$data))
+}
+
 #' Get game-log by player, season, and game-type
 #' 
+#' `get_player_game_log()` retrieves information on each game for a specified `player`, `season`, and `game-type`, including but not limited to their ID, date, and statistics.
+#' 
 #' @param player integer Player ID
-#' @param season integer Season in YYYYYYYY
-#' @param game_type integer Game-type where 2=regular and 3=playoffs
+#' @param season integer in YYYYYYYY
+#' @param game_type integer where 2=regular and 3=playoffs
 #' @return tibble with one row per game
 #' @examples
 #' playoff_Mikko_Rantanen_gl_20242025 <- get_player_game_log(
@@ -26,6 +45,8 @@ get_player_game_log <- function(
 
 #' Get landing by player
 #' 
+#' `get_player_landing()` retrieves information on a `player`, including but not limited to his ID, name, bio-metrics, career statistics, and awards.
+#' 
 #' @param player integer Player ID
 #' @return list with various items
 #' @examples
@@ -44,6 +65,8 @@ get_player_landing <- function(player=8480039) {
 }
 
 #' Get 'spotlight' players as of now
+#' 
+#' `get_spotlight_players()` retrieves information on each 'spotlight' player, including but not limited to their ID, name, position, and sweater number.
 #'
 #' @return tibble with one row per player
 #' @examples
@@ -56,19 +79,4 @@ get_spotlight_players <- function() {
     type=1
   )
   return(tibble::as_tibble(out))
-}
-
-#' Get all players
-#'
-#' @return tibble with one row per player
-#' @examples
-#' all_players <- get_players()
-#' @export
-
-get_players <- function() {
-  out <- nhl_api(
-    path='player',
-    type=3
-  )
-  return(tibble::as_tibble(out$data))
 }

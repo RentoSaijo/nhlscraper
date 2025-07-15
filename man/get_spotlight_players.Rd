@@ -10,7 +10,7 @@ get_spotlight_players()
 tibble with one row per player
 }
 \description{
-Get 'spotlight' players as of now
+\code{get_spotlight_players()} retrieves information on each 'spotlight' player, including but not limited to their ID, name, position, and sweater number.
 }
 \examples{
 spotlight_players_now <- get_spotlight_players()

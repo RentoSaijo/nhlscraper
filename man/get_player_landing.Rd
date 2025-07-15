@@ -13,7 +13,7 @@ get_player_landing(player = 8480039)
 list with various items
 }
 \description{
-Get landing by player
+\code{get_player_landing()} retrieves information on a \code{player}, including but not limited to his ID, name, bio-metrics, career statistics, and awards.
 }
 \examples{
 Mikko_Rantanen_landing <- get_player_landing(player=8478420)

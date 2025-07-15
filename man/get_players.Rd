@@ -10,7 +10,7 @@ get_players()
 tibble with one row per player
 }
 \description{
-Get all players
+\code{get_players()} retrieves information on each player, including but not limited to their ID, name, bio-metrics, birth date and location, and hall-of-fame status.
 }
 \examples{
 all_players <- get_players()

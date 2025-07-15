@@ -13,15 +13,15 @@ get_player_game_log(
 \arguments{
 \item{player}{integer Player ID}
 
-\item{season}{integer Season in YYYYYYYY}
+\item{season}{integer in YYYYYYYY}
 
-\item{game_type}{integer Game-type where 2=regular and 3=playoffs}
+\item{game_type}{integer where 2=regular and 3=playoffs}
 }
 \value{
 tibble with one row per game
 }
 \description{
-Get game-log by player, season, and game-type
+\code{get_player_game_log()} retrieves information on each game for a specified \code{player}, \code{season}, and \code{game-type}, including but not limited to their ID, date, and statistics.
 }
 \examples{
 playoff_Mikko_Rantanen_gl_20242025 <- get_player_game_log(
