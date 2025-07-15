@@ -4,16 +4,13 @@
 \alias{get_franchise_vs_franchise}
 \title{Get all franchises' all-time records versus other franchises}
 \usage{
-get_franchise_vs_franchise(game_type = 2)
-}
-\arguments{
-\item{game_type}{integer Game-type where 2=regular and 3=playoffs}
+get_franchise_vs_franchise()
 }
 \value{
 tibble with one row per franchise versus franchise
 }
 \description{
-Get all franchises' all-time records versus other franchises
+\code{get_franchise_vs_franchise()} retrieves information on each franchise versus another franchise, including but not limited to their IDs, game-type ID, and all-time statistics.
 }
 \examples{
 franchise_vs_franchise <- get_franchise_vs_franchise()

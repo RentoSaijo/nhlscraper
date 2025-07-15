@@ -2,7 +2,7 @@
 % Please edit documentation in R/Record.R
 \name{get_franchise_team_totals}
 \alias{get_franchise_team_totals}
-\title{Get all franchises' teams' totals}
+\title{Get all franchises' teams' all-time totals}
 \usage{
 get_franchise_team_totals()
 }
@@ -10,7 +10,7 @@ get_franchise_team_totals()
 tibble with one row per team
 }
 \description{
-Get all franchises' teams' totals
+\code{get_franchise_team_totals()} retrieves information on each team, including but not limited to their ID, first and last seasons' IDs, and all-time statistics.
 }
 \examples{
 all_franchise_team_totals <- get_franchise_team_totals()
