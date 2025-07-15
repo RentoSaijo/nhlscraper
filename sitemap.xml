@@ -11,6 +11,7 @@
 <url><loc>https://rentosaijo.github.io/nhlscraper/reference/get_attendance.html</loc></url>
 <url><loc>https://rentosaijo.github.io/nhlscraper/reference/get_award_winners.html</loc></url>
 <url><loc>https://rentosaijo.github.io/nhlscraper/reference/get_awards.html</loc></url>
+<url><loc>https://rentosaijo.github.io/nhlscraper/reference/get_bracket.html</loc></url>
 <url><loc>https://rentosaijo.github.io/nhlscraper/reference/get_configuration.html</loc></url>
 <url><loc>https://rentosaijo.github.io/nhlscraper/reference/get_countries.html</loc></url>
 <url><loc>https://rentosaijo.github.io/nhlscraper/reference/get_draft_picks.html</loc></url>
@@ -52,13 +53,12 @@
 <url><loc>https://rentosaijo.github.io/nhlscraper/reference/get_player_game_log.html</loc></url>
 <url><loc>https://rentosaijo.github.io/nhlscraper/reference/get_player_landing.html</loc></url>
 <url><loc>https://rentosaijo.github.io/nhlscraper/reference/get_players.html</loc></url>
-<url><loc>https://rentosaijo.github.io/nhlscraper/reference/get_playoff_bracket.html</loc></url>
 <url><loc>https://rentosaijo.github.io/nhlscraper/reference/get_schedule.html</loc></url>
 <url><loc>https://rentosaijo.github.io/nhlscraper/reference/get_scoreboards.html</loc></url>
 <url><loc>https://rentosaijo.github.io/nhlscraper/reference/get_scores.html</loc></url>
 <url><loc>https://rentosaijo.github.io/nhlscraper/reference/get_season_now.html</loc></url>
 <url><loc>https://rentosaijo.github.io/nhlscraper/reference/get_seasons.html</loc></url>
-<url><loc>https://rentosaijo.github.io/nhlscraper/reference/get_series_carousel.html</loc></url>
+<url><loc>https://rentosaijo.github.io/nhlscraper/reference/get_series.html</loc></url>
 <url><loc>https://rentosaijo.github.io/nhlscraper/reference/get_series_schedule.html</loc></url>
 <url><loc>https://rentosaijo.github.io/nhlscraper/reference/get_shift_charts.html</loc></url>
 <url><loc>https://rentosaijo.github.io/nhlscraper/reference/get_skater_leaders.html</loc></url>
