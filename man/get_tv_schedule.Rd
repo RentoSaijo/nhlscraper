@@ -7,13 +7,13 @@
 get_tv_schedule(date = "2025-01-01")
 }
 \arguments{
-\item{date}{string Date in 'YYYY-MM-DD'}
+\item{date}{string in 'YYYY-MM-DD'}
 }
 \value{
 tibble with one row per program
 }
 \description{
-Get TV schedule by date
+\code{get_tv_schedule()} retrieves information on each TV program for a specified \code{date}, including but not limited to their title, description, start and end times, and broadcast status.
 }
 \examples{
 tv_schedule_2025_01_02 <- get_tv_schedule(date='2025-01-02')

@@ -10,7 +10,7 @@ get_countries()
 tibble with one row per country
 }
 \description{
-Get all countries
+\code{get_countries()} retrieves information on each country, including but not limited to their ID, name, 2-letter code, and 3-letter code.
 }
 \examples{
 all_countries <- get_countries()

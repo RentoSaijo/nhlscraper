@@ -7,10 +7,10 @@
 ping()
 }
 \value{
-boolean TRUE=status is okay and FALSE=status is not okay
+boolean TRUE=OK
 }
 \description{
-Ping
+\code{ping()} retrieves information on the API status.
 }
 \examples{
 online <- ping()

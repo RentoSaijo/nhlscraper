@@ -17,7 +17,7 @@ get_game_boxscore(game = 2024020602, team = "home", player_type = "forwards")
 tibble with one row per player
 }
 \description{
-\code{get_game_boxscore()} retrieves information about each player for a specified \code{game}, \code{team}, and \code{player_type}, including but not limited to their ID, name, sweater number, goals, assists, +/-, hits, blocks, shots-on-goal, giveaways, takeaways, time on ice, and number of shifts. There exists many methods to grab game IDs; the easiest is by using \code{get_games()}.
+\code{get_game_boxscore()} retrieves information on each player for a specified \code{game}, \code{team}, and \code{player_type}, including but not limited to their ID, name, sweater number, goals, assists, +/-, hits, blocks, shots-on-goal, giveaways, takeaways, time on ice, and number of shifts. There exists many methods to grab game IDs; the easiest is by using \code{get_games()}.
 }
 \examples{
 boxscore_2024030411_FLA_defensemen <- get_game_boxscore(

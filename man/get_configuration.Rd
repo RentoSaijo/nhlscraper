@@ -10,7 +10,7 @@ get_configuration()
 list with 5 items
 }
 \description{
-Get configuration for skater, goalie, and team statistics
+\code{get_configuration()} retrieves information on the outputs of the possible combinations of inputs for \code{get_team_statistics()}, \code{get_skater_statistics()}, and \code{get_goalie_statistics()}.
 }
 \examples{
 config <- get_configuration()

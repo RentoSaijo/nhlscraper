@@ -10,7 +10,7 @@ get_streams()
 tibble with one row per stream
 }
 \description{
-Get all streams
+\code{get_streams()} retrieves information on each stream, including but not limited to their ID, name, and URL.
 }
 \examples{
 all_streams <- get_streams()

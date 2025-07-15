@@ -13,7 +13,7 @@ get_schedule(date = "2025-01-01")
 tibble with one row per game
 }
 \description{
-\code{get_schedule()} retrieves information about each game for a specified \code{date}, including but not limited to their ID; type; venue; start time; tickets link; and home and away teams' IDs, names, and scores. Unable to conclude any major difference between this and \code{get_scores()}; may become deprecated in the future.
+\code{get_schedule()} retrieves information on each game for a specified \code{date}, including but not limited to their ID; type; venue; start time; tickets link; and home and away teams' IDs, names, and scores. Unable to conclude any major difference between this and \code{get_scores()}; may become deprecated in the future.
 }
 \examples{
 schedule_2025_01_02 <- get_schedule(date='2025-01-02')

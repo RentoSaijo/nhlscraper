@@ -1,6 +1,6 @@
 #' Get draft rankings by year and player-type
 #' 
-#' `get_draft_rankings()` retrieves information about each draft prospect for a specified `year` and `player_type`, including but not limited to their name, midterm and final ranks, position, bio-metrics, and birth day and location.
+#' `get_draft_rankings()` retrieves information on each draft prospect for a specified `year` and `player_type`, including but not limited to their name, midterm and final ranks, position, bio-metrics, and birth date and location.
 #' 
 #' @param year integer in YYYY
 #' @param player_type integer where 1=North American Skaters, 
@@ -24,7 +24,7 @@ get_draft_rankings <- function(
 
 #' Get all draft picks
 #' 
-#' `get_draft_picks()` retrieves information about each draft selection, including but not limited to their player ID, name, draft year, overall number, bio-metrics, and the pick's team history.
+#' `get_draft_picks()` retrieves information on each draft selection, including but not limited to their player ID, name, draft year, overall number, bio-metrics, and the pick's team history.
 #' 
 #' @return tibble with one row per pick
 #' @examples
@@ -41,7 +41,7 @@ get_draft_picks <- function() {
 
 #' Get draft tracker as of now
 #' 
-#' `get_draft_tracker()` retrieves live information about the latest draft, including but not limited to each pick's team ID, name, and overall number and selected player's name and position.
+#' `get_draft_tracker()` retrieves information on the latest draft, including but not limited to each pick's team ID, name, and overall number and selected player's name and position.
 #' 
 #' @return tibble with one row per pick
 #' @examples
@@ -58,7 +58,7 @@ get_draft_tracker <- function() {
 
 #' Get all drafts
 #' 
-#' `get_drafts()` retrieves information about each draft, including but not limited to their year, type, venue, minimum and maximum player ages, and number of rounds and picks.
+#' `get_drafts()` retrieves information on each draft, including but not limited to their year, type, venue, minimum and maximum player ages, and number of rounds and picks.
 #' 
 #' @importFrom magrittr %>%
 #' @return tibble with one row per draft

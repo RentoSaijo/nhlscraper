@@ -1,6 +1,6 @@
 #' Get all goalies' biographies by range of seasons
 #' 
-#' `get_goalies()` retrieves information about each goalie for a specified `start_season` and `end_season`, including but not limited to their ID, name, bio-metrics, and career statistics. This will soon become deprecated as `get_players()` can list all players and their IDs much quicker.
+#' `get_goalies()` retrieves information on each goalie for a specified `start_season` and `end_season`, including but not limited to their ID, name, bio-metrics, and career statistics. This will soon become deprecated as `get_players()` can list all players and their IDs much quicker.
 #' 
 #' @importFrom magrittr %>%
 #' @param start_season integer in YYYYYYYY
@@ -81,7 +81,7 @@ get_goalies <- function(
 
 #' Get goalie statistics leaders by season, game-type, and category
 #' 
-#' `get_goalie_leaders()` retrieves information about each goalie for a specified `season`, `game_type`, and `category`, including but not limited to their ID, name, and statistics.
+#' `get_goalie_leaders()` retrieves information on each goalie for a specified `season`, `game_type`, and `category`, including but not limited to their ID, name, and statistics.
 #' 
 #' @param season integer in YYYYYYYY
 #' @param game_type integer where 2=regular and 3=playoffs
@@ -111,7 +111,7 @@ get_goalie_leaders <- function(
 
 #' Get goalie milestones
 #' 
-#' `get_goalie_milestones()` retrieves information about each goalie close to a milestone, including but not limited to their ID, name, and statistics.
+#' `get_goalie_milestones()` retrieves information on each goalie close to a milestone, including but not limited to their ID, name, and statistics.
 #' 
 #' @return tibble with one row per goalie
 #' @examples
@@ -129,7 +129,7 @@ get_goalie_milestones <- function() {
 
 #' Get goalie statistics by season
 #' 
-#' `get_goalie_statistics()` retrieves information about each goalie or game for (a) specified `season`, `teams`, `game_types`, and `report`. Check `get_configuration()` for what information each combination of `report`, `is_aggregate` and `is_game` can provide; `get_teams()` for team IDs; and `get_seasons()` for date references. `dates` must be specified when paired with `is_game` as the default range will return incomplete data (too wide); it will be ignored otherwise. Will soon be reworked for easier access.
+#' `get_goalie_statistics()` retrieves information on each goalie or game for (a) specified `season`, `teams`, `game_types`, and `report`. Check `get_configuration()` for what information each combination of `report`, `is_aggregate` and `is_game` can provide; `get_teams()` for team IDs; and `get_seasons()` for date references. `dates` must be specified when paired with `is_game` as the default range will return incomplete data (too wide); it will be ignored otherwise. Will soon be reworked for easier access.
 #' 
 #' @param season integer in YYYYYYYY
 #' @param teams vector of integers Team ID(s)

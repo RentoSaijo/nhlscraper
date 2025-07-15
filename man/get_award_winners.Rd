@@ -10,7 +10,7 @@ get_award_winners()
 tibble with one row per winner/finalist
 }
 \description{
-\code{get_award_winners()} retrieves information about each award winner or finalist, including but not limited to their player, trophy, and season IDs; name; and vote count.
+\code{get_award_winners()} retrieves information on each award winner or finalist, including but not limited to their player, trophy, and season IDs; name; and vote count.
 }
 \examples{
 all_award_winners <- get_award_winners()

@@ -10,7 +10,7 @@ get_venues()
 tibble with one row per venue
 }
 \description{
-Get all venues
+\code{get_venues()} retrieves information on each venue, including but not limited to their ID, name, and location.
 }
 \examples{
 all_venues <- get_venues()

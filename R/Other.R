@@ -1,6 +1,8 @@
 #' Get TV schedule by date
 #' 
-#' @param date string Date in 'YYYY-MM-DD'
+#' `get_tv_schedule()` retrieves information on each TV program for a specified `date`, including but not limited to their title, description, start and end times, and broadcast status.
+#' 
+#' @param date string in 'YYYY-MM-DD'
 #' @return tibble with one row per program
 #' @examples
 #' tv_schedule_2025_01_02 <- get_tv_schedule(date='2025-01-02')
@@ -19,6 +21,8 @@ get_tv_schedule <- function(date='2025-01-01') {
 
 #' Get glossary
 #' 
+#' `get_glossary()` retrieves information on each terminology, including but not limited to their definition and abbreviation.
+#' 
 #' @return tibble with one row per terminology
 #' @examples
 #' glossary <- get_glossary()
@@ -33,6 +37,8 @@ get_glossary <- function() {
 }
 
 #' Get season as of now
+#' 
+#' `get_season_now()` retrieves information on the current season, including but not limited to its ID and game-type.
 #' 
 #' @return tibble with one row
 #' @examples
@@ -49,6 +55,8 @@ get_season_now <- function() {
 
 #' Get configuration for skater, goalie, and team statistics
 #' 
+#' `get_configuration()` retrieves information on the outputs of the possible combinations of inputs for `get_team_statistics()`, `get_skater_statistics()`, and `get_goalie_statistics()`.
+#' 
 #' @return list with 5 items
 #' @examples
 #' config <- get_configuration()
@@ -64,7 +72,9 @@ get_configuration <- function() {
 
 #' Ping
 #' 
-#' @return boolean TRUE=status is okay and FALSE=status is not okay
+#' `ping()` retrieves information on the API status.
+#' 
+#' @return boolean TRUE=OK
 #' @examples
 #' online <- ping()
 #' @export
@@ -78,6 +88,8 @@ ping <- function() {
 }
 
 #' Get all countries
+#' 
+#' `get_countries()` retrieves information on each country, including but not limited to their ID, name, 2-letter code, and 3-letter code.
 #' 
 #' @return tibble with one row per country
 #' @examples
@@ -94,6 +106,8 @@ get_countries <- function() {
 
 #' Get all streams
 #' 
+#' `get_streams()` retrieves information on each stream, including but not limited to their ID, name, and URL.
+#' 
 #' @return tibble with one row per stream
 #' @examples
 #' all_streams <- get_streams()
@@ -108,6 +122,8 @@ get_streams <- function() {
 }
 
 #' Get all venues
+#' 
+#' `get_venues()` retrieves information on each venue, including but not limited to their ID, name, and location.
 #' 
 #' @return tibble with one row per venue
 #' @examples
@@ -124,6 +140,8 @@ get_venues <- function() {
 
 #' Get all officials
 #' 
+#' `get_officials()` retrieves information on each official, including but not limited to their ID, name, and birth date and location.
+#' 
 #' @return tibble with one row per official
 #' @examples
 #' all_officials <- get_officials()
@@ -138,6 +156,8 @@ get_officials <- function() {
 }
 
 #' Get attendance for all seasons
+#' 
+#' `get_attendance()` retrieves information on each season, including but not limited to their ID and regular and playoff attendance. May merge with `get_seasons()`.
 #' 
 #' @return tibble with one row per season
 #' @examples
@@ -154,7 +174,9 @@ get_attendance <- function() {
 
 #' Get partner odds as of now
 #' 
-#' @param country string 2-letter country code e.g. 'US'
+#' `get_partner_odds()` retrieves NHL-partnered information on each game for a specified `country`, including but not limited to their ID and home and away team odds.
+#' 
+#' @param country string 2-letter code
 #' @return tibble with one row per game
 #' @examples
 #' partner_odds_now_CA <- get_partner_odds(country='CA')

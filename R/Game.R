@@ -1,6 +1,6 @@
 #' Get score(s) by date
 #' 
-#' `get_scores()` retrieves live information about each game for a specified `date`, including but not limited to their ID; type; venue; start time; period and intermission clocks; and home and away teams' IDs, names, and scores.
+#' `get_scores()` retrieves information on each game for a specified `date`, including but not limited to their ID; type; venue; start time; period and intermission clocks; and home and away teams' IDs, names, and scores.
 #' 
 #' @param date string in 'YYYY-MM-DD'
 #' @return tibble with one row per game
@@ -21,7 +21,7 @@ get_scores <- function(date='2025-01-01') {
 
 #' Get scoreboard(s) by date
 #' 
-#' `get_scoreboards()` retrieves information about each game for a specified `date`, including but not limited to their ID; type; venue; start time; tickets link; and home and away teams' IDs, names, and scores. Unable to conclude any major difference between this and `get_scores()`; may become deprecated in the future.
+#' `get_scoreboards()` retrieves information on each game for a specified `date`, including but not limited to their ID; type; venue; start time; tickets link; and home and away teams' IDs, names, and scores. Unable to conclude any major difference between this and `get_scores()`; may become deprecated in the future.
 #' 
 #' @param date string in 'YYYY-MM-DD'
 #' @return tibble with one row per game
@@ -49,7 +49,7 @@ get_scoreboards <- function(date='2025-01-01') {
 
 #' Get GameCenter (GC) play-by-play by game
 #' 
-#' `get_gc_play_by_play()` retrieves GC-provided information about each play for a specified `game`, including but not limited to their ID; type; time of occurrence; winning, losing, blocking, shooting, hitting, hit, scoring, assisting, committed-by, drawn-by, and/or served-by player IDs; and X and Y coordinates. There exists many methods to grab game IDs; the easiest is by using `get_games()`.
+#' `get_gc_play_by_play()` retrieves GC-provided information on each play for a specified `game`, including but not limited to their ID; type; time of occurrence; winning, losing, blocking, shooting, hitting, hit, scoring, assisting, committed-by, drawn-by, and/or served-by player IDs; and X and Y coordinates. There exists many methods to grab game IDs; the easiest is by using `get_games()`.
 #' 
 #' @param game integer Game ID
 #' @return tibble with one row per play
@@ -67,7 +67,7 @@ get_gc_play_by_play <- function(game=2024020602) {
 
 #' Get World Showcase (WSC) play-by-play by game
 #' 
-#' `get_wsc_play_by_play()` retrieves WSC-provided information about each play for a specified `game`, including but not limited to their ID; time and strength state of occurrence; winning, losing, blocking, shooting, hitting, hit, scoring, assisting, committed-by, drawn-by, and/or served-by player IDs; and X and Y coordinates. There exists many methods to grab game IDs; the easiest is by using `get_games()`.
+#' `get_wsc_play_by_play()` retrieves WSC-provided information on each play for a specified `game`, including but not limited to their ID; time and strength state of occurrence; winning, losing, blocking, shooting, hitting, hit, scoring, assisting, committed-by, drawn-by, and/or served-by player IDs; and X and Y coordinates. There exists many methods to grab game IDs; the easiest is by using `get_games()`.
 #'
 #' @param game integer Game ID
 #' @return tibble with one row per play
@@ -89,7 +89,7 @@ get_wsc_play_by_play <- function(game=2024020602) {
 
 #' Get boxscore by game, team, and player-type
 #' 
-#' `get_game_boxscore()` retrieves information about each player for a specified `game`, `team`, and `player_type`, including but not limited to their ID, name, sweater number, goals, assists, +/-, hits, blocks, shots-on-goal, giveaways, takeaways, time on ice, and number of shifts. There exists many methods to grab game IDs; the easiest is by using `get_games()`.
+#' `get_game_boxscore()` retrieves information on each player for a specified `game`, `team`, and `player_type`, including but not limited to their ID, name, sweater number, goals, assists, +/-, hits, blocks, shots-on-goal, giveaways, takeaways, time on ice, and number of shifts. There exists many methods to grab game IDs; the easiest is by using `get_games()`.
 #' 
 #' @param game integer Game ID
 #' @param team string of 'home' or 'away'
@@ -119,7 +119,7 @@ get_game_boxscore <- function(
 
 #' Get GameCenter (GC) game-landing by game
 #' 
-#' `get_game_landing()` retrieves GC-provided information about a `game`, including but not limited to its type, venue, start time, clock, home and away teams, and TV broadcast(s). There exists many methods to grab game IDs; the easiest is by using `get_games()`.
+#' `get_game_landing()` retrieves GC-provided information on a `game`, including but not limited to its type, venue, start time, clock, home and away teams, and TV broadcast(s). There exists many methods to grab game IDs; the easiest is by using `get_games()`.
 #' 
 #' @param game integer Game ID
 #' @return list of various items
@@ -140,7 +140,7 @@ get_game_landing <- function(game=2024020602) {
 
 #' Get World Showcase (WSC) game-story by game
 #' 
-#' `get_game_story()` retrieves WSC-provided information about a `game`, including but not limited to its type, venue, start time, clock, home and away teams, and TV broadcast(s). There exists many methods to grab game IDs; the easiest is by using `get_games()`.
+#' `get_game_story()` retrieves WSC-provided information on a `game`, including but not limited to its type, venue, start time, clock, home and away teams, and TV broadcast(s). There exists many methods to grab game IDs; the easiest is by using `get_games()`.
 #' 
 #' @param game integer Game ID
 #' @return list of various items
@@ -161,7 +161,7 @@ get_game_story <- function(game=2024020602) {
 
 #' Get all games
 #' 
-#' `get_games()` retrieves information about each game, including but not limited to their ID, season, type, date, start time, home and visiting teams' IDs and scores.
+#' `get_games()` retrieves information on each game, including but not limited to their ID, season, type, date, start time, home and visiting teams' IDs and scores.
 #' 
 #' @return tibble with one row per game
 #' @examples
@@ -178,7 +178,7 @@ get_games <- function() {
 
 #' Get shift charts
 #' 
-#' `get_shift_charts()` retrieves information about each shift for a specified `game`, including but not limited to their period, start and end times, and player's ID and name. There exists many methods to grab game IDs; the easiest is by using `get_games()`.
+#' `get_shift_charts()` retrieves information on each shift for a specified `game`, including but not limited to their period, start and end times, and player's ID and name. There exists many methods to grab game IDs; the easiest is by using `get_games()`.
 #' 
 #' @param game integer Game ID
 #' @return tibble with one row per shift

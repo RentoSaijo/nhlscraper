@@ -10,7 +10,7 @@ get_officials()
 tibble with one row per official
 }
 \description{
-Get all officials
+\code{get_officials()} retrieves information on each official, including but not limited to their ID, name, and birth date and location.
 }
 \examples{
 all_officials <- get_officials()

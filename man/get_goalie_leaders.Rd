@@ -22,7 +22,7 @@ get_goalie_leaders(
 tibble with one row per goalie
 }
 \description{
-\code{get_goalie_leaders()} retrieves information about each goalie for a specified \code{season}, \code{game_type}, and \code{category}, including but not limited to their ID, name, and statistics.
+\code{get_goalie_leaders()} retrieves information on each goalie for a specified \code{season}, \code{game_type}, and \code{category}, including but not limited to their ID, name, and statistics.
 }
 \examples{
 playoff_savePctg_leaders_20242025 <- get_goalie_leaders(

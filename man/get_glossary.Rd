@@ -10,7 +10,7 @@ get_glossary()
 tibble with one row per terminology
 }
 \description{
-Get glossary
+\code{get_glossary()} retrieves information on each terminology, including but not limited to their definition and abbreviation.
 }
 \examples{
 glossary <- get_glossary()

@@ -10,7 +10,7 @@ get_season_now()
 tibble with one row
 }
 \description{
-Get season as of now
+\code{get_season_now()} retrieves information on the current season, including but not limited to its ID and game-type.
 }
 \examples{
 season_now <- get_season_now()
