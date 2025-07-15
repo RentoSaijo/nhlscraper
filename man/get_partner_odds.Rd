@@ -7,13 +7,13 @@
 get_partner_odds(country = "US")
 }
 \arguments{
-\item{country}{string 2-letter code}
+\item{country}{string 2-letter Code}
 }
 \value{
 tibble with one row per game
 }
 \description{
-\code{get_partner_odds()} retrieves partner-provided information on each game for a specified \code{country}, including but not limited to their ID and home and away team odds.
+\code{get_partner_odds()} retrieves partner-provided information on each game for a given \code{country}, including but not limited to their ID and home and away team odds.
 }
 \examples{
 partner_odds_now_CA <- get_partner_odds(country='CA')

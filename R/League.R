@@ -34,7 +34,7 @@ get_standings_information <- function() {
 
 #' Get standings by date
 #' 
-#' `get_standings()` retrieves information on each team for a specified `date`, including but not limited to their ID; name; conference; division; season, recent, and home-away statistics; and waiver sequence.
+#' `get_standings()` retrieves information on each team for a given `date`, including but not limited to their ID; name; conference; division; season, recent, and home-away statistics; and waiver sequence.
 #' 
 #' @param date string in 'YYYY-MM-DD'
 #' @return tibble with one row per team
@@ -55,7 +55,7 @@ get_standings <- function(date='2025-01-01') {
 
 #' Get schedule by date
 #' 
-#' `get_schedule()` retrieves information on each game for a specified `date`, including but not limited to their ID; type; venue; start time; tickets link; and home and away teams' IDs, names, and scores. Unable to conclude any major difference between this and `get_scores()`; may become deprecated in the future.
+#' `get_schedule()` retrieves information on each game for a given `date`, including but not limited to their ID; type; venue; start time; tickets link; and home and away teams' IDs, names, and scores. Unable to conclude any major difference between this and `get_scores()`; may become deprecated in the future.
 #' 
 #' @param date string in 'YYYY-MM-DD'
 #' @return tibble with one row per game

@@ -5,14 +5,16 @@
 - Added new functions (using NHL Records and ESPN APIs):
   - `get_franchise_season_by_season()`
   - `get_players()`
+  - `get_bracket()`
+  - `get_series()`
   - `get_awards()`
   - `get_award_winners()`
   - `get_drafts()`
   - `get_franchise_team_totals()`
   - `get_franchise_vs_franchise()`
+  - `get_venues()`
   - `get_attendance()`
   - `get_officials()`
-  - `get_venues()`
   - `get_espn_teams()`
   - `get_espn_team()`
   - `get_espn_athletes()`
@@ -29,11 +31,13 @@
   - `get_espn_transactions()`
   - `get_espn_injuries()`
   - `get_espn_futures()`
-- Modified functions:
+- Modified:
   - `get_franchises()`
   - `get_draft_picks()`
-- Deprecated function (replaced):
+- Defunct (replaced):
   - `get_draft_information()`
+  - `get_playoff_bracket()`
+  - `get_series_carousel()`
 
 # nhlscraper 0.1.1
 

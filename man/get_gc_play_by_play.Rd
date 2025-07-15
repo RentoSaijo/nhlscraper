@@ -13,7 +13,7 @@ get_gc_play_by_play(game = 2024020602)
 tibble with one row per play
 }
 \description{
-\code{get_gc_play_by_play()} retrieves GC-provided information on each play for a specified \code{game}, including but not limited to their ID; type; time of occurrence; winning, losing, blocking, shooting, hitting, hit, scoring, assisting, committed-by, drawn-by, and/or served-by player IDs; and X and Y coordinates. There exists many methods to grab game IDs; the easiest is by using \code{get_games()}.
+\code{get_gc_play_by_play()} retrieves GC-provided information on each play for a given \code{game}, including but not limited to their ID; type; time of occurrence; winning, losing, blocking, shooting, hitting, hit, scoring, assisting, committed-by, drawn-by, and/or served-by player IDs; and X and Y coordinates. There exists many methods to grab game IDs; the easiest is by using \code{get_games()}.
 }
 \examples{
 gc_pbp_2024030411 <- get_gc_play_by_play(game=2024030411)

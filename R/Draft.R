@@ -44,7 +44,7 @@ get_draft_picks <- function() {
 
 #' Get draft rankings by year and player-type
 #' 
-#' `get_draft_rankings()` retrieves information on each prospect for a specified `year` and `player_type`, including but not limited to their name, midterm and final ranks, position, bio-metrics, and birth date and location.
+#' `get_draft_rankings()` retrieves information on each prospect for a given `year` and `player_type`, including but not limited to their name, midterm and final ranks, position, bio-metrics, and birth date and location.
 #' 
 #' @param year integer in YYYY
 #' @param player_type integer where 1=North American Skaters, 

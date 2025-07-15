@@ -113,9 +113,9 @@ reference:
   desc: >
     Functions to retrieve data about the playoffs
   contents:
-    - get_playoff_bracket
+    - get_bracket
+    - get_series
     - get_series_schedule
-    - get_series_carousel
 
 - subtitle: 'Award Data'
   desc: >

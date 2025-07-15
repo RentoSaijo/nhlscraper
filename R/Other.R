@@ -136,7 +136,7 @@ get_streams <- function() {
 
 #' Get TV schedule by date
 #' 
-#' `get_tv_schedule()` retrieves information on each TV program for a specified `date`, including but not limited to their title, description, start and end times, and broadcast status.
+#' `get_tv_schedule()` retrieves information on each TV program for a given `date`, including but not limited to their title, description, start and end times, and broadcast status.
 #' 
 #' @param date string in 'YYYY-MM-DD'
 #' @return tibble with one row per program
@@ -174,9 +174,9 @@ get_season_now <- function() {
 
 #' Get partner odds as of now
 #' 
-#' `get_partner_odds()` retrieves partner-provided information on each game for a specified `country`, including but not limited to their ID and home and away team odds.
+#' `get_partner_odds()` retrieves partner-provided information on each game for a given `country`, including but not limited to their ID and home and away team odds.
 #' 
-#' @param country string 2-letter code
+#' @param country string 2-letter Code
 #' @return tibble with one row per game
 #' @examples
 #' partner_odds_now_CA <- get_partner_odds(country='CA')

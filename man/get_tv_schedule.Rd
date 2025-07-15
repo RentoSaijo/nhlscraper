@@ -13,7 +13,7 @@ get_tv_schedule(date = "2025-01-01")
 tibble with one row per program
 }
 \description{
-\code{get_tv_schedule()} retrieves information on each TV program for a specified \code{date}, including but not limited to their title, description, start and end times, and broadcast status.
+\code{get_tv_schedule()} retrieves information on each TV program for a given \code{date}, including but not limited to their title, description, start and end times, and broadcast status.
 }
 \examples{
 tv_schedule_2025_01_02 <- get_tv_schedule(date='2025-01-02')

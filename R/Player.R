@@ -17,7 +17,7 @@ get_players <- function() {
 
 #' Get game-log by player, season, and game-type
 #' 
-#' `get_player_game_log()` retrieves information on each game for a specified `player`, `season`, and `game-type`, including but not limited to their ID, date, and statistics.
+#' `get_player_game_log()` retrieves information on each game for a given `player`, `season`, and `game_type`, including but not limited to their ID, date, and statistics.
 #' 
 #' @param player integer Player ID
 #' @param season integer in YYYYYYYY
