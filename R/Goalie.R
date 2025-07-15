@@ -1,6 +1,6 @@
-#' Get all goalies' biographies by range of seasons
+#' Get goalies' biographies by range of seasons
 #' 
-#' `get_goalies()` retrieves information on each goalie for a given `start_season` and `end_season`, including but not limited to their ID, name, bio-metrics, and career statistics. This will soon become deprecated as `get_players()` can list all players and their IDs much quicker.
+#' `get_goalies()` retrieves information on each goalie for a given `start_season` and `end_season`, including but not limited to their ID, name, bio-metrics, and career statistics. Will soon be deprecated as `get_players()` can list all players and their IDs much more efficiently.
 #' 
 #' @importFrom magrittr %>%
 #' @param start_season integer in YYYYYYYY
@@ -79,7 +79,7 @@ get_goalies <- function(
   return(final)
 }
 
-#' Get goalie statistics by season
+#' Get goalie statistics
 #' 
 #' `get_goalie_statistics()` retrieves information on each goalie or game for (a) given `season`, `teams`, `game_types`, and `report`. Check `get_configuration()` for what information each combination of `report`, `is_aggregate` and `is_game` can provide; `get_teams()` for team IDs; and `get_seasons()` for date references. `dates` must be given when paired with `is_game` as the default range will return incomplete data (too wide); it will be ignored otherwise. Will soon be reworked for easier access.
 #' 
@@ -194,7 +194,6 @@ get_goalie_leaders <- function(
 get_goalie_milestones <- function() {
   out <- nhl_api(
     path='milestones/goalies',
-    query=list(),
     type=2
   )
   return(tibble::as_tibble(out$data))

@@ -2,7 +2,7 @@
 % Please edit documentation in R/Goalie.R
 \name{get_goalie_statistics}
 \alias{get_goalie_statistics}
-\title{Get goalie statistics by season}
+\title{Get goalie statistics}
 \usage{
 get_goalie_statistics(
   season = get_season_now()$seasonId,
