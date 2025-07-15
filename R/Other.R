@@ -1,22 +1,18 @@
-#' Get TV schedule by date
+#' Ping
 #' 
-#' `get_tv_schedule()` retrieves information on each TV program for a specified `date`, including but not limited to their title, description, start and end times, and broadcast status.
+#' `ping()` retrieves information on the API status.
 #' 
-#' @param date string in 'YYYY-MM-DD'
-#' @return tibble with one row per program
+#' @return boolean TRUE=OK
 #' @examples
-#' tv_schedule_2025_01_02 <- get_tv_schedule(date='2025-01-02')
+#' online <- ping()
 #' @export
 
-get_tv_schedule <- function(date='2025-01-01') {
-  if (!grepl('^\\d{4}-\\d{2}-\\d{2}$', date)) {
-    stop('`date` must be in \'YYYY-MM-DD\' format', call.=FALSE)
-  }
+ping <- function() {
   out <- nhl_api(
-    path=sprintf('network/tv-schedule/%s', date),
-    type=1
+    path='ping',
+    type=2
   )
-  return(tibble::as_tibble(out$broadcasts))
+  return(length(out)==0)
 }
 
 #' Get glossary
@@ -31,23 +27,6 @@ get_tv_schedule <- function(date='2025-01-01') {
 get_glossary <- function() {
   out <- nhl_api(
     path='glossary',
-    type=2
-  )
-  return(tibble::as_tibble(out$data))
-}
-
-#' Get season as of now
-#' 
-#' `get_season_now()` retrieves information on the current season, including but not limited to its ID and game-type.
-#' 
-#' @return tibble with one row
-#' @examples
-#' season_now <- get_season_now()
-#' @export
-
-get_season_now <- function() {
-  out <- nhl_api(
-    path='componentSeason',
     type=2
   )
   return(tibble::as_tibble(out$data))
@@ -70,23 +49,6 @@ get_configuration <- function() {
   return(out)
 }
 
-#' Ping
-#' 
-#' `ping()` retrieves information on the API status.
-#' 
-#' @return boolean TRUE=OK
-#' @examples
-#' online <- ping()
-#' @export
-
-ping <- function() {
-  out <- nhl_api(
-    path='ping',
-    type=2
-  )
-  return(length(out)==0)
-}
-
 #' Get all countries
 #' 
 #' `get_countries()` retrieves information on each country, including but not limited to their ID, name, 2-letter code, and 3-letter code.
@@ -104,23 +66,6 @@ get_countries <- function() {
   return(tibble::as_tibble(out$data))
 }
 
-#' Get all streams
-#' 
-#' `get_streams()` retrieves information on each stream, including but not limited to their ID, name, and URL.
-#' 
-#' @return tibble with one row per stream
-#' @examples
-#' all_streams <- get_streams()
-#' @export
-
-get_streams <- function() {
-  out <- nhl_api(
-    path='where-to-watch',
-    type=1
-  )
-  return(tibble::as_tibble(out))
-}
-
 #' Get all venues
 #' 
 #' `get_venues()` retrieves information on each venue, including but not limited to their ID, name, and location.
@@ -133,6 +78,23 @@ get_streams <- function() {
 get_venues <- function() {
   out <- nhl_api(
     path='venue',
+    type=3
+  )
+  return(tibble::as_tibble(out$data))
+}
+
+#' Get attendance for all seasons
+#' 
+#' `get_attendance()` retrieves information on each season, including but not limited to their ID and regular and playoff attendance. May merge with `get_seasons()`.
+#' 
+#' @return tibble with one row per season
+#' @examples
+#' all_attendance <- get_attendance()
+#' @export
+
+get_attendance <- function() {
+  out <- nhl_api(
+    path='attendance',
     type=3
   )
   return(tibble::as_tibble(out$data))
@@ -155,19 +117,57 @@ get_officials <- function() {
   return(tibble::as_tibble(out$data))
 }
 
-#' Get attendance for all seasons
+#' Get all streams
 #' 
-#' `get_attendance()` retrieves information on each season, including but not limited to their ID and regular and playoff attendance. May merge with `get_seasons()`.
+#' `get_streams()` retrieves information on each stream, including but not limited to their ID, name, and URL.
 #' 
-#' @return tibble with one row per season
+#' @return tibble with one row per stream
 #' @examples
-#' all_attendance <- get_attendance()
+#' all_streams <- get_streams()
 #' @export
 
-get_attendance <- function() {
+get_streams <- function() {
   out <- nhl_api(
-    path='attendance',
-    type=3
+    path='where-to-watch',
+    type=1
+  )
+  return(tibble::as_tibble(out))
+}
+
+#' Get TV schedule by date
+#' 
+#' `get_tv_schedule()` retrieves information on each TV program for a specified `date`, including but not limited to their title, description, start and end times, and broadcast status.
+#' 
+#' @param date string in 'YYYY-MM-DD'
+#' @return tibble with one row per program
+#' @examples
+#' tv_schedule_2025_01_02 <- get_tv_schedule(date='2025-01-02')
+#' @export
+
+get_tv_schedule <- function(date='2025-01-01') {
+  if (!grepl('^\\d{4}-\\d{2}-\\d{2}$', date)) {
+    stop('`date` must be in \'YYYY-MM-DD\' format', call.=FALSE)
+  }
+  out <- nhl_api(
+    path=sprintf('network/tv-schedule/%s', date),
+    type=1
+  )
+  return(tibble::as_tibble(out$broadcasts))
+}
+
+#' Get season as of now
+#' 
+#' `get_season_now()` retrieves information on the current season, including but not limited to its ID and game-type.
+#' 
+#' @return tibble with one row
+#' @examples
+#' season_now <- get_season_now()
+#' @export
+
+get_season_now <- function() {
+  out <- nhl_api(
+    path='componentSeason',
+    type=2
   )
   return(tibble::as_tibble(out$data))
 }

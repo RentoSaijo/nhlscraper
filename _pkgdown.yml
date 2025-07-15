@@ -147,10 +147,10 @@ reference:
     - ping
     - get_glossary
     - get_configuration
+    - get_countries
+    - get_venues
     - get_attendance
     - get_officials
-    - get_venues
-    - get_countries
     - get_streams
     - get_tv_schedule
     - get_season_now
