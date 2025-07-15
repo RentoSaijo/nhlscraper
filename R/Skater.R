@@ -77,7 +77,7 @@ get_skaters <- function(
 #' @param teams vector of integers Team ID(s)
 #' @param game_types vector of integers where 1=pre-season, 2=regular, and 
 #'                   3=playoffs
-#' @param dates vector of strings in 'YYYY-MM-DD' *only if paired with `is_game`
+#' @param dates vector of strings in 'YYYY-MM-DD'
 #' @param report string
 #' @param is_aggregate boolean
 #' @param is_game boolean

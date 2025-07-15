@@ -22,7 +22,7 @@ get_goalie_statistics(
 \item{game_types}{vector of integers where 1=pre-season, 2=regular, and
 3=playoffs}
 
-\item{dates}{vector of strings in 'YYYY-MM-DD' *only if paired with \code{is_game}}
+\item{dates}{vector of strings in 'YYYY-MM-DD'}
 
 \item{report}{string}
 
