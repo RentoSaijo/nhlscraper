@@ -49,9 +49,9 @@ reference:
     Functions to retrieve data about the league
   contents:
     - get_seasons
-    - get_schedule
     - get_standings_information
     - get_standings
+    - get_schedule
 
 - subtitle: 'Team Data'
   desc: >

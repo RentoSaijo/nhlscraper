@@ -1,3 +1,37 @@
+#' Get all seasons
+#' 
+#' `get_seasons()` retrieves information on each season, including but not limited to their ID; start and end dates; number of regular season and playoff games; Stanley Cup owner; Olympics participation; entry and supplemental draft, conference-division, win-tie-loss, and wildcard regulations.
+#' 
+#' @return tibble with one row per season
+#' @examples
+#' all_seasons <- get_seasons()
+#' @export
+
+get_seasons <- function() {
+  out <- nhl_api(
+    path='season',
+    type=2
+  )
+  return(tibble::as_tibble(out$data))
+}
+
+#' Get standings information for all seasons
+#' 
+#' `get_standings_information()` retrieves information on each season, including but not limited to their ID; start and end dates for standings; and conference-division, win-tie-loss, and wildcard regulations. May merge with `get_seasons()`.
+#' 
+#' @return tibble with one row per season
+#' @examples
+#' standings_info <- get_standings_information()
+#' @export
+
+get_standings_information <- function() {
+  out <- nhl_api(
+    path='standings-season',
+    type=1
+  )
+  return(tibble::as_tibble(out$seasons))
+}
+
 #' Get standings by date
 #' 
 #' `get_standings()` retrieves information on each team for a specified `date`, including but not limited to their ID; name; conference; division; season, recent, and home-away statistics; and waiver sequence.
@@ -17,23 +51,6 @@ get_standings <- function(date='2025-01-01') {
     type=1
   )
   return(tibble::as_tibble(out$standings))
-}
-
-#' Get standings information for all seasons
-#' 
-#' `get_standings_information()` retrieves information on each season, including but not limited to their ID; start and end dates for standings; and conference-division, win-tie-loss, and wildcard regulations. May merge with `get_seasons()`.
-#' 
-#' @return tibble with one row per season
-#' @examples
-#' standings_info <- get_standings_information()
-#' @export
-
-get_standings_information <- function() {
-  out <- nhl_api(
-    path='standings-season',
-    type=1
-  )
-  return(tibble::as_tibble(out$seasons))
 }
 
 #' Get schedule by date
@@ -62,21 +79,4 @@ get_schedule <- function(date='2025-01-01') {
     return(tibble::tibble())
   }
   tibble::as_tibble(sub$games[[1]])
-}
-
-#' Get all seasons
-#' 
-#' `get_seasons()` retrieves information on each season, including but not limited to their ID; start and end dates; number of regular season and playoff games; Stanley Cup owner; Olympics participation; entry and supplemental draft, conference-division, win-tie-loss, and wildcard regulations.
-#' 
-#' @return tibble with one row per season
-#' @examples
-#' all_seasons <- get_seasons()
-#' @export
-
-get_seasons <- function() {
-  out <- nhl_api(
-    path='season',
-    type=2
-  )
-  return(tibble::as_tibble(out$data))
 }
