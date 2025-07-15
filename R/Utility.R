@@ -1,8 +1,8 @@
 #' Call NHL API
 #' 
-#' @param path String API path
-#' @param query list Query parameters
-#' @param type integer Type where 1=api-web, 2=api.nhle, and 3=records.nhl
+#' @param path String
+#' @param query list
+#' @param type integer where 1=api-web, 2=api.nhle, and 3=records.nhl
 #' @return parsed JSON
 #' @keywords internal
 
@@ -14,7 +14,7 @@ nhl_api <- function(path, query=list(), type) {
     if (path!='ping') {
       base <- paste0(base, 'en/')
     }
-  } else if (type==3) {
+  } else {
     base <- 'https://records.nhl.com/site/api/'
   }
   url <- paste0(base, path)
@@ -25,9 +25,9 @@ nhl_api <- function(path, query=list(), type) {
 
 #' Call ESPN API
 #' 
-#' @param path String API path
-#' @param query list Query parameters
-#' @param type integer Type where 1=site.api and 2=sports.core
+#' @param path String
+#' @param query list
+#' @param type integer where 1=site.api and 2=sports.core
 #' @return parsed JSON
 #' @keywords internal
 
@@ -35,7 +35,7 @@ espn_api <- function(path, query=list(), type) {
   if (type==1) {
     base <- 'https://site.api.espn.com/apis/site/v2/sports/hockey/nhl/'
   }
-  else if (type==2) {
+  else {
     base <- 'https://sports.core.api.espn.com/v2/sports/hockey/leagues/nhl/'
   }
   url <- paste0(base, path)
