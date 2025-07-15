@@ -174,7 +174,7 @@ get_attendance <- function() {
 
 #' Get partner odds as of now
 #' 
-#' `get_partner_odds()` retrieves NHL-partnered information on each game for a specified `country`, including but not limited to their ID and home and away team odds.
+#' `get_partner_odds()` retrieves partner-provided information on each game for a specified `country`, including but not limited to their ID and home and away team odds.
 #' 
 #' @param country string 2-letter code
 #' @return tibble with one row per game

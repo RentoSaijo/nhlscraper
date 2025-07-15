@@ -17,7 +17,7 @@ and 4=International Goalies}
 tibble with one row per player
 }
 \description{
-\code{get_draft_rankings()} retrieves information on each draft prospect for a specified \code{year} and \code{player_type}, including but not limited to their name, midterm and final ranks, position, bio-metrics, and birth date and location.
+\code{get_draft_rankings()} retrieves information on each prospect for a specified \code{year} and \code{player_type}, including but not limited to their name, midterm and final ranks, position, bio-metrics, and birth date and location.
 }
 \examples{
 draft_rankings_2025_1 <- get_draft_rankings(year=2025, player_type=1)

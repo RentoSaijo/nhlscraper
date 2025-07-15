@@ -13,7 +13,7 @@ get_partner_odds(country = "US")
 tibble with one row per game
 }
 \description{
-\code{get_partner_odds()} retrieves NHL-partnered information on each game for a specified \code{country}, including but not limited to their ID and home and away team odds.
+\code{get_partner_odds()} retrieves partner-provided information on each game for a specified \code{country}, including but not limited to their ID and home and away team odds.
 }
 \examples{
 partner_odds_now_CA <- get_partner_odds(country='CA')
