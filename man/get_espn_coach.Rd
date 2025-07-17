@@ -15,7 +15,7 @@ get_espn_coach(coach = 5033, season = "all")
 list with various items
 }
 \description{
-\code{get_espn_coach()} retrieves information on a \code{coach} for a given \code{season} or all seasons, including but not limited to his or her name and head-shot URL.
+\code{get_espn_coach()} retrieves information on a \code{coach} for a given \code{season} or all seasons, including but not limited to his or her name and head-shot URL. Access \code{get_espn_coaches()} for \code{coach} and \code{get_seasons()} for \code{season} references.
 }
 \examples{
 ESPN_Paul_Maurice <- get_espn_coach(coach=5033, season='all')

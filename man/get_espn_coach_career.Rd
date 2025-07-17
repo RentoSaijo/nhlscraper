@@ -15,7 +15,7 @@ get_espn_coach_career(coach = 5033, game_type = 0)
 tibble with one row per statistic
 }
 \description{
-\code{get_espn_coach_career()} retrieves information on each statistic for a given set of \code{coach} and \code{game_type}, including but not limited to their name, abbreviation, description, and value.
+\code{get_espn_coach_career()} retrieves information on each statistic for a given set of \code{coach} and \code{game_type}, including but not limited to their name, abbreviation, description, and value. Access \code{get_espn_coaches()} for \code{coach} reference.
 }
 \examples{
 ESPN_Paul_Maurice_career <- get_espn_coach_career(coach=5033, game_type=0)

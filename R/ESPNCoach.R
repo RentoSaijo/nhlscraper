@@ -1,6 +1,6 @@
 #' Get ESPN coaches by season
 #' 
-#' `get_espn_coaches()` retrieves ESPN hyperlinks for each coach for a given `season`. The hyperlinks are formatted in `base/seasons/{ESPN Season ID}/coaches/{ESPN Coach ID}?query`. May soon be reworked to only return the ESPN Coach IDs.
+#' `get_espn_coaches()` retrieves ESPN hyperlinks for each coach for a given `season`; the hyperlinks are formatted in `base/seasons/{ESPN Season ID}/coaches/{ESPN Coach ID}?query`. Access `get_seasons()` for `season` reference. May soon be reworked to only return the ESPN Coach IDs.
 
 #' 
 #' @param season integer in YYYY
@@ -20,7 +20,7 @@ get_espn_coaches <- function(season=get_season_now()$seasonId%%10000) {
 
 #' Get coach by ESPN Coach ID (and season)
 #' 
-#' `get_espn_coach()` retrieves information on a `coach` for a given `season` or all seasons, including but not limited to his or her name and head-shot URL.
+#' `get_espn_coach()` retrieves information on a `coach` for a given `season` or all seasons, including but not limited to his or her name and head-shot URL. Access `get_espn_coaches()` for `coach` and `get_seasons()` for `season` references.
 #'
 #' @param coach integer ESPN Coach ID
 #' @param season integer/string in YYYY or 'all'
@@ -48,7 +48,7 @@ get_espn_coach <- function(coach=5033, season='all') {
 
 #' Get career coaching records by ESPN Coach ID and game-type
 #' 
-#' `get_espn_coach_career()` retrieves information on each statistic for a given set of `coach` and `game_type`, including but not limited to their name, abbreviation, description, and value.
+#' `get_espn_coach_career()` retrieves information on each statistic for a given set of `coach` and `game_type`, including but not limited to their name, abbreviation, description, and value. Access `get_espn_coaches()` for `coach` reference.
 #' 
 #' @param coach integer ESPN Coach ID
 #' @param game_type integer where 0=total, 1=regular, and 2=playoffs
