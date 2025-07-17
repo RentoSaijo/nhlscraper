@@ -96,10 +96,12 @@ get_espn_event_stars <- function(event=401687600) {
     query=list(lang='en', region='us', limit=1000),
     type=2
   )
-  return(
-    tibble::as_tibble(out$featuredAthletes) %>% 
+  df <- tibble::as_tibble(out$featuredAthletes)
+  if ('statistics.$ref' %in% names(df)) {
+    df <- df %>% 
       dplyr::select(-`statistics.$ref`)
-  )
+  }
+  return(df)
 }
 
 #' Get event (game) officials by ESPN Event (Game) ID
