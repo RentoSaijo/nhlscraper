@@ -4,19 +4,19 @@
 \alias{get_espn_coach}
 \title{Get coach by ESPN Coach ID (and season)}
 \usage{
-get_espn_coach(coach = 5033, season = "")
+get_espn_coach(coach = 5033, season = "all")
 }
 \arguments{
 \item{coach}{integer ESPN Coach ID}
 
-\item{season}{integer/string Season in YYYY or '' for all seasons}
+\item{season}{integer/string in YYYY or 'all'}
 }
 \value{
 list with various items
 }
 \description{
-Get coach by ESPN Coach ID (and season)
+\code{get_espn_coach()} retrieves information on a \code{coach} for a given \code{season} or all seasons, including but not limited to his or her name and head-shot URL.
 }
 \examples{
-ESPN_Paul_Maurice <- get_espn_coach(coach=5033, season='')
+ESPN_Paul_Maurice <- get_espn_coach(coach=5033, season='all')
 }

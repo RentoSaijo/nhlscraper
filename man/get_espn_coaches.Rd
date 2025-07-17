@@ -7,13 +7,13 @@
 get_espn_coaches(season = get_season_now()$seasonId\%\%10000)
 }
 \arguments{
-\item{season}{integer Season in YYYY}
+\item{season}{integer in YYYY}
 }
 \value{
 tibble with one row per coach
 }
 \description{
-Get ESPN coaches by season
+\code{get_espn_coaches()} retrieves ESPN hyperlinks for each coach for a given \code{season}. The hyperlinks are formatted in \verb{base/seasons/\{ESPN Season ID\}/coaches/\{ESPN Coach ID\}?query}. May soon be reworked to only return the ESPN Coach IDs.
 }
 \examples{
 ESPN_coaches_20242025 <- get_espn_coaches(2025)

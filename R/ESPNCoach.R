@@ -1,6 +1,9 @@
 #' Get ESPN coaches by season
 #' 
-#' @param season integer Season in YYYY
+#' `get_espn_coaches()` retrieves ESPN hyperlinks for each coach for a given `season`. The hyperlinks are formatted in `base/seasons/{ESPN Season ID}/coaches/{ESPN Coach ID}?query`. May soon be reworked to only return the ESPN Coach IDs.
+
+#' 
+#' @param season integer in YYYY
 #' @return tibble with one row per coach
 #' @examples
 #' ESPN_coaches_20242025 <- get_espn_coaches(2025)
@@ -17,16 +20,18 @@ get_espn_coaches <- function(season=get_season_now()$seasonId%%10000) {
 
 #' Get coach by ESPN Coach ID (and season)
 #' 
+#' `get_espn_coach()` retrieves information on a `coach` for a given `season` or all seasons, including but not limited to his or her name and head-shot URL.
+#'
 #' @param coach integer ESPN Coach ID
-#' @param season integer/string Season in YYYY or '' for all seasons
+#' @param season integer/string in YYYY or 'all'
 #' @return list with various items
 #' @examples
-#' ESPN_Paul_Maurice <- get_espn_coach(coach=5033, season='')
+#' ESPN_Paul_Maurice <- get_espn_coach(coach=5033, season='all')
 #' @export
 
-get_espn_coach <- function(coach=5033, season='') {
+get_espn_coach <- function(coach=5033, season='all') {
   p <- paste0('coaches/', coach)
-  if (season!='') {
+  if (season!='all') {
     p <- sprintf('seasons/%s/%s', season, p)
   }
   out <- espn_api(
@@ -35,12 +40,15 @@ get_espn_coach <- function(coach=5033, season='') {
     type=2
   )
   keeps <- setdiff(names(out), c(
-    'college'
+    'college',
+    'careerRecords'
   ))
   return(out[keeps])
 }
 
-#' Get coach career records by ESPN Coach ID and game-type
+#' Get career coaching records by ESPN Coach ID and game-type
+#' 
+#' `get_espn_coach_career()` retrieves information on a `coach` for a given `game_type`, including but not limited to his or her number of wins, ties, and losses.
 #' 
 #' @param coach integer ESPN Coach ID
 #' @param game_type integer where 0=total, 1=regular, and 2=playoffs

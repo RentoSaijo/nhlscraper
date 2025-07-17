@@ -2,7 +2,7 @@
 % Please edit documentation in R/ESPNCoach.R
 \name{get_espn_coach_career}
 \alias{get_espn_coach_career}
-\title{Get coach career records by ESPN Coach ID and game-type}
+\title{Get career coaching records by ESPN Coach ID and game-type}
 \usage{
 get_espn_coach_career(coach = 5033, game_type = 0)
 }
@@ -15,7 +15,7 @@ get_espn_coach_career(coach = 5033, game_type = 0)
 tibble with one row per statistic
 }
 \description{
-Get coach career records by ESPN Coach ID and game-type
+\code{get_espn_coach_career()} retrieves information on a \code{coach} for a given \code{game_type}, including but not limited to his or her number of wins, ties, and losses.
 }
 \examples{
 ESPN_Paul_Maurice_career <- get_espn_coach_career(coach=5033, game_type=0)
