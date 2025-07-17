@@ -48,7 +48,7 @@ get_espn_coach <- function(coach=5033, season='all') {
 
 #' Get career coaching records by ESPN Coach ID and game-type
 #' 
-#' `get_espn_coach_career()` retrieves information on a `coach` for a given `game_type`, including but not limited to his or her number of wins, ties, and losses.
+#' `get_espn_coach_career()` retrieves information on each statistic for a given set of `coach` and `game_type`, including but not limited to their name, abbreviation, description, and value.
 #' 
 #' @param coach integer ESPN Coach ID
 #' @param game_type integer where 0=total, 1=regular, and 2=playoffs
