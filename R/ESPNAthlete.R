@@ -29,7 +29,7 @@ get_espn_athletes <- function() {
   return(dplyr::bind_rows(all_athletes))
 }
 
-#' Get athlete (player) by season and ESPN Athlete (Player) ID
+#' Get athlete (player) by ESPN Athlete (Player) ID and season
 #' 
 #' `get_espn_athlete()` retrieves information on an `athlete` for a given `season`, including but not limited to his name, bio-metrics, birth date and location, position, team(s), and jersey number. Access `get_espn_athletes()` for `athlete` and `get_seasons()` for `season` references.
 #' 
