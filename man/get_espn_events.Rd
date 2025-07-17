@@ -15,7 +15,7 @@ get_espn_events(start_date = 20241004, end_date = 20250624)
 tibble with one row per event (game)
 }
 \description{
-Get ESPN events (games) by start and end dates
+\code{get_espn_events()} retrieves ESPN hyperlinks for each event; the hyperlinks are formatted in \verb{base/events/\{ESPN Event ID\}?query}. Access \code{get_seasons()} for \code{start_season} and \code{end_season} references. May soon be reworked to only return the ESPN Event IDs.
 }
 \examples{
 ESPN_events_20242025 <- get_espn_events(start_date=20241004, end_date=20250624)

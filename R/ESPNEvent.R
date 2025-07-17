@@ -1,5 +1,7 @@
 #' Get ESPN events (games) by start and end dates
 #' 
+#' `get_espn_events()` retrieves ESPN hyperlinks for each event; the hyperlinks are formatted in `base/events/{ESPN Event ID}?query`. Access `get_seasons()` for `start_season` and `end_season` references. May soon be reworked to only return the ESPN Event IDs.
+#' 
 #' @param start_date integer Start Date in YYYYMMDD
 #' @param end_date integer End Date in YYYYMMDD
 #' @return tibble with one row per event (game)
@@ -34,6 +36,8 @@ get_espn_events <- function(start_date=20241004, end_date=20250624) {
 
 #' Get event (game) by ESPN ID
 #' 
+#' `get_espn_event()` retrieves information on an `event`, including but not limited to its competitors, date, venue, and attendance.
+#' 
 #' @param event integer ESPN Event (Game) ID
 #' @return list with various items
 #' @examples
@@ -59,6 +63,8 @@ get_espn_event <- function(event=401687600) {
 
 #' Get event (game) play-by-play by ESPN Event (Game) ID
 #' 
+#' `get_espn_event_play_by_play()` retrieves ESPN-provided information on each play for a given `event`, including but not limited to their ID, type, time of occurrence, strength-state, participants, and X and Y coordinates. Access `get_espn_events()` for `event` reference.
+#' 
 #' @param event integer ESPN Event (Game) ID
 #' @return tibble with one row per play
 #' @examples
@@ -74,24 +80,9 @@ get_espn_event_play_by_play <- function(event=401687600) {
   return(tibble::as_tibble(out$items))
 }
 
-#' Get event (game) odds by ESPN Event (Game) ID
-#' 
-#' @param event integer ESPN Event (Game) ID
-#' @return tibble with one row per provider
-#' @examples
-#' NJD_BUF_2024_10_04_odds <- get_espn_event_odds(event=401687600)
-#' @export
-
-get_espn_event_odds <- function(event=401687600) {
-  out <- espn_api(
-    path=sprintf('events/%s/competitions/%s/odds', event, event),
-    query=list(lang='en', region='us', limit=1000),
-    type=2
-  )
-  return(tibble::as_tibble(out$items))
-}
-
 #' Get event (game) stars by ESPN Event (Game) ID
+#' 
+#' `get_espn_event_stars()` retrieves information on each star for a given `event`, including but not limited to its name, description, and the athlete's ESPN ID. Access `get_espn_events()` for `event` reference.
 #' 
 #' @param event integer ESPN Event (Game) ID
 #' @return tibble with one row per athlete
@@ -113,6 +104,8 @@ get_espn_event_stars <- function(event=401687600) {
 
 #' Get event (game) officials by ESPN Event (Game) ID
 #' 
+#' `get_espn_event_officials()` retrieves information on each official for a given `event`, including but not limited to its ESPN ID, name, and position. Access `get_espn_events()` for `event` reference.
+#' 
 #' @param event integer ESPN Event (Game) ID
 #' @return tibble with one row per official
 #' @examples
@@ -122,6 +115,25 @@ get_espn_event_stars <- function(event=401687600) {
 get_espn_event_officials <- function(event=401687600) {
   out <- espn_api(
     path=sprintf('events/%s/competitions/%s/officials', event, event),
+    query=list(lang='en', region='us', limit=1000),
+    type=2
+  )
+  return(tibble::as_tibble(out$items))
+}
+
+#' Get event (game) odds by ESPN Event (Game) ID
+#' 
+#' `get_espn_event_odds()` retrieves information on each provider for a given `event`, including but not limited to its name, favorite and underdog teams, and money-line and spread odds. Access `get_espn_events()` for `event` reference.
+#'
+#' @param event integer ESPN Event (Game) ID
+#' @return tibble with one row per provider
+#' @examples
+#' NJD_BUF_2024_10_04_odds <- get_espn_event_odds(event=401687600)
+#' @export
+
+get_espn_event_odds <- function(event=401687600) {
+  out <- espn_api(
+    path=sprintf('events/%s/competitions/%s/odds', event, event),
     query=list(lang='en', region='us', limit=1000),
     type=2
   )

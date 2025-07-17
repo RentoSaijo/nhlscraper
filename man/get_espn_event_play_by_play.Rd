@@ -13,7 +13,7 @@ get_espn_event_play_by_play(event = 401687600)
 tibble with one row per play
 }
 \description{
-Get event (game) play-by-play by ESPN Event (Game) ID
+\code{get_espn_event_play_by_play()} retrieves ESPN-provided information on each play for a given \code{event}, including but not limited to their ID, type, time of occurrence, strength-state, participants, and X and Y coordinates. Access \code{get_espn_events()} for \code{event} reference.
 }
 \examples{
 NJD_BUF_2024_10_04_pbp <- get_espn_event_play_by_play(event=401687600)

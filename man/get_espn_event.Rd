@@ -13,7 +13,7 @@ get_espn_event(event = 401687600)
 list with various items
 }
 \description{
-Get event (game) by ESPN ID
+\code{get_espn_event()} retrieves information on an \code{event}, including but not limited to its competitors, date, venue, and attendance.
 }
 \examples{
 NJD_BUF_2024_10_04 <- get_espn_event(event=401687600)

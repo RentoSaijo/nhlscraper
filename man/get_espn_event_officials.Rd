@@ -13,7 +13,7 @@ get_espn_event_officials(event = 401687600)
 tibble with one row per official
 }
 \description{
-Get event (game) officials by ESPN Event (Game) ID
+\code{get_espn_event_officials()} retrieves information on each official for a given \code{event}, including but not limited to its ESPN ID, name, and position. Access \code{get_espn_events()} for \code{event} reference.
 }
 \examples{
 NJD_BUF_2024_10_04_officials <- get_espn_event_officials(event=401687600)

@@ -13,7 +13,7 @@ get_espn_event_stars(event = 401687600)
 tibble with one row per athlete
 }
 \description{
-Get event (game) stars by ESPN Event (Game) ID
+\code{get_espn_event_stars()} retrieves information on each star for a given \code{event}, including but not limited to its name, description, and the athlete's ESPN ID. Access \code{get_espn_events()} for \code{event} reference.
 }
 \examples{
 NJD_BUF_2024_10_04_stars <- get_espn_event_stars(event=401687600)

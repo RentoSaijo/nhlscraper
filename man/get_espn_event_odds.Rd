@@ -13,7 +13,7 @@ get_espn_event_odds(event = 401687600)
 tibble with one row per provider
 }
 \description{
-Get event (game) odds by ESPN Event (Game) ID
+\code{get_espn_event_odds()} retrieves information on each provider for a given \code{event}, including but not limited to its name, favorite and underdog teams, and money-line and spread odds. Access \code{get_espn_events()} for \code{event} reference.
 }
 \examples{
 NJD_BUF_2024_10_04_odds <- get_espn_event_odds(event=401687600)
