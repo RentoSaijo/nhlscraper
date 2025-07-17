@@ -8,11 +8,11 @@ Encoding: UTF-8
 Roxygen: list(markdown=T)
 RoxygenNote: 7.3.2
 Imports:
-  httr,
-  jsonlite,
-  dplyr,
-  tibble,
-  magrittr
+    httr (>= 1.4.0),
+    jsonlite (>= 2.0.0),
+    dplyr (>= 1.1.0),
+    tibble (>= 3.3.0),
+    magrittr (>= 2.0.0)
 Config/testthat/edition: 3
 VignetteBuilder: knitr
 URL: https://github.com/RentoSaijo/nhlscraper, https://rentosaijo.github.io/nhlscraper/
