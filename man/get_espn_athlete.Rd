@@ -5,21 +5,21 @@
 \title{Get athlete (player) by season and ESPN Athlete (Player) ID}
 \usage{
 get_espn_athlete(
-  season = get_season_now()$seasonId\%\%10000,
-  athlete = 3988803
+  athlete = 3988803,
+  season = get_season_now()$seasonId\%\%10000
 )
 }
 \arguments{
-\item{season}{integer Season in YYYY}
-
 \item{athlete}{integer ESPN Athlete (Player) ID}
+
+\item{season}{integer Season in YYYY}
 }
 \value{
 list with various items
 }
 \description{
-\code{get_espn_athlete()} retrieves information on an \code{athlete} for a given \code{season}, including but not limited to his name, bio-metrics, birth date and location, position, team(s), and jersey number.
+\code{get_espn_athlete()} retrieves information on an \code{athlete} for a given \code{season}, including but not limited to his name, bio-metrics, birth date and location, position, team(s), and jersey number. Access \code{get_espn_athletes()} for \code{athlete} and \code{get_seasons()} for \code{season} references.
 }
 \examples{
-ESPN_Charlie_McAvoy_20242025 <- get_espn_athlete(season=2025, athlete=3988803)
+ESPN_Charlie_McAvoy_20242025 <- get_espn_athlete(athlete=3988803, season=2025)
 }
