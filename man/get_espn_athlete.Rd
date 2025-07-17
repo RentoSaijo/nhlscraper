@@ -18,7 +18,7 @@ get_espn_athlete(
 list with various items
 }
 \description{
-Get athlete (player) by season and ESPN Athlete (Player) ID
+\code{get_espn_athlete()} retrieves information on an \code{athlete} for a given \code{season}, including but not limited to his name, bio-metrics, birth date and location, position, team(s), and jersey number.
 }
 \examples{
 ESPN_Charlie_McAvoy_20242025 <- get_espn_athlete(season=2025, athlete=3988803)

@@ -1,5 +1,7 @@
 #' Get all ESPN athletes
 #' 
+#' `get_espn_athletes()` retrieves ESPN hyperlinks for each athlete. The hyperlinks are formatted in `base/athletes/{ESPN Athlete ID}?query`. May soon be reworked to only return the ESPN Athlete IDs.
+#' 
 #' @return tibble with one row per athlete
 #' @examples
 #' all_ESPN_athletes <- get_espn_athletes()
@@ -28,6 +30,8 @@ get_espn_athletes <- function() {
 }
 
 #' Get athlete (player) by season and ESPN Athlete (Player) ID
+#' 
+#' `get_espn_athlete()` retrieves information on an `athlete` for a given `season`, including but not limited to his name, bio-metrics, birth date and location, position, team(s), and jersey number.
 #' 
 #' @param season integer Season in YYYY
 #' @param athlete integer ESPN Athlete (Player) ID

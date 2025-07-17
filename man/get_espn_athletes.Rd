@@ -10,7 +10,7 @@ get_espn_athletes()
 tibble with one row per athlete
 }
 \description{
-Get all ESPN athletes
+\code{get_espn_athletes()} retrieves ESPN hyperlinks for each athlete. The hyperlinks are formatted in \verb{base/athletes/\{ESPN Athlete ID\}?query}. May soon be reworked to only return the ESPN Athlete IDs.
 }
 \examples{
 all_ESPN_athletes <- get_espn_athletes()
