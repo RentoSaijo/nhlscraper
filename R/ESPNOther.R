@@ -1,5 +1,7 @@
 #' Get ESPN transactions by start and end dates
 #' 
+#' `get_espn_transactions()` retrieves information on each transaction for a given set of `start_date` and `end_date`, including but not limited to their date, description, and involved teams. Access `get_seasons()` for `start_season` and `end_season` references.
+#' 
 #' @param start_date integer Start Date in YYYYMMDD
 #' @param end_date integer End Date in YYYYMMDD
 #' @return tibble with one row per transaction
@@ -32,7 +34,9 @@ get_espn_transactions <- function(start_date=20241004, end_date=20250624) {
 
 #' Get ESPN injury reports as of now
 #' 
-#' @return nested tibble with one row per team and one row per player
+#' `get_espn_injuries()` retrieves injury reports by team.
+#' 
+#' @return nested tibble with one row per team and player
 #' @examples
 #' ESPN_injuries_now <- get_espn_injuries()
 #' @export
@@ -48,10 +52,12 @@ get_espn_injuries <- function() {
 
 #' Get ESPN futures by season
 #' 
+#' `get_espn_futures()` retrieves futures by type for a given `season`.
+#' 
 #' @param season integer Season in YYYY
-#' @return tibble with one row per future
+#' @return nested tibble with one row per type and book
 #' @examples
-#' ESPN_futures_20242025 <- get_espn_futures(2025)
+#' ESPN_futures_20252026 <- get_espn_futures(2026)
 #' @export
 
 get_espn_futures <- function(season=get_season_now()$seasonId%%10000) {

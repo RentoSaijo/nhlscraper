@@ -7,10 +7,10 @@
 get_espn_injuries()
 }
 \value{
-nested tibble with one row per team and one row per player
+nested tibble with one row per team and player
 }
 \description{
-Get ESPN injury reports as of now
+\code{get_espn_injuries()} retrieves injury reports by team.
 }
 \examples{
 ESPN_injuries_now <- get_espn_injuries()

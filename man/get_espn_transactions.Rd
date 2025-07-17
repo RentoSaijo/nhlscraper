@@ -15,7 +15,7 @@ get_espn_transactions(start_date = 20241004, end_date = 20250624)
 tibble with one row per transaction
 }
 \description{
-Get ESPN transactions by start and end dates
+\code{get_espn_transactions()} retrieves information on each transaction for a given set of \code{start_date} and \code{end_date}, including but not limited to their date, description, and involved teams. Access \code{get_seasons()} for \code{start_season} and \code{end_season} references.
 }
 \examples{
 ESPN_transactions_20242025 <- get_espn_transactions(start_date=20241004, end_date=20250624)

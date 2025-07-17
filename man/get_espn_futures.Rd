@@ -10,11 +10,11 @@ get_espn_futures(season = get_season_now()$seasonId\%\%10000)
 \item{season}{integer Season in YYYY}
 }
 \value{
-tibble with one row per future
+nested tibble with one row per type and book
 }
 \description{
-Get ESPN futures by season
+\code{get_espn_futures()} retrieves futures by type for a given \code{season}.
 }
 \examples{
-ESPN_futures_20242025 <- get_espn_futures(2025)
+ESPN_futures_20252026 <- get_espn_futures(2026)
 }
