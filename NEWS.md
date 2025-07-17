@@ -1,4 +1,6 @@
-# nhlscraper (development version)
+# nhlscraper 0.2.0.9000
+
+- Website now properly includes title and example.
 
 # nhlscraper 0.2.0
 
