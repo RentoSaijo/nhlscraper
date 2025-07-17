@@ -13,5 +13,8 @@ tibble with one row per player
 \code{get_players()} retrieves information on each player, including but not limited to their ID, name, bio-metrics, birth date and location, and hall-of-fame status.
 }
 \examples{
-all_players <- get_players()
+# This may take >5s, so skip.
+\donttest{
+  all_players <- get_players()
+}
 }

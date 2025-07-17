@@ -4,7 +4,10 @@
 #' 
 #' @return tibble with one row per game
 #' @examples
-#' all_games <- get_games()
+#' # This may take >5s, so skip.
+#' \donttest{
+#'   all_games <- get_games()
+#' }
 #' @export
 
 get_games <- function() {

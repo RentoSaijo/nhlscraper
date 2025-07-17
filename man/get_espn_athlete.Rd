@@ -2,7 +2,7 @@
 % Please edit documentation in R/ESPNAthlete.R
 \name{get_espn_athlete}
 \alias{get_espn_athlete}
-\title{Get athlete (player) by season and ESPN Athlete (Player) ID}
+\title{Get athlete (player) by ESPN Athlete (Player) ID and season}
 \usage{
 get_espn_athlete(
   athlete = 3988803,

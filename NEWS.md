@@ -1,9 +1,12 @@
+# nhlscraper 0.2.0
+
+- Submitted to CRAN.
+
 # nhlscraper 0.1.1.9000
 
-- Testing/getting ready for another CRAN submission (v0.2).
-- Overhauled the documentation website.
-- Standardized the documentation.
-- Added new functions (using NHL Records and ESPN APIs):
+- Documentation is now standardized.
+- Website is now overhauled with dark theme, examples, and renames.
+- New functions to access the NHL Records and ESPN APIs are now available:
   - `get_franchise_season_by_season()`
   - `get_players()`
   - `get_bracket()`
@@ -32,13 +35,13 @@
   - `get_espn_transactions()`
   - `get_espn_injuries()`
   - `get_espn_futures()`
-- Modified:
+- Some functions' returns are now modified:
   - `get_franchises()`
   - `get_draft_picks()`
-- Defunct (replaced):
-  - `get_draft_information()`
-  - `get_playoff_bracket()`
-  - `get_series_carousel()`
+- Some functions are now replaced :
+  - `get_draft_information()` is now `get_drafts()`.
+  - `get_playoff_bracket()` is now `get_bracket()`.
+  - `get_series_carousel()` is now `get_series()`.
 
 # nhlscraper 0.1.1
 

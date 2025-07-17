@@ -4,7 +4,10 @@
 #'
 #' @return tibble with one row per player
 #' @examples
-#' all_players <- get_players()
+#' # This may take >5s, so skip.
+#' \donttest{
+#'   all_players <- get_players()
+#' }
 #' @export
 
 get_players <- function() {

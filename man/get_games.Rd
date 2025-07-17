@@ -13,5 +13,8 @@ tibble with one row per game
 \code{get_games()} retrieves information on each game, including but not limited to their ID, season, type, start date and time, and home and visiting teams' IDs and scores.
 }
 \examples{
-all_games <- get_games()
+# This may take >5s, so skip.
+\donttest{
+  all_games <- get_games()
+}
 }
