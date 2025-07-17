@@ -13,7 +13,7 @@ get_espn_teams(season = get_season_now()$seasonId\%\%10000)
 tibble with one row per team
 }
 \description{
-Get ESPN teams by season
+\code{get_espn_teams()} retrieves ESPN hyperlinks for each team for a given \code{season}; the hyperlinks are formatted in \verb{base/seasons/\{ESPN Season ID\}/coaches/\{ESPN Team ID\}?query}. Access \code{get_seasons()} for \code{season} reference. May soon be reworked to only return the ESPN Team IDs.
 }
 \examples{
 ESPN_teams_20242025 <- get_espn_teams(2025)

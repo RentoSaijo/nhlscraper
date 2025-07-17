@@ -4,19 +4,19 @@
 \alias{get_espn_team}
 \title{Get team by season and ESPN Team ID}
 \usage{
-get_espn_team(season = get_season_now()$seasonId\%\%10000, team = 1)
+get_espn_team(team = 1, season = get_season_now()$seasonId\%\%10000)
 }
 \arguments{
-\item{season}{integer Season in YYYY}
-
 \item{team}{integer ESPN Team ID}
+
+\item{season}{integer Season in YYYY}
 }
 \value{
 list with various items
 }
 \description{
-Get team by season and ESPN Team ID
+\code{get_espn_team()} retrieves information on a \code{team} for a given \code{season}, including but not limited to its name and logo URL. Access \code{get_espn_teams()} for \code{team} and \code{get_seasons()} for \code{season} references.
 }
 \examples{
-ESPN_BOS_20242025 <- get_espn_team(season=2025, team=1)
+ESPN_BOS_20242025 <- get_espn_team(team=1, season=2025)
 }
