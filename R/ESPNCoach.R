@@ -1,7 +1,6 @@
 #' Get ESPN coaches by season
 #' 
 #' `get_espn_coaches()` retrieves ESPN hyperlinks for each coach for a given `season`; the hyperlinks are formatted in `base/seasons/{ESPN Season ID}/coaches/{ESPN Coach ID}?query`. Access `get_seasons()` for `season` reference. May soon be reworked to only return the ESPN Coach IDs.
-
 #' 
 #' @param season integer in YYYY
 #' @return tibble with one row per coach
