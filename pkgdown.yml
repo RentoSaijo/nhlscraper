@@ -3,7 +3,7 @@ pkgdown: 2.1.3
 pkgdown_sha: ~
 articles:
   example: example.html
-last_built: 2025-07-17T09:45Z
+last_built: 2025-07-17T10:50Z
 urls:
   reference: https://rentosaijo.github.io/nhlscraper/reference
   article: https://rentosaijo.github.io/nhlscraper/articles
