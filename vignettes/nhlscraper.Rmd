@@ -1,0 +1,19 @@
+---
+title: "nhlscraper"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{nhlscraper}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(nhlscraper)
+```

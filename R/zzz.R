@@ -11,7 +11,12 @@ if (getRversion() >= '2.15.1') {
       'assists',
       'goals',
       'points',
-      'max_season_chunk'
+      'max_season_chunk',
+      'id',
+      'statistics.$ref',
+      'firstSeasonId',
+      'mostRecentTeamId',
+      'teamAbbrev'
     )
   )
 }
