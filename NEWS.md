@@ -5,7 +5,7 @@
 # nhlscraper 0.1.1.9000
 
 - Documentation is now standardized.
-- Website is now overhauled with dark theme, examples, and renames.
+- Website is now overhauled with dark theme, example, disclosure, etc.
 - New functions to access the NHL Records and ESPN APIs are now available:
   - `get_franchise_season_by_season()`
   - `get_players()`
