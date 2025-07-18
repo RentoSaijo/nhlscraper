@@ -4,10 +4,6 @@
 
 # nhlscraper 0.2.0
 
-- Submitted to CRAN.
-
-# nhlscraper 0.1.1.9000
-
 - Documentation is now standardized.
 - Website is now overhauled with dark theme, example, disclosure, etc.
 - New functions to access the NHL Records and ESPN APIs are now available:
@@ -49,17 +45,13 @@
 
 # nhlscraper 0.1.1
 
-- Fixed some documentation (mainly, examples).
-- Tidied up various functions.
+- Documentation is now cleaner.
+- Some functions are now more optimized.
 
 # nhlscraper 0.1.0
 
-- Submitted to CRAN.
-
-# nhlscraper 0.0.0.9000
-
-- Added `News.md` file to track changes to the package.
-- Added new functions:
+- `News.md` now tracks change-log.
+- New functions to access the NHL APIs are now available:
   - `get_seasons()`
   - `get_schedule()`
   - `get_standings_information()`
@@ -108,4 +100,3 @@
   - `get_tv_schedule()`
   - `get_partner_odds()`
   - `get_season_now()`
-    
