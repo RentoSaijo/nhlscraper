@@ -53,7 +53,7 @@ espn_api <- function(path, query=list(), type) {
 normalize_team_key <- function(x) {
   x <- as.character(x)
   x <- tolower(trimws(x))
-  x <- gsub("[^a-z0-9]", "", x)
+  x <- gsub('[^a-z0-9]', '', x)
   x
 }
 
@@ -63,4 +63,32 @@ to_team_tri_code <- function(team, lookup = .to_team_tri_code) {
 
 to_team_id <- function(team, lookup = .to_team_id) {
   unname(lookup[normalize_team_key(team)])
+}
+
+to_game_type_id <- function(game_type) {
+  switch(
+    tolower(as.character(game_type)),
+    `1`     = 1,
+    pre     = 1,
+    `2`     = 2,
+    regular = 2,
+    `3`     = 3,
+    playoff = 3,
+    post    = 3,
+    ''
+  )
+}
+
+to_team_edge_player_type <- function(player_type) {
+  switch(
+    player_type,
+    a          = 'all',
+    all        = 'all',
+    f          = 'forwards',
+    forward    = 'forwards',
+    forwards   = 'forwards',
+    d          = 'defense',
+    defense    = 'defense',
+    defensemen = 'defense'
+  )
 }
