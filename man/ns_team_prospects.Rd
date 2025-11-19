@@ -2,7 +2,7 @@
 % Please edit documentation in R/Team.R
 \name{ns_team_prospects}
 \alias{ns_team_prospects}
-\title{Get prospects by team and position}
+\title{Get the prospects of a team for a position}
 \usage{
 ns_team_prospects(team = 1, position = "forwards")
 }

@@ -2,7 +2,7 @@
 % Please edit documentation in R/Team.R
 \name{ns_team_schedule_season}
 \alias{ns_team_schedule_season}
-\title{Get schedule by team and season}
+\title{Get the schedule of a team for a season}
 \usage{
 ns_team_schedule_season(team = 1, season = "now")
 }

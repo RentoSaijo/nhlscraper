@@ -2,7 +2,7 @@
 % Please edit documentation in R/Team.R
 \name{ns_teams}
 \alias{ns_teams}
-\title{Get all teams}
+\title{Get all the teams}
 \usage{
 ns_teams()
 }

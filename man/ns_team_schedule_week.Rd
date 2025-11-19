@@ -2,7 +2,7 @@
 % Please edit documentation in R/Team.R
 \name{ns_team_schedule_week}
 \alias{ns_team_schedule_week}
-\title{Get schedule for week by team and date}
+\title{Get the schedule of a team for a week since a date}
 \usage{
 ns_team_schedule_week(team = 1, date = "now")
 }

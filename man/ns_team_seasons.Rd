@@ -2,7 +2,7 @@
 % Please edit documentation in R/Team.R
 \name{ns_team_seasons}
 \alias{ns_team_seasons}
-\title{Get season(s) for which team played in}
+\title{Get the season(s) and game type(s) of which a team played in}
 \usage{
 ns_team_seasons(team = 1)
 }

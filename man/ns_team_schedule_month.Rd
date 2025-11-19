@@ -2,7 +2,7 @@
 % Please edit documentation in R/Team.R
 \name{ns_team_schedule_month}
 \alias{ns_team_schedule_month}
-\title{Get schedule by team and month}
+\title{Get the schedule of a team for a month}
 \usage{
 ns_team_schedule_month(team = 1, month = "now")
 }
