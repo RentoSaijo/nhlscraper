@@ -2,21 +2,21 @@
 % Please edit documentation in R/Utility.R
 \name{nhl_api}
 \alias{nhl_api}
-\title{Call NHL API}
+\title{Call NHL API with 429 (rate limit) error-handling}
 \usage{
 nhl_api(path, query = list(), type)
 }
 \arguments{
-\item{path}{String}
+\item{path}{character}
 
 \item{query}{list}
 
-\item{type}{integer where 1=api-web, 2=api.nhle, and 3=records.nhl}
+\item{type}{character (e.g. 'w' for web, 's' for stats, 'r' for records)}
 }
 \value{
 parsed JSON
 }
 \description{
-Call NHL API
+Call NHL API with 429 (rate limit) error-handling
 }
 \keyword{internal}
