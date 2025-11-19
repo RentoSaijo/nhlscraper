@@ -169,20 +169,20 @@ get_team_prospects <- function(team = 1, player_type = 'forwards') {
 
 #' Get the schedule of a team for a season
 #' 
-#' `get_team_schedule()` is deprecated. Use [ns_team_schedule_month()] instead.
+#' `get_team_schedule()` is deprecated. Use [ns_team_schedule_season()] instead.
 #' 
 #' @export
 
 get_team_schedule <- function(team = 1, season = 'now') {
   .Deprecated(
-    new     = 'ns_team_schedule_month()',
+    new     = 'ns_team_schedule_season()',
     package = 'nhlscraper',
     msg     = paste(
       '`get_team_schedule()` is deprecated.',
-      'Use `ns_team_schedule_month()` instead.'
+      'Use `ns_team_schedule_season()` instead.'
     )
   )
-  ns_team_schedule_month(team, season)
+  ns_team_schedule_season(team, season)
 }
 
 #' Get team scoreboard as of now

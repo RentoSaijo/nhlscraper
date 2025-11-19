@@ -7,5 +7,5 @@
 get_team_schedule(team = 1, season = "now")
 }
 \description{
-\code{get_team_schedule()} is deprecated. Use \code{\link[=ns_team_schedule_month]{ns_team_schedule_month()}} instead.
+\code{get_team_schedule()} is deprecated. Use \code{\link[=ns_team_schedule_season]{ns_team_schedule_season()}} instead.
 }
