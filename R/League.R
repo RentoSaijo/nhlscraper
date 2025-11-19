@@ -37,6 +37,12 @@ ns_standings_information <- function() {
   )$seasons
 }
 
+#' @rdname ns_standings_information
+#' @export
+ns_standings_info <- function() {
+  ns_standings_information()
+}
+
 #' Get standings by date
 #' 
 #' `ns_standings()` retrieves information on each team for a given `date`, 
