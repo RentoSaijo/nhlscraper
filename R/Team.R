@@ -20,7 +20,7 @@ ns_teams <- function() {
 #' `ns_team_schedule_season()` retrieves information on each 
 #' 
 #' @param team integer ID (e.g., 21), character full name (e.g., 'Colorado 
-#' Avalanche'), OR 3-letter code (e.g., 'COL')
+#' Avalanche'), OR three-letter code (e.g., 'COL')
 #' @param season integer in YYYYYYYY (e.g., 20242025)
 #' @return data.frame with one row per game
 #' @examples
@@ -54,7 +54,7 @@ ns_team_schedule_season <- function(team = 1, season = 'now') {
 #' `ns_team_schedule_month()` retrieves information on each ...
 #' 
 #' @param team integer ID (e.g., 21), character full name (e.g., 'Colorado 
-#' Avalanche'), OR 3-letter code (e.g., 'COL')
+#' Avalanche'), OR three-letter code (e.g., 'COL')
 #' @param month character in 'YYYY-MM' (e.g., '2025-12')
 #' @return data.frame with one row per game
 #' @examples
@@ -88,7 +88,7 @@ ns_team_schedule_month <- function(team = 1, month = 'now') {
 #' `ns_team_schedule_week()` retrieves information on each ...
 #' 
 #' @param team integer ID (e.g., 21), character full name (e.g., 'Colorado 
-#' Avalanche'), OR 3-letter code (e.g., 'COL')
+#' Avalanche'), OR three-letter code (e.g., 'COL')
 #' @param date character in 'YYYY-MM-DD' (e.g., '2025-01-01')
 #' @return data.frame with one row per game
 #' @examples
@@ -117,39 +117,39 @@ ns_team_schedule_week <- function(team = 1, date = 'now') {
   )
 }
 
-#' Get statistics by team, season, game type, and player type
+#' Get statistics by team, season, game type, and position
 #' 
 #' `ns_team_statistics()` retrieves information on each player for a given set 
-#' of `team`, `season`, `game_type` and `player_type`, including but not 
+#' of `team`, `season`, `game_type` and `position`, including but not 
 #' limited to their ID, name, and statistics. Access `ns_teams()` for `team` 
 #' and `ns_team_seasons()` for `season` and `game_type` references.
 #' 
 #' @param team integer ID (e.g., 21), character full name (e.g., 'Colorado 
-#' Avalanche'), OR 3-letter code (e.g., 'COL')
+#' Avalanche'), OR three-letter code (e.g., 'COL')
 #' @param season integer in YYYYYYYY (e.g., 20242025)
 #' @param game_type integer in 1:3 (where 1 = pre-season, 2 = regular season, 3 
 #' = playoff/post-season) OR character of 'pre', 'regular', or 'playoff'/'post'
-#' @param player_type string of 's'/'skater'/'skaters' or 'g'/'goalie'/goalies'
+#' @param position string of 's'/'skater'/'skaters' or 'g'/'goalie'/goalies'
 #' @return data.frame with one row per player
 #' @examples
 #' COL_goalies_statistics_regular_20242025 <- ns_team_statistics(
-#'   team        = 21,
-#'   season      = 20242025,
-#'   game_type   = 2,
-#'   player_type = 'goalies'
+#'   team      = 21,
+#'   season    = 20242025,
+#'   game_type = 2,
+#'   position  = 'goalies'
 #' )
 #' @export
 
 ns_team_statistics <- function(
-    team        = 1,
-    season      = 'now',
-    game_type   = '',
-    player_type = 'skaters'
+    team      = 1,
+    season    = 'now',
+    game_type = '',
+    position  = 'skaters'
 ) {
   tryCatch(
     expr = {
-      player_type <- switch(
-        player_type,
+      position <- switch(
+        tolower(position),
         s       = 'skaters',
         skater  = 'skaters',
         skaters = 'skaters',
@@ -165,7 +165,7 @@ ns_team_statistics <- function(
           to_game_type_id(game_type)
         ),
         type = 'w'
-      )[[player_type]]
+      )[[position]]
     },
     error = function(e) {
       message("Invalid argument(s); refer to help file.")
@@ -181,7 +181,7 @@ ns_team_statistics <- function(
 #' for `team` reference.
 #' 
 #' @param team integer ID (e.g., 21), character full name (e.g., 'Colorado 
-#' Avalanche'), OR 3-letter code (e.g., 'COL')
+#' Avalanche'), OR three-letter code (e.g., 'COL')
 #' @return data.frame with one row per season
 #' @examples
 #' COL_seasons <- ns_team_seasons(team = 21)
@@ -202,36 +202,36 @@ ns_team_seasons <- function(team = 1) {
   )
 }
 
-#' Get roster by team, season, and player-type
+#' Get roster by team, season, and position
 #' 
 #' `ns_team_roster()` retrieves information on each player for a given set of 
-#' `team`, `season`, and `player_type`, including but not limited to their ID, 
+#' `team`, `season`, and `position`, including but not limited to their ID, 
 #' name, bio-metrics, and birth date and location. Access `ns_teams()` for 
 #' `team` and `ns_team_seasons()` for `season` references.
 #' 
 #' @param team integer ID (e.g., 21), character full name (e.g., 'Colorado 
-#' Avalanche'), OR 3-letter code (e.g., 'COL')
+#' Avalanche'), OR three-letter code (e.g., 'COL')
 #' @param season integer in YYYYYYYY (e.g., 20242025)
-#' @param player_type string of 'f'/'forward'/'forwards', 
+#' @param position string of 'f'/'forward'/'forwards', 
 #' 'd'/'defense'/'defensemen', or 'g'/goalie'/goalies'
 #' @return data.frame with one row per player
 #' @examples
 #' COL_defensemen_20242025 <- ns_team_roster(
 #'   team        = 1,
 #'   season      = 20242025,
-#'   player_type = 'defensemen'
+#'   position = 'defensemen'
 #' )
 #' @export
 
 ns_team_roster <- function(
-    team        = 1,
-    season      = 'current',
-    player_type = 'forwards'
+    team     = 1,
+    season   = 'current',
+    position = 'forwards'
 ) {
   tryCatch(
     expr = {
-      player_type <- switch(
-        player_type,
+      position <- switch(
+        tolower(position),
         f          = 'forwards',
         forward    = 'forwards',
         forwards   = 'forwards',
@@ -245,7 +245,7 @@ ns_team_roster <- function(
       nhl_api(
         path = sprintf('v1/roster/%s/%s', to_team_tri_code(team), season),
         type = 'w'
-      )[[player_type]]
+      )[[position]]
     },
     error = function(e) {
       message("Invalid argument(s); refer to help file.")
@@ -254,30 +254,30 @@ ns_team_roster <- function(
   )
 }
 
-#' Get prospects by team and player-type
+#' Get prospects by team and position
 #' 
 #' `ns_team_prospects()` retrieves information on each prospect for a given set 
-#' of `team` and `player_type`, including but not limited to their ID, name, 
+#' of `team` and `position`, including but not limited to their ID, name, 
 #' bio-metrics, and birth date and location. Access `ns_teams()` for `team` 
 #' reference.
 #' 
 #' @param team integer ID (e.g., 21), character full name (e.g., 'Colorado 
-#' Avalanche'), OR 3-letter code (e.g., 'COL')
-#' @param player_type string of 'f'/'forward'/'forwards', 
+#' Avalanche'), OR three-letter code (e.g., 'COL')
+#' @param position string of 'f'/'forward'/'forwards', 
 #' 'd'/'defense'/'defensemen', or 'g'/goalie'/goalies'
 #' @return data.frame with one row per player
 #' @examples
 #' COL_defensemen_prospects <- ns_team_prospects(
-#'   team        = 21,
-#'   player_type = 'defensemen'
+#'   team     = 21,
+#'   position = 'defensemen'
 #' )
 #' @export
 
-ns_team_prospects <- function(team = 1, player_type = 'forwards') {
+ns_team_prospects <- function(team = 1, position = 'forwards') {
   tryCatch(
     expr = {
-      player_type <- switch(
-        player_type,
+      position <- switch(
+        tolower(position),
         f          = 'forwards',
         forward    = 'forwards',
         forwards   = 'forwards',
@@ -291,7 +291,7 @@ ns_team_prospects <- function(team = 1, player_type = 'forwards') {
       nhl_api(
         path = sprintf('v1/prospects/%s', to_team_tri_code(team)),
         type = 'w'
-      )[[player_type]]
+      )[[position]]
     },
     error = function(e) {
       message("Invalid argument(s); refer to help file.")
