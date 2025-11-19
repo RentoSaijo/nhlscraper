@@ -2,7 +2,7 @@
 % Please edit documentation in R/League.R
 \name{ns_schedule}
 \alias{ns_schedule}
-\title{Get schedule by date}
+\title{Get the schedule for a date}
 \usage{
 ns_schedule(date = Sys.Date())
 }

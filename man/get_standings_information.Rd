@@ -2,7 +2,7 @@
 % Please edit documentation in R/LeagueOld.R
 \name{get_standings_information}
 \alias{get_standings_information}
-\title{Get standings information for all seasons}
+\title{Get information about the standings for all the seasons}
 \usage{
 get_standings_information()
 }

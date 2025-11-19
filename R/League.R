@@ -1,4 +1,4 @@
-#' Get all seasons
+#' Get all the seasons
 #' 
 #' `ns_seasons()` retrieves information on each season, including but not 
 #' limited to their ID; start and end dates; number of regular season and 
@@ -19,7 +19,7 @@ ns_seasons <- function() {
   seasons[order(seasons$id), ]
 }
 
-#' Get standings information for all seasons
+#' Get information about the standings for all the seasons
 #' 
 #' `ns_standings_information()` retrieves information on each season, including 
 #' but not limited to their ID; start and end dates for standings; and 
@@ -43,7 +43,7 @@ ns_standings_info <- function() {
   ns_standings_information()
 }
 
-#' Get standings by date
+#' Get the standings for a date
 #' 
 #' `ns_standings()` retrieves information on each team for a given `date`, 
 #' including but not limited to their ID; name; conference; division; season, 
@@ -73,7 +73,7 @@ ns_standings <- function(date = 'now') {
   )
 }
 
-#' Get schedule by date
+#' Get the schedule for a date
 #' 
 #' `ns_schedule()` retrieves information on each game for a given `date`, 
 #' including but not limited to their ID; type; venue; start time; tickets 

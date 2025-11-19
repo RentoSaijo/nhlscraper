@@ -2,9 +2,12 @@
 % Please edit documentation in R/League.R
 \name{ns_standings_information}
 \alias{ns_standings_information}
-\title{Get standings information for all seasons}
+\alias{ns_standings_info}
+\title{Get information about the standings for all the seasons}
 \usage{
 ns_standings_information()
+
+ns_standings_info()
 }
 \value{
 data.frame with one row per season

@@ -1,4 +1,4 @@
-#' Get all seasons
+#' Get all the seasons
 #' 
 #' `get_seasons()` is deprecated. Use [ns_seasons()] instead.
 #' 
@@ -8,12 +8,15 @@ get_seasons <- function() {
   .Deprecated(
     new     = 'ns_seasons()',
     package = 'nhlscraper',
-    msg     = '`get_seasons()` is deprecated. Use `ns_seasons()` instead.'
+    msg     = paste(
+      '`get_seasons()` is deprecated.',
+      'Use `ns_seasons()` instead.'
+    )
   )
   ns_seasons()
 }
 
-#' Get standings information for all seasons
+#' Get information about the standings for all the seasons
 #' 
 #' `get_standings_information()` is deprecated. Use 
 #' [ns_standings_information()] instead.
@@ -32,7 +35,7 @@ get_standings_information <- function() {
   ns_standings_information()
 }
 
-#' Get standings by date
+#' Get the standings for a date
 #' 
 #' `get_standings()` is deprecated. Use [ns_standings()] instead.
 #' 
@@ -42,22 +45,28 @@ get_standings <- function(date = '2025-01-01') {
   .Deprecated(
     new     = 'ns_standings()',
     package = 'nhlscraper',
-    msg     = '`get_standings()` is deprecated. Use `ns_standings()` instead.'
+    msg     = paste(
+      '`get_standings()` is deprecated.',
+      'Use `ns_standings()` instead.'
+    )
   )
   ns_standings(date)
 }
 
-#' Get schedule by date
+#' Get the schedule for a date
 #' 
 #' `get_schedule()` is deprecated. Use [ns_schedule()] instead.
 #' 
 #' @export
 
-get_schedule <- function(date='2025-01-01') {
+get_schedule <- function(date = '2025-01-01') {
   .Deprecated(
     new     = 'ns_schedule()',
     package = 'nhlscraper',
-    msg     = '`get_schedule()` is deprecated. Use `ns_schedule()` instead.'
+    msg     = paste(
+      '`get_schedule()` is deprecated.',
+      'Use `ns_schedule()` instead.'
+    )
   )
   ns_schedule(date)
 }

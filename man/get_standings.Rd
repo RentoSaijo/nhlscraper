@@ -2,7 +2,7 @@
 % Please edit documentation in R/LeagueOld.R
 \name{get_standings}
 \alias{get_standings}
-\title{Get standings by date}
+\title{Get the standings for a date}
 \usage{
 get_standings(date = "2025-01-01")
 }

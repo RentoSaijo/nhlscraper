@@ -2,7 +2,7 @@
 % Please edit documentation in R/League.R
 \name{ns_seasons}
 \alias{ns_seasons}
-\title{Get all seasons}
+\title{Get all the seasons}
 \usage{
 ns_seasons()
 }

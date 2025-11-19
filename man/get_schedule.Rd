@@ -2,7 +2,7 @@
 % Please edit documentation in R/LeagueOld.R
 \name{get_schedule}
 \alias{get_schedule}
-\title{Get schedule by date}
+\title{Get the schedule for a date}
 \usage{
 get_schedule(date = "2025-01-01")
 }

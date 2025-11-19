@@ -2,7 +2,7 @@
 % Please edit documentation in R/League.R
 \name{ns_standings}
 \alias{ns_standings}
-\title{Get standings by date}
+\title{Get the standings for a date}
 \usage{
 ns_standings(date = "now")
 }
