@@ -1,0 +1,425 @@
+#' Get seasons for which NHL recorded team EDGE statistics
+#' 
+#' `ns_team_edge_seasons` retrieves information on each 
+#'
+#' @return data.frame with one row per season
+#' @examples
+#' team_EDGE_seasons <- ns_team_edge_seasons()
+#' @export
+
+ns_team_edge_seasons <- function() {
+  tryCatch(
+    expr = {
+      nhl_api(
+        path = sprintf('v1/edge/team-landing/now'),
+        type = 'w'
+      )$seasonsWithEdgeStats
+    },
+    error = function(e) {
+      message("Invalid argument(s); refer to help file.")
+      data.frame()
+    }
+  )
+}
+
+#' Get EDGE summary by team, season, and game type
+#' 
+#' `ns_team_edge_summary()` retrieves information on each 
+#' 
+#' @param team integer ID (e.g., 21), character full name (e.g., 'Colorado 
+#' Avalanche'), OR three-letter code (e.g., 'COL')
+#' @param season integer in YYYYYYYY (e.g., 20242025)
+#' @param game_type integer in 1:3 (where 1 = pre-season, 2 = regular season, 3 
+#' = playoff/post-season) OR character of 'pre', 'regular', or 'playoff'/'post'
+#' @return list of various items
+#' @examples
+#' COL_EDGE_summary_regular_20242025 <- ns_team_edge_summary(
+#'   team      = 21, 
+#'   season    = 20242025,
+#'   game_type = 2
+#' )
+#' @export
+
+ns_team_edge_summary <- function(team = 1, season = 'now', game_type = '') {
+  tryCatch(
+    expr = {
+      nhl_api(
+        path = sprintf(
+          'v1/edge/team-detail/%s/%s/%s', 
+          to_team_id(team), 
+          season, 
+          to_game_type_id(game_type)
+        ),
+        type = 'w'
+      )
+    },
+    error = function(e) {
+      message("Invalid argument(s); refer to help file.")
+      data.frame()
+    }
+  )
+}
+
+#' Get team EDGE statistics leaders by season and game type
+#' 
+#' `ns_team_edge_leaders()` retrieves information on each 
+#' 
+#' @param season integer in YYYYYYYY (e.g., 20242025)
+#' @param game_type integer in 1:3 (where 1 = pre-season, 2 = regular season, 3 
+#' = playoff/post-season) OR character of 'pre', 'regular', or 'playoff'/'post'
+#' @return list of various items
+#' @examples
+#' team_EDGE_leaders_regular_20242025 <- ns_team_edge_leaders(
+#'   season    = 20242025,
+#'   game_type = 2
+#' )
+#' @export
+
+ns_team_edge_leaders <- function(season = 'now', game_type = '') {
+  tryCatch(
+    expr = {
+      nhl_api(
+        path = sprintf(
+          'v1/edge/team-landing/%s/%s', 
+          season, 
+          to_game_type_id(game_type)
+        ),
+        type = 'w'
+      )$leaders
+    },
+    error = function(e) {
+      message("Invalid argument(s); refer to help file.")
+      data.frame()
+    }
+  )
+}
+
+#' Get EDGE shot location statistics by team, season, game type, and report type
+#' 
+#' `ns_team_edge_shot_location()` retrieves information on each 
+#' 
+#' @param team integer ID (e.g., 21), character full name (e.g., 'Colorado 
+#' Avalanche'), OR three-letter code (e.g., 'COL')
+#' @param season integer in YYYYYYYY (e.g., 20242025)
+#' @param game_type integer in 1:3 (where 1 = pre-season, 2 = regular season, 3 
+#' = playoff/post-season) OR character of 'pre', 'regular', or 'playoff'/'post'
+#' @param report_type character of 'd'/'detail'/'details' or 
+#' 't'/'total'/'totals'
+#' @return data.frame with one (details) or three (totals) rows per shot 
+#' location
+#' @examples
+#' COL_shot_location_totals_regular_20242025 <- ns_team_edge_shot_location(
+#'   team        = 21,
+#'   season      = 20242025,
+#'   game_type   = 2,
+#'   report_type = 'totals'
+#' )
+#' @export
+
+ns_team_edge_shot_location <- function(
+    team        = 1, 
+    season      = 'now', 
+    game_type   = '', 
+    report_type = 'details'
+) {
+  tryCatch(
+    expr = {
+      report_type <- switch(
+        tolower(report_type),
+        d       = 'shotLocationDetails',
+        detail  = 'shotLocationDetails',
+        details = 'shotLocationDetails',
+        t       = 'shotLocationTotals',
+        total   = 'shotLocationTotals',
+        totals  = 'shotLocationTotals'
+      )
+      nhl_api(
+        path = sprintf(
+          'v1/edge/team-shot-location-detail/%s/%s/%s', 
+          to_team_id(team), 
+          season, 
+          to_game_type_id(game_type)
+        ),
+        type = 'w'
+      )[[report_type]]
+    },
+    error = function(e) {
+      message("Invalid argument(s); refer to help file.")
+      data.frame()
+    }
+  )
+}
+
+#' Get top 10 EDGE shot location teams by season, game type, position, report 
+#' type, and location
+#' 
+#' `ns_team_edge_shot_location_top_10()` retrieves information on each 
+#' 
+#' @param season integer in YYYYYYYY (e.g., 20242025)
+#' @param game_type integer in 1:3 (where 1 = pre-season, 2 = regular season, 3 
+#' = playoff/post-season) OR character of 'pre', 'regular', or 'playoff'/'post'
+#' @param position character of 'a'/'all', 'f'/'forward'/forwards', or 
+#' 'd'/'defense'/defensemen'
+#' @param location character 'a'/'all', 'h'/'high'/'high-danger'/'high danger', 
+#' 'm'/'mid'/'mid-range'/'mid range', or 'l'/'long'/'long-range'/'long range'
+#' @param report_type character of 
+#' 'shot'/'shots'/'sog'/'shots-on-goal'/'shots on goal', 'goal'/'goals', or 
+#' 'shooting%'/'shootingP'/'shooting-percentage'/'shooting percentage'
+#' @return data.frame with one row per team
+#' @examples
+#' top_10_defensemen_shootingP_high_danger_regular_20242025 <- 
+#'   ns_team_edge_shot_location_top_10(
+#'     season      = 20242025,
+#'     game_type   = 2,
+#'     position    = 'defensemen',
+#'     location    = 'high danger',
+#'     report_type = 'shooting%'
+#'   )
+#' @export
+
+ns_team_edge_shot_location_top_10 <- function(
+    season      = 'now', 
+    game_type   = '', 
+    position    = 'all',
+    location    = 'all',
+    report_type = 'sog'
+) {
+  tryCatch(
+    expr = {
+      report_type <- switch(
+        tolower(report_type),
+        shot                  = 'sog',
+        shots                 = 'sog',
+        sog                   = 'sog',
+        `shots-on-goal`       = 'sog',
+        `shots on goal`       = 'sog',
+        goal                  = 'goals',
+        goals                 = 'goals',
+        `shooting%`           = 'shooting-pctg',
+        shootingP             = 'shooting-pctg',
+        `shooting-percentage` = 'shooting-pctg',
+        `shooting percentage` = 'shooting-pctg'
+      )
+      location <- switch(
+        tolower(location),
+        a             = 'all',
+        all           = 'all',
+        h             = 'high',
+        high          = 'high',
+        `high-danger` = 'high',
+        `high danger` = 'high',
+        m             = 'mid',
+        mid           = 'mid',
+        `mid-range`   = 'mid',
+        `mid range`   = 'mid',
+        l             = 'long',
+        long          = 'long',
+        `long-range`  = 'long',
+        `long range`  = 'long'
+      )
+      nhl_api(
+        path = sprintf(
+          'v1/edge/team-shot-location-top-10/%s/%s/%s/%s/%s', 
+          to_team_edge_position(position), 
+          report_type,
+          location,
+          season,
+          to_game_type_id(game_type)
+        ),
+        type = 'w'
+      )
+    },
+    error = function(e) {
+      message("Invalid argument(s); refer to help file.")
+      data.frame()
+    }
+  )
+}
+
+#' Get EDGE shot speed statistics by team, season, game type, and report type
+#' 
+#' `ns_team_edge_shot_speed()` retrieves information on each 
+#' 
+#' @param team integer ID (e.g., 21), character full name (e.g., 'Colorado 
+#' Avalanche'), OR three-letter code (e.g., 'COL')
+#' @param season integer in YYYYYYYY (e.g., 20242025)
+#' @param game_type integer in 1:3 (where 1 = pre-season, 2 = regular season, 3 
+#' = playoff/post-season) OR character of 'pre', 'regular', or 'playoff'/'post'
+#' @param report_type character of 'd'/'detail'/'details' or 'h'/'hardest'
+#' @return data.frame with one row per position (details) or shot (hardest)
+#' @examples
+#' COL_hardest_shots_regular_20242025 <- ns_team_edge_shot_speed(
+#'   team        = 21,
+#'   season      = 20242025,
+#'   game_type   = 2,
+#'   report_type = 'hardest'
+#' )
+#' @export
+
+ns_team_edge_shot_speed <- function(
+    team        = 1, 
+    season      = 'now', 
+    game_type   = '', 
+    report_type = 'details'
+) {
+  tryCatch(
+    expr = {
+      report_type <- switch(
+        tolower(report_type),
+        d       = 'shotSpeedDetails',
+        detail  = 'shotSpeedDetails',
+        details = 'shotSpeedDetails',
+        h       = 'hardestShots',
+        hardest = 'hardestShots'
+      )
+      nhl_api(
+        path = sprintf(
+          'v1/edge/team-shot-speed-detail/%s/%s/%s', 
+          to_team_id(team), 
+          season, 
+          to_game_type_id(game_type)
+        ),
+        type = 'w'
+      )[[report_type]]
+    },
+    error = function(e) {
+      message("Invalid argument(s); refer to help file.")
+      data.frame()
+    }
+  )
+}
+
+#' Get EDGE skating distance statistics by team, season, game type, and report 
+#' type
+#' 
+#' `ns_team_edge_skating_distance()` retrieves information on each 
+#' 
+#' @param team integer ID (e.g., 21), character full name (e.g., 'Colorado 
+#' Avalanche'), OR three-letter code (e.g., 'COL')
+#' @param season integer in YYYYYYYY (e.g., 20242025)
+#' @param game_type integer in 1:3 (where 1 = pre-season, 2 = regular season, 3 
+#' = playoff/post-season) OR character of 'pre', 'regular', or 'playoff'/'post'
+#' @param report_type character of 'd'/'detail'/'details' or 
+#' 'l'/'l10'/'last10'/'last-10'/'last 10'
+#' @return data.frame with three rows per position (details) or one row per 
+#' game (L10)
+#' @examples
+#' COL_L10_skating_distance_regular_20242025 <- ns_team_edge_skating_distance(
+#'   team        = 21,
+#'   season      = 20242025,
+#'   game_type   = 2,
+#'   report_type = 'L10'
+#' )
+#' @export
+
+ns_team_edge_skating_distance <- function(
+    team        = 1, 
+    season      = 'now', 
+    game_type   = '', 
+    report_type = 'details'
+) {
+  tryCatch(
+    expr = {
+      report_type <- switch(
+        tolower(report_type),
+        d         = 'skatingDistanceDetails',
+        detail    = 'skatingDistanceDetails',
+        details   = 'skatingDistanceDetails',
+        l         = 'skatingDistanceLast10',
+        l10       = 'skatingDistanceLast10',
+        last10    = 'skatingDistanceLast10',
+        `last-10` = 'skatingDistanceLast10',
+        `last 10` = 'skatingDistanceLast10',
+      )
+      nhl_api(
+        path = sprintf(
+          'v1/edge/team-skating-distance-detail/%s/%s/%s', 
+          to_team_id(team), 
+          season, 
+          to_game_type_id(game_type)
+        ),
+        type = 'w'
+      )[[report_type]]
+    },
+    error = function(e) {
+      message("Invalid argument(s); refer to help file.")
+      data.frame()
+    }
+  )
+}
+
+#' Get top 10 EDGE skating distance teams by season, game type, position, 
+#' strength, and report type
+#' 
+#' `ns_team_edge_skating_distance_top_10()` retrieves information on each 
+#' 
+#' @param season integer in YYYYYYYY (e.g., 20242025)
+#' @param game_type integer in 1:3 (where 1 = pre-season, 2 = regular season, 3 
+#' = playoff/post-season) OR character of 'pre', 'regular', or 'playoff'/'post'
+#' @param position character of 'a'/'all', 'f'/'forward'/forwards', or 
+#' 'd'/'defense'/defensemen'
+#' @param strength character of 'a'/'all', 
+#' 'pp'/'powerplay'/'power-play'/'power play', or 
+#' 'pk'/'penaltykill'/'penalty-kill'/'penalty kill'
+#' @param report_type character of 't'/'total'/'totals', 
+#' 'a'/'average'/'per60'/'per-60'/'per 60', 
+#' 'g'/'game'/'most-in-game'/'most in game', or 
+#' 'p'/'period'/'most-in-period'/'most in period'
+#' @return data.frame with one row per team
+#' @examples
+#' top_10_defensemen_avg_skating_distance_per_60_pp_regular_20242025 <- 
+#'   ns_team_edge_skating_distance_top_10(
+#'     season      = 20242025,
+#'     game_type   = 2,
+#'     position    = 'defensemen',
+#'     strength    = 'pp',
+#'     report_type = 'per 60'
+#'   )
+#' @export
+
+ns_team_edge_skating_distance_top_10 <- function(
+    season      = 'now', 
+    game_type   = '', 
+    position    = 'all',
+    strength    = 'all',
+    report_type = 'total'
+) {
+  tryCatch(
+    expr = {
+      report_type <- switch(
+        tolower(report_type),
+        t                = 'total',
+        total            = 'total',
+        totals           = 'total',
+        a                = 'per-60',
+        average          = 'per-60',
+        per60            = 'per-60',
+        `per-60`         = 'per-60',
+        `per 60`         = 'per-60',
+        g                = 'max-game',
+        game             = 'max-game',
+        `most-in-game`   = 'max-game',
+        `most in game`   = 'max-game',
+        p                = 'max-period',
+        period           = 'max-period',
+        `most-in-period` = 'max-period',
+        `most in period` = 'max-period'
+      )
+      nhl_api(
+        path = sprintf(
+          'v1/edge/team-skating-distance-top-10/%s/%s/%s/%s/%s', 
+          to_team_edge_position(position),
+          to_team_edge_strength(strength),
+          report_type,
+          season,
+          to_game_type_id(game_type)
+        ),
+        type = 'w'
+      )
+    },
+    error = function(e) {
+      message("Invalid argument(s); refer to help file.")
+      data.frame()
+    }
+  )
+}
