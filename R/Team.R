@@ -9,10 +9,11 @@
 #' @export
 
 ns_teams <- function() {
-  nhl_api(
+  teams <- nhl_api(
     path = 'en/team',
     type = 's'
   )$data
+  teams[order(teams$id), ]
 }
 
 #' Get the season(s) and game type(s) of which a team played in
