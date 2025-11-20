@@ -1,4 +1,4 @@
-#' Get the skaters
+#' Get the skaters for a range of seasons
 #' 
 #' `get_skaters()` is defunct. Use [ns_players()] instead.
 #'
