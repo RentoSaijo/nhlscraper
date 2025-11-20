@@ -105,8 +105,7 @@ ns_team_edge_leaders <- function(season = 'now', game_type = '') {
 #' @param season integer in YYYYYYYY (e.g., 20242025)
 #' @param game_type integer in 1:3 (where 1 = pre-season, 2 = regular season, 3 
 #' = playoff/post-season) OR character of 'pre', 'regular', or 'playoff'/'post'
-#' @param report_type character of 'd'/'detail'/'details' or 
-#' 't'/'total'/'totals'
+#' @param report_type character of 'd'/details' or 't'/'totals'
 #' @return data.frame with one (details) or three (totals) rows per shot 
 #' location
 #' @examples
@@ -127,13 +126,9 @@ ns_team_edge_shot_location <- function(
   tryCatch(
     expr = {
       report_type <- switch(
-        tolower(report_type),
-        d       = 'shotLocationDetails',
-        detail  = 'shotLocationDetails',
-        details = 'shotLocationDetails',
-        t       = 'shotLocationTotals',
-        total   = 'shotLocationTotals',
-        totals  = 'shotLocationTotals'
+        substring(tolower(report_type), 1, 1),
+        d = 'shotLocationDetails',
+        t = 'shotLocationTotals'
       )
       nhl_api(
         path = sprintf(
@@ -162,7 +157,7 @@ ns_team_edge_shot_location <- function(
 #' @param season integer in YYYYYYYY (e.g., 20242025)
 #' @param game_type integer in 1:3 (where 1 = pre-season, 2 = regular season, 3 
 #' = playoff/post-season) OR character of 'pre', 'regular', or 'playoff'/'post'
-#' @param report_type character of 'd'/'detail'/'details' or 'h'/'hardest'
+#' @param report_type character of 'd'/'details' or 'h'/'hardest'
 #' @return data.frame with one row per position (details) or shot (hardest)
 #' @examples
 #' COL_hardest_shots_regular_20242025 <- ns_team_edge_shot_speed(
@@ -182,12 +177,9 @@ ns_team_edge_shot_speed <- function(
   tryCatch(
     expr = {
       report_type <- switch(
-        tolower(report_type),
-        d       = 'shotSpeedDetails',
-        detail  = 'shotSpeedDetails',
-        details = 'shotSpeedDetails',
-        h       = 'hardestShots',
-        hardest = 'hardestShots'
+        substring(tolower(report_type), 1, 1),
+        d = 'shotSpeedDetails',
+        h = 'hardestShots',
       )
       nhl_api(
         path = sprintf(
@@ -216,8 +208,7 @@ ns_team_edge_shot_speed <- function(
 #' @param season integer in YYYYYYYY (e.g., 20242025)
 #' @param game_type integer in 1:3 (where 1 = pre-season, 2 = regular season, 3 
 #' = playoff/post-season) OR character of 'pre', 'regular', or 'playoff'/'post'
-#' @param report_type character of 'd'/'detail'/'details' or 
-#' 'l'/'l10'/'last10'/'last-10'/'last 10'
+#' @param report_type character of 'd'/'details' or 'l'/'l10'/'last 10'
 #' @return data.frame with three rows per position (details) or one row per 
 #' game (L10)
 #' @examples
@@ -238,15 +229,9 @@ ns_team_edge_skating_distance <- function(
   tryCatch(
     expr = {
       report_type <- switch(
-        tolower(report_type),
-        d         = 'skatingDistanceDetails',
-        detail    = 'skatingDistanceDetails',
-        details   = 'skatingDistanceDetails',
-        l         = 'skatingDistanceLast10',
-        l10       = 'skatingDistanceLast10',
-        last10    = 'skatingDistanceLast10',
-        `last-10` = 'skatingDistanceLast10',
-        `last 10` = 'skatingDistanceLast10',
+        substring(tolower(report_type), 1, 1),
+        d = 'skatingDistanceDetails',
+        l = 'skatingDistanceLast10'
       )
       nhl_api(
         path = sprintf(
@@ -275,8 +260,7 @@ ns_team_edge_skating_distance <- function(
 #' @param season integer in YYYYYYYY (e.g., 20242025)
 #' @param game_type integer in 1:3 (where 1 = pre-season, 2 = regular season, 3 
 #' = playoff/post-season) OR character of 'pre', 'regular', or 'playoff'/'post'
-#' @param report_type character of 'd'/'detail'/'details' or 
-#' 't'/'top'/'top-speed'/'top-speeds'/'top speed'/'top speeds'
+#' @param report_type character of 'd'/'details' or t'/'top'/'top speeds'
 #' @return data.frame with one row per position (details) or event (top speeds)
 #' @examples
 #' COL_top_speeds_regular_20242025 <- ns_team_edge_skating_speed(
@@ -296,16 +280,9 @@ ns_team_edge_skating_speed <- function(
   tryCatch(
     expr = {
       report_type <- switch(
-        tolower(report_type),
-        d            = 'skatingSpeedDetails',
-        detail       = 'skatingSpeedDetails',
-        details      = 'skatingSpeedDetails',
-        t            = 'topSkatingSpeeds',
-        top          = 'topSkatingSpeeds',
-        `top-speed`  = 'topSkatingSpeeds',
-        `top-speeds` = 'topSkatingSpeeds',
-        `top speed`  = 'topSkatingSpeeds',
-        `top speeds` = 'topSkatingSpeeds'
+        substring(tolower(report_type), 1, 1),
+        d = 'skatingSpeedDetails',
+        t = 'topSkatingSpeeds'
       )
       nhl_api(
         path = sprintf(
@@ -334,8 +311,8 @@ ns_team_edge_skating_speed <- function(
 #' @param season integer in YYYYYYYY (e.g., 20242025)
 #' @param game_type integer in 1:3 (where 1 = pre-season, 2 = regular season, 3 
 #' = playoff/post-season) OR character of 'pre', 'regular', or 'playoff'/'post'
-#' @param report_type character of 'd'/'detail'/'details' or 
-#' 'dS'/'dShot'/'shot-differential'/'shot differential'
+#' @param report_type character of 'd'/'details' or 
+#' 'dS'/'dShot'/'shot differential'
 #' @return data.frame with one row per strength state (details) or list with 
 #' four items (shot differential)
 #' @examples
@@ -358,11 +335,9 @@ ns_team_edge_zone_time <- function(
       report_type <- switch(
         tolower(report_type),
         d                   = 'zoneTimeDetails',
-        detail              = 'zoneTimeDetails',
         details             = 'zoneTimeDetails',
         dS                  = 'shotDifferential',
         dShot               = 'shotDifferential',
-        `shot-differential` = 'shotDifferential',
         `shot differential` = 'shotDifferential'
       )
       nhl_api(

@@ -21,8 +21,7 @@ Avalanche'), OR three-letter code (e.g., 'COL')}
 \item{game_type}{integer in 1:3 (where 1 = pre-season, 2 = regular season, 3
 = playoff/post-season) OR character of 'pre', 'regular', or 'playoff'/'post'}
 
-\item{report_type}{character of 'd'/'detail'/'details' or
-'l'/'l10'/'last10'/'last-10'/'last 10'}
+\item{report_type}{character of 'd'/'details' or 'l'/'l10'/'last 10'}
 }
 \value{
 data.frame with three rows per position (details) or one row per
