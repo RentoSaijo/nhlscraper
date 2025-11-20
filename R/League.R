@@ -59,12 +59,10 @@ ns_standings_info <- function() {
 ns_standings <- function(date = 'now') {
   tryCatch(
     expr = {
-      standings <- nhl_api(
+      nhl_api(
         path = sprintf('v1/standings/%s', date),
         type = 'w'
       )$standings
-      standings$place <- seq_len(nrow(standings))
-      standings
     },
     error = function(e) {
       message("Invalid argument(s); refer to help file.")
