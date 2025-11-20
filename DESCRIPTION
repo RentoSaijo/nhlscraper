@@ -1,7 +1,7 @@
 Package: nhlscraper
 Title: Scraper for National Hockey League Data
 Version: 0.2.0.9000
-Authors@R: c(person('Rento', 'Saijo', email='rentosaijo0527@gmail.com', role=c('aut', 'cre', 'cph'), comment=c(ORCID='0009-0008-4919-7349')), person('Lars', 'Skytte', email='lars.sunesen.skytte@gmail.com', role='ctb'))
+Authors@R: c(person('Rento', 'Saijo', email = 'rentosaijo0527@gmail.com', role = c('aut', 'cre', 'cph'), comment = c(ORCID = '0009-0008-4919-7349')), person('Lars', 'Skytte', email = 'lars.sunesen.skytte@gmail.com', role = 'ctb'))
 Description: Scrapes data from the 'NHL' and 'ESPN' APIs into data.frames. It primarily wraps 500+ endpoints documented in <https://github.com/RentoSaijo/nhlscraper/wiki>, covering data from high-level multi-season summaries and award winners to low-level play-by-plays and bookmakers' odds, and has tools to perform analytics.
 License: MIT + file LICENSE
 Encoding: UTF-8
