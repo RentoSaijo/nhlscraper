@@ -11,7 +11,7 @@ nhl_api(path, query = list(), type)
 
 \item{query}{list}
 
-\item{type}{character (e.g. 'w' for web, 's' for stats, 'r' for records)}
+\item{type}{character of 'w' for web, 's' for stats, and 'r' for records}
 }
 \value{
 parsed JSON
