@@ -2,31 +2,10 @@
 % Please edit documentation in R/PlayerOld.R
 \name{get_player_game_log}
 \alias{get_player_game_log}
-\title{Get game-log by player, season, and game-type}
+\title{Get the game log of a player for a season and game type}
 \usage{
-get_player_game_log(
-  player = 8480039,
-  season = get_season_now()$seasonId,
-  game_type = 2
-)
-}
-\arguments{
-\item{player}{integer Player ID}
-
-\item{season}{integer in YYYYYYYY}
-
-\item{game_type}{integer where 2=regular and 3=playoffs}
-}
-\value{
-tibble with one row per game
+get_player_game_log(player = 8480039, season = "now", game_type = "")
 }
 \description{
-\code{get_player_game_log()} retrieves information on each game for a given set of \code{player}, \code{season}, and \code{game_type}, including but not limited to their ID, date, and statistics. Access \code{get_players()} for \code{player} and \code{get_seasons()} for \code{season} references.
-}
-\examples{
-playoff_Mikko_Rantanen_gl_20242025 <- get_player_game_log(
-  player=8478420,
-  season=20242025,
-  game_type=3
-)
+\code{get_player_game_log()} is deprecated. Use \code{\link[=ns_player_game_log]{ns_player_game_log()}} instead.
 }

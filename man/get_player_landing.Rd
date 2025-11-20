@@ -2,19 +2,10 @@
 % Please edit documentation in R/PlayerOld.R
 \name{get_player_landing}
 \alias{get_player_landing}
-\title{Get landing by player}
+\title{Get the summary of a player}
 \usage{
 get_player_landing(player = 8480039)
 }
-\arguments{
-\item{player}{integer Player ID}
-}
-\value{
-list with various items
-}
 \description{
-\code{get_player_landing()} retrieves information on a \code{player}, including but not limited to his ID, name, bio-metrics, career statistics, and awards. Access \code{get_players()} for \code{player} reference.
-}
-\examples{
-Mikko_Rantanen_landing <- get_player_landing(player=8478420)
+\code{get_player_landing()} is deprecated. Use \code{\link[=ns_player_summary]{ns_player_summary()}} instead.
 }
