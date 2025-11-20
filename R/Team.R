@@ -54,13 +54,12 @@ ns_team_seasons <- function(team = 1) {
 #' @param team integer ID (e.g., 21), character full name (e.g., 'Colorado 
 #' Avalanche'), OR three-letter code (e.g., 'COL')
 #' @param season integer in YYYYYYYY (e.g., 20242025)
-#' @param position string of 'f'/'forward'/'forwards', 
-#' 'd'/'defense'/'defensemen', or 'g'/goalie'/goalies'
+#' @param position string of 'f'/'forwards', d'/'defensemen', or 'g'/goalies'
 #' @return data.frame with one row per player
 #' @examples
 #' COL_defensemen_20242025 <- ns_roster(
-#'   team        = 1,
-#'   season      = 20242025,
+#'   team     = 1,
+#'   season   = 20242025,
 #'   position = 'defensemen'
 #' )
 #' @export
@@ -73,16 +72,10 @@ ns_roster <- function(
   tryCatch(
     expr = {
       position <- switch(
-        tolower(position),
-        f          = 'forwards',
-        forward    = 'forwards',
-        forwards   = 'forwards',
-        d          = 'defensemen',
-        defense    = 'defensemen',
-        defensemen = 'defensemen',
-        g          = 'goalies',
-        goalie     = 'goalies',
-        goalies    = 'goalies'
+        substring(tolower(position), 1, 1),
+        f = 'forwards',
+        d = 'defensemen',
+        g = 'goalies'
       )
       nhl_api(
         path = sprintf('v1/roster/%s/%s', to_team_tri_code(team), season),
@@ -108,7 +101,7 @@ ns_roster <- function(
 #' @param season integer in YYYYYYYY (e.g., 20242025)
 #' @param game_type integer in 1:3 (where 1 = pre-season, 2 = regular season, 3 
 #' = playoff/post-season) OR character of 'pre', 'regular', or 'playoff'/'post'
-#' @param position string of 's'/'skater'/'skaters' or 'g'/'goalie'/goalies'
+#' @param position string of 's'/'skaters' or 'g'/'goalies'
 #' @return data.frame with one row per player
 #' @examples
 #' COL_goalies_statistics_regular_20242025 <- ns_roster_statistics(
@@ -128,13 +121,9 @@ ns_roster_statistics <- function(
   tryCatch(
     expr = {
       position <- switch(
-        tolower(position),
-        s       = 'skaters',
-        skater  = 'skaters',
-        skaters = 'skaters',
-        g       = 'goalies',
-        goalie  = 'goalies',
-        goalies = 'goalies'
+        substring(tolower(position), 1, 1),
+        s = 'skaters',
+        g = 'goalies'
       )
       nhl_api(
         path = sprintf(
@@ -173,8 +162,7 @@ ns_roster_stats <- function(
 #' 
 #' @param team integer ID (e.g., 21), character full name (e.g., 'Colorado 
 #' Avalanche'), OR three-letter code (e.g., 'COL')
-#' @param position string of 'f'/'forward'/'forwards', 
-#' 'd'/'defense'/'defensemen', or 'g'/goalie'/goalies'
+#' @param position string of 'f'/'forwards', d'/'defensemen', or 'g'/goalies'
 #' @return data.frame with one row per player
 #' @examples
 #' COL_defensemen_prospects <- ns_team_prospects(
@@ -187,16 +175,10 @@ ns_team_prospects <- function(team = 1, position = 'forwards') {
   tryCatch(
     expr = {
       position <- switch(
-        tolower(position),
-        f          = 'forwards',
-        forward    = 'forwards',
-        forwards   = 'forwards',
-        d          = 'defensemen',
-        defense    = 'defensemen',
-        defensemen = 'defensemen',
-        g          = 'goalies',
-        goalie     = 'goalies',
-        goalies    = 'goalies'
+        substring(tolower(position), 1, 1),
+        f = 'forwards',
+        d = 'defensemen',
+        g = 'goalies'
       )
       nhl_api(
         path = sprintf('v1/prospects/%s', to_team_tri_code(team)),

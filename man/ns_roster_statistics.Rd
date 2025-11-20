@@ -23,7 +23,7 @@ Avalanche'), OR three-letter code (e.g., 'COL')}
 \item{game_type}{integer in 1:3 (where 1 = pre-season, 2 = regular season, 3
 = playoff/post-season) OR character of 'pre', 'regular', or 'playoff'/'post'}
 
-\item{position}{string of 's'/'skater'/'skaters' or 'g'/'goalie'/goalies'}
+\item{position}{string of 's'/'skaters' or 'g'/'goalies'}
 }
 \value{
 data.frame with one row per player

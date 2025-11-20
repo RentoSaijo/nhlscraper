@@ -10,8 +10,7 @@ ns_team_prospects(team = 1, position = "forwards")
 \item{team}{integer ID (e.g., 21), character full name (e.g., 'Colorado
 Avalanche'), OR three-letter code (e.g., 'COL')}
 
-\item{position}{string of 'f'/'forward'/'forwards',
-'d'/'defense'/'defensemen', or 'g'/goalie'/goalies'}
+\item{position}{string of 'f'/'forwards', d'/'defensemen', or 'g'/goalies'}
 }
 \value{
 data.frame with one row per player

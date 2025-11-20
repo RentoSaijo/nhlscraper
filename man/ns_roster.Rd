@@ -12,8 +12,7 @@ Avalanche'), OR three-letter code (e.g., 'COL')}
 
 \item{season}{integer in YYYYYYYY (e.g., 20242025)}
 
-\item{position}{string of 'f'/'forward'/'forwards',
-'d'/'defense'/'defensemen', or 'g'/goalie'/goalies'}
+\item{position}{string of 'f'/'forwards', d'/'defensemen', or 'g'/goalies'}
 }
 \value{
 data.frame with one row per player
@@ -26,8 +25,8 @@ name, bio-metrics, and birth date and location. Access \code{ns_teams()} for
 }
 \examples{
 COL_defensemen_20242025 <- ns_roster(
-  team        = 1,
-  season      = 20242025,
+  team     = 1,
+  season   = 20242025,
   position = 'defensemen'
 )
 }
