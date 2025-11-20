@@ -336,8 +336,8 @@ ns_team_edge_zone_time <- function(
         tolower(report_type),
         d                   = 'zoneTimeDetails',
         details             = 'zoneTimeDetails',
-        dS                  = 'shotDifferential',
-        dShot               = 'shotDifferential',
+        ds                  = 'shotDifferential',
+        dshot               = 'shotDifferential',
         `shot differential` = 'shotDifferential'
       )
       nhl_api(
