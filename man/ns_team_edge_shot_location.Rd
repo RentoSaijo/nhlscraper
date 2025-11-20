@@ -2,7 +2,8 @@
 % Please edit documentation in R/EDGETeam.R
 \name{ns_team_edge_shot_location}
 \alias{ns_team_edge_shot_location}
-\title{Get EDGE shot location statistics by team, season, game type, and report type}
+\title{Get the EDGE shot location statistics of a team by a season, game type, and
+report type}
 \usage{
 ns_team_edge_shot_location(
   team = 1,

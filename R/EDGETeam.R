@@ -1,4 +1,5 @@
-#' Get seasons for which NHL recorded team EDGE statistics
+#' Get the season(s) and game type(s) of which the NHL recorded team EDGE 
+#' statistics
 #' 
 #' `ns_team_edge_seasons` retrieves information on each 
 #'
@@ -22,7 +23,7 @@ ns_team_edge_seasons <- function() {
   )
 }
 
-#' Get EDGE summary by team, season, and game type
+#' Get the EDGE summary of a team for a season and game type
 #' 
 #' `ns_team_edge_summary()` retrieves information on each 
 #' 
@@ -60,7 +61,7 @@ ns_team_edge_summary <- function(team = 1, season = 'now', game_type = '') {
   )
 }
 
-#' Get team EDGE statistics leaders by season and game type
+#' Get the team EDGE statistics leaders for a season and game type
 #' 
 #' `ns_team_edge_leaders()` retrieves information on each 
 #' 
@@ -94,7 +95,8 @@ ns_team_edge_leaders <- function(season = 'now', game_type = '') {
   )
 }
 
-#' Get EDGE shot location statistics by team, season, game type, and report type
+#' Get the EDGE shot location statistics of a team by a season, game type, and 
+#' report type
 #' 
 #' `ns_team_edge_shot_location()` retrieves information on each 
 #' 
@@ -150,7 +152,8 @@ ns_team_edge_shot_location <- function(
   )
 }
 
-#' Get EDGE shot speed statistics by team, season, game type, and report type
+#' Get the EDGE shot speed statistics of a team for a season, game type, and 
+#' report type
 #' 
 #' `ns_team_edge_shot_speed()` retrieves information on each 
 #' 
@@ -203,8 +206,8 @@ ns_team_edge_shot_speed <- function(
   )
 }
 
-#' Get EDGE skating distance statistics by team, season, game type, and report 
-#' type
+#' Get the EDGE skating distance statistics of a team for a season, game type, 
+#' and report type
 #' 
 #' `ns_team_edge_skating_distance()` retrieves information on each 
 #' 
@@ -262,7 +265,8 @@ ns_team_edge_skating_distance <- function(
   )
 }
 
-#' Get EDGE skating speed statistics by team, season, game type, and report type
+#' Get the EDGE skating speed statistics of a team for a season, game type, and 
+#' report type
 #' 
 #' `ns_team_edge_skating_speed()` retrieves information on each 
 #' 
@@ -320,7 +324,8 @@ ns_team_edge_skating_speed <- function(
   )
 }
 
-#' Get EDGE zone time statistics by team, season, game type, and report type
+#' Get the EDGE zone time statistics of a team for a season, game type, and 
+#' report type
 #' 
 #' `ns_team_edge_zone_time()` retrieves information on each 
 #' 

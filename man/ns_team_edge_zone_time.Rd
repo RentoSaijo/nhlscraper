@@ -2,7 +2,8 @@
 % Please edit documentation in R/EDGETeam.R
 \name{ns_team_edge_zone_time}
 \alias{ns_team_edge_zone_time}
-\title{Get EDGE zone time statistics by team, season, game type, and report type}
+\title{Get the EDGE zone time statistics of a team for a season, game type, and
+report type}
 \usage{
 ns_team_edge_zone_time(
   team = 1,

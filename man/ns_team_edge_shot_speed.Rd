@@ -2,7 +2,8 @@
 % Please edit documentation in R/EDGETeam.R
 \name{ns_team_edge_shot_speed}
 \alias{ns_team_edge_shot_speed}
-\title{Get EDGE shot speed statistics by team, season, game type, and report type}
+\title{Get the EDGE shot speed statistics of a team for a season, game type, and
+report type}
 \usage{
 ns_team_edge_shot_speed(
   team = 1,

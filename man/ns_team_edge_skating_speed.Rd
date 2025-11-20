@@ -2,7 +2,8 @@
 % Please edit documentation in R/EDGETeam.R
 \name{ns_team_edge_skating_speed}
 \alias{ns_team_edge_skating_speed}
-\title{Get EDGE skating speed statistics by team, season, game type, and report type}
+\title{Get the EDGE skating speed statistics of a team for a season, game type, and
+report type}
 \usage{
 ns_team_edge_skating_speed(
   team = 1,

@@ -2,7 +2,7 @@
 % Please edit documentation in R/EDGETeam.R
 \name{ns_team_edge_leaders}
 \alias{ns_team_edge_leaders}
-\title{Get team EDGE statistics leaders by season and game type}
+\title{Get the team EDGE statistics leaders for a season and game type}
 \usage{
 ns_team_edge_leaders(season = "now", game_type = "")
 }

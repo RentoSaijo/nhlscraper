@@ -2,7 +2,7 @@
 % Please edit documentation in R/EDGETeam.R
 \name{ns_team_edge_summary}
 \alias{ns_team_edge_summary}
-\title{Get EDGE summary by team, season, and game type}
+\title{Get the EDGE summary of a team for a season and game type}
 \usage{
 ns_team_edge_summary(team = 1, season = "now", game_type = "")
 }
