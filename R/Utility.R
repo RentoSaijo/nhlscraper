@@ -2,7 +2,7 @@
 #' 
 #' @param path character
 #' @param query list
-#' @param type character (e.g. 'w' for web, 's' for stats, 'r' for records)
+#' @param type character of 'w' for web, 's' for stats, and 'r' for records
 #' @return parsed JSON
 #' @keywords internal
 
