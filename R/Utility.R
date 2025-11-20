@@ -78,35 +78,3 @@ to_game_type_id <- function(game_type) {
     ''
   )
 }
-
-to_team_edge_position <- function(position) {
-  switch(
-    tolower(position),
-    a          = 'all',
-    all        = 'all',
-    f          = 'forwards',
-    forward    = 'forwards',
-    forwards   = 'forwards',
-    d          = 'defense',
-    defense    = 'defense',
-    defensemen = 'defense'
-  )
-}
-
-to_team_edge_strength <- function(strength) {
-  switch(
-    tolower(strength),
-    a              = 'all',
-    all            = 'all',
-    ev             = 'even',
-    even           = 'even',
-    pp             = 'pp',
-    powerplay      = 'pp',
-    `power-play`   = 'pp',
-    `power play`   = 'pp',
-    pk             = 'pk',
-    penaltykill    = 'pk',
-    `penalty-kill` = 'pk',
-    `penalty kill` = 'pk'
-  )
-}
