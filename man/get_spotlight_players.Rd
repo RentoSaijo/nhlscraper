@@ -2,16 +2,11 @@
 % Please edit documentation in R/PlayerOld.R
 \name{get_spotlight_players}
 \alias{get_spotlight_players}
-\title{Get 'spotlight' players as of now}
+\title{Get the spotlight players}
 \usage{
 get_spotlight_players()
 }
-\value{
-tibble with one row per player
-}
 \description{
-\code{get_spotlight_players()} retrieves information on each 'spotlight' player, including but not limited to their ID, name, position, and sweater number.
-}
-\examples{
-spotlight_players_now <- get_spotlight_players()
+\code{get_spotlight_players()} is deprecated. Use \code{\link[=ns_spotlight_players]{ns_spotlight_players()}}
+instead.
 }
