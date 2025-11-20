@@ -51,10 +51,7 @@ espn_api <- function(path, query=list(), type) {
 }
 
 normalize_team_key <- function(x) {
-  x <- as.character(x)
-  x <- tolower(trimws(x))
-  x <- gsub('[^a-z0-9]', '', x)
-  x
+  gsub('[^a-z0-9]', '', tolower(trimws(as.character(x))))
 }
 
 to_team_tri_code <- function(team, lookup = .to_team_tri_code) {
