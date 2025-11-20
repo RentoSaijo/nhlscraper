@@ -36,71 +36,26 @@ get_team_seasons <- function(team = 1) {
 
 #' Get team statistics
 #' 
-#' `get_team_statistics()` retrieves information on each team or game for a given set of `season`, `game_types`, and `report`. `dates` must be given when paired with `is_game` as the default range will return incomplete data (too wide).  Access `get_configuration()` for what information each combination of `report`, `is_aggregate` and `is_game` can provide. Access `get_team_seasons()` for `season` and `dates` references. Will soon be reworked for easier access.
-#' 
-#' @param season integer in YYYYYYYY
-#' @param game_types vector of integers where 1=pre-season, 2=regular, and 
-#'                   3=playoffs
-#' @param dates vector of strings in 'YYYY-MM-DD'
-#' @param report string
-#' @param is_aggregate boolean
-#' @param is_game boolean
-#' @return tibble with one row per team or game
-#' @examples
-#' playoff_team_stf_20242025 <- get_team_statistics(
-#'   season=20242025,
-#'   report='scoretrailfirst',
-#'   game_types=c(3)
-#' )
+#' `get_team_statistics()` is defunct. Use [ns_team_statistics()] instead.
 #' 
 #' @export
 
 get_team_statistics <- function(
-    season=get_season_now()$seasonId,
-    report='summary',
-    is_aggregate=FALSE,
-    is_game=FALSE,
-    dates=c('2025-01-01'),
-    game_types=1:3
+    season       = 20242025,
+    report       = 'summary',
+    is_aggregate = FALSE,
+    is_game      = FALSE,
+    dates        = c('2025-01-01'),
+    game_types   = 1:3
 ) {
-  if (is_game) {
-    for (date in dates) {
-      if (!grepl('^\\d{4}-\\d{2}-\\d{2}$', date)) {
-        stop('date in `dates` must be in \'YYYY-MM-DD\' format', call.=FALSE)
-      }
-    }
-    out <- nhl_api(
-      path=sprintf('team/%s', report),
-      query=list(
-        limit=-1,
-        isGame=TRUE,
-        isAggregate=is_aggregate,
-        cayenneExp=sprintf(
-          'seasonId=%s and gameDate in (%s) and gameTypeId in (%s)',
-          season,
-          paste0('\'', dates, '\'', collapse=','),
-          paste(game_types, collapse=',')
-        )
-      ),
-      type=2
+  .Defunct(
+    new     = 'ns_team_statistics()',
+    package = 'nhlscraper',
+    msg     = paste(
+      '`get_team_statistics()` is defunct',
+      'Use `ns_team_statistics()` instead.'
     )
-  }
-  else {
-    out <- nhl_api(
-      path=sprintf('team/%s', report),
-      query=list(
-        limit=-1,
-        isAggregate=is_aggregate,
-        cayenneExp=sprintf(
-          'seasonId=%s and gameTypeId in (%s)',
-          season,
-          paste(game_types, collapse=',')
-        )
-      ),
-      type=2
-    )
-  }
-  return(tibble::as_tibble(out$data))
+  )
 }
 
 #' Get the roster of a team for a season and position

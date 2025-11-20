@@ -5,7 +5,7 @@
 \title{Get team statistics}
 \usage{
 get_team_statistics(
-  season = get_season_now()$seasonId,
+  season = 20242025,
   report = "summary",
   is_aggregate = FALSE,
   is_game = FALSE,
@@ -13,31 +13,6 @@ get_team_statistics(
   game_types = 1:3
 )
 }
-\arguments{
-\item{season}{integer in YYYYYYYY}
-
-\item{report}{string}
-
-\item{is_aggregate}{boolean}
-
-\item{is_game}{boolean}
-
-\item{dates}{vector of strings in 'YYYY-MM-DD'}
-
-\item{game_types}{vector of integers where 1=pre-season, 2=regular, and
-3=playoffs}
-}
-\value{
-tibble with one row per team or game
-}
 \description{
-\code{get_team_statistics()} retrieves information on each team or game for a given set of \code{season}, \code{game_types}, and \code{report}. \code{dates} must be given when paired with \code{is_game} as the default range will return incomplete data (too wide).  Access \code{get_configuration()} for what information each combination of \code{report}, \code{is_aggregate} and \code{is_game} can provide. Access \code{get_team_seasons()} for \code{season} and \code{dates} references. Will soon be reworked for easier access.
-}
-\examples{
-playoff_team_stf_20242025 <- get_team_statistics(
-  season=20242025,
-  report='scoretrailfirst',
-  game_types=c(3)
-)
-
+\code{get_team_statistics()} is defunct. Use \code{\link[=ns_team_statistics]{ns_team_statistics()}} instead.
 }
