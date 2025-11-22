@@ -1,55 +1,63 @@
-#' Get bracket by season
+#' Get the playoff bracket of a season
 #' 
-#' `get_bracket()` retrieves information on each series for a given `season`, including but not limited to their title, abbreviation, 1-letter code, round, top and bottom seeds, and winning and losing teams' IDs. Access `get_seasons()` for `season` reference.
+#' `ns_bracket()` retrieves information on each series for a given `season`, 
+#' including but not limited to their title, abbreviation, 1-letter code, 
+#' round, top and bottom seeds, and winning and losing teams' IDs. Access 
+#' `get_seasons()` for `season` reference.
 #' 
-#' @param season integer in YYYYYYYY
-#' @return tibble with one row per series
+#' @param season integer in YYYYYYYY (e.g., 20242025)
+#' @return data.frame with one row per series
 #' @examples
-#' bracket_20242025 <- get_bracket(season=20242025)
+#' bracket_20242025 <- ns_bracket(season = 20242025)
 #' @export
 
-get_bracket <- function(season=get_season_now()$seasonId-1) {
-  out <- nhl_api(
-    path=sprintf('playoff-bracket/%s', season%%10000),
-    type=1
+ns_bracket <- function(season = ns_season()$seasonId){
+  tryCatch(
+    expr = {
+      nhl_api(
+        path = sprintf('v1/playoff-bracket/%s', as.integer(season) %% 1e4),
+        type = 'w'
+      )$series
+    },
+    error = function(e) {
+      message("Invalid argument(s); refer to help file.")
+      data.frame()
+    }
   )
-  return(tibble::as_tibble(out$series))
 }
 
-#' Get series by season and round
+#' Get the schedule of a playoff series for a season
 #' 
-#' `get_series()` retrieves information on each series for a given set of `season` and `round`, including but not limited to their label, 1-letter code, top and bottom seeds, and winning and losing teams' IDs. Access `get_seasons()` for `season` reference.
+#' `ns_series_schedule()` retrieves information on each game for a given set of 
+#' `season` and `series`, including but not limited to their ID; venue; start 
+#' date and time; and home and away teams' IDs, names, and scores. Access 
+#' `get_seasons()` for `season` and `get_bracket()` for `series` references.
 #' 
-#' @param season integer in YYYYYYYY
-#' @param round integer of 1:4
-#' @return tibble with one row per series
+#' @param season integer in YYYYYYYY (e.g., 20242025)
+#' @param series one-letter code (e.g., 'F')
+#' @return data.frame with one row per game
 #' @examples
-#' CF_series_20242025 <- get_series(season=20242025, round=3)
+#' COL_DAL_schedule_20242025 <- ns_series_schedule(
+#'   season = 20242025, 
+#'   series = 'F'
+#' )
 #' @export
 
-get_series <- function(season=get_season_now()$seasonId, round=1) {
-  out <- nhl_api(
-    path=sprintf('playoff-series/carousel/%s/', season),
-    type=1
+ns_series_schedule <- function(season = ns_season()$seasonId, series = 'a') {
+  tryCatch(
+    expr = {
+      nhl_api(
+        path = sprintf(
+          'v1/schedule/playoff-series/%s/%s', 
+          season, 
+          tolower(series)
+        ),
+        type = 'w'
+      )$games
+    },
+    error = function(e) {
+      message("Invalid argument(s); refer to help file.")
+      data.frame()
+    }
   )
-  return(tibble::as_tibble(out$rounds$series[[round]]))
-}
-
-#' Get schedule by season and series
-#' 
-#' `get_series_schedule()` retrieves information on each game for a given set of `season` and `series`, including but not limited to their ID; venue; start date and time; and home and away teams' IDs, names, and scores. Access `get_seasons()` for `season` and `get_bracket()` for `series` references.
-#' 
-#' @param season integer in YYYYYYYY
-#' @param series string 1-letter Code
-#' @return tibble with one row per game
-#' @examples
-#' COL_DAL_schedule_20242025 <- get_series_schedule(season=20242025, series='f')
-#' @export
-
-get_series_schedule <- function(season=get_season_now()$seasonId, series='a') {
-  out <- nhl_api(
-    path=sprintf('schedule/playoff-series/%s/%s', season, series),
-    type=1
-  )
-  return(tibble::as_tibble(out$games))
 }
