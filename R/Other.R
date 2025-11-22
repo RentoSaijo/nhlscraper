@@ -1,191 +1,203 @@
-#' Ping
+#' Get the glossary
 #' 
-#' `ping()` retrieves information on the API status.
+#' `ns_glossary()` retrieves information on each terminology, including but not 
+#' limited to their definition and abbreviation.
 #' 
-#' @return boolean TRUE=OK
+#' @return data.frame with one row per terminology
 #' @examples
-#' online <- ping()
+#' glossary <- ns_glossary()
 #' @export
 
-ping <- function() {
-  out <- nhl_api(
-    path='ping',
-    type=2
-  )
-  return(length(out)==0)
+ns_glossary <- function() {
+  nhl_api(
+    path = 'en/glossary',
+    type = 's'
+  )$data
 }
 
-#' Get glossary
+#' Get the skater, goalie, and team statistics' configuration
 #' 
-#' `get_glossary()` retrieves information on each terminology, including but not limited to their definition and abbreviation.
-#' 
-#' @return tibble with one row per terminology
-#' @examples
-#' glossary <- get_glossary()
-#' @export
-
-get_glossary <- function() {
-  out <- nhl_api(
-    path='glossary',
-    type=2
-  )
-  return(tibble::as_tibble(out$data))
-}
-
-#' Get configuration for skater, goalie, and team statistics
-#' 
-#' `get_configuration()` retrieves information on the outputs of the possible combinations of inputs for `get_team_statistics()`, `get_skater_statistics()`, and `get_goalie_statistics()`.
+#' `ns_statistics_configuration()` retrieves information on the outputs of the 
+#' possible combinations of inputs for `get_team_statistics()`, 
+#' `get_skater_statistics()`, and `get_goalie_statistics()`.
 #' 
 #' @return list with 5 items
 #' @examples
-#' config <- get_configuration()
+#' stats_config <- ns_statistics_configuration()
 #' @export
 
-get_configuration <- function() {
-  out <- nhl_api(
-    path='config',
-    type=2
+ns_statistics_configuration <- function() {
+  nhl_api(
+    path = 'en/config',
+    type = 's'
   )
-  return(out)
 }
 
-#' Get all countries
-#' 
-#' `get_countries()` retrieves information on each country, including but not limited to their ID, name, 2-letter code, and 3-letter code.
-#' 
-#' @return tibble with one row per country
-#' @examples
-#' all_countries <- get_countries()
+#' @rdname ns_statistics_configuration
 #' @export
-
-get_countries <- function() {
-  out <- nhl_api(
-    path='country',
-    type=2
-  )
-  return(tibble::as_tibble(out$data))
+ns_stats_config <- function() {
+  ns_statistics_configuration()
 }
 
-#' Get all venues
+#' Get all the coaches
 #' 
-#' `get_venues()` retrieves information on each venue, including but not limited to their ID, name, and location.
+#' `ns_coaches()` retrieves information on each coach ...
 #' 
-#' @return tibble with one row per venue
+#' @return data.frame with one row per coach
 #' @examples
-#' all_venues <- get_venues()
+#' all_coaches <- ns_coaches()
 #' @export
 
-get_venues <- function() {
-  out <- nhl_api(
-    path='venue',
-    type=3
-  )
-  return(tibble::as_tibble(out$data))
+ns_coaches <- function() {
+  nhl_api(
+    path = 'coach',
+    type = 'r'
+  )$data
 }
 
-#' Get attendance for all seasons
+#' Get all the officials
 #' 
-#' `get_attendance()` retrieves information on each season, including but not limited to their ID and regular and playoff attendance. May soon be merged with `get_seasons()`.
+#' `ns_officials()` retrieves information on each official, including but not 
+#' limited to their ID, name, and birth date and location.
 #' 
-#' @return tibble with one row per season
+#' @return data.frame with one row per official
 #' @examples
-#' all_attendance <- get_attendance()
+#' all_officials <- ns_officials()
 #' @export
 
-get_attendance <- function() {
-  out <- nhl_api(
-    path='attendance',
-    type=3
-  )
-  return(tibble::as_tibble(out$data))
+ns_officials <- function() {
+  nhl_api(
+    path = 'officials',
+    type = 'r'
+  )$data
 }
 
-#' Get all officials
+#' Get all the venues
 #' 
-#' `get_officials()` retrieves information on each official, including but not limited to their ID, name, and birth date and location.
+#' `ns_venues()` retrieves information on each venue, including but not limited 
+#' to their ID, name, and location.
 #' 
-#' @return tibble with one row per official
+#' @return data.frame with one row per venue
 #' @examples
-#' all_officials <- get_officials()
+#' all_venues <- ns_venues()
 #' @export
 
-get_officials <- function() {
-  out <- nhl_api(
-    path='officials',
-    type=3
-  )
-  return(tibble::as_tibble(out$data))
+ns_venues <- function() {
+  nhl_api(
+    path = 'venue',
+    type = 'r'
+  )$data
 }
 
-#' Get all streams
+#' Get all the countries
 #' 
-#' `get_streams()` retrieves information on each stream, including but not limited to their ID, name, and URL.
+#' `ns_countries` retrieves information on each country, including but not 
+#' limited to their ID, name, 2-letter code, and 3-letter code.
 #' 
-#' @return tibble with one row per stream
+#' @return data.frame with one row per country
 #' @examples
-#' all_streams <- get_streams()
+#' all_countries <- ns_countries()
 #' @export
 
-get_streams <- function() {
-  out <- nhl_api(
-    path='where-to-watch',
-    type=1
-  )
-  return(tibble::as_tibble(out))
+ns_countries <- function() {
+  nhl_api(
+    path = 'en/country',
+    type = 's'
+  )$data
 }
 
-#' Get TV schedule by date
+#' Get the location of a zip code
 #' 
-#' `get_tv_schedule()` retrieves information on each TV program for a given `date`, including but not limited to their title, description, start and end times, and broadcast status. Access `get_seasons()` for `date` reference.
+#' `ns_location()` retrieves ...
 #' 
-#' @param date string in 'YYYY-MM-DD'
-#' @return tibble with one row per program
+#' @param zip integer (e.g., 80204)
+#' @return data.frame with one row per team
 #' @examples
-#' tv_schedule_2025_01_02 <- get_tv_schedule(date='2025-01-02')
+#' Cranbrook_Schools <- ns_location(48304)
 #' @export
 
-get_tv_schedule <- function(date='2025-01-01') {
-  if (!grepl('^\\d{4}-\\d{2}-\\d{2}$', date)) {
-    stop('`date` must be in \'YYYY-MM-DD\' format', call.=FALSE)
-  }
-  out <- nhl_api(
-    path=sprintf('network/tv-schedule/%s', date),
-    type=1
+ns_location <- function(zip = 80204) {
+  tryCatch(
+    expr = {
+      nhl_api(
+        path = sprintf('v1/postal-lookup/%s', zip),
+        type = 'w'
+      )
+    },
+    error = function(e) {
+      message("Invalid argument(s); refer to help file.")
+      data.frame()
+    }
   )
-  return(tibble::as_tibble(out$broadcasts))
 }
 
-#' Get season as of now
+#' Get all the streams
 #' 
-#' `get_season_now()` retrieves information on the current season, including but not limited to its ID and game-type.
+#' `ns_streams()` retrieves information on each stream, including but not 
+#' limited to their ID, name, and URL.
 #' 
-#' @return tibble with one row
+#' @return data.frame with one row per stream
 #' @examples
-#' season_now <- get_season_now()
+#' all_streams <- ns_streams()
 #' @export
 
-get_season_now <- function() {
-  out <- nhl_api(
-    path='componentSeason',
-    type=2
+ns_streams <- function() {
+  nhl_api(
+    path = 'v1/where-to-watch',
+    type = 'w'
   )
-  return(tibble::as_tibble(out$data))
 }
 
-#' Get partner odds as of now
+#' Get the TV schedule of the NHL Network for a date
 #' 
-#' `get_partner_odds()` retrieves partner-provided information on each game for a given `country`, including but not limited to their ID and home and away team odds. Access `get_countries()` for `country` reference.
+#' `ns_tv_schedule()` retrieves information on each TV program for a given 
+#' `date`, including but not limited to their title, description, start and end 
+#' times, and broadcast status. Access `get_seasons()` for `date` reference.
 #' 
-#' @param country string 2-letter Code
-#' @return tibble with one row per game
+#' @param date character in 'YYYY-MM-DD' (e.g., '2025-01-01')
+#' @return data.frame with one row per program
 #' @examples
-#' partner_odds_now_CA <- get_partner_odds(country='CA')
+#' tv_schedule_Halloween_2025 <- ns_tv_schedule(date = '2025-10-31')
 #' @export
 
-get_partner_odds <- function(country='US') {
-  out <- nhl_api(
-    path=sprintf('partner-game/%s/now', country),
-    type=1
+ns_tv_schedule <- function(date = 'now') {
+  tryCatch(
+    expr = {
+      nhl_api(
+        path = sprintf('v1/network/tv-schedule/%s', date),
+        type = 'w'
+      )$broadcasts
+    },
+    error = function(e) {
+      message("Invalid argument(s); refer to help file.")
+      data.frame()
+    }
   )
-  return(tibble::as_tibble(out$games))
+}
+
+#' Get the partnered bookmakers' real-time game odds
+#' 
+#' `ns_partner_odds()` retrieves partner-provided information on each game for 
+#' a given `country`, including but not limited to their ID and home and away 
+#' team odds. Access `get_countries()` for `country` reference.
+#' 
+#' @param country two-letter code
+#' @return data.frame with one row per game
+#' @examples
+#' partner_odds_CA <- ns_partner_odds(country = 'CA')
+#' @export
+
+ns_partner_odds <- function(country = 'US') {
+  tryCatch(
+    expr = {
+      nhl_api(
+        path = sprintf('v1/partner-game/%s/now', country),
+        type = 'w'
+      )$games
+    },
+    error = function(e) {
+      message("Invalid argument(s); refer to help file.")
+      data.frame()
+    }
+  )
 }
