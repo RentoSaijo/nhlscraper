@@ -34,12 +34,62 @@ ns_drafts <- function() {
 #' 
 #' @return data.frame with one row per pick
 #' @examples
-#' all_draft_picks <- ns_draft_picks()
+#' # This may take >5s, so skip.
+#' \donttest{all_draft_picks <- ns_draft_picks()}
 #' @export
 
 ns_draft_picks <- function() {
   nhl_api(
     path = 'draft',
+    type = 'r'
+  )$data
+}
+
+#' Get all the expansion drafts
+#' 
+#' `ns_expansion_drafts()` retrieves information on ...
+#' 
+#' @return data.frame with one row per pick
+#' @examples
+#' all_expansion_drafts <- ns_expansion_drafts()
+#' @export
+
+ns_expansion_drafts <- function() {
+  nhl_api(
+    path = 'expansion-draft-rules',
+    type = 'r'
+  )$data
+}
+
+#' Get all the expansion draft picks
+#' 
+#' `ns_expansion_draft_picks()` retrieves information on ...
+#' 
+#' @return data.frame with one row per pick
+#' @examples
+#' all_expansion_draft_picks <- ns_expansion_draft_picks()
+#' @export
+
+ns_expansion_draft_picks <- function() {
+  nhl_api(
+    path = 'expansion-draft-picks',
+    type = 'r'
+  )$data
+}
+
+#' Get all the draft prospects
+#' 
+#' `ns_draft_prospects()` retrieves information on ...
+#' 
+#' @return data.frame with one row per prospect
+#' @examples
+#' # This may take >5s, so skip.
+#' \donttest{all_draft_prospects <- ns_draft_prospects()}
+#' @export
+
+ns_draft_prospects <- function() {
+  nhl_api(
+    path = 'draft-prospect',
     type = 'r'
   )$data
 }

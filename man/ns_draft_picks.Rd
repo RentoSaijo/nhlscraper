@@ -15,5 +15,6 @@ not limited to their player ID, name, draft year, overall number,
 bio-metrics, and the pick's team history.
 }
 \examples{
-all_draft_picks <- ns_draft_picks()
+# This may take >5s, so skip.
+\donttest{all_draft_picks <- ns_draft_picks()}
 }
