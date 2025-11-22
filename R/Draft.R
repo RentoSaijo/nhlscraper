@@ -1,84 +1,121 @@
-#' Get all drafts
+#' Get all the drafts
 #' 
-#' `get_drafts()` retrieves information on each draft, including but not limited to their year, type, venue, minimum and maximum player ages, and number of rounds and picks.
+#' `ns_drafts()` retrieves information on each draft, including but not 
+#' limited to their year, type, venue, minimum and maximum player ages, and 
+#' number of rounds and picks.
 #' 
-#' @importFrom magrittr %>%
-#' @return tibble with one row per draft
+#' @return data.frame with one row per draft
 #' @examples
-#' all_drafts <- get_drafts()
+#' all_drafts <- ns_drafts()
 #' @export
 
-get_drafts <- function() {
-  out <- nhl_api(
-    path='draft',
-    query=list(limit=-1),
-    type=2
-  )
-  out <- out$data %>% 
-    dplyr::select(-id)
-  out2 <- nhl_api(
-    path='draft-master',
-    type=3
-  )
-  merged <- out2$data %>% 
-    dplyr::left_join(out, by='draftYear')
-  return(tibble::as_tibble(merged))
+ns_drafts <- function() {
+  master <- nhl_api(
+    path = 'draft-master',
+    type = 'r'
+  )$data
+  rounds <- nhl_api(
+    path = 'en/draft',
+    type = 's'
+  )$data
+  rounds$id        <- NULL
+  drafts           <- merge(master, rounds, by = 'draftYear')
+  column_to_move   <- 'id'
+  other_columns    <- setdiff(names(drafts), column_to_move)
+  new_column_order <- c(column_to_move, other_columns)
+  drafts[, new_column_order]
 }
 
-#' Get all draft picks
+#' Get all the draft picks
 #' 
-#' `get_draft_picks()` retrieves information on each selection, including but not limited to their player ID, name, draft year, overall number, bio-metrics, and the pick's team history.
+#' `ns_draft_picks()` retrieves information on each selection, including but 
+#' not limited to their player ID, name, draft year, overall number, 
+#' bio-metrics, and the pick's team history.
 #' 
-#' @return tibble with one row per pick
+#' @return data.frame with one row per pick
 #' @examples
-#' all_draft_picks <- get_draft_picks()
+#' all_draft_picks <- ns_draft_picks()
 #' @export
 
-get_draft_picks <- function() {
-  out <- nhl_api(
-    path='draft',
-    type=3
-  )
-  return(tibble::as_tibble(out$data))
+ns_draft_picks <- function() {
+  nhl_api(
+    path = 'draft',
+    type = 'r'
+  )$data
 }
 
-#' Get draft rankings by year and player-type
+#' Get the draft rankings of a class for a category
 #' 
-#' `get_draft_rankings()` retrieves information on each prospect for a given set of `year` and `player_type`, including but not limited to their name, midterm and final ranks, position, bio-metrics, and birth date and location.
+#' `ns_draft_rankings()` retrieves information on each prospect for a given set 
+#' of `year` and `player_type`, including but not limited to their name, 
+#' midterm and final ranks, position, bio-metrics, and birth date and location.
 #' 
-#' @param year integer in YYYY
-#' @param player_type integer where 1=North American Skaters, 
-#'                    2=International Skaters, 3=North American Goalies, 
-#'                    and 4=International Goalies
-#' @return tibble with one row per player
+#' @param class integer in YYYY (e.g., 2025)
+#' @param category integer in 1:4 (where 1 = North American Skaters, 
+#' 2 = International Skaters, 3 = North American Goalies, and 4 = International 
+#' Goalies) OR character in 'NAS'/'NA Skaters'/'North American Skaters', 
+#' 'INTLS'/'INTL Skaters'/'International Skaters', 
+#' 'NAG'/'NA Goalies'/'North American Goalies',
+#' 'INTLG'/'INTL Goalies'/'International Goalies'
+#' @return data.frame with one row per player
 #' @examples
-#' draft_rankings_2025_1 <- get_draft_rankings(year=2025, player_type=1)
+#' draft_rankings_NA_Skaters_2025 <- ns_draft_rankings(
+#'   class    = 2025, 
+#'   category = 1
+#' )
 #' @export
 
-get_draft_rankings <- function(
-    year=get_season_now()$seasonId%/%10000,
-    player_type=1
-  ) {
-  out <- nhl_api(
-    path=sprintf('draft/rankings/%s/%s', year, player_type),
-    type=1
+ns_draft_rankings <- function(
+  class    = ns_season()$seasonId %% 1e4,
+  category = 1
+) {
+  tryCatch(
+    expr = {
+      category <- switch(
+        tolower(category),
+        `1`                      = 1,
+        NAS                      = 1,
+        `NA Skaters`             = 1,
+        `North American Skaters` = 1,
+        `2`                      = 2,
+        INTLS                    = 2,
+        `INTL Skaters`           = 2,
+        `International Skaters`  = 2,
+        `3`                      = 3,
+        NAG                      = 3,
+        `NA Goalies`             = 3,
+        `North American Goalies` = 3,
+        `4`                      = 4,
+        INTLG                    = 4,
+        `INTL Goalies`           = 4,
+        `International Goalies`  = 4
+      )
+      nhl_api(
+        path = sprintf('v1/draft/rankings/%s/%s', class, category),
+        type = 'w'
+      )$rankings
+    },
+    error = function(e) {
+      message("Invalid argument(s); refer to help file.")
+      data.frame()
+    }
   )
-  return(tibble::as_tibble(out$rankings))
 }
 
-#' Get draft tracker as of now
+#' Get the real-time draft tracker
 #' 
-#' `get_draft_tracker()` retrieves information on the latest draft, including but not limited to each pick's team ID, name, and overall number and selected player's name and position.
+#' `ns_draft_tracker()` retrieves information on the latest draft, including 
+#' but not limited to each pick's team ID, name, and overall number and 
+#' selected player's name and position.
 #' 
-#' @return tibble with one row per pick
+#' @return data.frame with one row per pick
 #' @examples
-#' draft_tracker <- get_draft_tracker()
+#' draft_tracker <- ns_draft_tracker()
 #' @export
 
-get_draft_tracker <- function() {
-  out <- nhl_api(
-    path='draft-tracker/picks/now',
-    type=1
-  )
-  return(tibble::as_tibble(out$picks))
+ns_draft_tracker <- function() {
+  nhl_api(
+    path = 'v1/draft-tracker/picks/now',
+    type = 'w'
+  )$picks
 }
