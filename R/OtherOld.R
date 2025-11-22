@@ -168,7 +168,7 @@ get_season_now <- function() {
     new     = 'ns_season()',
     package = 'nhlscraper',
     msg     = paste(
-      '`get_season_now()` is deprecated.',
+      '`get_season_now()` is defunct.',
       'Use `ns_season()` and/or `ns_game_type()` instead.'
     )
   )
