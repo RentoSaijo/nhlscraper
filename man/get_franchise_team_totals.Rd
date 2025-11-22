@@ -2,16 +2,11 @@
 % Please edit documentation in R/RecordOld.R
 \name{get_franchise_team_totals}
 \alias{get_franchise_team_totals}
-\title{Get all franchises' teams' all-time totals}
+\title{Get all the franchises' teams' all-time totals}
 \usage{
 get_franchise_team_totals()
 }
-\value{
-tibble with one row per team
-}
 \description{
-\code{get_franchise_team_totals()} retrieves information on each team, including but not limited to their ID, first and last seasons' IDs, and all-time statistics.
-}
-\examples{
-all_franchise_team_totals <- get_franchise_team_totals()
+\code{get_franchise_team_totals()} is deprecated. Use
+\code{\link[=ns_franchise_team_totals]{ns_franchise_team_totals()}} instead.
 }

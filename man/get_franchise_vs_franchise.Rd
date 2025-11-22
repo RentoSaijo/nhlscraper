@@ -2,16 +2,11 @@
 % Please edit documentation in R/RecordOld.R
 \name{get_franchise_vs_franchise}
 \alias{get_franchise_vs_franchise}
-\title{Get all franchises' all-time records versus other franchises}
+\title{Get all the franchises' all-time records versus other franchises}
 \usage{
 get_franchise_vs_franchise()
 }
-\value{
-tibble with one row per franchise versus franchise
-}
 \description{
-\code{get_franchise_vs_franchise()} retrieves information on each franchise versus another franchise, including but not limited to their IDs, game-type ID, and all-time statistics.
-}
-\examples{
-franchise_vs_franchise <- get_franchise_vs_franchise()
+\code{get_franchise_vs_franchise()} is deprecated. Use
+\code{\link[=ns_franchise_versus_franchise]{ns_franchise_versus_franchise()}} instead.
 }
