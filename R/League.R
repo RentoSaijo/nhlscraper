@@ -19,6 +19,39 @@ ns_seasons <- function() {
   seasons[order(seasons$id), ]
 }
 
+#' Get the real-time season
+#' 
+#' `ns_season()` retrieves the season as of now.
+#' 
+#' @return integer in YYYYYYYY (e.g., 20242025)
+#' @examples
+#' season_now <- ns_season()
+#' @export
+
+ns_season <- function() {
+  nhl_api(
+    path = 'en/componentSeason',
+    type = 's'
+  )$data$seasonId
+}
+
+#' Get the real-time game type
+#' 
+#' `ns_game_type()` retrieves the game type as of now.
+#' 
+#' @return integer in 1:3 (where 1 = pre-season, 2 = regular season, 3 
+#' = playoff/post-season)
+#' @examples
+#' game_type_now <- ns_game_type()
+#' @export
+
+ns_game_type <- function() {
+  nhl_api(
+    path = 'en/componentSeason',
+    type = 's'
+  )$data$gameTypeId
+}
+
 #' Get information about the standings for all the seasons
 #' 
 #' `ns_standings_information()` retrieves information on each season, including 
