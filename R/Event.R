@@ -1,16 +1,16 @@
 #' Get the replay of an event
 #' 
-#' `ns_event_replay()` retrieves ...
+#' `ns_goal_replay()` retrieves ...
 #' 
 #' @return data.frame with one row per decisecond
 #' @examples
-#' Gabriel_Landeskog_first_regular_goal_back_replay <- ns_event_replay(
+#' Gabriel_Landeskog_first_regular_goal_back_replay <- ns_goal_replay(
 #'   game  = 2025020262,
 #'   event = 751
 #' )
 #' @export
 
-ns_event_replay <- function(game, event) {
+ns_goal_replay <- function(game, event) {
   base   <- 'https://wsr.nhle.com/'
   year   <- game %/% 1e6
   season <- paste0(as.character(year), as.character(year+1))
