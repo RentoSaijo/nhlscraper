@@ -2,7 +2,7 @@
 % Please edit documentation in R/Utility.R
 \name{nhl_api}
 \alias{nhl_api}
-\title{Call NHL API with 429 (rate limit) error-handling}
+\title{Call the NHL API with 429 (rate limit) error-handling}
 \usage{
 nhl_api(path, query = list(), type)
 }
@@ -14,9 +14,9 @@ nhl_api(path, query = list(), type)
 \item{type}{character of 'w' for web, 's' for stats, and 'r' for records}
 }
 \value{
-parsed JSON
+parsed JSON (i.e., data.frame or list)
 }
 \description{
-Call NHL API with 429 (rate limit) error-handling
+Call the NHL API with 429 (rate limit) error-handling
 }
 \keyword{internal}
