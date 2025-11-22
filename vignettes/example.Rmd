@@ -7,7 +7,7 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
-```{r setup, include=FALSE}
+```{r setup, include = FALSE, eval = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = '#>'
@@ -19,7 +19,7 @@ install.packages('scales')
 ```
 
 This example explores how one may create `ggplot2` line graphs for total attendance and attendance per game across all seasons. Please contact me with your cool examples, and I can add them here too!
-```{r example, echo=TRUE, results='hide', message=FALSE, warning=FALSE, fig.show="hide"}
+```{r example, echo=TRUE, results='hide', message=FALSE, warning=FALSE, fig.show="hide", eval = FALSE}
 # Load libraries.
 library(nhlscraper)
 library(tidyverse)
@@ -125,5 +125,6 @@ ggplot(attendance_pg_long, aes(x=seasonStart, y=attendance, color=type)) +
     legend.text=element_text(color='white', face='bold', size=12)
   )
 ```
+
 ![Example1](Example1.png)
 ![Example2](Example2.png)
