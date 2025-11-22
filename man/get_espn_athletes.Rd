@@ -2,15 +2,17 @@
 % Please edit documentation in R/ESPNAthlete.R
 \name{get_espn_athletes}
 \alias{get_espn_athletes}
-\title{Get all ESPN athletes}
+\title{Get all the ESPN athletes}
 \usage{
 get_espn_athletes()
 }
 \value{
-tibble with one row per athlete
+data.frame with one row per athlete
 }
 \description{
-\code{get_espn_athletes()} retrieves ESPN hyperlinks for each athlete; the hyperlinks are formatted in \verb{base/athletes/\{ESPN Athlete ID\}?query}. May soon be reworked to only return the ESPN Athlete IDs.
+\code{get_espn_athletes()} retrieves the ESPN ID for each athlete. Temporarily
+deprecated while we re-evaluate the practicality of ESPN API information.
+Use \code{\link[=ns_players]{ns_players()}} instead.
 }
 \examples{
 all_ESPN_athletes <- get_espn_athletes()

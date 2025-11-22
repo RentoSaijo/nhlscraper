@@ -2,21 +2,11 @@
 % Please edit documentation in R/ESPNTeam.R
 \name{get_espn_team}
 \alias{get_espn_team}
-\title{Get team by season and ESPN Team ID}
+\title{Get the ESPN information on a team for a season}
 \usage{
-get_espn_team(team = 1, season = get_season_now()$seasonId\%\%10000)
-}
-\arguments{
-\item{team}{integer ESPN Team ID}
-
-\item{season}{integer Season in YYYY}
-}
-\value{
-list with various items
+get_espn_team(team = 1, season = ns_season()\%\%10000)
 }
 \description{
-\code{get_espn_team()} retrieves information on a \code{team} for a given \code{season}, including but not limited to its name and logo URL. Access \code{get_espn_teams()} for \code{team} and \code{get_seasons()} for \code{season} references.
-}
-\examples{
-ESPN_BOS_20242025 <- get_espn_team(team=1, season=2025)
+\code{get_espn_team()} is temporarily defunct while we re-evaluate the
+practicality of ESPN API information.
 }

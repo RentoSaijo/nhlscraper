@@ -2,21 +2,11 @@
 % Please edit documentation in R/ESPNCoach.R
 \name{get_espn_coach_career}
 \alias{get_espn_coach_career}
-\title{Get career coaching records by ESPN Coach ID and game-type}
+\title{Get the career records of a coach for a game type}
 \usage{
 get_espn_coach_career(coach = 5033, game_type = 0)
 }
-\arguments{
-\item{coach}{integer ESPN Coach ID}
-
-\item{game_type}{integer where 0=total, 1=regular, and 2=playoffs}
-}
-\value{
-tibble with one row per statistic
-}
 \description{
-\code{get_espn_coach_career()} retrieves information on each statistic for a given set of \code{coach} and \code{game_type}, including but not limited to their name, abbreviation, description, and value. Access \code{get_espn_coaches()} for \code{coach} reference.
-}
-\examples{
-ESPN_Paul_Maurice_career <- get_espn_coach_career(coach=5033, game_type=0)
+\code{get_espn_coach_career()} is temporarily defunct while we re-evaluate the
+practicality of ESPN API information.
 }

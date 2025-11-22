@@ -2,18 +2,19 @@
 % Please edit documentation in R/ESPNOther.R
 \name{get_espn_futures}
 \alias{get_espn_futures}
-\title{Get ESPN futures by season}
+\title{Get the ESPN futures for a season}
 \usage{
-get_espn_futures(season = get_season_now()$seasonId\%\%10000)
+get_espn_futures(season = ns_season()\%\%10000)
 }
 \arguments{
-\item{season}{integer Season in YYYY}
+\item{season}{integer in YYYY (e.g., 2026)}
 }
 \value{
-nested tibble with one row per type and book
+nested data.frame with one row per type (outer) and book (inner)
 }
 \description{
-\code{get_espn_futures()} retrieves futures by type for a given \code{season}.
+\code{get_espn_futures()} retrieves real-time ESPN futures of various types for a
+given \code{season}.
 }
 \examples{
 ESPN_futures_20252026 <- get_espn_futures(2026)

@@ -2,21 +2,21 @@
 % Please edit documentation in R/Utility.R
 \name{espn_api}
 \alias{espn_api}
-\title{Call ESPN API}
+\title{Call the ESPN API with 429 (rate limit) error-handling}
 \usage{
 espn_api(path, query = list(), type)
 }
 \arguments{
-\item{path}{String}
+\item{path}{character}
 
 \item{query}{list}
 
-\item{type}{integer where 1=site.api and 2=sports.core}
+\item{type}{character of 'g' for general and 'c' for core}
 }
 \value{
-parsed JSON
+parsed JSON (i.e., data.frame or list)
 }
 \description{
-Call ESPN API
+Call the ESPN API with 429 (rate limit) error-handling
 }
 \keyword{internal}

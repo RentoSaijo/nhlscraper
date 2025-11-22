@@ -2,18 +2,20 @@
 % Please edit documentation in R/ESPNTeam.R
 \name{get_espn_teams}
 \alias{get_espn_teams}
-\title{Get ESPN teams by season}
+\title{Get the ESPN teams for a season}
 \usage{
-get_espn_teams(season = get_season_now()$seasonId\%\%10000)
+get_espn_teams(season = ns_season()\%\%10000)
 }
 \arguments{
-\item{season}{integer Season in YYYY}
+\item{season}{integer in YYYY (e.g., 2025)}
 }
 \value{
-tibble with one row per team
+data.frame with one row per team
 }
 \description{
-\code{get_espn_teams()} retrieves ESPN hyperlinks for each team for a given \code{season}; the hyperlinks are formatted in \verb{base/seasons/\{ESPN Season ID\}/coaches/\{ESPN Team ID\}?query}. Access \code{get_seasons()} for \code{season} reference. May soon be reworked to only return the ESPN Team IDs.
+\code{get_espn_teams()} retrieves the ESPN ID of each team for a given
+\code{season}. Temporarily deprecated while we re-evaluate the practicality of
+ESPN API information. Use \code{\link[=ns_teams]{ns_teams()}} instead.
 }
 \examples{
 ESPN_teams_20242025 <- get_espn_teams(2025)

@@ -29,25 +29,34 @@ nhl_api <- function(path, query = list(), type) {
   )
 }
 
-#' Call ESPN API
+#' Call the ESPN API with 429 (rate limit) error-handling
 #' 
-#' @param path String
+#' @param path character
 #' @param query list
-#' @param type integer where 1=site.api and 2=sports.core
-#' @return parsed JSON
+#' @param type character of 'g' for general and 'c' for core
+#' @return parsed JSON (i.e., data.frame or list)
 #' @keywords internal
 
 espn_api <- function(path, query=list(), type) {
-  if (type==1) {
-    base <- 'https://site.api.espn.com/apis/site/v2/sports/hockey/nhl/'
-  }
-  else {
-    base <- 'https://sports.core.api.espn.com/v2/sports/hockey/leagues/nhl/'
-  }
-  url <- paste0(base, path)
-  resp <- httr::GET(url, query=query)
-  json <- httr::content(resp, as='text', encoding='UTF-8')
-  return(jsonlite::fromJSON(json, simplifyVector=TRUE, flatten=TRUE))
+  base <- switch(
+    type, 
+    g = 'https://site.api.espn.com/apis/site/v2/sports/hockey/nhl/',
+    c = 'https://sports.core.api.espn.com/v2/sports/hockey/leagues/nhl/'
+  )
+  req <- httr2::request(paste0(base, path))
+  req <- do.call(httr2::req_url_query, c(list(req), query))
+  req <- httr2::req_retry(
+    req,
+    max_tries    = 3,
+    backoff      = function(attempt) 2 ^ (attempt - 1),
+    is_transient = function(resp) httr2::resp_status(resp) == 429
+  )
+  resp <- httr2::req_perform(req)
+  jsonlite::fromJSON(
+    httr2::resp_body_string(resp, encoding = 'UTF-8'),
+    simplifyVector = TRUE,
+    flatten        = TRUE
+  )
 }
 
 #' Convert to the appropriate game type ID

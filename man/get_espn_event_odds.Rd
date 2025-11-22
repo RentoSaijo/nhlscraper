@@ -2,18 +2,21 @@
 % Please edit documentation in R/ESPNEvent.R
 \name{get_espn_event_odds}
 \alias{get_espn_event_odds}
-\title{Get event (game) odds by ESPN Event (Game) ID}
+\title{Get the odds of an ESPN event}
 \usage{
 get_espn_event_odds(event = 401687600)
 }
 \arguments{
-\item{event}{integer ESPN Event (Game) ID}
+\item{event}{integer ESPN Event ID (e.g., 401687600)}
 }
 \value{
-tibble with one row per provider
+data.frame with one row per provider
 }
 \description{
-\code{get_espn_event_odds()} retrieves information on each provider for a given \code{event}, including but not limited to its name, favorite and underdog teams, and money-line and spread odds. Access \code{get_espn_events()} for \code{event} reference.
+\code{get_espn_event_odds()} retrieves information on each provider for a given
+\code{event}, including but not limited to its name, favorite and underdog teams,
+and money-line and spread odds. Access \code{get_espn_events()} for \code{event}
+reference.
 }
 \examples{
 NJD_BUF_2024_10_04_odds <- get_espn_event_odds(event=401687600)

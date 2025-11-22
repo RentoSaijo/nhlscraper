@@ -2,21 +2,27 @@
 % Please edit documentation in R/ESPNEvent.R
 \name{get_espn_events}
 \alias{get_espn_events}
-\title{Get ESPN events (games) by start and end dates}
+\title{Get the ESPN events for an interval of dates}
 \usage{
 get_espn_events(start_date = 20241004, end_date = 20250624)
 }
 \arguments{
-\item{start_date}{integer Start Date in YYYYMMDD}
+\item{start_date}{integer in YYYYMMDD (e.g., 20241004)}
 
-\item{end_date}{integer End Date in YYYYMMDD}
+\item{end_date}{integer in YYYYMMDD (e.g., 20250624)}
 }
 \value{
-tibble with one row per event (game)
+data.frame with one row per ESPN event
 }
 \description{
-\code{get_espn_events()} retrieves ESPN hyperlinks for each event; the hyperlinks are formatted in \verb{base/events/\{ESPN Event ID\}?query}. Access \code{get_seasons()} for \code{start_season} and \code{end_season} references. May soon be reworked to only return the ESPN Event IDs.
+\code{get_espn_events()} retrieves the ESPN ID for each event for an interval of
+dates bound by a given set of \code{start_date} and \code{end_date}. Temporarily
+deprecated while we re-evaluate the practicality of ESPN API information.
+Use \code{\link[=ns_games]{ns_games()}} instead.
 }
 \examples{
-ESPN_events_20242025 <- get_espn_events(start_date=20241004, end_date=20250624)
+ESPN_events_20242025 <- get_espn_events(
+  start_date = 20241004, 
+  end_date   = 20250624
+)
 }

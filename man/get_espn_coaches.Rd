@@ -2,18 +2,20 @@
 % Please edit documentation in R/ESPNCoach.R
 \name{get_espn_coaches}
 \alias{get_espn_coaches}
-\title{Get ESPN coaches by season}
+\title{Get the ESPN coaches for a season}
 \usage{
-get_espn_coaches(season = get_season_now()$seasonId\%\%10000)
+get_espn_coaches(season = ns_season()\%\%10000)
 }
 \arguments{
-\item{season}{integer in YYYY}
+\item{season}{integer in YYYY (e.g., 2025)}
 }
 \value{
-tibble with one row per coach
+data.frame with one row per coach
 }
 \description{
-\code{get_espn_coaches()} retrieves ESPN hyperlinks for each coach for a given \code{season}; the hyperlinks are formatted in \verb{base/seasons/\{ESPN Season ID\}/coaches/\{ESPN Coach ID\}?query}. Access \code{get_seasons()} for \code{season} reference. May soon be reworked to only return the ESPN Coach IDs.
+\code{get_espn_coaches()} retrieves the ESPN ID of each coach for a given
+\code{season}. Temporarily deprecated while we re-evaluate the practicality of
+ESPN API information. Use \code{\link[=ns_coaches]{ns_coaches()}} instead.
 }
 \examples{
 ESPN_coaches_20242025 <- get_espn_coaches(2025)

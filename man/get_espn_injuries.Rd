@@ -2,15 +2,16 @@
 % Please edit documentation in R/ESPNOther.R
 \name{get_espn_injuries}
 \alias{get_espn_injuries}
-\title{Get ESPN injury reports as of now}
+\title{Get the real-time ESPN injury reports}
 \usage{
 get_espn_injuries()
 }
 \value{
-nested tibble with one row per team and player
+nested data.frame with one row per team (outer) and player (inner)
 }
 \description{
-\code{get_espn_injuries()} retrieves injury reports by team.
+\code{get_espn_injuries()} retrieves real-time ESPN injury reports for all the
+teams.
 }
 \examples{
 ESPN_injuries_now <- get_espn_injuries()

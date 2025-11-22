@@ -2,19 +2,10 @@
 % Please edit documentation in R/ESPNEvent.R
 \name{get_espn_event_stars}
 \alias{get_espn_event_stars}
-\title{Get event (game) stars by ESPN Event (Game) ID}
+\title{Get the three stars of an ESPN event}
 \usage{
 get_espn_event_stars(event = 401687600)
 }
-\arguments{
-\item{event}{integer ESPN Event (Game) ID}
-}
-\value{
-tibble with one row per athlete
-}
 \description{
-\code{get_espn_event_stars()} retrieves information on each star for a given \code{event}, including but not limited to its name, description, and the athlete's ESPN ID. Access \code{get_espn_events()} for \code{event} reference.
-}
-\examples{
-NJD_BUF_2024_10_04_stars <- get_espn_event_stars(event=401687600)
+\code{get_espn_event_stars()} is defunct. Use \code{\link[=ns_gc_summary]{ns_gc_summary()}} instead.
 }

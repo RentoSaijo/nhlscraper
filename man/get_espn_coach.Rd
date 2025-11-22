@@ -2,21 +2,11 @@
 % Please edit documentation in R/ESPNCoach.R
 \name{get_espn_coach}
 \alias{get_espn_coach}
-\title{Get coach by ESPN Coach ID (and season)}
+\title{Get the ESPN information on a coach for a season}
 \usage{
 get_espn_coach(coach = 5033, season = "all")
 }
-\arguments{
-\item{coach}{integer ESPN Coach ID}
-
-\item{season}{integer/string in YYYY or 'all'}
-}
-\value{
-list with various items
-}
 \description{
-\code{get_espn_coach()} retrieves information on a \code{coach} for a given \code{season} or all seasons, including but not limited to his or her name and head-shot URL. Access \code{get_espn_coaches()} for \code{coach} and \code{get_seasons()} for \code{season} references.
-}
-\examples{
-ESPN_Paul_Maurice <- get_espn_coach(coach=5033, season='all')
+\code{get_espn_coach()} is temporarily defunct while we re-evaluate the
+practicality of ESPN API information.
 }

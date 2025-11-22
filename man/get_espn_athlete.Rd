@@ -2,24 +2,11 @@
 % Please edit documentation in R/ESPNAthlete.R
 \name{get_espn_athlete}
 \alias{get_espn_athlete}
-\title{Get athlete (player) by ESPN Athlete (Player) ID and season}
+\title{Get the ESPN information on an athlete for a season}
 \usage{
-get_espn_athlete(
-  athlete = 3988803,
-  season = get_season_now()$seasonId\%\%10000
-)
-}
-\arguments{
-\item{athlete}{integer ESPN Athlete (Player) ID}
-
-\item{season}{integer Season in YYYY}
-}
-\value{
-list with various items
+get_espn_athlete(athlete = 3988803, season = ns_season()\%\%10000)
 }
 \description{
-\code{get_espn_athlete()} retrieves information on an \code{athlete} for a given \code{season}, including but not limited to his name, bio-metrics, birth date and location, position, team(s), and jersey number. Access \code{get_espn_athletes()} for \code{athlete} and \code{get_seasons()} for \code{season} references.
-}
-\examples{
-ESPN_Charlie_McAvoy_20242025 <- get_espn_athlete(athlete=3988803, season=2025)
+\code{get_espn_athlete()} is temporarily defunct while we re-evaluate the
+practicality of ESPN API information.
 }

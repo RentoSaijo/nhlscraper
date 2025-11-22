@@ -1,70 +1,92 @@
-#' Get ESPN transactions by start and end dates
+#' Get ESPN information on transactions for an interval of dates
 #' 
-#' `get_espn_transactions()` retrieves information on each transaction for a given set of `start_date` and `end_date`, including but not limited to their date, description, and involved teams. Access `get_seasons()` for `start_season` and `end_season` references.
+#' `get_espn_transactions()` retrieves ESPN information on each transaction for 
+#' an interval of dates bound by a given set of `start_date` and `end_date`, 
+#' including but not limited to their date, description, and involved teams. 
+#' Access `ns_seasons()` for `start_date` and `end_date` references. Note the 
+#' date format differs from the NHL API; will soon be fixed to accept both.
 #' 
-#' @param start_date integer Start Date in YYYYMMDD
-#' @param end_date integer End Date in YYYYMMDD
-#' @return tibble with one row per transaction
+#' @param start_date integer in YYYYMMDD (e.g., 20241004)
+#' @param end_date integer in YYYYMMDD (e.g., 20250624)
+#' @return data.frame with one row per transaction
 #' @examples
-#' ESPN_transactions_20242025 <- get_espn_transactions(start_date=20241004, end_date=20250624)
+#' ESPN_transactions_20242025 <- get_espn_transactions(
+#'   start_date = 20241004, 
+#'   end_date   = 20250624
+#' )
 #' @export
 
-get_espn_transactions <- function(start_date=20241004, end_date=20250624) {
-  page <- 1
-  all_transactions <- list()
-  repeat {
-    out <- espn_api(
-      path='transactions',
-      query=list(
-        limit=1000, 
-        dates=sprintf('%s-%s', start_date, end_date), 
-        page=page
-      ),
-      type=1
-    )
-    df <- tibble::as_tibble(out$transactions)
-    all_transactions[[page+1]] <- df
-    if (nrow(df)<1000) {
-      break
+get_espn_transactions <- function(start_date = 20241004, end_date = 20250624) {
+  tryCatch(
+    expr = {
+      page <- 1
+      all_transactions <- list()
+      repeat {
+        transactions <- espn_api(
+          path  = 'transactions',
+          query = list(
+            limit = 1000,
+            page  = page,
+            dates = sprintf('%s-%s', start_date, end_date)
+          ),
+          type = 'g'
+        )
+        df <- as.data.frame(transactions$transactions, stringsAsFactors = FALSE)
+        all_transactions[[length(all_transactions) + 1]] <- df
+        if (nrow(df) < 1000) break
+        page <- page + 1
+      }
+      do.call(rbind, all_transactions)
+    },
+    error = function(e) {
+      message("Invalid argument(s); refer to help file.")
+      data.frame()
     }
-    page <- page+1
-  }
-  return(dplyr::bind_rows(all_transactions))
+  )
 }
 
-#' Get ESPN injury reports as of now
+#' Get the real-time ESPN injury reports
 #' 
-#' `get_espn_injuries()` retrieves injury reports by team.
+#' `get_espn_injuries()` retrieves real-time ESPN injury reports for all the 
+#' teams.
 #' 
-#' @return nested tibble with one row per team and player
+#' @return nested data.frame with one row per team (outer) and player (inner)
 #' @examples
 #' ESPN_injuries_now <- get_espn_injuries()
 #' @export
 
 get_espn_injuries <- function() {
-  out <- espn_api(
-    path='injuries',
-    query=list(limit=1000),
-    type=1
-  )
-  return(tibble::as_tibble(out$injuries))
+  espn_api(
+    path  = 'injuries',
+    query = list(limit = 1000),
+    type  = 'g'
+  )$injuries
 }
 
-#' Get ESPN futures by season
+#' Get the ESPN futures for a season
 #' 
-#' `get_espn_futures()` retrieves futures by type for a given `season`.
+#' `get_espn_futures()` retrieves real-time ESPN futures of various types for a 
+#' given `season`. Access `ns_seasons()` for `season` reference. Note the 
+#' season format differs from the NHL API; will soon be fixed to accept both.
 #' 
-#' @param season integer Season in YYYY
-#' @return nested tibble with one row per type and book
+#' @param season integer in YYYY (e.g., 2026)
+#' @return nested data.frame with one row per type (outer) and book (inner)
 #' @examples
 #' ESPN_futures_20252026 <- get_espn_futures(2026)
 #' @export
 
-get_espn_futures <- function(season=get_season_now()$seasonId%%10000) {
-  out <- espn_api(
-    path=sprintf('seasons/%s/futures', season),
-    query=list(lang='en', region='us', limit=1000),
-    type=2
+get_espn_futures <- function(season = ns_season() %% 1e4) {
+  tryCatch(
+    expr = {
+      espn_api(
+        path  = sprintf('seasons/%s/futures', season),
+        query = list(lang = 'en', region = 'us', limit = 1000),
+        type  = 'c'
+      )$items
+    },
+    error = function(e) {
+      message("Invalid argument(s); refer to help file.")
+      data.frame()
+    }
   )
-  return(tibble::as_tibble(out$items))
 }

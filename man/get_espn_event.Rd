@@ -2,19 +2,11 @@
 % Please edit documentation in R/ESPNEvent.R
 \name{get_espn_event}
 \alias{get_espn_event}
-\title{Get event (game) by ESPN ID}
+\title{Get information on an ESPN event}
 \usage{
 get_espn_event(event = 401687600)
 }
-\arguments{
-\item{event}{integer ESPN Event (Game) ID}
-}
-\value{
-list with various items
-}
 \description{
-\code{get_espn_event()} retrieves information on an \code{event}, including but not limited to its competitors, date, venue, and attendance.
-}
-\examples{
-NJD_BUF_2024_10_04 <- get_espn_event(event=401687600)
+\code{get_espn_event()} is temporarily defunct while we re-evaluate the
+practicality of ESPN API information.
 }
