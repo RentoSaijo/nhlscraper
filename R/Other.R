@@ -39,18 +39,18 @@ ns_stats_config <- function() {
   ns_statistics_configuration()
 }
 
-#' Get all the coaches
+#' Get all the logos
 #' 
-#' `ns_coaches()` retrieves information on each coach ...
+#' `ns_logos()` ...
 #' 
-#' @return data.frame with one row per coach
+#' @return data.frame with one row per venue
 #' @examples
-#' all_coaches <- ns_coaches()
+#' all_logos <- ns_logos()
 #' @export
 
-ns_coaches <- function() {
+ns_logos <- function() {
   nhl_api(
-    path = 'coach',
+    path = 'logo',
     type = 'r'
   )$data
 }
