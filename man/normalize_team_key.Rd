@@ -11,8 +11,7 @@ normalize_team_key(team)
 Avalanche'), OR three-letter code (e.g., 'COL')}
 }
 \value{
-integer ID (e.g., 21), character full name (e.g., 'Colorado
-Avalanche'), OR three-letter code (e.g., 'COL')
+integer in 1:68, character full name, OR three-letter code
 }
 \description{
 Normalize the team key
