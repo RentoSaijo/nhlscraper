@@ -29,10 +29,34 @@ ns_franchises <- function() {
 #' @export
 
 ns_franchise_team_totals <- function() {
-  franchises <- nhl_api(
-    path = 'franchise-team-total',
+  nhl_api(
+    path = 'franchise-team-totals',
     type = 'r'
   )$data
+}
+
+#' Get the season-by-season results for all the franchises
+#' 
+#' `ns_franchise_season_by_season()` retrieves information on each 
+#' franchise's season, including but not limited to their ID, decision, final 
+#' playoff round, and statistics.
+#' 
+#' @return data.frame with one row per franchise's season
+#' @examples
+#' sbs_all_franchises <- ns_franchise_season_by_season()
+#' @export
+
+ns_franchise_season_by_season <- function() {
+  nhl_api(
+    path = 'franchise-season-results',
+    type = 'r'
+  )$data
+}
+
+#' @rdname ns_franchise_season_by_season
+#' @export
+ns_franchise_sbs <- function() {
+  ns_franchise_season_by_season()
 }
 
 #' Get all the franchises' all-time records versus other franchises

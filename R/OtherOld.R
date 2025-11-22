@@ -32,20 +32,20 @@ get_glossary <- function() {
 
 #' Get the configuration for skater, goalie, and team statistics
 #' 
-#' `get_configuration()` is deprecated. Use [ns_configuration()] instead.
+#' `get_configuration()` is deprecated. Use [ns_statistics_configuration()] instead.
 #' 
 #' @export
 
 get_configuration <- function() {
   .Deprecated(
-    new     = 'ns_configuration()',
+    new     = 'ns_statistics_configuration()',
     package = 'nhlscraper',
     msg     = paste(
       '`get_configuration()` is deprecated.',
-      'Use `ns_configuration()` instead.'
+      'Use `ns_statistics_configuration()` instead.'
     )
   )
-  ns_configuration()
+  ns_statistics_configuration()
 }
 
 #' Get all the countries

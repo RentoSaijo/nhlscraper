@@ -14,8 +14,10 @@ data.frame with one row per coach
 }
 \description{
 \code{get_espn_coaches()} retrieves the ESPN ID of each coach for a given
-\code{season}. Temporarily deprecated while we re-evaluate the practicality of
-ESPN API information. Use \code{\link[=ns_coaches]{ns_coaches()}} instead.
+\code{season}. Access \code{ns_seasons()} for \code{season} reference. Note the season
+format differs from the NHL API; will soon be fixed to accept both.
+Temporarily deprecated while we re-evaluate the practicality of ESPN API
+information. Use \code{\link[=ns_coaches]{ns_coaches()}} instead.
 }
 \examples{
 ESPN_coaches_20242025 <- get_espn_coaches(2025)

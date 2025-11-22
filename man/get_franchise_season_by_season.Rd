@@ -2,16 +2,11 @@
 % Please edit documentation in R/FranchiseOld.R
 \name{get_franchise_season_by_season}
 \alias{get_franchise_season_by_season}
-\title{Get all franchises' season-by-season results}
+\title{Get the season-by-season results for all the franchises}
 \usage{
 get_franchise_season_by_season()
 }
-\value{
-tibble with one row per franchise's season
-}
 \description{
-\code{get_franchise_season_by_season()} retrieves information on each franchise's season, including but not limited to their ID, decision, final playoff round, and statistics.
-}
-\examples{
-all_franchise_sbs <- get_franchise_season_by_season()
+\code{get_franchise_season_by_season()} is deprecated. Use
+\code{\link[=ns_franchise_season_by_season]{ns_franchise_season_by_season()}} instead.
 }

@@ -7,5 +7,5 @@
 get_configuration()
 }
 \description{
-\code{get_configuration()} is deprecated. Use \code{\link[=ns_configuration]{ns_configuration()}} instead.
+\code{get_configuration()} is deprecated. Use \code{\link[=ns_statistics_configuration]{ns_statistics_configuration()}} instead.
 }

@@ -2,7 +2,7 @@
 % Please edit documentation in R/ESPNCoach.R
 \name{get_espn_coach_career}
 \alias{get_espn_coach_career}
-\title{Get the career records of a coach for a game type}
+\title{Get the ESPN career records of a coach for a game type}
 \usage{
 get_espn_coach_career(coach = 5033, game_type = 0)
 }

@@ -16,19 +16,20 @@ get_franchises <- function() {
   ns_franchises()
 }
 
-#' Get all franchises' season-by-season results
+#' Get the season-by-season results for all the franchises
 #' 
-#' `get_franchise_season_by_season()` retrieves information on each franchise's season, including but not limited to their ID, decision, final playoff round, and statistics.
-#' 
-#' @return tibble with one row per franchise's season
-#' @examples
-#' all_franchise_sbs <- get_franchise_season_by_season()
+#' `get_franchise_season_by_season()` is deprecated. Use 
+#' [ns_franchise_season_by_season()] instead.
 #' @export
 
 get_franchise_season_by_season <- function() {
-  out <- nhl_api(
-    path='franchise-season-results',
-    type=3
+  .Deprecated(
+    new     = 'ns_franchise_season_by_season()',
+    package = 'nhlscraper',
+    msg     = paste(
+      '`get_franchise_season_by_season()` is deprecated.',
+      'Use `ns_franchise_season_by_season()` instead.'
+    )
   )
-  return(tibble::as_tibble(out$data))
+  ns_franchise_season_by_season()
 }

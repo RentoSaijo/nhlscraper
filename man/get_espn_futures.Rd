@@ -14,7 +14,8 @@ nested data.frame with one row per type (outer) and book (inner)
 }
 \description{
 \code{get_espn_futures()} retrieves real-time ESPN futures of various types for a
-given \code{season}.
+given \code{season}. Access \code{ns_seasons()} for \code{season} reference. Note the
+season format differs from the NHL API; will soon be fixed to accept both.
 }
 \examples{
 ESPN_futures_20252026 <- get_espn_futures(2026)

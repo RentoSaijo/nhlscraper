@@ -2,21 +2,28 @@
 % Please edit documentation in R/ESPNOther.R
 \name{get_espn_transactions}
 \alias{get_espn_transactions}
-\title{Get ESPN transactions by start and end dates}
+\title{Get ESPN information on transactions for an interval of dates}
 \usage{
 get_espn_transactions(start_date = 20241004, end_date = 20250624)
 }
 \arguments{
-\item{start_date}{integer Start Date in YYYYMMDD}
+\item{start_date}{integer in YYYYMMDD (e.g., 20241004)}
 
-\item{end_date}{integer End Date in YYYYMMDD}
+\item{end_date}{integer in YYYYMMDD (e.g., 20250624)}
 }
 \value{
-tibble with one row per transaction
+data.frame with one row per transaction
 }
 \description{
-\code{get_espn_transactions()} retrieves information on each transaction for a given set of \code{start_date} and \code{end_date}, including but not limited to their date, description, and involved teams. Access \code{get_seasons()} for \code{start_season} and \code{end_season} references.
+\code{get_espn_transactions()} retrieves ESPN information on each transaction for
+an interval of dates bound by a given set of \code{start_date} and \code{end_date},
+including but not limited to their date, description, and involved teams.
+Access \code{ns_seasons()} for \code{start_date} and \code{end_date} references. Note the
+date format differs from the NHL API; will soon be fixed to accept both.
 }
 \examples{
-ESPN_transactions_20242025 <- get_espn_transactions(start_date=20241004, end_date=20250624)
+ESPN_transactions_20242025 <- get_espn_transactions(
+  start_date = 20241004, 
+  end_date   = 20250624
+)
 }

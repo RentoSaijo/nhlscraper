@@ -16,9 +16,11 @@ data.frame with one row per ESPN event
 }
 \description{
 \code{get_espn_events()} retrieves the ESPN ID for each event for an interval of
-dates bound by a given set of \code{start_date} and \code{end_date}. Temporarily
-deprecated while we re-evaluate the practicality of ESPN API information.
-Use \code{\link[=ns_games]{ns_games()}} instead.
+dates bound by a given set of \code{start_date} and \code{end_date}. Access
+\code{ns_seasons()} for \code{start_date} and \code{end_date} references. Note the date
+format differs from the NHL API; will soon be fixed to accept both.
+Temporarily deprecated while we re-evaluate the practicality of ESPN API
+information. Use \code{\link[=ns_games]{ns_games()}} instead.
 }
 \examples{
 ESPN_events_20242025 <- get_espn_events(
