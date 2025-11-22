@@ -215,7 +215,7 @@ ns_gc_play_by_play <- function(game = 2025020275) {
 #' @rdname ns_gc_play_by_play
 #' @export
 ns_gc_pbp <- function(game = 2025020275) {
-  ns_gc_pbp(game)
+  ns_gc_play_by_play(game)
 }
 
 #' Get the World Showcase (WSC) play-by-play of a game
@@ -246,7 +246,7 @@ ns_wsc_play_by_play <- function(game = 2025020275) {
 #' @rdname ns_wsc_play_by_play
 #' @export
 ns_wsc_pbp <- function(game = 2025020275) {
-  ns_wsc_pbp(game)
+  ns_wsc_play_by_play(game)
 }
 
 #' Get the shifts of a game
