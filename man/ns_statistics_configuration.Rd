@@ -3,7 +3,7 @@
 \name{ns_statistics_configuration}
 \alias{ns_statistics_configuration}
 \alias{ns_stats_config}
-\title{Get the skater, goalie, and team statistics' configuration}
+\title{Get the configuration for skater, goalie, and team statistics}
 \usage{
 ns_statistics_configuration()
 

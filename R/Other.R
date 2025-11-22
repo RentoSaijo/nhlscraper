@@ -15,7 +15,7 @@ ns_glossary <- function() {
   )$data
 }
 
-#' Get the skater, goalie, and team statistics' configuration
+#' Get the configuration for skater, goalie, and team statistics
 #' 
 #' `ns_statistics_configuration()` retrieves information on the outputs of the 
 #' possible combinations of inputs for `get_team_statistics()`, 
@@ -175,7 +175,7 @@ ns_tv_schedule <- function(date = 'now') {
   )
 }
 
-#' Get the partnered bookmakers' real-time game odds
+#' Get the real-time game odds by partnered bookmakers
 #' 
 #' `ns_partner_odds()` retrieves partner-provided information on each game for 
 #' a given `country`, including but not limited to their ID and home and away 

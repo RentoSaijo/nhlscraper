@@ -2,7 +2,7 @@
 % Please edit documentation in R/Other.R
 \name{ns_partner_odds}
 \alias{ns_partner_odds}
-\title{Get the partnered bookmakers' real-time game odds}
+\title{Get the real-time game odds by partnered bookmakers}
 \usage{
 ns_partner_odds(country = "US")
 }
