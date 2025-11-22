@@ -6,7 +6,7 @@
 #' 
 #' @return data.frame with one row per game
 #' @examples
-#' # This may take >5s, so skip.
+#' # May take >5s, so skip.
 #' \donttest{
 #'   all_games <- ns_games()
 #' }

@@ -9,7 +9,7 @@ get_skaters <- function(start_season = 19171918, end_season = 20242025) {
     new     = 'ns_players()',
     package = 'nhlscraper',
     msg     = paste(
-      '`get_skaters()` is defunct',
+      '`get_skaters()` is defunct.',
       'Use `ns_players()` instead.'
     )
   )
@@ -34,7 +34,7 @@ get_skater_statistics <- function(
     new     = 'ns_skater_statistics()',
     package = 'nhlscraper',
     msg     = paste(
-      '`get_skater_statistics()` is defunct',
+      '`get_skater_statistics()` is defunct.',
       'Use `ns_skater_statistics()` instead.'
     )
   )
