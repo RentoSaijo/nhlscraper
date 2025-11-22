@@ -47,23 +47,57 @@ ns_scores <- function(date = 'now') {
   )
 }
 
-#' Get the rosters of a game
+#' Get the GameCenter (GC) summary of a game
 #' 
-#' `ns_game_rosters()` retrieves ...
+#' `ns_gc_summary()` retrieves GC-provided information on a `game`, 
+#' including but not limited to its type, venue, start time, clock, home and 
+#' away teams, and TV broadcast(s). Access `get_games()` for `game` reference.
 #' 
 #' @param game integer ID (e.g., 2025020275)
-#' @return data.frame with one row per player
+#' @return list of various items
 #' @examples
-#' rosters_SCF_game_7_20232024 <- ns_game_rosters(game = 2023030417)
+#' gc_summary_SCF_game_7_20232024 <- ns_gc_summary(game = 2023030417)
 #' @export
 
-ns_game_rosters <- function(game = 2025020275) {
+ns_gc_summary <- function(game = 2025020275) {
+  tryCatch(
+    expr = {
+      landing    <- nhl_api(
+        path = sprintf('v1/gamecenter/%s/landing', game),
+        type = 'w'
+      )
+      right_rail <- nhl_api(
+        path = sprintf('v1/gamecenter/%s/right-rail', game),
+        type = 'w'
+      )
+      c(landing, right_rail)
+    },
+    error = function(e) {
+      message("Invalid argument(s); refer to help file.")
+      data.frame()
+    }
+  )
+}
+
+#' Get the World Showcase (WSC) summary of a game
+#' 
+#' `ns_wsc_summary()` retrieves WSC-provided information on a `game`, including 
+#' but not limited to its type, venue, start time, clock, home and away teams, 
+#' and TV broadcast(s). Access `get_games()` for `game` reference.
+#' 
+#' @param game integer ID (e.g., 2025020275)
+#' @return list of various items
+#' @examples
+#' wsc_summary_SCF_game_7_20232024 <- ns_wsc_summary(game = 2023030417)
+#' @export
+
+ns_wsc_summary <- function(game = 2025020275) {
   tryCatch(
     expr = {
       nhl_api(
-        path = sprintf('v1/gamecenter/%s/play-by-play', game),
+        path = sprintf('v1/wsc/game-story/%s', game),
         type = 'w'
-      )$rosterSpots
+      )
     },
     error = function(e) {
       message("Invalid argument(s); refer to help file.")
@@ -116,6 +150,31 @@ ns_boxscore <- function(
         type = 'w'
       )$playerByGameStats
       boxscore[[paste0(team, 'Team')]][[position]]
+    },
+    error = function(e) {
+      message("Invalid argument(s); refer to help file.")
+      data.frame()
+    }
+  )
+}
+
+#' Get the rosters of a game
+#' 
+#' `ns_game_rosters()` retrieves ...
+#' 
+#' @param game integer ID (e.g., 2025020275)
+#' @return data.frame with one row per player
+#' @examples
+#' rosters_SCF_game_7_20232024 <- ns_game_rosters(game = 2023030417)
+#' @export
+
+ns_game_rosters <- function(game = 2025020275) {
+  tryCatch(
+    expr = {
+      nhl_api(
+        path = sprintf('v1/gamecenter/%s/play-by-play', game),
+        type = 'w'
+      )$rosterSpots
     },
     error = function(e) {
       message("Invalid argument(s); refer to help file.")
@@ -210,65 +269,6 @@ ns_shifts <- function(game = 2025020275) {
         query = list(cayenneExp = sprintf('gameId = %s', game)),
         type  = 's'
       )$data
-    },
-    error = function(e) {
-      message("Invalid argument(s); refer to help file.")
-      data.frame()
-    }
-  )
-}
-
-#' Get the GameCenter (GC) summary of a game
-#' 
-#' `ns_gc_summary()` retrieves GC-provided information on a `game`, 
-#' including but not limited to its type, venue, start time, clock, home and 
-#' away teams, and TV broadcast(s). Access `get_games()` for `game` reference.
-#' 
-#' @param game integer ID (e.g., 2025020275)
-#' @return list of various items
-#' @examples
-#' gc_summary_SCF_game_7_20232024 <- ns_gc_summary(game = 2023030417)
-#' @export
-
-ns_gc_summary <- function(game = 2025020275) {
-  tryCatch(
-    expr = {
-      landing    <- nhl_api(
-        path = sprintf('v1/gamecenter/%s/landing', game),
-        type = 'w'
-      )
-      right_rail <- nhl_api(
-        path = sprintf('v1/gamecenter/%s/right-rail', game),
-        type = 'w'
-      )
-      c(landing, right_rail)
-    },
-    error = function(e) {
-      message("Invalid argument(s); refer to help file.")
-      data.frame()
-    }
-  )
-}
-
-#' Get the World Showcase (WSC) summary of a game
-#' 
-#' `ns_wsc_summary()` retrieves WSC-provided information on a `game`, including 
-#' but not limited to its type, venue, start time, clock, home and away teams, 
-#' and TV broadcast(s). Access `get_games()` for `game` reference.
-#' 
-#' @param game integer ID (e.g., 2025020275)
-#' @return list of various items
-#' @examples
-#' wsc_summary_SCF_game_7_20232024 <- ns_wsc_summary(game = 2023030417)
-#' @export
-
-ns_wsc_summary <- function(game = 2025020275) {
-  tryCatch(
-    expr = {
-      nhl_api(
-        path = sprintf('v1/wsc/game-story/%s', game),
-        type = 'w'
-      )
     },
     error = function(e) {
       message("Invalid argument(s); refer to help file.")
