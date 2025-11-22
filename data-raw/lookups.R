@@ -1,6 +1,6 @@
 # Read data.
 NHL_Teams <- read.csv(
-  'data-raw/NHL_Teams_19171918_20242025.csv',
+  'data-raw/NHL_Teams_19171918_20252026.csv',
   stringsAsFactors = FALSE
 )
 
