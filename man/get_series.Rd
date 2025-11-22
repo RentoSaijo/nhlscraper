@@ -4,7 +4,7 @@
 \alias{get_series}
 \title{Get the playoff series of a round for a season}
 \usage{
-get_series(season = ns_season()$seasonId, round = 1)
+get_series(season = ns_season(), round = 1)
 }
 \description{
 \code{get_series()} is defunct.

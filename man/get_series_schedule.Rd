@@ -4,7 +4,7 @@
 \alias{get_series_schedule}
 \title{Get the schedule of a playoff series for a season}
 \usage{
-get_series_schedule(season = ns_season()$seasonId, series = "a")
+get_series_schedule(season = ns_season(), series = "a")
 }
 \description{
 \code{get_series_schedule()} is deprecated. Use \code{\link[=ns_series_schedule]{ns_series_schedule()}} instead.

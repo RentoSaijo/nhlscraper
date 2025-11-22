@@ -4,7 +4,7 @@
 \alias{ns_draft_rankings}
 \title{Get the draft rankings of a class for a category}
 \usage{
-ns_draft_rankings(class = ns_season()$seasonId\%\%10000, category = 1)
+ns_draft_rankings(class = ns_season()\%\%10000, category = 1)
 }
 \arguments{
 \item{class}{integer in YYYY (e.g., 2025)}

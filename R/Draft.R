@@ -66,7 +66,7 @@ ns_draft_picks <- function() {
 #' @export
 
 ns_draft_rankings <- function(
-  class    = ns_season()$seasonId %% 1e4,
+  class    = ns_season() %% 1e4,
   category = 1
 ) {
   tryCatch(

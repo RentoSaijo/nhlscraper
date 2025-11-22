@@ -4,7 +4,7 @@
 #' 
 #' @export
 
-get_bracket <- function(season = ns_season()$seasonId) {
+get_bracket <- function(season = ns_season()) {
   .Deprecated(
     new     = 'ns_bracket()',
     package = 'nhlscraper',
@@ -22,7 +22,7 @@ get_bracket <- function(season = ns_season()$seasonId) {
 #' 
 #' @export
 
-get_series <- function(season = ns_season()$seasonId, round = 1) {
+get_series <- function(season = ns_season(), round = 1) {
   .Defunct(
     msg = paste(
       '`get_series()` is defunct.'
@@ -36,7 +36,7 @@ get_series <- function(season = ns_season()$seasonId, round = 1) {
 #' 
 #' @export
 
-get_series_schedule <- function(season = ns_season()$seasonId, series = 'a') {
+get_series_schedule <- function(season = ns_season(), series = 'a') {
   .Deprecated(
     new     = 'ns_series_schedule()',
     package = 'nhlscraper',

@@ -4,7 +4,7 @@
 \alias{get_bracket}
 \title{Get the playoff bracket of a season}
 \usage{
-get_bracket(season = ns_season()$seasonId)
+get_bracket(season = ns_season())
 }
 \description{
 \code{get_bracket()} is deprecated. Use \code{\link[=ns_bracket]{ns_bracket()}} instead.

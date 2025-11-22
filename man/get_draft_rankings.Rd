@@ -4,7 +4,7 @@
 \alias{get_draft_rankings}
 \title{Get the draft rankings of a year for a player type}
 \usage{
-get_draft_rankings(year = ns_season()$seasonId\%/\%10000, player_type = 1)
+get_draft_rankings(year = ns_season()\%/\%10000, player_type = 1)
 }
 \description{
 \code{get_draft_rankings()} is deprecated. Use \code{\link[=ns_draft_rankings]{ns_draft_rankings()}} instead.

@@ -4,7 +4,7 @@
 \alias{ns_bracket}
 \title{Get the playoff bracket of a season}
 \usage{
-ns_bracket(season = ns_season()$seasonId)
+ns_bracket(season = ns_season())
 }
 \arguments{
 \item{season}{integer in YYYYYYYY (e.g., 20242025)}

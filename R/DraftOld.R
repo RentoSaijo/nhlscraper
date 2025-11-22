@@ -40,7 +40,7 @@ get_draft_picks <- function() {
 #' @export
 
 get_draft_rankings <- function(
-  year        = ns_season()$seasonId %/% 1e4,
+  year        = ns_season() %/% 1e4,
   player_type = 1
 ) {
   .Deprecated(

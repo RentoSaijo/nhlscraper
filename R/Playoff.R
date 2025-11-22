@@ -11,7 +11,7 @@
 #' bracket_20242025 <- ns_bracket(season = 20242025)
 #' @export
 
-ns_bracket <- function(season = ns_season()$seasonId){
+ns_bracket <- function(season = ns_season()){
   tryCatch(
     expr = {
       nhl_api(
@@ -43,7 +43,7 @@ ns_bracket <- function(season = ns_season()$seasonId){
 #' )
 #' @export
 
-ns_series_schedule <- function(season = ns_season()$seasonId, series = 'a') {
+ns_series_schedule <- function(season = ns_season(), series = 'a') {
   tryCatch(
     expr = {
       nhl_api(
