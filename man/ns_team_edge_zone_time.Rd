@@ -22,11 +22,11 @@ Avalanche'), OR three-letter code (e.g., 'COL')}
 = playoff/post-season) OR character of 'pre', 'regular', or 'playoff'/'post'}
 
 \item{report_type}{character of 'd'/'details' or
-'dS'/'dShot'/'shot differential'}
+'dS'/'dSOG'/'dShot'/'shot differential'}
 }
 \value{
-data.frame with one row per strength state (details) or list with
-four items (shot differential)
+data.frame with one row per strength state (report_type = 'details')
+or list with four items (report_type = 'shot differential')
 }
 \description{
 \code{ns_team_edge_zone_time()} retrieves information on each
@@ -36,6 +36,6 @@ COL_dS_regular_20242025 <- ns_team_edge_zone_time(
   team        = 21,
   season      = 20242025,
   game_type   = 2,
-  report_type = 'shot differential'
+  report_type = 'dS'
 )
 }

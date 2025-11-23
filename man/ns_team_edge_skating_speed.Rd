@@ -21,10 +21,11 @@ Avalanche'), OR three-letter code (e.g., 'COL')}
 \item{game_type}{integer in 1:3 (where 1 = pre-season, 2 = regular season, 3
 = playoff/post-season) OR character of 'pre', 'regular', or 'playoff'/'post'}
 
-\item{report_type}{character of 'd'/'details' or t'/'top'/'top speeds'}
+\item{report_type}{character of 'd'/'details' or 't'/'top'/'top speeds'}
 }
 \value{
-data.frame with one row per position (details) or event (top speeds)
+data.frame with one row per position (report_type = 'details') or
+burst (report_type = 'top speeds')
 }
 \description{
 \code{ns_team_edge_skating_speed()} retrieves information on each
@@ -34,6 +35,6 @@ COL_top_speeds_regular_20242025 <- ns_team_edge_skating_speed(
   team        = 21,
   season      = 20242025,
   game_type   = 2,
-  report_type = 'top speeds'
+  report_type = 'T'
 )
 }

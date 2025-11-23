@@ -24,7 +24,8 @@ Avalanche'), OR three-letter code (e.g., 'COL')}
 \item{report_type}{character of 'd'/'details' or 'h'/'hardest'}
 }
 \value{
-data.frame with one row per position (details) or shot (hardest)
+data.frame with one row per position (report_type = 'details') or
+shot (report_type = 'hardest')
 }
 \description{
 \code{ns_team_edge_shot_speed()} retrieves information on each
@@ -34,6 +35,6 @@ COL_hardest_shots_regular_20242025 <- ns_team_edge_shot_speed(
   team        = 21,
   season      = 20242025,
   game_type   = 2,
-  report_type = 'hardest'
+  report_type = 'H'
 )
 }

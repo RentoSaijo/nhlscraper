@@ -24,7 +24,8 @@ Avalanche'), OR three-letter code (e.g., 'COL')}
 \item{report_type}{character of 'd'/'details' or 'l'/'l10'/'last 10'}
 }
 \value{
-data.frame with three rows per position (details) or one row per
+data.frame with one row per combination of strength state and
+position (report_type = 'details') or game (report_type = 'last 10')
 game (L10)
 }
 \description{
@@ -35,6 +36,6 @@ COL_L10_skating_distance_regular_20242025 <- ns_team_edge_skating_distance(
   team        = 21,
   season      = 20242025,
   game_type   = 2,
-  report_type = 'L10'
+  report_type = 'L'
 )
 }

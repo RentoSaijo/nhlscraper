@@ -2,7 +2,7 @@
 % Please edit documentation in R/TeamEDGE.R
 \name{ns_team_edge_seasons}
 \alias{ns_team_edge_seasons}
-\title{Get the season(s) and game type(s) of which the NHL recorded team EDGE
+\title{Get the season(s) and game type(s) for which the NHL recorded team EDGE
 statistics}
 \usage{
 ns_team_edge_seasons()
