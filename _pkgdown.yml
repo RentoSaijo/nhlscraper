@@ -165,6 +165,15 @@ reference:
       - get_season_now
       - get_partner_odds
 
+  - subtitle: "Deprecated"
+    desc: >
+      Functions that were deprecated
+    contents:
+      - get_seasons
+      - get_standings_information
+      - get_standings
+      - get_schedule
+
   - title: "ESPN API"
     desc: >
       Functions that call ESPN APIs

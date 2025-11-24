@@ -1,6 +1,7 @@
 #' Get all the seasons
 #' 
 #' `ns_seasons()` returns information on all the seasons, including but not limited to each season's ID, start & end dates, and rules.
+#'
 #' @return data.frame with one row per season
 #' @examples
 #' all_seasons <- ns_seasons()

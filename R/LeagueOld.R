@@ -2,6 +2,7 @@
 #' 
 #' `get_seasons()` is deprecated. Use [ns_seasons()] instead.
 #' 
+#' @return data.frame with one row per season
 #' @export
 
 get_seasons <- function() {
@@ -16,29 +17,32 @@ get_seasons <- function() {
   ns_seasons()
 }
 
-#' Get information about the standings for all the seasons
+#' Get the standings rules for all the seasons
 #' 
-#' `get_standings_information()` is deprecated. Use 
-#' [ns_standings_information()] instead.
+#' `get_standings_information()` is deprecated. Use [ns_standings_rules()] 
+#' instead.
 #' 
+#' @return data.frame with one row per season
 #' @export
 
 get_standings_information <- function() {
   .Deprecated(
-    new     = 'ns_standings_information()',
+    new     = 'ns_standings_rules()',
     package = 'nhlscraper',
     msg     = paste(
       '`get_standings_information()` is deprecated.',
-      'Use `ns_standings_information()` instead.'
+      'Use `ns_standings_rules()` instead.'
     )
   )
-  ns_standings_information()
+  ns_standings_rules()
 }
 
 #' Get the standings for a date
 #' 
 #' `get_standings()` is deprecated. Use [ns_standings()] instead.
 #' 
+#' @param date character in 'YYYY-MM-DD' (e.g., '2025-01-01')
+#' @return data.frame with one row per team
 #' @export
 
 get_standings <- function(date = '2025-01-01') {
@@ -57,6 +61,8 @@ get_standings <- function(date = '2025-01-01') {
 #' 
 #' `get_schedule()` is deprecated. Use [ns_schedule()] instead.
 #' 
+#' @param date character in 'YYYY-MM-DD' (e.g., '2025-01-01')
+#' @return data.frame with one row per game
 #' @export
 
 get_schedule <- function(date = '2025-01-01') {
