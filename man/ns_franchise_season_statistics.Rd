@@ -13,7 +13,7 @@ ns_franchise_season_stats()
 data.frame with one row per franchise per game type per season
 }
 \description{
-\code{ns_franchise_season_statistics()} returns information on statistics for all the franchises by season and game type, including but not limited to each franchise's ID, wins, ties, and losses.
+\code{ns_franchise_season_statistics()} returns statistics for all the franchises by season and game type, including but not limited to each franchise's ID, wins, ties, and losses.
 }
 \examples{
 franchise_season_statistics <- ns_franchise_season_statistics()

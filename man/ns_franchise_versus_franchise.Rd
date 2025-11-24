@@ -13,7 +13,7 @@ ns_franchise_vs_franchise()
 data.frame with one row per franchise per franchise
 }
 \description{
-\code{ns_franchise_versus_franchise()} returns information on the all-time statistics versus other franchises for all the franchises, including but not limited to each franchise's ID, wins, ties, and losses.
+\code{ns_franchise_versus_franchise()} returns the all-time statistics versus other franchises for all the franchises, including but not limited to each franchise's ID, wins, ties, and losses.
 }
 \examples{
 franchise_vs_franchise <- ns_franchise_versus_franchise()

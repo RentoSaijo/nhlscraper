@@ -24,7 +24,7 @@ ns_franchises <- function() {
 
 #' Get the all-time statistics for all the franchises by game type
 #' 
-#' `ns_franchise_statistics()` returns information on the all-time statistics for all the franchises by game type, including but not limited to each franchise's ID, wins, ties, and losses.
+#' `ns_franchise_statistics()` returns the all-time statistics for all the franchises by game type, including but not limited to each franchise's ID, wins, ties, and losses.
 #' 
 #' @return data.frame with one row per franchise per game type
 #' @examples
@@ -46,7 +46,7 @@ ns_franchise_stats <- function() {
 
 #' Get the all-time statistics for all the franchises by team and game type
 #' 
-#' `ns_franchise_team_statistics()` returns information on the all-time statistics for all the franchises by team and game type, including but not limited to each team's ID, wins, ties, and losses.
+#' `ns_franchise_team_statistics()` returns the all-time statistics for all the franchises by team and game type, including but not limited to each team's ID, wins, ties, and losses.
 #' 
 #' @return data.frame with one row per team per franchise per game type
 #' @examples
@@ -68,7 +68,7 @@ ns_franchise_team_stats <- function() {
 
 #' Get statistics for all the franchises by season and game type
 #' 
-#' `ns_franchise_season_statistics()` returns information on statistics for all the franchises by season and game type, including but not limited to each franchise's ID, wins, ties, and losses.
+#' `ns_franchise_season_statistics()` returns statistics for all the franchises by season and game type, including but not limited to each franchise's ID, wins, ties, and losses.
 #' 
 #' @return data.frame with one row per franchise per game type per season
 #' @examples
@@ -90,7 +90,7 @@ ns_franchise_season_stats <- function() {
 
 #' Get the all-time statistics versus other franchises for all the franchises
 #' 
-#' `ns_franchise_versus_franchise()` returns information on the all-time statistics versus other franchises for all the franchises, including but not limited to each franchise's ID, wins, ties, and losses.
+#' `ns_franchise_versus_franchise()` returns the all-time statistics versus other franchises for all the franchises, including but not limited to each franchise's ID, wins, ties, and losses.
 #' 
 #' @return data.frame with one row per franchise per franchise
 #' @examples

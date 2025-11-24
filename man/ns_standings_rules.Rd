@@ -10,7 +10,7 @@ ns_standings_rules()
 data.frame with one row per season
 }
 \description{
-\code{ns_standings_rules()} returns information on the standings rules by season, including but not limited to each season's ID, standings start & end dates, and rules.
+\code{ns_standings_rules()} returns the standings rules by season, including but not limited to each season's ID, standings start & end dates, and rules.
 }
 \examples{
 standings_rules <- ns_standings_rules()

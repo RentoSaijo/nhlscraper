@@ -10,7 +10,7 @@ ns_attendance()
 data.frame with one row per season
 }
 \description{
-\code{ns_attendance()} returns information on the attendance by season, including but not limited to each season's ID and regular season & playoff attendance.
+\code{ns_attendance()} returns the attendance by season, including but not limited to each season's ID and regular season & playoff attendance.
 }
 \examples{
 all_attendance <- ns_attendance()

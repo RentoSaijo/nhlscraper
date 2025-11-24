@@ -33,7 +33,7 @@ ns_season <- function() {
 
 #' Get the game type as of now
 #' 
-#' `ns_game_type()` returns the ID of the current game type (i.e., whether we are in pre-season, regular season, or the playoffs).
+#' `ns_game_type()` returns the ID of the current game type.
 #' 
 #' @return integer in 1:3 (where 1 = pre-season, 2 = regular season, 3 
 #' = playoff/post-season)
@@ -50,7 +50,7 @@ ns_game_type <- function() {
 
 #' Get the standings rules by season
 #' 
-#' `ns_standings_rules()` returns information on the standings rules by season, including but not limited to each season's ID, standings start & end dates, and rules.
+#' `ns_standings_rules()` returns the standings rules by season, including but not limited to each season's ID, standings start & end dates, and rules.
 #' 
 #' @return data.frame with one row per season
 #' @examples
@@ -66,7 +66,7 @@ ns_standings_rules <- function() {
 
 #' Get the standings for a date
 #' 
-#' `ns_standings()` returns information on the standings for a given `date`, including but not limited to each team's ID, record, and statistics. Use [ns_season()] for `date` reference.
+#' `ns_standings()` returns the standings for a given `date`, including but not limited to each team's ID, record, and statistics. Use [ns_seasons()] for `date` reference.
 #' 
 #' @param date character in 'YYYY-MM-DD' (e.g., '2025-01-01')
 #' @return data.frame with one row per team
@@ -91,7 +91,7 @@ ns_standings <- function(date = 'now') {
 
 #' Get the schedule for a date
 #' 
-#' `ns_schedule()` returns information on the schedule for a given `date`, including but not limited to each game's ID, competing teams, start time, and venue. Use [ns_season()] for `date` reference.
+#' `ns_schedule()` returns the schedule for a given `date`, including but not limited to each game's ID, competing teams, start time, and venue. Use [ns_seasons()] for `date` reference.
 #' 
 #' @param date character in 'YYYY-MM-DD' (e.g., '2025-01-01')
 #' @return data.frame with one row per game
@@ -117,7 +117,7 @@ ns_schedule <- function(date = Sys.Date()) {
 
 #' Get the attendance by season
 #' 
-#' `ns_attendance()` returns information on the attendance by season, including but not limited to each season's ID and regular season & playoff attendance.
+#' `ns_attendance()` returns the attendance by season, including but not limited to each season's ID and regular season & playoff attendance.
 #' 
 #' @return data.frame with one row per season
 #' @examples
