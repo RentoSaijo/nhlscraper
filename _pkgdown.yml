@@ -46,7 +46,7 @@ reference:
 
   - subtitle: "League"
     desc: >
-      Functions to access data on the entire league
+      Functions to access information on the entire league
     contents:
       - ns_seasons
       - ns_season
@@ -58,7 +58,7 @@ reference:
 
   - subtitle: "Franchise"
     desc: >
-      Functions to access data on franchises
+      Functions to access information on the franchises
     contents:
       - get_franchises
 
