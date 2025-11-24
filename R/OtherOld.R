@@ -84,24 +84,6 @@ get_venues <- function() {
   ns_venues()
 }
 
-#' Get the attendance for all the seasons
-#' 
-#' `get_attendance()` is deprecated. Use [ns_attendance()] instead.
-#' 
-#' @export
-
-get_attendance <- function() {
-  .Deprecated(
-    new     = 'ns_attendance()',
-    package = 'nhlscraper',
-    msg     = paste(
-      '`get_attendance()` is deprecated.',
-      'Use `ns_attendance()` instead.'
-    )
-  )
-  ns_attendance()
-}
-
 #' Get all the officials
 #' 
 #' `get_officials()` is deprecated. Use [ns_officials()] instead.
