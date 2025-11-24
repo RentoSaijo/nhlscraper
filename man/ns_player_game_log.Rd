@@ -2,9 +2,9 @@
 % Please edit documentation in R/Player.R
 \name{ns_player_game_log}
 \alias{ns_player_game_log}
-\title{Get the game log of a player for a season and game type}
+\title{Get the game log for a player, season, and game type}
 \usage{
-ns_player_game_log(player = 8480039, season = "now", game_type = "")
+ns_player_game_log(player = 8478402, season = "now", game_type = "")
 }
 \arguments{
 \item{player}{integer ID (e.g., 8480039)}
@@ -18,10 +18,7 @@ ns_player_game_log(player = 8480039, season = "now", game_type = "")
 data.frame with one row per game
 }
 \description{
-\code{ns_player_game_log()} retrieves information on each game for a given set of
-\code{player}, \code{season}, and \code{game_type}, including but not limited to their ID,
-date, and statistics. Access \code{get_players()} for \code{player} and \code{get_seasons()}
-for \code{season} references.
+\code{ns_player_game_log()} returns the game log for a given set of \code{player}, \code{season}, and \code{game_type}, including but not limited to each game's ID, data, and his performance in it. Use \code{\link[=ns_players]{ns_players()}} for \code{player} reference and \code{\link[=ns_seasons]{ns_seasons()}} for \code{season} & \code{game_type} references.
 }
 \examples{
 Martin_Necas_gl_regular_20242025 <- ns_player_game_log(

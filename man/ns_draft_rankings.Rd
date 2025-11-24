@@ -11,7 +11,7 @@ ns_draft_rankings(class = ns_season()\%\%10000, category = 1)
 
 \item{category}{integer in 1:4 (where 1 = North American Skaters,
 2 = International Skaters, 3 = North American Goalies, and 4 = International
-Goalies) OR character in 'NAS'/'NA Skaters'/'North American Skaters',
+Goalies) OR character of 'NAS'/'NA Skaters'/'North American Skaters',
 'INTLS'/'INTL Skaters'/'International Skaters',
 'NAG'/'NA Goalies'/'North American Goalies',
 'INTLG'/'INTL Goalies'/'International Goalies'}

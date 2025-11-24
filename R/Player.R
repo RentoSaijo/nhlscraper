@@ -1,8 +1,6 @@
 #' Get all the players
 #' 
-#' `ns_players()` retrieves information on each player, including but not 
-#' limited to their ID, name, bio-metrics, birth date and location, and 
-#' hall-of-fame status.
+#' `ns_players()` returns all the players, including but not limited to each player's ID, name, and bio-metrics.
 #'
 #' @return data.frame with one row per player
 #' @examples
@@ -18,9 +16,9 @@ ns_players <- function() {
   players[order(players$id), ]
 }
 
-#' Get the season(s) and game type(s) of which a player played in
+#' Get the season(s) and game type(s) in which a player played
 #' 
-#' `ns_player_seasons()` retrieves information ...
+#' `ns_player_seasons()` returns the season(s) and game type(s) in which a player played in the NHL. Use [ns_players()] for `player` reference.
 #' 
 #' @param player integer ID (e.g., 8480039)
 #' @return data.frame with one row per season
@@ -28,7 +26,7 @@ ns_players <- function() {
 #' Martin_Necas_seasons <- ns_player_seasons(player = 8480039)
 #' @export
 
-ns_player_seasons <- function(player = 8480039) {
+ns_player_seasons <- function(player = 8478402) {
   tryCatch(
     expr = {
       nhl_api(
@@ -43,11 +41,9 @@ ns_player_seasons <- function(player = 8480039) {
   )
 }
 
-#' Get the summary of a player
+#' Get the summary for a player
 #' 
-#' `ns_player_summary()` retrieves information on a `player`, including but not 
-#' limited to his ID, name, bio-metrics, career statistics, and awards. Access 
-#' `get_players()` for `player` reference.
+#' `ns_player_summary()` returns the summary for a given `player`, including but not limited to his ID, name, bio-metrics, and statistics. Use [ns_players()] for `player` reference.
 #' 
 #' @param player integer ID (e.g., 8480039)
 #' @return list with various items
@@ -55,7 +51,7 @@ ns_player_seasons <- function(player = 8480039) {
 #' Martin_Necas_landing <- ns_player_summary(player = 8480039)
 #' @export
 
-ns_player_summary <- function(player = 8480039) {
+ns_player_summary <- function(player = 8478402) {
   tryCatch(
     expr = {
       nhl_api(
@@ -70,12 +66,9 @@ ns_player_summary <- function(player = 8480039) {
   )
 }
 
-#' Get the game log of a player for a season and game type
+#' Get the game log for a player, season, and game type
 #' 
-#' `ns_player_game_log()` retrieves information on each game for a given set of 
-#' `player`, `season`, and `game_type`, including but not limited to their ID, 
-#' date, and statistics. Access `get_players()` for `player` and `get_seasons()` 
-#' for `season` references.
+#' `ns_player_game_log()` returns the game log for a given set of `player`, `season`, and `game_type`, including but not limited to each game's ID, data, and his performance in it. Use [ns_players()] for `player` reference and [ns_seasons()] for `season` & `game_type` references.
 #' 
 #' @param player integer ID (e.g., 8480039)
 #' @param season integer in YYYYYYYY (e.g., 20242025)
@@ -91,9 +84,9 @@ ns_player_summary <- function(player = 8480039) {
 #' @export
 
 ns_player_game_log <- function(
-    player    = 8480039, 
-    season    = 'now', 
-    game_type = ''
+  player    = 8478402, 
+  season    = 'now', 
+  game_type = ''
 ) {
   tryCatch(
     expr = {
@@ -116,8 +109,7 @@ ns_player_game_log <- function(
 
 #' Get the spotlight players
 #' 
-#' `ns_spotlight_players()` retrieves information on each 'spotlight' player, 
-#' including but not limited to their ID, name, position, and sweater number.
+#' `ns_spotlight_players()` returns the spotlight players, including but not limited to each player's ID, name, and team.
 #'
 #' @return data.frame with one row per player
 #' @examples

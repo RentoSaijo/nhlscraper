@@ -24,7 +24,7 @@ ns_team_edge_seasons <- function() {
 
 #' Get the team EDGE statistics leaders for a season and game type
 #' 
-#' `ns_team_edge_leaders()` returns the team EDGE statistics leaders for a given set of `season` and `game_type`, including but not limited to each category's leading team and their statistics. Use [ns_team_edge_seasons()] for `season` and `game_type` references.
+#' `ns_team_edge_leaders()` returns the team EDGE statistics leaders for a given set of `season` and `game_type`, including but not limited to each category's leader and their statistics. Use [ns_team_edge_seasons()] for `season` and `game_type` references.
 #' 
 #' @param season integer in YYYYYYYY (e.g., 20242025)
 #' @param game_type integer in 1:3 (where 1 = pre-season, 2 = regular season, 3 
@@ -58,7 +58,7 @@ ns_team_edge_leaders <- function(season = 'now', game_type = '') {
 
 #' Get the EDGE summary for a team, season, and game type
 #' 
-#' `ns_team_edge_summary()` returns the EDGE summary for a given set of `team`, `season`, and `game_type`. Use [ns_teams()] for `team` reference and [ns_team_edge_seasons()] for `season` & `game_type` references.
+#' `ns_team_edge_summary()` returns the EDGE summary for a given set of `team`, `season`, and `game_type`, including but not limited to their zone time, skating, and shot statistics. Use [ns_teams()] for `team` reference and [ns_team_edge_seasons()] for `season` & `game_type` references.
 #' 
 #' @param team integer ID (e.g., 21), character full name (e.g., 'Colorado 
 #' Avalanche'), OR three-letter code (e.g., 'COL')
@@ -118,10 +118,10 @@ ns_team_edge_summary <- function(team = 1, season = 'now', game_type = '') {
 #' @export
 
 ns_team_edge_zone_time <- function(
-    team        = 1, 
-    season      = 'now', 
-    game_type   = '', 
-    report_type = 'details'
+  team        = 1, 
+  season      = 'now', 
+  game_type   = '', 
+  report_type = 'details'
 ) {
   tryCatch(
     expr = {
@@ -175,10 +175,10 @@ ns_team_edge_zone_time <- function(
 #' @export
 
 ns_team_edge_skating_distance <- function(
-    team        = 1, 
-    season      = 'now', 
-    game_type   = '', 
-    report_type = 'details'
+  team        = 1, 
+  season      = 'now', 
+  game_type   = '', 
+  report_type = 'details'
 ) {
   tryCatch(
     expr = {
@@ -227,10 +227,10 @@ ns_team_edge_skating_distance <- function(
 #' @export
 
 ns_team_edge_skating_speed <- function(
-    team        = 1, 
-    season      = 'now', 
-    game_type   = '', 
-    report_type = 'details'
+  team        = 1, 
+  season      = 'now', 
+  game_type   = '', 
+  report_type = 'details'
 ) {
   tryCatch(
     expr = {
@@ -279,10 +279,10 @@ ns_team_edge_skating_speed <- function(
 #' @export
 
 ns_team_edge_shot_location <- function(
-    team        = 1, 
-    season      = 'now', 
-    game_type   = '', 
-    report_type = 'details'
+  team        = 1, 
+  season      = 'now', 
+  game_type   = '', 
+  report_type = 'details'
 ) {
   tryCatch(
     expr = {
@@ -331,10 +331,10 @@ ns_team_edge_shot_location <- function(
 #' @export
 
 ns_team_edge_shot_speed <- function(
-    team        = 1, 
-    season      = 'now', 
-    game_type   = '', 
-    report_type = 'details'
+  team        = 1, 
+  season      = 'now', 
+  game_type   = '', 
+  report_type = 'details'
 ) {
   tryCatch(
     expr = {

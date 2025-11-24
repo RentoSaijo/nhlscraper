@@ -19,7 +19,7 @@ Avalanche'), OR three-letter code (e.g., 'COL')}
 list of various items
 }
 \description{
-\code{ns_team_edge_summary()} returns the EDGE summary for a given set of \code{team}, \code{season}, and \code{game_type}. Use \code{\link[=ns_teams]{ns_teams()}} for \code{team} reference and \code{\link[=ns_team_edge_seasons]{ns_team_edge_seasons()}} for \code{season} & \code{game_type} references.
+\code{ns_team_edge_summary()} returns the EDGE summary for a given set of \code{team}, \code{season}, and \code{game_type}, including but not limited to their zone time, skating, and shot statistics. Use \code{\link[=ns_teams]{ns_teams()}} for \code{team} reference and \code{\link[=ns_team_edge_seasons]{ns_team_edge_seasons()}} for \code{season} & \code{game_type} references.
 }
 \examples{
 COL_EDGE_summary_regular_20242025 <- ns_team_edge_summary(

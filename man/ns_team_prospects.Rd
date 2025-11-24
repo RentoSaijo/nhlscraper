@@ -17,7 +17,7 @@ Avalanche'), OR three-letter code (e.g., 'COL')}
 data.frame with one row per player
 }
 \description{
-\code{ns_team_prospects()} returns the prospects for a given set of \code{team} and \code{position}, including but not limited to each player's ID, headshot, and bio-metrics. Use \code{\link[=ns_teams]{ns_teams()}} for \code{team} reference and \code{\link[=ns_seasons]{ns_seasons()}} for \code{season} & \code{game_type} references.
+\code{ns_team_prospects()} returns the prospects for a given set of \code{team} and \code{position}, including but not limited to each player's ID, name, and bio-metrics. Use \code{\link[=ns_teams]{ns_teams()}} for \code{team} reference and \code{\link[=ns_seasons]{ns_seasons()}} for \code{season} & \code{game_type} references.
 }
 \examples{
 COL_forward_prospects <- ns_team_prospects(

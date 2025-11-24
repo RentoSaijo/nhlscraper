@@ -48,9 +48,9 @@ get_team_seasons <- function(team = 'NJD') {
 #' @export
 
 get_team_roster <- function(
-    team        = 'NJD',
-    season      = 'current',
-    player_type = 'forwards'
+  team        = 'NJD',
+  season      = 'current',
+  player_type = 'forwards'
 ) {
   .Deprecated(
     new     = 'ns_roster()',
@@ -77,10 +77,10 @@ get_team_roster <- function(
 #' @export
 
 get_team_roster_statistics <- function(
-    team        = 'NJD',
-    season      = 'now',
-    game_type   = 2,
-    player_type = 'skaters'
+  team        = 'NJD',
+  season      = 'now',
+  game_type   = 2,
+  player_type = 'skaters'
 ) {
   .Deprecated(
     new     = 'ns_roster_statistics()',
@@ -143,12 +143,12 @@ get_team_schedule <- function(team = 'NJD', season = 'now') {
 #' @export
 
 get_team_statistics <- function(
-    season       = 20242025,
-    report       = 'summary',
-    is_aggregate = FALSE,
-    is_game      = FALSE,
-    dates        = c('2025-01-01'),
-    game_types   = 1:3
+  season       = 20242025,
+  report       = 'summary',
+  is_aggregate = FALSE,
+  is_game      = FALSE,
+  dates        = c('2025-01-01'),
+  game_types   = 1:3
 ) {
   .Defunct(
     new     = 'ns_team_season_report()',

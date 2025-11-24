@@ -10,8 +10,7 @@ ns_spotlight_players()
 data.frame with one row per player
 }
 \description{
-\code{ns_spotlight_players()} retrieves information on each 'spotlight' player,
-including but not limited to their ID, name, position, and sweater number.
+\code{ns_spotlight_players()} returns the spotlight players, including but not limited to each player's ID, name, and team.
 }
 \examples{
 spotlight_players <- ns_spotlight_players()

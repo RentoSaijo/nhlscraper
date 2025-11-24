@@ -16,7 +16,7 @@ ns_team_edge_leaders(season = "now", game_type = "")
 list of various items
 }
 \description{
-\code{ns_team_edge_leaders()} returns the team EDGE statistics leaders for a given set of \code{season} and \code{game_type}, including but not limited to each category's leading team and their statistics. Use \code{\link[=ns_team_edge_seasons]{ns_team_edge_seasons()}} for \code{season} and \code{game_type} references.
+\code{ns_team_edge_leaders()} returns the team EDGE statistics leaders for a given set of \code{season} and \code{game_type}, including but not limited to each category's leader and their statistics. Use \code{\link[=ns_team_edge_seasons]{ns_team_edge_seasons()}} for \code{season} and \code{game_type} references.
 }
 \examples{
 team_EDGE_leaders_regular_20242025 <- ns_team_edge_leaders(

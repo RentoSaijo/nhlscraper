@@ -66,7 +66,7 @@ ns_team_season_stats <- function() {
 
 #' Get the roster for a team, season, and position
 #' 
-#' `ns_roster()` returns the roster for a given set of `team`, `season`, and `position`, including but not limited to each player's ID, headshot URL, and bio-metrics. Use [ns_teams()] for `team` reference and [ns_seasons()] for `season` reference.
+#' `ns_roster()` returns the roster for a given set of `team`, `season`, and `position`, including but not limited to each player's ID, name, and bio-metrics. Use [ns_teams()] for `team` reference and [ns_seasons()] for `season` reference.
 #' 
 #' @param team integer ID (e.g., 21), character full name (e.g., 'Colorado 
 #' Avalanche'), OR three-letter code (e.g., 'COL')
@@ -83,9 +83,9 @@ ns_team_season_stats <- function() {
 #' @export
 
 ns_roster <- function(
-    team     = 1,
-    season   = 'current',
-    position = 'forwards'
+  team     = 1,
+  season   = 'current',
+  position = 'forwards'
 ) {
   tryCatch(
     expr = {
@@ -128,10 +128,10 @@ ns_roster <- function(
 #' @export
 
 ns_roster_statistics <- function(
-    team      = 1,
-    season    = 'now',
-    game_type = '',
-    position  = 'skaters'
+  team      = 1,
+  season    = 'now',
+  game_type = '',
+  position  = 'skaters'
 ) {
   tryCatch(
     expr = {
@@ -160,17 +160,17 @@ ns_roster_statistics <- function(
 #' @rdname ns_roster_statistics
 #' @export
 ns_roster_stats <- function(
-    team      = 1,
-    season    = 'now',
-    game_type = '',
-    position  = 'skaters'
+  team      = 1,
+  season    = 'now',
+  game_type = '',
+  position  = 'skaters'
 ) {
   ns_roster_statistics(team, season, game_type, position)
 }
 
 #' Get the prospects for a team and position
 #' 
-#' `ns_team_prospects()` returns the prospects for a given set of `team` and `position`, including but not limited to each player's ID, headshot, and bio-metrics. Use [ns_teams()] for `team` reference and [ns_seasons()] for `season` & `game_type` references.
+#' `ns_team_prospects()` returns the prospects for a given set of `team` and `position`, including but not limited to each player's ID, name, and bio-metrics. Use [ns_teams()] for `team` reference and [ns_seasons()] for `season` & `game_type` references.
 #' 
 #' @param team integer ID (e.g., 21), character full name (e.g., 'Colorado 
 #' Avalanche'), OR three-letter code (e.g., 'COL')

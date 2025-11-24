@@ -6,6 +6,9 @@
 \usage{
 get_players()
 }
+\value{
+data.frame with one row per player
+}
 \description{
 \code{get_players()} is deprecated. Use \code{\link[=ns_players]{ns_players()}} instead.
 }

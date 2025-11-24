@@ -10,9 +10,7 @@ ns_players()
 data.frame with one row per player
 }
 \description{
-\code{ns_players()} retrieves information on each player, including but not
-limited to their ID, name, bio-metrics, birth date and location, and
-hall-of-fame status.
+\code{ns_players()} returns all the players, including but not limited to each player's ID, name, and bio-metrics.
 }
 \examples{
 # This may take >5s, so skip.

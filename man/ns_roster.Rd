@@ -19,7 +19,7 @@ Avalanche'), OR three-letter code (e.g., 'COL')}
 data.frame with one row per player
 }
 \description{
-\code{ns_roster()} returns the roster for a given set of \code{team}, \code{season}, and \code{position}, including but not limited to each player's ID, headshot URL, and bio-metrics. Use \code{\link[=ns_teams]{ns_teams()}} for \code{team} reference and \code{\link[=ns_seasons]{ns_seasons()}} for \code{season} reference.
+\code{ns_roster()} returns the roster for a given set of \code{team}, \code{season}, and \code{position}, including but not limited to each player's ID, name, and bio-metrics. Use \code{\link[=ns_teams]{ns_teams()}} for \code{team} reference and \code{\link[=ns_seasons]{ns_seasons()}} for \code{season} reference.
 }
 \examples{
 COL_defensemen_20242025 <- ns_roster(

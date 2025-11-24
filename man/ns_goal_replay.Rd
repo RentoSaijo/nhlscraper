@@ -4,7 +4,7 @@
 \alias{ns_goal_replay}
 \title{Get the replay of an event}
 \usage{
-ns_goal_replay(game, event)
+ns_goal_replay(game = 2025020262, event = 751)
 }
 \value{
 data.frame with one row per decisecond

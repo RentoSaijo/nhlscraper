@@ -2,9 +2,15 @@
 % Please edit documentation in R/PlayerOld.R
 \name{get_player_landing}
 \alias{get_player_landing}
-\title{Get the summary of a player}
+\title{Get the summary for a player}
 \usage{
-get_player_landing(player = 8480039)
+get_player_landing(player = 8478402)
+}
+\arguments{
+\item{player}{integer ID (e.g., 8480039)}
+}
+\value{
+list with various items
 }
 \description{
 \code{get_player_landing()} is deprecated. Use \code{\link[=ns_player_summary]{ns_player_summary()}} instead.

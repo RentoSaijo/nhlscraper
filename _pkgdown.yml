@@ -85,37 +85,46 @@ reference:
       - ns_team_season_schedule
       - ns_team_month_schedule
       - ns_team_week_schedule
+      - ns_team_edge_seasons
+      - ns_team_edge_leaders
+      - ns_team_edge_summary
+      - ns_team_edge_zone_time
+      - ns_team_edge_skating_distance
+      - ns_team_edge_skating_speed
+      - ns_team_edge_shot_location
+      - ns_team_edge_shot_speed
 
-  - subtitle: "Player Data"
+  - subtitle: "Player"
     desc: >
-      Functions to retrieve data about players
+      Functions to access data about the players at large
     contents:
-      - get_players
-      - get_player_game_log
-      - get_player_landing
-      - get_spotlight_players
+      - ns_players
+      - ns_player_seasons
+      - ns_player_summary
+      - ns_player_game_log
+      - ns_spotlight_players
 
-  - subtitle: "Skater Data"
+  - subtitle: "Skater"
     desc: >
-      Functions to retrieve data about skaters
+      Functions to access data about the skaters
     contents:
       - get_skaters
       - get_skater_statistics
       - get_skater_leaders
       - get_skater_milestones
 
-  - subtitle: "Goalie Data"
+  - subtitle: "Goalie"
     desc: >
-      Functions to retrieve data about goalies
+      Functions to access data about the goalies
     contents:
       - get_goalies
       - get_goalie_statistics
       - get_goalie_leaders
       - get_goalie_milestones
 
-  - subtitle: "Game Data"
+  - subtitle: "Game"
     desc: >
-      Functions to retrieve data about games
+      Functions to access data about the games
     contents:
       - get_games
       - get_scores
@@ -126,34 +135,52 @@ reference:
       - get_shift_charts
       - get_game_landing
       - get_game_story
-
-  - subtitle: "Playoff Data"
+  
+  - subtitle: "Event"
     desc: >
-      Functions to retrieve data about the playoffs
+      Functions to access data about the events (plays)
+    contents:
+      - get_games
+
+  - subtitle: "Playoff"
+    desc: >
+      Functions to access data about the playoffs
     contents:
       - get_bracket
       - get_series
       - get_series_schedule
 
-  - subtitle: "Award Data"
+  - subtitle: "Award"
     desc: >
-      Functions to retrieve data about awards
+      Functions to access data about the awards
     contents:
       - get_awards
       - get_award_winners
 
-  - subtitle: "Draft Data"
+  - subtitle: "Draft"
     desc: >
-      Functions to retrieve data about drafts
+      Functions to access data about the drafts
     contents:
       - get_drafts
       - get_draft_picks
       - get_draft_rankings
       - get_draft_tracker
-
-  - subtitle: "Other Data"
+      
+  - subtitle: "Coach"
     desc: >
-      Functions to retrieve any other data
+      Functions to access data about the coaches
+    contents:
+      - get_drafts
+      
+  - subtitle: "Manager"
+    desc: >
+      Functions to access data about the general managers
+    contents:
+      - get_drafts
+
+  - subtitle: "Other"
+    desc: >
+      Functions to acccess any other data
     contents:
       - ping
       - get_glossary
@@ -184,6 +211,10 @@ reference:
       - get_team_roster_statistics
       - get_team_prospects
       - get_team_schedule
+      - get_players
+      - get_player_landing
+      - get_player_game_log
+      - get_spotlight_players
 
   - subtitle: "Defunct"
     desc: >
