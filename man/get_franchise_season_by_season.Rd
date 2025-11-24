@@ -7,7 +7,7 @@
 get_franchise_season_by_season()
 }
 \value{
-data.frame with one row per franchise per game type per season
+data.frame with one row per franchise per season per game type
 }
 \description{
 \code{get_franchise_season_by_season()} is deprecated. Use

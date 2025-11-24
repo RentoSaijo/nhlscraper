@@ -3,19 +3,23 @@
 \name{ns_franchise_versus_franchise}
 \alias{ns_franchise_versus_franchise}
 \alias{ns_franchise_vs_franchise}
-\title{Get the all-time statistics versus other franchises for all the franchises}
+\title{Get the all-time statistics versus other franchises for all the franchises
+by game type}
 \usage{
 ns_franchise_versus_franchise()
 
 ns_franchise_vs_franchise()
 }
 \value{
-data.frame with one row per franchise per franchise
+data.frame with one row per franchise per franchise per game type
 }
 \description{
-\code{ns_franchise_versus_franchise()} returns the all-time statistics versus other franchises for all the franchises, including but not limited to each franchise's ID, wins, ties, and losses.
+\code{ns_franchise_versus_franchise()} returns the all-time statistics versus
+other franchises for all the franchises, including but not limited to the
+numbers of the following: wins, ties, losses, games played, goals for, and
+goals against.
 }
 \examples{
-#' # This may take >5s, so skip.
+# This may take >5s, so skip.
 \donttest{franchise_vs_franchise <- ns_franchise_versus_franchise()}
 }

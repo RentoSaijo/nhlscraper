@@ -2,12 +2,13 @@
 % Please edit documentation in R/FranchiseOld.R
 \name{get_franchise_vs_franchise}
 \alias{get_franchise_vs_franchise}
-\title{Get the all-time statistics versus other franchises for all the franchises}
+\title{Get the all-time statistics versus other franchises for all the franchises
+by game type}
 \usage{
 get_franchise_vs_franchise()
 }
 \value{
-data.frame with one row per franchise per franchise
+data.frame with one row per franchise per franchise per game type
 }
 \description{
 \code{get_franchise_vs_franchise()} is deprecated. Use

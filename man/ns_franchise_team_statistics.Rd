@@ -13,7 +13,10 @@ ns_franchise_team_stats()
 data.frame with one row per team per franchise per game type
 }
 \description{
-\code{ns_franchise_team_statistics()} returns the all-time statistics for all the franchises by team and game type, including but not limited to each team's ID, wins, ties, and losses.
+\code{ns_franchise_team_statistics()} returns the all-time statistics for all the
+franchises by team and game type, including but not limited to the numbers
+of the following: wins, ties, losses, games played, goals for, and goals
+against.
 }
 \examples{
 franchise_team_stats <- ns_franchise_team_statistics()

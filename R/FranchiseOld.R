@@ -42,7 +42,7 @@ get_franchise_team_totals <- function() {
 #' `get_franchise_season_by_season()` is deprecated. Use 
 #' [ns_franchise_season_statistics()] instead.
 #' 
-#' @return data.frame with one row per franchise per game type per season
+#' @return data.frame with one row per franchise per season per game type
 #' @export
 
 get_franchise_season_by_season <- function() {
@@ -57,12 +57,13 @@ get_franchise_season_by_season <- function() {
   ns_franchise_season_statistics()
 }
 
-#' Get the all-time statistics versus other franchises for all the franchises
+#' Get the all-time statistics versus other franchises for all the franchises 
+#' by game type
 #' 
 #' `get_franchise_vs_franchise()` is deprecated. Use 
 #' [ns_franchise_versus_franchise()] instead.
 #' 
-#' @return data.frame with one row per franchise per franchise
+#' @return data.frame with one row per franchise per franchise per game type
 #' @export
 
 get_franchise_vs_franchise <- function() {

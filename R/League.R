@@ -1,9 +1,9 @@
 #' Get all the seasons
 #' 
 #' `ns_seasons()` returns information on all the seasons, including but not 
-#' limited to the start & end dates, minimum required games for goalie 
+#' limited to the IDs, start & end dates, minimum required games for goalie 
 #' statistics leaders, Olympics participation, and the use of the following: 
-#' all-star games, entry drafts, conferences, divisions, and points for OT 
+#' all-star games, entry drafts, conferences, divisions, & points for OT 
 #' losses.
 #'
 #' @return data.frame with one row per season
