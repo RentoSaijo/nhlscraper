@@ -151,13 +151,6 @@ reference:
       - get_draft_rankings
       - get_draft_tracker
 
-  - subtitle: "Record Data"
-    desc: >
-      Functions to retrieve data about records
-    contents:
-      - get_franchise_team_totals
-      - get_franchise_vs_franchise
-
   - subtitle: "Other Data"
     desc: >
       Functions to retrieve any other data
@@ -171,7 +164,6 @@ reference:
       - get_officials
       - get_streams
       - get_tv_schedule
-      - get_season_now
       - get_partner_odds
 
   - subtitle: "Deprecated"
@@ -197,6 +189,7 @@ reference:
     desc: >
       Functions that are defunct
     contents:
+      - get_season_now
       - get_team_statistics
       - get_team_scoreboard
 

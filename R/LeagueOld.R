@@ -17,6 +17,24 @@ get_seasons <- function() {
   ns_seasons()
 }
 
+#' Get the season and game type as of now
+#' 
+#' `get_season_now()` is defunct. Use [ns_season()] and/or [ns_game_type()] 
+#' instead.
+#' 
+#' @export
+
+get_season_now <- function() {
+  .Defunct(
+    new     = 'ns_season()',
+    package = 'nhlscraper',
+    msg     = paste(
+      '`get_season_now()` is defunct.',
+      'Use `ns_season()` and/or `ns_game_type()` instead.'
+    )
+  )
+}
+
 #' Get the standings rules for all the seasons
 #' 
 #' `get_standings_information()` is deprecated. Use [ns_standings_rules()] 

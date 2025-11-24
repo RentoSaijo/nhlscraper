@@ -156,24 +156,6 @@ get_tv_schedule <- function(date = 'now') {
   ns_tv_schedule(date)
 }
 
-#' Get the real-time season
-#' 
-#' `get_season_now()` is defunct. Use [ns_season()] and/or [ns_game_type()] 
-#' instead.
-#' 
-#' @export
-
-get_season_now <- function() {
-  .Defunct(
-    new     = 'ns_season()',
-    package = 'nhlscraper',
-    msg     = paste(
-      '`get_season_now()` is defunct.',
-      'Use `ns_season()` and/or `ns_game_type()` instead.'
-    )
-  )
-}
-
 #' Get partner odds as of now
 #' 
 #' `get_partner_odds()` is deprecated. Use [ns_partner_odds()] instead.
