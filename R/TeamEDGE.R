@@ -1,7 +1,6 @@
-#' Get the season(s) and game type(s) for which the NHL recorded team EDGE 
-#' statistics
+#' Get the season(s) and game type(s) in which there exists team EDGE statistics
 #' 
-#' `ns_team_edge_seasons` retrieves information on each 
+#' `ns_team_edge_seasons` returns the season(s) and game type(s) in which the NHL recorded team EDGE statistics.
 #'
 #' @return data.frame with one row per season
 #' @examples
@@ -25,7 +24,7 @@ ns_team_edge_seasons <- function() {
 
 #' Get the team EDGE statistics leaders for a season and game type
 #' 
-#' `ns_team_edge_leaders()` retrieves information on each 
+#' `ns_team_edge_leaders()` returns the team EDGE statistics leaders for a given set of `season` and `game_type`, including but not limited to each category's leading team and their statistics. Use [ns_team_edge_seasons()] for `season` and `game_type` references.
 #' 
 #' @param season integer in YYYYYYYY (e.g., 20242025)
 #' @param game_type integer in 1:3 (where 1 = pre-season, 2 = regular season, 3 
@@ -57,9 +56,9 @@ ns_team_edge_leaders <- function(season = 'now', game_type = '') {
   )
 }
 
-#' Get the EDGE summary of a team for a season and game type
+#' Get the EDGE summary for a team, season, and game type
 #' 
-#' `ns_team_edge_summary()` retrieves information on each 
+#' `ns_team_edge_summary()` returns the EDGE summary for a given set of `team`, `season`, and `game_type`. Use [ns_teams()] for `team` reference and [ns_team_edge_seasons()] for `season` & `game_type` references.
 #' 
 #' @param team integer ID (e.g., 21), character full name (e.g., 'Colorado 
 #' Avalanche'), OR three-letter code (e.g., 'COL')
@@ -95,10 +94,10 @@ ns_team_edge_summary <- function(team = 1, season = 'now', game_type = '') {
   )
 }
 
-#' Get the EDGE zone time statistics of a team for a season, game type, and 
-#' report type
+#' Get the EDGE zone time statistics for a team, season, game type, and report
+#' type
 #' 
-#' `ns_team_edge_zone_time()` retrieves information on each 
+#' `ns_team_edge_zone_time()` returns the EDGE zone time statistics for a given set of `team`, `season`, `game_type`, and `report_type`. Use [ns_teams()] for `team` reference and [ns_team_edge_seasons()] for `season` & `game_type` references.
 #' 
 #' @param team integer ID (e.g., 21), character full name (e.g., 'Colorado 
 #' Avalanche'), OR three-letter code (e.g., 'COL')
@@ -152,10 +151,10 @@ ns_team_edge_zone_time <- function(
   )
 }
 
-#' Get the EDGE skating distance statistics of a team for a season, game type, 
+#' Get the EDGE skating distance statistics for a team, season, game type, 
 #' and report type
 #' 
-#' `ns_team_edge_skating_distance()` retrieves information on each 
+#' `ns_team_edge_skating_distance()` returns the EDGE skating distance statistics for a given set of `team`, `season`, `game_type`, and `report_type`. Use [ns_teams()] for `team` reference and [ns_team_edge_seasons()] for `season` & `game_type` references.
 #' 
 #' @param team integer ID (e.g., 21), character full name (e.g., 'Colorado 
 #' Avalanche'), OR three-letter code (e.g., 'COL')
@@ -205,10 +204,10 @@ ns_team_edge_skating_distance <- function(
   )
 }
 
-#' Get the EDGE skating speed statistics of a team for a season, game type, and 
+#' Get the EDGE skating speed statistics for a team, season, game type, and 
 #' report type
 #' 
-#' `ns_team_edge_skating_speed()` retrieves information on each 
+#' `ns_team_edge_skating_speed()` returns the EDGE skating speed statistics for a given set of `team`, `season`, `game_type`, and `report_type`. Use [ns_teams()] for `team` reference and [ns_team_edge_seasons()] for `season` & `game_type` references.
 #' 
 #' @param team integer ID (e.g., 21), character full name (e.g., 'Colorado 
 #' Avalanche'), OR three-letter code (e.g., 'COL')
@@ -257,10 +256,10 @@ ns_team_edge_skating_speed <- function(
   )
 }
 
-#' Get the EDGE shot location statistics of a team for a season, game type, and 
+#' Get the EDGE shot location statistics for a team, season, game type, and 
 #' report type
 #' 
-#' `ns_team_edge_shot_location()` retrieves information on each 
+#' `ns_team_edge_shot_location()` returns the EDGE shot location statistics for a given set of `team`, `season`, `game_type`, and `report_type`. Use [ns_teams()] for `team` reference and [ns_team_edge_seasons()] for `season` & `game_type` references.
 #' 
 #' @param team integer ID (e.g., 21), character full name (e.g., 'Colorado 
 #' Avalanche'), OR three-letter code (e.g., 'COL')
@@ -309,10 +308,10 @@ ns_team_edge_shot_location <- function(
   )
 }
 
-#' Get the EDGE shot speed statistics of a team for a season, game type, and 
-#' report type
+#' Get the EDGE shot speed statistics for a team, season, game type, and report
+#' type
 #' 
-#' `ns_team_edge_shot_speed()` retrieves information on each 
+#' `ns_team_edge_shot_speed()` returns the EDGE shot speed statistics for a given set of `team`, `season`, `game_type`, and `report_type`. Use [ns_teams()] for `team` reference and [ns_team_edge_seasons()] for `season` & `game_type` references.
 #' 
 #' @param team integer ID (e.g., 21), character full name (e.g., 'Colorado 
 #' Avalanche'), OR three-letter code (e.g., 'COL')

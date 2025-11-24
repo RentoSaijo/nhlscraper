@@ -2,8 +2,8 @@
 % Please edit documentation in R/TeamEDGE.R
 \name{ns_team_edge_zone_time}
 \alias{ns_team_edge_zone_time}
-\title{Get the EDGE zone time statistics of a team for a season, game type, and
-report type}
+\title{Get the EDGE zone time statistics for a team, season, game type, and report
+type}
 \usage{
 ns_team_edge_zone_time(
   team = 1,
@@ -29,7 +29,7 @@ data.frame with one row per strength state (report_type = 'details')
 or list with four items (report_type = 'shot differential')
 }
 \description{
-\code{ns_team_edge_zone_time()} retrieves information on each
+\code{ns_team_edge_zone_time()} returns the EDGE zone time statistics for a given set of \code{team}, \code{season}, \code{game_type}, and \code{report_type}. Use \code{\link[=ns_teams]{ns_teams()}} for \code{team} reference and \code{\link[=ns_team_edge_seasons]{ns_team_edge_seasons()}} for \code{season} & \code{game_type} references.
 }
 \examples{
 COL_dS_regular_20242025 <- ns_team_edge_zone_time(

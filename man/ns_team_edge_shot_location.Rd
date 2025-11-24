@@ -2,7 +2,7 @@
 % Please edit documentation in R/TeamEDGE.R
 \name{ns_team_edge_shot_location}
 \alias{ns_team_edge_shot_location}
-\title{Get the EDGE shot location statistics of a team for a season, game type, and
+\title{Get the EDGE shot location statistics for a team, season, game type, and
 report type}
 \usage{
 ns_team_edge_shot_location(
@@ -28,7 +28,7 @@ data.frame with one row per location (report_type = 'details') or
 combination of strength state and position (report_type = 'totals')
 }
 \description{
-\code{ns_team_edge_shot_location()} retrieves information on each
+\code{ns_team_edge_shot_location()} returns the EDGE shot location statistics for a given set of \code{team}, \code{season}, \code{game_type}, and \code{report_type}. Use \code{\link[=ns_teams]{ns_teams()}} for \code{team} reference and \code{\link[=ns_team_edge_seasons]{ns_team_edge_seasons()}} for \code{season} & \code{game_type} references.
 }
 \examples{
 COL_shot_location_totals_regular_20242025 <- ns_team_edge_shot_location(

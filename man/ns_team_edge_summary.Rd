@@ -2,7 +2,7 @@
 % Please edit documentation in R/TeamEDGE.R
 \name{ns_team_edge_summary}
 \alias{ns_team_edge_summary}
-\title{Get the EDGE summary of a team for a season and game type}
+\title{Get the EDGE summary for a team, season, and game type}
 \usage{
 ns_team_edge_summary(team = 1, season = "now", game_type = "")
 }
@@ -19,7 +19,7 @@ Avalanche'), OR three-letter code (e.g., 'COL')}
 list of various items
 }
 \description{
-\code{ns_team_edge_summary()} retrieves information on each
+\code{ns_team_edge_summary()} returns the EDGE summary for a given set of \code{team}, \code{season}, and \code{game_type}. Use \code{\link[=ns_teams]{ns_teams()}} for \code{team} reference and \code{\link[=ns_team_edge_seasons]{ns_team_edge_seasons()}} for \code{season} & \code{game_type} references.
 }
 \examples{
 COL_EDGE_summary_regular_20242025 <- ns_team_edge_summary(
