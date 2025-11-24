@@ -1,11 +1,6 @@
 #' Get all the seasons
 #' 
-#' `ns_seasons()` retrieves information on each season, including but not 
-#' limited to their ID; start and end dates; number of regular season and 
-#' playoff games; Stanley Cup owner; Olympics participation; entry and 
-#' supplemental draft, conference-division, win-tie-loss, and wildcard 
-#' regulations.
-#' 
+#' `ns_seasons()` returns information on all the seasons, including but not limited to each season's ID, start & end dates, and rules.
 #' @return data.frame with one row per season
 #' @examples
 #' all_seasons <- ns_seasons()
@@ -19,9 +14,9 @@ ns_seasons <- function() {
   seasons[order(seasons$id), ]
 }
 
-#' Get the real-time season
+#' Get the season as of now
 #' 
-#' `ns_season()` retrieves the season as of now.
+#' `ns_season()` returns the ID of the current season.
 #' 
 #' @return integer in YYYYYYYY (e.g., 20242025)
 #' @examples
@@ -35,9 +30,9 @@ ns_season <- function() {
   )$data$seasonId
 }
 
-#' Get the real-time game type
+#' Get the game type as of now
 #' 
-#' `ns_game_type()` retrieves the game type as of now.
+#' `ns_game_type()` returns the ID of the current game type (i.e., whether we are in pre-season, regular season, or the playoffs).
 #' 
 #' @return integer in 1:3 (where 1 = pre-season, 2 = regular season, 3 
 #' = playoff/post-season)
@@ -52,36 +47,25 @@ ns_game_type <- function() {
   )$data$gameTypeId
 }
 
-#' Get information about the standings for all the seasons
+#' Get the standings rules for all the seasons
 #' 
-#' `ns_standings_information()` retrieves information on each season, including 
-#' but not limited to their ID; start and end dates for standings; and 
-#' conference-division, win-tie-loss, and wildcard regulations.
+#' `ns_standings_rules()` returns information on the standings for all the seasons, including but not limited to each season's ID and each standing's start & end dates and rules.
 #' 
 #' @return data.frame with one row per season
 #' @examples
-#' standings_info <- ns_standings_information()
+#' standings_rules <- ns_standings_rules()
 #' @export
 
-ns_standings_information <- function() {
+ns_standings_rules <- function() {
   nhl_api(
     path = 'v1/standings-season',
     type = 'w'
   )$seasons
 }
 
-#' @rdname ns_standings_information
-#' @export
-ns_standings_info <- function() {
-  ns_standings_information()
-}
-
 #' Get the standings for a date
 #' 
-#' `ns_standings()` retrieves information on each team for a given `date`, 
-#' including but not limited to their ID; name; conference; division; season, 
-#' recent, and home-away statistics; and waiver sequence. Access `ns_seasons()` 
-#' for `date` reference.
+#' `ns_standings()` returns information on the standings for a given `date`, including but not limited to each team's ID, record, and statistics. Use [ns_season()] for `date` reference.
 #' 
 #' @param date character in 'YYYY-MM-DD' (e.g., '2025-01-01')
 #' @return data.frame with one row per team
@@ -106,10 +90,7 @@ ns_standings <- function(date = 'now') {
 
 #' Get the schedule for a date
 #' 
-#' `ns_schedule()` retrieves information on each game for a given `date`, 
-#' including but not limited to their ID; type; venue; start time; tickets 
-#' link; and home and away teams' IDs, names, and scores. Access `ns_seasons()` 
-#' for `date` reference.
+#' `ns_schedule()` returns information on the schedule for a given `date`, including but not limited to each game's ID, competing teams, start time, and venue. Use [ns_season()] for `date` reference.
 #' 
 #' @param date character in 'YYYY-MM-DD' (e.g., '2025-01-01')
 #' @return data.frame with one row per game
@@ -135,8 +116,7 @@ ns_schedule <- function(date = Sys.Date()) {
 
 #' Get the attendance for all the seasons
 #' 
-#' `ns_attendance()` retrieves information on each season, including but not 
-#' limited to their ID and regular and playoff attendance.
+#' `ns_attendance()` returns information on the attendance for all the seasons, including but not limited to each season's ID and regular season & playoff attendance.
 #' 
 #' @return data.frame with one row per season
 #' @examples

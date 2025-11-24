@@ -10,11 +10,7 @@ ns_seasons()
 data.frame with one row per season
 }
 \description{
-\code{ns_seasons()} retrieves information on each season, including but not
-limited to their ID; start and end dates; number of regular season and
-playoff games; Stanley Cup owner; Olympics participation; entry and
-supplemental draft, conference-division, win-tie-loss, and wildcard
-regulations.
+\code{ns_seasons()} returns information about all the seasons, including but not limited to each season's ID, start & end dates, and rules.
 }
 \examples{
 all_seasons <- ns_seasons()
