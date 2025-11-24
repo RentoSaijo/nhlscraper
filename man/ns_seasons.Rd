@@ -10,7 +10,7 @@ ns_seasons()
 data.frame with one row per season
 }
 \description{
-\code{ns_seasons()} returns information about all the seasons, including but not limited to each season's ID, start & end dates, and rules.
+\code{ns_seasons()} returns information on all the seasons, including but not limited to each season's ID, start & end dates, and rules.
 }
 \examples{
 all_seasons <- ns_seasons()

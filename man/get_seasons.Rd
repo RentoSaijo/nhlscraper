@@ -6,6 +6,9 @@
 \usage{
 get_seasons()
 }
+\value{
+data.frame with one row per season
+}
 \description{
 \code{get_seasons()} is deprecated. Use \code{\link[=ns_seasons]{ns_seasons()}} instead.
 }

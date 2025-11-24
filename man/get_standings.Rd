@@ -6,6 +6,12 @@
 \usage{
 get_standings(date = "2025-01-01")
 }
+\arguments{
+\item{date}{character in 'YYYY-MM-DD' (e.g., '2025-01-01')}
+}
+\value{
+data.frame with one row per team
+}
 \description{
 \code{get_standings()} is deprecated. Use \code{\link[=ns_standings]{ns_standings()}} instead.
 }

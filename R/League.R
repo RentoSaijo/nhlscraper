@@ -48,9 +48,9 @@ ns_game_type <- function() {
   )$data$gameTypeId
 }
 
-#' Get the standings rules for all the seasons
+#' Get the standings rules by season
 #' 
-#' `ns_standings_rules()` returns information on the standings for all the seasons, including but not limited to each season's ID and each standing's start & end dates and rules.
+#' `ns_standings_rules()` returns information on the standings rules by season, including but not limited to each season's ID, standings start & end dates, and rules.
 #' 
 #' @return data.frame with one row per season
 #' @examples
@@ -115,9 +115,9 @@ ns_schedule <- function(date = Sys.Date()) {
   )
 }
 
-#' Get the attendance for all the seasons
+#' Get the attendance by season
 #' 
-#' `ns_attendance()` returns information on the attendance for all the seasons, including but not limited to each season's ID and regular season & playoff attendance.
+#' `ns_attendance()` returns information on the attendance by season, including but not limited to each season's ID and regular season & playoff attendance.
 #' 
 #' @return data.frame with one row per season
 #' @examples

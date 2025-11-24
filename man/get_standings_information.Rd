@@ -2,11 +2,14 @@
 % Please edit documentation in R/LeagueOld.R
 \name{get_standings_information}
 \alias{get_standings_information}
-\title{Get information about the standings for all the seasons}
+\title{Get the standings rules for all the seasons}
 \usage{
 get_standings_information()
 }
+\value{
+data.frame with one row per season
+}
 \description{
-\code{get_standings_information()} is deprecated. Use
-\code{\link[=ns_standings_information]{ns_standings_information()}} instead.
+\code{get_standings_information()} is deprecated. Use \code{\link[=ns_standings_rules]{ns_standings_rules()}}
+instead.
 }

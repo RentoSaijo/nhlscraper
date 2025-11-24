@@ -13,10 +13,7 @@ ns_schedule(date = Sys.Date())
 data.frame with one row per game
 }
 \description{
-\code{ns_schedule()} retrieves information on each game for a given \code{date},
-including but not limited to their ID; type; venue; start time; tickets
-link; and home and away teams' IDs, names, and scores. Access \code{ns_seasons()}
-for \code{date} reference.
+\code{ns_schedule()} returns information on the schedule for a given \code{date}, including but not limited to each game's ID, competing teams, start time, and venue. Use \code{\link[=ns_season]{ns_season()}} for \code{date} reference.
 }
 \examples{
 schedule_Halloween_2025 <- ns_schedule(date = '2025-10-31')

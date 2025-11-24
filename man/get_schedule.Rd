@@ -6,6 +6,12 @@
 \usage{
 get_schedule(date = "2025-01-01")
 }
+\arguments{
+\item{date}{character in 'YYYY-MM-DD' (e.g., '2025-01-01')}
+}
+\value{
+data.frame with one row per game
+}
 \description{
 \code{get_schedule()} is deprecated. Use \code{\link[=ns_schedule]{ns_schedule()}} instead.
 }

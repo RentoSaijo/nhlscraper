@@ -2,7 +2,7 @@
 % Please edit documentation in R/League.R
 \name{ns_attendance}
 \alias{ns_attendance}
-\title{Get the attendance for all the seasons}
+\title{Get the attendance by season}
 \usage{
 ns_attendance()
 }
@@ -10,8 +10,7 @@ ns_attendance()
 data.frame with one row per season
 }
 \description{
-\code{ns_attendance()} retrieves information on each season, including but not
-limited to their ID and regular and playoff attendance.
+\code{ns_attendance()} returns information on the attendance by season, including but not limited to each season's ID and regular season & playoff attendance.
 }
 \examples{
 all_attendance <- ns_attendance()
