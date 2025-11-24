@@ -5,7 +5,7 @@
 
 ### Overview
 
-nhlscraper is a CRAN-approved minimum-dependency R package for scraping and cleaning NHL data via the NHL and ESPN APIs. It primarily wraps 500+ endpoints documented [here](https://github.com/RentoSaijo/nhlscraper/wiki) from high-level multi-season summaries and award winners to low-level play-by-plays and bookmakers' odds, making them significantly more accessible. It also features cleaning functions, primarily for play-by-play logs, to help analyze the data. Since the NHL API endpoints got reworked in 2023, many of the earlier scrapers became defunct; this one should be updated for the new endpoints.
+nhlscraper is a CRAN-approved minimum-dependency R package for scraping and cleaning NHL data via the NHL and ESPN APIs. It primarily wraps 500+ endpoints documented [here](https://github.com/RentoSaijo/nhlscraper/wiki) from high-level multi-season summaries and award winners to low-level play-by-plays and bookmakers' odds, making them significantly more accessible. It also features cleaning functions, primarily for play-by-play logs, to help analyze the data.
 
 ### History
 
