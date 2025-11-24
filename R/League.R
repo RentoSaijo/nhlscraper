@@ -83,7 +83,7 @@ ns_standings <- function(date = 'now') {
       )$standings
     },
     error = function(e) {
-      message("Invalid argument(s); refer to help file.")
+      message('Invalid argument(s); refer to help file.')
       data.frame()
     }
   )
@@ -109,7 +109,7 @@ ns_schedule <- function(date = Sys.Date()) {
       gameWeek[gameWeek$date == date, ]$games[[1]]
     },
     error = function(e) {
-      message("Invalid argument(s); refer to help file.")
+      message('Invalid argument(s); refer to help file.')
       data.frame()
     }
   )

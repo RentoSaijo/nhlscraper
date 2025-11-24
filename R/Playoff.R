@@ -52,7 +52,7 @@ ns_bracket <- function(season = ns_season()){
       )$series
     },
     error = function(e) {
-      message("Invalid argument(s); refer to help file.")
+      message('Invalid argument(s); refer to help file.')
       data.frame()
     }
   )
@@ -88,7 +88,7 @@ ns_series_schedule <- function(season = ns_season(), series = 'a') {
       )$games
     },
     error = function(e) {
-      message("Invalid argument(s); refer to help file.")
+      message('Invalid argument(s); refer to help file.')
       data.frame()
     }
   )

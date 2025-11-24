@@ -39,7 +39,7 @@ get_espn_transactions <- function(start_date = 20241004, end_date = 20250624) {
       do.call(rbind, all_transactions)
     },
     error = function(e) {
-      message("Invalid argument(s); refer to help file.")
+      message('Invalid argument(s); refer to help file.')
       data.frame()
     }
   )
@@ -85,7 +85,7 @@ get_espn_futures <- function(season = ns_season() %% 1e4) {
       )$items
     },
     error = function(e) {
-      message("Invalid argument(s); refer to help file.")
+      message('Invalid argument(s); refer to help file.')
       data.frame()
     }
   )

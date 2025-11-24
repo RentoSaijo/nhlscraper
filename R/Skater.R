@@ -55,7 +55,7 @@ ns_skater_leaders <- function(
       )[[report_type]]
     },
     error = function(e) {
-      message("Invalid argument(s); refer to help file.")
+      message('Invalid argument(s); refer to help file.')
       data.frame()
     }
   )

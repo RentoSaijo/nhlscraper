@@ -16,7 +16,7 @@ ns_team_edge_seasons <- function() {
       )$seasonsWithEdgeStats
     },
     error = function(e) {
-      message("Invalid argument(s); refer to help file.")
+      message('Invalid argument(s); refer to help file.')
       data.frame()
     }
   )
@@ -50,7 +50,7 @@ ns_team_edge_leaders <- function(season = 'now', game_type = '') {
       )$leaders
     },
     error = function(e) {
-      message("Invalid argument(s); refer to help file.")
+      message('Invalid argument(s); refer to help file.')
       data.frame()
     }
   )
@@ -88,7 +88,7 @@ ns_team_edge_summary <- function(team = 1, season = 'now', game_type = '') {
       )
     },
     error = function(e) {
-      message("Invalid argument(s); refer to help file.")
+      message('Invalid argument(s); refer to help file.')
       data.frame()
     }
   )
@@ -145,7 +145,7 @@ ns_team_edge_zone_time <- function(
       )[[report_type]]
     },
     error = function(e) {
-      message("Invalid argument(s); refer to help file.")
+      message('Invalid argument(s); refer to help file.')
       data.frame()
     }
   )
@@ -198,7 +198,7 @@ ns_team_edge_skating_distance <- function(
       )[[report_type]]
     },
     error = function(e) {
-      message("Invalid argument(s); refer to help file.")
+      message('Invalid argument(s); refer to help file.')
       data.frame()
     }
   )
@@ -250,7 +250,7 @@ ns_team_edge_skating_speed <- function(
       )[[report_type]]
     },
     error = function(e) {
-      message("Invalid argument(s); refer to help file.")
+      message('Invalid argument(s); refer to help file.')
       data.frame()
     }
   )
@@ -302,7 +302,7 @@ ns_team_edge_shot_location <- function(
       )[[report_type]]
     },
     error = function(e) {
-      message("Invalid argument(s); refer to help file.")
+      message('Invalid argument(s); refer to help file.')
       data.frame()
     }
   )
@@ -354,7 +354,7 @@ ns_team_edge_shot_speed <- function(
       )[[report_type]]
     },
     error = function(e) {
-      message("Invalid argument(s); refer to help file.")
+      message('Invalid argument(s); refer to help file.')
       data.frame()
     }
   )

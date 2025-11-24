@@ -37,7 +37,7 @@ ns_player_seasons <- function(player = 8480039) {
       )$playerStatsSeasons
     },
     error = function(e) {
-      message("Invalid argument(s); refer to help file.")
+      message('Invalid argument(s); refer to help file.')
       data.frame()
     }
   )
@@ -64,7 +64,7 @@ ns_player_summary <- function(player = 8480039) {
       )
     },
     error = function(e) {
-      message("Invalid argument(s); refer to help file.")
+      message('Invalid argument(s); refer to help file.')
       data.frame()
     }
   )
@@ -108,7 +108,7 @@ ns_player_game_log <- function(
       )$gameLog
     },
     error = function(e) {
-      message("Invalid argument(s); refer to help file.")
+      message('Invalid argument(s); refer to help file.')
       data.frame()
     }
   )

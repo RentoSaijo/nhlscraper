@@ -17,7 +17,7 @@ ns_goalie_edge_seasons <- function() {
       )$seasonsWithEdgeStats
     },
     error = function(e) {
-      message("Invalid argument(s); refer to help file.")
+      message('Invalid argument(s); refer to help file.')
       data.frame()
     }
   )
@@ -51,7 +51,7 @@ ns_goalie_edge_leaders <- function(season = 'now', game_type = '') {
       )$leaders
     },
     error = function(e) {
-      message("Invalid argument(s); refer to help file.")
+      message('Invalid argument(s); refer to help file.')
       data.frame()
     }
   )
@@ -92,7 +92,7 @@ ns_goalie_edge_summary <- function(
       )
     },
     error = function(e) {
-      message("Invalid argument(s); refer to help file.")
+      message('Invalid argument(s); refer to help file.')
       data.frame()
     }
   )
@@ -144,7 +144,7 @@ ns_goalie_edge_save_percentage <- function(
       )[[report_type]]
     },
     error = function(e) {
-      message("Invalid argument(s); refer to help file.")
+      message('Invalid argument(s); refer to help file.')
       data.frame()
     }
   )
@@ -195,7 +195,7 @@ ns_goalie_edge_5_vs_5 <- function(
       )[[report_type]]
     },
     error = function(e) {
-      message("Invalid argument(s); refer to help file.")
+      message('Invalid argument(s); refer to help file.')
       data.frame()
     }
   )
@@ -246,7 +246,7 @@ ns_goalie_edge_shot_location <- function(
       )[[report_type]]
     },
     error = function(e) {
-      message("Invalid argument(s); refer to help file.")
+      message('Invalid argument(s); refer to help file.')
       data.frame()
     }
   )

@@ -41,7 +41,7 @@ ns_scores <- function(date = 'now') {
       )$games
     },
     error = function(e) {
-      message("Invalid argument(s); refer to help file.")
+      message('Invalid argument(s); refer to help file.')
       data.frame()
     }
   )
@@ -73,7 +73,7 @@ ns_gc_summary <- function(game = 2025020275) {
       c(landing, right_rail)
     },
     error = function(e) {
-      message("Invalid argument(s); refer to help file.")
+      message('Invalid argument(s); refer to help file.')
       data.frame()
     }
   )
@@ -100,7 +100,7 @@ ns_wsc_summary <- function(game = 2025020275) {
       )
     },
     error = function(e) {
-      message("Invalid argument(s); refer to help file.")
+      message('Invalid argument(s); refer to help file.')
       data.frame()
     }
   )
@@ -152,7 +152,7 @@ ns_boxscore <- function(
       boxscore[[paste0(team, 'Team')]][[position]]
     },
     error = function(e) {
-      message("Invalid argument(s); refer to help file.")
+      message('Invalid argument(s); refer to help file.')
       data.frame()
     }
   )
@@ -177,7 +177,7 @@ ns_game_rosters <- function(game = 2025020275) {
       )$rosterSpots
     },
     error = function(e) {
-      message("Invalid argument(s); refer to help file.")
+      message('Invalid argument(s); refer to help file.')
       data.frame()
     }
   )
@@ -206,7 +206,7 @@ ns_gc_play_by_play <- function(game = 2025020275) {
       )$plays
     },
     error = function(e) {
-      message("Invalid argument(s); refer to help file.")
+      message('Invalid argument(s); refer to help file.')
       data.frame()
     }
   )
@@ -237,7 +237,7 @@ ns_wsc_play_by_play <- function(game = 2025020275) {
       )
     },
     error = function(e) {
-      message("Invalid argument(s); refer to help file.")
+      message('Invalid argument(s); refer to help file.')
       data.frame()
     }
   )
@@ -271,7 +271,7 @@ ns_shifts <- function(game = 2025020275) {
       )$data
     },
     error = function(e) {
-      message("Invalid argument(s); refer to help file.")
+      message('Invalid argument(s); refer to help file.')
       data.frame()
     }
   )

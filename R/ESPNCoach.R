@@ -33,7 +33,7 @@ get_espn_coaches <- function(season = ns_season() %% 1e4) {
       data.frame(id = id, stringsAsFactors = FALSE)
     },
     error = function(e) {
-      message("Invalid argument(s); refer to help file.")
+      message('Invalid argument(s); refer to help file.')
       data.frame()
     }
   )

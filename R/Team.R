@@ -35,7 +35,7 @@ ns_team_seasons <- function(team = 1) {
       )
     },
     error = function(e) {
-      message("Invalid argument(s); refer to help file.")
+      message('Invalid argument(s); refer to help file.')
       data.frame()
     }
   )
@@ -101,7 +101,7 @@ ns_roster <- function(
       )[[position]]
     },
     error = function(e) {
-      message("Invalid argument(s); refer to help file.")
+      message('Invalid argument(s); refer to help file.')
       data.frame()
     }
   )
@@ -151,7 +151,7 @@ ns_roster_statistics <- function(
       )[[position]]
     },
     error = function(e) {
-      message("Invalid argument(s); refer to help file.")
+      message('Invalid argument(s); refer to help file.')
       data.frame()
     }
   )
@@ -199,7 +199,7 @@ ns_team_prospects <- function(team = 1, position = 'forwards') {
       )[[position]]
     },
     error = function(e) {
-      message("Invalid argument(s); refer to help file.")
+      message('Invalid argument(s); refer to help file.')
       data.frame()
     }
   )
@@ -233,7 +233,7 @@ ns_team_season_schedule <- function(team = 1, season = 'now') {
       )$games
     },
     error = function(e) {
-      message("Invalid argument(s); refer to help file.")
+      message('Invalid argument(s); refer to help file.')
       data.frame()
     }
   )
@@ -267,7 +267,7 @@ ns_team_month_schedule <- function(team = 1, month = 'now') {
       )$games
     },
     error = function(e) {
-      message("Invalid argument(s); refer to help file.")
+      message('Invalid argument(s); refer to help file.')
       data.frame()
     }
   )
@@ -301,7 +301,7 @@ ns_team_week_schedule <- function(team = 1, date = 'now') {
       )$games
     },
     error = function(e) {
-      message("Invalid argument(s); refer to help file.")
+      message('Invalid argument(s); refer to help file.')
       data.frame()
     }
   )

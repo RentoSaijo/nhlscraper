@@ -125,7 +125,7 @@ ns_location <- function(zip = 80204) {
       )
     },
     error = function(e) {
-      message("Invalid argument(s); refer to help file.")
+      message('Invalid argument(s); refer to help file.')
       data.frame()
     }
   )
@@ -169,7 +169,7 @@ ns_tv_schedule <- function(date = 'now') {
       )$broadcasts
     },
     error = function(e) {
-      message("Invalid argument(s); refer to help file.")
+      message('Invalid argument(s); refer to help file.')
       data.frame()
     }
   )
@@ -196,7 +196,7 @@ ns_partner_odds <- function(country = 'US') {
       )$games
     },
     error = function(e) {
-      message("Invalid argument(s); refer to help file.")
+      message('Invalid argument(s); refer to help file.')
       data.frame()
     }
   )

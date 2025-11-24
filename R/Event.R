@@ -10,7 +10,7 @@
 #' )
 #' @export
 
-ns_goal_replay <- function(game, event) {
+ns_goal_replay <- function(game = 2025020262, event = 751) {
   base   <- 'https://wsr.nhle.com/'
   year   <- game %/% 1e6
   season <- paste0(as.character(year), as.character(year+1))

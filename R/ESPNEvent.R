@@ -53,7 +53,7 @@ get_espn_events <- function(start_date = 20241004, end_date = 20250624) {
       data.frame(id = id, stringsAsFactors = FALSE)
     },
     error = function(e) {
-      message("Invalid argument(s); refer to help file.")
+      message('Invalid argument(s); refer to help file.')
       data.frame()
     }
   )
@@ -98,7 +98,7 @@ get_espn_event_play_by_play <- function(event = 401687600) {
       )$items
     },
     error = function(e) {
-      message("Invalid argument(s); refer to help file.")
+      message('Invalid argument(s); refer to help file.')
       data.frame()
     }
   )
@@ -168,7 +168,7 @@ get_espn_event_odds <- function(event = 401687600) {
       )$items
     },
     error = function(e) {
-      message("Invalid argument(s); refer to help file.")
+      message('Invalid argument(s); refer to help file.')
       data.frame()
     }
   )

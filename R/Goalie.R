@@ -43,7 +43,7 @@ ns_goalie_leaders <- function(
     },
     error = function(e) {
       message(e)
-      message("Invalid argument(s); refer to help file.")
+      message('Invalid argument(s); refer to help file.')
       data.frame()
     }
   )
