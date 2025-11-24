@@ -164,7 +164,7 @@ ns_team_edge_zone_time <- function(
 #' @param report_type character of 'd'/'details' or 'l'/'l10'/'last 10'
 #' @return data.frame with one row per combination of strength state and 
 #' position (report_type = 'details') or game (report_type = 'last 10')
-#' game (L10)
+#' game
 #' @examples
 #' COL_L10_skating_distance_regular_20242025 <- ns_team_edge_skating_distance(
 #'   team        = 21,

@@ -26,7 +26,7 @@ Avalanche'), OR three-letter code (e.g., 'COL')}
 \value{
 data.frame with one row per combination of strength state and
 position (report_type = 'details') or game (report_type = 'last 10')
-game (L10)
+game
 }
 \description{
 \code{ns_team_edge_skating_distance()} returns the EDGE skating distance statistics for a given set of \code{team}, \code{season}, \code{game_type}, and \code{report_type}. Use \code{\link[=ns_teams]{ns_teams()}} for \code{team} reference and \code{\link[=ns_team_edge_seasons]{ns_team_edge_seasons()}} for \code{season} & \code{game_type} references.
