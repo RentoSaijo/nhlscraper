@@ -60,7 +60,15 @@ reference:
     desc: >
       Functions to access information on the franchises
     contents:
-      - get_franchises
+      - ns_franchises
+      - ns_franchise_statistics
+      - ns_franchise_stats
+      - ns_franchise_team_statistics
+      - ns_franchise_team_stats
+      - ns_franchise_season_statistics
+      - ns_franchise_season_stats
+      - ns_franchise_versus_franchise
+      - ns_franchise_vs_franchise
 
   - subtitle: "Team"
     desc: >
@@ -74,8 +82,6 @@ reference:
       - get_team_prospects
       - get_team_schedule
       - get_team_scoreboard
-      - get_franchises
-      - get_franchise_season_by_season
 
   - subtitle: "Player Data"
     desc: >
@@ -173,6 +179,10 @@ reference:
       - get_standings_information
       - get_standings
       - get_schedule
+      - get_franchises
+      - get_franchise_team_totals
+      - get_franchise_season_by_season
+      - get_franchise_vs_franchise
 
   - title: "ESPN API"
     desc: >

@@ -6,6 +6,9 @@
 \usage{
 get_franchises()
 }
+\value{
+data.frame with one row per franchise
+}
 \description{
 \code{get_franchises()} is deprecated. Use \code{\link[=ns_franchises]{ns_franchises()}} instead.
 }

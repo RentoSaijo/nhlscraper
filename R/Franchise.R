@@ -1,8 +1,6 @@
 #' Get all the franchises
 #' 
-#' `ns_franchises()` retrieves information on each franchise, including but 
-#' not limited to their ID; first and last seasons' IDs; captain, coach, and 
-#' general manager histories; and retired numbers.
+#' `ns_franchises()` returns information on all the franchises, including but not limited to each franchise's ID, name, and history.
 #' 
 #' @return data.frame with one row per franchise
 #' @examples
@@ -24,73 +22,77 @@ ns_franchises <- function() {
   merge(franchises[order(franchises$id), ], details, by = 'id')
 }
 
-#' Get all the franchises' all-time records
+#' Get the all-time statistics for all the franchises by game type
 #' 
-#' `ns_franchise_records()` retrieves information on each team, including 
-#' but not limited to their ID, first and last seasons' IDs, and all-time 
-#' statistics.
+#' `ns_franchise_statistics()` returns information on the all-time statistics for all the franchises by game type, including but not limited to each franchise's ID, wins, ties, and losses.
 #' 
-#' @return data.frame with one row per franchise
+#' @return data.frame with one row per franchise per game type
 #' @examples
-#' franchise_records <- ns_franchise_records()
+#' franchise_statistics <- ns_franchise_statistics()
 #' @export
 
-ns_franchise_records <- function() {
+ns_franchise_statistics <- function() {
   nhl_api(
     path = 'franchise-totals',
     type = 'r'
   )$data
 }
 
-#' Get all the franchises' teams' all-time records
+#' @rdname ns_franchise_statistics
+#' @export
+ns_franchise_stats <- function() {
+  ns_franchise_statistics()
+}
+
+#' Get the all-time statistics for all the franchises by team and game type
 #' 
-#' `ns_franchise_team_records()` retrieves information on each team, including 
-#' but not limited to their ID, first and last seasons' IDs, and all-time 
-#' statistics.
+#' `ns_franchise_team_statistics()` returns information on the all-time statistics for all the franchises by team and game type, including but not limited to each team's ID, wins, ties, and losses.
 #' 
-#' @return data.frame with one row per franchise's team
+#' @return data.frame with one row per team per franchise per game type
 #' @examples
-#' franchise_team_records <- ns_franchise_team_records()
+#' franchise_team_statistics <- ns_franchise_team_statistics()
 #' @export
 
-ns_franchise_team_records <- function() {
+ns_franchise_team_statistics <- function() {
   nhl_api(
     path = 'franchise-team-totals',
     type = 'r'
   )$data
 }
 
-#' Get the season-by-season results for all the franchises
+#' @rdname ns_franchise_team_statistics
+#' @export
+ns_franchise_team_stats <- function() {
+  ns_franchise_team_statistics()
+}
+
+#' Get statistics for all the franchises by season and game type
 #' 
-#' `ns_franchise_season_by_season()` retrieves information on each 
-#' franchise's season, including but not limited to their ID, decision, final 
-#' playoff round, and statistics.
+#' `ns_franchise_season_statistics()` returns information on statistics for all the franchises by season and game type, including but not limited to each franchise's ID, wins, ties, and losses.
 #' 
-#' @return data.frame with one row per franchise's season
+#' @return data.frame with one row per franchise per game type per season
 #' @examples
-#' sbs_all_franchises <- ns_franchise_season_by_season()
+#' franchise_season_statistics <- ns_franchise_season_statistics()
 #' @export
 
-ns_franchise_season_by_season <- function() {
+ns_franchise_season_statistics <- function() {
   nhl_api(
     path = 'franchise-season-results',
     type = 'r'
   )$data
 }
 
-#' @rdname ns_franchise_season_by_season
+#' @rdname ns_franchise_season_statistics
 #' @export
-ns_franchise_sbs <- function() {
-  ns_franchise_season_by_season()
+ns_franchise_season_stats <- function() {
+  ns_franchise_season_statistics()
 }
 
-#' Get all the franchises' all-time records versus other franchises
+#' Get the all-time statistics versus other franchises for all the franchises
 #' 
-#' `ns_franchise_versus_franchise()` retrieves information on each franchise 
-#' versus another franchise, including but not limited to their IDs, game-type 
-#' ID, and all-time statistics.
+#' `ns_franchise_versus_franchise()` returns information on the all-time statistics versus other franchises for all the franchises, including but not limited to each franchise's ID, wins, ties, and losses.
 #' 
-#' @return data.frame with one row per franchise versus another franchise
+#' @return data.frame with one row per franchise per franchise
 #' @examples
 #' franchise_vs_franchise <- ns_franchise_versus_franchise()
 #' @export

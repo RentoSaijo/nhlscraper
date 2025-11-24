@@ -10,9 +10,7 @@ ns_franchises()
 data.frame with one row per franchise
 }
 \description{
-\code{ns_franchises()} retrieves information on each franchise, including but
-not limited to their ID; first and last seasons' IDs; captain, coach, and
-general manager histories; and retired numbers.
+\code{ns_franchises()} returns information on all the franchises, including but not limited to each franchise's ID, name, and history.
 }
 \examples{
 all_franchises <- ns_franchises()

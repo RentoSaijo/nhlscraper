@@ -2,11 +2,14 @@
 % Please edit documentation in R/FranchiseOld.R
 \name{get_franchise_season_by_season}
 \alias{get_franchise_season_by_season}
-\title{Get the season-by-season results for all the franchises}
+\title{Get statistics for all the franchises by season and game type}
 \usage{
 get_franchise_season_by_season()
 }
+\value{
+data.frame with one row per franchise per game type per season
+}
 \description{
 \code{get_franchise_season_by_season()} is deprecated. Use
-\code{\link[=ns_franchise_season_by_season]{ns_franchise_season_by_season()}} instead.
+\code{\link[=ns_franchise_season_statistics]{ns_franchise_season_statistics()}} instead.
 }
