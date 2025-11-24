@@ -1,7 +1,6 @@
 #' Get all the teams
 #' 
-#' `ns_teams()` retrieves information on each team, including but not limited to 
-#' their ID, name, and 3-letter code.
+#' `ns_teams()` returns information on all the teams, including but not limited to each team's ID, name, and three-letter code.
 #' 
 #' @return data.frame with one row per team
 #' @examples
@@ -16,11 +15,9 @@ ns_teams <- function() {
   teams[order(teams$id), ]
 }
 
-#' Get the season(s) and game type(s) of which a team played in
+#' Get the season(s) and game type(s) in which a team played
 #' 
-#' `ns_team_seasons()` retrieves information on each season for a given `team`, 
-#' including but not limited to their ID and game-type(s). Access `ns_teams()` 
-#' for `team` reference.
+#' `ns_team_seasons()` returns the season(s) and game type(s) in which a team played in the NHL.
 #' 
 #' @param team integer ID (e.g., 21), character full name (e.g., 'Colorado 
 #' Avalanche'), OR three-letter code (e.g., 'COL')
@@ -44,23 +41,44 @@ ns_team_seasons <- function(team = 1) {
   )
 }
 
-#' Get the roster of a team for a season and position
+#' Get statistics for all the teams by season and game type
 #' 
-#' `ns_roster()` retrieves information on each player for a given set of 
-#' `team`, `season`, and `position`, including but not limited to their ID, 
-#' name, bio-metrics, and birth date and location. Access `ns_teams()` for 
-#' `team` and `ns_team_seasons()` for `season` references.
+#' `ns_team_season_statistics()` returns statistics for all the teams by season and game type, including but not limited to each team's ID, wins, ties, and losses.
+#' 
+#' @return data.frame with one row per team per game type per season
+#' @examples
+#' # This may take >5s, so skip.
+#' \donttest{team_season_statistics <- ns_team_season_statistics()}
+#' @export
+
+ns_team_season_statistics <- function() {
+  nhl_api(
+    path = 'team-stats',
+    type = 'r'
+  )$data
+}
+
+#' @rdname ns_team_season_statistics
+#' @export
+ns_team_season_stats <- function() {
+  ns_team_season_statistics()
+}
+
+#' Get the roster for a team, season, and position
+#' 
+#' `ns_roster()` returns the roster for a given set of `team`, `season`, and `position`, including but not limited to each player's ID, headshot URL, and bio-metrics. Use [ns_teams()] for `team` reference and [ns_seasons()] for `season` reference.
 #' 
 #' @param team integer ID (e.g., 21), character full name (e.g., 'Colorado 
 #' Avalanche'), OR three-letter code (e.g., 'COL')
 #' @param season integer in YYYYYYYY (e.g., 20242025)
-#' @param position string of 'f'/'forwards', d'/'defensemen', or 'g'/goalies'
+#' @param position character of 'f'/'forwards', 'd'/'defensemen', or 
+#' 'g'/'goalies'
 #' @return data.frame with one row per player
 #' @examples
 #' COL_defensemen_20242025 <- ns_roster(
-#'   team     = 1,
+#'   team     = 21,
 #'   season   = 20242025,
-#'   position = 'defensemen'
+#'   position = 'D'
 #' )
 #' @export
 
@@ -89,26 +107,23 @@ ns_roster <- function(
   )
 }
 
-#' Get the statistics of a roster for a season, game type, and position
+#' Get the roster statistics for a team, season, game type, and position
 #' 
-#' `ns_roster_statistics()` retrieves information on each player for a given set 
-#' of `team`, `season`, `game_type` and `position`, including but not 
-#' limited to their ID, name, and statistics. Access `ns_teams()` for `team` 
-#' and `ns_team_seasons()` for `season` and `game_type` references.
+#' `ns_roster_statistics()` returns the roster statistics for a given set of `team`, `season`, `game_type`, and `position`, including but not limited to each player's ID, goals, assists, and points. Use [ns_teams()] for `team` reference and [ns_seasons()] for `season` & `game_type` references.
 #' 
 #' @param team integer ID (e.g., 21), character full name (e.g., 'Colorado 
 #' Avalanche'), OR three-letter code (e.g., 'COL')
 #' @param season integer in YYYYYYYY (e.g., 20242025)
 #' @param game_type integer in 1:3 (where 1 = pre-season, 2 = regular season, 3 
 #' = playoff/post-season) OR character of 'pre', 'regular', or 'playoff'/'post'
-#' @param position string of 's'/'skaters' or 'g'/'goalies'
+#' @param position character of 's'/'skaters' or 'g'/'goalies'
 #' @return data.frame with one row per player
 #' @examples
 #' COL_goalies_statistics_regular_20242025 <- ns_roster_statistics(
 #'   team      = 21,
 #'   season    = 20242025,
 #'   game_type = 2,
-#'   position  = 'goalies'
+#'   position  = 'G'
 #' )
 #' @export
 
@@ -153,21 +168,19 @@ ns_roster_stats <- function(
   ns_roster_statistics(team, season, game_type, position)
 }
 
-#' Get the prospects of a team for a position
+#' Get the prospects for a team and position
 #' 
-#' `ns_team_prospects()` retrieves information on each prospect for a given set 
-#' of `team` and `position`, including but not limited to their ID, name, 
-#' bio-metrics, and birth date and location. Access `ns_teams()` for `team` 
-#' reference.
+#' `ns_team_prospects()` returns the prospects for a given set of `team` and `position`, including but not limited to each player's ID, headshot, and bio-metrics. Use [ns_teams()] for `team` reference and [ns_seasons()] for `season` & `game_type` references.
 #' 
 #' @param team integer ID (e.g., 21), character full name (e.g., 'Colorado 
 #' Avalanche'), OR three-letter code (e.g., 'COL')
-#' @param position string of 'f'/'forwards', d'/'defensemen', or 'g'/goalies'
+#' @param position character of 'f'/'forwards', 'd'/'defensemen', or 
+#' 'g'/'goalies'
 #' @return data.frame with one row per player
 #' @examples
-#' COL_defensemen_prospects <- ns_team_prospects(
+#' COL_forward_prospects <- ns_team_prospects(
 #'   team     = 21,
-#'   position = 'defensemen'
+#'   position = 'F'
 #' )
 #' @export
 
@@ -192,22 +205,22 @@ ns_team_prospects <- function(team = 1, position = 'forwards') {
   )
 }
 
-#' Get the schedule of a team for a season
+#' Get the schedule for a team and season
 #' 
-#' `ns_team_schedule_season()` retrieves information on each 
+#' `ns_team_season_schedule()` returns the schedule for a given set of `team` and `season`, including but not limited to each game's ID, competing teams, start time, and venue. Use [ns_teams()] for `team` reference and [ns_seasons()] for `season` reference.
 #' 
 #' @param team integer ID (e.g., 21), character full name (e.g., 'Colorado 
 #' Avalanche'), OR three-letter code (e.g., 'COL')
 #' @param season integer in YYYYYYYY (e.g., 20242025)
 #' @return data.frame with one row per game
 #' @examples
-#' COL_schedule_20252026 <- ns_team_schedule_season(
+#' COL_schedule_20252026 <- ns_team_season_schedule(
 #'   team   = 21, 
 #'   season = 20252026
 #' )
 #' @export
 
-ns_team_schedule_season <- function(team = 1, season = 'now') {
+ns_team_season_schedule <- function(team = 1, season = 'now') {
   tryCatch(
     expr = {
       nhl_api(
@@ -226,22 +239,22 @@ ns_team_schedule_season <- function(team = 1, season = 'now') {
   )
 }
 
-#' Get the schedule of a team for a month
+#' Get the schedule for a team and month
 #' 
-#' `ns_team_schedule_month()` retrieves information on each ...
+#' `ns_team_month_schedule()` returns the schedule for a given set of `team` and `month`, including but not limited to each game's ID, competing teams, start time, and venue. Use [ns_teams()] for `team` reference and [ns_seasons()] for `month` reference.
 #' 
 #' @param team integer ID (e.g., 21), character full name (e.g., 'Colorado 
 #' Avalanche'), OR three-letter code (e.g., 'COL')
-#' @param month character in 'YYYY-MM' (e.g., '2025-12')
+#' @param month character in 'YYYY-MM' (e.g., '2025-01')
 #' @return data.frame with one row per game
 #' @examples
-#' COL_schedule_December_2025 <- ns_team_schedule_month(
+#' COL_schedule_December_2025 <- ns_team_month_schedule(
 #'   team  = 21, 
 #'   month = '2025-12'
 #' )
 #' @export
 
-ns_team_schedule_month <- function(team = 1, month = 'now') {
+ns_team_month_schedule <- function(team = 1, month = 'now') {
   tryCatch(
     expr = {
       nhl_api(
@@ -260,22 +273,22 @@ ns_team_schedule_month <- function(team = 1, month = 'now') {
   )
 }
 
-#' Get the schedule of a team for a week since a date
+#' Get the schedule for a team and week since a date
 #' 
-#' `ns_team_schedule_week()` retrieves information on each ...
+#' `ns_team_week_schedule()` returns the schedule for a given set of `team` and a week since `date`, including but not limited to each game's ID, competing teams, start time, and venue. Use [ns_teams()] for `team` reference and [ns_seasons()] for `date` reference.
 #' 
 #' @param team integer ID (e.g., 21), character full name (e.g., 'Colorado 
 #' Avalanche'), OR three-letter code (e.g., 'COL')
 #' @param date character in 'YYYY-MM-DD' (e.g., '2025-01-01')
 #' @return data.frame with one row per game
 #' @examples
-#' COL_schedule_Family_Week_2025 <- ns_team_schedule_week(
+#' COL_schedule_Family_Week_2025 <- ns_team_week_schedule(
 #'   team = 21,
 #'   date = '2025-10-06'
 #' )
 #' @export
 
-ns_team_schedule_week <- function(team = 1, date = 'now') {
+ns_team_week_schedule <- function(team = 1, date = 'now') {
   tryCatch(
     expr = {
       nhl_api(
@@ -292,26 +305,4 @@ ns_team_schedule_week <- function(team = 1, date = 'now') {
       data.frame()
     }
   )
-}
-
-#' Get the statistics for all the teams by season and game type
-#' 
-#' `ns_team_season_statistics()` retrieves information on ...
-#' 
-#' @return data.frame with one row per team per game type per season
-#' @examples
-#' team_season_stats <- ns_team_season_statistics()
-#' @export
-
-ns_team_season_statistics <- function() {
-  nhl_api(
-    path = 'team-stats',
-    type = 'r'
-  )$data
-}
-
-#' @rdname ns_team_season_statistics
-#' @export
-ns_team_season_stats <- function() {
-  ns_team_season_statistics()
 }

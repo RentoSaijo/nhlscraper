@@ -2,14 +2,27 @@
 % Please edit documentation in R/TeamOld.R
 \name{get_team_roster_statistics}
 \alias{get_team_roster_statistics}
-\title{Get the statistics of a roster for a season, game type, and position}
+\title{Get the roster statistics for a team, season, game type, and player type}
 \usage{
 get_team_roster_statistics(
-  team = 1,
+  team = "NJD",
   season = "now",
   game_type = 2,
   player_type = "skaters"
 )
+}
+\arguments{
+\item{team}{three-letter code (e.g., 'COL')}
+
+\item{season}{integer in YYYYYYYY (e.g., 20242025)}
+
+\item{game_type}{integer in 1:3 (where 1 = pre-season, 2 = regular season, 3
+= playoff/post-season) OR character of 'pre', 'regular', or 'playoff'/'post'}
+
+\item{player_type}{character of 'skaters' or 'goalies'}
+}
+\value{
+data.frame with one row per player
 }
 \description{
 \code{get_team_roster_statistics()} is deprecated. Use \code{\link[=ns_roster_statistics]{ns_roster_statistics()}}

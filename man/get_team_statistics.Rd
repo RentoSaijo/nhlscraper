@@ -2,7 +2,7 @@
 % Please edit documentation in R/TeamOld.R
 \name{get_team_statistics}
 \alias{get_team_statistics}
-\title{Get team statistics}
+\title{Get various reports for all the teams by season or game}
 \usage{
 get_team_statistics(
   season = 20242025,
@@ -14,5 +14,6 @@ get_team_statistics(
 )
 }
 \description{
-\code{get_team_statistics()} is defunct. Use \code{\link[=ns_team_statistics]{ns_team_statistics()}} instead.
+\code{get_team_statistics()} is defunct. Use \code{\link[=ns_team_season_report]{ns_team_season_report()}} or
+\code{\link[=ns_team_game_report]{ns_team_game_report()}} instead.
 }

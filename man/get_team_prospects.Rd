@@ -2,9 +2,17 @@
 % Please edit documentation in R/TeamOld.R
 \name{get_team_prospects}
 \alias{get_team_prospects}
-\title{Get the prospects of a team for a position}
+\title{Get the prospects for a team and player type}
 \usage{
-get_team_prospects(team = 1, player_type = "forwards")
+get_team_prospects(team = "NJD", player_type = "forwards")
+}
+\arguments{
+\item{team}{three-letter code (e.g., 'COL')}
+
+\item{player_type}{character of 'forwards', 'defensemen', or 'goalies'}
+}
+\value{
+data.frame with one row per player
 }
 \description{
 \code{get_team_prospects()} is deprecated. Use \code{\link[=ns_team_prospects]{ns_team_prospects()}} instead.

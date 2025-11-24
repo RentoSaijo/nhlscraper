@@ -2,7 +2,7 @@
 % Please edit documentation in R/Team.R
 \name{ns_team_prospects}
 \alias{ns_team_prospects}
-\title{Get the prospects of a team for a position}
+\title{Get the prospects for a team and position}
 \usage{
 ns_team_prospects(team = 1, position = "forwards")
 }
@@ -10,20 +10,18 @@ ns_team_prospects(team = 1, position = "forwards")
 \item{team}{integer ID (e.g., 21), character full name (e.g., 'Colorado
 Avalanche'), OR three-letter code (e.g., 'COL')}
 
-\item{position}{string of 'f'/'forwards', d'/'defensemen', or 'g'/goalies'}
+\item{position}{character of 'f'/'forwards', 'd'/'defensemen', or
+'g'/'goalies'}
 }
 \value{
 data.frame with one row per player
 }
 \description{
-\code{ns_team_prospects()} retrieves information on each prospect for a given set
-of \code{team} and \code{position}, including but not limited to their ID, name,
-bio-metrics, and birth date and location. Access \code{ns_teams()} for \code{team}
-reference.
+\code{ns_team_prospects()} returns the prospects for a given set of \code{team} and \code{position}, including but not limited to each player's ID, headshot, and bio-metrics. Use \code{\link[=ns_teams]{ns_teams()}} for \code{team} reference and \code{\link[=ns_seasons]{ns_seasons()}} for \code{season} & \code{game_type} references.
 }
 \examples{
-COL_defensemen_prospects <- ns_team_prospects(
+COL_forward_prospects <- ns_team_prospects(
   team     = 21,
-  position = 'defensemen'
+  position = 'F'
 )
 }

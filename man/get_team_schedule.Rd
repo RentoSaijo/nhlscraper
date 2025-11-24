@@ -2,10 +2,18 @@
 % Please edit documentation in R/TeamOld.R
 \name{get_team_schedule}
 \alias{get_team_schedule}
-\title{Get the schedule of a team for a season}
+\title{Get the schedule for a team and season}
 \usage{
-get_team_schedule(team = 1, season = "now")
+get_team_schedule(team = "NJD", season = "now")
+}
+\arguments{
+\item{team}{three-letter code (e.g., 'COL')}
+
+\item{season}{integer in YYYYYYYY (e.g., 20242025)}
+}
+\value{
+data.frame with one row per game
 }
 \description{
-\code{get_team_schedule()} is deprecated. Use \code{\link[=ns_team_schedule_season]{ns_team_schedule_season()}} instead.
+\code{get_team_schedule()} is deprecated. Use \code{\link[=ns_team_season_schedule]{ns_team_season_schedule()}} instead.
 }

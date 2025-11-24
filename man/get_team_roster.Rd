@@ -2,9 +2,19 @@
 % Please edit documentation in R/TeamOld.R
 \name{get_team_roster}
 \alias{get_team_roster}
-\title{Get the roster of a team for a season and position}
+\title{Get the roster for a team, season, and player type}
 \usage{
-get_team_roster(team = 1, season = "current", player_type = "forwards")
+get_team_roster(team = "NJD", season = "current", player_type = "forwards")
+}
+\arguments{
+\item{team}{three-letter code (e.g., 'COL')}
+
+\item{season}{integer in YYYYYYYY (e.g., 20242025)}
+
+\item{player_type}{character of 'forwards', 'defensemen', or 'goalies'}
+}
+\value{
+data.frame with one row per player
 }
 \description{
 \code{get_team_roster()} is deprecated. Use \code{\link[=ns_roster]{ns_roster()}} instead.

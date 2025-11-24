@@ -11,7 +11,7 @@ integer in 1:3 (where 1 = pre-season, 2 = regular season, 3
 = playoff/post-season)
 }
 \description{
-\code{ns_game_type()} returns the ID of the current game type (i.e., whether we are in pre-season, regular season, or the playoffs).
+\code{ns_game_type()} returns the ID of the current game type.
 }
 \examples{
 game_type_now <- ns_game_type()

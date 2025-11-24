@@ -46,7 +46,7 @@ reference:
 
   - subtitle: "League"
     desc: >
-      Functions to access information on the entire league
+      Functions to access data about the entire league
     contents:
       - ns_seasons
       - ns_season
@@ -58,7 +58,7 @@ reference:
 
   - subtitle: "Franchise"
     desc: >
-      Functions to access information on the franchises
+      Functions to access data about the franchises
     contents:
       - ns_franchises
       - ns_franchise_statistics
@@ -72,16 +72,19 @@ reference:
 
   - subtitle: "Team"
     desc: >
-      Functions to retrieve data about teams
+      Functions to access data about the teams
     contents:
-      - get_teams
-      - get_team_seasons
-      - get_team_statistics
-      - get_team_roster
-      - get_team_roster_statistics
-      - get_team_prospects
-      - get_team_schedule
-      - get_team_scoreboard
+      - ns_teams
+      - ns_team_seasons
+      - ns_team_season_statistics
+      - ns_team_season_stats
+      - ns_roster
+      - ns_roster_statistics
+      - ns_roster_stats
+      - ns_team_prospects
+      - ns_team_season_schedule
+      - ns_team_month_schedule
+      - ns_team_week_schedule
 
   - subtitle: "Player Data"
     desc: >
@@ -173,7 +176,7 @@ reference:
 
   - subtitle: "Deprecated"
     desc: >
-      Functions that were deprecated
+      Functions that are deprecated
     contents:
       - get_seasons
       - get_standings_information
@@ -183,6 +186,19 @@ reference:
       - get_franchise_team_totals
       - get_franchise_season_by_season
       - get_franchise_vs_franchise
+      - get_teams
+      - get_team_seasons
+      - get_team_roster
+      - get_team_roster_statistics
+      - get_team_prospects
+      - get_team_schedule
+
+  - subtitle: "Defunct"
+    desc: >
+      Functions that are defunct
+    contents:
+      - get_team_statistics
+      - get_team_scoreboard
 
   - title: "ESPN API"
     desc: >

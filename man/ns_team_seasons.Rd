@@ -2,7 +2,7 @@
 % Please edit documentation in R/Team.R
 \name{ns_team_seasons}
 \alias{ns_team_seasons}
-\title{Get the season(s) and game type(s) of which a team played in}
+\title{Get the season(s) and game type(s) in which a team played}
 \usage{
 ns_team_seasons(team = 1)
 }
@@ -14,9 +14,7 @@ Avalanche'), OR three-letter code (e.g., 'COL')}
 data.frame with one row per season
 }
 \description{
-\code{ns_team_seasons()} retrieves information on each season for a given \code{team},
-including but not limited to their ID and game-type(s). Access \code{ns_teams()}
-for \code{team} reference.
+\code{ns_team_seasons()} returns the season(s) and game type(s) in which a team played in the NHL.
 }
 \examples{
 COL_seasons <- ns_team_seasons(team = 21)

@@ -4,7 +4,7 @@
 \alias{get_team_scoreboard}
 \title{Get team scoreboard as of now}
 \usage{
-get_team_scoreboard(team = 1)
+get_team_scoreboard(team = "NJD")
 }
 \description{
 \code{get_team_scoreboard()} is defunct.

@@ -2,9 +2,15 @@
 % Please edit documentation in R/TeamOld.R
 \name{get_team_seasons}
 \alias{get_team_seasons}
-\title{Get the season(s) and game type(s) of which a team played in}
+\title{Get the season(s) and game type(s) in which a team played}
 \usage{
-get_team_seasons(team = 1)
+get_team_seasons(team = "NJD")
+}
+\arguments{
+\item{team}{three-letter code (e.g., 'COL')}
+}
+\value{
+data.frame with one row per season
 }
 \description{
 \code{get_team_seasons()} is deprecated. Use \code{\link[=ns_team_seasons]{ns_team_seasons()}} instead.

@@ -10,8 +10,7 @@ ns_teams()
 data.frame with one row per team
 }
 \description{
-\code{ns_teams()} retrieves information on each team, including but not limited to
-their ID, name, and 3-letter code.
+\code{ns_teams()} returns information on all the teams, including but not limited to each team's ID, name, and three-letter code.
 }
 \examples{
 all_teams <- ns_teams()

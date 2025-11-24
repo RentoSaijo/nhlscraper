@@ -6,6 +6,9 @@
 \usage{
 get_teams()
 }
+\value{
+data.frame with one row per team
+}
 \description{
 \code{get_teams()} is deprecated. Use \code{\link[=ns_teams]{ns_teams()}} instead.
 }
