@@ -11,24 +11,49 @@
 
 ns_franchises <- function() {
   franchises <- nhl_api(
-    path = 'en/franchise',
-    type = 's'
+    path = 'franchise',
+    type = 'r'
   )$data
-  franchises[order(franchises$id), ]
+  details    <- nhl_api(
+    path = 'franchise-detail',
+    type = 'r'
+  )$data
+  details$firstSeasonId    <- NULL
+  details$mostRecentTeamId <- NULL
+  details$teamAbbrev       <- NULL
+  merge(franchises[order(franchises$id), ], details, by = 'id')
 }
 
-#' Get all the franchises' teams' all-time totals
+#' Get all the franchises' all-time records
 #' 
-#' `ns_franchise_team_totals()` retrieves information on each team, including 
+#' `ns_franchise_records()` retrieves information on each team, including 
 #' but not limited to their ID, first and last seasons' IDs, and all-time 
 #' statistics.
 #' 
-#' @return data.frame with one row per team
+#' @return data.frame with one row per franchise
 #' @examples
-#' all_franchise_team_totals <- ns_franchise_team_totals()
+#' franchise_records <- ns_franchise_records()
 #' @export
 
-ns_franchise_team_totals <- function() {
+ns_franchise_records <- function() {
+  nhl_api(
+    path = 'franchise-totals',
+    type = 'r'
+  )$data
+}
+
+#' Get all the franchises' teams' all-time records
+#' 
+#' `ns_franchise_team_records()` retrieves information on each team, including 
+#' but not limited to their ID, first and last seasons' IDs, and all-time 
+#' statistics.
+#' 
+#' @return data.frame with one row per franchise's team
+#' @examples
+#' franchise_team_records <- ns_franchise_team_records()
+#' @export
+
+ns_franchise_team_records <- function() {
   nhl_api(
     path = 'franchise-team-totals',
     type = 'r'

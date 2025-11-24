@@ -65,3 +65,167 @@ ns_goalie_milestones <- function() {
     type = 's'
   )$data
 }
+
+#' Get the goalie statistics for all the games
+#' 
+#' `ns_goalie_game_statistics()` retrieves information on ...
+#' 
+#' @return data.frame with one row per goalie per game
+#' @examples
+#' goalie_game_stats <- ns_goalie_game_statistics()
+#' @export
+
+ns_goalie_game_statistics <- function() {
+  nhl_api(
+    path = 'goalie_career_stats_incl_playoffs',
+    type = 'r'
+  )$data
+}
+
+#' @rdname ns_goalie_game_statistics
+#' @export
+ns_goalie_game_stats <- function() {
+  ns_goalie_game_statistics()
+}
+
+#' Get the goalie statistics for all the seasons
+#' 
+#' `ns_goalie_season_statistics()` retrieves information on ...
+#' 
+#' @return data.frame with one row per goalie per season
+#' @examples
+#' goalie_season_stats <- ns_goalie_season_statistics()
+#' @export
+
+ns_goalie_season_statistics <- function() {
+  nhl_api(
+    path = 'goalie_season_stats_incl_playoffs',
+    type = 'r'
+  )$data
+}
+
+#' @rdname ns_goalie_season_statistics
+#' @export
+ns_goalie_season_stats <- function() {
+  ns_goalie_season_statistics()
+}
+
+#' Get the regular season goalie statistics for all the seasons
+#' 
+#' `ns_goalie_season_regular_statistics()` retrieves information on ...
+#' 
+#' @return data.frame with one row per goalie per season
+#' @examples
+#' goalie_season_regular_stats <- ns_goalie_season_regular_statistics()
+#' @export
+
+ns_goalie_season_regular_statistics <- function() {
+  nhl_api(
+    path = 'goalie-season-stats',
+    type = 'r'
+  )$data
+}
+
+#' @rdname ns_goalie_season_regular_statistics
+#' @export
+ns_goalie_season_regular_stats <- function() {
+  ns_goalie_season_regular_statistics()
+}
+
+#' Get the career statistics for all the goalies
+#' 
+#' `ns_goalie_career_statistics()` retrieves information on ...
+#' 
+#' @return data.frame with one row per goalie
+#' @examples
+#' goalie_career_stats <- ns_goalie_career_statistics()
+#' @export
+
+ns_goalie_career_statistics <- function() {
+  nhl_api(
+    path = 'goalie_career_stats_incl_playoffs',
+    type = 'r'
+  )$data
+}
+
+#' @rdname ns_goalie_career_statistics
+#' @export
+ns_goalie_career_stats <- function() {
+  ns_goalie_career_statistics()
+}
+
+#' Get the career regular season statistics for all the goalies
+#' 
+#' `ns_goalie_career_regular_statistics()` retrieves information on ...
+#' 
+#' @return data.frame with one row per goalie
+#' @examples
+#' goalie_career_regular_statistics <- ns_goalie_career_regular_statistics()
+#' @export
+
+ns_goalie_career_regular_statistics <- function() {
+  nhl_api(
+    path = 'goalie-career-stats',
+    type = 'r'
+  )$data
+}
+
+#' @rdname ns_goalie_career_regular_statistics
+#' @export
+ns_goalie_career_regular_stats <- function() {
+  ns_goalie_career_regular_statistics()
+}
+
+#' Get the career scoring totals for all the goalies
+#' 
+#' `ns_goalie_career_scoring()` retrieves information on ...
+#' 
+#' @return data.frame with one row per goalie
+#' @examples
+#' goalie_career_scoring <- ns_goalie_career_scoring()
+#' @export
+
+ns_goalie_career_scoring <- function() {
+  nhl_api(
+    path = 'goalie-career-scoring',
+    type = 'r'
+  )$data
+}
+
+#' Get all the games in which at least one goalie got at least one point
+#' 
+#' `ns_goalie_scoring_games()` retrieves information on ...
+#' 
+#' @return data.frame with one row per goalie
+#' @examples
+#' goalie_scoring_games <- ns_goalie_scoring_games()
+#' @export
+
+ns_goalie_scoring_games <- function() {
+  nhl_api(
+    path = 'goalie-career-scoring',
+    type = 'r'
+  )$data
+}
+
+#' Get the statistics for all the goalies by playoff series
+#' 
+#' `ns_goalie_series_statistics()` retrieves information on ...
+#' 
+#' @return data.frame with one row per goalie per series
+#' @examples
+#' goalie_series_stats <- ns_goalie_series_statistics()
+#' @export
+
+ns_goalie_series_statistics <- function() {
+  nhl_api(
+    path = 'playoff-goalie-series-stats',
+    type = 'r'
+  )$data
+}
+
+#' @rdname ns_goalie_series_statistics
+#' @export
+ns_goalie_series_stats <- function() {
+  ns_goalie_series_statistics()
+}

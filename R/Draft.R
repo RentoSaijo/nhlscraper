@@ -45,38 +45,6 @@ ns_draft_picks <- function() {
   )$data
 }
 
-#' Get all the expansion drafts
-#' 
-#' `ns_expansion_drafts()` retrieves information on ...
-#' 
-#' @return data.frame with one row per pick
-#' @examples
-#' all_expansion_drafts <- ns_expansion_drafts()
-#' @export
-
-ns_expansion_drafts <- function() {
-  nhl_api(
-    path = 'expansion-draft-rules',
-    type = 'r'
-  )$data
-}
-
-#' Get all the expansion draft picks
-#' 
-#' `ns_expansion_draft_picks()` retrieves information on ...
-#' 
-#' @return data.frame with one row per pick
-#' @examples
-#' all_expansion_draft_picks <- ns_expansion_draft_picks()
-#' @export
-
-ns_expansion_draft_picks <- function() {
-  nhl_api(
-    path = 'expansion-draft-picks',
-    type = 'r'
-  )$data
-}
-
 #' Get all the draft prospects
 #' 
 #' `ns_draft_prospects()` retrieves information on ...
@@ -116,8 +84,8 @@ ns_draft_prospects <- function() {
 #' @export
 
 ns_draft_rankings <- function(
-  class    = ns_season() %% 1e4,
-  category = 1
+    class    = ns_season() %% 1e4,
+    category = 1
 ) {
   tryCatch(
     expr = {
@@ -152,6 +120,40 @@ ns_draft_rankings <- function(
   )
 }
 
+#' Get the draft combine reports
+#' 
+#' `ns_combine_reports()` retrieves information on ...
+#' 
+#' @return data.frame with one row per player
+#' @examples
+#' combine_reports <- ns_combine_reports()
+#' @export
+
+ns_combine_reports <- function() {
+  combine <- nhl_api(
+    path = 'combine',
+    type = 'r'
+  )$data
+  combine[order(combine$draftYear), ]
+}
+
+#' Get the draft lottery odds
+#' 
+#' `ns_lottery_odds()` retrieves information on ...
+#' 
+#' @return data.frame with one row per draft lottery
+#' @examples
+#' lottery_odds <- ns_lottery_odds()
+#' @export
+
+ns_lottery_odds <- function() {
+  lotteries <- nhl_api(
+    path = 'draft-lottery-odds',
+    type = 'r'
+  )$data
+  lotteries[order(lotteries$draftYear), ]
+}
+
 #' Get the real-time draft tracker
 #' 
 #' `ns_draft_tracker()` retrieves information on the latest draft, including 
@@ -168,4 +170,36 @@ ns_draft_tracker <- function() {
     path = 'v1/draft-tracker/picks/now',
     type = 'w'
   )$picks
+}
+
+#' Get all the expansion drafts
+#' 
+#' `ns_expansion_drafts()` retrieves information on ...
+#' 
+#' @return data.frame with one row per pick
+#' @examples
+#' all_expansion_drafts <- ns_expansion_drafts()
+#' @export
+
+ns_expansion_drafts <- function() {
+  nhl_api(
+    path = 'expansion-draft-rules',
+    type = 'r'
+  )$data
+}
+
+#' Get all the expansion draft picks
+#' 
+#' `ns_expansion_draft_picks()` retrieves information on ...
+#' 
+#' @return data.frame with one row per pick
+#' @examples
+#' all_expansion_draft_picks <- ns_expansion_draft_picks()
+#' @export
+
+ns_expansion_draft_picks <- function() {
+  nhl_api(
+    path = 'expansion-draft-picks',
+    type = 'r'
+  )$data
 }

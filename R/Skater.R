@@ -77,3 +77,114 @@ ns_skater_milestones <- function() {
     type = 's'
   )$data
 }
+
+#' Get the career statistics for all the skaters
+#' 
+#' `ns_skater_career_statistics()` retrieves information on ...
+#' 
+#' @return data.frame with one row per skater
+#' @examples
+#' skater_career_stats <- ns_skater_career_statistics()
+#' @export
+
+ns_skater_career_statistics <- function() {
+  nhl_api(
+    path = 'skater-career-scoring-regular-plus-playoffs',
+    type = 'r'
+  )$data
+}
+
+#' @rdname ns_skater_career_statistics
+#' @export
+ns_skater_career_stats <- function() {
+  ns_skater_career_statistics()
+}
+
+#' Get the career regular season statistics for all the skaters
+#' 
+#' `ns_skater_career_regular_statistics()` retrieves information on ...
+#' 
+#' @return data.frame with one row per skater
+#' @examples
+#' skater_career_regular_statistics <- ns_skater_career_regular_statistics()
+#' @export
+
+ns_skater_career_regular_statistics <- function() {
+  nhl_api(
+    path = 'skater-career-scoring-regular-season',
+    type = 'r'
+  )$data
+}
+
+#' @rdname ns_skater_career_regular_statistics
+#' @export
+ns_skater_career_regular_stats <- function() {
+  ns_skater_career_regular_statistics()
+}
+
+#' Get the career playoff statistics for all the skaters
+#' 
+#' `ns_skater_career_playoff_statistics()` retrieves information on ...
+#' 
+#' @return data.frame with one row per skater
+#' @examples
+#' skater_career_playoff_statistics <- ns_skater_career_playoff_statistics()
+#' @export
+
+ns_skater_career_playoff_statistics <- function() {
+  nhl_api(
+    path = 'skater-career-scoring-playoffs',
+    type = 'r'
+  )$data
+}
+
+#' @rdname ns_skater_career_playoff_statistics
+#' @export
+ns_skater_career_playoff_stats <- function() {
+  ns_skater_career_playoff_statistics()
+}
+
+#' Get the statistics for all the skaters by season, game type, and team
+#' 
+#' `ns_skater_season_statistics()` retrieves information on ...
+#' 
+#' @return data.frame with one row per skater per game type per season, 
+#' separated by team when necessary
+#' @examples
+#' skater_season_stats <- ns_skater_season_statistics()
+#' @export
+
+ns_skater_season_statistics <- function() {
+  nhl_api(
+    path = 'player-stats',
+    type = 'r'
+  )$data
+}
+
+#' @rdname ns_skater_season_statistics
+#' @export
+ns_skater_season_stats <- function() {
+  ns_skater_season_statistics()
+}
+
+#' Get the statistics for all the skaters by playoff series
+#' 
+#' `ns_skater_series_statistics()` retrieves information on ...
+#' 
+#' @return data.frame with one row per skater per series
+#' @examples
+#' skater_series_stats <- ns_skater_series_statistics()
+#' @export
+
+ns_skater_series_statistics <- function() {
+  nhl_api(
+    path = 'playoff-skater-series-stats',
+    type = 'r'
+  )$data
+}
+
+#' @rdname ns_skater_series_statistics
+#' @export
+ns_skater_series_stats <- function() {
+  ns_skater_series_statistics()
+}

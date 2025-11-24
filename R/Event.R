@@ -40,3 +40,26 @@ ns_goal_replay <- function(game, event) {
     flatten        = TRUE
   )
 }
+
+#' Get all the penalty shots
+#' 
+#' `ns_penalty_shots()` retrieves ...
+#' 
+#' @return data.frame with one row per team
+#' @examples
+#' all_ps <- ns_penalty_shots()
+#' @export
+
+ns_penalty_shots <- function() {
+  ps <- nhl_api(
+    path = 'penalty-shots',
+    type = 'r'
+  )$data
+  ps[order(ps$gameId), ]
+}
+
+#' @rdname ns_penalty_shots
+#' @export
+ns_ps <- function() {
+  ns_penalty_shots()
+}

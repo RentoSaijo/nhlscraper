@@ -293,3 +293,25 @@ ns_team_schedule_week <- function(team = 1, date = 'now') {
     }
   )
 }
+
+#' Get the statistics for all the teams by season and game type
+#' 
+#' `ns_team_season_statistics()` retrieves information on ...
+#' 
+#' @return data.frame with one row per team per game type per season
+#' @examples
+#' team_season_stats <- ns_team_season_statistics()
+#' @export
+
+ns_team_season_statistics <- function() {
+  nhl_api(
+    path = 'team-stats',
+    type = 'r'
+  )$data
+}
+
+#' @rdname ns_team_season_statistics
+#' @export
+ns_team_season_stats <- function() {
+  ns_team_season_statistics()
+}
