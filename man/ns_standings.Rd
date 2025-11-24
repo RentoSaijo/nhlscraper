@@ -13,7 +13,8 @@ ns_standings(date = "now")
 data.frame with one row per team
 }
 \description{
-\code{ns_standings()} returns the standings for a given \code{date}, including but not limited to each team's ID, record, and statistics. Use \code{\link[=ns_seasons]{ns_seasons()}} for \code{date} reference.
+\code{ns_standings()} returns the standings for a given \code{date}. Use
+\code{\link[=ns_seasons]{ns_seasons()}} for \code{date} reference.
 }
 \examples{
 standings_Halloween_2025 <- ns_standings(date = '2025-10-31')

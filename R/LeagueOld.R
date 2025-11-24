@@ -94,3 +94,21 @@ get_schedule <- function(date = '2025-01-01') {
   )
   ns_schedule(date)
 }
+
+#' Get the attendance by season and game type
+#' 
+#' `get_attendance()` is deprecated. Use [ns_attendance()] instead.
+#' 
+#' @export
+
+get_attendance <- function() {
+  .Deprecated(
+    new     = 'ns_attendance()',
+    package = 'nhlscraper',
+    msg     = paste(
+      '`get_attendance()` is deprecated.',
+      'Use `ns_attendance()` instead.'
+    )
+  )
+  ns_attendance()
+}
