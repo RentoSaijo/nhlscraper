@@ -28,7 +28,7 @@ ns_franchises <- function() {
 #' 
 #' @return data.frame with one row per franchise per game type
 #' @examples
-#' franchise_statistics <- ns_franchise_statistics()
+#' franchise_stats <- ns_franchise_statistics()
 #' @export
 
 ns_franchise_statistics <- function() {
@@ -50,7 +50,7 @@ ns_franchise_stats <- function() {
 #' 
 #' @return data.frame with one row per team per franchise per game type
 #' @examples
-#' franchise_team_statistics <- ns_franchise_team_statistics()
+#' franchise_team_stats <- ns_franchise_team_statistics()
 #' @export
 
 ns_franchise_team_statistics <- function() {
@@ -72,7 +72,8 @@ ns_franchise_team_stats <- function() {
 #' 
 #' @return data.frame with one row per franchise per game type per season
 #' @examples
-#' franchise_season_statistics <- ns_franchise_season_statistics()
+#' #' # This may take >5s, so skip.
+#' \donttest{franchise_season_stats <- ns_franchise_season_statistics()}
 #' @export
 
 ns_franchise_season_statistics <- function() {
@@ -94,7 +95,8 @@ ns_franchise_season_stats <- function() {
 #' 
 #' @return data.frame with one row per franchise per franchise
 #' @examples
-#' franchise_vs_franchise <- ns_franchise_versus_franchise()
+#' #' # This may take >5s, so skip.
+#' \donttest{franchise_vs_franchise <- ns_franchise_versus_franchise()}
 #' @export
 
 ns_franchise_versus_franchise <- function() {
