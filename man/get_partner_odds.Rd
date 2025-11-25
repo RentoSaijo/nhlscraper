@@ -2,10 +2,17 @@
 % Please edit documentation in R/OtherOld.R
 \name{get_partner_odds}
 \alias{get_partner_odds}
-\title{Get partner odds as of now}
+\title{Get the real-time game odds for a country by partnered bookmaker}
 \usage{
 get_partner_odds(country = "US")
 }
+\arguments{
+\item{country}{two-letter code (e.g., 'CA'); see \code{\link[=ns_countries]{ns_countries()}} for
+reference}
+}
+\value{
+data.frame with one row per game
+}
 \description{
-\code{get_partner_odds()} is deprecated. Use \code{\link[=ns_partner_odds]{ns_partner_odds()}} instead.
+\code{get_partner_odds()} is deprecated. Use \code{\link[=ns_game_partner_odds]{ns_game_partner_odds()}} instead.
 }

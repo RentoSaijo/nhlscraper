@@ -54,6 +54,7 @@ reference:
       - ns_standings_rules
       - ns_standings
       - ns_schedule
+      - ns_venues
       - ns_attendance
 
   - subtitle: "Franchise"
@@ -86,6 +87,7 @@ reference:
       - ns_team_season_schedule
       - ns_team_month_schedule
       - ns_team_week_schedule
+      - ns_team_logos
       - ns_team_edge_seasons
       - ns_team_edge_leaders
       - ns_team_edge_summary
@@ -177,6 +179,13 @@ reference:
       - ns_expansion_drafts
       - ns_expansion_draft_picks
       
+  - subtitle: "Manager"
+    desc: >
+      Functions to access data about the general managers
+    contents:
+      - ns_general_managers
+      - ns_gms
+      
   - subtitle: "Coach"
     desc: >
       Functions to access data about the coaches
@@ -187,26 +196,24 @@ reference:
       - ns_coach_franchise_statistics
       - ns_coach_franchise_stats
       
-  - subtitle: "Manager"
+  - subtitle: "Official"
     desc: >
-      Functions to access data about the general managers
+      Functions to access data about the officials
     contents:
-      - get_drafts
+      - ns_officials
 
   - subtitle: "Other"
     desc: >
       Functions to acccess any other data
     contents:
-      - ping
-      - get_glossary
-      - get_configuration
-      - get_countries
-      - get_venues
-      - get_attendance
-      - get_officials
-      - get_streams
-      - get_tv_schedule
-      - get_partner_odds
+      - ns_glossary
+      - ns_statistics_report_configuration
+      - ns_stats_report_config
+      - ns_countries
+      - ns_location
+      - ns_streams
+      - ns_tv_schedule
+      - ns_game_partner_odds
 
   - subtitle: "Deprecated"
     desc: >
@@ -247,6 +254,13 @@ reference:
       - get_draft_picks
       - get_draft_rankings
       - get_draft_tracker
+      - get_officials
+      - get_glossary
+      - get_configuration
+      - get_countries
+      - get_streams
+      - get_tv_schedule
+      - get_partner_odds
 
   - subtitle: "Defunct"
     desc: >
@@ -255,7 +269,10 @@ reference:
       - get_season_now
       - get_team_statistics
       - get_team_scoreboard
+      - get_skater_statistics
+      - get_goalie_statistics
       - get_series
+      - ping
 
   - title: "ESPN API"
     desc: >

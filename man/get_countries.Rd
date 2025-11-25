@@ -2,9 +2,12 @@
 % Please edit documentation in R/OtherOld.R
 \name{get_countries}
 \alias{get_countries}
-\title{Get all the countries}
+\title{Access all the countries}
 \usage{
 get_countries()
+}
+\value{
+data.frame with one row per country
 }
 \description{
 \code{get_countries()} is deprecated. Use \code{\link[=ns_countries]{ns_countries()}} instead.

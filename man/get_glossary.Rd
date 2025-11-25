@@ -2,9 +2,12 @@
 % Please edit documentation in R/OtherOld.R
 \name{get_glossary}
 \alias{get_glossary}
-\title{Get the glossary}
+\title{Access the glossary}
 \usage{
 get_glossary()
+}
+\value{
+data.frame with one row per terminology
 }
 \description{
 \code{get_glossary()} is deprecated. Use \code{\link[=ns_glossary]{ns_glossary()}} instead.

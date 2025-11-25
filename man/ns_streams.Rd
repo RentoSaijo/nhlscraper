@@ -2,7 +2,7 @@
 % Please edit documentation in R/Other.R
 \name{ns_streams}
 \alias{ns_streams}
-\title{Get all the streams}
+\title{Access all the streams}
 \usage{
 ns_streams()
 }
@@ -10,8 +10,7 @@ ns_streams()
 data.frame with one row per stream
 }
 \description{
-\code{ns_streams()} retrieves information on each stream, including but not
-limited to their ID, name, and URL.
+\code{ns_streams()} scrapes information on all the streams.
 }
 \examples{
 all_streams <- ns_streams()

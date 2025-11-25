@@ -1,7 +1,6 @@
-#' Get the glossary
+#' Access the glossary
 #' 
-#' `ns_glossary()` retrieves information on each terminology, including but not 
-#' limited to their definition and abbreviation.
+#' `ns_glossary()` scrapes the glossary.
 #' 
 #' @returns data.frame with one row per terminology
 #' @examples
@@ -15,84 +14,34 @@ ns_glossary <- function() {
   )$data
 }
 
-#' Get the configuration for skater, goalie, and team statistics
+#' Access the configurations for skater, goalie, and team statistics reports
 #' 
-#' `ns_statistics_configuration()` retrieves information on the outputs of the 
-#' possible combinations of inputs for `get_team_statistics()`, 
-#' `get_skater_statistics()`, and `get_goalie_statistics()`.
+#' `ns_statistics_report_configuration()` scrapes the configurations for 
+#' [ns_team_season_report()], [ns_team_game_report()], 
+#' [ns_skater_season_report()], [ns_skater_game_report()], 
+#' [ns_goalie_season_report()], and [ns_goalie_game_report()].
 #' 
 #' @returns list with 5 items
 #' @examples
-#' stats_config <- ns_statistics_configuration()
+#' stats_report_config <- ns_statistics_report_configuration()
 #' @export
 
-ns_statistics_configuration <- function() {
+ns_statistics_report_configuration <- function() {
   nhl_api(
     path = 'en/config',
     type = 's'
   )
 }
 
-#' @rdname ns_statistics_configuration
+#' @rdname ns_statistics_report_configuration
 #' @export
-ns_stats_config <- function() {
-  ns_statistics_configuration()
+ns_stats_report_config <- function() {
+  ns_statistics_report_configuration()
 }
 
-#' Get all the logos
+#' Access all the countries
 #' 
-#' `ns_logos()` ...
-#' 
-#' @returns data.frame with one row per venue
-#' @examples
-#' all_logos <- ns_logos()
-#' @export
-
-ns_logos <- function() {
-  nhl_api(
-    path = 'logo',
-    type = 'r'
-  )$data
-}
-
-#' Get all the officials
-#' 
-#' `ns_officials()` retrieves information on each official, including but not 
-#' limited to their ID, name, and birth date and location.
-#' 
-#' @returns data.frame with one row per official
-#' @examples
-#' all_officials <- ns_officials()
-#' @export
-
-ns_officials <- function() {
-  nhl_api(
-    path = 'officials',
-    type = 'r'
-  )$data
-}
-
-#' Get all the venues
-#' 
-#' `ns_venues()` retrieves information on each venue, including but not limited 
-#' to their ID, name, and location.
-#' 
-#' @returns data.frame with one row per venue
-#' @examples
-#' all_venues <- ns_venues()
-#' @export
-
-ns_venues <- function() {
-  nhl_api(
-    path = 'venue',
-    type = 'r'
-  )$data
-}
-
-#' Get all the countries
-#' 
-#' `ns_countries` retrieves information on each country, including but not 
-#' limited to their ID, name, 2-letter code, and 3-letter code.
+#' `ns_countries` scrapes information on all the countries.
 #' 
 #' @returns data.frame with one row per country
 #' @examples
@@ -106,17 +55,17 @@ ns_countries <- function() {
   )$data
 }
 
-#' Get the location of a zip code
+#' Access the location for a zip code
 #' 
-#' `ns_location()` retrieves ...
+#' `ns_location()` scrapes the location for a given `zip` code.
 #' 
-#' @param zip integer (e.g., 80204)
+#' @param zip integer (e.g., 48304)
 #' @returns data.frame with one row per team
 #' @examples
 #' Cranbrook_Schools <- ns_location(48304)
 #' @export
 
-ns_location <- function(zip = 80204) {
+ns_location <- function(zip = 10001) {
   tryCatch(
     expr = {
       nhl_api(
@@ -131,10 +80,9 @@ ns_location <- function(zip = 80204) {
   )
 }
 
-#' Get all the streams
+#' Access all the streams
 #' 
-#' `ns_streams()` retrieves information on each stream, including but not 
-#' limited to their ID, name, and URL.
+#' `ns_streams()` scrapes information on all the streams.
 #' 
 #' @returns data.frame with one row per stream
 #' @examples
@@ -148,13 +96,11 @@ ns_streams <- function() {
   )
 }
 
-#' Get the TV schedule of the NHL Network for a date
+#' Access the NHL Network TV schedule for a date
 #' 
-#' `ns_tv_schedule()` retrieves information on each TV program for a given 
-#' `date`, including but not limited to their title, description, start and end 
-#' times, and broadcast status. Access `get_seasons()` for `date` reference.
+#' `ns_tv_schedule()` scrapes the NHL Network TV schedule for a given `date`
 #' 
-#' @param date character in 'YYYY-MM-DD' (e.g., '2025-01-01')
+#' @inheritParams ns_standings
 #' @returns data.frame with one row per program
 #' @examples
 #' tv_schedule_Halloween_2025 <- ns_tv_schedule(date = '2025-10-31')
@@ -175,19 +121,19 @@ ns_tv_schedule <- function(date = 'now') {
   )
 }
 
-#' Get the real-time game odds by partnered bookmakers
+#' Get the real-time game odds for a country by partnered bookmaker
 #' 
-#' `ns_partner_odds()` retrieves partner-provided information on each game for 
-#' a given `country`, including but not limited to their ID and home and away 
-#' team odds. Access `get_countries()` for `country` reference.
+#' `ns_game_partner_odds()` scrapes the real-time game odds for a given 
+#' `country` by partnered bookmaker.
 #' 
-#' @param country two-letter code
+#' @param country two-letter code (e.g., 'CA'); see [ns_countries()] for 
+#' reference
 #' @returns data.frame with one row per game
 #' @examples
-#' partner_odds_CA <- ns_partner_odds(country = 'CA')
+#' game_partner_odds_CA <- ns_game_partner_odds(country = 'CA')
 #' @export
 
-ns_partner_odds <- function(country = 'US') {
+ns_game_partner_odds <- function(country = 'US') {
   tryCatch(
     expr = {
       nhl_api(

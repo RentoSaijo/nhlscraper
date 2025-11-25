@@ -2,7 +2,7 @@
 % Please edit documentation in R/Other.R
 \name{ns_countries}
 \alias{ns_countries}
-\title{Get all the countries}
+\title{Access all the countries}
 \usage{
 ns_countries()
 }
@@ -10,8 +10,7 @@ ns_countries()
 data.frame with one row per country
 }
 \description{
-\code{ns_countries} retrieves information on each country, including but not
-limited to their ID, name, 2-letter code, and 3-letter code.
+\code{ns_countries} scrapes information on all the countries.
 }
 \examples{
 all_countries <- ns_countries()

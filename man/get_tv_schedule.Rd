@@ -2,9 +2,16 @@
 % Please edit documentation in R/OtherOld.R
 \name{get_tv_schedule}
 \alias{get_tv_schedule}
-\title{Get the TV schedule of the NHL Network for a date}
+\title{Access the NHL Network TV schedule for a date}
 \usage{
 get_tv_schedule(date = "now")
+}
+\arguments{
+\item{date}{character in 'YYYY-MM-DD' (e.g., '2025-01-01'); see
+\code{\link[=ns_seasons]{ns_seasons()}} for reference}
+}
+\value{
+data.frame with one row per program
 }
 \description{
 \code{get_tv_schedule()} is deprecated. Use \code{\link[=ns_tv_schedule]{ns_tv_schedule()}} instead.

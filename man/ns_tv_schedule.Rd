@@ -2,20 +2,19 @@
 % Please edit documentation in R/Other.R
 \name{ns_tv_schedule}
 \alias{ns_tv_schedule}
-\title{Get the TV schedule of the NHL Network for a date}
+\title{Access the NHL Network TV schedule for a date}
 \usage{
 ns_tv_schedule(date = "now")
 }
 \arguments{
-\item{date}{character in 'YYYY-MM-DD' (e.g., '2025-01-01')}
+\item{date}{character in 'YYYY-MM-DD' (e.g., '2025-01-01'); see
+\code{\link[=ns_seasons]{ns_seasons()}} for reference}
 }
 \value{
 data.frame with one row per program
 }
 \description{
-\code{ns_tv_schedule()} retrieves information on each TV program for a given
-\code{date}, including but not limited to their title, description, start and end
-times, and broadcast status. Access \code{get_seasons()} for \code{date} reference.
+\code{ns_tv_schedule()} scrapes the NHL Network TV schedule for a given \code{date}
 }
 \examples{
 tv_schedule_Halloween_2025 <- ns_tv_schedule(date = '2025-10-31')

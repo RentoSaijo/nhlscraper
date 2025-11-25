@@ -1,21 +1,8 @@
-#' Ping
-#' 
-#' `ping()` is defunct.
-#' 
-#' @export
-
-ping <- function() {
-  .Defunct(
-    msg = paste(
-      '`get_teams()` is defunct.'
-    )
-  )
-}
-
-#' Get the glossary
+#' Access the glossary
 #' 
 #' `get_glossary()` is deprecated. Use [ns_glossary()] instead.
 #' 
+#' @returns data.frame with one row per terminology
 #' @export
 
 get_glossary <- function() {
@@ -23,35 +10,38 @@ get_glossary <- function() {
     new     = 'ns_glossary()',
     package = 'nhlscraper',
     msg     = paste(
-      '`get_teams()` is deprecated.',
+      '`get_glossary()` is deprecated.',
       'Use `ns_glossary()` instead.'
     )
   )
   ns_glossary()
 }
 
-#' Get the configuration for skater, goalie, and team statistics
+#' Access the configurations for skater, goalie, and team statistics reports
 #' 
-#' `get_configuration()` is deprecated. Use [ns_statistics_configuration()] instead.
+#' `get_configuration()` is deprecated. Use 
+#' [ns_statistics_report_configuration()] instead.
 #' 
+#' @returns list with 5 items
 #' @export
 
 get_configuration <- function() {
   .Deprecated(
-    new     = 'ns_statistics_configuration()',
+    new     = 'ns_statistics_report_configuration()',
     package = 'nhlscraper',
     msg     = paste(
       '`get_configuration()` is deprecated.',
-      'Use `ns_statistics_configuration()` instead.'
+      'Use `ns_statistics_report_configuration()` instead.'
     )
   )
-  ns_statistics_configuration()
+  ns_statistics_report_configuration()
 }
 
-#' Get all the countries
+#' Access all the countries
 #' 
 #' `get_countries()` is deprecated. Use [ns_countries()] instead.
 #' 
+#' @returns data.frame with one row per country
 #' @export
 
 get_countries <- function() {
@@ -66,46 +56,11 @@ get_countries <- function() {
   ns_countries()
 }
 
-#' Get all the venues
-#' 
-#' `get_venues()` is deprecated. Use [ns_venues()] instead.
-#' 
-#' @export
-
-get_venues <- function() {
-  .Deprecated(
-    new     = 'ns_venues()',
-    package = 'nhlscraper',
-    msg     = paste(
-      '`get_venues()` is deprecated.',
-      'Use `ns_venues()` instead.'
-    )
-  )
-  ns_venues()
-}
-
-#' Get all the officials
-#' 
-#' `get_officials()` is deprecated. Use [ns_officials()] instead.
-#' 
-#' @export
-
-get_officials <- function() {
-  .Deprecated(
-    new     = 'ns_officials()',
-    package = 'nhlscraper',
-    msg     = paste(
-      '`get_officials()` is deprecated.',
-      'Use `ns_officials()` instead.'
-    )
-  )
-  ns_officials()
-}
-
-#' Get all the streams
+#' Access all the streams
 #' 
 #' `get_streams()` is deprecated. Use [ns_streams()] instead.
 #' 
+#' @returns data.frame with one row per stream
 #' @export
 
 get_streams <- function() {
@@ -120,10 +75,12 @@ get_streams <- function() {
   ns_streams()
 }
 
-#' Get the TV schedule of the NHL Network for a date
+#' Access the NHL Network TV schedule for a date
 #' 
 #' `get_tv_schedule()` is deprecated. Use [ns_tv_schedule()] instead.
 #' 
+#' @inheritParams ns_standings
+#' @returns data.frame with one row per program
 #' @export
 
 get_tv_schedule <- function(date = 'now') {
@@ -138,20 +95,36 @@ get_tv_schedule <- function(date = 'now') {
   ns_tv_schedule(date)
 }
 
-#' Get partner odds as of now
+#' Get the real-time game odds for a country by partnered bookmaker
 #' 
-#' `get_partner_odds()` is deprecated. Use [ns_partner_odds()] instead.
+#' `get_partner_odds()` is deprecated. Use [ns_game_partner_odds()] instead.
 #' 
+#' @inheritParams ns_game_partner_odds
+#' @returns data.frame with one row per game
 #' @export
 
 get_partner_odds <- function(country = 'US') {
   .Deprecated(
-    new     = 'ns_partner_odds()',
+    new     = 'ns_game_partner_odds()',
     package = 'nhlscraper',
     msg     = paste(
       '`get_partner_odds()` is deprecated.',
-      'Use `ns_partner_odds()` instead.'
+      'Use `ns_game_partner_odds()` instead.'
     )
   )
-  ns_partner_odds(country)
+  ns_game_partner_odds(country)
+}
+
+#' Ping
+#' 
+#' `ping()` is defunct.
+#' 
+#' @export
+
+ping <- function() {
+  .Defunct(
+    msg = paste(
+      '`get_teams()` is defunct.'
+    )
+  )
 }

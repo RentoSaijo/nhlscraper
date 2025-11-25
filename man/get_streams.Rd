@@ -2,9 +2,12 @@
 % Please edit documentation in R/OtherOld.R
 \name{get_streams}
 \alias{get_streams}
-\title{Get all the streams}
+\title{Access all the streams}
 \usage{
 get_streams()
+}
+\value{
+data.frame with one row per stream
 }
 \description{
 \code{get_streams()} is deprecated. Use \code{\link[=ns_streams]{ns_streams()}} instead.

@@ -2,18 +2,18 @@
 % Please edit documentation in R/Other.R
 \name{ns_location}
 \alias{ns_location}
-\title{Get the location of a zip code}
+\title{Access the location for a zip code}
 \usage{
-ns_location(zip = 80204)
+ns_location(zip = 10001)
 }
 \arguments{
-\item{zip}{integer (e.g., 80204)}
+\item{zip}{integer (e.g., 48304)}
 }
 \value{
 data.frame with one row per team
 }
 \description{
-\code{ns_location()} retrieves ...
+\code{ns_location()} scrapes the location for a given \code{zip} code.
 }
 \examples{
 Cranbrook_Schools <- ns_location(48304)

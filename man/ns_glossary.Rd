@@ -2,7 +2,7 @@
 % Please edit documentation in R/Other.R
 \name{ns_glossary}
 \alias{ns_glossary}
-\title{Get the glossary}
+\title{Access the glossary}
 \usage{
 ns_glossary()
 }
@@ -10,8 +10,7 @@ ns_glossary()
 data.frame with one row per terminology
 }
 \description{
-\code{ns_glossary()} retrieves information on each terminology, including but not
-limited to their definition and abbreviation.
+\code{ns_glossary()} scrapes the glossary.
 }
 \examples{
 glossary <- ns_glossary()
