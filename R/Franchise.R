@@ -133,3 +133,24 @@ ns_franchise_versus_franchise <- function() {
 ns_franchise_vs_franchise <- function() {
   ns_franchise_versus_franchise()
 }
+
+#' Access the playoff series results for all the franchises by situation
+#' 
+#' `ns_franchise_playoff_situational_results()` scrapes the playoff series 
+#' results for all the franchises by situation
+#'
+#' @returns data.frame with one row per franchise per situation
+#' @examples
+#' franchise_playoff_situational_results <- 
+#'   ns_franchise_playoff_situational_results()
+#' @export
+
+ns_franchise_playoff_situational_results <- function() {
+  results    <- nhl_api(
+    path = 'series-situational-records',
+    type = 'r'
+  )$data
+  results$id <- NULL
+  results    <- results[order(results$seriesSituation), ]
+  results[order(results$franchiseId), ]
+}
