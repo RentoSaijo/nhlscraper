@@ -4,7 +4,7 @@
 #'
 #' @export
 
-get_goalies <- function(start_season = 19171918, end_season = 20242025) {
+get_goalies <- function() {
   .Defunct(
     new     = 'ns_players()',
     package = 'nhlscraper',
@@ -21,15 +21,7 @@ get_goalies <- function(start_season = 19171918, end_season = 20242025) {
 #'
 #' @export
 
-get_goalie_statistics <- function(
-    season       = 20242025,
-    teams        = 1:100,
-    game_types   = 1:3,
-    dates        = c('2025-01-01'),
-    report       = 'summary',
-    is_aggregate = FALSE,
-    is_game      = FALSE
-) {
+get_goalie_statistics <- function() {
   .Defunct(
     new     = 'ns_goalie_statistics()',
     package = 'nhlscraper',

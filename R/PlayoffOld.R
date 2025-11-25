@@ -44,7 +44,7 @@ get_series_schedule <- function(season = ns_season(), series = 'a') {
 #' 
 #' @export
 
-get_series <- function(season = ns_season(), round = 1) {
+get_series <- function() {
   .Defunct(
     msg = paste(
       '`get_series()` is defunct.'

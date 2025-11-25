@@ -141,14 +141,7 @@ get_team_schedule <- function(team = 'NJD', season = 'now') {
 #' 
 #' @export
 
-get_team_statistics <- function(
-  season       = 20242025,
-  report       = 'summary',
-  is_aggregate = FALSE,
-  is_game      = FALSE,
-  dates        = c('2025-01-01'),
-  game_types   = 1:3
-) {
+get_team_statistics <- function() {
   .Defunct(
     new     = 'ns_team_season_report()',
     package = 'nhlscraper',
@@ -165,7 +158,7 @@ get_team_statistics <- function(
 #' 
 #' @export
 
-get_team_scoreboard <- function(team = 'NJD') {
+get_team_scoreboard <- function() {
   .Defunct(
     msg = paste(
       '`get_team_scoreboard()` is defunct.'
