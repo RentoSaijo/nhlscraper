@@ -97,7 +97,7 @@ get_game_story <- function(game = 2023030417) {
   ns_wsc_summary(game)
 }
 
-#' Access the boxscore for a game, team, and position
+#' Access the boxscore for a game, team, and player type
 #' 
 #' `get_game_boxscore()` is deprecated. Use [ns_boxscore()] instead.
 #'

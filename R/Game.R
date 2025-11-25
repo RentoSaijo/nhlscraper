@@ -114,9 +114,9 @@ ns_wsc_summary <- function(game = 2023030417) {
 #' @export
 
 ns_boxscore <- function(
-    game     = 2023030417,
-    team     = 'home',
-    position = 'forwards'
+  game     = 2023030417,
+  team     = 'home',
+  position = 'forwards'
 ) {
   tryCatch(
     expr = {

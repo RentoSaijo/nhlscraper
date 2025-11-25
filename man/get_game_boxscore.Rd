@@ -2,7 +2,7 @@
 % Please edit documentation in R/GameOld.R
 \name{get_game_boxscore}
 \alias{get_game_boxscore}
-\title{Access the boxscore for a game, team, and position}
+\title{Access the boxscore for a game, team, and player type}
 \usage{
 get_game_boxscore(game = 2023030417, team = "home", player_type = "forwards")
 }
