@@ -316,7 +316,7 @@ team_week_schedule <- function(team = 1, date = 'now') {
 
 #' Access all the team logos
 #' 
-#' `team_logos()` scrapes all the logos.
+#' `team_logos()` scrapes all the team logos.
 #' 
 #' @returns data.frame with one row per logo
 #' @examples
