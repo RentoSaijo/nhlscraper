@@ -1,7 +1,8 @@
-#' Get all awards
+#' Access all the awards
 #' 
 #' `get_awards()` is deprecated. Use [ns_awards()] instead.
 #' 
+#' @returns data.frame with one row per award
 #' @export
 
 get_awards <- function() {
@@ -16,10 +17,11 @@ get_awards <- function() {
   ns_awards()
 }
 
-#' Get all award winners/finalists
+#' Access all the award winners/finalists
 #' 
 #' `get_award_winners()` is deprecated. Use [ns_award_winners()] instead.
 #' 
+#' @returns data.frame with one row per winner/finalist
 #' @export
 
 get_award_winners <- function() {

@@ -2,9 +2,12 @@
 % Please edit documentation in R/AwardOld.R
 \name{get_award_winners}
 \alias{get_award_winners}
-\title{Get all award winners/finalists}
+\title{Access all the award winners/finalists}
 \usage{
 get_award_winners()
+}
+\value{
+data.frame with one row per winner/finalist
 }
 \description{
 \code{get_award_winners()} is deprecated. Use \code{\link[=ns_award_winners]{ns_award_winners()}} instead.

@@ -2,9 +2,12 @@
 % Please edit documentation in R/AwardOld.R
 \name{get_awards}
 \alias{get_awards}
-\title{Get all awards}
+\title{Access all the awards}
 \usage{
 get_awards()
+}
+\value{
+data.frame with one row per award
 }
 \description{
 \code{get_awards()} is deprecated. Use \code{\link[=ns_awards]{ns_awards()}} instead.

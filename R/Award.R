@@ -1,7 +1,6 @@
-#' Get all the awards
+#' Access all the awards
 #' 
-#' `ns_awards()` retrieves information on each award, including but not 
-#' limited to their trophy ID, name, description, creation date, and image URL.
+#' `ns_awards()` scrapes information on all the awards.
 #' 
 #' @returns data.frame with one row per award
 #' @examples
@@ -15,11 +14,9 @@ ns_awards <- function() {
   )$data
 }
 
-#' Get all the award winners/finalists
+#' Access all the award winners/finalists
 #' 
-#' `ns_award_winners()` retrieves information on each award winner or 
-#' finalist, including but not limited to their player, trophy, and season IDs; 
-#' name; and vote count. 
+#' `ns_award_winners()` scrapes information on all the award winners/finalists.
 #' 
 #' @returns data.frame with one row per winner/finalist
 #' @examples
@@ -27,8 +24,12 @@ ns_awards <- function() {
 #' @export
 
 ns_award_winners <- function() {
-  nhl_api(
+  winners    <- nhl_api(
     path = 'award-details',
     type = 'r'
   )$data
+  winners$id <- NULL
+  winners    <- winners[order(winners$status), ]
+  winners    <- winners[order(winners$seasonId), ]
+  winners[order(winners$trophyId), ]
 }

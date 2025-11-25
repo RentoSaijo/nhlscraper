@@ -2,7 +2,7 @@
 % Please edit documentation in R/Award.R
 \name{ns_award_winners}
 \alias{ns_award_winners}
-\title{Get all the award winners/finalists}
+\title{Access all the award winners/finalists}
 \usage{
 ns_award_winners()
 }
@@ -10,9 +10,7 @@ ns_award_winners()
 data.frame with one row per winner/finalist
 }
 \description{
-\code{ns_award_winners()} retrieves information on each award winner or
-finalist, including but not limited to their player, trophy, and season IDs;
-name; and vote count.
+\code{ns_award_winners()} scrapes information on all the award winners/finalists.
 }
 \examples{
 all_award_winners <- ns_award_winners()

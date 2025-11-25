@@ -2,7 +2,7 @@
 % Please edit documentation in R/Award.R
 \name{ns_awards}
 \alias{ns_awards}
-\title{Get all the awards}
+\title{Access all the awards}
 \usage{
 ns_awards()
 }
@@ -10,8 +10,7 @@ ns_awards()
 data.frame with one row per award
 }
 \description{
-\code{ns_awards()} retrieves information on each award, including but not
-limited to their trophy ID, name, description, creation date, and image URL.
+\code{ns_awards()} scrapes information on all the awards.
 }
 \examples{
 all_awards <- ns_awards()
