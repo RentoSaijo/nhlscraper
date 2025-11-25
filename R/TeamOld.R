@@ -1,8 +1,8 @@
-#' Get all the teams
+#' Access all the teams
 #' 
 #' `get_teams()` is deprecated. Use [ns_teams()] instead.
 #' 
-#' @return data.frame with one row per team
+#' @returns data.frame with one row per team
 #' @export
 
 get_teams <- function() {
@@ -17,12 +17,12 @@ get_teams <- function() {
   ns_teams()
 }
 
-#' Get the season(s) and game type(s) in which a team played
+#' Access the season(s) and game type(s) in which a team played
 #' 
 #' `get_team_seasons()` is deprecated. Use [ns_team_seasons()] instead.
 #' 
-#' @param team three-letter code (e.g., 'COL')
-#' @return data.frame with one row per season
+#' @param team three-letter code (e.g., 'COL'); see [ns_teams()] for reference
+#' @returns data.frame with one row per season
 #' @export
 
 get_team_seasons <- function(team = 'NJD') {
@@ -37,14 +37,15 @@ get_team_seasons <- function(team = 'NJD') {
   ns_team_seasons(team)
 }
 
-#' Get the roster for a team, season, and player type
+#' Access the roster for a team, season, and player type
 #' 
 #' `get_team_roster()` is deprecated. Use [ns_roster()] instead.
 #' 
-#' @param team three-letter code (e.g., 'COL')
-#' @param season integer in YYYYYYYY (e.g., 20242025)
+#' @inheritParams get_team_seasons
+#' @param season integer in YYYYYYYY (e.g., 20242025); see [ns_seasons()] for 
+#' reference
 #' @param player_type character of 'forwards', 'defensemen', or 'goalies'
-#' @return data.frame with one row per player
+#' @returns data.frame with one row per player
 #' @export
 
 get_team_roster <- function(
@@ -63,17 +64,17 @@ get_team_roster <- function(
   ns_roster(team, season, player_type)
 }
 
-#' Get the roster statistics for a team, season, game type, and player type
+#' Access the roster statistics for a team, season, game type, and player type
 #' 
 #' `get_team_roster_statistics()` is deprecated. Use [ns_roster_statistics()] 
 #' instead.
 #' 
-#' @param team three-letter code (e.g., 'COL')
-#' @param season integer in YYYYYYYY (e.g., 20242025)
+#' @inheritParams get_team_roster
 #' @param game_type integer in 1:3 (where 1 = pre-season, 2 = regular season, 3 
-#' = playoff/post-season) OR character of 'pre', 'regular', or 'playoff'/'post'
+#' = playoff/post-season) OR character of 'pre', 'regular', or 
+#' playoff'/'post'; see [ns_seasons()] for reference
 #' @param player_type character of 'skaters' or 'goalies'
-#' @return data.frame with one row per player
+#' @returns data.frame with one row per player
 #' @export
 
 get_team_roster_statistics <- function(
@@ -93,13 +94,12 @@ get_team_roster_statistics <- function(
   ns_roster_statistics(team, season, game_type, player_type)
 }
 
-#' Get the prospects for a team and player type
+#' Access the prospects for a team and position
 #' 
 #' `get_team_prospects()` is deprecated. Use [ns_team_prospects()] instead.
 #' 
-#' @param team three-letter code (e.g., 'COL')
-#' @param player_type character of 'forwards', 'defensemen', or 'goalies'
-#' @return data.frame with one row per player
+#' @inheritParams get_team_roster
+#' @returns data.frame with one row per player
 #' @export
 
 get_team_prospects <- function(team = 'NJD', player_type = 'forwards') {
@@ -114,13 +114,12 @@ get_team_prospects <- function(team = 'NJD', player_type = 'forwards') {
   ns_team_prospects(team, player_type)
 }
 
-#' Get the schedule for a team and season
+#' Access the schedule for a team and season
 #' 
 #' `get_team_schedule()` is deprecated. Use [ns_team_season_schedule()] instead.
 #' 
-#' @param team three-letter code (e.g., 'COL')
-#' @param season integer in YYYYYYYY (e.g., 20242025)
-#' @return data.frame with one row per game
+#' @inheritParams get_team_roster
+#' @returns data.frame with one row per game
 #' @export
 
 get_team_schedule <- function(team = 'NJD', season = 'now') {
@@ -135,7 +134,7 @@ get_team_schedule <- function(team = 'NJD', season = 'now') {
   ns_team_season_schedule(team, season)
 }
 
-#' Get various reports for all the teams by season or game
+#' Access various reports for all the teams by season or game
 #' 
 #' `get_team_statistics()` is defunct. Use [ns_team_season_report()] or 
 #' [ns_team_game_report()] instead.
@@ -160,7 +159,7 @@ get_team_statistics <- function(
   )
 }
 
-#' Get team scoreboard as of now
+#' Access the team scoreboard as of now
 #' 
 #' `get_team_scoreboard()` is defunct.
 #' 

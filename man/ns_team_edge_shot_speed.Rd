@@ -2,8 +2,8 @@
 % Please edit documentation in R/TeamEDGE.R
 \name{ns_team_edge_shot_speed}
 \alias{ns_team_edge_shot_speed}
-\title{Get the EDGE shot speed statistics for a team, season, game type, and report
-type}
+\title{Access the EDGE shot speed statistics for a team, season, game type, and
+report type}
 \usage{
 ns_team_edge_shot_speed(
   team = 1,
@@ -14,12 +14,15 @@ ns_team_edge_shot_speed(
 }
 \arguments{
 \item{team}{integer ID (e.g., 21), character full name (e.g., 'Colorado
-Avalanche'), OR three-letter code (e.g., 'COL')}
+Avalanche'), OR three-letter code (e.g., 'COL'); see \code{\link[=ns_teams]{ns_teams()}} for
+reference}
 
-\item{season}{integer in YYYYYYYY (e.g., 20242025)}
+\item{season}{integer in YYYYYYYY (e.g., 20242025); see
+\code{\link[=ns_team_edge_seasons]{ns_team_edge_seasons()}} for reference}
 
 \item{game_type}{integer in 1:3 (where 1 = pre-season, 2 = regular season, 3
-= playoff/post-season) OR character of 'pre', 'regular', or 'playoff'/'post'}
+= playoff/post-season) OR character of 'pre', 'regular', or
+'playoff'/'post'; see \code{\link[=ns_team_edge_seasons]{ns_team_edge_seasons()}} for reference}
 
 \item{report_type}{character of 'd'/'details' or 'h'/'hardest'}
 }
@@ -28,7 +31,8 @@ data.frame with one row per position (report_type = 'details') or
 shot (report_type = 'hardest')
 }
 \description{
-\code{ns_team_edge_shot_speed()} returns the EDGE shot speed statistics for a given set of \code{team}, \code{season}, \code{game_type}, and \code{report_type}. Use \code{\link[=ns_teams]{ns_teams()}} for \code{team} reference and \code{\link[=ns_team_edge_seasons]{ns_team_edge_seasons()}} for \code{season} & \code{game_type} references.
+\code{ns_team_edge_shot_speed()} scrapes the EDGE shot speed statistics for a
+given set of \code{team}, \code{season}, \code{game_type}, and \code{report_type}.
 }
 \examples{
 COL_hardest_shots_regular_20242025 <- ns_team_edge_shot_speed(

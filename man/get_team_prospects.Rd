@@ -2,12 +2,12 @@
 % Please edit documentation in R/TeamOld.R
 \name{get_team_prospects}
 \alias{get_team_prospects}
-\title{Get the prospects for a team and player type}
+\title{Access the prospects for a team and position}
 \usage{
 get_team_prospects(team = "NJD", player_type = "forwards")
 }
 \arguments{
-\item{team}{three-letter code (e.g., 'COL')}
+\item{team}{three-letter code (e.g., 'COL'); see \code{\link[=ns_teams]{ns_teams()}} for reference}
 
 \item{player_type}{character of 'forwards', 'defensemen', or 'goalies'}
 }

@@ -3,17 +3,18 @@
 \name{ns_team_season_statistics}
 \alias{ns_team_season_statistics}
 \alias{ns_team_season_stats}
-\title{Get statistics for all the teams by season and game type}
+\title{Access the statistics for all the teams by season and game type}
 \usage{
 ns_team_season_statistics()
 
 ns_team_season_stats()
 }
 \value{
-data.frame with one row per team per game type per season
+data.frame with one row per team per season per game type
 }
 \description{
-\code{ns_team_season_statistics()} returns statistics for all the teams by season and game type, including but not limited to each team's ID, wins, ties, and losses.
+\code{ns_team_season_statistics()} scrapes the statistics for all the teams by
+season and game type.
 }
 \examples{
 # This may take >5s, so skip.

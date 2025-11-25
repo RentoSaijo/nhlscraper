@@ -2,7 +2,7 @@
 % Please edit documentation in R/TeamOld.R
 \name{get_team_scoreboard}
 \alias{get_team_scoreboard}
-\title{Get team scoreboard as of now}
+\title{Access the team scoreboard as of now}
 \usage{
 get_team_scoreboard(team = "NJD")
 }

@@ -2,12 +2,12 @@
 % Please edit documentation in R/TeamOld.R
 \name{get_team_seasons}
 \alias{get_team_seasons}
-\title{Get the season(s) and game type(s) in which a team played}
+\title{Access the season(s) and game type(s) in which a team played}
 \usage{
 get_team_seasons(team = "NJD")
 }
 \arguments{
-\item{team}{three-letter code (e.g., 'COL')}
+\item{team}{three-letter code (e.g., 'COL'); see \code{\link[=ns_teams]{ns_teams()}} for reference}
 }
 \value{
 data.frame with one row per season

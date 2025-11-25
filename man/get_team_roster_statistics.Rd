@@ -2,7 +2,7 @@
 % Please edit documentation in R/TeamOld.R
 \name{get_team_roster_statistics}
 \alias{get_team_roster_statistics}
-\title{Get the roster statistics for a team, season, game type, and player type}
+\title{Access the roster statistics for a team, season, game type, and player type}
 \usage{
 get_team_roster_statistics(
   team = "NJD",
@@ -12,12 +12,14 @@ get_team_roster_statistics(
 )
 }
 \arguments{
-\item{team}{three-letter code (e.g., 'COL')}
+\item{team}{three-letter code (e.g., 'COL'); see \code{\link[=ns_teams]{ns_teams()}} for reference}
 
-\item{season}{integer in YYYYYYYY (e.g., 20242025)}
+\item{season}{integer in YYYYYYYY (e.g., 20242025); see \code{\link[=ns_seasons]{ns_seasons()}} for
+reference}
 
 \item{game_type}{integer in 1:3 (where 1 = pre-season, 2 = regular season, 3
-= playoff/post-season) OR character of 'pre', 'regular', or 'playoff'/'post'}
+= playoff/post-season) OR character of 'pre', 'regular', or
+playoff'/'post'; see \code{\link[=ns_seasons]{ns_seasons()}} for reference}
 
 \item{player_type}{character of 'skaters' or 'goalies'}
 }

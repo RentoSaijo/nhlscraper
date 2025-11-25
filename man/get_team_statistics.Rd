@@ -2,7 +2,7 @@
 % Please edit documentation in R/TeamOld.R
 \name{get_team_statistics}
 \alias{get_team_statistics}
-\title{Get various reports for all the teams by season or game}
+\title{Access various reports for all the teams by season or game}
 \usage{
 get_team_statistics(
   season = 20242025,

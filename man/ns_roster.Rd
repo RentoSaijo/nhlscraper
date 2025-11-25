@@ -2,15 +2,17 @@
 % Please edit documentation in R/Team.R
 \name{ns_roster}
 \alias{ns_roster}
-\title{Get the roster for a team, season, and position}
+\title{Access the roster for a team, season, and position}
 \usage{
 ns_roster(team = 1, season = "current", position = "forwards")
 }
 \arguments{
 \item{team}{integer ID (e.g., 21), character full name (e.g., 'Colorado
-Avalanche'), OR three-letter code (e.g., 'COL')}
+Avalanche'), OR three-letter code (e.g., 'COL'); see \code{\link[=ns_teams]{ns_teams()}} for
+reference}
 
-\item{season}{integer in YYYYYYYY (e.g., 20242025)}
+\item{season}{integer in YYYYYYYY (e.g., 20242025); see \code{\link[=ns_seasons]{ns_seasons()}} for
+reference}
 
 \item{position}{character of 'f'/'forwards', 'd'/'defensemen', or
 'g'/'goalies'}
@@ -19,7 +21,8 @@ Avalanche'), OR three-letter code (e.g., 'COL')}
 data.frame with one row per player
 }
 \description{
-\code{ns_roster()} returns the roster for a given set of \code{team}, \code{season}, and \code{position}, including but not limited to each player's ID, name, and bio-metrics. Use \code{\link[=ns_teams]{ns_teams()}} for \code{team} reference and \code{\link[=ns_seasons]{ns_seasons()}} for \code{season} reference.
+\code{ns_roster()} scrapes the roster for a given set of \code{team}, \code{season}, and
+\code{position}.
 }
 \examples{
 COL_defensemen_20242025 <- ns_roster(

@@ -3,7 +3,7 @@
 \name{ns_roster_statistics}
 \alias{ns_roster_statistics}
 \alias{ns_roster_stats}
-\title{Get the roster statistics for a team, season, game type, and position}
+\title{Access the roster statistics for a team, season, game type, and position}
 \usage{
 ns_roster_statistics(
   team = 1,
@@ -16,12 +16,15 @@ ns_roster_stats(team = 1, season = "now", game_type = "", position = "skaters")
 }
 \arguments{
 \item{team}{integer ID (e.g., 21), character full name (e.g., 'Colorado
-Avalanche'), OR three-letter code (e.g., 'COL')}
+Avalanche'), OR three-letter code (e.g., 'COL'); see \code{\link[=ns_teams]{ns_teams()}} for
+reference}
 
-\item{season}{integer in YYYYYYYY (e.g., 20242025)}
+\item{season}{integer in YYYYYYYY (e.g., 20242025); see \code{\link[=ns_seasons]{ns_seasons()}} for
+reference}
 
 \item{game_type}{integer in 1:3 (where 1 = pre-season, 2 = regular season, 3
-= playoff/post-season) OR character of 'pre', 'regular', or 'playoff'/'post'}
+= playoff/post-season) OR character of 'pre', 'regular', or
+playoff'/'post'; see \code{\link[=ns_seasons]{ns_seasons()}} for reference}
 
 \item{position}{character of 's'/'skaters' or 'g'/'goalies'}
 }
@@ -29,7 +32,8 @@ Avalanche'), OR three-letter code (e.g., 'COL')}
 data.frame with one row per player
 }
 \description{
-\code{ns_roster_statistics()} returns the roster statistics for a given set of \code{team}, \code{season}, \code{game_type}, and \code{position}, including but not limited to each player's ID, goals, assists, and points. Use \code{\link[=ns_teams]{ns_teams()}} for \code{team} reference and \code{\link[=ns_seasons]{ns_seasons()}} for \code{season} & \code{game_type} references.
+\code{ns_roster_statistics()} scrapes the roster statistics for a given set of
+\code{team}, \code{season}, \code{game_type}, and \code{position}.
 }
 \examples{
 COL_goalies_statistics_regular_20242025 <- ns_roster_statistics(

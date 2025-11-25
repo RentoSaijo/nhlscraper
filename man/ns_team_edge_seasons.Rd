@@ -2,7 +2,8 @@
 % Please edit documentation in R/TeamEDGE.R
 \name{ns_team_edge_seasons}
 \alias{ns_team_edge_seasons}
-\title{Get the season(s) and game type(s) in which there exists team EDGE statistics}
+\title{Access the season(s) and game type(s) in which there exists team EDGE
+statistics}
 \usage{
 ns_team_edge_seasons()
 }
@@ -10,7 +11,8 @@ ns_team_edge_seasons()
 data.frame with one row per season
 }
 \description{
-\code{ns_team_edge_seasons} returns the season(s) and game type(s) in which the NHL recorded team EDGE statistics.
+\code{ns_team_edge_seasons} scrapes the season(s) and game type(s) in which the
+NHL recorded team EDGE statistics.
 }
 \examples{
 team_EDGE_seasons <- ns_team_edge_seasons()

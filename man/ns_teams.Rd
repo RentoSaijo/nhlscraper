@@ -2,7 +2,7 @@
 % Please edit documentation in R/Team.R
 \name{ns_teams}
 \alias{ns_teams}
-\title{Get all the teams}
+\title{Access all the teams}
 \usage{
 ns_teams()
 }
@@ -10,7 +10,7 @@ ns_teams()
 data.frame with one row per team
 }
 \description{
-\code{ns_teams()} returns information on all the teams, including but not limited to each team's ID, name, and three-letter code.
+\code{ns_teams()} scrapes information on all the teams.
 }
 \examples{
 all_teams <- ns_teams()

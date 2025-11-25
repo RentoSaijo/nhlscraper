@@ -2,24 +2,28 @@
 % Please edit documentation in R/TeamEDGE.R
 \name{ns_team_edge_summary}
 \alias{ns_team_edge_summary}
-\title{Get the EDGE summary for a team, season, and game type}
+\title{Access the EDGE summary for a team, season, and game type}
 \usage{
 ns_team_edge_summary(team = 1, season = "now", game_type = "")
 }
 \arguments{
 \item{team}{integer ID (e.g., 21), character full name (e.g., 'Colorado
-Avalanche'), OR three-letter code (e.g., 'COL')}
+Avalanche'), OR three-letter code (e.g., 'COL'); see \code{\link[=ns_teams]{ns_teams()}} for
+reference}
 
-\item{season}{integer in YYYYYYYY (e.g., 20242025)}
+\item{season}{integer in YYYYYYYY (e.g., 20242025); see
+\code{\link[=ns_team_edge_seasons]{ns_team_edge_seasons()}} for reference}
 
 \item{game_type}{integer in 1:3 (where 1 = pre-season, 2 = regular season, 3
-= playoff/post-season) OR character of 'pre', 'regular', or 'playoff'/'post'}
+= playoff/post-season) OR character of 'pre', 'regular', or
+'playoff'/'post'; see \code{\link[=ns_team_edge_seasons]{ns_team_edge_seasons()}} for reference}
 }
 \value{
 list of various items
 }
 \description{
-\code{ns_team_edge_summary()} returns the EDGE summary for a given set of \code{team}, \code{season}, and \code{game_type}, including but not limited to their zone time, skating, and shot statistics. Use \code{\link[=ns_teams]{ns_teams()}} for \code{team} reference and \code{\link[=ns_team_edge_seasons]{ns_team_edge_seasons()}} for \code{season} & \code{game_type} references.
+\code{ns_team_edge_summary()} scrapes the EDGE summary for a given set of \code{team},
+\code{season}, and \code{game_type}.
 }
 \examples{
 COL_EDGE_summary_regular_20242025 <- ns_team_edge_summary(

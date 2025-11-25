@@ -2,21 +2,24 @@
 % Please edit documentation in R/Team.R
 \name{ns_team_week_schedule}
 \alias{ns_team_week_schedule}
-\title{Get the schedule for a team and week since a date}
+\title{Access the schedule for a team and week since a date}
 \usage{
 ns_team_week_schedule(team = 1, date = "now")
 }
 \arguments{
 \item{team}{integer ID (e.g., 21), character full name (e.g., 'Colorado
-Avalanche'), OR three-letter code (e.g., 'COL')}
+Avalanche'), OR three-letter code (e.g., 'COL'); see \code{\link[=ns_teams]{ns_teams()}} for
+reference}
 
-\item{date}{character in 'YYYY-MM-DD' (e.g., '2025-01-01')}
+\item{date}{character in 'YYYY-MM-DD' (e.g., '2025-01-01'); see
+\code{\link[=ns_seasons]{ns_seasons()}} for reference}
 }
 \value{
 data.frame with one row per game
 }
 \description{
-\code{ns_team_week_schedule()} returns the schedule for a given set of \code{team} and a week since \code{date}, including but not limited to each game's ID, competing teams, start time, and venue. Use \code{\link[=ns_teams]{ns_teams()}} for \code{team} reference and \code{\link[=ns_seasons]{ns_seasons()}} for \code{date} reference.
+\code{ns_team_week_schedule()} scrapes the schedule for a given set of \code{team} and
+a week since \code{date}.
 }
 \examples{
 COL_schedule_Family_Week_2025 <- ns_team_week_schedule(

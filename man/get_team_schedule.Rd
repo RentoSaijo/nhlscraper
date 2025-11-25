@@ -2,14 +2,15 @@
 % Please edit documentation in R/TeamOld.R
 \name{get_team_schedule}
 \alias{get_team_schedule}
-\title{Get the schedule for a team and season}
+\title{Access the schedule for a team and season}
 \usage{
 get_team_schedule(team = "NJD", season = "now")
 }
 \arguments{
-\item{team}{three-letter code (e.g., 'COL')}
+\item{team}{three-letter code (e.g., 'COL'); see \code{\link[=ns_teams]{ns_teams()}} for reference}
 
-\item{season}{integer in YYYYYYYY (e.g., 20242025)}
+\item{season}{integer in YYYYYYYY (e.g., 20242025); see \code{\link[=ns_seasons]{ns_seasons()}} for
+reference}
 }
 \value{
 data.frame with one row per game

@@ -2,7 +2,7 @@
 % Please edit documentation in R/TeamOld.R
 \name{get_teams}
 \alias{get_teams}
-\title{Get all the teams}
+\title{Access all the teams}
 \usage{
 get_teams()
 }
