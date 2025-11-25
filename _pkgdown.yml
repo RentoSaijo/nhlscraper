@@ -241,13 +241,18 @@ reference:
       Functions to acccess any other data
     contents:
       - glossary
-      - statistics_report_configuration
-      - stats_report_config
+      - statistics_report_configurations
+      - stats_report_configs
       - countries
       - location
       - streams
       - tv_schedule
       - game_partner_odds
+      
+  - subtitle: "Clean"
+    desc: >
+      Functions to clean data
+    contents:
 
   - subtitle: "Deprecated"
     desc: >
