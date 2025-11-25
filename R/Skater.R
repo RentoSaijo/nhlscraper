@@ -1,3 +1,178 @@
+#' Access the configurations for skater reports
+#' 
+#' `skater_report_configurations()` scrapes the configurations for 
+#' [skater_season_report()] and [skater_game_report()].
+#' 
+#' @returns list with various items
+#' @examples
+#' skater_report_configs <- skater_report_configurations()
+#' @export
+
+skater_report_configurations <- function() {
+  nhl_api(
+    path = 'en/config',
+    type = 's'
+  )$playerReportData
+}
+
+#' @rdname skater_report_configurations
+#' @export
+skater_report_configs <- function() {
+  skater_report_configurations()
+}
+
+#' Access various reports for a season, game type, and category for all 
+#' the skaters by season
+#' 
+#' `skater_season_report()` scrapes various reports for a given set of 
+#' `season`, `game_type`, and `category` for all the skaters by season.
+#' 
+#' @inheritParams roster_statistics
+#' @param category character (e.g., 'puckPossessions'); see 
+#' [skater_report_configurations()] for reference
+#' @returns data.frame with one row per player
+#' @examples
+#' # May take >5s, so skip.
+#' \donttest{possession_skater_season_report_playoff_20212022 <- 
+#'   skater_season_report(
+#'     season    = 20212022, 
+#'     game_type = 3, 
+#'     category  = 'puckPossessions'
+#'   )}
+#' @export
+
+skater_season_report <- function(
+  season    = season_now(), 
+  game_type = game_type_now(), 
+  category  = 'summary'
+) {
+  tryCatch(
+    expr = {
+      report <- nhl_api(
+        path  = sprintf('en/skater/%s', category),
+        query = list(
+          limit       = -1,
+          isAggregate = FALSE,
+          isGame      = FALSE,
+          cayenneExp  = sprintf(
+            'seasonId = %s and gameTypeId = %s', 
+            season,
+            game_type
+          )
+        ),
+        type  = 's'
+      )$data
+      report[order(report$playerId), ]
+    },
+    error = function(e) {
+      message(e)
+      message('Invalid argument(s); refer to help file.')
+      data.frame()
+    }
+  )
+}
+
+#' Access various reports for a season, game type, and category for all 
+#' the skaters by game
+#' 
+#' `skater_game_report()` scrapes various reports for a given set of 
+#' `season`, `game_type`, and `category` for all the skaters by game.
+#' 
+#' @inheritParams skater_season_report
+#' @returns data.frame with one row per game per player
+#' @examples
+#' # May take >5s, so skip.
+#' \donttest{possession_skater_game_report_playoff_20212022 <- 
+#'   skater_game_report(
+#'     season    = 20212022, 
+#'     game_type = 3, 
+#'     category  = 'puckPossessions'
+#'   )}
+#' @export
+
+skater_game_report <- function(
+  season    = season_now(), 
+  game_type = game_type_now(), 
+  category  = 'summary'
+) {
+  tryCatch(
+    expr = {
+      if (game_type != 2) {
+        report <- nhl_api(
+          path  = sprintf('en/skater/%s', category),
+          query = list(
+            limit       = -1,
+            isAggregate = FALSE,
+            isGame      = TRUE,
+            cayenneExp  = sprintf(
+              'seasonId = %s and gameTypeId = %s',
+              season,
+              game_type
+            )
+          ),
+          type  = 's'
+        )$data
+      } else {
+        seasons_tbl <- seasons()
+        season_row  <- seasons_tbl[seasons_tbl$id == season, ]
+        if (!nrow(season_row)) {
+          stop('No season metadata found for season: ', season)
+        }
+        start_date <- as.Date(season_row$startDate)
+        end_date   <- as.Date(season_row$regularSeasonEndDate)
+        all_dates <- seq(start_date, end_date, by = '1 day')
+        date_groups <- split(all_dates, format(all_dates, '%Y-%m'))
+        pages <- list()
+        for (dates in date_groups) {
+          dates_chr <- as.character(dates)
+          cayenne <- sprintf(
+            'seasonId = %s and gameTypeId = %s and gameDate in (%s)',
+            season,
+            game_type,
+            paste0('\'', dates_chr, '\'', collapse = ',')
+          )
+          page <- nhl_api(
+            path  = sprintf('en/skater/%s', category),
+            query = list(
+              limit       = -1,
+              isAggregate = FALSE,
+              isGame      = TRUE,
+              cayenneExp  = cayenne
+            ),
+            type  = 's'
+          )$data
+          if (!is.null(page)) {
+            if (!is.data.frame(page)) {
+              page <- as.data.frame(page, stringsAsFactors = FALSE)
+            }
+            if (nrow(page)) {
+              pages[[length(pages) + 1]] <- page
+            }
+          }
+        }
+        if (!length(pages)) {
+          return(data.frame())
+        }
+        report <- do.call(rbind, pages)
+      }
+      if (is.null(report)) {
+        return(data.frame())
+      }
+      if (!is.data.frame(report)) {
+        report <- as.data.frame(report, stringsAsFactors = FALSE)
+      }
+      if (!nrow(report)) {
+        return(report)
+      }
+      report[order(report$playerId, report$gameId), ]
+    },
+    error = function(e) {
+      message('Invalid argument(s); refer to help file.')
+      data.frame()
+    }
+  )
+}
+
 #' Access the career statistics for all the skaters
 #' 
 #' `skater_statistics()` scrapes the career statistics for all the skaters.
@@ -76,7 +251,7 @@ skater_playoff_stats <- function() {
 #' @returns data.frame with one row per player per season per game type, 
 #' separated by team if applicable
 #' @examples
-#' # This may take >5s, so skip.
+#' # May take >5s, so skip.
 #' \donttest{skater_season_stats <- skater_season_statistics()}
 #' @export
 
@@ -102,7 +277,7 @@ skater_season_stats <- function() {
 #' 
 #' @returns data.frame with one row per player per series
 #' @examples
-#' # This may take >5s, so skip.
+#' # May take >5s, so skip.
 #' \donttest{skater_series_stats <- skater_series_statistics()}
 #' @export
 

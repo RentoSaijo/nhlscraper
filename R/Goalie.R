@@ -1,3 +1,125 @@
+#' Access the configurations for goalie reports
+#' 
+#' `goalie_report_configurations()` scrapes the configurations for 
+#' [goalie_season_report()] and [goalie_game_report()].
+#' 
+#' @returns list with various items
+#' @examples
+#' goalie_report_configs <- goalie_report_configurations()
+#' @export
+
+goalie_report_configurations <- function() {
+  nhl_api(
+    path = 'en/config',
+    type = 's'
+  )$goalieReportData
+}
+
+#' @rdname goalie_report_configurations
+#' @export
+goalie_report_configs <- function() {
+  goalie_report_configurations()
+}
+
+#' Access various reports for a season, game type, and category for all 
+#' the goalies by season
+#' 
+#' `goalie_season_report()` scrapes various reports for a given set of 
+#' `season`, `game_type`, and `category` for all the goalies by season.
+#' 
+#' @inheritParams roster_statistics
+#' @param category character (e.g., 'advanced'); see 
+#' [goalie_report_configurations()] for reference
+#' @returns data.frame with one row per player
+#' @examples
+#' # May take >5s, so skip.
+#' \donttest{advanced_goalie_season_report_playoffs_20212022 <- 
+#'   goalie_season_report(
+#'     season    = 20212022, 
+#'     game_type = 3, 
+#'     category  = 'advanced'
+#'   )}
+#' @export
+
+goalie_season_report <- function(
+  season    = season_now(), 
+  game_type = game_type_now(), 
+  category  = 'summary'
+) {
+  tryCatch(
+    expr = {
+      report <- nhl_api(
+        path  = sprintf('en/goalie/%s', category),
+        query = list(
+          limit       = -1,
+          isAggregate = FALSE,
+          isGame      = FALSE,
+          cayenneExp  = sprintf(
+            'seasonId = %s and gameTypeId = %s', 
+            season,
+            game_type
+          )
+        ),
+        type  = 's'
+      )$data
+      report[order(report$playerId), ]
+    },
+    error = function(e) {
+      
+      message('Invalid argument(s); refer to help file.')
+      data.frame()
+    }
+  )
+}
+
+#' Access various reports for a season, game type, and category for all 
+#' the goalies by game
+#' 
+#' `goalie_game_report()` scrapes various reports for a given set of 
+#' `season`, `game_type`, and `category` for all the goalies by game.
+#' 
+#' @inheritParams goalie_season_report
+#' @returns data.frame with one row per game per goalie
+#' @examples
+#' # May take >5s, so skip.
+#' \donttest{advanced_goalie_game_report_playoffs_20212022 <- 
+#'   goalie_game_report(
+#'     season    = 20212022, 
+#'     game_type = 3, 
+#'     category  = 'advanced'
+#'   )}
+#' @export
+
+goalie_game_report <- function(
+    season    = season_now(), 
+    game_type = game_type_now(), 
+    category  = 'summary'
+) {
+  tryCatch(
+    expr = {
+      report <- nhl_api(
+        path  = sprintf('en/goalie/%s', category),
+        query = list(
+          limit       = -1,
+          isAggregate = FALSE,
+          isGame      = TRUE,
+          cayenneExp  = sprintf(
+            'seasonId = %s and gameTypeId = %s', 
+            season,
+            game_type
+          )
+        ),
+        type  = 's'
+      )$data
+      report[order(report$playerId, report$gameId), ]
+    },
+    error = function(e) {
+      message('Invalid argument(s); refer to help file.')
+      data.frame()
+    }
+  )
+}
+
 #' Access the career statistics for all the goalies
 #' 
 #' `goalie_statistics()` scrapes the career statistics for all the goalies.
@@ -205,7 +327,7 @@ goalie_leaders <- function(
       )[[category]]
     },
     error = function(e) {
-      message(e)
+      
       message('Invalid argument(s); refer to help file.')
       data.frame()
     }

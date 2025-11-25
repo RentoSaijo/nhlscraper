@@ -22,7 +22,8 @@ teams <- function() {
 #' 
 #' @param team integer ID (e.g., 21), character full name (e.g., 'Colorado 
 #' Avalanche'), OR three-letter code (e.g., 'COL'); see [teams()] for 
-#' reference
+#' reference; ID is preferable as there now exists duplicate three-letter codes 
+#' (i.e., 'UTA' for 'Utah Hockey Club' and 'Utah Mammoth')
 #' @returns data.frame with one row per season
 #' @examples
 #' COL_seasons <- team_seasons(team = 21)
@@ -43,6 +44,125 @@ team_seasons <- function(team = 1) {
   )
 }
 
+#' Access the configurations for team reports
+#' 
+#' `team_report_configurations()` scrapes the configurations for 
+#' [team_season_report()] and [team_game_report()].
+#' 
+#' @returns list with various items
+#' @examples
+#' team_report_configs <- team_report_configurations()
+#' @export
+
+team_report_configurations <- function() {
+  nhl_api(
+    path = 'en/config',
+    type = 's'
+  )$teamReportData
+}
+
+#' @rdname team_report_configurations
+#' @export
+team_report_configs <- function() {
+  team_report_configurations()
+}
+
+#' Access various reports for a season, game type, and category for all 
+#' the teams by season
+#' 
+#' `team_season_report()` scrapes various reports for a given set of `season`, 
+#' `game_type`, and `category` for all the teams by season.
+#' 
+#' @inheritParams roster_statistics
+#' @param category character (e.g., 'leadingtrailing'); see 
+#' [team_report_configurations()] for reference
+#' @returns data.frame with one row per team
+#' @examples
+#' situational_team_season_report_playoffs_20212022 <- team_season_report(
+#'   season    = 20212022, 
+#'   game_type = 3, 
+#'   category  = 'leadingtrailing'
+#' )
+#' @export
+
+team_season_report <- function(
+  season    = season_now(), 
+  game_type = game_type_now(), 
+  category  = 'summary'
+) {
+  tryCatch(
+    expr = {
+      report <- nhl_api(
+        path  = sprintf('en/team/%s', category),
+        query = list(
+          limit       = -1,
+          isAggregate = FALSE,
+          isGame      = FALSE,
+          cayenneExp  = sprintf(
+            'seasonId = %s and gameTypeId = %s', 
+            season,
+            game_type
+          )
+        ),
+        type  = 's'
+      )$data
+      report[order(report$teamId), ]
+    },
+    error = function(e) {
+      
+      message('Invalid argument(s); refer to help file.')
+      data.frame()
+    }
+  )
+}
+
+#' Access various reports for a season, game type, and category for all 
+#' the teams by game
+#' 
+#' `team_game_report()` scrapes various reports for a given set of `season`, 
+#' `game_type`, and `category` for all the teams by game.
+#' 
+#' @inheritParams team_season_report
+#' @returns data.frame with one row per game per team
+#' @examples
+#' situational_team_game_report_playoffs_20212022 <- team_game_report(
+#'   season    = 20212022, 
+#'   game_type = 3, 
+#'   category  = 'leadingtrailing'
+#' )
+#' @export
+
+team_game_report <- function(
+  season    = season_now(), 
+  game_type = game_type_now(), 
+  category  = 'summary'
+) {
+  tryCatch(
+    expr = {
+      report <- nhl_api(
+        path  = sprintf('en/team/%s', category),
+        query = list(
+          limit       = -1,
+          isAggregate = FALSE,
+          isGame      = TRUE,
+          cayenneExp  = sprintf(
+            'seasonId = %s and gameTypeId = %s', 
+            season,
+            game_type
+          )
+        ),
+        type  = 's'
+      )$data
+      report[order(report$teamId, report$gameId), ]
+    },
+    error = function(e) {
+      
+      message('Invalid argument(s); refer to help file.')
+      data.frame()
+    }
+  )
+}
+
 #' Access the statistics for all the teams by season and game type
 #' 
 #' `team_season_statistics()` scrapes the statistics for all the teams by 
@@ -50,7 +170,7 @@ team_seasons <- function(team = 1) {
 #' 
 #' @returns data.frame with one row per team per season per game type
 #' @examples
-#' # This may take >5s, so skip.
+#' # May take >5s, so skip.
 #' \donttest{team_season_statistics <- team_season_statistics()}
 #' @export
 
@@ -124,7 +244,8 @@ roster <- function(
 #' @inheritParams roster
 #' @param game_type integer in 1:3 (where 1 = pre-season, 2 = regular season, 3 
 #' = playoff/post-season) OR character of 'pre', 'regular', or 
-#' playoff'/'post'; see [seasons()] for reference
+#' playoff'/'post'; see [seasons()] for reference; most functions will NOT 
+#' support pre-season
 #' @param position character of 's'/'skaters' or 'g'/'goalies'
 #' @returns data.frame with one row per player
 #' @examples
