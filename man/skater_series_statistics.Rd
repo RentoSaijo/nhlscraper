@@ -17,6 +17,6 @@ data.frame with one row per player per series
 skaters by series.
 }
 \examples{
-# This may take >5s, so skip.
+# May take >5s, so skip.
 \donttest{skater_series_stats <- skater_series_statistics()}
 }

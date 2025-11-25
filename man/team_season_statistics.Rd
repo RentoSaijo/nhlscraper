@@ -17,6 +17,6 @@ data.frame with one row per team per season per game type
 season and game type.
 }
 \examples{
-# This may take >5s, so skip.
+# May take >5s, so skip.
 \donttest{team_season_statistics <- team_season_statistics()}
 }

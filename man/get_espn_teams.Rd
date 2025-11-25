@@ -4,7 +4,7 @@
 \alias{get_espn_teams}
 \title{Get the ESPN teams for a season}
 \usage{
-get_espn_teams(season = season()\%\%10000)
+get_espn_teams(season = season_now()\%\%10000)
 }
 \arguments{
 \item{season}{integer in YYYY (e.g., 2025)}

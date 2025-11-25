@@ -9,14 +9,16 @@ team_edge_summary(team = 1, season = "now", game_type = "")
 \arguments{
 \item{team}{integer ID (e.g., 21), character full name (e.g., 'Colorado
 Avalanche'), OR three-letter code (e.g., 'COL'); see \code{\link[=teams]{teams()}} for
-reference}
+reference; ID is preferable as there now exists duplicate three-letter codes
+(i.e., 'UTA' for 'Utah Hockey Club' and 'Utah Mammoth')}
 
 \item{season}{integer in YYYYYYYY (e.g., 20242025); see
 \code{\link[=team_edge_seasons]{team_edge_seasons()}} for reference}
 
 \item{game_type}{integer in 1:3 (where 1 = pre-season, 2 = regular season, 3
 = playoff/post-season) OR character of 'pre', 'regular', or
-'playoff'/'post'; see \code{\link[=team_edge_seasons]{team_edge_seasons()}} for reference}
+'playoff'/'post'; see \code{\link[=team_edge_seasons]{team_edge_seasons()}} for reference; most functions
+will NOT support pre-season}
 }
 \value{
 list of various items

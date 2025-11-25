@@ -6,7 +6,7 @@
 #' @returns data.frame with one row per series
 #' @export
 
-get_bracket <- function(season = season()) {
+get_bracket <- function(season = season_now()) {
   .Deprecated(
     new     = 'bracket()',
     package = 'nhlscraper',
@@ -26,7 +26,7 @@ get_bracket <- function(season = season()) {
 #' @returns data.frame with one row per game
 #' @export
 
-get_series_schedule <- function(season = season(), series = 'a') {
+get_series_schedule <- function(season = season_now(), series = 'a') {
   .Deprecated(
     new     = 'series_schedule()',
     package = 'nhlscraper',

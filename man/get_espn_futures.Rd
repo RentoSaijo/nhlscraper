@@ -4,7 +4,7 @@
 \alias{get_espn_futures}
 \title{Get the ESPN futures for a season}
 \usage{
-get_espn_futures(season = season()\%\%10000)
+get_espn_futures(season = season_now()\%\%10000)
 }
 \arguments{
 \item{season}{integer in YYYY (e.g., 2026)}

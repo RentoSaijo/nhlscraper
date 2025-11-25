@@ -12,7 +12,7 @@
 #' ESPN_teams_20242025 <- get_espn_teams(2025)
 #' @export
 
-get_espn_teams <- function(season = season() %% 1e4) {
+get_espn_teams <- function(season = season_now() %% 1e4) {
   .Deprecated(
     new     = 'teams()',
     package = 'nhlscraper',
@@ -46,7 +46,7 @@ get_espn_teams <- function(season = season() %% 1e4) {
 #'
 #' @export
 
-get_espn_team <- function(team = 1, season = season() %% 1e4) {
+get_espn_team <- function(team = 1, season = season_now() %% 1e4) {
   .Defunct(
     msg = paste(
       '`get_espn_team()` is temporarily defunct.',

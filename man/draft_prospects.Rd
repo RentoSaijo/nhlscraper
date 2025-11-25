@@ -13,6 +13,6 @@ data.frame with one row per player
 \code{draft_prospects()} scrapes all the draft prospects.
 }
 \examples{
-# This may take >5s, so skip.
+# May take >5s, so skip.
 \donttest{all_prospects <- draft_prospects()}
 }

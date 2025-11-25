@@ -13,6 +13,6 @@ data.frame with one row per pick
 \code{draft_picks()} scrapes all the draft picks.
 }
 \examples{
-# This may take >5s, so skip.
+# May take >5s, so skip.
 \donttest{all_draft_picks <- draft_picks()}
 }

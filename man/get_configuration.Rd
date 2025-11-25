@@ -6,10 +6,8 @@
 \usage{
 get_configuration()
 }
-\value{
-list with 5 items
-}
 \description{
-\code{get_configuration()} is deprecated. Use
-\code{\link[=report_configurations]{report_configurations()}} instead.
+\code{get_configuration()} is defunct. Use \code{\link[=team_report_configurations]{team_report_configurations()}},
+\code{\link[=skater_report_configurations]{skater_report_configurations()}}, and/or \code{\link[=goalie_report_configurations]{goalie_report_configurations()}}
+instead.
 }

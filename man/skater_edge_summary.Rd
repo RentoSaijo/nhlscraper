@@ -14,7 +14,8 @@ skater_edge_summary(player = 8478402, season = "now", game_type = "")
 
 \item{game_type}{integer in 1:3 (where 1 = pre-season, 2 = regular season, 3
 = playoff/post-season) OR character of 'pre', 'regular', or
-'playoff'/'post'; see \code{\link[=skater_edge_seasons]{skater_edge_seasons()}} for reference}
+'playoff'/'post'; see \code{\link[=skater_edge_seasons]{skater_edge_seasons()}} for reference; most functions
+will NOT support pre-season}
 }
 \value{
 list of various items

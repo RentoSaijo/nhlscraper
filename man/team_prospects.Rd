@@ -9,7 +9,8 @@ team_prospects(team = 1, position = "forwards")
 \arguments{
 \item{team}{integer ID (e.g., 21), character full name (e.g., 'Colorado
 Avalanche'), OR three-letter code (e.g., 'COL'); see \code{\link[=teams]{teams()}} for
-reference}
+reference; ID is preferable as there now exists duplicate three-letter codes
+(i.e., 'UTA' for 'Utah Hockey Club' and 'Utah Mammoth')}
 
 \item{position}{character of 'f'/'forwards', 'd'/'defensemen', or
 'g'/'goalies'}

@@ -48,7 +48,7 @@ get_draft_picks <- function() {
 #' @export
 
 get_draft_rankings <- function(
-  year        = season() %/% 1e4,
+  year        = season_now() %/% 1e4,
   player_type = 1
 ) {
   .Deprecated(

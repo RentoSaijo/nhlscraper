@@ -301,7 +301,6 @@ reference:
       - get_draft_tracker
       - get_officials
       - get_glossary
-      - get_configuration
       - get_countries
       - get_streams
       - get_tv_schedule
@@ -320,6 +319,7 @@ reference:
       - get_goalie_statistics
       - get_series
       - ping
+      - get_configuration
 
   - title: "ESPN API"
     desc: >

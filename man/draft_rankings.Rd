@@ -4,7 +4,7 @@
 \alias{draft_rankings}
 \title{Access the draft rankings for a class and category}
 \usage{
-draft_rankings(class = season()\%\%10000, category = 1)
+draft_rankings(class = season_now()\%\%10000, category = 1)
 }
 \arguments{
 \item{class}{integer in YYYY (e.g., 2017); see \code{\link[=drafts]{drafts()}} for reference}

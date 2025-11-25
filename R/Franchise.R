@@ -79,7 +79,7 @@ franchise_team_stats <- function() {
 #' 
 #' @returns data.frame with one row per franchise per season per game type
 #' @examples
-#' # This may take >5s, so skip.
+#' # May take >5s, so skip.
 #' \donttest{franchise_season_stats <- franchise_season_statistics()}
 #' @export
 
@@ -106,7 +106,7 @@ franchise_season_stats <- function() {
 #' 
 #' @returns data.frame with one row per franchise per franchise per game type
 #' @examples
-#' # This may take >5s, so skip.
+#' # May take >5s, so skip.
 #' \donttest{franchise_vs_franchise <- franchise_versus_franchise()}
 #' @export
 

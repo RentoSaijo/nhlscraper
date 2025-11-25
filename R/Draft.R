@@ -30,7 +30,7 @@ drafts <- function() {
 #' 
 #' @returns data.frame with one row per pick
 #' @examples
-#' # This may take >5s, so skip.
+#' # May take >5s, so skip.
 #' \donttest{all_draft_picks <- draft_picks()}
 #' @export
 
@@ -49,7 +49,7 @@ draft_picks <- function() {
 #' 
 #' @returns data.frame with one row per player
 #' @examples
-#' # This may take >5s, so skip.
+#' # May take >5s, so skip.
 #' \donttest{all_prospects <- draft_prospects()}
 #' @export
 
@@ -83,7 +83,7 @@ draft_prospects <- function() {
 #' @export
 
 draft_rankings <- function(
-  class    = season() %% 1e4,
+  class    = season_now() %% 1e4,
   category = 1
 ) {
   tryCatch(

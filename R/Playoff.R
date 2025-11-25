@@ -4,7 +4,7 @@
 #'
 #' @returns data.frame with one row per game per series
 #' @examples
-#' # This may take >5s, so skip.
+#' # May take >5s, so skip.
 #' \donttest{all_series <- series()}
 #' @export
 
@@ -51,7 +51,7 @@ playoff_season_stats <- function() {
 #' bracket_20242025 <- bracket(season = 20242025)
 #' @export
 
-bracket <- function(season = season()){
+bracket <- function(season = season_now()){
   tryCatch(
     expr = {
       nhl_api(
@@ -82,7 +82,7 @@ bracket <- function(season = season()){
 #' )
 #' @export
 
-series_schedule <- function(season = season(), series = 'a') {
+series_schedule <- function(season = season_now(), series = 'a') {
   tryCatch(
     expr = {
       nhl_api(

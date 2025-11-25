@@ -9,7 +9,8 @@ team_month_schedule(team = 1, month = "now")
 \arguments{
 \item{team}{integer ID (e.g., 21), character full name (e.g., 'Colorado
 Avalanche'), OR three-letter code (e.g., 'COL'); see \code{\link[=teams]{teams()}} for
-reference}
+reference; ID is preferable as there now exists duplicate three-letter codes
+(i.e., 'UTA' for 'Utah Hockey Club' and 'Utah Mammoth')}
 
 \item{month}{character in 'YYYY-MM' (e.g., '2025-01'); see \code{\link[=seasons]{seasons()}}
 for reference}

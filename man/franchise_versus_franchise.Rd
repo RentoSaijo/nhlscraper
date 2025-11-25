@@ -18,6 +18,6 @@ data.frame with one row per franchise per franchise per game type
 other franchises for all the franchises by game type.
 }
 \examples{
-# This may take >5s, so skip.
+# May take >5s, so skip.
 \donttest{franchise_vs_franchise <- franchise_versus_franchise()}
 }

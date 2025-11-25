@@ -72,7 +72,8 @@ get_team_roster <- function(
 #' @inheritParams get_team_roster
 #' @param game_type integer in 1:3 (where 1 = pre-season, 2 = regular season, 3 
 #' = playoff/post-season) OR character of 'pre', 'regular', or 
-#' playoff'/'post'; see [seasons()] for reference
+#' playoff'/'post'; see [seasons()] for reference; most functions will NOT 
+#' support pre-season
 #' @param player_type character of 'skaters' or 'goalies'
 #' @returns data.frame with one row per player
 #' @export

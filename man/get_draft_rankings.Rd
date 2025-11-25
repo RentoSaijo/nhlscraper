@@ -4,7 +4,7 @@
 \alias{get_draft_rankings}
 \title{Access the draft rankings for a year and player type}
 \usage{
-get_draft_rankings(year = season()\%/\%10000, player_type = 1)
+get_draft_rankings(year = season_now()\%/\%10000, player_type = 1)
 }
 \arguments{
 \item{year}{integer in YYYY (e.g., 2017); see \code{\link[=drafts]{drafts()}} for reference}

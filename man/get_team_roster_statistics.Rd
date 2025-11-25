@@ -19,7 +19,8 @@ reference}
 
 \item{game_type}{integer in 1:3 (where 1 = pre-season, 2 = regular season, 3
 = playoff/post-season) OR character of 'pre', 'regular', or
-playoff'/'post'; see \code{\link[=seasons]{seasons()}} for reference}
+playoff'/'post'; see \code{\link[=seasons]{seasons()}} for reference; most functions will NOT
+support pre-season}
 
 \item{player_type}{character of 'skaters' or 'goalies'}
 }

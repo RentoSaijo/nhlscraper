@@ -13,6 +13,6 @@ data.frame with one row per game per series
 \code{series()} scrapes all the playoff series by game.
 }
 \examples{
-# This may take >5s, so skip.
+# May take >5s, so skip.
 \donttest{all_series <- series()}
 }

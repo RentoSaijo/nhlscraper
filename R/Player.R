@@ -4,7 +4,7 @@
 #' 
 #' @returns data.frame with one row per player
 #' @examples
-#' # This may take >5s, so skip.
+#' # May take >5s, so skip.
 #' \donttest{all_players <- players()}
 #' @export
 

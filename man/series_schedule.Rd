@@ -4,7 +4,7 @@
 \alias{series_schedule}
 \title{Access the playoff schedule for a season and series}
 \usage{
-series_schedule(season = season(), series = "a")
+series_schedule(season = season_now(), series = "a")
 }
 \arguments{
 \item{season}{integer in YYYYYYYY (e.g., 20242025); see \code{\link[=seasons]{seasons()}} for

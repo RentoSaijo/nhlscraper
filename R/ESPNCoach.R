@@ -12,7 +12,7 @@
 #' ESPN_coaches_20242025 <- get_espn_coaches(2025)
 #' @export
 
-get_espn_coaches <- function(season = season() %% 1e4) {
+get_espn_coaches <- function(season = season_now() %% 1e4) {
   .Deprecated(
     new     = 'coaches()',
     package = 'nhlscraper',

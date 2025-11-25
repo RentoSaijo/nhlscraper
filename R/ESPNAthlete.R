@@ -46,7 +46,7 @@ get_espn_athletes <- function() {
 
 get_espn_athlete <- function(
   athlete = 3988803,
-  season  = season() %% 1e4
+  season  = season_now() %% 1e4
 ) {
   .Defunct(
     msg = paste(

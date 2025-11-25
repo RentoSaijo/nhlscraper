@@ -18,6 +18,6 @@ separated by team if applicable
 season, game type, and team.
 }
 \examples{
-# This may take >5s, so skip.
+# May take >5s, so skip.
 \donttest{skater_season_stats <- skater_season_statistics()}
 }

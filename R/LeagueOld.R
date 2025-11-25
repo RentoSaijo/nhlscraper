@@ -19,18 +19,18 @@ get_seasons <- function() {
 
 #' Access the season and game type as of now
 #' 
-#' `get_season_now()` is defunct. Use [season()] and/or [game_type()] 
+#' `get_season_now()` is defunct. Use [season_now()] and/or [game_type()] 
 #' instead.
 #' 
 #' @export
 
 get_season_now <- function() {
   .Defunct(
-    new     = 'season()',
+    new     = 'season_now()',
     package = 'nhlscraper',
     msg     = paste(
       '`get_season_now()` is defunct.',
-      'Use `season()` and/or `game_type()` instead.'
+      'Use `season_now()` and/or `game_type()` instead.'
     )
   )
 }

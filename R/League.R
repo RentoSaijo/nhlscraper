@@ -17,14 +17,14 @@ seasons <- function() {
 
 #' Access the season as of now
 #' 
-#' `season` scrapes the current season.
+#' `season_now` scrapes the current season.
 #' 
 #' @returns integer in YYYYYYYY (e.g., 20242025)
 #' @examples
-#' season_now <- season()
+#' season_now <- season_now()
 #' @export
 
-season <- function() {
+season_now <- function() {
   nhl_api(
     path = 'en/componentSeason',
     type = 's'
@@ -33,15 +33,15 @@ season <- function() {
 
 #' Access the game type as of now
 #' 
-#' `game_type()` scrapes the current game type.
+#' `game_type_now()` scrapes the current game type.
 #' 
 #' @returns integer in 1:3 (where 1 = pre-season, 2 = regular season, 3 
 #' = playoff/post-season)
 #' @examples
-#' game_type_now <- game_type()
+#' game_type_now <- game_type_now()
 #' @export
 
-game_type <- function() {
+game_type_now <- function() {
   nhl_api(
     path = 'en/componentSeason',
     type = 's'

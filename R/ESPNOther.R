@@ -75,7 +75,7 @@ get_espn_injuries <- function() {
 #' ESPN_futures_20252026 <- get_espn_futures(2026)
 #' @export
 
-get_espn_futures <- function(season = season() %% 1e4) {
+get_espn_futures <- function(season = season_now() %% 1e4) {
   tryCatch(
     expr = {
       espn_api(

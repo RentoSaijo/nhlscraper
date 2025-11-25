@@ -33,7 +33,8 @@ team_edge_seasons <- function() {
 #' [team_edge_seasons()] for reference
 #' @param game_type integer in 1:3 (where 1 = pre-season, 2 = regular season, 3 
 #' = playoff/post-season) OR character of 'pre', 'regular', or 
-#' 'playoff'/'post'; see [team_edge_seasons()] for reference
+#' 'playoff'/'post'; see [team_edge_seasons()] for reference; most functions 
+#' will NOT support pre-season
 #' @returns list of various items
 #' @examples
 #' team_EDGE_leaders_regular_20242025 <- team_edge_leaders(

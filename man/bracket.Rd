@@ -4,7 +4,7 @@
 \alias{bracket}
 \title{Access the playoff bracket for a season}
 \usage{
-bracket(season = season())
+bracket(season = season_now())
 }
 \arguments{
 \item{season}{integer in YYYYYYYY (e.g., 20242025); see \code{\link[=seasons]{seasons()}} for

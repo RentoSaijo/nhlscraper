@@ -20,7 +20,8 @@ skater_edge_skating_speed(
 
 \item{game_type}{integer in 1:3 (where 1 = pre-season, 2 = regular season, 3
 = playoff/post-season) OR character of 'pre', 'regular', or
-'playoff'/'post'; see \code{\link[=skater_edge_seasons]{skater_edge_seasons()}} for reference}
+'playoff'/'post'; see \code{\link[=skater_edge_seasons]{skater_edge_seasons()}} for reference; most functions
+will NOT support pre-season}
 
 \item{category}{character of 'd'/'details' or 't'/'top'/'top speeds'}
 }

@@ -17,26 +17,6 @@ get_glossary <- function() {
   glossary()
 }
 
-#' Access the configurations for team, skater, and goalie reports
-#' 
-#' `get_configuration()` is deprecated. Use 
-#' [report_configurations()] instead.
-#' 
-#' @returns list with 5 items
-#' @export
-
-get_configuration <- function() {
-  .Deprecated(
-    new     = 'report_configurations()',
-    package = 'nhlscraper',
-    msg     = paste(
-      '`get_configuration()` is deprecated.',
-      'Use `report_configurations()` instead.'
-    )
-  )
-  report_configurations()
-}
-
 #' Access all the countries
 #' 
 #' `get_countries()` is deprecated. Use [countries()] instead.
@@ -128,3 +108,24 @@ ping <- function() {
     )
   )
 }
+
+#' Access the configurations for team, skater, and goalie reports
+#' 
+#' `get_configuration()` is defunct. Use [team_report_configurations()], 
+#' [skater_report_configurations()], and/or [goalie_report_configurations()] 
+#' instead.
+#' 
+#' @export
+
+get_configuration <- function() {
+  .Defunct(
+    new     = 'team_report_configurations()',
+    package = 'nhlscraper',
+    msg     = paste(
+      '`get_configuration()` is defunct.',
+      'Use `team_report_configurations()`, `skater_report_configurations()`,',
+      'and/or `goalie_report_configurations()` instead.'
+    )
+  )
+}
+

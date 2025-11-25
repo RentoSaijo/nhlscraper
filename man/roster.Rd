@@ -9,7 +9,8 @@ roster(team = 1, season = "current", position = "forwards")
 \arguments{
 \item{team}{integer ID (e.g., 21), character full name (e.g., 'Colorado
 Avalanche'), OR three-letter code (e.g., 'COL'); see \code{\link[=teams]{teams()}} for
-reference}
+reference; ID is preferable as there now exists duplicate three-letter codes
+(i.e., 'UTA' for 'Utah Hockey Club' and 'Utah Mammoth')}
 
 \item{season}{integer in YYYYYYYY (e.g., 20242025); see \code{\link[=seasons]{seasons()}} for
 reference}

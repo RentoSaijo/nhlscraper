@@ -9,7 +9,8 @@ team_seasons(team = 1)
 \arguments{
 \item{team}{integer ID (e.g., 21), character full name (e.g., 'Colorado
 Avalanche'), OR three-letter code (e.g., 'COL'); see \code{\link[=teams]{teams()}} for
-reference}
+reference; ID is preferable as there now exists duplicate three-letter codes
+(i.e., 'UTA' for 'Utah Hockey Club' and 'Utah Mammoth')}
 }
 \value{
 data.frame with one row per season
