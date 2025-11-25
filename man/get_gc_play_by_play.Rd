@@ -7,11 +7,11 @@
 get_gc_play_by_play(game = 2023030417)
 }
 \arguments{
-\item{game}{integer ID (e.g., 2025020275); see \code{\link[=ns_games]{ns_games()}} for reference}
+\item{game}{integer ID (e.g., 2025020275); see \code{\link[=games]{games()}} for reference}
 }
 \value{
 data.frame with one row per event (play)
 }
 \description{
-\code{get_gc_play_by_play()} is deprecated. Use \code{\link[=ns_gc_play_by_play]{ns_gc_play_by_play()}} instead.
+\code{get_gc_play_by_play()} is deprecated. Use \code{\link[=gc_play_by_play]{gc_play_by_play()}} instead.
 }

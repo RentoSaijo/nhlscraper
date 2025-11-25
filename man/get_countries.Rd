@@ -10,5 +10,5 @@ get_countries()
 data.frame with one row per country
 }
 \description{
-\code{get_countries()} is deprecated. Use \code{\link[=ns_countries]{ns_countries()}} instead.
+\code{get_countries()} is deprecated. Use \code{\link[=countries]{countries()}} instead.
 }

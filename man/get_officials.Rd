@@ -10,5 +10,5 @@ get_officials()
 data.frame with one row per official
 }
 \description{
-\code{get_officials()} is deprecated. Use \code{\link[=ns_officials]{ns_officials()}} instead.
+\code{get_officials()} is deprecated. Use \code{\link[=officials]{officials()}} instead.
 }

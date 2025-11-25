@@ -2,7 +2,7 @@
 #' 
 #' `get_espn_athletes()` retrieves the ESPN ID for each athlete. Temporarily 
 #' deprecated while we re-evaluate the practicality of ESPN API information. 
-#' Use [ns_players()] instead.
+#' Use [players()] instead.
 #' 
 #' @returns data.frame with one row per athlete
 #' @examples
@@ -11,12 +11,12 @@
 
 get_espn_athletes <- function() {
   .Deprecated(
-    new     = 'ns_players()',
+    new     = 'players()',
     package = 'nhlscraper',
     msg     = paste(
       '`get_espn_athletes()` is temporarily deprecated.',
       'Re-evaluating the practicality of ESPN API inforamtion.',
-      'Use `ns_players()` instead.'
+      'Use `players()` instead.'
     )
   )
   page <- 1
@@ -46,7 +46,7 @@ get_espn_athletes <- function() {
 
 get_espn_athlete <- function(
   athlete = 3988803,
-  season  = ns_season() %% 1e4
+  season  = season() %% 1e4
 ) {
   .Defunct(
     msg = paste(

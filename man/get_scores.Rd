@@ -8,11 +8,11 @@ get_scores(date = "now")
 }
 \arguments{
 \item{date}{character in 'YYYY-MM-DD' (e.g., '2025-01-01'); see
-\code{\link[=ns_seasons]{ns_seasons()}} for reference}
+\code{\link[=seasons]{seasons()}} for reference}
 }
 \value{
 data.frame with one row per game
 }
 \description{
-\code{get_scores()} is deprecated. Use \code{\link[=ns_scores]{ns_scores()}} instead.
+\code{get_scores()} is deprecated. Use \code{\link[=scores]{scores()}} instead.
 }

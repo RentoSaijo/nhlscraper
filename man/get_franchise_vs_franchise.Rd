@@ -12,5 +12,5 @@ data.frame with one row per franchise per franchise per game type
 }
 \description{
 \code{get_franchise_vs_franchise()} is deprecated. Use
-\code{\link[=ns_franchise_versus_franchise]{ns_franchise_versus_franchise()}} instead.
+\code{\link[=franchise_versus_franchise]{franchise_versus_franchise()}} instead.
 }

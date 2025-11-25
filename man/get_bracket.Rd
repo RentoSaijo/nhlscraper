@@ -4,15 +4,15 @@
 \alias{get_bracket}
 \title{Access the playoff bracket for a season}
 \usage{
-get_bracket(season = ns_season())
+get_bracket(season = season())
 }
 \arguments{
-\item{season}{integer in YYYYYYYY (e.g., 20242025); see \code{\link[=ns_seasons]{ns_seasons()}} for
+\item{season}{integer in YYYYYYYY (e.g., 20242025); see \code{\link[=seasons]{seasons()}} for
 reference}
 }
 \value{
 data.frame with one row per series
 }
 \description{
-\code{get_bracket()} is deprecated. Use \code{\link[=ns_bracket]{ns_bracket()}} instead.
+\code{get_bracket()} is deprecated. Use \code{\link[=bracket]{bracket()}} instead.
 }

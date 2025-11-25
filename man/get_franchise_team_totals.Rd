@@ -11,5 +11,5 @@ data.frame with one row per team per franchise per game type
 }
 \description{
 \code{get_franchise_team_totals()} is deprecated. Use
-\code{\link[=ns_franchise_team_statistics]{ns_franchise_team_statistics()}} instead.
+\code{\link[=franchise_team_statistics]{franchise_team_statistics()}} instead.
 }

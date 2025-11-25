@@ -1,18 +1,18 @@
 #' Access all the officials
 #' 
-#' `get_officials()` is deprecated. Use [ns_officials()] instead.
+#' `get_officials()` is deprecated. Use [officials()] instead.
 #' 
 #' @returns data.frame with one row per official
 #' @export
 
 get_officials <- function() {
   .Deprecated(
-    new     = 'ns_officials()',
+    new     = 'officials()',
     package = 'nhlscraper',
     msg     = paste(
       '`get_officials()` is deprecated.',
-      'Use `ns_officials()` instead.'
+      'Use `officials()` instead.'
     )
   )
-  ns_officials()
+  officials()
 }

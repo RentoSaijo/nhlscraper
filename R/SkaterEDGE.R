@@ -1,14 +1,14 @@
 #' Get the season(s) and game type(s) for which the NHL recorded skater EDGE 
 #' statistics
 #' 
-#' `ns_skater_edge_seasons` retrieves information on each 
+#' `skater_edge_seasons` retrieves information on each 
 #'
 #' @returns data.frame with one row per season
 #' @examples
-#' skater_EDGE_seasons <- ns_skater_edge_seasons()
+#' skater_EDGE_seasons <- skater_edge_seasons()
 #' @export
 
-ns_skater_edge_seasons <- function() {
+skater_edge_seasons <- function() {
   tryCatch(
     expr = {
       nhl_api(
@@ -25,20 +25,20 @@ ns_skater_edge_seasons <- function() {
 
 #' Get the skater EDGE statistics leaders for a season and game type
 #' 
-#' `ns_skater_edge_leaders()` retrieves information on each 
+#' `skater_edge_leaders()` retrieves information on each 
 #' 
 #' @param season integer in YYYYYYYY (e.g., 20242025)
 #' @param game_type integer in 1:3 (where 1 = pre-season, 2 = regular season, 3 
 #' = playoff/post-season) OR character of 'pre', 'regular', or 'playoff'/'post'
 #' @returns list of various items
 #' @examples
-#' skater_EDGE_leaders_regular_20242025 <- ns_skater_edge_leaders(
+#' skater_EDGE_leaders_regular_20242025 <- skater_edge_leaders(
 #'   season    = 20242025,
 #'   game_type = 2
 #' )
 #' @export
 
-ns_skater_edge_leaders <- function(season = 'now', game_type = '') {
+skater_edge_leaders <- function(season = 'now', game_type = '') {
   tryCatch(
     expr = {
       nhl_api(
@@ -59,7 +59,7 @@ ns_skater_edge_leaders <- function(season = 'now', game_type = '') {
 
 #' Get the EDGE summary of a skater for a season and game type
 #' 
-#' `ns_skater_edge_summary()` retrieves information on each 
+#' `skater_edge_summary()` retrieves information on each 
 #' 
 #' @param player integer ID (e.g., 8480039)
 #' @param season integer in YYYYYYYY (e.g., 20242025)
@@ -67,14 +67,14 @@ ns_skater_edge_leaders <- function(season = 'now', game_type = '') {
 #' = playoff/post-season) OR character of 'pre', 'regular', or 'playoff'/'post'
 #' @returns list of various items
 #' @examples
-#' Martin_Necas_EDGE_summary_regular_20242025 <- ns_skater_edge_summary(
+#' Martin_Necas_EDGE_summary_regular_20242025 <- skater_edge_summary(
 #'   player    = 8480039, 
 #'   season    = 20242025,
 #'   game_type = 2
 #' )
 #' @export
 
-ns_skater_edge_summary <- function(
+skater_edge_summary <- function(
   player    = 8480039, 
   season    = 'now', 
   game_type = ''
@@ -101,7 +101,7 @@ ns_skater_edge_summary <- function(
 #' Get the EDGE zone time statistics of a skater for a season, game type, and 
 #' report type
 #' 
-#' `ns_skater_edge_zone_time()` retrieves information on each 
+#' `skater_edge_zone_time()` retrieves information on each 
 #' 
 #' @param player integer ID (e.g., 8480039)
 #' @param season integer in YYYYYYYY (e.g., 20242025)
@@ -111,7 +111,7 @@ ns_skater_edge_summary <- function(
 #' @returns data.frame with one row per strength state (report_type = 'details') 
 #' or list with six items (report_type = 'starts')
 #' @examples
-#' Martin_Necas_starts_regular_20242025 <- ns_skater_edge_zone_time(
+#' Martin_Necas_starts_regular_20242025 <- skater_edge_zone_time(
 #'   player      = 8480039,
 #'   season      = 20242025,
 #'   game_type   = 2,
@@ -119,7 +119,7 @@ ns_skater_edge_summary <- function(
 #' )
 #' @export
 
-ns_skater_edge_zone_time <- function(
+skater_edge_zone_time <- function(
     player      = 8480039,
     season      = 'now', 
     game_type   = '', 
@@ -152,7 +152,7 @@ ns_skater_edge_zone_time <- function(
 #' Get the EDGE skating distance statistics of a skater for a season, game 
 #' type, and report type
 #' 
-#' `ns_skater_edge_skating_distance()` retrieves information on each 
+#' `skater_edge_skating_distance()` retrieves information on each 
 #' 
 #' @param player integer ID (e.g., 8480039)
 #' @param season integer in YYYYYYYY (e.g., 20242025)
@@ -163,7 +163,7 @@ ns_skater_edge_zone_time <- function(
 #' or game (report_type = 'last 10')
 #' @examples
 #' Martin_Necas_L10_skating_distance_regular_20242025 <- 
-#'   ns_skater_edge_skating_distance(
+#'   skater_edge_skating_distance(
 #'     player      = 8480039,
 #'     season      = 20242025,
 #'     game_type   = 2,
@@ -171,7 +171,7 @@ ns_skater_edge_zone_time <- function(
 #'   )
 #' @export
 
-ns_skater_edge_skating_distance <- function(
+skater_edge_skating_distance <- function(
     player      = 8480039,
     season      = 'now', 
     game_type   = '', 
@@ -204,7 +204,7 @@ ns_skater_edge_skating_distance <- function(
 #' Get the EDGE skating speed statistics of a skater for a season, game type, 
 #' and report type
 #' 
-#' `ns_skater_edge_skating_speed()` retrieves information on each 
+#' `skater_edge_skating_speed()` retrieves information on each 
 #' 
 #' @param player integer ID (e.g., 8480039)
 #' @param season integer in YYYYYYYY (e.g., 20242025)
@@ -214,7 +214,7 @@ ns_skater_edge_skating_distance <- function(
 #' @returns list with four items (report_type = 'details') or data.frame with 
 #' one row per burst (report_type = 'top speeds')
 #' @examples
-#' Martin_Necas_top_speeds_regular_20242025 <- ns_skater_edge_skating_speed(
+#' Martin_Necas_top_speeds_regular_20242025 <- skater_edge_skating_speed(
 #'   player      = 8480039,
 #'   season      = 20242025,
 #'   game_type   = 2,
@@ -222,7 +222,7 @@ ns_skater_edge_skating_distance <- function(
 #' )
 #' @export
 
-ns_skater_edge_skating_speed <- function(
+skater_edge_skating_speed <- function(
     player      = 8480039,
     season      = 'now', 
     game_type   = '', 
@@ -255,7 +255,7 @@ ns_skater_edge_skating_speed <- function(
 #' Get the EDGE shot location statistics of a skater for a season, game type, 
 #' and report type
 #' 
-#' `ns_skater_edge_shot_location()` retrieves information on each 
+#' `skater_edge_shot_location()` retrieves information on each 
 #' 
 #' @param player integer ID (e.g., 8480039)
 #' @param season integer in YYYYYYYY (e.g., 20242025)
@@ -265,7 +265,7 @@ ns_skater_edge_skating_speed <- function(
 #' @returns data.frame with one row per shot location
 #' @examples
 #' Martin_Necas_shot_location_totals_regular_20242025 <- 
-#'   ns_skater_edge_shot_location(
+#'   skater_edge_shot_location(
 #'     player      = 8480039,
 #'     season      = 20242025,
 #'     game_type   = 2,
@@ -273,7 +273,7 @@ ns_skater_edge_skating_speed <- function(
 #'   )
 #' @export
 
-ns_skater_edge_shot_location <- function(
+skater_edge_shot_location <- function(
     player      = 8480039,
     season      = 'now', 
     game_type   = '', 
@@ -306,7 +306,7 @@ ns_skater_edge_shot_location <- function(
 #' Get the EDGE shot speed statistics of a skater for a season, game type, and 
 #' report type
 #' 
-#' `ns_skater_edge_shot_speed()` retrieves information on each 
+#' `skater_edge_shot_speed()` retrieves information on each 
 #' 
 #' @param player integer ID (e.g., 8480039)
 #' @param season integer in YYYYYYYY (e.g., 20242025)
@@ -316,7 +316,7 @@ ns_skater_edge_shot_location <- function(
 #' @returns list with six items (report_type = 'details') or data.frame with one 
 #' row per shot (report_type = 'hardest')
 #' @examples
-#' Martin_Necas_hardest_shots_regular_20242025 <- ns_skater_edge_shot_speed(
+#' Martin_Necas_hardest_shots_regular_20242025 <- skater_edge_shot_speed(
 #'   player      = 8480039,
 #'   season      = 20242025,
 #'   game_type   = 2,
@@ -324,7 +324,7 @@ ns_skater_edge_shot_location <- function(
 #' )
 #' @export
 
-ns_skater_edge_shot_speed <- function(
+skater_edge_shot_speed <- function(
     player      = 8480039,
     season      = 'now', 
     game_type   = '', 

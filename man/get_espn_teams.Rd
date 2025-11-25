@@ -4,7 +4,7 @@
 \alias{get_espn_teams}
 \title{Get the ESPN teams for a season}
 \usage{
-get_espn_teams(season = ns_season()\%\%10000)
+get_espn_teams(season = season()\%\%10000)
 }
 \arguments{
 \item{season}{integer in YYYY (e.g., 2025)}
@@ -14,10 +14,10 @@ data.frame with one row per team
 }
 \description{
 \code{get_espn_teams()} retrieves the ESPN ID of each team for a given \code{season}.
-Access \code{ns_seasons()} for \code{season} reference. Note the season format differs
+Access \code{seasons()} for \code{season} reference. Note the season format differs
 from the NHL API; will soon be fixed to accept both. Temporarily deprecated
 while we re-evaluate the practicality of ESPN API information. Use
-\code{\link[=ns_teams]{ns_teams()}} instead.
+\code{\link[=teams]{teams()}} instead.
 }
 \examples{
 ESPN_teams_20242025 <- get_espn_teams(2025)

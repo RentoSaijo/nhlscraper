@@ -7,9 +7,9 @@
 get_team_roster(team = "NJD", season = "current", player_type = "forwards")
 }
 \arguments{
-\item{team}{three-letter code (e.g., 'COL'); see \code{\link[=ns_teams]{ns_teams()}} for reference}
+\item{team}{three-letter code (e.g., 'COL'); see \code{\link[=teams]{teams()}} for reference}
 
-\item{season}{integer in YYYYYYYY (e.g., 20242025); see \code{\link[=ns_seasons]{ns_seasons()}} for
+\item{season}{integer in YYYYYYYY (e.g., 20242025); see \code{\link[=seasons]{seasons()}} for
 reference}
 
 \item{player_type}{character of 'forwards', 'defensemen', or 'goalies'}
@@ -18,5 +18,5 @@ reference}
 data.frame with one row per player
 }
 \description{
-\code{get_team_roster()} is deprecated. Use \code{\link[=ns_roster]{ns_roster()}} instead.
+\code{get_team_roster()} is deprecated. Use \code{\link[=roster]{roster()}} instead.
 }

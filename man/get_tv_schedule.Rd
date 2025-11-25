@@ -8,11 +8,11 @@ get_tv_schedule(date = "now")
 }
 \arguments{
 \item{date}{character in 'YYYY-MM-DD' (e.g., '2025-01-01'); see
-\code{\link[=ns_seasons]{ns_seasons()}} for reference}
+\code{\link[=seasons]{seasons()}} for reference}
 }
 \value{
 data.frame with one row per program
 }
 \description{
-\code{get_tv_schedule()} is deprecated. Use \code{\link[=ns_tv_schedule]{ns_tv_schedule()}} instead.
+\code{get_tv_schedule()} is deprecated. Use \code{\link[=tv_schedule]{tv_schedule()}} instead.
 }

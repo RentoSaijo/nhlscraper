@@ -10,5 +10,5 @@ get_drafts()
 data.frame with one row per draft
 }
 \description{
-\code{get_drafts()} is deprecated. Use \code{\link[=ns_drafts]{ns_drafts()}} instead.
+\code{get_drafts()} is deprecated. Use \code{\link[=drafts]{drafts()}} instead.
 }

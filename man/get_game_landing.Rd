@@ -7,11 +7,11 @@
 get_game_landing(game = 2023030417)
 }
 \arguments{
-\item{game}{integer ID (e.g., 2025020275); see \code{\link[=ns_games]{ns_games()}} for reference}
+\item{game}{integer ID (e.g., 2025020275); see \code{\link[=games]{games()}} for reference}
 }
 \value{
 list of various items
 }
 \description{
-\code{get_game_landing()} is deprecated. Use \code{\link[=ns_gc_summary]{ns_gc_summary()}} instead.
+\code{get_game_landing()} is deprecated. Use \code{\link[=gc_summary]{gc_summary()}} instead.
 }

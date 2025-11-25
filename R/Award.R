@@ -1,13 +1,13 @@
 #' Access all the awards
 #' 
-#' `ns_awards()` scrapes information on all the awards.
+#' `awards()` scrapes information on all the awards.
 #' 
 #' @returns data.frame with one row per award
 #' @examples
-#' all_awards <- ns_awards()
+#' all_awards <- awards()
 #' @export
 
-ns_awards <- function() {
+awards <- function() {
   nhl_api(
     path = 'trophy',
     type = 'r'
@@ -16,14 +16,14 @@ ns_awards <- function() {
 
 #' Access all the award winners/finalists
 #' 
-#' `ns_award_winners()` scrapes information on all the award winners/finalists.
+#' `award_winners()` scrapes information on all the award winners/finalists.
 #' 
 #' @returns data.frame with one row per winner/finalist
 #' @examples
-#' all_award_winners <- ns_award_winners()
+#' all_award_winners <- award_winners()
 #' @export
 
-ns_award_winners <- function() {
+award_winners <- function() {
   winners    <- nhl_api(
     path = 'award-details',
     type = 'r'

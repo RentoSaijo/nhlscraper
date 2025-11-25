@@ -10,5 +10,5 @@ get_award_winners()
 data.frame with one row per winner/finalist
 }
 \description{
-\code{get_award_winners()} is deprecated. Use \code{\link[=ns_award_winners]{ns_award_winners()}} instead.
+\code{get_award_winners()} is deprecated. Use \code{\link[=award_winners]{award_winners()}} instead.
 }

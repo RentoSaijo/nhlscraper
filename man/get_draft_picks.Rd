@@ -10,5 +10,5 @@ get_draft_picks()
 data.frame with one row per pick
 }
 \description{
-\code{get_draft_picks()} is deprecated. Use \code{\link[=ns_draft_picks]{ns_draft_picks()}} instead.
+\code{get_draft_picks()} is deprecated. Use \code{\link[=draft_picks]{draft_picks()}} instead.
 }

@@ -7,12 +7,12 @@
 get_partner_odds(country = "US")
 }
 \arguments{
-\item{country}{two-letter code (e.g., 'CA'); see \code{\link[=ns_countries]{ns_countries()}} for
+\item{country}{two-letter code (e.g., 'CA'); see \code{\link[=countries]{countries()}} for
 reference}
 }
 \value{
 data.frame with one row per game
 }
 \description{
-\code{get_partner_odds()} is deprecated. Use \code{\link[=ns_game_partner_odds]{ns_game_partner_odds()}} instead.
+\code{get_partner_odds()} is deprecated. Use \code{\link[=game_partner_odds]{game_partner_odds()}} instead.
 }

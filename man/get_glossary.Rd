@@ -10,5 +10,5 @@ get_glossary()
 data.frame with one row per terminology
 }
 \description{
-\code{get_glossary()} is deprecated. Use \code{\link[=ns_glossary]{ns_glossary()}} instead.
+\code{get_glossary()} is deprecated. Use \code{\link[=glossary]{glossary()}} instead.
 }

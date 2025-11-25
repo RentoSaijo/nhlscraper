@@ -7,5 +7,5 @@
 get_goalie_leaders(season = "current", game_type = "", category = "wins")
 }
 \description{
-\code{get_goalie_leaders()} is deprecated. Use \code{\link[=ns_goalie_leaders]{ns_goalie_leaders()}} instead.
+\code{get_goalie_leaders()} is deprecated. Use \code{\link[=goalie_leaders]{goalie_leaders()}} instead.
 }

@@ -7,5 +7,5 @@
 get_espn_event_officials(event = 401687600)
 }
 \description{
-\code{get_espn_event_officials()} is defunct. Use \code{\link[=ns_gc_summary]{ns_gc_summary()}} instead.
+\code{get_espn_event_officials()} is defunct. Use \code{\link[=gc_summary]{gc_summary()}} instead.
 }

@@ -10,5 +10,5 @@ get_attendance()
 data.frame with one row per season
 }
 \description{
-\code{get_attendance()} is deprecated. Use \code{\link[=ns_attendance]{ns_attendance()}} instead.
+\code{get_attendance()} is deprecated. Use \code{\link[=attendance]{attendance()}} instead.
 }

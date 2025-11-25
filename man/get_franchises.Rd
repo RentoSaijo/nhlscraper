@@ -10,5 +10,5 @@ get_franchises()
 data.frame with one row per franchise
 }
 \description{
-\code{get_franchises()} is deprecated. Use \code{\link[=ns_franchises]{ns_franchises()}} instead.
+\code{get_franchises()} is deprecated. Use \code{\link[=franchises]{franchises()}} instead.
 }

@@ -4,18 +4,18 @@
 \alias{get_series_schedule}
 \title{Access the playoff schedule for a season and series}
 \usage{
-get_series_schedule(season = ns_season(), series = "a")
+get_series_schedule(season = season(), series = "a")
 }
 \arguments{
-\item{season}{integer in YYYYYYYY (e.g., 20242025); see \code{\link[=ns_seasons]{ns_seasons()}} for
+\item{season}{integer in YYYYYYYY (e.g., 20242025); see \code{\link[=seasons]{seasons()}} for
 reference}
 
-\item{series}{one-letter code (e.g., 'O'); see \code{\link[=ns_series]{ns_series()}} and/or
-\code{\link[=ns_bracket]{ns_bracket()}} for reference}
+\item{series}{one-letter code (e.g., 'O'); see \code{\link[=series]{series()}} and/or
+\code{\link[=bracket]{bracket()}} for reference}
 }
 \value{
 data.frame with one row per game
 }
 \description{
-\code{get_series_schedule()} is deprecated. Use \code{\link[=ns_series_schedule]{ns_series_schedule()}} instead.
+\code{get_series_schedule()} is deprecated. Use \code{\link[=series_schedule]{series_schedule()}} instead.
 }

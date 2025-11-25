@@ -10,5 +10,5 @@ get_venues()
 data.frame with one row per venue
 }
 \description{
-\code{get_venues()} is deprecated. Use \code{\link[=ns_venues]{ns_venues()}} instead.
+\code{get_venues()} is deprecated. Use \code{\link[=venues]{venues()}} instead.
 }

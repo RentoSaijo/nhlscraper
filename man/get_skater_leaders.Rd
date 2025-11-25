@@ -7,5 +7,5 @@
 get_skater_leaders(season = "current", game_type = "", category = "points")
 }
 \description{
-\code{get_skater_leaders()} is deprecated. Use \code{\link[=ns_skater_leaders]{ns_skater_leaders()}} instead.
+\code{get_skater_leaders()} is deprecated. Use \code{\link[=skater_leaders]{skater_leaders()}} instead.
 }

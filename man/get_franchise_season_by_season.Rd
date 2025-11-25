@@ -11,5 +11,5 @@ data.frame with one row per franchise per season per game type
 }
 \description{
 \code{get_franchise_season_by_season()} is deprecated. Use
-\code{\link[=ns_franchise_season_statistics]{ns_franchise_season_statistics()}} instead.
+\code{\link[=franchise_season_statistics]{franchise_season_statistics()}} instead.
 }

@@ -1,43 +1,43 @@
 #' Access all the seasons
 #' 
-#' `get_seasons()` is deprecated. Use [ns_seasons()] instead.
+#' `get_seasons()` is deprecated. Use [seasons()] instead.
 #' 
 #' @returns data.frame with one row per season
 #' @export
 
 get_seasons <- function() {
   .Deprecated(
-    new     = 'ns_seasons()',
+    new     = 'seasons()',
     package = 'nhlscraper',
     msg     = paste(
       '`get_seasons()` is deprecated.',
-      'Use `ns_seasons()` instead.'
+      'Use `seasons()` instead.'
     )
   )
-  ns_seasons()
+  seasons()
 }
 
 #' Access the season and game type as of now
 #' 
-#' `get_season_now()` is defunct. Use [ns_season()] and/or [ns_game_type()] 
+#' `get_season_now()` is defunct. Use [season()] and/or [game_type()] 
 #' instead.
 #' 
 #' @export
 
 get_season_now <- function() {
   .Defunct(
-    new     = 'ns_season()',
+    new     = 'season()',
     package = 'nhlscraper',
     msg     = paste(
       '`get_season_now()` is defunct.',
-      'Use `ns_season()` and/or `ns_game_type()` instead.'
+      'Use `season()` and/or `game_type()` instead.'
     )
   )
 }
 
 #' Access the standings rules by season
 #' 
-#' `get_standings_information()` is deprecated. Use [ns_standings_rules()] 
+#' `get_standings_information()` is deprecated. Use [standings_rules()] 
 #' instead.
 #' 
 #' @returns data.frame with one row per season
@@ -45,90 +45,90 @@ get_season_now <- function() {
 
 get_standings_information <- function() {
   .Deprecated(
-    new     = 'ns_standings_rules()',
+    new     = 'standings_rules()',
     package = 'nhlscraper',
     msg     = paste(
       '`get_standings_information()` is deprecated.',
-      'Use `ns_standings_rules()` instead.'
+      'Use `standings_rules()` instead.'
     )
   )
-  ns_standings_rules()
+  standings_rules()
 }
 
 #' Access the standings for a date
 #' 
-#' `get_standings()` is deprecated. Use [ns_standings()] instead.
+#' `get_standings()` is deprecated. Use [standings()] instead.
 #' 
-#' @inheritParams ns_standings
+#' @inheritParams standings
 #' @returns data.frame with one row per team
 #' @export
 
 get_standings <- function(date = '2025-01-01') {
   .Deprecated(
-    new     = 'ns_standings()',
+    new     = 'standings()',
     package = 'nhlscraper',
     msg     = paste(
       '`get_standings()` is deprecated.',
-      'Use `ns_standings()` instead.'
+      'Use `standings()` instead.'
     )
   )
-  ns_standings(date)
+  standings(date)
 }
 
 #' Access the schedule for a date
 #' 
-#' `get_schedule()` is deprecated. Use [ns_schedule()] instead.
+#' `get_schedule()` is deprecated. Use [schedule()] instead.
 #' 
-#' @inheritParams ns_standings
+#' @inheritParams standings
 #' @returns data.frame with one row per game
 #' @export
 
 get_schedule <- function(date = '2025-01-01') {
   .Deprecated(
-    new     = 'ns_schedule()',
+    new     = 'schedule()',
     package = 'nhlscraper',
     msg     = paste(
       '`get_schedule()` is deprecated.',
-      'Use `ns_schedule()` instead.'
+      'Use `schedule()` instead.'
     )
   )
-  ns_schedule(date)
+  schedule(date)
 }
 
 #' Access all the venues
 #' 
-#' `get_venues()` is deprecated. Use [ns_venues()] instead.
+#' `get_venues()` is deprecated. Use [venues()] instead.
 #' 
 #' @returns data.frame with one row per venue
 #' @export
 
 get_venues <- function() {
   .Deprecated(
-    new     = 'ns_venues()',
+    new     = 'venues()',
     package = 'nhlscraper',
     msg     = paste(
       '`get_venues()` is deprecated.',
-      'Use `ns_venues()` instead.'
+      'Use `venues()` instead.'
     )
   )
-  ns_venues()
+  venues()
 }
 
 #' Access the attendance by season and game type
 #' 
-#' `get_attendance()` is deprecated. Use [ns_attendance()] instead.
+#' `get_attendance()` is deprecated. Use [attendance()] instead.
 #' 
 #' @returns data.frame with one row per season
 #' @export
 
 get_attendance <- function() {
   .Deprecated(
-    new     = 'ns_attendance()',
+    new     = 'attendance()',
     package = 'nhlscraper',
     msg     = paste(
       '`get_attendance()` is deprecated.',
-      'Use `ns_attendance()` instead.'
+      'Use `attendance()` instead.'
     )
   )
-  ns_attendance()
+  attendance()
 }

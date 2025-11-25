@@ -4,8 +4,8 @@
 \alias{get_skaters}
 \title{Get the skaters for a range of seasons}
 \usage{
-get_skaters(start_season = 19171918, end_season = 20242025)
+get_skaters()
 }
 \description{
-\code{get_skaters()} is defunct. Use \code{\link[=ns_players]{ns_players()}} instead.
+\code{get_skaters()} is defunct. Use \code{\link[=players]{players()}} instead.
 }

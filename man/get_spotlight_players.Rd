@@ -10,6 +10,6 @@ get_spotlight_players()
 data.frame with one row per player
 }
 \description{
-\code{get_spotlight_players()} is deprecated. Use \code{\link[=ns_spotlight_players]{ns_spotlight_players()}}
+\code{get_spotlight_players()} is deprecated. Use \code{\link[=spotlight_players]{spotlight_players()}}
 instead.
 }

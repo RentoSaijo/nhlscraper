@@ -4,7 +4,7 @@
 \alias{get_espn_futures}
 \title{Get the ESPN futures for a season}
 \usage{
-get_espn_futures(season = ns_season()\%\%10000)
+get_espn_futures(season = season()\%\%10000)
 }
 \arguments{
 \item{season}{integer in YYYY (e.g., 2026)}
@@ -14,7 +14,7 @@ nested data.frame with one row per type (outer) and book (inner)
 }
 \description{
 \code{get_espn_futures()} retrieves real-time ESPN futures of various types for a
-given \code{season}. Access \code{ns_seasons()} for \code{season} reference. Note the
+given \code{season}. Access \code{seasons()} for \code{season} reference. Note the
 season format differs from the NHL API; will soon be fixed to accept both.
 }
 \examples{

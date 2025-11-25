@@ -12,7 +12,7 @@ data.frame with one row per athlete
 \description{
 \code{get_espn_athletes()} retrieves the ESPN ID for each athlete. Temporarily
 deprecated while we re-evaluate the practicality of ESPN API information.
-Use \code{\link[=ns_players]{ns_players()}} instead.
+Use \code{\link[=players]{players()}} instead.
 }
 \examples{
 all_ESPN_athletes <- get_espn_athletes()

@@ -1,14 +1,14 @@
 #' Get the season(s) and game type(s) for which the NHL recorded goalie EDGE 
 #' statistics
 #' 
-#' `ns_goalie_edge_seasons` retrieves information on each 
+#' `goalie_edge_seasons` retrieves information on each 
 #'
 #' @returns data.frame with one row per season
 #' @examples
-#' goalie_EDGE_seasons <- ns_goalie_edge_seasons()
+#' goalie_EDGE_seasons <- goalie_edge_seasons()
 #' @export
 
-ns_goalie_edge_seasons <- function() {
+goalie_edge_seasons <- function() {
   tryCatch(
     expr = {
       nhl_api(
@@ -25,20 +25,20 @@ ns_goalie_edge_seasons <- function() {
 
 #' Get the goalie EDGE statistics leaders for a season and game type
 #' 
-#' `ns_goalie_edge_leaders()` retrieves information on each 
+#' `goalie_edge_leaders()` retrieves information on each 
 #' 
 #' @param season integer in YYYYYYYY (e.g., 20242025)
 #' @param game_type integer in 1:3 (where 1 = pre-season, 2 = regular season, 3 
 #' = playoff/post-season) OR character of 'pre', 'regular', or 'playoff'/'post'
 #' @returns list of various items
 #' @examples
-#' goalie_EDGE_leaders_regular_20242025 <- ns_goalie_edge_leaders(
+#' goalie_EDGE_leaders_regular_20242025 <- goalie_edge_leaders(
 #'   season    = 20242025,
 #'   game_type = 2
 #' )
 #' @export
 
-ns_goalie_edge_leaders <- function(season = 'now', game_type = '') {
+goalie_edge_leaders <- function(season = 'now', game_type = '') {
   tryCatch(
     expr = {
       nhl_api(
@@ -59,7 +59,7 @@ ns_goalie_edge_leaders <- function(season = 'now', game_type = '') {
 
 #' Get the EDGE summary of a goalie for a season and game type
 #' 
-#' `ns_goalie_edge_summary()` retrieves information on each 
+#' `goalie_edge_summary()` retrieves information on each 
 #' 
 #' @param player integer ID (e.g., 8478406)
 #' @param season integer in YYYYYYYY (e.g., 20242025)
@@ -67,14 +67,14 @@ ns_goalie_edge_leaders <- function(season = 'now', game_type = '') {
 #' = playoff/post-season) OR character of 'pre', 'regular', or 'playoff'/'post'
 #' @returns list of various items
 #' @examples
-#' Mackenzie_Blackwood_EDGE_summary_regular_20242025 <- ns_goalie_edge_summary(
+#' Mackenzie_Blackwood_EDGE_summary_regular_20242025 <- goalie_edge_summary(
 #'   player    = 8478406, 
 #'   season    = 20242025,
 #'   game_type = 2
 #' )
 #' @export
 
-ns_goalie_edge_summary <- function(
+goalie_edge_summary <- function(
     player    = 8478406, 
     season    = 'now', 
     game_type = ''
@@ -101,7 +101,7 @@ ns_goalie_edge_summary <- function(
 #' Get the EDGE save percentage statistics of a goalie for a season, game type, 
 #' and report type
 #' 
-#' `ns_goalie_edge_save_percentage()` retrieves information on each 
+#' `goalie_edge_save_percentage()` retrieves information on each 
 #' 
 #' @param player integer ID (e.g., 8478406)
 #' @param season integer in YYYYYYYY (e.g., 20242025)
@@ -112,7 +112,7 @@ ns_goalie_edge_summary <- function(
 #' row per game (report_type = 'last 10')
 #' @examples
 #' Mackenzie_Blackwood_L10_sP_regular_20242025 <- 
-#'   ns_goalie_edge_save_percentage(
+#'   goalie_edge_save_percentage(
 #'     player      = 8478406,
 #'     season      = 20242025,
 #'     game_type   = 2,
@@ -120,7 +120,7 @@ ns_goalie_edge_summary <- function(
 #'   )
 #' @export
 
-ns_goalie_edge_save_percentage <- function(
+goalie_edge_save_percentage <- function(
     player      = 8478406,
     season      = 'now', 
     game_type   = '', 
@@ -153,7 +153,7 @@ ns_goalie_edge_save_percentage <- function(
 #' Get the EDGE 5 vs. 5 statistics of a goalie for a season, game type, and 
 #' report type
 #' 
-#' `ns_goalie_edge_5_vs_5()` retrieves information on each 
+#' `goalie_edge_5_vs_5()` retrieves information on each 
 #' 
 #' @param player integer ID (e.g., 8478406)
 #' @param season integer in YYYYYYYY (e.g., 20242025)
@@ -163,7 +163,7 @@ ns_goalie_edge_save_percentage <- function(
 #' @returns list with four items (report_type = 'details') or data.frame with 
 #' one row per game (report_type = 'last 10')
 #' @examples
-#' Mackenzie_Blackwood_L10_5_vs_5_regular_20242025 <- ns_goalie_edge_5_vs_5(
+#' Mackenzie_Blackwood_L10_5_vs_5_regular_20242025 <- goalie_edge_5_vs_5(
 #'   player      = 8478406,
 #'   season      = 20242025,
 #'   game_type   = 2,
@@ -171,7 +171,7 @@ ns_goalie_edge_save_percentage <- function(
 #'  )
 #' @export
 
-ns_goalie_edge_5_vs_5 <- function(
+goalie_edge_5_vs_5 <- function(
     player      = 8478406,
     season      = 'now', 
     game_type   = '', 
@@ -204,7 +204,7 @@ ns_goalie_edge_5_vs_5 <- function(
 #' Get the EDGE shot location statistics of a goalie for a season, game type, 
 #' and report type
 #' 
-#' `ns_goalie_edge_shot_location()` retrieves information on each 
+#' `goalie_edge_shot_location()` retrieves information on each 
 #' 
 #' @param player integer ID (e.g., 8478406)
 #' @param season integer in YYYYYYYY (e.g., 20242025)
@@ -214,7 +214,7 @@ ns_goalie_edge_5_vs_5 <- function(
 #' @returns data.frame with one row per shot location
 #' @examples
 #' Mackenzie_Blackwood_shot_location_totals_regular_20242025 <- 
-#'   ns_goalie_edge_shot_location(
+#'   goalie_edge_shot_location(
 #'     player      = 8478406,
 #'     season      = 20242025,
 #'     game_type   = 2,
@@ -222,7 +222,7 @@ ns_goalie_edge_5_vs_5 <- function(
 #'   )
 #' @export
 
-ns_goalie_edge_shot_location <- function(
+goalie_edge_shot_location <- function(
     player      = 8478406,
     season      = 'now', 
     game_type   = '', 

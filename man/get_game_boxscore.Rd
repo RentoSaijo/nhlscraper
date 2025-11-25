@@ -7,7 +7,7 @@
 get_game_boxscore(game = 2023030417, team = "home", player_type = "forwards")
 }
 \arguments{
-\item{game}{integer ID (e.g., 2025020275); see \code{\link[=ns_games]{ns_games()}} for reference}
+\item{game}{integer ID (e.g., 2025020275); see \code{\link[=games]{games()}} for reference}
 
 \item{team}{character of 'home' or 'away'}
 
@@ -17,5 +17,5 @@ get_game_boxscore(game = 2023030417, team = "home", player_type = "forwards")
 data.frame with one row per player
 }
 \description{
-\code{get_game_boxscore()} is deprecated. Use \code{\link[=ns_boxscore]{ns_boxscore()}} instead.
+\code{get_game_boxscore()} is deprecated. Use \code{\link[=boxscore]{boxscore()}} instead.
 }

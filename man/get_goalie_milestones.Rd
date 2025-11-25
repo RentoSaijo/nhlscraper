@@ -7,6 +7,6 @@
 get_goalie_milestones()
 }
 \description{
-\code{get_goalie_milestones()} is deprecated. Use \code{\link[=ns_goalie_milestones]{ns_goalie_milestones()}}
+\code{get_goalie_milestones()} is deprecated. Use \code{\link[=goalie_milestones]{goalie_milestones()}}
 instead.
 }

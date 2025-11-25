@@ -1,48 +1,48 @@
 #' Access all the players
 #' 
-#' `get_players()` is deprecated. Use [ns_players()] instead.
+#' `get_players()` is deprecated. Use [players()] instead.
 #' 
 #' @returns data.frame with one row per player
 #' @export
 
 get_players <- function() {
   .Deprecated(
-    new     = 'ns_players()',
+    new     = 'players()',
     package = 'nhlscraper',
     msg     = paste(
       '`get_players()` is deprecated.',
-      'Use `ns_players()` instead.'
+      'Use `players()` instead.'
     )
   )
-  ns_players()
+  players()
 }
 
 #' Access the summary for a player
 #' 
-#' `get_player_landing()` is deprecated. Use [ns_player_summary()] instead.
+#' `get_player_landing()` is deprecated. Use [player_summary()] instead.
 #' 
-#' @inheritParams ns_player_seasons
+#' @inheritParams player_seasons
 #' @returns list with various items
 #' @export
 
 get_player_landing <- function(player = 8478402) {
   .Deprecated(
-    new     = 'ns_player_summary()',
+    new     = 'player_summary()',
     package = 'nhlscraper',
     msg     = paste(
       '`get_player_landing()` is deprecated.',
-      'Use `ns_player_summary()` instead.'
+      'Use `player_summary()` instead.'
     )
   )
-  ns_player_summary(player)
+  player_summary(player)
 }
 
 #' Access the game log for a player, season, and game type
 #' 
-#' `get_player_game_log()` is deprecated. Use [ns_player_game_log()] instead.
+#' `get_player_game_log()` is deprecated. Use [player_game_log()] instead.
 #' 
-#' @inheritParams ns_player_seasons
-#' @inheritParams ns_roster_statistics
+#' @inheritParams player_seasons
+#' @inheritParams roster_statistics
 #' @returns data.frame with one row per game
 #' @export
 
@@ -52,19 +52,19 @@ get_player_game_log <- function(
   game_type = ''
 ) {
   .Deprecated(
-    new     = 'ns_player_game_log()',
+    new     = 'player_game_log()',
     package = 'nhlscraper',
     msg     = paste(
       '`get_player_game_log()` is deprecated.',
-      'Use `ns_player_game_log()` instead.'
+      'Use `player_game_log()` instead.'
     )
   )
-  ns_player_game_log(player, season, game_type)
+  player_game_log(player, season, game_type)
 }
 
 #' Access the spotlight players
 #' 
-#' `get_spotlight_players()` is deprecated. Use [ns_spotlight_players()] 
+#' `get_spotlight_players()` is deprecated. Use [spotlight_players()] 
 #' instead.
 #' 
 #' @returns data.frame with one row per player
@@ -72,12 +72,12 @@ get_player_game_log <- function(
 
 get_spotlight_players <- function() {
   .Deprecated(
-    new     = 'ns_spotlight_players()',
+    new     = 'spotlight_players()',
     package = 'nhlscraper',
     msg     = paste(
       '`get_spotlight_players()` is deprecated.',
-      'Use `ns_spotlight_players()` instead.'
+      'Use `spotlight_players()` instead.'
     )
   )
-  ns_spotlight_players()
+  spotlight_players()
 }

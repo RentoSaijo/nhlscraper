@@ -7,11 +7,11 @@
 get_game_story(game = 2023030417)
 }
 \arguments{
-\item{game}{integer ID (e.g., 2025020275); see \code{\link[=ns_games]{ns_games()}} for reference}
+\item{game}{integer ID (e.g., 2025020275); see \code{\link[=games]{games()}} for reference}
 }
 \value{
 list of various items
 }
 \description{
-\code{get_game_story()} is deprecated. Use \code{\link[=ns_wsc_summary]{ns_wsc_summary()}} instead.
+\code{get_game_story()} is deprecated. Use \code{\link[=wsc_summary]{wsc_summary()}} instead.
 }

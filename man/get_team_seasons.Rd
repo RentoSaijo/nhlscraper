@@ -7,11 +7,11 @@
 get_team_seasons(team = "NJD")
 }
 \arguments{
-\item{team}{three-letter code (e.g., 'COL'); see \code{\link[=ns_teams]{ns_teams()}} for reference}
+\item{team}{three-letter code (e.g., 'COL'); see \code{\link[=teams]{teams()}} for reference}
 }
 \value{
 data.frame with one row per season
 }
 \description{
-\code{get_team_seasons()} is deprecated. Use \code{\link[=ns_team_seasons]{ns_team_seasons()}} instead.
+\code{get_team_seasons()} is deprecated. Use \code{\link[=team_seasons]{team_seasons()}} instead.
 }

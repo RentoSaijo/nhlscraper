@@ -10,5 +10,5 @@ get_streams()
 data.frame with one row per stream
 }
 \description{
-\code{get_streams()} is deprecated. Use \code{\link[=ns_streams]{ns_streams()}} instead.
+\code{get_streams()} is deprecated. Use \code{\link[=streams]{streams()}} instead.
 }

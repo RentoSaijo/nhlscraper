@@ -10,6 +10,6 @@ get_standings_information()
 data.frame with one row per season
 }
 \description{
-\code{get_standings_information()} is deprecated. Use \code{\link[=ns_standings_rules]{ns_standings_rules()}}
+\code{get_standings_information()} is deprecated. Use \code{\link[=standings_rules]{standings_rules()}}
 instead.
 }

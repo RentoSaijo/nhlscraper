@@ -1,40 +1,40 @@
 #' Get the skaters for a range of seasons
 #' 
-#' `get_skaters()` is defunct. Use [ns_players()] instead.
+#' `get_skaters()` is defunct. Use [players()] instead.
 #'
 #' @export
 
 get_skaters <- function() {
   .Defunct(
-    new     = 'ns_players()',
+    new     = 'players()',
     package = 'nhlscraper',
     msg     = paste(
       '`get_skaters()` is defunct.',
-      'Use `ns_players()` instead.'
+      'Use `players()` instead.'
     )
   )
 }
 
 #' Get skater statistics
 #' 
-#' `get_skater_statistics()` is defunct. Use [ns_skater_statistics()] instead.
+#' `get_skater_statistics()` is defunct. Use [skater_statistics()] instead.
 #'
 #' @export
 
 get_skater_statistics <- function() {
   .Defunct(
-    new     = 'ns_skater_statistics()',
+    new     = 'skater_statistics()',
     package = 'nhlscraper',
     msg     = paste(
       '`get_skater_statistics()` is defunct.',
-      'Use `ns_skater_statistics()` instead.'
+      'Use `skater_statistics()` instead.'
     )
   )
 }
 
 #' Get the skater statistics leaders for a season, game type, and category
 #' 
-#' `get_skater_leaders()` is deprecated. Use [ns_skater_leaders()] instead.
+#' `get_skater_leaders()` is deprecated. Use [skater_leaders()] instead.
 #'
 #' @export
 
@@ -44,11 +44,11 @@ get_skater_leaders <- function(
     category  = 'points'
 ) {
   .Deprecated(
-    new     = 'ns_skater_leaders()',
+    new     = 'skater_leaders()',
     package = 'nhlscraper',
     msg     = paste(
       '`get_skater_leaders()` is deprecated.',
-      'Use `ns_skater_leaders()` instead.'
+      'Use `skater_leaders()` instead.'
     )
   )
   category <- switch(
@@ -63,24 +63,24 @@ get_skater_leaders <- function(
     plusMinus      = 'pm',
     faceoffLeaders = 'f'
   )
-  ns_skater_leaders(season, game_type, category)
+  skater_leaders(season, game_type, category)
 }
 
 #' Get the skaters on milestone watch
 #' 
-#' `get_skater_milestones()` is deprecated. Use [ns_skater_milestones()] 
+#' `get_skater_milestones()` is deprecated. Use [skater_milestones()] 
 #' instead.
 #'
 #' @export
 
 get_skater_milestones <- function() {
   .Deprecated(
-    new     = 'ns_skater_milestones()',
+    new     = 'skater_milestones()',
     package = 'nhlscraper',
     msg     = paste(
       '`get_skater_milestones()` is deprecated.',
-      'Use `ns_skater_milestones()` instead.'
+      'Use `skater_milestones()` instead.'
     )
   )
-  ns_skater_milestones()
+  skater_milestones()
 }

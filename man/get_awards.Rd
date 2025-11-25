@@ -10,5 +10,5 @@ get_awards()
 data.frame with one row per award
 }
 \description{
-\code{get_awards()} is deprecated. Use \code{\link[=ns_awards]{ns_awards()}} instead.
+\code{get_awards()} is deprecated. Use \code{\link[=awards]{awards()}} instead.
 }

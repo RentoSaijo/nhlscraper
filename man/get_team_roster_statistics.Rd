@@ -12,14 +12,14 @@ get_team_roster_statistics(
 )
 }
 \arguments{
-\item{team}{three-letter code (e.g., 'COL'); see \code{\link[=ns_teams]{ns_teams()}} for reference}
+\item{team}{three-letter code (e.g., 'COL'); see \code{\link[=teams]{teams()}} for reference}
 
-\item{season}{integer in YYYYYYYY (e.g., 20242025); see \code{\link[=ns_seasons]{ns_seasons()}} for
+\item{season}{integer in YYYYYYYY (e.g., 20242025); see \code{\link[=seasons]{seasons()}} for
 reference}
 
 \item{game_type}{integer in 1:3 (where 1 = pre-season, 2 = regular season, 3
 = playoff/post-season) OR character of 'pre', 'regular', or
-playoff'/'post'; see \code{\link[=ns_seasons]{ns_seasons()}} for reference}
+playoff'/'post'; see \code{\link[=seasons]{seasons()}} for reference}
 
 \item{player_type}{character of 'skaters' or 'goalies'}
 }
@@ -27,6 +27,6 @@ playoff'/'post'; see \code{\link[=ns_seasons]{ns_seasons()}} for reference}
 data.frame with one row per player
 }
 \description{
-\code{get_team_roster_statistics()} is deprecated. Use \code{\link[=ns_roster_statistics]{ns_roster_statistics()}}
+\code{get_team_roster_statistics()} is deprecated. Use \code{\link[=roster_statistics]{roster_statistics()}}
 instead.
 }

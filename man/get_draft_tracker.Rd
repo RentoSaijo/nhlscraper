@@ -10,5 +10,5 @@ get_draft_tracker()
 data.frame with one row per player
 }
 \description{
-\code{get_draft_tracker()} is deprecated. Use \code{\link[=ns_draft_tracker]{ns_draft_tracker()}} instead.
+\code{get_draft_tracker()} is deprecated. Use \code{\link[=draft_tracker]{draft_tracker()}} instead.
 }

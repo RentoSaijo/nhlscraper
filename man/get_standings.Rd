@@ -8,11 +8,11 @@ get_standings(date = "2025-01-01")
 }
 \arguments{
 \item{date}{character in 'YYYY-MM-DD' (e.g., '2025-01-01'); see
-\code{\link[=ns_seasons]{ns_seasons()}} for reference}
+\code{\link[=seasons]{seasons()}} for reference}
 }
 \value{
 data.frame with one row per team
 }
 \description{
-\code{get_standings()} is deprecated. Use \code{\link[=ns_standings]{ns_standings()}} instead.
+\code{get_standings()} is deprecated. Use \code{\link[=standings]{standings()}} instead.
 }

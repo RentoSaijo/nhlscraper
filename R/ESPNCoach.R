@@ -1,10 +1,10 @@
 #' Get the ESPN coaches for a season
 #' 
 #' `get_espn_coaches()` retrieves the ESPN ID of each coach for a given 
-#' `season`. Access `ns_seasons()` for `season` reference. Note the season 
+#' `season`. Access `seasons()` for `season` reference. Note the season 
 #' format differs from the NHL API; will soon be fixed to accept both. 
 #' Temporarily deprecated while we re-evaluate the practicality of ESPN API 
-#' information. Use [ns_coaches()] instead.
+#' information. Use [coaches()] instead.
 #'  
 #' @param season integer in YYYY (e.g., 2025)
 #' @returns data.frame with one row per coach
@@ -12,14 +12,14 @@
 #' ESPN_coaches_20242025 <- get_espn_coaches(2025)
 #' @export
 
-get_espn_coaches <- function(season = ns_season() %% 1e4) {
+get_espn_coaches <- function(season = season() %% 1e4) {
   .Deprecated(
-    new     = 'ns_coaches()',
+    new     = 'coaches()',
     package = 'nhlscraper',
     msg     = paste(
       '`get_espn_coaches()` is temporarily deprecated.',
       'Re-evaluating the practicality of ESPN API inforamtion.',
-      'Use `ns_coaches()` instead.'
+      'Use `coaches()` instead.'
     )
   )
   tryCatch(

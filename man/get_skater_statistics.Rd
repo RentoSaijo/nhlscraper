@@ -4,16 +4,8 @@
 \alias{get_skater_statistics}
 \title{Get skater statistics}
 \usage{
-get_skater_statistics(
-  season = 20242025,
-  teams = 1:100,
-  game_types = 1:3,
-  dates = c("2025-01-01"),
-  report = "summary",
-  is_aggregate = FALSE,
-  is_game = FALSE
-)
+get_skater_statistics()
 }
 \description{
-\code{get_skater_statistics()} is defunct. Use \code{\link[=ns_skater_statistics]{ns_skater_statistics()}} instead.
+\code{get_skater_statistics()} is defunct. Use \code{\link[=skater_statistics]{skater_statistics()}} instead.
 }

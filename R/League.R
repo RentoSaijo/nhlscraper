@@ -1,13 +1,13 @@
 #' Access all the seasons
 #' 
-#' `ns_seasons()` scrapes information on all the seasons.
+#' `seasons()` scrapes information on all the seasons.
 #'
 #' @returns data.frame with one row per season
 #' @examples
-#' all_seasons <- ns_seasons()
+#' all_seasons <- seasons()
 #' @export
 
-ns_seasons <- function() {
+seasons <- function() {
   seasons <- nhl_api(
     path = 'en/season',
     type = 's'
@@ -17,14 +17,14 @@ ns_seasons <- function() {
 
 #' Access the season as of now
 #' 
-#' `ns_season` scrapes the current season ID.
+#' `season` scrapes the current season ID.
 #' 
 #' @returns integer in YYYYYYYY (e.g., 20242025)
 #' @examples
-#' season_now <- ns_season()
+#' season_now <- season()
 #' @export
 
-ns_season <- function() {
+season <- function() {
   nhl_api(
     path = 'en/componentSeason',
     type = 's'
@@ -33,15 +33,15 @@ ns_season <- function() {
 
 #' Access the game type as of now
 #' 
-#' `ns_game_type()` scrapes the current game type ID.
+#' `game_type()` scrapes the current game type ID.
 #' 
 #' @returns integer in 1:3 (where 1 = pre-season, 2 = regular season, 3 
 #' = playoff/post-season)
 #' @examples
-#' game_type_now <- ns_game_type()
+#' game_type_now <- game_type()
 #' @export
 
-ns_game_type <- function() {
+game_type <- function() {
   nhl_api(
     path = 'en/componentSeason',
     type = 's'
@@ -50,14 +50,14 @@ ns_game_type <- function() {
 
 #' Access the standings rules by season
 #' 
-#' `ns_standings_rules()` scrapes the standings rules by season.
+#' `standings_rules()` scrapes the standings rules by season.
 #' 
 #' @returns data.frame with one row per season
 #' @examples
-#' standings_rules <- ns_standings_rules()
+#' standings_rules <- standings_rules()
 #' @export
 
-ns_standings_rules <- function() {
+standings_rules <- function() {
   nhl_api(
     path = 'v1/standings-season',
     type = 'w'
@@ -66,16 +66,16 @@ ns_standings_rules <- function() {
 
 #' Access the standings for a date
 #' 
-#' `ns_standings()` scrapes the standings for a given `date`.
+#' `standings()` scrapes the standings for a given `date`.
 #' 
 #' @param date character in 'YYYY-MM-DD' (e.g., '2025-01-01'); see 
-#' [ns_seasons()] for reference
+#' [seasons()] for reference
 #' @returns data.frame with one row per team
 #' @examples
-#' standings_Halloween_2025 <- ns_standings(date = '2025-10-31')
+#' standings_Halloween_2025 <- standings(date = '2025-10-31')
 #' @export
 
-ns_standings <- function(date = 'now') {
+standings <- function(date = 'now') {
   tryCatch(
     expr = {
       nhl_api(
@@ -92,15 +92,15 @@ ns_standings <- function(date = 'now') {
 
 #' Access the schedule for a date
 #' 
-#' `ns_schedule()` scrapes the schedule for a given `date`.
+#' `schedule()` scrapes the schedule for a given `date`.
 #' 
-#' @inheritParams ns_standings
+#' @inheritParams standings
 #' @returns data.frame with one row per game
 #' @examples
-#' schedule_Halloween_2025 <- ns_schedule(date = '2025-10-31')
+#' schedule_Halloween_2025 <- schedule(date = '2025-10-31')
 #' @export
 
-ns_schedule <- function(date = Sys.Date()) {
+schedule <- function(date = Sys.Date()) {
   tryCatch(
     expr = {
       gameWeek <- nhl_api(
@@ -118,14 +118,14 @@ ns_schedule <- function(date = Sys.Date()) {
 
 #' Access all the venues
 #' 
-#' `ns_venues()` scrapes information on all the venues.
+#' `venues()` scrapes information on all the venues.
 #' 
 #' @returns data.frame with one row per venue
 #' @examples
-#' all_venues <- ns_venues()
+#' all_venues <- venues()
 #' @export
 
-ns_venues <- function() {
+venues <- function() {
   venues    <- nhl_api(
     path = 'venue',
     type = 'r'
@@ -136,14 +136,14 @@ ns_venues <- function() {
 
 #' Access the attendance by season and game type
 #' 
-#' `ns_attendance()` scrapes the attendance by season and game type.
+#' `attendance()` scrapes the attendance by season and game type.
 #' 
 #' @returns data.frame with one row per season
 #' @examples
-#' all_attendance <- ns_attendance()
+#' all_attendance <- attendance()
 #' @export
 
-ns_attendance <- function() {
+attendance <- function() {
   attendance <- nhl_api(
     path = 'attendance',
     type = 'r'

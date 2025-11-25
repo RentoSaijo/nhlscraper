@@ -4,16 +4,8 @@
 \alias{get_goalie_statistics}
 \title{Get goalie statistics}
 \usage{
-get_goalie_statistics(
-  season = 20242025,
-  teams = 1:100,
-  game_types = 1:3,
-  dates = c("2025-01-01"),
-  report = "summary",
-  is_aggregate = FALSE,
-  is_game = FALSE
-)
+get_goalie_statistics()
 }
 \description{
-\code{get_goalie_statistics()} is defunct. Use \code{\link[=ns_goalie_statistics]{ns_goalie_statistics()}} instead.
+\code{get_goalie_statistics()} is defunct. Use \code{\link[=goalie_statistics]{goalie_statistics()}} instead.
 }

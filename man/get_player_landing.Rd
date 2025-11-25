@@ -7,11 +7,11 @@
 get_player_landing(player = 8478402)
 }
 \arguments{
-\item{player}{integer ID (e.g., 8480039); see \code{\link[=ns_players]{ns_players()}} for reference}
+\item{player}{integer ID (e.g., 8480039); see \code{\link[=players]{players()}} for reference}
 }
 \value{
 list with various items
 }
 \description{
-\code{get_player_landing()} is deprecated. Use \code{\link[=ns_player_summary]{ns_player_summary()}} instead.
+\code{get_player_landing()} is deprecated. Use \code{\link[=player_summary]{player_summary()}} instead.
 }

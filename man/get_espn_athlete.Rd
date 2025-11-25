@@ -4,7 +4,7 @@
 \alias{get_espn_athlete}
 \title{Get the ESPN information on an athlete for a season}
 \usage{
-get_espn_athlete(athlete = 3988803, season = ns_season()\%\%10000)
+get_espn_athlete(athlete = 3988803, season = season()\%\%10000)
 }
 \description{
 \code{get_espn_athlete()} is temporarily defunct while we re-evaluate the

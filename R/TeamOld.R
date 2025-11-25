@@ -1,48 +1,48 @@
 #' Access all the teams
 #' 
-#' `get_teams()` is deprecated. Use [ns_teams()] instead.
+#' `get_teams()` is deprecated. Use [teams()] instead.
 #' 
 #' @returns data.frame with one row per team
 #' @export
 
 get_teams <- function() {
   .Deprecated(
-    new     = 'ns_teams()',
+    new     = 'teams()',
     package = 'nhlscraper',
     msg     = paste(
       '`get_teams()` is deprecated.',
-      'Use `ns_teams()` instead.'
+      'Use `teams()` instead.'
     )
   )
-  ns_teams()
+  teams()
 }
 
 #' Access the season(s) and game type(s) in which a team played
 #' 
-#' `get_team_seasons()` is deprecated. Use [ns_team_seasons()] instead.
+#' `get_team_seasons()` is deprecated. Use [team_seasons()] instead.
 #' 
-#' @param team three-letter code (e.g., 'COL'); see [ns_teams()] for reference
+#' @param team three-letter code (e.g., 'COL'); see [teams()] for reference
 #' @returns data.frame with one row per season
 #' @export
 
 get_team_seasons <- function(team = 'NJD') {
   .Deprecated(
-    new     = 'ns_team_seasons()',
+    new     = 'team_seasons()',
     package = 'nhlscraper',
     msg     = paste(
       '`get_team_seasons()` is deprecated.',
-      'Use `ns_team_seasons()` instead.'
+      'Use `team_seasons()` instead.'
     )
   )
-  ns_team_seasons(team)
+  team_seasons(team)
 }
 
 #' Access the roster for a team, season, and player type
 #' 
-#' `get_team_roster()` is deprecated. Use [ns_roster()] instead.
+#' `get_team_roster()` is deprecated. Use [roster()] instead.
 #' 
 #' @inheritParams get_team_seasons
-#' @param season integer in YYYYYYYY (e.g., 20242025); see [ns_seasons()] for 
+#' @param season integer in YYYYYYYY (e.g., 20242025); see [seasons()] for 
 #' reference
 #' @param player_type character of 'forwards', 'defensemen', or 'goalies'
 #' @returns data.frame with one row per player
@@ -54,25 +54,25 @@ get_team_roster <- function(
   player_type = 'forwards'
 ) {
   .Deprecated(
-    new     = 'ns_roster()',
+    new     = 'roster()',
     package = 'nhlscraper',
     msg     = paste(
       '`get_team_roster()` is deprecated.',
-      'Use `ns_roster()` instead.'
+      'Use `roster()` instead.'
     )
   )
-  ns_roster(team, season, player_type)
+  roster(team, season, player_type)
 }
 
 #' Access the roster statistics for a team, season, game type, and player type
 #' 
-#' `get_team_roster_statistics()` is deprecated. Use [ns_roster_statistics()] 
+#' `get_team_roster_statistics()` is deprecated. Use [roster_statistics()] 
 #' instead.
 #' 
 #' @inheritParams get_team_roster
 #' @param game_type integer in 1:3 (where 1 = pre-season, 2 = regular season, 3 
 #' = playoff/post-season) OR character of 'pre', 'regular', or 
-#' playoff'/'post'; see [ns_seasons()] for reference
+#' playoff'/'post'; see [seasons()] for reference
 #' @param player_type character of 'skaters' or 'goalies'
 #' @returns data.frame with one row per player
 #' @export
@@ -84,19 +84,19 @@ get_team_roster_statistics <- function(
   player_type = 'skaters'
 ) {
   .Deprecated(
-    new     = 'ns_roster_statistics()',
+    new     = 'roster_statistics()',
     package = 'nhlscraper',
     msg     = paste(
       '`get_team_roster_statistics()` is deprecated.',
-      'Use `ns_roster_statistics()` instead.'
+      'Use `roster_statistics()` instead.'
     )
   )
-  ns_roster_statistics(team, season, game_type, player_type)
+  roster_statistics(team, season, game_type, player_type)
 }
 
 #' Access the prospects for a team and position
 #' 
-#' `get_team_prospects()` is deprecated. Use [ns_team_prospects()] instead.
+#' `get_team_prospects()` is deprecated. Use [team_prospects()] instead.
 #' 
 #' @inheritParams get_team_roster
 #' @returns data.frame with one row per player
@@ -104,19 +104,19 @@ get_team_roster_statistics <- function(
 
 get_team_prospects <- function(team = 'NJD', player_type = 'forwards') {
   .Deprecated(
-    new     = 'ns_team_prospects()',
+    new     = 'team_prospects()',
     package = 'nhlscraper',
     msg     = paste(
       '`get_team_prospects()` is deprecated.',
-      'Use `ns_team_prospects()` instead.'
+      'Use `team_prospects()` instead.'
     )
   )
-  ns_team_prospects(team, player_type)
+  team_prospects(team, player_type)
 }
 
 #' Access the schedule for a team and season
 #' 
-#' `get_team_schedule()` is deprecated. Use [ns_team_season_schedule()] instead.
+#' `get_team_schedule()` is deprecated. Use [team_season_schedule()] instead.
 #' 
 #' @inheritParams get_team_roster
 #' @returns data.frame with one row per game
@@ -124,30 +124,30 @@ get_team_prospects <- function(team = 'NJD', player_type = 'forwards') {
 
 get_team_schedule <- function(team = 'NJD', season = 'now') {
   .Deprecated(
-    new     = 'ns_team_season_schedule()',
+    new     = 'team_season_schedule()',
     package = 'nhlscraper',
     msg     = paste(
       '`get_team_schedule()` is deprecated.',
-      'Use `ns_team_season_schedule()` instead.'
+      'Use `team_season_schedule()` instead.'
     )
   )
-  ns_team_season_schedule(team, season)
+  team_season_schedule(team, season)
 }
 
 #' Access various reports for all the teams by season or game
 #' 
-#' `get_team_statistics()` is defunct. Use [ns_team_season_report()] or 
-#' [ns_team_game_report()] instead.
+#' `get_team_statistics()` is defunct. Use [team_season_report()] or 
+#' [team_game_report()] instead.
 #' 
 #' @export
 
 get_team_statistics <- function() {
   .Defunct(
-    new     = 'ns_team_season_report()',
+    new     = 'team_season_report()',
     package = 'nhlscraper',
     msg     = paste(
       '`get_team_statistics()` is defunct.',
-      'Use `ns_team_season_report()` or `ns_team_game_report` instead.'
+      'Use `team_season_report()` or `team_game_report` instead.'
     )
   )
 }

@@ -7,6 +7,6 @@
 get_skater_milestones()
 }
 \description{
-\code{get_skater_milestones()} is deprecated. Use \code{\link[=ns_skater_milestones]{ns_skater_milestones()}}
+\code{get_skater_milestones()} is deprecated. Use \code{\link[=skater_milestones]{skater_milestones()}}
 instead.
 }

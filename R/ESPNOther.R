@@ -3,14 +3,14 @@
 #' `get_espn_transactions()` retrieves ESPN information on each transaction for 
 #' an interval of dates bound by a given set of `start_date` and `end_date`, 
 #' including but not limited to their date, description, and involved teams. 
-#' Access `ns_seasons()` for `start_date` and `end_date` references. Note the 
+#' Access `seasons()` for `start_date` and `end_date` references. Note the 
 #' date format differs from the NHL API; will soon be fixed to accept both.
 #' 
 #' @param start_date integer in YYYYMMDD (e.g., 20241004)
 #' @param end_date integer in YYYYMMDD (e.g., 20250624)
 #' @returns data.frame with one row per transaction
 #' @examples
-#' ESPN_transactions_20242025 <- get_espn_transactions(
+#' ESPN_transactio20242025 <- get_espn_transactions(
 #'   start_date = 20241004, 
 #'   end_date   = 20250624
 #' )
@@ -66,7 +66,7 @@ get_espn_injuries <- function() {
 #' Get the ESPN futures for a season
 #' 
 #' `get_espn_futures()` retrieves real-time ESPN futures of various types for a 
-#' given `season`. Access `ns_seasons()` for `season` reference. Note the 
+#' given `season`. Access `seasons()` for `season` reference. Note the 
 #' season format differs from the NHL API; will soon be fixed to accept both.
 #' 
 #' @param season integer in YYYY (e.g., 2026)
@@ -75,7 +75,7 @@ get_espn_injuries <- function() {
 #' ESPN_futures_20252026 <- get_espn_futures(2026)
 #' @export
 
-get_espn_futures <- function(season = ns_season() %% 1e4) {
+get_espn_futures <- function(season = season() %% 1e4) {
   tryCatch(
     expr = {
       espn_api(

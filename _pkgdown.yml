@@ -48,64 +48,64 @@ reference:
     desc: >
       Functions to access data about the entire league
     contents:
-      - ns_seasons
-      - ns_season
-      - ns_game_type
-      - ns_standings_rules
-      - ns_standings
-      - ns_schedule
-      - ns_venues
-      - ns_attendance
+      - seasons
+      - season
+      - game_type
+      - standings_rules
+      - standings
+      - schedule
+      - venues
+      - attendance
 
   - subtitle: "Franchise"
     desc: >
       Functions to access data about the franchises
     contents:
-      - ns_franchises
-      - ns_franchise_statistics
-      - ns_franchise_stats
-      - ns_franchise_team_statistics
-      - ns_franchise_team_stats
-      - ns_franchise_season_statistics
-      - ns_franchise_season_stats
-      - ns_franchise_versus_franchise
-      - ns_franchise_vs_franchise
-      - ns_franchise_playoff_situational_results
+      - franchises
+      - franchise_statistics
+      - franchise_stats
+      - franchise_team_statistics
+      - franchise_team_stats
+      - franchise_season_statistics
+      - franchise_season_stats
+      - franchise_versus_franchise
+      - franchise_vs_franchise
+      - franchise_playoff_situational_results
 
   - subtitle: "Team"
     desc: >
       Functions to access data about the teams
     contents:
-      - ns_teams
-      - ns_team_seasons
-      - ns_team_season_statistics
-      - ns_team_season_stats
-      - ns_roster
-      - ns_roster_statistics
-      - ns_roster_stats
-      - ns_team_prospects
-      - ns_team_season_schedule
-      - ns_team_month_schedule
-      - ns_team_week_schedule
-      - ns_team_logos
-      - ns_team_edge_seasons
-      - ns_team_edge_leaders
-      - ns_team_edge_summary
-      - ns_team_edge_zone_time
-      - ns_team_edge_skating_distance
-      - ns_team_edge_skating_speed
-      - ns_team_edge_shot_location
-      - ns_team_edge_shot_speed
+      - teams
+      - team_seasons
+      - team_season_statistics
+      - team_season_stats
+      - roster
+      - roster_statistics
+      - roster_stats
+      - team_prospects
+      - team_season_schedule
+      - team_month_schedule
+      - team_week_schedule
+      - team_logos
+      - team_edge_seasons
+      - team_edge_leaders
+      - team_edge_summary
+      - team_edge_zone_time
+      - team_edge_skating_distance
+      - team_edge_skating_speed
+      - team_edge_shot_location
+      - team_edge_shot_speed
 
   - subtitle: "Player"
     desc: >
       Functions to access data about the players at large
     contents:
-      - ns_players
-      - ns_player_seasons
-      - ns_player_summary
-      - ns_player_game_log
-      - ns_spotlight_players
+      - players
+      - player_seasons
+      - player_summary
+      - player_game_log
+      - spotlight_players
 
   - subtitle: "Skater"
     desc: >
@@ -129,91 +129,91 @@ reference:
     desc: >
       Functions to access data about the games
     contents:
-      - ns_games
-      - ns_scores
-      - ns_gc_summary
-      - ns_wsc_summary
-      - ns_boxscore
-      - ns_game_rosters
-      - ns_gc_play_by_play
-      - ns_gc_pbp
-      - ns_wsc_play_by_play
-      - ns_wsc_pbp
-      - ns_shifts
+      - games
+      - scores
+      - gc_summary
+      - wsc_summary
+      - boxscore
+      - game_rosters
+      - gc_play_by_play
+      - gc_pbp
+      - wsc_play_by_play
+      - wsc_pbp
+      - shifts
   
   - subtitle: "Event"
     desc: >
       Functions to access data about the events (plays)
     contents:
-      - ns_penalty_shots
-      - ns_event_replay
+      - penalty_shots
+      - event_replay
 
   - subtitle: "Playoff"
     desc: >
       Functions to access data about the playoffs
     contents:
-      - ns_series
-      - ns_playoff_season_statistics
-      - ns_playoff_season_stats
-      - ns_bracket
-      - ns_series_schedule
+      - series
+      - playoff_season_statistics
+      - playoff_season_stats
+      - bracket
+      - series_schedule
 
   - subtitle: "Award"
     desc: >
       Functions to access data about the awards
     contents:
-      - ns_awards
-      - ns_award_winners
+      - awards
+      - award_winners
 
   - subtitle: "Draft"
     desc: >
       Functions to access data about the drafts
     contents:
-      - ns_drafts
-      - ns_draft_picks
-      - ns_draft_prospects
-      - ns_draft_rankings
-      - ns_combine_reports
-      - ns_lottery_odds
-      - ns_draft_tracker
-      - ns_expansion_drafts
-      - ns_expansion_draft_picks
+      - drafts
+      - draft_picks
+      - draft_prospects
+      - draft_rankings
+      - combine_reports
+      - lottery_odds
+      - draft_tracker
+      - expansion_drafts
+      - expansion_draft_picks
       
   - subtitle: "Manager"
     desc: >
       Functions to access data about the general managers
     contents:
-      - ns_general_managers
-      - ns_gms
+      - general_managers
+      - gms
       
   - subtitle: "Coach"
     desc: >
       Functions to access data about the coaches
     contents:
-      - ns_coaches
-      - ns_coach_career_statistics
-      - ns_coach_career_stats
-      - ns_coach_franchise_statistics
-      - ns_coach_franchise_stats
+      - coaches
+      - coach_career_statistics
+      - coach_career_stats
+      - coach_franchise_statistics
+      - coach_franchise_stats
       
   - subtitle: "Official"
     desc: >
       Functions to access data about the officials
     contents:
-      - ns_officials
+      - officials
 
   - subtitle: "Other"
     desc: >
       Functions to acccess any other data
     contents:
-      - ns_glossary
-      - ns_statistics_report_configuration
-      - ns_stats_report_config
-      - ns_countries
-      - ns_location
-      - ns_streams
-      - ns_tv_schedule
-      - ns_game_partner_odds
+      - glossary
+      - statistics_report_configuration
+      - stats_report_config
+      - countries
+      - location
+      - streams
+      - tv_schedule
+      - game_partner_odds
 
   - subtitle: "Deprecated"
     desc: >

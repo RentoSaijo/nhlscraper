@@ -1,13 +1,13 @@
 #' Access all the teams
 #' 
-#' `ns_teams()` scrapes information on all the teams.
+#' `teams()` scrapes information on all the teams.
 #' 
 #' @returns data.frame with one row per team
 #' @examples
-#' all_teams <- ns_teams()
+#' all_teams <- teams()
 #' @export
 
-ns_teams <- function() {
+teams <- function() {
   teams <- nhl_api(
     path = 'en/team',
     type = 's'
@@ -17,18 +17,18 @@ ns_teams <- function() {
 
 #' Access the season(s) and game type(s) in which a team played
 #' 
-#' `ns_team_seasons()` scrapes the season(s) and game type(s) in which a team 
+#' `team_seasons()` scrapes the season(s) and game type(s) in which a team 
 #' played in the NHL.
 #' 
 #' @param team integer ID (e.g., 21), character full name (e.g., 'Colorado 
-#' Avalanche'), OR three-letter code (e.g., 'COL'); see [ns_teams()] for 
+#' Avalanche'), OR three-letter code (e.g., 'COL'); see [teams()] for 
 #' reference
 #' @returns data.frame with one row per season
 #' @examples
-#' COL_seasons <- ns_team_seasons(team = 21)
+#' COL_seasons <- team_seasons(team = 21)
 #' @export
 
-ns_team_seasons <- function(team = 1) {
+team_seasons <- function(team = 1) {
   tryCatch(
     expr = {
       nhl_api(
@@ -45,16 +45,16 @@ ns_team_seasons <- function(team = 1) {
 
 #' Access the statistics for all the teams by season and game type
 #' 
-#' `ns_team_season_statistics()` scrapes the statistics for all the teams by 
+#' `team_season_statistics()` scrapes the statistics for all the teams by 
 #' season and game type.
 #' 
 #' @returns data.frame with one row per team per season per game type
 #' @examples
 #' # This may take >5s, so skip.
-#' \donttest{team_season_statistics <- ns_team_season_statistics()}
+#' \donttest{team_season_statistics <- team_season_statistics()}
 #' @export
 
-ns_team_season_statistics <- function() {
+team_season_statistics <- function() {
   stats <- nhl_api(
     path = 'team-stats',
     type = 'r'
@@ -64,32 +64,32 @@ ns_team_season_statistics <- function() {
   stats[order(stats$`id.db:TEAMID`), ]
 }
 
-#' @rdname ns_team_season_statistics
+#' @rdname team_season_statistics
 #' @export
-ns_team_season_stats <- function() {
-  ns_team_season_statistics()
+team_season_stats <- function() {
+  team_season_statistics()
 }
 
 #' Access the roster for a team, season, and position
 #' 
-#' `ns_roster()` scrapes the roster for a given set of `team`, `season`, and 
+#' `roster()` scrapes the roster for a given set of `team`, `season`, and 
 #' `position`.
 #' 
-#' @inheritParams ns_team_seasons
-#' @param season integer in YYYYYYYY (e.g., 20242025); see [ns_seasons()] for 
+#' @inheritParams team_seasons
+#' @param season integer in YYYYYYYY (e.g., 20242025); see [seasons()] for 
 #' reference
 #' @param position character of 'f'/'forwards', 'd'/'defensemen', or 
 #' 'g'/'goalies'
 #' @returns data.frame with one row per player
 #' @examples
-#' COL_defensemen_20242025 <- ns_roster(
+#' COL_defensemen_20242025 <- roster(
 #'   team     = 21,
 #'   season   = 20242025,
 #'   position = 'D'
 #' )
 #' @export
 
-ns_roster <- function(
+roster <- function(
   team     = 1,
   season   = 'current',
   position = 'forwards'
@@ -116,17 +116,17 @@ ns_roster <- function(
 
 #' Access the roster statistics for a team, season, game type, and position
 #' 
-#' `ns_roster_statistics()` scrapes the roster statistics for a given set of 
+#' `roster_statistics()` scrapes the roster statistics for a given set of 
 #' `team`, `season`, `game_type`, and `position`.
 #' 
-#' @inheritParams ns_roster
+#' @inheritParams roster
 #' @param game_type integer in 1:3 (where 1 = pre-season, 2 = regular season, 3 
 #' = playoff/post-season) OR character of 'pre', 'regular', or 
-#' playoff'/'post'; see [ns_seasons()] for reference
+#' playoff'/'post'; see [seasons()] for reference
 #' @param position character of 's'/'skaters' or 'g'/'goalies'
 #' @returns data.frame with one row per player
 #' @examples
-#' COL_goalies_statistics_regular_20242025 <- ns_roster_statistics(
+#' COL_goalies_statistics_regular_20242025 <- roster_statistics(
 #'   team      = 21,
 #'   season    = 20242025,
 #'   game_type = 2,
@@ -134,7 +134,7 @@ ns_roster <- function(
 #' )
 #' @export
 
-ns_roster_statistics <- function(
+roster_statistics <- function(
   team      = 1,
   season    = 'now',
   game_type = '',
@@ -164,32 +164,32 @@ ns_roster_statistics <- function(
   )
 }
 
-#' @rdname ns_roster_statistics
+#' @rdname roster_statistics
 #' @export
-ns_roster_stats <- function(
+roster_stats <- function(
   team      = 1,
   season    = 'now',
   game_type = '',
   position  = 'skaters'
 ) {
-  ns_roster_statistics(team, season, game_type, position)
+  roster_statistics(team, season, game_type, position)
 }
 
 #' Access the prospects for a team and position
 #' 
-#' `ns_team_prospects()` scrapes the prospects for a given set of `team` and 
+#' `team_prospects()` scrapes the prospects for a given set of `team` and 
 #' `position`.
 #' 
-#' @inheritParams ns_roster
+#' @inheritParams roster
 #' @returns data.frame with one row per player
 #' @examples
-#' COL_forward_prospects <- ns_team_prospects(
+#' COL_forward_prospects <- team_prospects(
 #'   team     = 21,
 #'   position = 'F'
 #' )
 #' @export
 
-ns_team_prospects <- function(team = 1, position = 'forwards') {
+team_prospects <- function(team = 1, position = 'forwards') {
   tryCatch(
     expr = {
       position <- switch(
@@ -212,19 +212,19 @@ ns_team_prospects <- function(team = 1, position = 'forwards') {
 
 #' Access the schedule for a team and season
 #' 
-#' `ns_team_season_schedule()` scrapes the schedule for a given set of `team` 
+#' `team_season_schedule()` scrapes the schedule for a given set of `team` 
 #' and `season`.
 #' 
-#' @inheritParams ns_roster
+#' @inheritParams roster
 #' @returns data.frame with one row per game
 #' @examples
-#' COL_schedule_20252026 <- ns_team_season_schedule(
+#' COL_schedule_20252026 <- team_season_schedule(
 #'   team   = 21, 
 #'   season = 20252026
 #' )
 #' @export
 
-ns_team_season_schedule <- function(team = 1, season = 'now') {
+team_season_schedule <- function(team = 1, season = 'now') {
   tryCatch(
     expr = {
       nhl_api(
@@ -245,21 +245,21 @@ ns_team_season_schedule <- function(team = 1, season = 'now') {
 
 #' Access the schedule for a team and month
 #' 
-#' `ns_team_month_schedule()` scrapes the schedule for a given set of `team` 
+#' `team_month_schedule()` scrapes the schedule for a given set of `team` 
 #' and `month`.
 #' 
-#' @inheritParams ns_team_seasons
-#' @param month character in 'YYYY-MM' (e.g., '2025-01'); see [ns_seasons()] 
+#' @inheritParams team_seasons
+#' @param month character in 'YYYY-MM' (e.g., '2025-01'); see [seasons()] 
 #' for reference
 #' @returns data.frame with one row per game
 #' @examples
-#' COL_schedule_December_2025 <- ns_team_month_schedule(
+#' COL_schedule_December_2025 <- team_month_schedule(
 #'   team  = 21, 
 #'   month = '2025-12'
 #' )
 #' @export
 
-ns_team_month_schedule <- function(team = 1, month = 'now') {
+team_month_schedule <- function(team = 1, month = 'now') {
   tryCatch(
     expr = {
       nhl_api(
@@ -280,20 +280,20 @@ ns_team_month_schedule <- function(team = 1, month = 'now') {
 
 #' Access the schedule for a team and week since a date
 #' 
-#' `ns_team_week_schedule()` scrapes the schedule for a given set of `team` and 
+#' `team_week_schedule()` scrapes the schedule for a given set of `team` and 
 #' a week since `date`.
 #' 
-#' @inheritParams ns_team_seasons
-#' @inheritParams ns_standings
+#' @inheritParams team_seasons
+#' @inheritParams standings
 #' @returns data.frame with one row per game
 #' @examples
-#' COL_schedule_Family_Week_2025 <- ns_team_week_schedule(
+#' COL_schedule_Family_Week_2025 <- team_week_schedule(
 #'   team = 21,
 #'   date = '2025-10-06'
 #' )
 #' @export
 
-ns_team_week_schedule <- function(team = 1, date = 'now') {
+team_week_schedule <- function(team = 1, date = 'now') {
   tryCatch(
     expr = {
       nhl_api(
@@ -314,14 +314,14 @@ ns_team_week_schedule <- function(team = 1, date = 'now') {
 
 #' Access all the team logos
 #' 
-#' `ns_team_logos()` scrapes information on all the team logos.
+#' `team_logos()` scrapes information on all the team logos.
 #' 
 #' @returns data.frame with one row per logo
 #' @examples
-#' all_team_logos <- ns_team_logos()
+#' all_team_logos <- team_logos()
 #' @export
 
-ns_team_logos <- function() {
+team_logos <- function() {
   logos <- nhl_api(
     path = 'logo',
     type = 'r'

@@ -7,7 +7,7 @@
 get_team_prospects(team = "NJD", player_type = "forwards")
 }
 \arguments{
-\item{team}{three-letter code (e.g., 'COL'); see \code{\link[=ns_teams]{ns_teams()}} for reference}
+\item{team}{three-letter code (e.g., 'COL'); see \code{\link[=teams]{teams()}} for reference}
 
 \item{player_type}{character of 'forwards', 'defensemen', or 'goalies'}
 }
@@ -15,5 +15,5 @@ get_team_prospects(team = "NJD", player_type = "forwards")
 data.frame with one row per player
 }
 \description{
-\code{get_team_prospects()} is deprecated. Use \code{\link[=ns_team_prospects]{ns_team_prospects()}} instead.
+\code{get_team_prospects()} is deprecated. Use \code{\link[=team_prospects]{team_prospects()}} instead.
 }

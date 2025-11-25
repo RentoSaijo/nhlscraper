@@ -7,6 +7,6 @@
 get_season_now()
 }
 \description{
-\code{get_season_now()} is defunct. Use \code{\link[=ns_season]{ns_season()}} and/or \code{\link[=ns_game_type]{ns_game_type()}}
+\code{get_season_now()} is defunct. Use \code{\link[=season]{season()}} and/or \code{\link[=game_type]{game_type()}}
 instead.
 }

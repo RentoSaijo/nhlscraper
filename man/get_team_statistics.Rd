@@ -4,16 +4,9 @@
 \alias{get_team_statistics}
 \title{Access various reports for all the teams by season or game}
 \usage{
-get_team_statistics(
-  season = 20242025,
-  report = "summary",
-  is_aggregate = FALSE,
-  is_game = FALSE,
-  dates = c("2025-01-01"),
-  game_types = 1:3
-)
+get_team_statistics()
 }
 \description{
-\code{get_team_statistics()} is defunct. Use \code{\link[=ns_team_season_report]{ns_team_season_report()}} or
-\code{\link[=ns_team_game_report]{ns_team_game_report()}} instead.
+\code{get_team_statistics()} is defunct. Use \code{\link[=team_season_report]{team_season_report()}} or
+\code{\link[=team_game_report]{team_game_report()}} instead.
 }

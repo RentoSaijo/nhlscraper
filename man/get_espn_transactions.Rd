@@ -18,11 +18,11 @@ data.frame with one row per transaction
 \code{get_espn_transactions()} retrieves ESPN information on each transaction for
 an interval of dates bound by a given set of \code{start_date} and \code{end_date},
 including but not limited to their date, description, and involved teams.
-Access \code{ns_seasons()} for \code{start_date} and \code{end_date} references. Note the
+Access \code{seasons()} for \code{start_date} and \code{end_date} references. Note the
 date format differs from the NHL API; will soon be fixed to accept both.
 }
 \examples{
-ESPN_transactions_20242025 <- get_espn_transactions(
+ESPN_transactio20242025 <- get_espn_transactions(
   start_date = 20241004, 
   end_date   = 20250624
 )

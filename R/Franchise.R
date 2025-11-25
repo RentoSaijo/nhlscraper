@@ -1,13 +1,13 @@
 #' Access all the franchises
 #' 
-#' `ns_franchises()` scrapes information on all the franchises.
+#' `franchises()` scrapes information on all the franchises.
 #'
 #' @returns data.frame with one row per franchise
 #' @examples
-#' all_franchises <- ns_franchises()
+#' all_franchises <- franchises()
 #' @export
 
-ns_franchises <- function() {
+franchises <- function() {
   franchises <- nhl_api(
     path = 'franchise',
     type = 'r'
@@ -24,15 +24,15 @@ ns_franchises <- function() {
 
 #' Access the all-time statistics for all the franchises by game type
 #' 
-#' `ns_franchise_statistics()` scrapes the all-time statistics for all the 
+#' `franchise_statistics()` scrapes the all-time statistics for all the 
 #' franchises by game type.
 #' 
 #' @returns data.frame with one row per franchise per game type
 #' @examples
-#' franchise_stats <- ns_franchise_statistics()
+#' franchise_stats <- franchise_statistics()
 #' @export
 
-ns_franchise_statistics <- function() {
+franchise_statistics <- function() {
   stats <- nhl_api(
     path = 'franchise-totals',
     type = 'r'
@@ -42,23 +42,23 @@ ns_franchise_statistics <- function() {
   stats[order(stats$franchiseId), ]
 }
 
-#' @rdname ns_franchise_statistics
+#' @rdname franchise_statistics
 #' @export
-ns_franchise_stats <- function() {
-  ns_franchise_statistics()
+franchise_stats <- function() {
+  franchise_statistics()
 }
 
 #' Access the all-time statistics for all the franchises by team and game type
 #' 
-#' `ns_franchise_team_statistics()` scrapes the all-time statistics for all the 
+#' `franchise_team_statistics()` scrapes the all-time statistics for all the 
 #' franchises by team and game type.
 #' 
 #' @returns data.frame with one row per team per franchise per game type
 #' @examples
-#' franchise_team_stats <- ns_franchise_team_statistics()
+#' franchise_team_stats <- franchise_team_statistics()
 #' @export
 
-ns_franchise_team_statistics <- function() {
+franchise_team_statistics <- function() {
   stats <- nhl_api(
     path = 'franchise-team-totals',
     type = 'r'
@@ -69,24 +69,24 @@ ns_franchise_team_statistics <- function() {
   stats[order(stats$teamId), ]
 }
 
-#' @rdname ns_franchise_team_statistics
+#' @rdname franchise_team_statistics
 #' @export
-ns_franchise_team_stats <- function() {
-  ns_franchise_team_statistics()
+franchise_team_stats <- function() {
+  franchise_team_statistics()
 }
 
 #' Access the statistics for all the franchises by season and game type
 #' 
-#' `ns_franchise_season_statistics()` scrapes the statistics for all the 
+#' `franchise_season_statistics()` scrapes the statistics for all the 
 #' franchises by season and game type.
 #' 
 #' @returns data.frame with one row per franchise per season per game type
 #' @examples
 #' # This may take >5s, so skip.
-#' \donttest{franchise_season_stats <- ns_franchise_season_statistics()}
+#' \donttest{franchise_season_stats <- franchise_season_statistics()}
 #' @export
 
-ns_franchise_season_statistics <- function() {
+franchise_season_statistics <- function() {
   stats <- nhl_api(
     path = 'franchise-season-results',
     type = 'r'
@@ -97,25 +97,25 @@ ns_franchise_season_statistics <- function() {
   stats[order(stats$franchiseId), ]
 }
 
-#' @rdname ns_franchise_season_statistics
+#' @rdname franchise_season_statistics
 #' @export
-ns_franchise_season_stats <- function() {
-  ns_franchise_season_statistics()
+franchise_season_stats <- function() {
+  franchise_season_statistics()
 }
 
 #' Access the all-time statistics versus other franchises for all the 
 #' franchises by game type
 #' 
-#' `ns_franchise_versus_franchise()` scrapes the all-time statistics versus 
+#' `franchise_versus_franchise()` scrapes the all-time statistics versus 
 #' other franchises for all the franchises by game type.
 #' 
 #' @returns data.frame with one row per franchise per franchise per game type
 #' @examples
 #' # This may take >5s, so skip.
-#' \donttest{franchise_vs_franchise <- ns_franchise_versus_franchise()}
+#' \donttest{franchise_vs_franchise <- franchise_versus_franchise()}
 #' @export
 
-ns_franchise_versus_franchise <- function() {
+franchise_versus_franchise <- function() {
   versus <- nhl_api(
     path = 'all-time-record-vs-franchise',
     type = 'r'
@@ -128,24 +128,24 @@ ns_franchise_versus_franchise <- function() {
   versus[order(versus$teamFranchiseId), ]
 }
 
-#' @rdname ns_franchise_versus_franchise
+#' @rdname franchise_versus_franchise
 #' @export
-ns_franchise_vs_franchise <- function() {
-  ns_franchise_versus_franchise()
+franchise_vs_franchise <- function() {
+  franchise_versus_franchise()
 }
 
 #' Access the playoff series results for all the franchises by situation
 #' 
-#' `ns_franchise_playoff_situational_results()` scrapes the playoff series 
+#' `franchise_playoff_situational_results()` scrapes the playoff series 
 #' results for all the franchises by situation
 #'
 #' @returns data.frame with one row per franchise per situation
 #' @examples
 #' franchise_playoff_situational_results <- 
-#'   ns_franchise_playoff_situational_results()
+#'   franchise_playoff_situational_results()
 #' @export
 
-ns_franchise_playoff_situational_results <- function() {
+franchise_playoff_situational_results <- function() {
   results    <- nhl_api(
     path = 'series-situational-records',
     type = 'r'

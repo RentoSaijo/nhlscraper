@@ -2,10 +2,10 @@
 #' 
 #' `get_espn_events()` retrieves the ESPN ID for each event for an interval of 
 #' dates bound by a given set of `start_date` and `end_date`. Access 
-#' `ns_seasons()` for `start_date` and `end_date` references. Note the date 
+#' `seasons()` for `start_date` and `end_date` references. Note the date 
 #' format differs from the NHL API; will soon be fixed to accept both. 
 #' Temporarily deprecated while we re-evaluate the practicality of ESPN API 
-#' information. Use [ns_games()] instead.
+#' information. Use [games()] instead.
 #' 
 #' @param start_date integer in YYYYMMDD (e.g., 20241004)
 #' @param end_date integer in YYYYMMDD (e.g., 20250624)
@@ -19,12 +19,12 @@
 
 get_espn_events <- function(start_date = 20241004, end_date = 20250624) {
   .Deprecated(
-    new     = 'ns_games()',
+    new     = 'games()',
     package = 'nhlscraper',
     msg     = paste(
       '`get_espn_events()` is temporarily deprecated.',
       'Re-evaluating the practicality of ESPN API inforamtion.',
-      'Use `ns_games()` instead.'
+      'Use `games()` instead.'
     )
   )
   tryCatch(
@@ -113,34 +113,34 @@ get_espn_event_pbp <- function(event = 401687600) {
 
 #' Get the three stars of an ESPN event
 #' 
-#' `get_espn_event_stars()` is defunct. Use [ns_gc_summary()] instead.
+#' `get_espn_event_stars()` is defunct. Use [gc_summary()] instead.
 #' 
 #' @export
 
 get_espn_event_stars <- function(event = 401687600) {
   .Defunct(
-    new     = 'ns_gc_summary()',
+    new     = 'gc_summary()',
     package = 'nhlscraper',
     msg     = paste(
       '`get_espn_event_stars()` is defunct.',
-      'Use `ns_gc_summary()` instead.'
+      'Use `gc_summary()` instead.'
     )
   )
 }
 
 #' Get the officials of an event
 #' 
-#' `get_espn_event_officials()` is defunct. Use [ns_gc_summary()] instead.
+#' `get_espn_event_officials()` is defunct. Use [gc_summary()] instead.
 #' 
 #' @export
 
 get_espn_event_officials <- function(event = 401687600) {
   .Defunct(
-    new     = 'ns_gc_summary()',
+    new     = 'gc_summary()',
     package = 'nhlscraper',
     msg     = paste(
       '`get_espn_event_officials()` is defunct.',
-      'Use `ns_gc_summary()` instead.'
+      'Use `gc_summary()` instead.'
     )
   )
 }

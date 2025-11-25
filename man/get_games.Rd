@@ -10,5 +10,5 @@ get_games()
 data.frame with one row per game
 }
 \description{
-\code{get_games()} is deprecated. Use \code{\link[=ns_games]{ns_games()}} instead.
+\code{get_games()} is deprecated. Use \code{\link[=games]{games()}} instead.
 }

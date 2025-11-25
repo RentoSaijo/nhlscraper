@@ -1,107 +1,107 @@
 #' Access all the games
 #' 
-#' `get_games()` is deprecated. Use [ns_games()] instead.
+#' `get_games()` is deprecated. Use [games()] instead.
 #' 
 #' @returns data.frame with one row per game
 #' @export
 
 get_games <- function() {
   .Deprecated(
-    new     = 'ns_games()',
+    new     = 'games()',
     package = 'nhlscraper',
     msg     = paste(
       '`get_games()` is deprecated.',
-      'Use `ns_games()` instead.'
+      'Use `games()` instead.'
     )
   )
-  ns_games()
+  games()
 }
 
 #' Access the scores for a date
 #' 
-#' `get_scores()` is deprecated. Use [ns_scores()] instead.
+#' `get_scores()` is deprecated. Use [scores()] instead.
 #' 
-#' @inheritParams ns_standings
+#' @inheritParams standings
 #' @returns data.frame with one row per game
 #' @export
 
 get_scores <- function(date = 'now') {
   .Deprecated(
-    new     = 'ns_scores()',
+    new     = 'scores()',
     package = 'nhlscraper',
     msg     = paste(
       '`get_scores()` is deprecated.',
-      'Use `ns_scores()` instead.'
+      'Use `scores()` instead.'
     )
   )
-  ns_scores(date)
+  scores(date)
 }
 
 #' Access the scoreboards for a date
 #' 
-#' `get_scoreboards()` is deprecated. Use [ns_scores()] instead.
+#' `get_scoreboards()` is deprecated. Use [scores()] instead.
 #' 
-#' @inheritParams ns_standings
+#' @inheritParams standings
 #' @returns data.frame with one row per game
 #' @export
 
 get_scoreboards <- function(date = 'now') {
   .Deprecated(
-    new     = 'ns_scores()',
+    new     = 'scores()',
     package = 'nhlscraper',
     msg     = paste(
       '`get_scoreboards()` is deprecated.',
-      'Use `ns_scores()` instead.'
+      'Use `scores()` instead.'
     )
   )
-  ns_scores(date)
+  scores(date)
 }
 
 #' Access the GameCenter (GC) summary for a game
 #' 
-#' `get_game_landing()` is deprecated. Use [ns_gc_summary()] instead.
+#' `get_game_landing()` is deprecated. Use [gc_summary()] instead.
 #'
-#' @inheritParams ns_gc_summary
+#' @inheritParams gc_summary
 #' @returns list of various items
 #' @export
 
 get_game_landing <- function(game = 2023030417) {
   .Deprecated(
-    new     = 'ns_gc_summary()',
+    new     = 'gc_summary()',
     package = 'nhlscraper',
     msg     = paste(
       '`get_game_landing()` is deprecated.',
-      'Use `ns_gc_summary()` instead.'
+      'Use `gc_summary()` instead.'
     )
   )
-  ns_gc_summary(game)
+  gc_summary(game)
 }
 
 #' Access the World Showcase (WSC) summary for a game
 #' 
-#' `get_game_story()` is deprecated. Use [ns_wsc_summary()] instead.
+#' `get_game_story()` is deprecated. Use [wsc_summary()] instead.
 #'
-#' @inheritParams ns_gc_summary
+#' @inheritParams gc_summary
 #' @returns list of various items
 #' @export
 
 get_game_story <- function(game = 2023030417) {
   .Deprecated(
-    new     = 'ns_wsc_summary()',
+    new     = 'wsc_summary()',
     package = 'nhlscraper',
     msg     = paste(
       '`get_game_story()` is deprecated.',
-      'Use `ns_wsc_summary()` instead.'
+      'Use `wsc_summary()` instead.'
     )
   )
-  ns_wsc_summary(game)
+  wsc_summary(game)
 }
 
 #' Access the boxscore for a game, team, and player type
 #' 
-#' `get_game_boxscore()` is deprecated. Use [ns_boxscore()] instead.
+#' `get_game_boxscore()` is deprecated. Use [boxscore()] instead.
 #'
-#' @inheritParams ns_gc_summary
+#' @inheritParams gc_summary
 #' @param team character of 'home' or 'away'
 #' @param player_type character of 'forwards', 'defense', or 'goalies'
 #' @returns data.frame with one row per player
@@ -113,72 +113,72 @@ get_game_boxscore <- function(
     player_type = 'forwards'
 ) {
   .Deprecated(
-    new     = 'ns_boxscore()',
+    new     = 'boxscore()',
     package = 'nhlscraper',
     msg     = paste(
       '`get_game_boxscore()` is deprecated.',
-      'Use `ns_boxscore()` instead.'
+      'Use `boxscore()` instead.'
     )
   )
-  ns_boxscore(game, team, player_type)
+  boxscore(game, team, player_type)
 }
 
 #' Access the GameCenter (GC) play-by-play for a game
 #' 
-#' `get_gc_play_by_play()` is deprecated. Use [ns_gc_play_by_play()] instead.
+#' `get_gc_play_by_play()` is deprecated. Use [gc_play_by_play()] instead.
 #'
-#' @inheritParams ns_gc_summary
+#' @inheritParams gc_summary
 #' @returns data.frame with one row per event (play)
 #' @export
 
 get_gc_play_by_play <- function(game = 2023030417) {
   .Deprecated(
-    new     = 'ns_gc_play_by_play()',
+    new     = 'gc_play_by_play()',
     package = 'nhlscraper',
     msg     = paste(
       '`get_gc_play_by_play()` is deprecated.',
-      'Use `ns_gc_play_by_play()` instead.'
+      'Use `gc_play_by_play()` instead.'
     )
   )
-  ns_gc_play_by_play(game)
+  gc_play_by_play(game)
 }
 
 #' Access the World Showcase (WSC) play-by-play for a game
 #' 
-#' `get_wsc_play_by_play()` is deprecated. Use [ns_wsc_play_by_play()] instead.
+#' `get_wsc_play_by_play()` is deprecated. Use [wsc_play_by_play()] instead.
 #'
-#' @inheritParams ns_gc_summary
+#' @inheritParams gc_summary
 #' @returns data.frame with one row per event (play)
 #' @export
 
 get_wsc_play_by_play <- function(game = 2023030417) {
   .Deprecated(
-    new     = 'ns_wsc_play_by_play()',
+    new     = 'wsc_play_by_play()',
     package = 'nhlscraper',
     msg     = paste(
       '`get_wsc_play_by_play()` is deprecated.',
-      'Use `ns_wsc_play_by_play()` instead.'
+      'Use `wsc_play_by_play()` instead.'
     )
   )
-  ns_wsc_play_by_play(game)
+  wsc_play_by_play(game)
 }
 
 #' Access the shift charts for a game
 #' 
-#' `get_shift_charts()` is deprecated. Use [ns_shifts()] instead.
+#' `get_shift_charts()` is deprecated. Use [shifts()] instead.
 #'
-#' @inheritParams ns_gc_summary
+#' @inheritParams gc_summary
 #' @returns data.frame with one row per shift
 #' @export
 
 get_shift_charts <- function(game = 2023030417) {
   .Deprecated(
-    new     = 'ns_shifts()',
+    new     = 'shifts()',
     package = 'nhlscraper',
     msg     = paste(
       '`get_shift_charts()` is deprecated.',
-      'Use `ns_shifts()` instead.'
+      'Use `shifts()` instead.'
     )
   )
-  ns_shifts(game)
+  shifts(game)
 }
