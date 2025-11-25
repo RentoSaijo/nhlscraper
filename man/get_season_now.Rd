@@ -2,7 +2,7 @@
 % Please edit documentation in R/LeagueOld.R
 \name{get_season_now}
 \alias{get_season_now}
-\title{Get the season and game type as of now}
+\title{Access the season and game type as of now}
 \usage{
 get_season_now()
 }

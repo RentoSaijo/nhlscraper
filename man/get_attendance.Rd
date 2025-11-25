@@ -2,9 +2,12 @@
 % Please edit documentation in R/LeagueOld.R
 \name{get_attendance}
 \alias{get_attendance}
-\title{Get the attendance by season and game type}
+\title{Access the attendance by season and game type}
 \usage{
 get_attendance()
+}
+\value{
+data.frame with one row per season
 }
 \description{
 \code{get_attendance()} is deprecated. Use \code{\link[=ns_attendance]{ns_attendance()}} instead.

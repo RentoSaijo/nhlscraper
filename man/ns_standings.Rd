@@ -2,7 +2,7 @@
 % Please edit documentation in R/League.R
 \name{ns_standings}
 \alias{ns_standings}
-\title{Get the standings for a date}
+\title{Access the standings for a date}
 \usage{
 ns_standings(date = "now")
 }
@@ -13,7 +13,7 @@ ns_standings(date = "now")
 data.frame with one row per team
 }
 \description{
-\code{ns_standings()} returns the standings for a given \code{date}. Use
+\code{ns_standings()} scrapes the standings for a given \code{date}. Use
 \code{\link[=ns_seasons]{ns_seasons()}} for \code{date} reference.
 }
 \examples{

@@ -1,8 +1,8 @@
-#' Get all the seasons
+#' Access all the seasons
 #' 
 #' `get_seasons()` is deprecated. Use [ns_seasons()] instead.
 #' 
-#' @return data.frame with one row per season
+#' @returns data.frame with one row per season
 #' @export
 
 get_seasons <- function() {
@@ -17,7 +17,7 @@ get_seasons <- function() {
   ns_seasons()
 }
 
-#' Get the season and game type as of now
+#' Access the season and game type as of now
 #' 
 #' `get_season_now()` is defunct. Use [ns_season()] and/or [ns_game_type()] 
 #' instead.
@@ -35,12 +35,12 @@ get_season_now <- function() {
   )
 }
 
-#' Get the standings rules for all the seasons
+#' Access the standings rules by season
 #' 
 #' `get_standings_information()` is deprecated. Use [ns_standings_rules()] 
 #' instead.
 #' 
-#' @return data.frame with one row per season
+#' @returns data.frame with one row per season
 #' @export
 
 get_standings_information <- function() {
@@ -55,12 +55,12 @@ get_standings_information <- function() {
   ns_standings_rules()
 }
 
-#' Get the standings for a date
+#' Access the standings for a date
 #' 
 #' `get_standings()` is deprecated. Use [ns_standings()] instead.
 #' 
-#' @param date character in 'YYYY-MM-DD' (e.g., '2025-01-01')
-#' @return data.frame with one row per team
+#' @inheritParams ns_standings
+#' @returns data.frame with one row per team
 #' @export
 
 get_standings <- function(date = '2025-01-01') {
@@ -75,12 +75,12 @@ get_standings <- function(date = '2025-01-01') {
   ns_standings(date)
 }
 
-#' Get the schedule for a date
+#' Access the schedule for a date
 #' 
 #' `get_schedule()` is deprecated. Use [ns_schedule()] instead.
 #' 
-#' @param date character in 'YYYY-MM-DD' (e.g., '2025-01-01')
-#' @return data.frame with one row per game
+#' @inheritParams ns_standings
+#' @returns data.frame with one row per game
 #' @export
 
 get_schedule <- function(date = '2025-01-01') {
@@ -95,10 +95,11 @@ get_schedule <- function(date = '2025-01-01') {
   ns_schedule(date)
 }
 
-#' Get the attendance by season and game type
+#' Access the attendance by season and game type
 #' 
 #' `get_attendance()` is deprecated. Use [ns_attendance()] instead.
 #' 
+#' @returns data.frame with one row per season
 #' @export
 
 get_attendance <- function() {

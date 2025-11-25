@@ -2,7 +2,7 @@
 % Please edit documentation in R/League.R
 \name{ns_game_type}
 \alias{ns_game_type}
-\title{Get the game type as of now}
+\title{Access the game type as of now}
 \usage{
 ns_game_type()
 }
@@ -11,7 +11,7 @@ integer in 1:3 (where 1 = pre-season, 2 = regular season, 3
 = playoff/post-season)
 }
 \description{
-\code{ns_game_type()} returns the ID of the current game type.
+\code{ns_game_type()} scrapes the current game type ID.
 }
 \examples{
 game_type_now <- ns_game_type()

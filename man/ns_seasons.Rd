@@ -2,7 +2,7 @@
 % Please edit documentation in R/League.R
 \name{ns_seasons}
 \alias{ns_seasons}
-\title{Get all the seasons}
+\title{Access all the seasons}
 \usage{
 ns_seasons()
 }
@@ -10,11 +10,7 @@ ns_seasons()
 data.frame with one row per season
 }
 \description{
-\code{ns_seasons()} returns information on all the seasons, including but not
-limited to the IDs, start & end dates, minimum required games for goalie
-statistics leaders, Olympics participation, and the use of the following:
-all-star games, entry drafts, conferences, divisions, & points for OT
-losses.
+\code{ns_seasons()} scrapes information on all the seasons.
 }
 \examples{
 all_seasons <- ns_seasons()

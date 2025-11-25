@@ -2,7 +2,7 @@
 % Please edit documentation in R/League.R
 \name{ns_standings_rules}
 \alias{ns_standings_rules}
-\title{Get the standings rules by season}
+\title{Access the standings rules by season}
 \usage{
 ns_standings_rules()
 }
@@ -10,9 +10,7 @@ ns_standings_rules()
 data.frame with one row per season
 }
 \description{
-\code{ns_standings_rules()} returns the standings rules by season, including but
-not limited to the use of the following: conferences, divisions, wildcards,
-points for regulation wins, points for OT losses, and ties.
+\code{ns_standings_rules()} scrapes the standings rules by season.
 }
 \examples{
 standings_rules <- ns_standings_rules()

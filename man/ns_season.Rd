@@ -2,7 +2,7 @@
 % Please edit documentation in R/League.R
 \name{ns_season}
 \alias{ns_season}
-\title{Get the season as of now}
+\title{Access the season as of now}
 \usage{
 ns_season()
 }
@@ -10,7 +10,7 @@ ns_season()
 integer in YYYYYYYY (e.g., 20242025)
 }
 \description{
-\code{ns_season()} returns the ID of the current season.
+\code{ns_season} scrapes the current season ID.
 }
 \examples{
 season_now <- ns_season()

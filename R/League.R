@@ -1,12 +1,8 @@
-#' Get all the seasons
+#' Access all the seasons
 #' 
-#' `ns_seasons()` returns information on all the seasons, including but not 
-#' limited to the IDs, start & end dates, minimum required games for goalie 
-#' statistics leaders, Olympics participation, and the use of the following: 
-#' all-star games, entry drafts, conferences, divisions, & points for OT 
-#' losses.
+#' `ns_seasons()` scrapes information on all the seasons.
 #'
-#' @return data.frame with one row per season
+#' @returns data.frame with one row per season
 #' @examples
 #' all_seasons <- ns_seasons()
 #' @export
@@ -19,11 +15,11 @@ ns_seasons <- function() {
   seasons[order(seasons$id), ]
 }
 
-#' Get the season as of now
+#' Access the season as of now
 #' 
-#' `ns_season()` returns the ID of the current season.
+#' `ns_season` scrapes the current season ID.
 #' 
-#' @return integer in YYYYYYYY (e.g., 20242025)
+#' @returns integer in YYYYYYYY (e.g., 20242025)
 #' @examples
 #' season_now <- ns_season()
 #' @export
@@ -35,11 +31,11 @@ ns_season <- function() {
   )$data$seasonId
 }
 
-#' Get the game type as of now
+#' Access the game type as of now
 #' 
-#' `ns_game_type()` returns the ID of the current game type.
+#' `ns_game_type()` scrapes the current game type ID.
 #' 
-#' @return integer in 1:3 (where 1 = pre-season, 2 = regular season, 3 
+#' @returns integer in 1:3 (where 1 = pre-season, 2 = regular season, 3 
 #' = playoff/post-season)
 #' @examples
 #' game_type_now <- ns_game_type()
@@ -52,13 +48,11 @@ ns_game_type <- function() {
   )$data$gameTypeId
 }
 
-#' Get the standings rules by season
+#' Access the standings rules by season
 #' 
-#' `ns_standings_rules()` returns the standings rules by season, including but 
-#' not limited to the use of the following: conferences, divisions, wildcards, 
-#' points for regulation wins, points for OT losses, and ties.
+#' `ns_standings_rules()` scrapes the standings rules by season.
 #' 
-#' @return data.frame with one row per season
+#' @returns data.frame with one row per season
 #' @examples
 #' standings_rules <- ns_standings_rules()
 #' @export
@@ -70,13 +64,13 @@ ns_standings_rules <- function() {
   )$seasons
 }
 
-#' Get the standings for a date
+#' Access the standings for a date
 #' 
-#' `ns_standings()` returns the standings for a given `date`. Use 
+#' `ns_standings()` scrapes the standings for a given `date`. Use 
 #' [ns_seasons()] for `date` reference.
 #' 
 #' @param date character in 'YYYY-MM-DD' (e.g., '2025-01-01')
-#' @return data.frame with one row per team
+#' @returns data.frame with one row per team
 #' @examples
 #' standings_Halloween_2025 <- ns_standings(date = '2025-10-31')
 #' @export
@@ -96,13 +90,13 @@ ns_standings <- function(date = 'now') {
   )
 }
 
-#' Get the schedule for a date
+#' Access the schedule for a date
 #' 
-#' `ns_schedule()` returns the schedule for a given `date`. Use [ns_seasons()] 
+#' `ns_schedule()` scrapes the schedule for a given `date`. Use [ns_seasons()] 
 #' for `date` reference.
 #' 
-#' @param date character in 'YYYY-MM-DD' (e.g., '2025-01-01')
-#' @return data.frame with one row per game
+#' @inheritParams ns_standings
+#' @returns data.frame with one row per game
 #' @examples
 #' schedule_Halloween_2025 <- ns_schedule(date = '2025-10-31')
 #' @export
@@ -123,11 +117,11 @@ ns_schedule <- function(date = Sys.Date()) {
   )
 }
 
-#' Get the attendance by season and game type
+#' Access the attendance by season and game type
 #' 
-#' `ns_attendance()` returns the attendance by season and game type
+#' `ns_attendance()` scrapes the attendance by season and game type.
 #' 
-#' @return data.frame with one row per season
+#' @returns data.frame with one row per season
 #' @examples
 #' all_attendance <- ns_attendance()
 #' @export

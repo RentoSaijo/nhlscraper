@@ -2,7 +2,7 @@
 % Please edit documentation in R/League.R
 \name{ns_schedule}
 \alias{ns_schedule}
-\title{Get the schedule for a date}
+\title{Access the schedule for a date}
 \usage{
 ns_schedule(date = Sys.Date())
 }
@@ -13,7 +13,7 @@ ns_schedule(date = Sys.Date())
 data.frame with one row per game
 }
 \description{
-\code{ns_schedule()} returns the schedule for a given \code{date}. Use \code{\link[=ns_seasons]{ns_seasons()}}
+\code{ns_schedule()} scrapes the schedule for a given \code{date}. Use \code{\link[=ns_seasons]{ns_seasons()}}
 for \code{date} reference.
 }
 \examples{
