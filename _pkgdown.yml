@@ -154,8 +154,9 @@ reference:
       - goalie_edge_leaders
       - goalie_edge_summary
       - goalie_edge_save_percentage
-      - goalie_edge_5_vs_5
-      
+      - goalie_edge_five_versus_five
+      - goalie_edge_5v5
+      - goalie_edge_shot_location
 
   - subtitle: "Game"
     desc: >
