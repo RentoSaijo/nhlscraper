@@ -2,7 +2,7 @@
 % Please edit documentation in R/Draft.R
 \name{ns_combine_reports}
 \alias{ns_combine_reports}
-\title{Get the draft combine reports}
+\title{Access the draft combine reports}
 \usage{
 ns_combine_reports()
 }
@@ -10,7 +10,7 @@ ns_combine_reports()
 data.frame with one row per player
 }
 \description{
-\code{ns_combine_reports()} retrieves information on ...
+\code{ns_combine_reports()} scrapes the draft combine reports.
 }
 \examples{
 combine_reports <- ns_combine_reports()

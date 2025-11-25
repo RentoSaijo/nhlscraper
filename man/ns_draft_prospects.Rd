@@ -2,15 +2,15 @@
 % Please edit documentation in R/Draft.R
 \name{ns_draft_prospects}
 \alias{ns_draft_prospects}
-\title{Get all the draft prospects}
+\title{Access all the draft prospects}
 \usage{
 ns_draft_prospects()
 }
 \value{
-data.frame with one row per prospect
+data.frame with one row per player
 }
 \description{
-\code{ns_draft_prospects()} retrieves information on ...
+\code{ns_draft_prospects()} scrapes information on all the draft prospects.
 }
 \examples{
 # This may take >5s, so skip.

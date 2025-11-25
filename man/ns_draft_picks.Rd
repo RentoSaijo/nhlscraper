@@ -2,7 +2,7 @@
 % Please edit documentation in R/Draft.R
 \name{ns_draft_picks}
 \alias{ns_draft_picks}
-\title{Get all the draft picks}
+\title{Access all the draft picks}
 \usage{
 ns_draft_picks()
 }
@@ -10,9 +10,7 @@ ns_draft_picks()
 data.frame with one row per pick
 }
 \description{
-\code{ns_draft_picks()} retrieves information on each selection, including but
-not limited to their player ID, name, draft year, overall number,
-bio-metrics, and the pick's team history.
+\code{ns_draft_picks()} scrapes information on all the draft picks.
 }
 \examples{
 # This may take >5s, so skip.

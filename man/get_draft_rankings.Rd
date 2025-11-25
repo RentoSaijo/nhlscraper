@@ -2,9 +2,19 @@
 % Please edit documentation in R/DraftOld.R
 \name{get_draft_rankings}
 \alias{get_draft_rankings}
-\title{Get the draft rankings of a year for a player type}
+\title{Access the draft rankings for a year and player type}
 \usage{
 get_draft_rankings(year = ns_season()\%/\%10000, player_type = 1)
+}
+\arguments{
+\item{year}{integer in YYYY (e.g., 2017); see \code{\link[=ns_drafts]{ns_drafts()}} for reference}
+
+\item{player_type}{integer in 1:4 (where 1 = North American Skaters,
+2 = International Skaters, 3 = North American Goalies, and 4 = International
+Goalies)}
+}
+\value{
+data.frame with one row per player
 }
 \description{
 \code{get_draft_rankings()} is deprecated. Use \code{\link[=ns_draft_rankings]{ns_draft_rankings()}} instead.

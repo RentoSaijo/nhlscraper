@@ -2,10 +2,13 @@
 % Please edit documentation in R/DraftOld.R
 \name{get_drafts}
 \alias{get_drafts}
-\title{Get all the drafts}
+\title{Access all the drafts}
 \usage{
 get_drafts()
 }
+\value{
+data.frame with one row per draft
+}
 \description{
-\code{get_drafts()} is defunct. Use \code{\link[=ns_drafts]{ns_drafts()}} instead.
+\code{get_drafts()} is deprecated. Use \code{\link[=ns_drafts]{ns_drafts()}} instead.
 }

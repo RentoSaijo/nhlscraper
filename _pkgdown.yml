@@ -160,17 +160,22 @@ reference:
     desc: >
       Functions to access data about the awards
     contents:
-      - get_awards
-      - get_award_winners
+      - ns_awards
+      - ns_award_winners
 
   - subtitle: "Draft"
     desc: >
       Functions to access data about the drafts
     contents:
-      - get_drafts
-      - get_draft_picks
-      - get_draft_rankings
-      - get_draft_tracker
+      - ns_drafts
+      - ns_draft_picks
+      - ns_draft_prospects
+      - ns_draft_rankings
+      - ns_combine_reports
+      - ns_lottery_odds
+      - ns_draft_tracker
+      - ns_expansion_drafts
+      - ns_expansion_draft_picks
       
   - subtitle: "Coach"
     desc: >
@@ -232,6 +237,12 @@ reference:
       - get_shift_charts
       - get_bracket
       - get_series_schedule
+      - get_awards
+      - get_award_winners
+      - get_drafts
+      - get_draft_picks
+      - get_draft_rankings
+      - get_draft_tracker
 
   - subtitle: "Defunct"
     desc: >

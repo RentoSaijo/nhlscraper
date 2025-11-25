@@ -2,7 +2,7 @@
 % Please edit documentation in R/Draft.R
 \name{ns_drafts}
 \alias{ns_drafts}
-\title{Get all the drafts}
+\title{Access all the drafts}
 \usage{
 ns_drafts()
 }
@@ -10,9 +10,7 @@ ns_drafts()
 data.frame with one row per draft
 }
 \description{
-\code{ns_drafts()} retrieves information on each draft, including but not
-limited to their year, type, venue, minimum and maximum player ages, and
-number of rounds and picks.
+\code{ns_drafts()} scrapes information on all the drafts.
 }
 \examples{
 all_drafts <- ns_drafts()

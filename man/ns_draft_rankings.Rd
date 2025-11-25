@@ -2,12 +2,12 @@
 % Please edit documentation in R/Draft.R
 \name{ns_draft_rankings}
 \alias{ns_draft_rankings}
-\title{Get the draft rankings of a class for a category}
+\title{Access the draft rankings for a class and category}
 \usage{
 ns_draft_rankings(class = ns_season()\%\%10000, category = 1)
 }
 \arguments{
-\item{class}{integer in YYYY (e.g., 2025)}
+\item{class}{integer in YYYY (e.g., 2017); see \code{\link[=ns_drafts]{ns_drafts()}} for reference}
 
 \item{category}{integer in 1:4 (where 1 = North American Skaters,
 2 = International Skaters, 3 = North American Goalies, and 4 = International
@@ -20,13 +20,12 @@ Goalies) OR character of 'NAS'/'NA Skaters'/'North American Skaters',
 data.frame with one row per player
 }
 \description{
-\code{ns_draft_rankings()} retrieves information on each prospect for a given set
-of \code{year} and \code{player_type}, including but not limited to their name,
-midterm and final ranks, position, bio-metrics, and birth date and location.
+\code{ns_draft_rankings()} scrapes the draft rankings for a given set of \code{class}
+and \code{category}.
 }
 \examples{
-draft_rankings_NA_Skaters_2025 <- ns_draft_rankings(
-  class    = 2025, 
-  category = 1
+draft_rankings_INTL_Skaters_2017 <- ns_draft_rankings(
+  class    = 2017, 
+  category = 2
 )
 }

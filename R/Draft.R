@@ -1,8 +1,6 @@
-#' Get all the drafts
+#' Access all the drafts
 #' 
-#' `ns_drafts()` retrieves information on each draft, including but not 
-#' limited to their year, type, venue, minimum and maximum player ages, and 
-#' number of rounds and picks.
+#' `ns_drafts()` scrapes information on all the drafts.
 #' 
 #' @returns data.frame with one row per draft
 #' @examples
@@ -26,11 +24,9 @@ ns_drafts <- function() {
   drafts[, new_column_order]
 }
 
-#' Get all the draft picks
+#' Access all the draft picks
 #' 
-#' `ns_draft_picks()` retrieves information on each selection, including but 
-#' not limited to their player ID, name, draft year, overall number, 
-#' bio-metrics, and the pick's team history.
+#' `ns_draft_picks()` scrapes information on all the draft picks.
 #' 
 #' @returns data.frame with one row per pick
 #' @examples
@@ -39,36 +35,39 @@ ns_drafts <- function() {
 #' @export
 
 ns_draft_picks <- function() {
-  nhl_api(
+  picks    <- nhl_api(
     path = 'draft',
     type = 'r'
   )$data
+  picks$id <- NULL
+  picks[order(picks$draftYear), ]
 }
 
-#' Get all the draft prospects
+#' Access all the draft prospects
 #' 
-#' `ns_draft_prospects()` retrieves information on ...
+#' `ns_draft_prospects()` scrapes information on all the draft prospects.
 #' 
-#' @returns data.frame with one row per prospect
+#' @returns data.frame with one row per player
 #' @examples
 #' # This may take >5s, so skip.
 #' \donttest{all_draft_prospects <- ns_draft_prospects()}
 #' @export
 
 ns_draft_prospects <- function() {
-  nhl_api(
+  prospects    <-nhl_api(
     path = 'draft-prospect',
     type = 'r'
   )$data
+  prospects$id <- NULL
+  prospects[order(prospects$playerId), ]
 }
 
-#' Get the draft rankings of a class for a category
+#' Access the draft rankings for a class and category
 #' 
-#' `ns_draft_rankings()` retrieves information on each prospect for a given set 
-#' of `year` and `player_type`, including but not limited to their name, 
-#' midterm and final ranks, position, bio-metrics, and birth date and location.
+#' `ns_draft_rankings()` scrapes the draft rankings for a given set of `class` 
+#' and `category`.
 #' 
-#' @param class integer in YYYY (e.g., 2025)
+#' @param class integer in YYYY (e.g., 2017); see [ns_drafts()] for reference
 #' @param category integer in 1:4 (where 1 = North American Skaters, 
 #' 2 = International Skaters, 3 = North American Goalies, and 4 = International 
 #' Goalies) OR character of 'NAS'/'NA Skaters'/'North American Skaters', 
@@ -77,15 +76,15 @@ ns_draft_prospects <- function() {
 #' 'INTLG'/'INTL Goalies'/'International Goalies'
 #' @returns data.frame with one row per player
 #' @examples
-#' draft_rankings_NA_Skaters_2025 <- ns_draft_rankings(
-#'   class    = 2025, 
-#'   category = 1
+#' draft_rankings_INTL_Skaters_2017 <- ns_draft_rankings(
+#'   class    = 2017, 
+#'   category = 2
 #' )
 #' @export
 
 ns_draft_rankings <- function(
-    class    = ns_season() %% 1e4,
-    category = 1
+  class    = ns_season() %% 1e4,
+  category = 1
 ) {
   tryCatch(
     expr = {
@@ -120,9 +119,9 @@ ns_draft_rankings <- function(
   )
 }
 
-#' Get the draft combine reports
+#' Access the draft combine reports
 #' 
-#' `ns_combine_reports()` retrieves information on ...
+#' `ns_combine_reports()` scrapes the draft combine reports.
 #' 
 #' @returns data.frame with one row per player
 #' @examples
@@ -130,16 +129,18 @@ ns_draft_rankings <- function(
 #' @export
 
 ns_combine_reports <- function() {
-  combine <- nhl_api(
+  combine    <- nhl_api(
     path = 'combine',
     type = 'r'
   )$data
+  combine$id <- NULL
+  combine <- combine[order(combine$event), ]
   combine[order(combine$draftYear), ]
 }
 
-#' Get the draft lottery odds
+#' Access the draft lottery odds
 #' 
-#' `ns_lottery_odds()` retrieves information on ...
+#' `ns_lottery_odds()` scrapes the draft lottery odds.
 #' 
 #' @returns data.frame with one row per draft lottery
 #' @examples
@@ -147,20 +148,19 @@ ns_combine_reports <- function() {
 #' @export
 
 ns_lottery_odds <- function() {
-  lotteries <- nhl_api(
+  lotteries    <- nhl_api(
     path = 'draft-lottery-odds',
     type = 'r'
   )$data
+  lotteries$id <- NULL
   lotteries[order(lotteries$draftYear), ]
 }
 
-#' Get the real-time draft tracker
+#' Access the real-time draft tracker
 #' 
-#' `ns_draft_tracker()` retrieves information on the latest draft, including 
-#' but not limited to each pick's team ID, name, and overall number and 
-#' selected player's name and position.
+#' `ns_draft_tracker()` scrapes the real-time draft tracker.
 #' 
-#' @returns data.frame with one row per pick
+#' @returns data.frame with one row per player
 #' @examples
 #' draft_tracker <- ns_draft_tracker()
 #' @export
@@ -172,25 +172,28 @@ ns_draft_tracker <- function() {
   )$picks
 }
 
-#' Get all the expansion drafts
+#' Access all the expansion drafts
 #' 
-#' `ns_expansion_drafts()` retrieves information on ...
+#' `ns_expansion_drafts()` scrapes information on all the expansion drafts.
 #' 
-#' @returns data.frame with one row per pick
+#' @returns data.frame with one row per expansion draft
 #' @examples
 #' all_expansion_drafts <- ns_expansion_drafts()
 #' @export
 
 ns_expansion_drafts <- function() {
-  nhl_api(
+  drafts    <- nhl_api(
     path = 'expansion-draft-rules',
     type = 'r'
   )$data
+  drafts$id <- NULL
+  drafts[order(drafts$seasonId), ]
 }
 
-#' Get all the expansion draft picks
+#' Access all the expansion draft picks
 #' 
-#' `ns_expansion_draft_picks()` retrieves information on ...
+#' `ns_expansion_draft_picks()` scrapes information on all the expansion draft 
+#' picks
 #' 
 #' @returns data.frame with one row per pick
 #' @examples
@@ -198,8 +201,11 @@ ns_expansion_drafts <- function() {
 #' @export
 
 ns_expansion_draft_picks <- function() {
-  nhl_api(
+  drafts    <- nhl_api(
     path = 'expansion-draft-picks',
     type = 'r'
   )$data
+  drafts$id <- NULL
+  drafts    <- drafts[order(drafts$teamId), ]
+  drafts[order(drafts$seasonId), ]
 }

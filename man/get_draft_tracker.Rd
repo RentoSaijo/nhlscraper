@@ -2,9 +2,12 @@
 % Please edit documentation in R/DraftOld.R
 \name{get_draft_tracker}
 \alias{get_draft_tracker}
-\title{Get the real-time draft tracker}
+\title{Access the real-time draft tracker}
 \usage{
 get_draft_tracker()
+}
+\value{
+data.frame with one row per player
 }
 \description{
 \code{get_draft_tracker()} is deprecated. Use \code{\link[=ns_draft_tracker]{ns_draft_tracker()}} instead.

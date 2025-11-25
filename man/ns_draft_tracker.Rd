@@ -2,17 +2,15 @@
 % Please edit documentation in R/Draft.R
 \name{ns_draft_tracker}
 \alias{ns_draft_tracker}
-\title{Get the real-time draft tracker}
+\title{Access the real-time draft tracker}
 \usage{
 ns_draft_tracker()
 }
 \value{
-data.frame with one row per pick
+data.frame with one row per player
 }
 \description{
-\code{ns_draft_tracker()} retrieves information on the latest draft, including
-but not limited to each pick's team ID, name, and overall number and
-selected player's name and position.
+\code{ns_draft_tracker()} scrapes the real-time draft tracker.
 }
 \examples{
 draft_tracker <- ns_draft_tracker()

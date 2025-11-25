@@ -2,15 +2,15 @@
 % Please edit documentation in R/Draft.R
 \name{ns_expansion_drafts}
 \alias{ns_expansion_drafts}
-\title{Get all the expansion drafts}
+\title{Access all the expansion drafts}
 \usage{
 ns_expansion_drafts()
 }
 \value{
-data.frame with one row per pick
+data.frame with one row per expansion draft
 }
 \description{
-\code{ns_expansion_drafts()} retrieves information on ...
+\code{ns_expansion_drafts()} scrapes information on all the expansion drafts.
 }
 \examples{
 all_expansion_drafts <- ns_expansion_drafts()

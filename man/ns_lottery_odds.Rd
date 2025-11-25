@@ -2,7 +2,7 @@
 % Please edit documentation in R/Draft.R
 \name{ns_lottery_odds}
 \alias{ns_lottery_odds}
-\title{Get the draft lottery odds}
+\title{Access the draft lottery odds}
 \usage{
 ns_lottery_odds()
 }
@@ -10,7 +10,7 @@ ns_lottery_odds()
 data.frame with one row per draft lottery
 }
 \description{
-\code{ns_lottery_odds()} retrieves information on ...
+\code{ns_lottery_odds()} scrapes the draft lottery odds.
 }
 \examples{
 lottery_odds <- ns_lottery_odds()

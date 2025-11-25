@@ -2,7 +2,7 @@
 % Please edit documentation in R/Draft.R
 \name{ns_expansion_draft_picks}
 \alias{ns_expansion_draft_picks}
-\title{Get all the expansion draft picks}
+\title{Access all the expansion draft picks}
 \usage{
 ns_expansion_draft_picks()
 }
@@ -10,7 +10,8 @@ ns_expansion_draft_picks()
 data.frame with one row per pick
 }
 \description{
-\code{ns_expansion_draft_picks()} retrieves information on ...
+\code{ns_expansion_draft_picks()} scrapes information on all the expansion draft
+picks
 }
 \examples{
 all_expansion_draft_picks <- ns_expansion_draft_picks()

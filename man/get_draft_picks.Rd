@@ -2,9 +2,12 @@
 % Please edit documentation in R/DraftOld.R
 \name{get_draft_picks}
 \alias{get_draft_picks}
-\title{Get all the draft picks}
+\title{Access all the draft picks}
 \usage{
 get_draft_picks()
+}
+\value{
+data.frame with one row per pick
 }
 \description{
 \code{get_draft_picks()} is deprecated. Use \code{\link[=ns_draft_picks]{ns_draft_picks()}} instead.

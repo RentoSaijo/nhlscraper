@@ -1,24 +1,27 @@
-#' Get all the drafts
+#' Access all the drafts
 #' 
-#' `get_drafts()` is defunct. Use [ns_drafts()] instead.
-#' 
+#' `get_drafts()` is deprecated. Use [ns_drafts()] instead.
+#'
+#' @returns data.frame with one row per draft
 #' @export
 
 get_drafts <- function() {
-  .Defunct(
+  .Deprecated(
     new     = 'ns_drafts()',
     package = 'nhlscraper',
     msg     = paste(
-      '`get_drafts()` is defunct.',
+      '`get_drafts()` is deprecated.',
       'Use `ns_drafts()` instead.'
     )
   )
+  ns_drafts()
 }
 
-#' Get all the draft picks
+#' Access all the draft picks
 #' 
 #' `get_draft_picks()` is deprecated. Use [ns_draft_picks()] instead.
 #' 
+#' @returns data.frame with one row per pick
 #' @export
 
 get_draft_picks <- function() {
@@ -33,10 +36,15 @@ get_draft_picks <- function() {
   ns_draft_picks()
 }
 
-#' Get the draft rankings of a year for a player type
+#' Access the draft rankings for a year and player type
 #' 
 #' `get_draft_rankings()` is deprecated. Use [ns_draft_rankings()] instead.
 #' 
+#' @param year integer in YYYY (e.g., 2017); see [ns_drafts()] for reference
+#' @param player_type integer in 1:4 (where 1 = North American Skaters, 
+#' 2 = International Skaters, 3 = North American Goalies, and 4 = International 
+#' Goalies)
+#' @returns data.frame with one row per player
 #' @export
 
 get_draft_rankings <- function(
@@ -54,10 +62,11 @@ get_draft_rankings <- function(
   ns_draft_rankings(year, player_type)
 }
 
-#' Get the real-time draft tracker
+#' Access the real-time draft tracker
 #' 
 #' `get_draft_tracker()` is deprecated. Use [ns_draft_tracker()] instead.
 #' 
+#' @returns data.frame with one row per player
 #' @export
 
 get_draft_tracker <- function() {
