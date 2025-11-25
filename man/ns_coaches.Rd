@@ -2,7 +2,7 @@
 % Please edit documentation in R/Coach.R
 \name{ns_coaches}
 \alias{ns_coaches}
-\title{Get all the coaches}
+\title{Access all the coaches}
 \usage{
 ns_coaches()
 }
@@ -10,7 +10,7 @@ ns_coaches()
 data.frame with one row per coach
 }
 \description{
-\code{ns_coaches()} retrieves information on each coach ...
+\code{ns_coaches()} scrapes information on all the coaches.
 }
 \examples{
 all_coaches <- ns_coaches()

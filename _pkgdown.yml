@@ -181,7 +181,11 @@ reference:
     desc: >
       Functions to access data about the coaches
     contents:
-      - get_drafts
+      - ns_coaches
+      - ns_coach_career_statistics
+      - ns_coach_career_stats
+      - ns_coach_franchise_statistics
+      - ns_coach_franchise_stats
       
   - subtitle: "Manager"
     desc: >

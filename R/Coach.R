@@ -1,6 +1,6 @@
-#' Get all the coaches
+#' Access all the coaches
 #' 
-#' `ns_coaches()` retrieves information on each coach ...
+#' `ns_coaches()` scrapes information on all the coaches.
 #' 
 #' @returns data.frame with one row per coach
 #' @examples
@@ -14,34 +14,50 @@ ns_coaches <- function() {
   )$data
 }
 
-#' Get all the coaches' career records
+#' Access the career statistics for all the coaches
 #' 
-#' `ns_coach_career_records()` retrieves information on each coach ...
+#' `ns_coach_career_statistics()` scrapes the career results for all the coaches
 #' 
 #' @returns data.frame with one row per coach
 #' @examples
-#' coach_career_records <- ns_coach_career_records()
+#' coach_career_stats <- ns_coach_career_statistics()
 #' @export
 
-ns_coach_career_records <- function() {
-  nhl_api(
+ns_coach_career_statistics <- function() {
+  results <- nhl_api(
     path = 'coach-career-records-regular-plus-playoffs',
     type = 'r'
   )$data
+  results$id <- NULL
+  results[order(results$coachId), ]
 }
 
-#' Get all the coaches' franchise records by game type
+#' @rdname ns_coach_career_statistics
+#' @export
+ns_coach_career_stats <- function() {
+  ns_coach_career_statistics()
+}
+
+#' Access the statistics for all the coaches by franchise and game type
 #' 
-#' `ns_coach_franchise_records()` retrieves information on each coach ...
+#' `ns_coach_franchise_statistics()` retrieves information on each coach ...
 #' 
-#' @returns data.frame with one row per coach's franchise, separated by game type
+#' @returns data.frame with one row per franchise per coach per game type
 #' @examples
-#' coach_franchise_records <- ns_coach_franchise_records()
+#' coach_franchise_stats <- ns_coach_franchise_statistics()
 #' @export
 
-ns_coach_franchise_records <- function() {
-  nhl_api(
+ns_coach_franchise_statistics <- function() {
+  stats    <- nhl_api(
     path = 'coach-franchise-records',
     type = 'r'
   )$data
+  stats$id <- NULL
+  stats[order(stats$coachName, stats$firstCoachedDate), ]
+}
+
+#' @rdname ns_coach_franchise_statistics
+#' @export
+ns_coach_franchise_stats <- function() {
+  ns_coach_franchise_statistics()
 }
