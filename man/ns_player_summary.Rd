@@ -2,19 +2,19 @@
 % Please edit documentation in R/Player.R
 \name{ns_player_summary}
 \alias{ns_player_summary}
-\title{Get the summary for a player}
+\title{Access the summary for a player}
 \usage{
 ns_player_summary(player = 8478402)
 }
 \arguments{
-\item{player}{integer ID (e.g., 8480039)}
+\item{player}{integer ID (e.g., 8480039); see \code{\link[=ns_players]{ns_players()}} for reference}
 }
 \value{
 list with various items
 }
 \description{
-\code{ns_player_summary()} returns the summary for a given \code{player}, including but not limited to his ID, name, bio-metrics, and statistics. Use \code{\link[=ns_players]{ns_players()}} for \code{player} reference.
+\code{ns_player_summary()} scrapes the summary for a given \code{player}.
 }
 \examples{
-Martin_Necas_landing <- ns_player_summary(player = 8480039)
+Martin_Necas_summary <- ns_player_summary(player = 8480039)
 }

@@ -1,7 +1,7 @@
-#' Get all the players
+#' Access all the players
 #' 
-#' `ns_players()` returns information on all the players, including but not limited to each player's ID, name, and bio-metrics.
-#'
+#' `ns_players()` scrapes information on all the players.
+#' 
 #' @returns data.frame with one row per player
 #' @examples
 #' # This may take >5s, so skip.
@@ -16,11 +16,12 @@ ns_players <- function() {
   players[order(players$id), ]
 }
 
-#' Get the season(s) and game type(s) in which a player played
+#' Access the season(s) and game type(s) in which a player played
 #' 
-#' `ns_player_seasons()` returns the season(s) and game type(s) in which a player played in the NHL. Use [ns_players()] for `player` reference.
+#' `ns_player_seasons()` scrapes the season(s) and game type(s) in which a 
+#' player played in the NHL.
 #' 
-#' @param player integer ID (e.g., 8480039)
+#' @param player integer ID (e.g., 8480039); see [ns_players()] for reference
 #' @returns data.frame with one row per season
 #' @examples
 #' Martin_Necas_seasons <- ns_player_seasons(player = 8480039)
@@ -41,14 +42,14 @@ ns_player_seasons <- function(player = 8478402) {
   )
 }
 
-#' Get the summary for a player
+#' Access the summary for a player
 #' 
-#' `ns_player_summary()` returns the summary for a given `player`, including but not limited to his ID, name, bio-metrics, and statistics. Use [ns_players()] for `player` reference.
+#' `ns_player_summary()` scrapes the summary for a given `player`.
 #' 
-#' @param player integer ID (e.g., 8480039)
+#' @inheritParams ns_player_seasons
 #' @returns list with various items
 #' @examples
-#' Martin_Necas_landing <- ns_player_summary(player = 8480039)
+#' Martin_Necas_summary <- ns_player_summary(player = 8480039)
 #' @export
 
 ns_player_summary <- function(player = 8478402) {
@@ -66,14 +67,13 @@ ns_player_summary <- function(player = 8478402) {
   )
 }
 
-#' Get the game log for a player, season, and game type
+#' Access the game log for a player, season, and game type
 #' 
-#' `ns_player_game_log()` returns the game log for a given set of `player`, `season`, and `game_type`, including but not limited to each game's ID, data, and his performance in it. Use [ns_players()] for `player` reference and [ns_seasons()] for `season` & `game_type` references.
-#' 
-#' @param player integer ID (e.g., 8480039)
-#' @param season integer in YYYYYYYY (e.g., 20242025)
-#' @param game_type integer in 1:3 (where 1 = pre-season, 2 = regular season, 3 
-#' = playoff/post-season) OR character of 'pre', 'regular', or 'playoff'/'post'
+#' `ns_player_game_log()` scrapes the game log for a given set of `player`, 
+#' `season`, and `game_type`.
+#'
+#' @inheritParams ns_player_seasons
+#' @inheritParams ns_roster_statistics
 #' @returns data.frame with one row per game
 #' @examples
 #' Martin_Necas_gl_regular_20242025 <- ns_player_game_log(
@@ -107,9 +107,9 @@ ns_player_game_log <- function(
   )
 }
 
-#' Get the spotlight players
+#' Access the spotlight players
 #' 
-#' `ns_spotlight_players()` returns the spotlight players, including but not limited to each player's ID, name, and team.
+#' `ns_spotlight_players()` scrapes the spotlight players.
 #'
 #' @returns data.frame with one row per player
 #' @examples

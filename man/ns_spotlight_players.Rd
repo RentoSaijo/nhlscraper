@@ -2,7 +2,7 @@
 % Please edit documentation in R/Player.R
 \name{ns_spotlight_players}
 \alias{ns_spotlight_players}
-\title{Get the spotlight players}
+\title{Access the spotlight players}
 \usage{
 ns_spotlight_players()
 }
@@ -10,7 +10,7 @@ ns_spotlight_players()
 data.frame with one row per player
 }
 \description{
-\code{ns_spotlight_players()} returns the spotlight players, including but not limited to each player's ID, name, and team.
+\code{ns_spotlight_players()} scrapes the spotlight players.
 }
 \examples{
 spotlight_players <- ns_spotlight_players()

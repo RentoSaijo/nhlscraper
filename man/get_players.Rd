@@ -2,7 +2,7 @@
 % Please edit documentation in R/PlayerOld.R
 \name{get_players}
 \alias{get_players}
-\title{Get all the players}
+\title{Access all the players}
 \usage{
 get_players()
 }

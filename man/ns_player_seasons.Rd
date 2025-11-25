@@ -2,18 +2,19 @@
 % Please edit documentation in R/Player.R
 \name{ns_player_seasons}
 \alias{ns_player_seasons}
-\title{Get the season(s) and game type(s) in which a player played}
+\title{Access the season(s) and game type(s) in which a player played}
 \usage{
 ns_player_seasons(player = 8478402)
 }
 \arguments{
-\item{player}{integer ID (e.g., 8480039)}
+\item{player}{integer ID (e.g., 8480039); see \code{\link[=ns_players]{ns_players()}} for reference}
 }
 \value{
 data.frame with one row per season
 }
 \description{
-\code{ns_player_seasons()} returns the season(s) and game type(s) in which a player played in the NHL. Use \code{\link[=ns_players]{ns_players()}} for \code{player} reference.
+\code{ns_player_seasons()} scrapes the season(s) and game type(s) in which a
+player played in the NHL.
 }
 \examples{
 Martin_Necas_seasons <- ns_player_seasons(player = 8480039)

@@ -2,12 +2,12 @@
 % Please edit documentation in R/PlayerOld.R
 \name{get_player_landing}
 \alias{get_player_landing}
-\title{Get the summary for a player}
+\title{Access the summary for a player}
 \usage{
 get_player_landing(player = 8478402)
 }
 \arguments{
-\item{player}{integer ID (e.g., 8480039)}
+\item{player}{integer ID (e.g., 8480039); see \code{\link[=ns_players]{ns_players()}} for reference}
 }
 \value{
 list with various items

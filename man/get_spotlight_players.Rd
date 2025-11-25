@@ -2,7 +2,7 @@
 % Please edit documentation in R/PlayerOld.R
 \name{get_spotlight_players}
 \alias{get_spotlight_players}
-\title{Get the spotlight players}
+\title{Access the spotlight players}
 \usage{
 get_spotlight_players()
 }

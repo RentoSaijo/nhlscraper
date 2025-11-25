@@ -2,7 +2,7 @@
 % Please edit documentation in R/Player.R
 \name{ns_players}
 \alias{ns_players}
-\title{Get all the players}
+\title{Access all the players}
 \usage{
 ns_players()
 }
@@ -10,7 +10,7 @@ ns_players()
 data.frame with one row per player
 }
 \description{
-\code{ns_players()} returns all the players, including but not limited to each player's ID, name, and bio-metrics.
+\code{ns_players()} scrapes information on all the players.
 }
 \examples{
 # This may take >5s, so skip.

@@ -2,17 +2,19 @@
 % Please edit documentation in R/PlayerOld.R
 \name{get_player_game_log}
 \alias{get_player_game_log}
-\title{Get the game log for a player, season, and game type}
+\title{Access the game log for a player, season, and game type}
 \usage{
 get_player_game_log(player = 8478402, season = "now", game_type = "")
 }
 \arguments{
-\item{player}{integer ID (e.g., 8480039)}
+\item{player}{integer ID (e.g., 8480039); see \code{\link[=ns_players]{ns_players()}} for reference}
 
-\item{season}{integer in YYYYYYYY (e.g., 20242025)}
+\item{season}{integer in YYYYYYYY (e.g., 20242025); see \code{\link[=ns_seasons]{ns_seasons()}} for
+reference}
 
 \item{game_type}{integer in 1:3 (where 1 = pre-season, 2 = regular season, 3
-= playoff/post-season) OR character of 'pre', 'regular', or 'playoff'/'post'}
+= playoff/post-season) OR character of 'pre', 'regular', or
+playoff'/'post'; see \code{\link[=ns_seasons]{ns_seasons()}} for reference}
 }
 \value{
 data.frame with one row per game
