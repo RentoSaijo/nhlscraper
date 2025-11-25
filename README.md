@@ -26,7 +26,7 @@ devtools::install_github('RentoSaijo/nhlscraper')
 
 ### Disclosure
 
-I will slowly roll out more detailed documentations for each of the scraping functions, but since there are way too much information packed into each of them, I recommend playing around with some of the provided examples to see what you can find! Also, most, if not, all of the endpoints you are accessing with this package are unofficially documented (i.e., hidden); therefore, it is all of our responsibilities to hit these endpoints with care and respect for the NHL data servers. For example, endpoints that contain historical data and other mostly static data should only be hit once and stored in a database (e.g., MySQL) for further query. We do not know the exact rate limits for these APIs, so please don't ruin the fun for all of us!
+I will slowly roll out more detailed documentation for each of the scraping functions, but since there are way too much information packed into each of them, I recommend playing around with some of the provided examples to see what you can find! Also, most, if not, all of the endpoints you are accessing with this package are unofficially documented (i.e., hidden); therefore, it is all of our responsibilities to hit these endpoints with care and respect for the NHL data servers. For example, endpoints that contain historical data and other mostly static data should only be hit once and stored in a database (e.g., MySQL) for further query. We do not know the exact rate limits for these APIs, so please don't ruin the fun for all of us!
 
 ### History
 
