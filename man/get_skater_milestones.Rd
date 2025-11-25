@@ -2,9 +2,12 @@
 % Please edit documentation in R/SkaterOld.R
 \name{get_skater_milestones}
 \alias{get_skater_milestones}
-\title{Get the skaters on milestone watch}
+\title{Access the skaters on milestone watch}
 \usage{
 get_skater_milestones()
+}
+\value{
+data.frame with one row per player
 }
 \description{
 \code{get_skater_milestones()} is deprecated. Use \code{\link[=skater_milestones]{skater_milestones()}}

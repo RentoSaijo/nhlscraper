@@ -111,19 +111,37 @@ reference:
     desc: >
       Functions to access data about the skaters
     contents:
-      - get_skaters
-      - get_skater_statistics
-      - get_skater_leaders
-      - get_skater_milestones
+      - skater_statistics
+      - skater_stats
+      - skater_regular_statistics
+      - skater_regular_stats
+      - skater_playoff_statistics
+      - skater_playoff_stats
+      - skater_season_statistics
+      - skater_season_stats
+      - skater_series_statistics
+      - skater_series_stats
+      - skater_leaders
+      - skater_milestones
 
   - subtitle: "Goalie"
     desc: >
       Functions to access data about the goalies
     contents:
-      - get_goalies
-      - get_goalie_statistics
-      - get_goalie_leaders
-      - get_goalie_milestones
+      - goalie_statistics
+      - goalie_stats
+      - goalie_regular_statistics
+      - goalie_regular_stats
+      - goalie_season_statistics
+      - goalie_season_stats
+      - goalie_game_statistics
+      - goalie_game_stats
+      - goalie_series_statistics
+      - goalie_series_stats
+      - goalie_scoring
+      - goalie_game_scoring
+      - goalie_leaders
+      - goalie_milestones
 
   - subtitle: "Game"
     desc: >
@@ -145,8 +163,9 @@ reference:
     desc: >
       Functions to access data about the events (plays)
     contents:
-      - penalty_shots
       - event_replay
+      - penalty_shots
+      - ps
 
   - subtitle: "Playoff"
     desc: >
@@ -223,6 +242,8 @@ reference:
       - get_standings_information
       - get_standings
       - get_schedule
+      - get_venues
+      - get_attendance
       - get_franchises
       - get_franchise_team_totals
       - get_franchise_season_by_season
@@ -237,6 +258,10 @@ reference:
       - get_player_landing
       - get_player_game_log
       - get_spotlight_players
+      - get_skater_leaders
+      - get_skater_milestones
+      - get_goalie_leaders
+      - get_goalie_milestones
       - get_games
       - get_scores
       - get_scoreboards
@@ -269,7 +294,9 @@ reference:
       - get_season_now
       - get_team_statistics
       - get_team_scoreboard
+      - get_skaters
       - get_skater_statistics
+      - get_goalies
       - get_goalie_statistics
       - get_series
       - ping

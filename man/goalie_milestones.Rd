@@ -2,16 +2,16 @@
 % Please edit documentation in R/Goalie.R
 \name{goalie_milestones}
 \alias{goalie_milestones}
-\title{Get the goalies on milestone watch}
+\title{Access the goalies on milestone watch}
 \usage{
 goalie_milestones()
 }
 \value{
-data.frame with one row per goalie
+data.frame with one row per player
 }
 \description{
-\code{get_goalie_milestones()} retrieves information on each goalie close to a
-milestone, including but not limited to their ID, name, and statistics.
+\code{goalie_milestones()} scrapes information on the goalies on milestone
+watch.
 }
 \examples{
 goalie_milestones <- goalie_milestones()

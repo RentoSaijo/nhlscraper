@@ -2,7 +2,7 @@
 % Please edit documentation in R/SkaterOld.R
 \name{get_skaters}
 \alias{get_skaters}
-\title{Get the skaters for a range of seasons}
+\title{Access all the skaters for a range of seasons}
 \usage{
 get_skaters()
 }

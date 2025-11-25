@@ -3,17 +3,18 @@
 \name{goalie_series_statistics}
 \alias{goalie_series_statistics}
 \alias{goalie_series_stats}
-\title{Get the statistics for all the goalies by playoff series}
+\title{Access the playoff statistics for all the goalies by series}
 \usage{
 goalie_series_statistics()
 
 goalie_series_stats()
 }
 \value{
-data.frame with one row per goalie per series
+data.frame with one row per player per series
 }
 \description{
-\code{goalie_series_statistics()} retrieves information on ...
+\code{goalie_series_statistics()} scrapes the playoff statistics for all the
+goalies by series.
 }
 \examples{
 goalie_series_stats <- goalie_series_statistics()

@@ -2,9 +2,23 @@
 % Please edit documentation in R/SkaterOld.R
 \name{get_skater_leaders}
 \alias{get_skater_leaders}
-\title{Get the skater statistics leaders for a season, game type, and category}
+\title{Access the skater statistics leaders for a season, game type, and category}
 \usage{
 get_skater_leaders(season = "current", game_type = "", category = "points")
+}
+\arguments{
+\item{season}{integer in YYYYYYYY (e.g., 20242025); see \code{\link[=seasons]{seasons()}} for
+reference}
+
+\item{game_type}{integer in 1:3 (where 1 = pre-season, 2 = regular season, 3
+= playoff/post-season) OR character of 'pre', 'regular', or
+playoff'/'post'; see \code{\link[=seasons]{seasons()}} for reference}
+
+\item{category}{character of 'assists', 'goals', 'goalsSh', 'goalsPp',
+'points, 'penaltyMins', 'toi', 'plusMinus', or 'faceoffLeaders'}
+}
+\value{
+data.frame with one row per player
 }
 \description{
 \code{get_skater_leaders()} is deprecated. Use \code{\link[=skater_leaders]{skater_leaders()}} instead.

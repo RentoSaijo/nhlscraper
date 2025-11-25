@@ -2,7 +2,7 @@
 % Please edit documentation in R/GoalieOld.R
 \name{get_goalies}
 \alias{get_goalies}
-\title{Get the goalies for a range of seasons}
+\title{Access all the goalies for a range of seasons}
 \usage{
 get_goalies()
 }

@@ -2,9 +2,23 @@
 % Please edit documentation in R/GoalieOld.R
 \name{get_goalie_leaders}
 \alias{get_goalie_leaders}
-\title{Get the goalie statistics leaders for a season, game type, and category}
+\title{Access the goalie statistics leaders for a season, game type, and category}
 \usage{
 get_goalie_leaders(season = "current", game_type = "", category = "wins")
+}
+\arguments{
+\item{season}{integer in YYYYYYYY (e.g., 20242025); see \code{\link[=seasons]{seasons()}} for
+reference}
+
+\item{game_type}{integer in 1:3 (where 1 = pre-season, 2 = regular season, 3
+= playoff/post-season) OR character of 'pre', 'regular', or
+playoff'/'post'; see \code{\link[=seasons]{seasons()}} for reference}
+
+\item{category}{character of 'wins', 'shutouts', 'savePctg', or
+'goalsAgainstAverage'}
+}
+\value{
+data.frame with one row per player
 }
 \description{
 \code{get_goalie_leaders()} is deprecated. Use \code{\link[=goalie_leaders]{goalie_leaders()}} instead.

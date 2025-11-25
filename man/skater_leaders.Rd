@@ -2,15 +2,17 @@
 % Please edit documentation in R/Skater.R
 \name{skater_leaders}
 \alias{skater_leaders}
-\title{Get the skater statistics leaders for a season, game type, and report type}
+\title{Access the skater statistics leaders for a season, game type, and report type}
 \usage{
 skater_leaders(season = "current", game_type = "", report_type = "points")
 }
 \arguments{
-\item{season}{integer in YYYYYYYY (e.g., 20242025)}
+\item{season}{integer in YYYYYYYY (e.g., 20242025); see \code{\link[=seasons]{seasons()}} for
+reference}
 
 \item{game_type}{integer in 1:3 (where 1 = pre-season, 2 = regular season, 3
-= playoff/post-season) OR character of 'pre', 'regular', or 'playoff'/'post'}
+= playoff/post-season) OR character of 'pre', 'regular', or
+playoff'/'post'; see \code{\link[=seasons]{seasons()}} for reference}
 
 \item{report_type}{string of 'a'/'assists', 'g'/goals',
 'shg'/'shorthanded goals', 'ppg'/'powerplay goals', 'p'/'points',
@@ -18,17 +20,16 @@ skater_leaders(season = "current", game_type = "", report_type = "points")
 'pm'/'plus minus', or 'f'/'faceoffs'}
 }
 \value{
-data.frame with one row per skater
+data.frame with one row per player
 }
 \description{
-\code{skater_leaders()} retrieves information on each skater for a given set
-of \code{season}, \code{game_type}, and \code{category}, including but not limited to their
-ID, name, and statistics. Access \code{get_seasons()} for \code{season} reference.
+\code{skater_leaders()} scrapes the skater statistics leaderboard for a given set
+of \code{season}, \code{game_type}, and \code{report_type}.
 }
 \examples{
-toi_leaders_regular_20242025 <- skater_leaders(
+TOI_leaders_regular_20242025 <- skater_leaders(
   season      = 20242025,
   game_type   = 2,
-  report_type = 'time on ice'
+  report_type = 'TOI'
 )
 }

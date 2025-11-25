@@ -2,16 +2,15 @@
 % Please edit documentation in R/Skater.R
 \name{skater_milestones}
 \alias{skater_milestones}
-\title{Get the skaters on milestone watch}
+\title{Access the skaters on milestone watch}
 \usage{
 skater_milestones()
 }
 \value{
-data.frame with one row per skater
+data.frame with one row per player
 }
 \description{
-\code{skater_milestones()} retrieves information on each skater close to a
-milestone, including but not limited to their ID, name, and statistics.
+\code{skater_milestones()} scrapes information on the skaters on milestone watch.
 }
 \examples{
 skater_milestones <- skater_milestones()

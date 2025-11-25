@@ -2,10 +2,11 @@
 % Please edit documentation in R/SkaterOld.R
 \name{get_skater_statistics}
 \alias{get_skater_statistics}
-\title{Get skater statistics}
+\title{Access various reports for all the skaters by season or game}
 \usage{
 get_skater_statistics()
 }
 \description{
-\code{get_skater_statistics()} is defunct. Use \code{\link[=skater_statistics]{skater_statistics()}} instead.
+\code{get_skater_statistics()} is defunct. Use \code{\link[=skater_season_report]{skater_season_report()}} or
+\code{\link[=skater_game_report]{skater_game_report()}} instead.
 }

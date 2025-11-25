@@ -3,7 +3,7 @@
 \name{goalie_game_statistics}
 \alias{goalie_game_statistics}
 \alias{goalie_game_stats}
-\title{Get the goalie statistics for all the games}
+\title{Access the statistics for all the goalies by game}
 \usage{
 goalie_game_statistics()
 
@@ -13,8 +13,9 @@ goalie_game_stats()
 data.frame with one row per goalie per game
 }
 \description{
-\code{goalie_game_statistics()} retrieves information on ...
+\code{goalie_game_statistics()} scrapes the statistics for all the goalies by
+game.
 }
 \examples{
-goalie_game_stats <- goalie_game_statistics()
+\donttest{goalie_game_stats <- goalie_game_statistics()}
 }

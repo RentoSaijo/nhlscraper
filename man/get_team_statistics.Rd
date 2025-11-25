@@ -7,6 +7,6 @@
 get_team_statistics()
 }
 \description{
-\code{get_team_statistics()} is defunct. Use \code{\link[=team_season_report]{team_season_report()}} or
+\code{get_team_statistics()} is defunct. Use \code{\link[=team_season_report]{team_season_report()}} and/or
 \code{\link[=team_game_report]{team_game_report()}} instead.
 }

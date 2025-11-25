@@ -3,17 +3,19 @@
 \name{goalie_season_statistics}
 \alias{goalie_season_statistics}
 \alias{goalie_season_stats}
-\title{Get the goalie statistics for all the seasons}
+\title{Access the statistics for all the goalies by season, game type, and team.}
 \usage{
 goalie_season_statistics()
 
 goalie_season_stats()
 }
 \value{
-data.frame with one row per goalie per season
+data.frame with one row per player per season per game type,
+separated by team if applicable
 }
 \description{
-\code{goalie_season_statistics()} retrieves information on ...
+\code{goalie_season_statistics()} scrapes the statistics for all the goalies by
+season, game type, and team.
 }
 \examples{
 goalie_season_stats <- goalie_season_statistics()

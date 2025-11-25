@@ -136,7 +136,7 @@ get_team_schedule <- function(team = 'NJD', season = 'now') {
 
 #' Access various reports for all the teams by season or game
 #' 
-#' `get_team_statistics()` is defunct. Use [team_season_report()] or 
+#' `get_team_statistics()` is defunct. Use [team_season_report()] and/or 
 #' [team_game_report()] instead.
 #' 
 #' @export
@@ -147,7 +147,7 @@ get_team_statistics <- function() {
     package = 'nhlscraper',
     msg     = paste(
       '`get_team_statistics()` is defunct.',
-      'Use `team_season_report()` or `team_game_report` instead.'
+      'Use `team_season_report()` and/or `team_game_report` instead.'
     )
   )
 }

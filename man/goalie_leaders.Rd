@@ -2,29 +2,32 @@
 % Please edit documentation in R/Goalie.R
 \name{goalie_leaders}
 \alias{goalie_leaders}
-\title{Get goalie statistics leaders by season, game-type, and category}
+\title{Access the goalie statistics leaders for a season, game type, and report type}
 \usage{
 goalie_leaders(season = "current", game_type = "", report_type = "wins")
 }
 \arguments{
-\item{season}{integer in YYYYYYYY (e.g., 20242025)}
+\item{season}{integer in YYYYYYYY (e.g., 20242025); see \code{\link[=seasons]{seasons()}} for
+reference}
 
 \item{game_type}{integer in 1:3 (where 1 = pre-season, 2 = regular season, 3
-= playoff/post-season) OR character of 'pre', 'regular', or 'playoff'/'post'}
+= playoff/post-season) OR character of 'pre', 'regular', or
+playoff'/'post'; see \code{\link[=seasons]{seasons()}} for reference}
 
-\item{report_type}{string of 'w'/'wins', 's'/shutouts',
+\item{report_type}{character of 'w'/'wins', 's'/shutouts',
 's\%'/'sP'/'save \%'/'save percentage', or 'gaa'/'goals against average'}
 }
 \value{
-data.frame with one row per goalie
+data.frame with one row per player
 }
 \description{
-\code{get_goalie_leaders()} retrieves information on each goalie for a given set of \code{season}, \code{game_type}, and \code{category}, including but not limited to their ID, name, and statistics. Access \code{get_seasons()} for \code{season} reference.
+\code{goalie_leaders()} scrapes the goalie statistics leaderboard for a given
+set of \code{season}, \code{game_type}, and \code{report_type}.
 }
 \examples{
-gaa_leaders_regular_20242025 <- goalie_leaders(
+GAA_leaders_regular_20242025 <- goalie_leaders(
   season      = 20242025,
   game_type   = 2,
-  report_type = 'goals against average'
+  report_type = 'GAA'
 )
 }

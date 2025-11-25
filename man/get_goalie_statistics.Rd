@@ -2,10 +2,11 @@
 % Please edit documentation in R/GoalieOld.R
 \name{get_goalie_statistics}
 \alias{get_goalie_statistics}
-\title{Get goalie statistics}
+\title{Access various reports for all the goalies by season or game}
 \usage{
 get_goalie_statistics()
 }
 \description{
-\code{get_goalie_statistics()} is defunct. Use \code{\link[=goalie_statistics]{goalie_statistics()}} instead.
+\code{get_goalie_statistics()} is defunct. Use \code{\link[=goalies_season_report]{goalies_season_report()}} or
+\code{\link[=goalie_game_report]{goalie_game_report()}} instead.
 }

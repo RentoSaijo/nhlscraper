@@ -2,9 +2,12 @@
 % Please edit documentation in R/GoalieOld.R
 \name{get_goalie_milestones}
 \alias{get_goalie_milestones}
-\title{Get the goalies on milestone watch}
+\title{Access the goalies on milestone watch}
 \usage{
 get_goalie_milestones()
+}
+\value{
+data.frame with one row per player
 }
 \description{
 \code{get_goalie_milestones()} is deprecated. Use \code{\link[=goalie_milestones]{goalie_milestones()}}

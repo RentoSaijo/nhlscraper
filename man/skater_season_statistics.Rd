@@ -3,19 +3,21 @@
 \name{skater_season_statistics}
 \alias{skater_season_statistics}
 \alias{skater_season_stats}
-\title{Get the statistics for all the skaters by season, game type, and team}
+\title{Access the statistics for all the skaters by season, game type, and team}
 \usage{
 skater_season_statistics()
 
 skater_season_stats()
 }
 \value{
-data.frame with one row per skater per game type per season,
-separated by team when necessary
+data.frame with one row per player per season per game type,
+separated by team if applicable
 }
 \description{
-\code{skater_season_statistics()} retrieves information on ...
+\code{skater_season_statistics()} scrapes the statistics for all the skaters by
+season, game type, and team.
 }
 \examples{
-skater_season_stats <- skater_season_statistics()
+# This may take >5s, so skip.
+\donttest{skater_season_stats <- skater_season_statistics()}
 }

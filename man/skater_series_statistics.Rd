@@ -3,18 +3,20 @@
 \name{skater_series_statistics}
 \alias{skater_series_statistics}
 \alias{skater_series_stats}
-\title{Get the statistics for all the skaters by playoff series}
+\title{Access the playoff statistics for all the skaters by series}
 \usage{
 skater_series_statistics()
 
 skater_series_stats()
 }
 \value{
-data.frame with one row per skater per series
+data.frame with one row per player per series
 }
 \description{
-\code{skater_series_statistics()} retrieves information on ...
+\code{skater_series_statistics()} scrapes the playoff statistics for all the
+skaters by series.
 }
 \examples{
-skater_series_stats <- skater_series_statistics()
+# This may take >5s, so skip.
+\donttest{skater_series_stats <- skater_series_statistics()}
 }
