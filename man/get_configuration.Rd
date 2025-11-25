@@ -11,5 +11,5 @@ list with 5 items
 }
 \description{
 \code{get_configuration()} is deprecated. Use
-\code{\link[=statistics_report_configuration]{statistics_report_configuration()}} instead.
+\code{\link[=statistics_report_configurations]{statistics_report_configurations()}} instead.
 }
