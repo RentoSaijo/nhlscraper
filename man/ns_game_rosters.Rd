@@ -2,19 +2,19 @@
 % Please edit documentation in R/Game.R
 \name{ns_game_rosters}
 \alias{ns_game_rosters}
-\title{Get the rosters of a game}
+\title{Access the rosters for a game}
 \usage{
-ns_game_rosters(game = 2025020275)
+ns_game_rosters(game = 2023030417)
 }
 \arguments{
-\item{game}{integer ID (e.g., 2025020275)}
+\item{game}{integer ID (e.g., 2025020275); see \code{\link[=ns_games]{ns_games()}} for reference}
 }
 \value{
 data.frame with one row per player
 }
 \description{
-\code{ns_game_rosters()} retrieves ...
+\code{ns_game_rosters()} scrapes the rosters for a given \code{game}.
 }
 \examples{
-rosters_SCF_game_7_20232024 <- ns_game_rosters(game = 2023030417)
+rosters_Martin_Necas_legacy_game <- ns_game_rosters(game = 2025020275)
 }

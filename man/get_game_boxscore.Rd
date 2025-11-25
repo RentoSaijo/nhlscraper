@@ -2,9 +2,19 @@
 % Please edit documentation in R/GameOld.R
 \name{get_game_boxscore}
 \alias{get_game_boxscore}
-\title{Get the boxscore of a game for a team and player type}
+\title{Access the boxscore for a game, team, and position}
 \usage{
-get_game_boxscore(game = 2025020275, team = "home", player_type = "forwards")
+get_game_boxscore(game = 2023030417, team = "home", player_type = "forwards")
+}
+\arguments{
+\item{game}{integer ID (e.g., 2025020275); see \code{\link[=ns_games]{ns_games()}} for reference}
+
+\item{team}{character of 'home' or 'away'}
+
+\item{player_type}{character of 'forwards', 'defense', or 'goalies'}
+}
+\value{
+data.frame with one row per player
 }
 \description{
 \code{get_game_boxscore()} is deprecated. Use \code{\link[=ns_boxscore]{ns_boxscore()}} instead.

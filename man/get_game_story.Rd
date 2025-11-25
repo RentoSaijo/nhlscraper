@@ -2,9 +2,15 @@
 % Please edit documentation in R/GameOld.R
 \name{get_game_story}
 \alias{get_game_story}
-\title{Get the World Showcase (WSC) summary of a game}
+\title{Access the World Showcase (WSC) summary for a game}
 \usage{
-get_game_story(game = 2025020275)
+get_game_story(game = 2023030417)
+}
+\arguments{
+\item{game}{integer ID (e.g., 2025020275); see \code{\link[=ns_games]{ns_games()}} for reference}
+}
+\value{
+list of various items
 }
 \description{
 \code{get_game_story()} is deprecated. Use \code{\link[=ns_wsc_summary]{ns_wsc_summary()}} instead.

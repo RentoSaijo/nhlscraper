@@ -1,27 +1,26 @@
-#' Get all the games
+#' Access all the games
 #' 
-#' `ns_games()` returns information on all the games, including but not limited to each game's ID, start time, and competing teams.
+#' `ns_games()` scrapes information on all the games.
 #' 
 #' @returns data.frame with one row per game
 #' @examples
 #' # May take >5s, so skip.
-#' \donttest{
-#'   all_games <- ns_games()
-#' }
+#' \donttest{all_games <- ns_games()}
 #' @export
 
 ns_games <- function() {
-  nhl_api(
+  games <- nhl_api(
     path = 'en/game',
     type = 's'
   )$data
+  games[order(games$id), ]
 }
 
-#' Get the score(s) of the game(s) for a date
+#' Access the scores for a date
 #' 
-#' `ns_scores()` returns the score(s) of the game(s) for a given `date`. Use [ns_seasons()] for `date` reference.
+#' `ns_scores()` scrapes the scores for a given `date`.
 #' 
-#' @param date character in 'YYYY-MM-DD' (e.g., '2025-01-01')
+#' @inheritParams ns_standings
 #' @returns data.frame with one row per game
 #' @examples
 #' scores_Halloween_2025 <- ns_scores(date = '2025-10-31')
@@ -42,17 +41,17 @@ ns_scores <- function(date = 'now') {
   )
 }
 
-#' Get the GameCenter (GC) summary for a game
+#' Access the GameCenter (GC) summary for a game
 #' 
-#' `ns_gc_summary()` returns the GameCenter (GC) summary for a game, including but not limited to the game's ID, start time, venue, competing teams, three stars, and statistics.
+#' `ns_gc_summary()` scrapes the GC summary for a given `game`.
 #' 
-#' @param game integer ID (e.g., 2025020275)
+#' @param game integer ID (e.g., 2025020275); see [ns_games()] for reference
 #' @returns list of various items
 #' @examples
-#' gc_summary_SCF_game_7_20232024 <- ns_gc_summary(game = 2023030417)
+#' gc_summary_Martin_Necas_legacy_game <- ns_gc_summary(game = 2025020275)
 #' @export
 
-ns_gc_summary <- function(game = 2025020275) {
+ns_gc_summary <- function(game = 2023030417) {
   tryCatch(
     expr = {
       landing    <- nhl_api(
@@ -72,17 +71,17 @@ ns_gc_summary <- function(game = 2025020275) {
   )
 }
 
-#' Get the World Showcase (WSC) summary for a game
+#' Access the World Showcase (WSC) summary for a game
 #' 
-#' `ns_wsc_summary()` returns the World Showcase (WSC) summary for a given `game`, including but not limited to the game's ID, start time, venue, competing teams, three stars, and statistics.
+#' `ns_wsc_summary()` scrapes the WSC summary for a given `game`.
 #' 
-#' @param game integer ID (e.g., 2025020275)
+#' @inheritParams ns_gc_summary
 #' @returns list of various items
 #' @examples
-#' wsc_summary_SCF_game_7_20232024 <- ns_wsc_summary(game = 2023030417)
+#' wsc_summary_Martin_Necas_legacy_game <- ns_wsc_summary(game = 2025020275)
 #' @export
 
-ns_wsc_summary <- function(game = 2025020275) {
+ns_wsc_summary <- function(game = 2023030417) {
   tryCatch(
     expr = {
       nhl_api(
@@ -97,25 +96,25 @@ ns_wsc_summary <- function(game = 2025020275) {
   )
 }
 
-#' Get the boxscore of a game for a team and position
+#' Access the boxscore for a game, team, and position
 #' 
-#' `ns_boxscore()` returns the boxscore for a 
+#' `ns_boxscore()` scrapes the boxscore for a given set of `game`, `team`, and 
+#' `position`.
 #' 
-#' @param game integer ID (e.g., 2025020275)
+#' @inheritParams ns_gc_summary
+#' @inheritParams ns_roster
 #' @param team character of 'h'/'home' or 'a'/'away'
-#' @param position character of 'f'/'forwards', 'd'/'defensemen', or 
-#' 'g'/goalies'
 #' @returns data.frame with one row per player
 #' @examples
-#' boxscore_SCF_game_7_20232024_FLA_defensemen <- ns_boxscore(
-#'   game     = 2023030417,
-#'   team     = 'A',
-#'   position = 'D'
+#' boxscore_COL_forwards_Martin_Necas_legacy_game <- ns_boxscore(
+#'   game     = 2025020275,
+#'   team     = 'H',
+#'   position = 'F'
 #' )
 #' @export
 
 ns_boxscore <- function(
-    game     = 2025020275,
+    game     = 2023030417,
     team     = 'home',
     position = 'forwards'
 ) {
@@ -145,23 +144,25 @@ ns_boxscore <- function(
   )
 }
 
-#' Get the rosters of a game
+#' Access the rosters for a game
 #' 
-#' `ns_game_rosters()` retrieves ...
+#' `ns_game_rosters()` scrapes the rosters for a given `game`.
 #' 
-#' @param game integer ID (e.g., 2025020275)
+#' @inheritParams ns_gc_summary
 #' @returns data.frame with one row per player
 #' @examples
-#' rosters_SCF_game_7_20232024 <- ns_game_rosters(game = 2023030417)
+#' rosters_Martin_Necas_legacy_game <- ns_game_rosters(game = 2025020275)
 #' @export
 
-ns_game_rosters <- function(game = 2025020275) {
+ns_game_rosters <- function(game = 2023030417) {
   tryCatch(
     expr = {
-      nhl_api(
+      rosters <- nhl_api(
         path = sprintf('v1/gamecenter/%s/play-by-play', game),
         type = 'w'
       )$rosterSpots
+      rosters <- rosters[order(rosters$sweaterNumber), ]
+      rosters[order(rosters$teamId), ]
     },
     error = function(e) {
       message('Invalid argument(s); refer to help file.')
@@ -170,21 +171,17 @@ ns_game_rosters <- function(game = 2025020275) {
   )
 }
 
-#' Get the GameCenter (GC) play-by-play of a game
+#' Access the GameCenter (GC) play-by-play for a game
 #' 
-#' `ns_gc_play_by_play()` retrieves GC-provided information on each play for a 
-#' given `game`, including but not limited to their ID; type; time of 
-#' occurrence; winning, losing, blocking, shooting, hitting, hit, scoring, 
-#' assisting, committed-by, drawn-by, and/or served-by player IDs; and X and Y 
-#' coordinates. Access `get_games()` for `game` reference.
+#' `ns_gc_play_by_play()` scrapes GC play-by-play for a given `game`.
 #' 
-#' @param game integer ID (e.g., 2025020275)
-#' @returns data.frame with one row per event/play
+#' @inheritParams ns_gc_summary
+#' @returns data.frame with one row per event (play)
 #' @examples
-#' gc_pbp_SCF_game_7_20232024 <- ns_gc_play_by_play(game = 2023030417)
+#' gc_pbp_Martin_Necas_legacy_game <- ns_gc_play_by_play(game = 2025020275)
 #' @export
 
-ns_gc_play_by_play <- function(game = 2025020275) {
+ns_gc_play_by_play <- function(game = 2023030417) {
   tryCatch(
     expr = {
       nhl_api(
@@ -201,21 +198,21 @@ ns_gc_play_by_play <- function(game = 2025020275) {
 
 #' @rdname ns_gc_play_by_play
 #' @export
-ns_gc_pbp <- function(game = 2025020275) {
+ns_gc_pbp <- function(game = 2023030417) {
   ns_gc_play_by_play(game)
 }
 
-#' Get the World Showcase (WSC) play-by-play of a game
+#' Access the World Showcase (WSC) play-by-play for a game
 #' 
-#' `ns_wsc_play_by_play()` retrieves WSC-provided information on each play for a given `game`, including but not limited to their ID; time and strength state of occurrence; winning, losing, blocking, shooting, hitting, hit, scoring, assisting, committed-by, drawn-by, and/or served-by player IDs; and X and Y coordinates. Access `get_games()` for `game` reference.
-#'
-#' @param game integer ID (e.g., 2025020275)
-#' @returns data.frame with one row per event/play
+#' `ns_wsc_play_by_play()` scrapes the WSC play-by-play for given `game`.
+#' 
+#' @inheritParams ns_gc_summary
+#' @returns data.frame with one row per event (play)
 #' @examples
-#' wsc_pbp_SCF_game_7_20232024 <- ns_wsc_play_by_play(game = 2023030417)
+#' wsc_pbp_Martin_Necas_legacy_game <- ns_wsc_play_by_play(game = 2025020275)
 #' @export
 
-ns_wsc_play_by_play <- function(game = 2025020275) {
+ns_wsc_play_by_play <- function(game = 2023030417) {
   tryCatch(
     expr = {
       nhl_api(
@@ -232,30 +229,29 @@ ns_wsc_play_by_play <- function(game = 2025020275) {
 
 #' @rdname ns_wsc_play_by_play
 #' @export
-ns_wsc_pbp <- function(game = 2025020275) {
+ns_wsc_pbp <- function(game = 2023030417) {
   ns_wsc_play_by_play(game)
 }
 
-#' Get the shifts of a game
+#' Access the shift charts for a game
 #' 
-#' `ns_shifts()` retrieves information on each shift for a given `game`, 
-#' including but not limited to their period, start and end times, and player's 
-#' ID and name. Access `get_games()` for `game` reference.
+#' `ns_shifts()` scrapes the shift charts for a given `game`.
 #' 
-#' @param game integer ID (e.g., 2025020275)
+#' @inheritParams ns_gc_summary
 #' @returns data.frame with one row per shift
 #' @examples
-#' shifts_SCF_game_7_20232024 <- ns_shifts(game = 2023030417)
+#' shifts_Martin_Necas_legacy_game <- ns_shifts(game = 2025020275)
 #' @export
 
-ns_shifts <- function(game = 2025020275) {
+ns_shifts <- function(game = 2023030417) {
   tryCatch(
     expr = {
-      nhl_api(
+      shifts <- nhl_api(
         path  = 'en/shiftcharts',
         query = list(cayenneExp = sprintf('gameId = %s', game)),
         type  = 's'
       )$data
+      shifts[order(shifts$teamId), ]
     },
     error = function(e) {
       message('Invalid argument(s); refer to help file.')

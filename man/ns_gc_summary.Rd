@@ -2,21 +2,19 @@
 % Please edit documentation in R/Game.R
 \name{ns_gc_summary}
 \alias{ns_gc_summary}
-\title{Get the GameCenter (GC) summary of a game}
+\title{Access the GameCenter (GC) summary for a game}
 \usage{
-ns_gc_summary(game = 2025020275)
+ns_gc_summary(game = 2023030417)
 }
 \arguments{
-\item{game}{integer ID (e.g., 2025020275)}
+\item{game}{integer ID (e.g., 2025020275); see \code{\link[=ns_games]{ns_games()}} for reference}
 }
 \value{
 list of various items
 }
 \description{
-\code{ns_gc_summary()} retrieves GC-provided information on a \code{game},
-including but not limited to its type, venue, start time, clock, home and
-away teams, and TV broadcast(s). Access \code{get_games()} for \code{game} reference.
+\code{ns_gc_summary()} scrapes the GC summary for a given \code{game}.
 }
 \examples{
-gc_summary_SCF_game_7_20232024 <- ns_gc_summary(game = 2023030417)
+gc_summary_Martin_Necas_legacy_game <- ns_gc_summary(game = 2025020275)
 }

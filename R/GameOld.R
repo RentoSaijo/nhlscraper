@@ -1,7 +1,8 @@
-#' Get all the games
+#' Access all the games
 #' 
 #' `get_games()` is deprecated. Use [ns_games()] instead.
 #' 
+#' @returns data.frame with one row per game
 #' @export
 
 get_games <- function() {
@@ -16,10 +17,12 @@ get_games <- function() {
   ns_games()
 }
 
-#' Get the score(s) of the game(s) for a date
+#' Access the scores for a date
 #' 
 #' `get_scores()` is deprecated. Use [ns_scores()] instead.
 #' 
+#' @inheritParams ns_standings
+#' @returns data.frame with one row per game
 #' @export
 
 get_scores <- function(date = 'now') {
@@ -34,13 +37,15 @@ get_scores <- function(date = 'now') {
   ns_scores(date)
 }
 
-#' Get the scoreboard(s) of the game(s) for a date
+#' Access the scoreboards for a date
 #' 
 #' `get_scoreboards()` is deprecated. Use [ns_scores()] instead.
 #' 
+#' @inheritParams ns_standings
+#' @returns data.frame with one row per game
 #' @export
 
-get_scoreboards <- function(date='2025-01-01') {
+get_scoreboards <- function(date = 'now') {
   .Deprecated(
     new     = 'ns_scores()',
     package = 'nhlscraper',
@@ -52,14 +57,58 @@ get_scoreboards <- function(date='2025-01-01') {
   ns_scores(date)
 }
 
-#' Get the boxscore of a game for a team and player type
+#' Access the GameCenter (GC) summary for a game
+#' 
+#' `get_game_landing()` is deprecated. Use [ns_gc_summary()] instead.
+#'
+#' @inheritParams ns_gc_summary
+#' @returns list of various items
+#' @export
+
+get_game_landing <- function(game = 2023030417) {
+  .Deprecated(
+    new     = 'ns_gc_summary()',
+    package = 'nhlscraper',
+    msg     = paste(
+      '`get_game_landing()` is deprecated.',
+      'Use `ns_gc_summary()` instead.'
+    )
+  )
+  ns_gc_summary(game)
+}
+
+#' Access the World Showcase (WSC) summary for a game
+#' 
+#' `get_game_story()` is deprecated. Use [ns_wsc_summary()] instead.
+#'
+#' @inheritParams ns_gc_summary
+#' @returns list of various items
+#' @export
+
+get_game_story <- function(game = 2023030417) {
+  .Deprecated(
+    new     = 'ns_wsc_summary()',
+    package = 'nhlscraper',
+    msg     = paste(
+      '`get_game_story()` is deprecated.',
+      'Use `ns_wsc_summary()` instead.'
+    )
+  )
+  ns_wsc_summary(game)
+}
+
+#' Access the boxscore for a game, team, and position
 #' 
 #' `get_game_boxscore()` is deprecated. Use [ns_boxscore()] instead.
 #'
+#' @inheritParams ns_gc_summary
+#' @param team character of 'home' or 'away'
+#' @param player_type character of 'forwards', 'defense', or 'goalies'
+#' @returns data.frame with one row per player
 #' @export
 
 get_game_boxscore <- function(
-    game        = 2025020275,
+    game        = 2023030417,
     team        = 'home',
     player_type = 'forwards'
 ) {
@@ -74,13 +123,15 @@ get_game_boxscore <- function(
   ns_boxscore(game, team, player_type)
 }
 
-#' Get the GameCenter (GC) play-by-play of a game
+#' Access the GameCenter (GC) play-by-play for a game
 #' 
 #' `get_gc_play_by_play()` is deprecated. Use [ns_gc_play_by_play()] instead.
 #'
+#' @inheritParams ns_gc_summary
+#' @returns data.frame with one row per event (play)
 #' @export
 
-get_gc_play_by_play <- function(game = 2025020275) {
+get_gc_play_by_play <- function(game = 2023030417) {
   .Deprecated(
     new     = 'ns_gc_play_by_play()',
     package = 'nhlscraper',
@@ -92,13 +143,15 @@ get_gc_play_by_play <- function(game = 2025020275) {
   ns_gc_play_by_play(game)
 }
 
-#' Get the World Showcase (WSC) play-by-play of a game
+#' Access the World Showcase (WSC) play-by-play for a game
 #' 
 #' `get_wsc_play_by_play()` is deprecated. Use [ns_wsc_play_by_play()] instead.
 #'
+#' @inheritParams ns_gc_summary
+#' @returns data.frame with one row per event (play)
 #' @export
 
-get_wsc_play_by_play <- function(game = 2025020275) {
+get_wsc_play_by_play <- function(game = 2023030417) {
   .Deprecated(
     new     = 'ns_wsc_play_by_play()',
     package = 'nhlscraper',
@@ -110,13 +163,15 @@ get_wsc_play_by_play <- function(game = 2025020275) {
   ns_wsc_play_by_play(game)
 }
 
-#' Get the shifts of a game
+#' Access the shift charts for a game
 #' 
 #' `get_shift_charts()` is deprecated. Use [ns_shifts()] instead.
 #'
+#' @inheritParams ns_gc_summary
+#' @returns data.frame with one row per shift
 #' @export
 
-get_shift_charts <- function(game = 2025020275) {
+get_shift_charts <- function(game = 2023030417) {
   .Deprecated(
     new     = 'ns_shifts()',
     package = 'nhlscraper',
@@ -126,40 +181,4 @@ get_shift_charts <- function(game = 2025020275) {
     )
   )
   ns_shifts(game)
-}
-
-#' Get the GameCenter (GC) summary of a game
-#' 
-#' `get_game_landing()` is deprecated. Use [ns_gc_summary()] instead.
-#'
-#' @export
-
-get_game_landing <- function(game = 2025020275) {
-  .Deprecated(
-    new     = 'ns_gc_summary()',
-    package = 'nhlscraper',
-    msg     = paste(
-      '`get_game_landing()` is deprecated.',
-      'Use `ns_gc_summary()` instead.'
-    )
-  )
-  ns_gc_summary(game)
-}
-
-#' Get the World Showcase (WSC) summary of a game
-#' 
-#' `get_game_story()` is deprecated. Use [ns_wsc_summary()] instead.
-#'
-#' @export
-
-get_game_story <- function(game = 2025020275) {
-  .Deprecated(
-    new     = 'ns_wsc_summary()',
-    package = 'nhlscraper',
-    msg     = paste(
-      '`get_game_story()` is deprecated.',
-      'Use `ns_wsc_summary()` instead.'
-    )
-  )
-  ns_wsc_summary(game)
 }

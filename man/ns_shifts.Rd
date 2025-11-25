@@ -2,21 +2,19 @@
 % Please edit documentation in R/Game.R
 \name{ns_shifts}
 \alias{ns_shifts}
-\title{Get the shifts of a game}
+\title{Access the shift charts for a game}
 \usage{
-ns_shifts(game = 2025020275)
+ns_shifts(game = 2023030417)
 }
 \arguments{
-\item{game}{integer ID (e.g., 2025020275)}
+\item{game}{integer ID (e.g., 2025020275); see \code{\link[=ns_games]{ns_games()}} for reference}
 }
 \value{
 data.frame with one row per shift
 }
 \description{
-\code{ns_shifts()} retrieves information on each shift for a given \code{game},
-including but not limited to their period, start and end times, and player's
-ID and name. Access \code{get_games()} for \code{game} reference.
+\code{ns_shifts()} scrapes the shift charts for a given \code{game}.
 }
 \examples{
-shifts_SCF_game_7_20232024 <- ns_shifts(game = 2023030417)
+shifts_Martin_Necas_legacy_game <- ns_shifts(game = 2025020275)
 }

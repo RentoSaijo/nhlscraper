@@ -2,18 +2,19 @@
 % Please edit documentation in R/Game.R
 \name{ns_scores}
 \alias{ns_scores}
-\title{Get the score(s) of the game(s) for a date}
+\title{Access the scores for a date}
 \usage{
 ns_scores(date = "now")
 }
 \arguments{
-\item{date}{character in 'YYYY-MM-DD' (e.g., '2025-01-01')}
+\item{date}{character in 'YYYY-MM-DD' (e.g., '2025-01-01'); see
+\code{\link[=ns_seasons]{ns_seasons()}} for reference}
 }
 \value{
 data.frame with one row per game
 }
 \description{
-\code{ns_scores()} returns the score(s) of the game(s) for a given \code{date}. Use \code{\link[=ns_seasons]{ns_seasons()}} for \code{date} reference.
+\code{ns_scores()} scrapes the scores for a given \code{date}.
 }
 \examples{
 scores_Halloween_2025 <- ns_scores(date = '2025-10-31')

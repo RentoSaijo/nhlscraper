@@ -2,9 +2,15 @@
 % Please edit documentation in R/GameOld.R
 \name{get_wsc_play_by_play}
 \alias{get_wsc_play_by_play}
-\title{Get the World Showcase (WSC) play-by-play of a game}
+\title{Access the World Showcase (WSC) play-by-play for a game}
 \usage{
-get_wsc_play_by_play(game = 2025020275)
+get_wsc_play_by_play(game = 2023030417)
+}
+\arguments{
+\item{game}{integer ID (e.g., 2025020275); see \code{\link[=ns_games]{ns_games()}} for reference}
+}
+\value{
+data.frame with one row per event (play)
 }
 \description{
 \code{get_wsc_play_by_play()} is deprecated. Use \code{\link[=ns_wsc_play_by_play]{ns_wsc_play_by_play()}} instead.

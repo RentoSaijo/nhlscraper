@@ -2,7 +2,7 @@
 % Please edit documentation in R/Game.R
 \name{ns_games}
 \alias{ns_games}
-\title{Get all the games}
+\title{Access all the games}
 \usage{
 ns_games()
 }
@@ -10,13 +10,9 @@ ns_games()
 data.frame with one row per game
 }
 \description{
-\code{ns_games()} retrieves information on each game, including but not limited
-to their ID, season, type, start date and time, and home and visiting teams'
-IDs and scores.
+\code{ns_games()} scrapes information on all the games.
 }
 \examples{
 # May take >5s, so skip.
-\donttest{
-  all_games <- ns_games()
-}
+\donttest{all_games <- ns_games()}
 }

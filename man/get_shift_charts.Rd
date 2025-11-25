@@ -2,9 +2,15 @@
 % Please edit documentation in R/GameOld.R
 \name{get_shift_charts}
 \alias{get_shift_charts}
-\title{Get the shifts of a game}
+\title{Access the shift charts for a game}
 \usage{
-get_shift_charts(game = 2025020275)
+get_shift_charts(game = 2023030417)
+}
+\arguments{
+\item{game}{integer ID (e.g., 2025020275); see \code{\link[=ns_games]{ns_games()}} for reference}
+}
+\value{
+data.frame with one row per shift
 }
 \description{
 \code{get_shift_charts()} is deprecated. Use \code{\link[=ns_shifts]{ns_shifts()}} instead.

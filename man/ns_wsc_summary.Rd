@@ -2,21 +2,19 @@
 % Please edit documentation in R/Game.R
 \name{ns_wsc_summary}
 \alias{ns_wsc_summary}
-\title{Get the World Showcase (WSC) summary of a game}
+\title{Access the World Showcase (WSC) summary for a game}
 \usage{
-ns_wsc_summary(game = 2025020275)
+ns_wsc_summary(game = 2023030417)
 }
 \arguments{
-\item{game}{integer ID (e.g., 2025020275)}
+\item{game}{integer ID (e.g., 2025020275); see \code{\link[=ns_games]{ns_games()}} for reference}
 }
 \value{
 list of various items
 }
 \description{
-\code{ns_wsc_summary()} retrieves WSC-provided information on a \code{game}, including
-but not limited to its type, venue, start time, clock, home and away teams,
-and TV broadcast(s). Access \code{get_games()} for \code{game} reference.
+\code{ns_wsc_summary()} scrapes the WSC summary for a given \code{game}.
 }
 \examples{
-wsc_summary_SCF_game_7_20232024 <- ns_wsc_summary(game = 2023030417)
+wsc_summary_Martin_Necas_legacy_game <- ns_wsc_summary(game = 2025020275)
 }

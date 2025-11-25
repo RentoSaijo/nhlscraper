@@ -2,9 +2,12 @@
 % Please edit documentation in R/GameOld.R
 \name{get_games}
 \alias{get_games}
-\title{Get all the games}
+\title{Access all the games}
 \usage{
 get_games()
+}
+\value{
+data.frame with one row per game
 }
 \description{
 \code{get_games()} is deprecated. Use \code{\link[=ns_games]{ns_games()}} instead.

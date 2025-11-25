@@ -3,21 +3,21 @@
 \name{ns_wsc_play_by_play}
 \alias{ns_wsc_play_by_play}
 \alias{ns_wsc_pbp}
-\title{Get the World Showcase (WSC) play-by-play of a game}
+\title{Access the World Showcase (WSC) play-by-play for a game}
 \usage{
-ns_wsc_play_by_play(game = 2025020275)
+ns_wsc_play_by_play(game = 2023030417)
 
-ns_wsc_pbp(game = 2025020275)
+ns_wsc_pbp(game = 2023030417)
 }
 \arguments{
-\item{game}{integer ID (e.g., 2025020275)}
+\item{game}{integer ID (e.g., 2025020275); see \code{\link[=ns_games]{ns_games()}} for reference}
 }
 \value{
-data.frame with one row per event/play
+data.frame with one row per event (play)
 }
 \description{
-\code{ns_wsc_play_by_play()} retrieves WSC-provided information on each play for a given \code{game}, including but not limited to their ID; time and strength state of occurrence; winning, losing, blocking, shooting, hitting, hit, scoring, assisting, committed-by, drawn-by, and/or served-by player IDs; and X and Y coordinates. Access \code{get_games()} for \code{game} reference.
+\code{ns_wsc_play_by_play()} scrapes the WSC play-by-play for given \code{game}.
 }
 \examples{
-wsc_pbp_SCF_game_7_20232024 <- ns_wsc_play_by_play(game = 2023030417)
+wsc_pbp_Martin_Necas_legacy_game <- ns_wsc_play_by_play(game = 2025020275)
 }

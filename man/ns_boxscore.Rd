@@ -2,32 +2,29 @@
 % Please edit documentation in R/Game.R
 \name{ns_boxscore}
 \alias{ns_boxscore}
-\title{Get the boxscore of a game for a team and position}
+\title{Access the boxscore for a game, team, and position}
 \usage{
-ns_boxscore(game = 2025020275, team = "home", position = "forwards")
+ns_boxscore(game = 2023030417, team = "home", position = "forwards")
 }
 \arguments{
-\item{game}{integer ID (e.g., 2025020275)}
+\item{game}{integer ID (e.g., 2025020275); see \code{\link[=ns_games]{ns_games()}} for reference}
 
 \item{team}{character of 'h'/'home' or 'a'/'away'}
 
 \item{position}{character of 'f'/'forwards', 'd'/'defensemen', or
-'g'/goalies'}
+'g'/'goalies'}
 }
 \value{
 data.frame with one row per player
 }
 \description{
-\code{ns_boxscore()} retrieves information on each player for a given set
-of \code{game}, \code{team}, and \code{player_type}, including but not limited to their ID,
-name, sweater number, goals, assists, +/-, hits, blocks, shots-on-goal,
-giveaways, takeaways, time on ice, and number of shifts. Access
-\code{get_games()} for \code{game} reference.
+\code{ns_boxscore()} scrapes the boxscore for a given set of \code{game}, \code{team}, and
+\code{position}.
 }
 \examples{
-boxscore_SCF_game_7_20232024_FLA_defensemen <- ns_boxscore(
-  game     = 2023030417,
-  team     = 'A',
-  position = 'D'
+boxscore_COL_forwards_Martin_Necas_legacy_game <- ns_boxscore(
+  game     = 2025020275,
+  team     = 'H',
+  position = 'F'
 )
 }

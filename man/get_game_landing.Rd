@@ -2,9 +2,15 @@
 % Please edit documentation in R/GameOld.R
 \name{get_game_landing}
 \alias{get_game_landing}
-\title{Get the GameCenter (GC) summary of a game}
+\title{Access the GameCenter (GC) summary for a game}
 \usage{
-get_game_landing(game = 2025020275)
+get_game_landing(game = 2023030417)
+}
+\arguments{
+\item{game}{integer ID (e.g., 2025020275); see \code{\link[=ns_games]{ns_games()}} for reference}
+}
+\value{
+list of various items
 }
 \description{
 \code{get_game_landing()} is deprecated. Use \code{\link[=ns_gc_summary]{ns_gc_summary()}} instead.

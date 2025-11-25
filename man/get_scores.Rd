@@ -2,9 +2,16 @@
 % Please edit documentation in R/GameOld.R
 \name{get_scores}
 \alias{get_scores}
-\title{Get the score(s) of the game(s) for a date}
+\title{Access the scores for a date}
 \usage{
 get_scores(date = "now")
+}
+\arguments{
+\item{date}{character in 'YYYY-MM-DD' (e.g., '2025-01-01'); see
+\code{\link[=ns_seasons]{ns_seasons()}} for reference}
+}
+\value{
+data.frame with one row per game
 }
 \description{
 \code{get_scores()} is deprecated. Use \code{\link[=ns_scores]{ns_scores()}} instead.
