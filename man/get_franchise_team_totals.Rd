@@ -2,7 +2,7 @@
 % Please edit documentation in R/FranchiseOld.R
 \name{get_franchise_team_totals}
 \alias{get_franchise_team_totals}
-\title{Get the all-time statistics for all the franchises by team and game type}
+\title{Access the all-time statistics for all the franchises by team and game type}
 \usage{
 get_franchise_team_totals()
 }

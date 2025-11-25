@@ -2,7 +2,7 @@
 % Please edit documentation in R/FranchiseOld.R
 \name{get_franchise_season_by_season}
 \alias{get_franchise_season_by_season}
-\title{Get statistics for all the franchises by season and game type}
+\title{Access the statistics for all the franchises by season and game type}
 \usage{
 get_franchise_season_by_season()
 }

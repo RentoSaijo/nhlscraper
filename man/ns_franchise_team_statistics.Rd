@@ -3,7 +3,7 @@
 \name{ns_franchise_team_statistics}
 \alias{ns_franchise_team_statistics}
 \alias{ns_franchise_team_stats}
-\title{Get the all-time statistics for all the franchises by team and game type}
+\title{Access the all-time statistics for all the franchises by team and game type}
 \usage{
 ns_franchise_team_statistics()
 
@@ -13,10 +13,8 @@ ns_franchise_team_stats()
 data.frame with one row per team per franchise per game type
 }
 \description{
-\code{ns_franchise_team_statistics()} returns the all-time statistics for all the
-franchises by team and game type, including but not limited to the numbers
-of the following: wins, ties, losses, games played, goals for, and goals
-against.
+\code{ns_franchise_team_statistics()} scrapes the all-time statistics for all the
+franchises by team and game type.
 }
 \examples{
 franchise_team_stats <- ns_franchise_team_statistics()

@@ -2,7 +2,7 @@
 % Please edit documentation in R/FranchiseOld.R
 \name{get_franchises}
 \alias{get_franchises}
-\title{Get all the franchises}
+\title{Access all the franchises}
 \usage{
 get_franchises()
 }

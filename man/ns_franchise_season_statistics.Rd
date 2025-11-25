@@ -3,7 +3,7 @@
 \name{ns_franchise_season_statistics}
 \alias{ns_franchise_season_statistics}
 \alias{ns_franchise_season_stats}
-\title{Get statistics for all the franchises by season and game type}
+\title{Access the statistics for all the franchises by season and game type}
 \usage{
 ns_franchise_season_statistics()
 
@@ -13,9 +13,8 @@ ns_franchise_season_stats()
 data.frame with one row per franchise per season per game type
 }
 \description{
-\code{ns_franchise_season_statistics()} returns statistics for all the franchises
-by season and game type, including but not limited to the numbers of the
-following: wins, ties, losses, games played, goals for, and goals against.
+\code{ns_franchise_season_statistics()} scrapes the statistics for all the
+franchises by season and game type.
 }
 \examples{
 # This may take >5s, so skip.

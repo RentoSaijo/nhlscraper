@@ -2,7 +2,7 @@
 % Please edit documentation in R/Franchise.R
 \name{ns_franchises}
 \alias{ns_franchises}
-\title{Get all the franchises}
+\title{Access all the franchises}
 \usage{
 ns_franchises()
 }
@@ -10,9 +10,7 @@ ns_franchises()
 data.frame with one row per franchise
 }
 \description{
-\code{ns_franchises()} returns information on all the franchises, including but
-not limited to the IDs, names, status, and the history of the following:
-general managers, coaches, captains, and retired numbers.
+\code{ns_franchises()} scrapes information on all the franchises.
 }
 \examples{
 all_franchises <- ns_franchises()
