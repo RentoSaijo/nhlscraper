@@ -154,7 +154,7 @@ goalie_edge_save_percentage <- function(
 #' Access the EDGE 5 vs. 5 statistics for a goalie, season, game type, and 
 #' category
 #' 
-#' `goalie_edge_5_vs_5()` scrapes the EDGE 5 vs. 5 statistics for a given set 
+#' `goalie_edge_five_versus_five()` scrapes the EDGE 5 vs. 5 statistics for a given set 
 #' of `goalie`, `season`, `game_type`, and `category`.
 #' 
 #' @inheritParams goalie_edge_summary
@@ -162,7 +162,7 @@ goalie_edge_save_percentage <- function(
 #' @returns list with four items (category = 'details') or data.frame with 
 #' one row per game (category = 'last 10')
 #' @examples
-#' Mackenzie_Blackwood_L10_5_vs_5_regular_20242025 <- goalie_edge_5_vs_5(
+#' Mackenzie_Blackwood_L10_5_vs_5_regular_20242025 <- goalie_edge_five_versus_five(
 #'   player    = 8478406,
 #'   season    = 20242025,
 #'   game_type = 2,
@@ -170,11 +170,11 @@ goalie_edge_save_percentage <- function(
 #'  )
 #' @export
 
-goalie_edge_5_vs_5 <- function(
-    player    = 8476945,
-    season    = 'now', 
-    game_type = '', 
-    category  = 'details'
+goalie_edge_five_versus_five <- function(
+  player    = 8476945,
+  season    = 'now', 
+  game_type = '', 
+  category  = 'details'
 ) {
   tryCatch(
     expr = {
@@ -198,6 +198,17 @@ goalie_edge_5_vs_5 <- function(
       data.frame()
     }
   )
+}
+
+#' @rdname goalie_edge_five_versus_five
+#' @export
+goalie_edge_5v5 <- function(
+  player    = 8476945,
+  season    = 'now', 
+  game_type = '', 
+  category  = 'details'
+) {
+  goalie_edge_five_versus_five(player, season, game_type, category)
 }
 
 #' Access the EDGE shot location statistics for a goalie, season, game type, 

@@ -123,6 +123,14 @@ reference:
       - skater_series_stats
       - skater_leaders
       - skater_milestones
+      - skater_edge_seasons
+      - skater_edge_leaders
+      - skater_edge_summary
+      - skater_edge_zone_time
+      - skater_edge_skating_distance
+      - skater_edge_skating_speed
+      - skater_edge_shot_location
+      - skater_edge_shot_speed
 
   - subtitle: "Goalie"
     desc: >
@@ -142,6 +150,12 @@ reference:
       - goalie_game_scoring
       - goalie_leaders
       - goalie_milestones
+      - goalie_edge_seasons
+      - goalie_edge_leaders
+      - goalie_edge_summary
+      - goalie_edge_save_percentage
+      - goalie_edge_5_vs_5
+      
 
   - subtitle: "Game"
     desc: >
