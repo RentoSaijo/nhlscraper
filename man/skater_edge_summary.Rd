@@ -2,23 +2,26 @@
 % Please edit documentation in R/SkaterEDGE.R
 \name{skater_edge_summary}
 \alias{skater_edge_summary}
-\title{Get the EDGE summary of a skater for a season and game type}
+\title{Access the EDGE summary for a skater, season, and game type}
 \usage{
-skater_edge_summary(player = 8480039, season = "now", game_type = "")
+skater_edge_summary(player = 8478402, season = "now", game_type = "")
 }
 \arguments{
-\item{player}{integer ID (e.g., 8480039)}
+\item{player}{integer ID (e.g., 8480039); see \code{\link[=players]{players()}} for reference}
 
-\item{season}{integer in YYYYYYYY (e.g., 20242025)}
+\item{season}{integer in YYYYYYYY (e.g., 20242025); see
+\code{\link[=skater_edge_seasons]{skater_edge_seasons()}} for reference}
 
 \item{game_type}{integer in 1:3 (where 1 = pre-season, 2 = regular season, 3
-= playoff/post-season) OR character of 'pre', 'regular', or 'playoff'/'post'}
+= playoff/post-season) OR character of 'pre', 'regular', or
+'playoff'/'post'; see \code{\link[=skater_edge_seasons]{skater_edge_seasons()}} for reference}
 }
 \value{
 list of various items
 }
 \description{
-\code{skater_edge_summary()} retrieves information on each
+\code{skater_edge_summary()} scrapes the EDGE summary for a given set of
+\code{skater}, \code{season}, and \code{game_type}.
 }
 \examples{
 Martin_Necas_EDGE_summary_regular_20242025 <- skater_edge_summary(

@@ -98,37 +98,36 @@ team_edge_summary <- function(team = 1, season = 'now', game_type = '') {
 }
 
 #' Access the EDGE zone time statistics for a team, season, game type, and 
-#' report type
+#' category
 #' 
 #' `team_edge_zone_time()` scrapes the EDGE zone time statistics for a given 
-#' set of `team`, `season`, `game_type`, and `report_type`.
+#' set of `team`, `season`, `game_type`, and `category`.
 #' 
-#' @inheritParams team_seasons
-#' @inheritParams team_edge_leaders
-#' @param report_type character of 'd'/'details' or 
+#' @inheritParams team_edge_summary
+#' @param category character of 'd'/'details' or 
 #' 'dS'/'dSOG'/'dShot'/'shot differential'
 #' @returns data.frame with one row per strength state 
-#' (report_type = 'details') or list with four items (report_type = 'shot 
+#' (category = 'details') or list with four items (category = 'shot 
 #' differential')
 #' @examples
 #' COL_dS_regular_20242025 <- team_edge_zone_time(
-#'   team        = 21,
-#'   season      = 20242025,
-#'   game_type   = 2,
-#'   report_type = 'dS'
+#'   team      = 21,
+#'   season    = 20242025,
+#'   game_type = 2,
+#'   category  = 'dS'
 #' )
 #' @export
 
 team_edge_zone_time <- function(
-  team        = 1, 
-  season      = 'now', 
-  game_type   = '', 
-  report_type = 'details'
+  team      = 1, 
+  season    = 'now', 
+  game_type = '', 
+  category  = 'details'
 ) {
   tryCatch(
     expr = {
-      report_type <- switch(
-        tolower(report_type),
+      category <- switch(
+        tolower(category),
         d                   = 'zoneTimeDetails',
         details             = 'zoneTimeDetails',
         ds                  = 'shotDifferential',
@@ -144,7 +143,7 @@ team_edge_zone_time <- function(
           to_game_type_id(game_type)
         ),
         type = 'w'
-      )[[report_type]]
+      )[[category]]
     },
     error = function(e) {
       message('Invalid argument(s); refer to help file.')
@@ -154,37 +153,36 @@ team_edge_zone_time <- function(
 }
 
 #' Access the EDGE skating distance statistics for a team, season, game type, 
-#' and report type
+#' and category
 #' 
 #' `team_edge_skating_distance()` scrapes the EDGE skating distance 
 #' statistics for a given set of `team`, `season`, `game_type`, and 
-#' `report_type`.
+#' `category`.
 #' 
-#' @inheritParams team_seasons
-#' @inheritParams team_edge_leaders
-#' @param report_type character of 'd'/'details' or 'l'/'l10'/'last 10'
+#' @inheritParams team_edge_summary
+#' @param category character of 'd'/'details' or 'l'/'l10'/'last 10'
 #' @returns data.frame with one row per combination of strength state and 
-#' position (report_type = 'details') or game (report_type = 'last 10')
+#' position (category = 'details') or game (category = 'last 10')
 #' game
 #' @examples
 #' COL_L10_skating_distance_regular_20242025 <- team_edge_skating_distance(
-#'   team        = 21,
-#'   season      = 20242025,
-#'   game_type   = 2,
-#'   report_type = 'L'
+#'   team      = 21,
+#'   season    = 20242025,
+#'   game_type = 2,
+#'   category  = 'L'
 #' )
 #' @export
 
 team_edge_skating_distance <- function(
-  team        = 1, 
-  season      = 'now', 
-  game_type   = '', 
-  report_type = 'details'
+  team      = 1, 
+  season    = 'now', 
+  game_type = '', 
+  category  = 'details'
 ) {
   tryCatch(
     expr = {
-      report_type <- switch(
-        substring(tolower(report_type), 1, 1),
+      category <- switch(
+        substring(tolower(category), 1, 1),
         d = 'skatingDistanceDetails',
         l = 'skatingDistanceLast10'
       )
@@ -196,7 +194,7 @@ team_edge_skating_distance <- function(
           to_game_type_id(game_type)
         ),
         type = 'w'
-      )[[report_type]]
+      )[[category]]
     },
     error = function(e) {
       message('Invalid argument(s); refer to help file.')
@@ -206,35 +204,34 @@ team_edge_skating_distance <- function(
 }
 
 #' Access the EDGE skating speed statistics for a team, season, game type, and 
-#' report type
+#' category
 #' 
 #' `team_edge_skating_speed()` scrapes the EDGE skating speed statistics for 
-#' a given set of `team`, `season`, `game_type`, and `report_type`.
+#' a given set of `team`, `season`, `game_type`, and `category`.
 #' 
-#' @inheritParams team_seasons
-#' @inheritParams team_edge_leaders
-#' @param report_type character of 'd'/'details' or 't'/'top'/'top speeds'
-#' @returns data.frame with one row per position (report_type = 'details') or 
-#' burst (report_type = 'top speeds')
+#' @inheritParams team_edge_summary
+#' @param category character of 'd'/'details' or 't'/'top'/'top speeds'
+#' @returns data.frame with one row per position (category = 'details') or 
+#' burst (category = 'top speeds')
 #' @examples
 #' COL_top_speeds_regular_20242025 <- team_edge_skating_speed(
-#'   team        = 21,
-#'   season      = 20242025,
-#'   game_type   = 2,
-#'   report_type = 'T'
+#'   team      = 21,
+#'   season    = 20242025,
+#'   game_type = 2,
+#'   category  = 'T'
 #' )
 #' @export
 
 team_edge_skating_speed <- function(
-  team        = 1, 
-  season      = 'now', 
-  game_type   = '', 
-  report_type = 'details'
+  team      = 1, 
+  season    = 'now', 
+  game_type = '', 
+  category  = 'details'
 ) {
   tryCatch(
     expr = {
-      report_type <- switch(
-        substring(tolower(report_type), 1, 1),
+      category <- switch(
+        substring(tolower(category), 1, 1),
         d = 'skatingSpeedDetails',
         t = 'topSkatingSpeeds'
       )
@@ -246,7 +243,7 @@ team_edge_skating_speed <- function(
           to_game_type_id(game_type)
         ),
         type = 'w'
-      )[[report_type]]
+      )[[category]]
     },
     error = function(e) {
       message('Invalid argument(s); refer to help file.')
@@ -256,35 +253,34 @@ team_edge_skating_speed <- function(
 }
 
 #' Access the EDGE shot location statistics for a team, season, game type, and 
-#' report type
+#' category
 #' 
 #' `team_edge_shot_location()` scrapes the EDGE shot location statistics for 
-#' a given set of `team`, `season`, `game_type`, and `report_type`.
+#' a given set of `team`, `season`, `game_type`, and `category`.
 #' 
-#' @inheritParams team_seasons
-#' @inheritParams team_edge_leaders
-#' @param report_type character of 'd'/details' or 't'/'totals'
-#' @returns data.frame with one row per location (report_type = 'details') or 
-#' combination of strength state and position (report_type = 'totals')
+#' @inheritParams team_edge_summary
+#' @param category character of 'd'/details' or 't'/'totals'
+#' @returns data.frame with one row per location (category = 'details') or 
+#' combination of strength state and position (category = 'totals')
 #' @examples
 #' COL_shot_location_totals_regular_20242025 <- team_edge_shot_location(
-#'   team        = 21,
-#'   season      = 20242025,
-#'   game_type   = 2,
-#'   report_type = 'T'
+#'   team      = 21,
+#'   season    = 20242025,
+#'   game_type = 2,
+#'   category  = 'T'
 #' )
 #' @export
 
 team_edge_shot_location <- function(
-  team        = 1, 
-  season      = 'now', 
-  game_type   = '', 
-  report_type = 'details'
+  team      = 1, 
+  season    = 'now', 
+  game_type = '', 
+  category  = 'details'
 ) {
   tryCatch(
     expr = {
-      report_type <- switch(
-        substring(tolower(report_type), 1, 1),
+      category <- switch(
+        substring(tolower(category), 1, 1),
         d = 'shotLocationDetails',
         t = 'shotLocationTotals'
       )
@@ -296,7 +292,7 @@ team_edge_shot_location <- function(
           to_game_type_id(game_type)
         ),
         type = 'w'
-      )[[report_type]]
+      )[[category]]
     },
     error = function(e) {
       message('Invalid argument(s); refer to help file.')
@@ -306,35 +302,34 @@ team_edge_shot_location <- function(
 }
 
 #' Access the EDGE shot speed statistics for a team, season, game type, and 
-#' report type
+#' category
 #' 
 #' `team_edge_shot_speed()` scrapes the EDGE shot speed statistics for a 
-#' given set of `team`, `season`, `game_type`, and `report_type`.
+#' given set of `team`, `season`, `game_type`, and `category`.
 #' 
-#' @inheritParams team_seasons
-#' @inheritParams team_edge_leaders
-#' @param report_type character of 'd'/'details' or 'h'/'hardest'
-#' @returns data.frame with one row per position (report_type = 'details') or 
-#' shot (report_type = 'hardest')
+#' @inheritParams team_edge_summary
+#' @param category character of 'd'/'details' or 'h'/'hardest'
+#' @returns data.frame with one row per position (category = 'details') or 
+#' shot (category = 'hardest')
 #' @examples
 #' COL_hardest_shots_regular_20242025 <- team_edge_shot_speed(
-#'   team        = 21,
-#'   season      = 20242025,
-#'   game_type   = 2,
-#'   report_type = 'H'
+#'   team      = 21,
+#'   season    = 20242025,
+#'   game_type = 2,
+#'   category  = 'H'
 #' )
 #' @export
 
 team_edge_shot_speed <- function(
-  team        = 1, 
-  season      = 'now', 
-  game_type   = '', 
-  report_type = 'details'
+  team      = 1, 
+  season    = 'now', 
+  game_type = '', 
+  category  = 'details'
 ) {
   tryCatch(
     expr = {
-      report_type <- switch(
-        substring(tolower(report_type), 1, 1),
+      category <- switch(
+        substring(tolower(category), 1, 1),
         d = 'shotSpeedDetails',
         h = 'hardestShots',
       )
@@ -346,7 +341,7 @@ team_edge_shot_speed <- function(
           to_game_type_id(game_type)
         ),
         type = 'w'
-      )[[report_type]]
+      )[[category]]
     },
     error = function(e) {
       message('Invalid argument(s); refer to help file.')

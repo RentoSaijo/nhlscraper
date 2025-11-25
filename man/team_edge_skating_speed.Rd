@@ -3,13 +3,13 @@
 \name{team_edge_skating_speed}
 \alias{team_edge_skating_speed}
 \title{Access the EDGE skating speed statistics for a team, season, game type, and
-report type}
+category}
 \usage{
 team_edge_skating_speed(
   team = 1,
   season = "now",
   game_type = "",
-  report_type = "details"
+  category = "details"
 )
 }
 \arguments{
@@ -24,21 +24,21 @@ reference}
 = playoff/post-season) OR character of 'pre', 'regular', or
 'playoff'/'post'; see \code{\link[=team_edge_seasons]{team_edge_seasons()}} for reference}
 
-\item{report_type}{character of 'd'/'details' or 't'/'top'/'top speeds'}
+\item{category}{character of 'd'/'details' or 't'/'top'/'top speeds'}
 }
 \value{
-data.frame with one row per position (report_type = 'details') or
-burst (report_type = 'top speeds')
+data.frame with one row per position (category = 'details') or
+burst (category = 'top speeds')
 }
 \description{
 \code{team_edge_skating_speed()} scrapes the EDGE skating speed statistics for
-a given set of \code{team}, \code{season}, \code{game_type}, and \code{report_type}.
+a given set of \code{team}, \code{season}, \code{game_type}, and \code{category}.
 }
 \examples{
 COL_top_speeds_regular_20242025 <- team_edge_skating_speed(
-  team        = 21,
-  season      = 20242025,
-  game_type   = 2,
-  report_type = 'T'
+  team      = 21,
+  season    = 20242025,
+  game_type = 2,
+  category  = 'T'
 )
 }

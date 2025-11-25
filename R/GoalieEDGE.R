@@ -1,7 +1,8 @@
-#' Get the season(s) and game type(s) for which the NHL recorded goalie EDGE 
+#' Access the season(s) and game type(s) in which there exists goalie EDGE 
 #' statistics
 #' 
-#' `goalie_edge_seasons` retrieves information on each 
+#' `goalie_edge_seasons` scrapes the season(s) and game type(s) in which the 
+#' NHL recorded goalie EDGE statistics.
 #'
 #' @returns data.frame with one row per season
 #' @examples
@@ -23,13 +24,16 @@ goalie_edge_seasons <- function() {
   )
 }
 
-#' Get the goalie EDGE statistics leaders for a season and game type
+#' Access the goalie EDGE statistics leaders for a season and game type
 #' 
-#' `goalie_edge_leaders()` retrieves information on each 
+#' `goalie_edge_leaders()` scrapes the goalie EDGE statistics leaders for a 
+#' given set of `season` and `game_type`.
 #' 
-#' @param season integer in YYYYYYYY (e.g., 20242025)
+#' @param season integer in YYYYYYYY (e.g., 20242025); see 
+#' [goalie_edge_seasons()] for reference
 #' @param game_type integer in 1:3 (where 1 = pre-season, 2 = regular season, 3 
-#' = playoff/post-season) OR character of 'pre', 'regular', or 'playoff'/'post'
+#' = playoff/post-season) OR character of 'pre', 'regular', or 
+#' 'playoff'/'post'; see [goalie_edge_seasons()] for reference
 #' @returns list of various items
 #' @examples
 #' goalie_EDGE_leaders_regular_20242025 <- goalie_edge_leaders(
@@ -57,14 +61,13 @@ goalie_edge_leaders <- function(season = 'now', game_type = '') {
   )
 }
 
-#' Get the EDGE summary of a goalie for a season and game type
+#' Access the EDGE summary for a goalie, season, and game type
 #' 
-#' `goalie_edge_summary()` retrieves information on each 
+#' `goalie_edge_summary()` scrapes the EDGE summary for a given set of 
+#' `goalie`, `season`, and `game_type`.
 #' 
+#' @inheritParams goalie_edge_leaders
 #' @param player integer ID (e.g., 8478406)
-#' @param season integer in YYYYYYYY (e.g., 20242025)
-#' @param game_type integer in 1:3 (where 1 = pre-season, 2 = regular season, 3 
-#' = playoff/post-season) OR character of 'pre', 'regular', or 'playoff'/'post'
 #' @returns list of various items
 #' @examples
 #' Mackenzie_Blackwood_EDGE_summary_regular_20242025 <- goalie_edge_summary(
@@ -75,7 +78,7 @@ goalie_edge_leaders <- function(season = 'now', game_type = '') {
 #' @export
 
 goalie_edge_summary <- function(
-    player    = 8478406, 
+    player    = 8476945, 
     season    = 'now', 
     game_type = ''
 ) {
@@ -98,38 +101,36 @@ goalie_edge_summary <- function(
   )
 }
 
-#' Get the EDGE save percentage statistics of a goalie for a season, game type, 
-#' and report type
+#' Access the EDGE save percentage statistics for a goalie, season, game type, 
+#' and category
 #' 
-#' `goalie_edge_save_percentage()` retrieves information on each 
+#' `goalie_edge_save_percentage()` scrapes the EDGE save percentage statistics 
+#' for a given set of `goalie`, `season`, `game_type`, and `category`.
 #' 
-#' @param player integer ID (e.g., 8478406)
-#' @param season integer in YYYYYYYY (e.g., 20242025)
-#' @param game_type integer in 1:3 (where 1 = pre-season, 2 = regular season, 3 
-#' = playoff/post-season) OR character of 'pre', 'regular', or 'playoff'/'post'
-#' @param report_type character of 'd'/'details' or 'l'/'l10'/'last 10'
-#' @returns list with two items (report_type = 'details') or data.frame with one 
-#' row per game (report_type = 'last 10')
+#' @inheritParams goalie_edge_summary
+#' @param category character of 'd'/'details' or 'l'/'l10'/'last 10'
+#' @returns list with two items (category = 'details') or data.frame with one 
+#' row per game (category = 'last 10')
 #' @examples
 #' Mackenzie_Blackwood_L10_sP_regular_20242025 <- 
 #'   goalie_edge_save_percentage(
-#'     player      = 8478406,
-#'     season      = 20242025,
-#'     game_type   = 2,
-#'     report_type = 'L'
+#'     player    = 8478406,
+#'     season    = 20242025,
+#'     game_type = 2,
+#'     category  = 'L'
 #'   )
 #' @export
 
 goalie_edge_save_percentage <- function(
-    player      = 8478406,
-    season      = 'now', 
-    game_type   = '', 
-    report_type = 'details'
+  player    = 8476945,
+  season    = 'now', 
+  game_type = '', 
+  category  = 'details'
 ) {
   tryCatch(
     expr = {
-      report_type <- switch(
-        substring(tolower(report_type), 1, 1),
+      category <- switch(
+        substring(tolower(category), 1, 1),
         d = 'savePctgDetails',
         l = 'savePctgLast10'
       )
@@ -141,7 +142,7 @@ goalie_edge_save_percentage <- function(
           to_game_type_id(game_type)
         ),
         type = 'w'
-      )[[report_type]]
+      )[[category]]
     },
     error = function(e) {
       message('Invalid argument(s); refer to help file.')
@@ -150,37 +151,35 @@ goalie_edge_save_percentage <- function(
   )
 }
 
-#' Get the EDGE 5 vs. 5 statistics of a goalie for a season, game type, and 
-#' report type
+#' Access the EDGE 5 vs. 5 statistics for a goalie, season, game type, and 
+#' category
 #' 
-#' `goalie_edge_5_vs_5()` retrieves information on each 
+#' `goalie_edge_5_vs_5()` scrapes the EDGE 5 vs. 5 statistics for a given set 
+#' of `goalie`, `season`, `game_type`, and `category`.
 #' 
-#' @param player integer ID (e.g., 8478406)
-#' @param season integer in YYYYYYYY (e.g., 20242025)
-#' @param game_type integer in 1:3 (where 1 = pre-season, 2 = regular season, 3 
-#' = playoff/post-season) OR character of 'pre', 'regular', or 'playoff'/'post'
-#' @param report_type character of 'd'/'details' or 'l'/'l10'/'last 10'
-#' @returns list with four items (report_type = 'details') or data.frame with 
-#' one row per game (report_type = 'last 10')
+#' @inheritParams goalie_edge_summary
+#' @param category character of 'd'/'details' or 'l'/'l10'/'last 10'
+#' @returns list with four items (category = 'details') or data.frame with 
+#' one row per game (category = 'last 10')
 #' @examples
 #' Mackenzie_Blackwood_L10_5_vs_5_regular_20242025 <- goalie_edge_5_vs_5(
-#'   player      = 8478406,
-#'   season      = 20242025,
-#'   game_type   = 2,
-#'   report_type = 'L'
+#'   player    = 8478406,
+#'   season    = 20242025,
+#'   game_type = 2,
+#'   category  = 'L'
 #'  )
 #' @export
 
 goalie_edge_5_vs_5 <- function(
-    player      = 8478406,
-    season      = 'now', 
-    game_type   = '', 
-    report_type = 'details'
+    player    = 8476945,
+    season    = 'now', 
+    game_type = '', 
+    category  = 'details'
 ) {
   tryCatch(
     expr = {
-      report_type <- switch(
-        substring(tolower(report_type), 1, 1),
+      category <- switch(
+        substring(tolower(category), 1, 1),
         d = 'savePctg5v5Details',
         l = 'savePctg5v5Last10'
       )
@@ -192,7 +191,7 @@ goalie_edge_5_vs_5 <- function(
           to_game_type_id(game_type)
         ),
         type = 'w'
-      )[[report_type]]
+      )[[category]]
     },
     error = function(e) {
       message('Invalid argument(s); refer to help file.')
@@ -201,37 +200,35 @@ goalie_edge_5_vs_5 <- function(
   )
 }
 
-#' Get the EDGE shot location statistics of a goalie for a season, game type, 
-#' and report type
+#' Access the EDGE shot location statistics for a goalie, season, game type, 
+#' and category
 #' 
-#' `goalie_edge_shot_location()` retrieves information on each 
+#' `goalie_edge_shot_location()` scrapes the EDGE shot location statistics for 
+#' a given set of `goalie`, `season`, `game_type`, and `category`.
 #' 
-#' @param player integer ID (e.g., 8478406)
-#' @param season integer in YYYYYYYY (e.g., 20242025)
-#' @param game_type integer in 1:3 (where 1 = pre-season, 2 = regular season, 3 
-#' = playoff/post-season) OR character of 'pre', 'regular', or 'playoff'/'post'
-#' @param report_type character of 'd'/details' or 't'/'totals'
+#' @inheritParams goalie_edge_summary
+#' @param category character of 'd'/details' or 't'/'totals'
 #' @returns data.frame with one row per shot location
 #' @examples
 #' Mackenzie_Blackwood_shot_location_totals_regular_20242025 <- 
 #'   goalie_edge_shot_location(
-#'     player      = 8478406,
-#'     season      = 20242025,
-#'     game_type   = 2,
-#'     report_type = 'T'
+#'     player    = 8478406,
+#'     season    = 20242025,
+#'     game_type = 2,
+#'     category  = 'T'
 #'   )
 #' @export
 
 goalie_edge_shot_location <- function(
-    player      = 8478406,
-    season      = 'now', 
-    game_type   = '', 
-    report_type = 'details'
+    player    = 8476945,
+    season    = 'now', 
+    game_type = '', 
+    category  = 'details'
 ) {
   tryCatch(
     expr = {
-      report_type <- switch(
-        substring(tolower(report_type), 1, 1),
+      category <- switch(
+        substring(tolower(category), 1, 1),
         d = 'shotLocationDetails',
         t = 'shotLocationTotals'
       )
@@ -243,7 +240,7 @@ goalie_edge_shot_location <- function(
           to_game_type_id(game_type)
         ),
         type = 'w'
-      )[[report_type]]
+      )[[category]]
     },
     error = function(e) {
       message('Invalid argument(s); refer to help file.')

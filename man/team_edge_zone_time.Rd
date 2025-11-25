@@ -3,13 +3,13 @@
 \name{team_edge_zone_time}
 \alias{team_edge_zone_time}
 \title{Access the EDGE zone time statistics for a team, season, game type, and
-report type}
+category}
 \usage{
 team_edge_zone_time(
   team = 1,
   season = "now",
   game_type = "",
-  report_type = "details"
+  category = "details"
 )
 }
 \arguments{
@@ -24,23 +24,23 @@ reference}
 = playoff/post-season) OR character of 'pre', 'regular', or
 'playoff'/'post'; see \code{\link[=team_edge_seasons]{team_edge_seasons()}} for reference}
 
-\item{report_type}{character of 'd'/'details' or
+\item{category}{character of 'd'/'details' or
 'dS'/'dSOG'/'dShot'/'shot differential'}
 }
 \value{
 data.frame with one row per strength state
-(report_type = 'details') or list with four items (report_type = 'shot
+(category = 'details') or list with four items (category = 'shot
 differential')
 }
 \description{
 \code{team_edge_zone_time()} scrapes the EDGE zone time statistics for a given
-set of \code{team}, \code{season}, \code{game_type}, and \code{report_type}.
+set of \code{team}, \code{season}, \code{game_type}, and \code{category}.
 }
 \examples{
 COL_dS_regular_20242025 <- team_edge_zone_time(
-  team        = 21,
-  season      = 20242025,
-  game_type   = 2,
-  report_type = 'dS'
+  team      = 21,
+  season    = 20242025,
+  game_type = 2,
+  category  = 'dS'
 )
 }

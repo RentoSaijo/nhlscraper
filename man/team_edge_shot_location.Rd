@@ -3,13 +3,13 @@
 \name{team_edge_shot_location}
 \alias{team_edge_shot_location}
 \title{Access the EDGE shot location statistics for a team, season, game type, and
-report type}
+category}
 \usage{
 team_edge_shot_location(
   team = 1,
   season = "now",
   game_type = "",
-  report_type = "details"
+  category = "details"
 )
 }
 \arguments{
@@ -24,21 +24,21 @@ reference}
 = playoff/post-season) OR character of 'pre', 'regular', or
 'playoff'/'post'; see \code{\link[=team_edge_seasons]{team_edge_seasons()}} for reference}
 
-\item{report_type}{character of 'd'/details' or 't'/'totals'}
+\item{category}{character of 'd'/details' or 't'/'totals'}
 }
 \value{
-data.frame with one row per location (report_type = 'details') or
-combination of strength state and position (report_type = 'totals')
+data.frame with one row per location (category = 'details') or
+combination of strength state and position (category = 'totals')
 }
 \description{
 \code{team_edge_shot_location()} scrapes the EDGE shot location statistics for
-a given set of \code{team}, \code{season}, \code{game_type}, and \code{report_type}.
+a given set of \code{team}, \code{season}, \code{game_type}, and \code{category}.
 }
 \examples{
 COL_shot_location_totals_regular_20242025 <- team_edge_shot_location(
-  team        = 21,
-  season      = 20242025,
-  game_type   = 2,
-  report_type = 'T'
+  team      = 21,
+  season    = 20242025,
+  game_type = 2,
+  category  = 'T'
 )
 }

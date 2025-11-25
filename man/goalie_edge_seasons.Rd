@@ -2,7 +2,7 @@
 % Please edit documentation in R/GoalieEDGE.R
 \name{goalie_edge_seasons}
 \alias{goalie_edge_seasons}
-\title{Get the season(s) and game type(s) for which the NHL recorded goalie EDGE
+\title{Access the season(s) and game type(s) in which there exists goalie EDGE
 statistics}
 \usage{
 goalie_edge_seasons()
@@ -11,7 +11,8 @@ goalie_edge_seasons()
 data.frame with one row per season
 }
 \description{
-\code{goalie_edge_seasons} retrieves information on each
+\code{goalie_edge_seasons} scrapes the season(s) and game type(s) in which the
+NHL recorded goalie EDGE statistics.
 }
 \examples{
 goalie_EDGE_seasons <- goalie_edge_seasons()

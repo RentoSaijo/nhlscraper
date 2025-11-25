@@ -2,21 +2,24 @@
 % Please edit documentation in R/GoalieEDGE.R
 \name{goalie_edge_leaders}
 \alias{goalie_edge_leaders}
-\title{Get the goalie EDGE statistics leaders for a season and game type}
+\title{Access the goalie EDGE statistics leaders for a season and game type}
 \usage{
 goalie_edge_leaders(season = "now", game_type = "")
 }
 \arguments{
-\item{season}{integer in YYYYYYYY (e.g., 20242025)}
+\item{season}{integer in YYYYYYYY (e.g., 20242025); see
+\code{\link[=goalie_edge_seasons]{goalie_edge_seasons()}} for reference}
 
 \item{game_type}{integer in 1:3 (where 1 = pre-season, 2 = regular season, 3
-= playoff/post-season) OR character of 'pre', 'regular', or 'playoff'/'post'}
+= playoff/post-season) OR character of 'pre', 'regular', or
+'playoff'/'post'; see \code{\link[=goalie_edge_seasons]{goalie_edge_seasons()}} for reference}
 }
 \value{
 list of various items
 }
 \description{
-\code{goalie_edge_leaders()} retrieves information on each
+\code{goalie_edge_leaders()} scrapes the goalie EDGE statistics leaders for a
+given set of \code{season} and \code{game_type}.
 }
 \examples{
 goalie_EDGE_leaders_regular_20242025 <- goalie_edge_leaders(

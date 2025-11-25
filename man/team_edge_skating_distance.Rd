@@ -3,13 +3,13 @@
 \name{team_edge_skating_distance}
 \alias{team_edge_skating_distance}
 \title{Access the EDGE skating distance statistics for a team, season, game type,
-and report type}
+and category}
 \usage{
 team_edge_skating_distance(
   team = 1,
   season = "now",
   game_type = "",
-  report_type = "details"
+  category = "details"
 )
 }
 \arguments{
@@ -24,23 +24,23 @@ reference}
 = playoff/post-season) OR character of 'pre', 'regular', or
 'playoff'/'post'; see \code{\link[=team_edge_seasons]{team_edge_seasons()}} for reference}
 
-\item{report_type}{character of 'd'/'details' or 'l'/'l10'/'last 10'}
+\item{category}{character of 'd'/'details' or 'l'/'l10'/'last 10'}
 }
 \value{
 data.frame with one row per combination of strength state and
-position (report_type = 'details') or game (report_type = 'last 10')
+position (category = 'details') or game (category = 'last 10')
 game
 }
 \description{
 \code{team_edge_skating_distance()} scrapes the EDGE skating distance
 statistics for a given set of \code{team}, \code{season}, \code{game_type}, and
-\code{report_type}.
+\code{category}.
 }
 \examples{
 COL_L10_skating_distance_regular_20242025 <- team_edge_skating_distance(
-  team        = 21,
-  season      = 20242025,
-  game_type   = 2,
-  report_type = 'L'
+  team      = 21,
+  season    = 20242025,
+  game_type = 2,
+  category  = 'L'
 )
 }

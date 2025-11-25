@@ -2,7 +2,7 @@
 % Please edit documentation in R/SkaterEDGE.R
 \name{skater_edge_seasons}
 \alias{skater_edge_seasons}
-\title{Get the season(s) and game type(s) for which the NHL recorded skater EDGE
+\title{Access the season(s) and game type(s) in which there exists skater EDGE
 statistics}
 \usage{
 skater_edge_seasons()
@@ -11,7 +11,8 @@ skater_edge_seasons()
 data.frame with one row per season
 }
 \description{
-\code{skater_edge_seasons} retrieves information on each
+\code{skater_edge_seasons} scrapes the season(s) and game type(s) in which the
+NHL recorded skater EDGE statistics.
 }
 \examples{
 skater_EDGE_seasons <- skater_edge_seasons()

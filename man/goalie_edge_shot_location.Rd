@@ -2,38 +2,41 @@
 % Please edit documentation in R/GoalieEDGE.R
 \name{goalie_edge_shot_location}
 \alias{goalie_edge_shot_location}
-\title{Get the EDGE shot location statistics of a goalie for a season, game type,
-and report type}
+\title{Access the EDGE shot location statistics for a goalie, season, game type,
+and category}
 \usage{
 goalie_edge_shot_location(
-  player = 8478406,
+  player = 8476945,
   season = "now",
   game_type = "",
-  report_type = "details"
+  category = "details"
 )
 }
 \arguments{
 \item{player}{integer ID (e.g., 8478406)}
 
-\item{season}{integer in YYYYYYYY (e.g., 20242025)}
+\item{season}{integer in YYYYYYYY (e.g., 20242025); see
+\code{\link[=goalie_edge_seasons]{goalie_edge_seasons()}} for reference}
 
 \item{game_type}{integer in 1:3 (where 1 = pre-season, 2 = regular season, 3
-= playoff/post-season) OR character of 'pre', 'regular', or 'playoff'/'post'}
+= playoff/post-season) OR character of 'pre', 'regular', or
+'playoff'/'post'; see \code{\link[=goalie_edge_seasons]{goalie_edge_seasons()}} for reference}
 
-\item{report_type}{character of 'd'/details' or 't'/'totals'}
+\item{category}{character of 'd'/details' or 't'/'totals'}
 }
 \value{
 data.frame with one row per shot location
 }
 \description{
-\code{goalie_edge_shot_location()} retrieves information on each
+\code{goalie_edge_shot_location()} scrapes the EDGE shot location statistics for
+a given set of \code{goalie}, \code{season}, \code{game_type}, and \code{category}.
 }
 \examples{
 Mackenzie_Blackwood_shot_location_totals_regular_20242025 <- 
   goalie_edge_shot_location(
-    player      = 8478406,
-    season      = 20242025,
-    game_type   = 2,
-    report_type = 'T'
+    player    = 8478406,
+    season    = 20242025,
+    game_type = 2,
+    category  = 'T'
   )
 }

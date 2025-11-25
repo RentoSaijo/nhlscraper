@@ -1,7 +1,8 @@
-#' Get the season(s) and game type(s) for which the NHL recorded skater EDGE 
+#' Access the season(s) and game type(s) in which there exists skater EDGE 
 #' statistics
 #' 
-#' `skater_edge_seasons` retrieves information on each 
+#' `skater_edge_seasons` scrapes the season(s) and game type(s) in which the 
+#' NHL recorded skater EDGE statistics. 
 #'
 #' @returns data.frame with one row per season
 #' @examples
@@ -23,13 +24,16 @@ skater_edge_seasons <- function() {
   )
 }
 
-#' Get the skater EDGE statistics leaders for a season and game type
+#' Access the skater EDGE statistics leaders for a season and game type
 #' 
-#' `skater_edge_leaders()` retrieves information on each 
+#' `skater_edge_leaders()` scrapes the skater EDGE statistics leaders for a 
+#' given set of `season` and `game_type`.
 #' 
-#' @param season integer in YYYYYYYY (e.g., 20242025)
+#' @param season integer in YYYYYYYY (e.g., 20242025); see 
+#' [skater_edge_seasons()] for reference
 #' @param game_type integer in 1:3 (where 1 = pre-season, 2 = regular season, 3 
-#' = playoff/post-season) OR character of 'pre', 'regular', or 'playoff'/'post'
+#' = playoff/post-season) OR character of 'pre', 'regular', or 
+#' 'playoff'/'post'; see [skater_edge_seasons()] for reference
 #' @returns list of various items
 #' @examples
 #' skater_EDGE_leaders_regular_20242025 <- skater_edge_leaders(
@@ -57,14 +61,13 @@ skater_edge_leaders <- function(season = 'now', game_type = '') {
   )
 }
 
-#' Get the EDGE summary of a skater for a season and game type
+#' Access the EDGE summary for a skater, season, and game type
 #' 
-#' `skater_edge_summary()` retrieves information on each 
+#' `skater_edge_summary()` scrapes the EDGE summary for a given set of 
+#' `skater`, `season`, and `game_type`.
 #' 
-#' @param player integer ID (e.g., 8480039)
-#' @param season integer in YYYYYYYY (e.g., 20242025)
-#' @param game_type integer in 1:3 (where 1 = pre-season, 2 = regular season, 3 
-#' = playoff/post-season) OR character of 'pre', 'regular', or 'playoff'/'post'
+#' @inheritParams player_seasons
+#' @inheritParams skater_edge_leaders
 #' @returns list of various items
 #' @examples
 #' Martin_Necas_EDGE_summary_regular_20242025 <- skater_edge_summary(
@@ -75,7 +78,7 @@ skater_edge_leaders <- function(season = 'now', game_type = '') {
 #' @export
 
 skater_edge_summary <- function(
-  player    = 8480039, 
+  player    = 8478402, 
   season    = 'now', 
   game_type = ''
 ) {
@@ -98,37 +101,35 @@ skater_edge_summary <- function(
   )
 }
 
-#' Get the EDGE zone time statistics of a skater for a season, game type, and 
-#' report type
+#' Access the EDGE zone time statistics for a skater, season, game type, and 
+#' category
 #' 
-#' `skater_edge_zone_time()` retrieves information on each 
+#' `skater_edge_zone_time()` scrapes the EDGE zone time statistics for a given 
+#' set of `skater`, `season`, `game_type`, and `category`.
 #' 
-#' @param player integer ID (e.g., 8480039)
-#' @param season integer in YYYYYYYY (e.g., 20242025)
-#' @param game_type integer in 1:3 (where 1 = pre-season, 2 = regular season, 3 
-#' = playoff/post-season) OR character of 'pre', 'regular', or 'playoff'/'post'
-#' @param report_type character of 'd'/'details' or 's'/'starts'
-#' @returns data.frame with one row per strength state (report_type = 'details') 
-#' or list with six items (report_type = 'starts')
+#' @inheritParams skater_edge_summary
+#' @param category character of 'd'/'details' or 's'/'starts'
+#' @returns data.frame with one row per strength state (category = 'details') 
+#' or list with six items (category = 'starts')
 #' @examples
 #' Martin_Necas_starts_regular_20242025 <- skater_edge_zone_time(
-#'   player      = 8480039,
-#'   season      = 20242025,
-#'   game_type   = 2,
-#'   report_type = 'S'
+#'   player    = 8480039,
+#'   season    = 20242025,
+#'   game_type = 2,
+#'   category  = 'S'
 #' )
 #' @export
 
 skater_edge_zone_time <- function(
-    player      = 8480039,
-    season      = 'now', 
-    game_type   = '', 
-    report_type = 'details'
+  player    = 8478402,
+  season    = 'now', 
+  game_type = '', 
+  category  = 'details'
 ) {
   tryCatch(
     expr = {
-      report_type <- switch(
-        substring(tolower(report_type), 1, 1),
+      category <- switch(
+        substring(tolower(category), 1, 1),
         d = 'zoneTimeDetails',
         s = 'zoneStarts'
       )
@@ -140,7 +141,7 @@ skater_edge_zone_time <- function(
           to_game_type_id(game_type)
         ),
         type = 'w'
-      )[[report_type]]
+      )[[category]]
     },
     error = function(e) {
       message('Invalid argument(s); refer to help file.')
@@ -149,38 +150,37 @@ skater_edge_zone_time <- function(
   )
 }
 
-#' Get the EDGE skating distance statistics of a skater for a season, game 
-#' type, and report type
+#' Access the EDGE skating distance statistics for a skater, season, game type, 
+#' and category
 #' 
-#' `skater_edge_skating_distance()` retrieves information on each 
+#' `skater_edge_skating_distance()` scrapes the EDGE skating distance 
+#' statistics for a given set of `skater`, `season`, `game_type`, and 
+#' `category`.
 #' 
-#' @param player integer ID (e.g., 8480039)
-#' @param season integer in YYYYYYYY (e.g., 20242025)
-#' @param game_type integer in 1:3 (where 1 = pre-season, 2 = regular season, 3 
-#' = playoff/post-season) OR character of 'pre', 'regular', or 'playoff'/'post'
-#' @param report_type character of 'd'/'details' or 'l'/'l10'/'last 10'
-#' @returns data.frame with one row per strength state (report_type = 'details') 
-#' or game (report_type = 'last 10')
+#' @inheritParams skater_edge_summary
+#' @param category character of 'd'/'details' or 'l'/'l10'/'last 10'
+#' @returns data.frame with one row per strength state (category = 'details') 
+#' or game (category = 'last 10')
 #' @examples
 #' Martin_Necas_L10_skating_distance_regular_20242025 <- 
 #'   skater_edge_skating_distance(
-#'     player      = 8480039,
-#'     season      = 20242025,
-#'     game_type   = 2,
-#'     report_type = 'L'
+#'     player    = 8480039,
+#'     season    = 20242025,
+#'     game_type = 2,
+#'     category  = 'L'
 #'   )
 #' @export
 
 skater_edge_skating_distance <- function(
-    player      = 8480039,
-    season      = 'now', 
-    game_type   = '', 
-    report_type = 'details'
+  player    = 8478402,
+  season    = 'now', 
+  game_type = '', 
+  category  = 'details'
 ) {
   tryCatch(
     expr = {
-      report_type <- switch(
-        substring(tolower(report_type), 1, 1),
+      category <- switch(
+        substring(tolower(category), 1, 1),
         d = 'skatingDistanceDetails',
         l = 'skatingDistanceLast10'
       )
@@ -192,7 +192,7 @@ skater_edge_skating_distance <- function(
           to_game_type_id(game_type)
         ),
         type = 'w'
-      )[[report_type]]
+      )[[category]]
     },
     error = function(e) {
       message('Invalid argument(s); refer to help file.')
@@ -201,37 +201,35 @@ skater_edge_skating_distance <- function(
   )
 }
 
-#' Get the EDGE skating speed statistics of a skater for a season, game type, 
-#' and report type
+#' Access the EDGE skating speed statistics for a skater, season, game type, and 
+#' category
 #' 
-#' `skater_edge_skating_speed()` retrieves information on each 
+#' `skater_edge_skating_speed()` scrapes the EDGE skating speed statistics for 
+#' a given set of `skater`, `season`, `game_type`, and `category`.
 #' 
-#' @param player integer ID (e.g., 8480039)
-#' @param season integer in YYYYYYYY (e.g., 20242025)
-#' @param game_type integer in 1:3 (where 1 = pre-season, 2 = regular season, 3 
-#' = playoff/post-season) OR character of 'pre', 'regular', or 'playoff'/'post'
-#' @param report_type character of 'd'/'details' or 't'/'top'/'top speeds'
-#' @returns list with four items (report_type = 'details') or data.frame with 
-#' one row per burst (report_type = 'top speeds')
+#' @inheritParams skater_edge_summary
+#' @param category character of 'd'/'details' or 't'/'top'/'top speeds'
+#' @returns list with four items (category = 'details') or data.frame with 
+#' one row per burst (category = 'top speeds')
 #' @examples
 #' Martin_Necas_top_speeds_regular_20242025 <- skater_edge_skating_speed(
-#'   player      = 8480039,
-#'   season      = 20242025,
-#'   game_type   = 2,
-#'   report_type = 'T'
+#'   player    = 8480039,
+#'   season    = 20242025,
+#'   game_type = 2,
+#'   category  = 'T'
 #' )
 #' @export
 
 skater_edge_skating_speed <- function(
-    player      = 8480039,
-    season      = 'now', 
-    game_type   = '', 
-    report_type = 'details'
+  player    = 8478402,
+  season    = 'now', 
+  game_type = '', 
+  category  = 'details'
 ) {
   tryCatch(
     expr = {
-      report_type <- switch(
-        substring(tolower(report_type), 1, 1),
+      category <- switch(
+        substring(tolower(category), 1, 1),
         d = 'skatingSpeedDetails',
         t = 'topSkatingSpeeds'
       )
@@ -243,7 +241,7 @@ skater_edge_skating_speed <- function(
           to_game_type_id(game_type)
         ),
         type = 'w'
-      )[[report_type]]
+      )[[category]]
     },
     error = function(e) {
       message('Invalid argument(s); refer to help file.')
@@ -252,37 +250,35 @@ skater_edge_skating_speed <- function(
   )
 }
 
-#' Get the EDGE shot location statistics of a skater for a season, game type, 
-#' and report type
+#' Access the EDGE shot location statistics for a skater, season, game type, and 
+#' category
 #' 
-#' `skater_edge_shot_location()` retrieves information on each 
+#' `skater_edge_shot_location()` scrapes the EDGE shot location statistics for 
+#' a given set of `skater`, `season`, `game_type`, and `category`.
 #' 
-#' @param player integer ID (e.g., 8480039)
-#' @param season integer in YYYYYYYY (e.g., 20242025)
-#' @param game_type integer in 1:3 (where 1 = pre-season, 2 = regular season, 3 
-#' = playoff/post-season) OR character of 'pre', 'regular', or 'playoff'/'post'
-#' @param report_type character of 'd'/details' or 't'/'totals'
+#' @inheritParams skater_edge_summary
+#' @param category character of 'd'/details' or 't'/'totals'
 #' @returns data.frame with one row per shot location
 #' @examples
 #' Martin_Necas_shot_location_totals_regular_20242025 <- 
 #'   skater_edge_shot_location(
-#'     player      = 8480039,
-#'     season      = 20242025,
-#'     game_type   = 2,
-#'     report_type = 'T'
+#'     player    = 8480039,
+#'     season    = 20242025,
+#'     game_type = 2,
+#'     category  = 'T'
 #'   )
 #' @export
 
 skater_edge_shot_location <- function(
-    player      = 8480039,
-    season      = 'now', 
-    game_type   = '', 
-    report_type = 'details'
+  player    = 8478402,
+  season    = 'now', 
+  game_type = '', 
+  category  = 'details'
 ) {
   tryCatch(
     expr = {
-      report_type <- switch(
-        substring(tolower(report_type), 1, 1),
+      category <- switch(
+        substring(tolower(category), 1, 1),
         d = 'shotLocationDetails',
         t = 'shotLocationTotals'
       )
@@ -294,7 +290,7 @@ skater_edge_shot_location <- function(
           to_game_type_id(game_type)
         ),
         type = 'w'
-      )[[report_type]]
+      )[[category]]
     },
     error = function(e) {
       message('Invalid argument(s); refer to help file.')
@@ -303,37 +299,35 @@ skater_edge_shot_location <- function(
   )
 }
 
-#' Get the EDGE shot speed statistics of a skater for a season, game type, and 
-#' report type
+#' Access the EDGE shot speed statistics for a skater, season, game type, and 
+#' category
 #' 
-#' `skater_edge_shot_speed()` retrieves information on each 
+#' `skater_edge_shot_speed()` scrapes the EDGE shot speed statistics for a 
+#' given set of `skater`, `season`, `game_type`, and `category`.
 #' 
-#' @param player integer ID (e.g., 8480039)
-#' @param season integer in YYYYYYYY (e.g., 20242025)
-#' @param game_type integer in 1:3 (where 1 = pre-season, 2 = regular season, 3 
-#' = playoff/post-season) OR character of 'pre', 'regular', or 'playoff'/'post'
-#' @param report_type character of 'd'/'details' or 'h'/'hardest'
-#' @returns list with six items (report_type = 'details') or data.frame with one 
-#' row per shot (report_type = 'hardest')
+#' @inheritParams skater_edge_summary
+#' @param category character of 'd'/'details' or 'h'/'hardest'
+#' @returns list with six items (category = 'details') or data.frame with one 
+#' row per shot (category = 'hardest')
 #' @examples
 #' Martin_Necas_hardest_shots_regular_20242025 <- skater_edge_shot_speed(
-#'   player      = 8480039,
-#'   season      = 20242025,
-#'   game_type   = 2,
-#'   report_type = 'H'
+#'   player    = 8480039,
+#'   season    = 20242025,
+#'   game_type = 2,
+#'   category  = 'H'
 #' )
 #' @export
 
 skater_edge_shot_speed <- function(
-    player      = 8480039,
-    season      = 'now', 
-    game_type   = '', 
-    report_type = 'details'
+    player    = 8478402,
+    season    = 'now', 
+    game_type = '', 
+    category  = 'details'
 ) {
   tryCatch(
     expr = {
-      report_type <- switch(
-        substring(tolower(report_type), 1, 1),
+      category <- switch(
+        substring(tolower(category), 1, 1),
         d = 'shotSpeedDetails',
         h = 'hardestShots',
       )
@@ -345,7 +339,7 @@ skater_edge_shot_speed <- function(
           to_game_type_id(game_type)
         ),
         type = 'w'
-      )[[report_type]]
+      )[[category]]
     },
     error = function(e) {
       message('Invalid argument(s); refer to help file.')
