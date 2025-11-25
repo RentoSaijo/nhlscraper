@@ -70,18 +70,18 @@ get_goalies <- function() {
 
 #' Access various reports for all the goalies by season or game
 #' 
-#' `get_goalie_statistics()` is defunct. Use [goalies_season_report()] or 
+#' `get_goalie_statistics()` is defunct. Use [goalie_season_report()] or 
 #' [goalie_game_report()] instead.
 #' 
 #' @export
 
 get_goalie_statistics <- function() {
   .Defunct(
-    new     = 'goalies_season_report()',
+    new     = 'goalie_season_report()',
     package = 'nhlscraper',
     msg     = paste(
       '`get_goalie_statistics()` is defunct.',
-      'Use `goalies_season_report()` and/or `goalie_game_report()` instead.'
+      'Use `goalie_season_report()` and/or `goalie_game_report()` instead.'
     )
   )
 }
