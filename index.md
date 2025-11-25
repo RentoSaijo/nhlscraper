@@ -6,7 +6,7 @@ Logo](reference/figures/logo.png)](https://rentosaijo.github.io/nhlscraper/)
 ## **nhlscraper**
 
 nhlscraper is a minimum-dependency R package to scrape, clean, and
-visualize NHL data via the NHL and ESPN APIs. It primarily wraps 150+
+visualize NHL data via the NHL and ESPN APIs. It primarily wraps 110+
 [endpoints](https://github.com/RentoSaijo/nhlscraper/wiki) from
 high-level multi-season summaries and award winners to low-level
 decisecond replays and bookmakers’ odds, making them significantly more
@@ -68,7 +68,7 @@ research, with a particular focus on NHL EDGE and Records data. After I
 shared those
 [findings](https://github.com/Zmalski/NHL-API-Reference/issues/69), the
 effort to expand and refine this map of the APIs accelerated, and
-together, we ultimately identified 500+ new endpoints that expose a wide
+together, we ultimately identified 400+ new endpoints that expose a wide
 range of NHL data. In parallel, I also discovered many new endpoints for
 the ESPN API, extending beyond what Joseph Wilson had already
 [compiled](https://github.com/pseudo-r/Public-ESPN-API).

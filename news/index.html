@@ -42,26 +42,248 @@
 
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.2.0.9000" id="nhlscraper-0209000">nhlscraper 0.2.0.9000<a class="anchor" aria-label="anchor" href="#nhlscraper-0209000"></a></h2>
-<ul><li>Website now properly includes title and example.</li>
-</ul></div>
-    <div class="section level2">
-<h2 class="pkg-version" data-toc-text="0.2.0" id="nhlscraper-020">nhlscraper 0.2.0<a class="anchor" aria-label="anchor" href="#nhlscraper-020"></a></h2><p class="text-muted">CRAN release: 2025-07-17</p>
 <ul><li>Documentation is now standardized.</li>
-<li>Website is now overhauled with dark theme, example, disclosure, etc.</li>
-<li>New functions to access the NHL Records and ESPN APIs are now available:
-<ul><li><code><a href="../reference/get_franchise_season_by_season.html">get_franchise_season_by_season()</a></code></li>
+<li>Website now features disclosure and history.</li>
+<li>New functions to access data about the entire league are now available:
+<ul><li><code><a href="../reference/seasons.html">seasons()</a></code></li>
+<li><code><a href="../reference/season_now.html">season_now()</a></code></li>
+<li><code><a href="../reference/game_type_now.html">game_type_now()</a></code></li>
+<li><code><a href="../reference/standings_rules.html">standings_rules()</a></code></li>
+<li><code><a href="../reference/standings.html">standings()</a></code></li>
+<li><code><a href="../reference/schedule.html">schedule()</a></code></li>
+<li><code><a href="../reference/venues.html">venues()</a></code></li>
+<li><code><a href="../reference/attendance.html">attendance()</a></code></li>
+</ul></li>
+<li>New functions to access data about the franchises are now available:
+<ul><li><code><a href="../reference/franchises.html">franchises()</a></code></li>
+<li><code><a href="../reference/franchise_statistics.html">franchise_statistics()</a></code></li>
+<li><code><a href="../reference/franchise_team_statistics.html">franchise_team_statistics()</a></code></li>
+<li><code><a href="../reference/franchise_season_statistics.html">franchise_season_statistics()</a></code></li>
+<li><code><a href="../reference/franchise_versus_franchise.html">franchise_versus_franchise()</a></code></li>
+<li><code><a href="../reference/franchise_playoff_situational_results.html">franchise_playoff_situational_results()</a></code></li>
+</ul></li>
+<li>New functions to access data about the teams are now available:
+<ul><li><code><a href="../reference/teams.html">teams()</a></code></li>
+<li><code><a href="../reference/team_seasons.html">team_seasons()</a></code></li>
+<li><code><a href="../reference/team_report_configurations.html">team_report_configurations()</a></code></li>
+<li><code><a href="../reference/team_season_report.html">team_season_report()</a></code></li>
+<li><code><a href="../reference/team_game_report.html">team_game_report()</a></code></li>
+<li><code><a href="../reference/team_season_statistics.html">team_season_statistics()</a></code></li>
+<li><code><a href="../reference/roster.html">roster()</a></code></li>
+<li><code><a href="../reference/roster_statistics.html">roster_statistics()</a></code></li>
+<li><code><a href="../reference/team_prospects.html">team_prospects()</a></code></li>
+<li><code><a href="../reference/team_season_schedule.html">team_season_schedule()</a></code></li>
+<li><code><a href="../reference/team_month_schedule.html">team_month_schedule()</a></code></li>
+<li><code><a href="../reference/team_week_schedule.html">team_week_schedule()</a></code></li>
+<li><code><a href="../reference/team_logos.html">team_logos()</a></code></li>
+</ul></li>
+<li>New functions to access the team EDGE statistics are now available:
+<ul><li><code><a href="../reference/team_edge_seasons.html">team_edge_seasons()</a></code></li>
+<li><code><a href="../reference/team_edge_leaders.html">team_edge_leaders()</a></code></li>
+<li><code><a href="../reference/team_edge_summary.html">team_edge_summary()</a></code></li>
+<li><code><a href="../reference/team_edge_zone_time.html">team_edge_zone_time()</a></code></li>
+<li><code><a href="../reference/team_edge_skating_distance.html">team_edge_skating_distance()</a></code></li>
+<li><code><a href="../reference/team_edge_skating_speed.html">team_edge_skating_speed()</a></code></li>
+<li><code><a href="../reference/team_edge_shot_location.html">team_edge_shot_location()</a></code></li>
+<li><code><a href="../reference/team_edge_shot_speed.html">team_edge_shot_speed()</a></code></li>
+</ul></li>
+<li>New functions to access data about the players are now available:
+<ul><li><code><a href="../reference/players.html">players()</a></code></li>
+<li><code><a href="../reference/player_seasons.html">player_seasons()</a></code></li>
+<li><code><a href="../reference/player_summary.html">player_summary()</a></code></li>
+<li><code><a href="../reference/player_game_log.html">player_game_log()</a></code></li>
+<li><code><a href="../reference/spotlight_players.html">spotlight_players()</a></code></li>
+</ul></li>
+<li>New functions to access data about the skaters are now available:
+<ul><li><code><a href="../reference/skater_report_configurations.html">skater_report_configurations()</a></code></li>
+<li><code><a href="../reference/skater_season_report.html">skater_season_report()</a></code></li>
+<li><code><a href="../reference/skater_game_report.html">skater_game_report()</a></code></li>
+<li><code><a href="../reference/skater_statistics.html">skater_statistics()</a></code></li>
+<li><code><a href="../reference/skater_regular_statistics.html">skater_regular_statistics()</a></code></li>
+<li><code><a href="../reference/skater_playoff_statistics.html">skater_playoff_statistics()</a></code></li>
+<li><code><a href="../reference/skater_season_statistics.html">skater_season_statistics()</a></code></li>
+<li><code><a href="../reference/skater_series_statistics.html">skater_series_statistics()</a></code></li>
+<li><code><a href="../reference/skater_leaders.html">skater_leaders()</a></code></li>
+<li><code><a href="../reference/skater_milestones.html">skater_milestones()</a></code></li>
+</ul></li>
+<li>New functions to access the skater EDGE statistics are now available:
+<ul><li><code><a href="../reference/skater_edge_seasons.html">skater_edge_seasons()</a></code></li>
+<li><code><a href="../reference/skater_edge_leaders.html">skater_edge_leaders()</a></code></li>
+<li><code><a href="../reference/skater_edge_summary.html">skater_edge_summary()</a></code></li>
+<li><code><a href="../reference/skater_edge_zone_time.html">skater_edge_zone_time()</a></code></li>
+<li><code><a href="../reference/skater_edge_skating_distance.html">skater_edge_skating_distance()</a></code></li>
+<li><code><a href="../reference/skater_edge_skating_speed.html">skater_edge_skating_speed()</a></code></li>
+<li><code><a href="../reference/skater_edge_shot_location.html">skater_edge_shot_location()</a></code></li>
+<li><code><a href="../reference/skater_edge_shot_speed.html">skater_edge_shot_speed()</a></code></li>
+</ul></li>
+<li>New functions to access data about the goalies are now available:
+<ul><li><code><a href="../reference/goalie_report_configurations.html">goalie_report_configurations()</a></code></li>
+<li><code><a href="../reference/goalie_season_report.html">goalie_season_report()</a></code></li>
+<li><code><a href="../reference/goalie_game_report.html">goalie_game_report()</a></code></li>
+<li><code><a href="../reference/goalie_statistics.html">goalie_statistics()</a></code></li>
+<li><code><a href="../reference/goalie_regular_statistics.html">goalie_regular_statistics()</a></code></li>
+<li><code><a href="../reference/goalie_season_statistics.html">goalie_season_statistics()</a></code></li>
+<li><code><a href="../reference/goalie_game_statistics.html">goalie_game_statistics()</a></code></li>
+<li><code><a href="../reference/goalie_series_statistics.html">goalie_series_statistics()</a></code></li>
+<li><code><a href="../reference/goalie_scoring.html">goalie_scoring()</a></code></li>
+<li><code><a href="../reference/goalie_game_scoring.html">goalie_game_scoring()</a></code></li>
+<li><code><a href="../reference/goalie_leaders.html">goalie_leaders()</a></code></li>
+<li><code><a href="../reference/goalie_milestones.html">goalie_milestones()</a></code></li>
+</ul></li>
+<li>New functions to access the goalie EDGE statistics are now available:
+<ul><li><code><a href="../reference/goalie_edge_seasons.html">goalie_edge_seasons()</a></code></li>
+<li><code><a href="../reference/goalie_edge_leaders.html">goalie_edge_leaders()</a></code></li>
+<li><code><a href="../reference/goalie_edge_summary.html">goalie_edge_summary()</a></code></li>
+<li><code><a href="../reference/goalie_edge_save_percentage.html">goalie_edge_save_percentage()</a></code></li>
+<li><code><a href="../reference/goalie_edge_five_versus_five.html">goalie_edge_five_versus_five()</a></code></li>
+<li><code><a href="../reference/goalie_edge_shot_location.html">goalie_edge_shot_location()</a></code></li>
+</ul></li>
+<li>New functions to access data about the games are now available:
+<ul><li><code><a href="../reference/games.html">games()</a></code></li>
+<li><code><a href="../reference/scores.html">scores()</a></code></li>
+<li><code><a href="../reference/gc_summary.html">gc_summary()</a></code></li>
+<li><code><a href="../reference/wsc_summary.html">wsc_summary()</a></code></li>
+<li><code><a href="../reference/boxscore.html">boxscore()</a></code></li>
+<li><code><a href="../reference/game_rosters.html">game_rosters()</a></code></li>
+<li><code><a href="../reference/gc_play_by_play.html">gc_play_by_play()</a></code></li>
+<li><code><a href="../reference/wsc_play_by_play.html">wsc_play_by_play()</a></code></li>
+<li><code><a href="../reference/shifts.html">shifts()</a></code></li>
+</ul></li>
+<li>New functions to access data about the events (plays) are now available:
+<ul><li><code><a href="../reference/event_replay.html">event_replay()</a></code></li>
+<li><code><a href="../reference/penalty_shots.html">penalty_shots()</a></code></li>
+</ul></li>
+<li>New functions to access data about the playoffs are now available:
+<ul><li><code><a href="../reference/series.html">series()</a></code></li>
+<li><code><a href="../reference/playoff_season_statistics.html">playoff_season_statistics()</a></code></li>
+<li><code><a href="../reference/bracket.html">bracket()</a></code></li>
+<li><code><a href="../reference/series_schedule.html">series_schedule()</a></code></li>
+</ul></li>
+<li>New functions to access data about the awards are now available:
+<ul><li><code><a href="../reference/awards.html">awards()</a></code></li>
+<li><code><a href="../reference/award_winners.html">award_winners()</a></code></li>
+</ul></li>
+<li>New functions to access data about the drafts are now available:
+<ul><li><code><a href="../reference/drafts.html">drafts()</a></code></li>
+<li><code><a href="../reference/draft_picks.html">draft_picks()</a></code></li>
+<li><code><a href="../reference/draft_prospects.html">draft_prospects()</a></code></li>
+<li><code><a href="../reference/draft_rankings.html">draft_rankings()</a></code></li>
+<li><code><a href="../reference/combine_reports.html">combine_reports()</a></code></li>
+<li><code><a href="../reference/lottery_odds.html">lottery_odds()</a></code></li>
+<li><code><a href="../reference/draft_tracker.html">draft_tracker()</a></code></li>
+<li><code><a href="../reference/expansion_drafts.html">expansion_drafts()</a></code></li>
+<li><code><a href="../reference/expansion_draft_picks.html">expansion_draft_picks()</a></code></li>
+</ul></li>
+<li>New function to access data about the general managers is now available:
+<ul><li><code><a href="../reference/general_managers.html">general_managers()</a></code></li>
+</ul></li>
+<li>New functions to access data about the coaches are now available:
+<ul><li><code><a href="../reference/coaches.html">coaches()</a></code></li>
+<li><code><a href="../reference/coach_career_statistics.html">coach_career_statistics()</a></code></li>
+<li><code><a href="../reference/coach_franchise_statistics.html">coach_franchise_statistics()</a></code></li>
+</ul></li>
+<li>New function to access data about the officials is now available:
+<ul><li><code><a href="../reference/officials.html">officials()</a></code></li>
+</ul></li>
+<li>New functions to access other data are now available:
+<ul><li><code><a href="../reference/glossary.html">glossary()</a></code></li>
+<li><code><a href="../reference/countries.html">countries()</a></code></li>
+<li><code><a href="../reference/location.html">location()</a></code></li>
+<li><code><a href="../reference/streams.html">streams()</a></code></li>
+<li><code><a href="../reference/tv_schedule.html">tv_schedule()</a></code></li>
+<li><code><a href="../reference/game_partner_odds.html">game_partner_odds()</a></code></li>
+</ul></li>
+<li>Some functions are now deprecated:
+<ul><li><code><a href="../reference/get_seasons.html">get_seasons()</a></code></li>
+<li><code><a href="../reference/get_standings_information.html">get_standings_information()</a></code></li>
+<li><code><a href="../reference/get_standings.html">get_standings()</a></code></li>
+<li><code><a href="../reference/get_schedule.html">get_schedule()</a></code></li>
+<li><code><a href="../reference/get_venues.html">get_venues()</a></code></li>
+<li><code><a href="../reference/get_attendance.html">get_attendance()</a></code></li>
+<li><code><a href="../reference/get_franchises.html">get_franchises()</a></code></li>
+<li><code><a href="../reference/get_franchise_team_totals.html">get_franchise_team_totals()</a></code></li>
+<li><code><a href="../reference/get_franchise_season_by_season.html">get_franchise_season_by_season()</a></code></li>
+<li><code><a href="../reference/get_franchise_vs_franchise.html">get_franchise_vs_franchise()</a></code></li>
+<li><code><a href="../reference/get_teams.html">get_teams()</a></code></li>
+<li><code><a href="../reference/get_team_seasons.html">get_team_seasons()</a></code></li>
+<li><code><a href="../reference/get_team_roster.html">get_team_roster()</a></code></li>
+<li><code><a href="../reference/get_team_roster_statistics.html">get_team_roster_statistics()</a></code></li>
+<li><code><a href="../reference/get_team_prospects.html">get_team_prospects()</a></code></li>
+<li><code><a href="../reference/get_team_schedule.html">get_team_schedule()</a></code></li>
 <li><code><a href="../reference/get_players.html">get_players()</a></code></li>
+<li><code><a href="../reference/get_player_landing.html">get_player_landing()</a></code></li>
+<li><code><a href="../reference/get_player_game_log.html">get_player_game_log()</a></code></li>
+<li><code><a href="../reference/get_spotlight_players.html">get_spotlight_players()</a></code></li>
+<li><code><a href="../reference/get_skater_leaders.html">get_skater_leaders()</a></code></li>
+<li><code><a href="../reference/get_skater_milestones.html">get_skater_milestones()</a></code></li>
+<li><code><a href="../reference/get_goalie_leaders.html">get_goalie_leaders()</a></code></li>
+<li><code><a href="../reference/get_goalie_milestones.html">get_goalie_milestones()</a></code></li>
+<li><code><a href="../reference/get_games.html">get_games()</a></code></li>
+<li><code><a href="../reference/get_scores.html">get_scores()</a></code></li>
+<li><code><a href="../reference/get_scoreboards.html">get_scoreboards()</a></code></li>
+<li><code><a href="../reference/get_game_landing.html">get_game_landing()</a></code></li>
+<li><code><a href="../reference/get_game_story.html">get_game_story()</a></code></li>
+<li><code><a href="../reference/get_game_boxscore.html">get_game_boxscore()</a></code></li>
+<li><code><a href="../reference/get_gc_play_by_play.html">get_gc_play_by_play()</a></code></li>
+<li><code><a href="../reference/get_wsc_play_by_play.html">get_wsc_play_by_play()</a></code></li>
+<li><code><a href="../reference/get_shift_charts.html">get_shift_charts()</a></code></li>
 <li><code><a href="../reference/get_bracket.html">get_bracket()</a></code></li>
-<li><code><a href="../reference/get_series.html">get_series()</a></code></li>
+<li><code><a href="../reference/get_series_schedule.html">get_series_schedule()</a></code></li>
 <li><code><a href="../reference/get_awards.html">get_awards()</a></code></li>
 <li><code><a href="../reference/get_award_winners.html">get_award_winners()</a></code></li>
 <li><code><a href="../reference/get_drafts.html">get_drafts()</a></code></li>
+<li><code><a href="../reference/get_draft_picks.html">get_draft_picks()</a></code></li>
+<li><code><a href="../reference/get_draft_rankings.html">get_draft_rankings()</a></code></li>
+<li><code><a href="../reference/get_draft_tracker.html">get_draft_tracker()</a></code></li>
+<li><code><a href="../reference/get_officials.html">get_officials()</a></code></li>
+<li><code><a href="../reference/get_glossary.html">get_glossary()</a></code></li>
+<li><code><a href="../reference/get_countries.html">get_countries()</a></code></li>
+<li><code><a href="../reference/get_streams.html">get_streams()</a></code></li>
+<li><code><a href="../reference/get_tv_schedule.html">get_tv_schedule()</a></code></li>
+<li><code><a href="../reference/get_partner_odds.html">get_partner_odds()</a></code></li>
+</ul></li>
+<li>Some functions are now defunct:
+<ul><li><code><a href="../reference/get_season_now.html">get_season_now()</a></code></li>
+<li><code><a href="../reference/get_team_statistics.html">get_team_statistics()</a></code></li>
+<li><code><a href="../reference/get_team_scoreboard.html">get_team_scoreboard()</a></code></li>
+<li><code><a href="../reference/get_skaters.html">get_skaters()</a></code></li>
+<li><code><a href="../reference/get_skater_statistics.html">get_skater_statistics()</a></code></li>
+<li><code><a href="../reference/get_goalies.html">get_goalies()</a></code></li>
+<li><code><a href="../reference/get_goalie_statistics.html">get_goalie_statistics()</a></code></li>
+<li><code><a href="../reference/get_series.html">get_series()</a></code></li>
+<li><code><a href="../reference/ping.html">ping()</a></code></li>
+<li><code><a href="../reference/get_configuration.html">get_configuration()</a></code></li>
+</ul></li>
+</ul></div>
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="0.2.0" id="nhlscraper-020">nhlscraper 0.2.0<a class="anchor" aria-label="anchor" href="#nhlscraper-020"></a></h2><p class="text-muted">CRAN release: 2025-07-17</p>
+<ul><li>Website now features dark theme and example.</li>
+<li>New functions to access data about the franchises are now available:
+<ul><li><code><a href="../reference/get_franchise_season_by_season.html">get_franchise_season_by_season()</a></code></li>
 <li><code><a href="../reference/get_franchise_team_totals.html">get_franchise_team_totals()</a></code></li>
 <li><code><a href="../reference/get_franchise_vs_franchise.html">get_franchise_vs_franchise()</a></code></li>
-<li><code><a href="../reference/get_venues.html">get_venues()</a></code></li>
+</ul></li>
+<li>New function to access data about the players is now available:
+<ul><li><code><a href="../reference/get_players.html">get_players()</a></code></li>
+</ul></li>
+<li>New functions to access data about the playoffs are now available:
+<ul><li><code><a href="../reference/get_bracket.html">get_bracket()</a></code></li>
+<li><code><a href="../reference/get_series.html">get_series()</a></code></li>
+</ul></li>
+<li>New functions to access data about the awards are now available:
+<ul><li><code><a href="../reference/get_awards.html">get_awards()</a></code></li>
+<li><code><a href="../reference/get_award_winners.html">get_award_winners()</a></code></li>
+</ul></li>
+<li>New function to access data about the drafts is now available:
+<ul><li><code><a href="../reference/get_drafts.html">get_drafts()</a></code></li>
+</ul></li>
+<li>New functions to access other data are now available:
+<ul><li><code><a href="../reference/get_venues.html">get_venues()</a></code></li>
 <li><code><a href="../reference/get_attendance.html">get_attendance()</a></code></li>
 <li><code><a href="../reference/get_officials.html">get_officials()</a></code></li>
-<li><code><a href="../reference/get_espn_teams.html">get_espn_teams()</a></code></li>
+</ul></li>
+<li>New functions to access the ESPN API are now available:
+<ul><li><code><a href="../reference/get_espn_teams.html">get_espn_teams()</a></code></li>
 <li><code><a href="../reference/get_espn_team.html">get_espn_team()</a></code></li>
 <li><code><a href="../reference/get_espn_athletes.html">get_espn_athletes()</a></code></li>
 <li><code><a href="../reference/get_espn_athlete.html">get_espn_athlete()</a></code></li>
@@ -78,34 +300,23 @@
 <li><code><a href="../reference/get_espn_injuries.html">get_espn_injuries()</a></code></li>
 <li><code><a href="../reference/get_espn_futures.html">get_espn_futures()</a></code></li>
 </ul></li>
-<li>Some functions’ returns are now modified:
-<ul><li><code><a href="../reference/get_franchises.html">get_franchises()</a></code></li>
-<li><code><a href="../reference/get_draft_picks.html">get_draft_picks()</a></code></li>
-</ul></li>
-<li>Some functions are now replaced :
-<ul><li>
-<code>get_draft_information()</code> is now <code><a href="../reference/get_drafts.html">get_drafts()</a></code>.</li>
-<li>
-<code>get_playoff_bracket()</code> is now <code><a href="../reference/get_bracket.html">get_bracket()</a></code>.</li>
-<li>
-<code>get_series_carousel()</code> is now <code><a href="../reference/get_series.html">get_series()</a></code>.</li>
-</ul></li>
 </ul></div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.1.1" id="nhlscraper-011">nhlscraper 0.1.1<a class="anchor" aria-label="anchor" href="#nhlscraper-011"></a></h2><p class="text-muted">CRAN release: 2025-06-11</p>
-<ul><li>Documentation is now cleaner.</li>
-<li>Some functions are now more optimized.</li>
+<ul><li>Some functions are now more optimized.</li>
 </ul></div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.1.0" id="nhlscraper-010">nhlscraper 0.1.0<a class="anchor" aria-label="anchor" href="#nhlscraper-010"></a></h2>
 <ul><li>
-<code>News.md</code> now tracks change-log.</li>
-<li>New functions to access the NHL APIs are now available:
+<code>News.md</code> now tracks changelog.</li>
+<li>New functions to access data about the entire league are now available:
 <ul><li><code><a href="../reference/get_seasons.html">get_seasons()</a></code></li>
 <li><code><a href="../reference/get_schedule.html">get_schedule()</a></code></li>
 <li><code><a href="../reference/get_standings_information.html">get_standings_information()</a></code></li>
 <li><code><a href="../reference/get_standings.html">get_standings()</a></code></li>
-<li><code><a href="../reference/get_teams.html">get_teams()</a></code></li>
+</ul></li>
+<li>New functions to access data about the franchises/teams are now available:
+<ul><li><code><a href="../reference/get_teams.html">get_teams()</a></code></li>
 <li><code><a href="../reference/get_franchises.html">get_franchises()</a></code></li>
 <li><code><a href="../reference/get_team_seasons.html">get_team_seasons()</a></code></li>
 <li><code><a href="../reference/get_team_statistics.html">get_team_statistics()</a></code></li>
@@ -114,18 +325,26 @@
 <li><code><a href="../reference/get_team_prospects.html">get_team_prospects()</a></code></li>
 <li><code><a href="../reference/get_team_schedule.html">get_team_schedule()</a></code></li>
 <li><code><a href="../reference/get_team_scoreboard.html">get_team_scoreboard()</a></code></li>
-<li><code><a href="../reference/get_player_game_log.html">get_player_game_log()</a></code></li>
+</ul></li>
+<li>New functions to access data about the players are now available:
+<ul><li><code><a href="../reference/get_player_game_log.html">get_player_game_log()</a></code></li>
 <li><code><a href="../reference/get_player_landing.html">get_player_landing()</a></code></li>
 <li><code><a href="../reference/get_spotlight_players.html">get_spotlight_players()</a></code></li>
-<li><code><a href="../reference/get_skaters.html">get_skaters()</a></code></li>
+</ul></li>
+<li>New functions to access data about the skaters are now available:
+<ul><li><code><a href="../reference/get_skaters.html">get_skaters()</a></code></li>
 <li><code><a href="../reference/get_skater_statistics.html">get_skater_statistics()</a></code></li>
 <li><code><a href="../reference/get_skater_leaders.html">get_skater_leaders()</a></code></li>
 <li><code><a href="../reference/get_skater_milestones.html">get_skater_milestones()</a></code></li>
-<li><code><a href="../reference/get_goalies.html">get_goalies()</a></code></li>
+</ul></li>
+<li>New functions to access data about the goalies are now available:
+<ul><li><code><a href="../reference/get_goalies.html">get_goalies()</a></code></li>
 <li><code><a href="../reference/get_goalie_statistics.html">get_goalie_statistics()</a></code></li>
 <li><code><a href="../reference/get_goalie_leaders.html">get_goalie_leaders()</a></code></li>
 <li><code><a href="../reference/get_goalie_milestones.html">get_goalie_milestones()</a></code></li>
-<li><code><a href="../reference/get_games.html">get_games()</a></code></li>
+</ul></li>
+<li>New functions to access data about the games are now available:
+<ul><li><code><a href="../reference/get_games.html">get_games()</a></code></li>
 <li><code><a href="../reference/get_scores.html">get_scores()</a></code></li>
 <li><code><a href="../reference/get_scoreboards.html">get_scoreboards()</a></code></li>
 <li><code><a href="../reference/get_game_boxscore.html">get_game_boxscore()</a></code></li>
@@ -134,14 +353,17 @@
 <li><code><a href="../reference/get_shift_charts.html">get_shift_charts()</a></code></li>
 <li><code><a href="../reference/get_game_landing.html">get_game_landing()</a></code></li>
 <li><code><a href="../reference/get_game_story.html">get_game_story()</a></code></li>
-<li><code>get_playoff_bracket()</code></li>
-<li><code><a href="../reference/get_series_schedule.html">get_series_schedule()</a></code></li>
-<li><code>get_series_carousel()</code></li>
-<li><code>get_draft_information()</code></li>
-<li><code><a href="../reference/get_draft_picks.html">get_draft_picks()</a></code></li>
+</ul></li>
+<li>New function to access data about the playoffs is now available:
+<ul><li><code><a href="../reference/get_series_schedule.html">get_series_schedule()</a></code></li>
+</ul></li>
+<li>New functions to access data about the drafts are now available:
+<ul><li><code><a href="../reference/get_draft_picks.html">get_draft_picks()</a></code></li>
 <li><code><a href="../reference/get_draft_rankings.html">get_draft_rankings()</a></code></li>
 <li><code><a href="../reference/get_draft_tracker.html">get_draft_tracker()</a></code></li>
-<li><code><a href="../reference/ping.html">ping()</a></code></li>
+</ul></li>
+<li>New functions to access other data are now available:
+<ul><li><code><a href="../reference/ping.html">ping()</a></code></li>
 <li><code><a href="../reference/get_glossary.html">get_glossary()</a></code></li>
 <li><code><a href="../reference/get_configuration.html">get_configuration()</a></code></li>
 <li><code><a href="../reference/get_countries.html">get_countries()</a></code></li>
