@@ -7,14 +7,14 @@
 ns_schedule(date = Sys.Date())
 }
 \arguments{
-\item{date}{character in 'YYYY-MM-DD' (e.g., '2025-01-01')}
+\item{date}{character in 'YYYY-MM-DD' (e.g., '2025-01-01'); see
+\code{\link[=ns_seasons]{ns_seasons()}} for reference}
 }
 \value{
 data.frame with one row per game
 }
 \description{
-\code{ns_schedule()} scrapes the schedule for a given \code{date}. Use \code{\link[=ns_seasons]{ns_seasons()}}
-for \code{date} reference.
+\code{ns_schedule()} scrapes the schedule for a given \code{date}.
 }
 \examples{
 schedule_Halloween_2025 <- ns_schedule(date = '2025-10-31')

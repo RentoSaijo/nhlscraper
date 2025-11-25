@@ -13,10 +13,7 @@ ns_scores(date = "now")
 data.frame with one row per game
 }
 \description{
-\code{ns_scores()} retrieves information on each game for a given \code{date},
-including but not limited to their ID; type; venue; start time; period and
-intermission clocks; and home and away teams' IDs, names, and scores. Access
-\code{get_seasons()} for \code{date} reference.
+\code{ns_scores()} returns the score(s) of the game(s) for a given \code{date}. Use \code{\link[=ns_seasons]{ns_seasons()}} for \code{date} reference.
 }
 \examples{
 scores_Halloween_2025 <- ns_scores(date = '2025-10-31')

@@ -66,10 +66,10 @@ ns_standings_rules <- function() {
 
 #' Access the standings for a date
 #' 
-#' `ns_standings()` scrapes the standings for a given `date`. Use 
-#' [ns_seasons()] for `date` reference.
+#' `ns_standings()` scrapes the standings for a given `date`.
 #' 
-#' @param date character in 'YYYY-MM-DD' (e.g., '2025-01-01')
+#' @param date character in 'YYYY-MM-DD' (e.g., '2025-01-01'); see 
+#' [ns_seasons()] for reference
 #' @returns data.frame with one row per team
 #' @examples
 #' standings_Halloween_2025 <- ns_standings(date = '2025-10-31')
@@ -92,8 +92,7 @@ ns_standings <- function(date = 'now') {
 
 #' Access the schedule for a date
 #' 
-#' `ns_schedule()` scrapes the schedule for a given `date`. Use [ns_seasons()] 
-#' for `date` reference.
+#' `ns_schedule()` scrapes the schedule for a given `date`.
 #' 
 #' @inheritParams ns_standings
 #' @returns data.frame with one row per game
