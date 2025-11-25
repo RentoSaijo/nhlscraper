@@ -240,7 +240,6 @@ reference:
       - coach_career_statistics
       - coach_career_stats
       - coach_franchise_statistics
-      - coach_franchise_stats
       
   - subtitle: "Official"
     desc: >
@@ -253,7 +252,6 @@ reference:
       Functions to acccess any other data
     contents:
       - glossary
-      - report_configurations
       - report_configs
       - countries
       - location
