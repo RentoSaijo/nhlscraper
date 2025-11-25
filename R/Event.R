@@ -1,19 +1,22 @@
-#' Get the replay of an event
+#' Access the replay for an event
 #' 
-#' `ns_goal_replay()` retrieves ...
+#' `ns_event_replay()` scrapes the replay for a given `event`.
 #' 
+#' @param game integer ID (e.g., 2025020262); see [ns_games()] for reference
+#' @param event integer ID (e.g., 751); see [gc_play_by_play()] and/or 
+#' [gc_wsc_play_by_play()] for reference; must be a 'goal' event
 #' @returns data.frame with one row per decisecond
 #' @examples
-#' Gabriel_Landeskog_first_regular_goal_back_replay <- ns_goal_replay(
+#' Gabriel_Landeskog_first_regular_goal_back_replay <- ns_event_replay(
 #'   game  = 2025020262,
 #'   event = 751
 #' )
 #' @export
 
-ns_goal_replay <- function(game = 2025020262, event = 751) {
+ns_event_replay <- function(game = 2023030417, event = 866) {
   base   <- 'https://wsr.nhle.com/'
   year   <- game %/% 1e6
-  season <- paste0(as.character(year), as.character(year+1))
+  season <- paste0(as.character(year), as.character(year + 1))
   url    <- sprintf(
     '%ssprites/%s/%s/ev%s.json',
     base,
@@ -41,11 +44,11 @@ ns_goal_replay <- function(game = 2025020262, event = 751) {
   )
 }
 
-#' Get all the penalty shots
+#' Access all the penalty shots
 #' 
-#' `ns_penalty_shots()` retrieves ...
+#' `ns_penalty_shots()` scrapes information on all the penalty shots.
 #' 
-#' @returns data.frame with one row per team
+#' @returns data.frame with one row per penalty shot
 #' @examples
 #' all_ps <- ns_penalty_shots()
 #' @export
@@ -55,6 +58,7 @@ ns_penalty_shots <- function() {
     path = 'penalty-shots',
     type = 'r'
   )$data
+  ps$id <- NULL
   ps[order(ps$gameId), ]
 }
 

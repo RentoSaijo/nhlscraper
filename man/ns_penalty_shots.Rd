@@ -3,17 +3,17 @@
 \name{ns_penalty_shots}
 \alias{ns_penalty_shots}
 \alias{ns_ps}
-\title{Get all the penalty shots}
+\title{Access all the penalty shots}
 \usage{
 ns_penalty_shots()
 
 ns_ps()
 }
 \value{
-data.frame with one row per team
+data.frame with one row per penalty shot
 }
 \description{
-\code{ns_penalty_shots()} retrieves ...
+\code{ns_penalty_shots()} scrapes information on all the penalty shots.
 }
 \examples{
 all_ps <- ns_penalty_shots()

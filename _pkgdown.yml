@@ -126,21 +126,24 @@ reference:
     desc: >
       Functions to access data about the games
     contents:
-      - get_games
-      - get_scores
-      - get_scoreboards
-      - get_game_boxscore
-      - get_gc_play_by_play
-      - get_wsc_play_by_play
-      - get_shift_charts
-      - get_game_landing
-      - get_game_story
+      - ns_games
+      - ns_scores
+      - ns_gc_summary
+      - ns_wsc_summary
+      - ns_boxscore
+      - ns_game_rosters
+      - ns_gc_play_by_play
+      - ns_gc_pbp
+      - ns_wsc_play_by_play
+      - ns_wsc_pbp
+      - ns_shifts
   
   - subtitle: "Event"
     desc: >
       Functions to access data about the events (plays)
     contents:
-      - get_games
+      - ns_penalty_shots
+      - ns_event_replay
 
   - subtitle: "Playoff"
     desc: >
@@ -215,6 +218,15 @@ reference:
       - get_player_landing
       - get_player_game_log
       - get_spotlight_players
+      - get_games
+      - get_scores
+      - get_scoreboards
+      - get_game_landing
+      - get_game_story
+      - get_game_boxscore
+      - get_gc_play_by_play
+      - get_wsc_play_by_play
+      - get_shift_charts
 
   - subtitle: "Defunct"
     desc: >
