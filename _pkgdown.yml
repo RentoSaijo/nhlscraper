@@ -241,8 +241,8 @@ reference:
       Functions to acccess any other data
     contents:
       - glossary
-      - statistics_report_configurations
-      - stats_report_configs
+      - report_configurations
+      - report_configs
       - countries
       - location
       - streams

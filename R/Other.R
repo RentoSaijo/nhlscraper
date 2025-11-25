@@ -14,29 +14,29 @@ glossary <- function() {
   )$data
 }
 
-#' Access the configurations for skater, goalie, and team statistics reports
+#' Access the configurations for team, skater, and goalie reports
 #' 
-#' `statistics_report_configurations()` scrapes the configurations for 
+#' `report_configurations()` scrapes the configurations for 
 #' [team_season_report()], [team_game_report()], 
 #' [skater_season_report()], [skater_game_report()], 
 #' [goalie_season_report()], and [goalie_game_report()].
 #' 
 #' @returns list with 5 items
 #' @examples
-#' stats_report_config <- statistics_report_configurations()
+#' report_configs <- report_configurations()
 #' @export
 
-statistics_report_configurations <- function() {
+report_configurations <- function() {
   nhl_api(
     path = 'en/config',
     type = 's'
   )
 }
 
-#' @rdname statistics_report_configurations
+#' @rdname report_configurations
 #' @export
-stats_report_configs <- function() {
-  statistics_report_configurations()
+report_configs <- function() {
+  report_configurations()
 }
 
 #' Access all the countries

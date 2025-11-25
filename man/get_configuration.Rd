@@ -2,7 +2,7 @@
 % Please edit documentation in R/OtherOld.R
 \name{get_configuration}
 \alias{get_configuration}
-\title{Access the configurations for skater, goalie, and team statistics reports}
+\title{Access the configurations for team, skater, and goalie reports}
 \usage{
 get_configuration()
 }
@@ -11,5 +11,5 @@ list with 5 items
 }
 \description{
 \code{get_configuration()} is deprecated. Use
-\code{\link[=statistics_report_configurations]{statistics_report_configurations()}} instead.
+\code{\link[=report_configurations]{report_configurations()}} instead.
 }
