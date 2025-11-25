@@ -7,6 +7,6 @@
 get_goalie_statistics()
 }
 \description{
-\code{get_goalie_statistics()} is defunct. Use \code{\link[=goalies_season_report]{goalies_season_report()}} or
+\code{get_goalie_statistics()} is defunct. Use \code{\link[=goalie_season_report]{goalie_season_report()}} or
 \code{\link[=goalie_game_report]{goalie_game_report()}} instead.
 }
