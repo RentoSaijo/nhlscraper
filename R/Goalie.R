@@ -1,7 +1,6 @@
 #' Access the career statistics for all the goalies
 #' 
-#' `goalie_statistics()` scrapes the career statistics for all the 
-#' goalies.
+#' `goalie_statistics()` scrapes the career statistics for all the goalies.
 #' 
 #' @returns data.frame with one row per player
 #' @examples
@@ -163,32 +162,32 @@ goalie_game_scoring <- function() {
   scoring[order(scoring$playerId, scoring$gameId), ]
 }
 
-#' Access the goalie statistics leaders for a season, game type, and report type
+#' Access the goalie statistics leaders for a season, game type, and category
 #' 
-#' `goalie_leaders()` scrapes the goalie statistics leaderboard for a given 
-#' set of `season`, `game_type`, and `report_type`.
+#' `goalie_leaders()` scrapes the goalie statistics leaders for a given set of 
+#' `season`, `game_type`, and `category`.
 #' 
 #' @inheritParams roster_statistics
-#' @param report_type character of 'w'/'wins', 's'/shutouts', 
+#' @param category character of 'w'/'wins', 's'/shutouts', 
 #' 's%'/'sP'/'save %'/'save percentage', or 'gaa'/'goals against average'
 #' @returns data.frame with one row per player
 #' @examples
 #' GAA_leaders_regular_20242025 <- goalie_leaders(
-#'   season      = 20242025,
-#'   game_type   = 2,
-#'   report_type = 'GAA'
+#'   season    = 20242025,
+#'   game_type = 2,
+#'   category  = 'GAA'
 #' )
 #' @export
 
 goalie_leaders <- function(
-    season      = 'current',
-    game_type   = '',
-    report_type = 'wins'
+  season    = 'current',
+  game_type = '',
+  category  = 'wins'
 ) {
   tryCatch(
     expr = {
-      report_type <- switch(
-        tolower(report_type),
+      category <- switch(
+        tolower(category),
         w                       = 'wins',
         wins                    = 'wins',
         s                       = 'shutouts',
@@ -203,7 +202,7 @@ goalie_leaders <- function(
       nhl_api(
         path  = sprintf('v1/goalie-stats-leaders/%s/%s', season, game_type),
         type  = 'w'
-      )[[report_type]]
+      )[[category]]
     },
     error = function(e) {
       message(e)
@@ -215,8 +214,7 @@ goalie_leaders <- function(
 
 #' Access the goalies on milestone watch
 #' 
-#' `goalie_milestones()` scrapes information on the goalies on milestone 
-#' watch.
+#' `goalie_milestones()` scrapes the goalies on milestone watch.
 #' 
 #' @returns data.frame with one row per player
 #' @examples

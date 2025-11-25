@@ -2,7 +2,7 @@
 % Please edit documentation in R/GoalieEDGE.R
 \name{goalie_edge_five_versus_five}
 \alias{goalie_edge_five_versus_five}
-\alias{goalie_edge_5v5}
+\alias{goalie_edge_5_vs_5}
 \title{Access the EDGE 5 vs. 5 statistics for a goalie, season, game type, and
 category}
 \usage{
@@ -13,7 +13,7 @@ goalie_edge_five_versus_five(
   category = "details"
 )
 
-goalie_edge_5v5(
+goalie_edge_5_vs_5(
   player = 8476945,
   season = "now",
   game_type = "",

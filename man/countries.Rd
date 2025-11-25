@@ -10,7 +10,7 @@ countries()
 data.frame with one row per country
 }
 \description{
-\code{countries} scrapes information on all the countries.
+\code{countries} scrapes all the countries.
 }
 \examples{
 all_countries <- countries()

@@ -41,7 +41,7 @@ stats_report_configs <- function() {
 
 #' Access all the countries
 #' 
-#' `countries` scrapes information on all the countries.
+#' `countries` scrapes all the countries.
 #' 
 #' @returns data.frame with one row per country
 #' @examples
@@ -82,7 +82,7 @@ location <- function(zip = 10001) {
 
 #' Access all the streams
 #' 
-#' `streams()` scrapes information on all the streams.
+#' `streams()` scrapes all the streams.
 #' 
 #' @returns data.frame with one row per stream
 #' @examples
@@ -98,7 +98,7 @@ streams <- function() {
 
 #' Access the NHL Network TV schedule for a date
 #' 
-#' `tv_schedule()` scrapes the NHL Network TV schedule for a given `date`
+#' `tv_schedule()` scrapes the NHL Network TV schedule for a given `date`.
 #' 
 #' @inheritParams standings
 #' @returns data.frame with one row per program

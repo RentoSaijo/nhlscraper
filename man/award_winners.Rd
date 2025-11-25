@@ -10,7 +10,7 @@ award_winners()
 data.frame with one row per winner/finalist
 }
 \description{
-\code{award_winners()} scrapes information on all the award winners/finalists.
+\code{award_winners()} scrapes all the award winners/finalists.
 }
 \examples{
 all_award_winners <- award_winners()

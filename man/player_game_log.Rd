@@ -24,7 +24,7 @@ data.frame with one row per game
 \code{season}, and \code{game_type}.
 }
 \examples{
-Martin_Necas_gl_regular_20242025 <- player_game_log(
+Martin_Necas_game_log_regular_20242025 <- player_game_log(
   player    = 8480039,
   season    = 20242025,
   game_type = 2

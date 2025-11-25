@@ -10,7 +10,7 @@ season()
 integer in YYYYYYYY (e.g., 20242025)
 }
 \description{
-\code{season} scrapes the current season ID.
+\code{season} scrapes the current season.
 }
 \examples{
 season_now <- season()

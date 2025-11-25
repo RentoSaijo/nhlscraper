@@ -1,6 +1,6 @@
 #' Access all the games
 #' 
-#' `games()` scrapes information on all the games.
+#' `games()` scrapes all the games.
 #' 
 #' @returns data.frame with one row per game
 #' @examples
@@ -173,7 +173,7 @@ game_rosters <- function(game = 2023030417) {
 
 #' Access the GameCenter (GC) play-by-play for a game
 #' 
-#' `gc_play_by_play()` scrapes GC play-by-play for a given `game`.
+#' `gc_play_by_play()` scrapes the GC play-by-play for a given `game`.
 #' 
 #' @inheritParams gc_summary
 #' @returns data.frame with one row per event (play)

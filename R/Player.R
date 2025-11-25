@@ -1,6 +1,6 @@
 #' Access all the players
 #' 
-#' `players()` scrapes information on all the players.
+#' `players()` scrapes all the players.
 #' 
 #' @returns data.frame with one row per player
 #' @examples
@@ -76,7 +76,7 @@ player_summary <- function(player = 8478402) {
 #' @inheritParams roster_statistics
 #' @returns data.frame with one row per game
 #' @examples
-#' Martin_Necas_gl_regular_20242025 <- player_game_log(
+#' Martin_Necas_game_log_regular_20242025 <- player_game_log(
 #'   player    = 8480039,
 #'   season    = 20242025,
 #'   game_type = 2

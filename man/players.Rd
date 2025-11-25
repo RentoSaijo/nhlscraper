@@ -10,7 +10,7 @@ players()
 data.frame with one row per player
 }
 \description{
-\code{players()} scrapes information on all the players.
+\code{players()} scrapes all the players.
 }
 \examples{
 # This may take >5s, so skip.

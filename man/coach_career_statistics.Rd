@@ -13,7 +13,7 @@ coach_career_stats()
 data.frame with one row per coach
 }
 \description{
-\code{coach_career_statistics()} scrapes the career results for all the coaches
+\code{coach_career_statistics()} scrapes the career results for all the coaches.
 }
 \examples{
 coach_career_stats <- coach_career_statistics()

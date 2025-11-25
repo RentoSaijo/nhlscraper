@@ -1,6 +1,6 @@
 #' Access all the franchises
 #' 
-#' `franchises()` scrapes information on all the franchises.
+#' `franchises()` scrapes all the franchises.
 #'
 #' @returns data.frame with one row per franchise
 #' @examples
@@ -38,8 +38,7 @@ franchise_statistics <- function() {
     type = 'r'
   )$data
   stats$id <- NULL
-  stats    <- stats[order(stats$gameTypeId), ]
-  stats[order(stats$franchiseId), ]
+  stats[order(stats$franchiseId, stats$gameTypeId), ]
 }
 
 #' @rdname franchise_statistics
@@ -64,9 +63,7 @@ franchise_team_statistics <- function() {
     type = 'r'
   )$data
   stats$id <- NULL
-  stats    <- stats[order(stats$gameTypeId), ]
-  stats    <- stats[order(stats$franchiseId), ]
-  stats[order(stats$teamId), ]
+  stats[order(stats$franchiseId, stats$teamId, stats$gameTypeId), ]
 }
 
 #' @rdname franchise_team_statistics
@@ -92,9 +89,7 @@ franchise_season_statistics <- function() {
     type = 'r'
   )$data
   stats$id <- NULL
-  stats    <- stats[order(stats$gameTypeId), ]
-  stats    <- stats[order(stats$seasonId), ]
-  stats[order(stats$franchiseId), ]
+  stats[order(stats$franchiseId, stats$seasonId, stats$gameTypeId), ]
 }
 
 #' @rdname franchise_season_statistics
@@ -121,11 +116,13 @@ franchise_versus_franchise <- function() {
     type = 'r'
   )$data
   versus$id <- NULL
-  versus    <- versus[order(versus$gameTypeId), ]
-  versus    <- versus[order(versus$opponentTeamId), ]
-  versus    <- versus[order(versus$opponentFranchiseId), ]
-  versus    <- versus[order(versus$teamId), ]
-  versus[order(versus$teamFranchiseId), ]
+  versus[order(
+    versus$teamFranchiseId, 
+    versus$teamId, 
+    versus$opponentFranchiseId, 
+    versus$opponentTeamId, 
+    versus$gameTypeId
+  ), ]
 }
 
 #' @rdname franchise_versus_franchise
@@ -137,7 +134,7 @@ franchise_vs_franchise <- function() {
 #' Access the playoff series results for all the franchises by situation
 #' 
 #' `franchise_playoff_situational_results()` scrapes the playoff series 
-#' results for all the franchises by situation
+#' results for all the franchises by situation.
 #'
 #' @returns data.frame with one row per franchise per situation
 #' @examples
@@ -151,6 +148,5 @@ franchise_playoff_situational_results <- function() {
     type = 'r'
   )$data
   results$id <- NULL
-  results    <- results[order(results$seriesSituation), ]
-  results[order(results$franchiseId), ]
+  results[order(results$franchiseId, results$seriesSituation), ]
 }

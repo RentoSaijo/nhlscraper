@@ -1,6 +1,6 @@
 #' Access all the officials
 #' 
-#' `officials()` scrapes information on all the officials.
+#' `officials()` scrapes all the officials.
 #' 
 #' @returns data.frame with one row per official
 #' @examples

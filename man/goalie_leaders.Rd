@@ -2,9 +2,9 @@
 % Please edit documentation in R/Goalie.R
 \name{goalie_leaders}
 \alias{goalie_leaders}
-\title{Access the goalie statistics leaders for a season, game type, and report type}
+\title{Access the goalie statistics leaders for a season, game type, and category}
 \usage{
-goalie_leaders(season = "current", game_type = "", report_type = "wins")
+goalie_leaders(season = "current", game_type = "", category = "wins")
 }
 \arguments{
 \item{season}{integer in YYYYYYYY (e.g., 20242025); see \code{\link[=seasons]{seasons()}} for
@@ -14,20 +14,20 @@ reference}
 = playoff/post-season) OR character of 'pre', 'regular', or
 playoff'/'post'; see \code{\link[=seasons]{seasons()}} for reference}
 
-\item{report_type}{character of 'w'/'wins', 's'/shutouts',
+\item{category}{character of 'w'/'wins', 's'/shutouts',
 's\%'/'sP'/'save \%'/'save percentage', or 'gaa'/'goals against average'}
 }
 \value{
 data.frame with one row per player
 }
 \description{
-\code{goalie_leaders()} scrapes the goalie statistics leaderboard for a given
-set of \code{season}, \code{game_type}, and \code{report_type}.
+\code{goalie_leaders()} scrapes the goalie statistics leaders for a given set of
+\code{season}, \code{game_type}, and \code{category}.
 }
 \examples{
 GAA_leaders_regular_20242025 <- goalie_leaders(
-  season      = 20242025,
-  game_type   = 2,
-  report_type = 'GAA'
+  season    = 20242025,
+  game_type = 2,
+  category  = 'GAA'
 )
 }

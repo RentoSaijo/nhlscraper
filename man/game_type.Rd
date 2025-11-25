@@ -11,7 +11,7 @@ integer in 1:3 (where 1 = pre-season, 2 = regular season, 3
 = playoff/post-season)
 }
 \description{
-\code{game_type()} scrapes the current game type ID.
+\code{game_type()} scrapes the current game type.
 }
 \examples{
 game_type_now <- game_type()

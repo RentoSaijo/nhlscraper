@@ -13,7 +13,8 @@ coach_franchise_stats()
 data.frame with one row per franchise per coach per game type
 }
 \description{
-\code{coach_franchise_statistics()} retrieves information on each coach ...
+\code{coach_franchise_statistics()} scrapes the statistics for all the coaches by
+franchise and game type.
 }
 \examples{
 coach_franchise_stats <- coach_franchise_statistics()

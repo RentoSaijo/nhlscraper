@@ -10,9 +10,9 @@ draft_prospects()
 data.frame with one row per player
 }
 \description{
-\code{draft_prospects()} scrapes information on all the draft prospects.
+\code{draft_prospects()} scrapes all the draft prospects.
 }
 \examples{
 # This may take >5s, so skip.
-\donttest{all_draft_prospects <- draft_prospects()}
+\donttest{all_prospects <- draft_prospects()}
 }

@@ -1,6 +1,6 @@
 #' Access all the playoff series by game
 #' 
-#' `series()` scrapes information on all the playoff series by game.
+#' `series()` scrapes all the playoff series by game.
 #'
 #' @returns data.frame with one row per game per series
 #' @examples
@@ -14,9 +14,7 @@ series <- function() {
     type = 'r'
   )$data
   series$id <- NULL
-  series    <- series[order(series$gameId), ]
-  series    <- series[order(series$playoffSeriesLetter), ]
-  series[order(series$seasonId), ]
+  series[order(series$seasonId, series$playoffSeriesLetter, series$gameId), ]
 }
 
 #' Access the playoff statistics by season

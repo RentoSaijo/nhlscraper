@@ -13,7 +13,7 @@ gms()
 data.frame with one row per general manager
 }
 \description{
-\code{general_managers()} scrapes information on all the general managers.
+\code{general_managers()} scrapes all the general managers.
 }
 \examples{
 all_GMs <- general_managers()

@@ -1,6 +1,6 @@
 #' Access all the awards
 #' 
-#' `awards()` scrapes information on all the awards.
+#' `awards()` scrapes all the awards.
 #' 
 #' @returns data.frame with one row per award
 #' @examples
@@ -16,7 +16,7 @@ awards <- function() {
 
 #' Access all the award winners/finalists
 #' 
-#' `award_winners()` scrapes information on all the award winners/finalists.
+#' `award_winners()` scrapes all the award winners/finalists.
 #' 
 #' @returns data.frame with one row per winner/finalist
 #' @examples
@@ -29,7 +29,5 @@ award_winners <- function() {
     type = 'r'
   )$data
   winners$id <- NULL
-  winners    <- winners[order(winners$status), ]
-  winners    <- winners[order(winners$seasonId), ]
-  winners[order(winners$trophyId), ]
+  winners[order(winners$trophyId, winners$seasonId, winners$status), ]
 }

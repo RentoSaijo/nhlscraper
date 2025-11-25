@@ -46,7 +46,7 @@ event_replay <- function(game = 2023030417, event = 866) {
 
 #' Access all the penalty shots
 #' 
-#' `penalty_shots()` scrapes information on all the penalty shots.
+#' `penalty_shots()` scrapes all the penalty shots.
 #' 
 #' @returns data.frame with one row per penalty shot
 #' @examples

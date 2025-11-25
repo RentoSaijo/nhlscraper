@@ -11,7 +11,7 @@ data.frame with one row per franchise per situation
 }
 \description{
 \code{franchise_playoff_situational_results()} scrapes the playoff series
-results for all the franchises by situation
+results for all the franchises by situation.
 }
 \examples{
 franchise_playoff_situational_results <- 

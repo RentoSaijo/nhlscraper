@@ -10,7 +10,7 @@ streams()
 data.frame with one row per stream
 }
 \description{
-\code{streams()} scrapes information on all the streams.
+\code{streams()} scrapes all the streams.
 }
 \examples{
 all_streams <- streams()

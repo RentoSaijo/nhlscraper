@@ -10,7 +10,7 @@ officials()
 data.frame with one row per official
 }
 \description{
-\code{officials()} scrapes information on all the officials.
+\code{officials()} scrapes all the officials.
 }
 \examples{
 all_officials <- officials()

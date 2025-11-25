@@ -10,7 +10,7 @@ venues()
 data.frame with one row per venue
 }
 \description{
-\code{venues()} scrapes information on all the venues.
+\code{venues()} scrapes all the venues.
 }
 \examples{
 all_venues <- venues()

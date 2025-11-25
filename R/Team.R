@@ -1,6 +1,6 @@
 #' Access all the teams
 #' 
-#' `teams()` scrapes information on all the teams.
+#' `teams()` scrapes all the teams.
 #' 
 #' @returns data.frame with one row per team
 #' @examples
@@ -59,9 +59,11 @@ team_season_statistics <- function() {
     path = 'team-stats',
     type = 'r'
   )$data
-  stats    <- stats[order(stats$`id.db:GAMETYPE`), ]
-  stats    <- stats[order(stats$`id.db:SEASON`), ]
-  stats[order(stats$`id.db:TEAMID`), ]
+  stats[order(
+    stats$`id.db:TEAMID`, 
+    stats$`id.db:SEASON`, 
+    stats$`id.db:GAMETYPE`
+  ), ]
 }
 
 #' @rdname team_season_statistics
@@ -314,7 +316,7 @@ team_week_schedule <- function(team = 1, date = 'now') {
 
 #' Access all the team logos
 #' 
-#' `team_logos()` scrapes information on all the team logos.
+#' `team_logos()` scrapes all the logos.
 #' 
 #' @returns data.frame with one row per logo
 #' @examples

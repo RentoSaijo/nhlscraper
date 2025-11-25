@@ -10,7 +10,7 @@ seasons()
 data.frame with one row per season
 }
 \description{
-\code{seasons()} scrapes information on all the seasons.
+\code{seasons()} scrapes all the seasons.
 }
 \examples{
 all_seasons <- seasons()

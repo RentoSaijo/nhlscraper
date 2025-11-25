@@ -10,7 +10,7 @@ coaches()
 data.frame with one row per coach
 }
 \description{
-\code{coaches()} scrapes information on all the coaches.
+\code{coaches()} scrapes all the coaches.
 }
 \examples{
 all_coaches <- coaches()

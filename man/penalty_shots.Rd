@@ -13,7 +13,7 @@ ps()
 data.frame with one row per penalty shot
 }
 \description{
-\code{penalty_shots()} scrapes information on all the penalty shots.
+\code{penalty_shots()} scrapes all the penalty shots.
 }
 \examples{
 all_ps <- penalty_shots()

@@ -1,6 +1,6 @@
 #' Access all the seasons
 #' 
-#' `seasons()` scrapes information on all the seasons.
+#' `seasons()` scrapes all the seasons.
 #'
 #' @returns data.frame with one row per season
 #' @examples
@@ -17,7 +17,7 @@ seasons <- function() {
 
 #' Access the season as of now
 #' 
-#' `season` scrapes the current season ID.
+#' `season` scrapes the current season.
 #' 
 #' @returns integer in YYYYYYYY (e.g., 20242025)
 #' @examples
@@ -33,7 +33,7 @@ season <- function() {
 
 #' Access the game type as of now
 #' 
-#' `game_type()` scrapes the current game type ID.
+#' `game_type()` scrapes the current game type.
 #' 
 #' @returns integer in 1:3 (where 1 = pre-season, 2 = regular season, 3 
 #' = playoff/post-season)
@@ -118,7 +118,7 @@ schedule <- function(date = Sys.Date()) {
 
 #' Access all the venues
 #' 
-#' `venues()` scrapes information on all the venues.
+#' `venues()` scrapes all the venues.
 #' 
 #' @returns data.frame with one row per venue
 #' @examples

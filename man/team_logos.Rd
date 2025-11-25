@@ -10,7 +10,7 @@ team_logos()
 data.frame with one row per logo
 }
 \description{
-\code{team_logos()} scrapes information on all the team logos.
+\code{team_logos()} scrapes all the logos.
 }
 \examples{
 all_team_logos <- team_logos()

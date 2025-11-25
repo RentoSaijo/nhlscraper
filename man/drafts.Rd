@@ -10,7 +10,7 @@ drafts()
 data.frame with one row per draft
 }
 \description{
-\code{drafts()} scrapes information on all the drafts.
+\code{drafts()} scrapes all the drafts.
 }
 \examples{
 all_drafts <- drafts()

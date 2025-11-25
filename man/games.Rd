@@ -10,7 +10,7 @@ games()
 data.frame with one row per game
 }
 \description{
-\code{games()} scrapes information on all the games.
+\code{games()} scrapes all the games.
 }
 \examples{
 # May take >5s, so skip.

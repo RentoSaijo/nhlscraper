@@ -13,8 +13,7 @@ goalie_stats()
 data.frame with one row per player
 }
 \description{
-\code{goalie_statistics()} scrapes the career statistics for all the
-goalies.
+\code{goalie_statistics()} scrapes the career statistics for all the goalies.
 }
 \examples{
 goalie_stats <- goalie_statistics()

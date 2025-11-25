@@ -1,6 +1,6 @@
 #' Access all the drafts
 #' 
-#' `drafts()` scrapes information on all the drafts.
+#' `drafts()` scrapes all the drafts.
 #' 
 #' @returns data.frame with one row per draft
 #' @examples
@@ -26,7 +26,7 @@ drafts <- function() {
 
 #' Access all the draft picks
 #' 
-#' `draft_picks()` scrapes information on all the draft picks.
+#' `draft_picks()` scrapes all the draft picks.
 #' 
 #' @returns data.frame with one row per pick
 #' @examples
@@ -45,12 +45,12 @@ draft_picks <- function() {
 
 #' Access all the draft prospects
 #' 
-#' `draft_prospects()` scrapes information on all the draft prospects.
+#' `draft_prospects()` scrapes all the draft prospects.
 #' 
 #' @returns data.frame with one row per player
 #' @examples
 #' # This may take >5s, so skip.
-#' \donttest{all_draft_prospects <- draft_prospects()}
+#' \donttest{all_prospects <- draft_prospects()}
 #' @export
 
 draft_prospects <- function() {
@@ -134,8 +134,7 @@ combine_reports <- function() {
     type = 'r'
   )$data
   combine$id <- NULL
-  combine <- combine[order(combine$event), ]
-  combine[order(combine$draftYear), ]
+  combine[order(combine$draftYear, combine$event), ]
 }
 
 #' Access the draft lottery odds
@@ -174,7 +173,7 @@ draft_tracker <- function() {
 
 #' Access all the expansion drafts
 #' 
-#' `expansion_drafts()` scrapes information on all the expansion drafts.
+#' `expansion_drafts()` scrapes all the expansion drafts.
 #' 
 #' @returns data.frame with one row per expansion draft
 #' @examples
@@ -192,8 +191,7 @@ expansion_drafts <- function() {
 
 #' Access all the expansion draft picks
 #' 
-#' `expansion_draft_picks()` scrapes information on all the expansion draft 
-#' picks
+#' `expansion_draft_picks()` scrapes all the expansion draft picks.
 #' 
 #' @returns data.frame with one row per pick
 #' @examples
@@ -206,6 +204,5 @@ expansion_draft_picks <- function() {
     type = 'r'
   )$data
   drafts$id <- NULL
-  drafts    <- drafts[order(drafts$teamId), ]
-  drafts[order(drafts$seasonId), ]
+  drafts[order(drafts$seasonId, drafts$teamId), ]
 }

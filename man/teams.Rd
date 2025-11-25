@@ -10,7 +10,7 @@ teams()
 data.frame with one row per team
 }
 \description{
-\code{teams()} scrapes information on all the teams.
+\code{teams()} scrapes all the teams.
 }
 \examples{
 all_teams <- teams()

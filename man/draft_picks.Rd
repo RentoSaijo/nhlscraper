@@ -10,7 +10,7 @@ draft_picks()
 data.frame with one row per pick
 }
 \description{
-\code{draft_picks()} scrapes information on all the draft picks.
+\code{draft_picks()} scrapes all the draft picks.
 }
 \examples{
 # This may take >5s, so skip.

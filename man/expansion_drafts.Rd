@@ -10,7 +10,7 @@ expansion_drafts()
 data.frame with one row per expansion draft
 }
 \description{
-\code{expansion_drafts()} scrapes information on all the expansion drafts.
+\code{expansion_drafts()} scrapes all the expansion drafts.
 }
 \examples{
 all_expansion_drafts <- expansion_drafts()

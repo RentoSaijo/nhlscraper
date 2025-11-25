@@ -10,7 +10,7 @@ franchises()
 data.frame with one row per franchise
 }
 \description{
-\code{franchises()} scrapes information on all the franchises.
+\code{franchises()} scrapes all the franchises.
 }
 \examples{
 all_franchises <- franchises()

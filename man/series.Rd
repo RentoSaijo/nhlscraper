@@ -10,7 +10,7 @@ series()
 data.frame with one row per game per series
 }
 \description{
-\code{series()} scrapes information on all the playoff series by game.
+\code{series()} scrapes all the playoff series by game.
 }
 \examples{
 # This may take >5s, so skip.

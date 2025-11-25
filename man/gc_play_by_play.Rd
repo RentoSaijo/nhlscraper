@@ -16,7 +16,7 @@ gc_pbp(game = 2023030417)
 data.frame with one row per event (play)
 }
 \description{
-\code{gc_play_by_play()} scrapes GC play-by-play for a given \code{game}.
+\code{gc_play_by_play()} scrapes the GC play-by-play for a given \code{game}.
 }
 \examples{
 gc_pbp_Martin_Necas_legacy_game <- gc_play_by_play(game = 2025020275)

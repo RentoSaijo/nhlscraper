@@ -121,34 +121,34 @@ skater_series_stats <- function() {
   skater_series_statistics()
 }
 
-#' Access the skater statistics leaders for a season, game type, and report type
+#' Access the skater statistics leaders for a season, game type, and category
 #' 
-#' `skater_leaders()` scrapes the skater statistics leaderboard for a given set 
-#' of `season`, `game_type`, and `report_type`.
+#' `skater_leaders()` scrapes the skater statistics leaders for a given set of 
+#' `season`, `game_type`, and `category`.
 #' 
 #' @inheritParams roster_statistics
-#' @param report_type string of 'a'/'assists', 'g'/goals', 
+#' @param category string of 'a'/'assists', 'g'/goals', 
 #' 'shg'/'shorthanded goals', 'ppg'/'powerplay goals', 'p'/'points', 
 #' 'pim'/penalty minutes'/'penalty infraction minutes', 'toi'/'time on ice', 
 #' 'pm'/'plus minus', or 'f'/'faceoffs'
 #' @returns data.frame with one row per player
 #' @examples
 #' TOI_leaders_regular_20242025 <- skater_leaders(
-#'   season      = 20242025,
-#'   game_type   = 2,
-#'   report_type = 'TOI'
+#'   season    = 20242025,
+#'   game_type = 2,
+#'   category  = 'TOI'
 #' )
 #' @export
 
 skater_leaders <- function(
-    season      = 'current',
-    game_type   = '',
-    report_type = 'points'
+  season    = 'current',
+  game_type = '',
+  category  = 'points'
 ) {
   tryCatch(
     expr = {
-      report_type <- switch(
-        tolower(report_type),
+      category <- switch(
+        tolower(category),
         a                            = 'assists',
         assists                      = 'assists',
         g                            = 'goals',
@@ -172,7 +172,7 @@ skater_leaders <- function(
       nhl_api(
         path  = sprintf('v1/skater-stats-leaders/%s/%s', season, game_type),
         type  = 'w'
-      )[[report_type]]
+      )[[category]]
     },
     error = function(e) {
       message('Invalid argument(s); refer to help file.')
@@ -183,7 +183,7 @@ skater_leaders <- function(
 
 #' Access the skaters on milestone watch
 #' 
-#' `skater_milestones()` scrapes information on the skaters on milestone watch.
+#' `skater_milestones()` scrapes the skaters on milestone watch.
 #' 
 #' @returns data.frame with one row per player
 #' @examples

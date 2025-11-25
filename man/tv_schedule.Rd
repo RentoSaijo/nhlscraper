@@ -14,7 +14,7 @@ tv_schedule(date = "now")
 data.frame with one row per program
 }
 \description{
-\code{tv_schedule()} scrapes the NHL Network TV schedule for a given \code{date}
+\code{tv_schedule()} scrapes the NHL Network TV schedule for a given \code{date}.
 }
 \examples{
 tv_schedule_Halloween_2025 <- tv_schedule(date = '2025-10-31')

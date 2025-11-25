@@ -10,8 +10,7 @@ goalie_milestones()
 data.frame with one row per player
 }
 \description{
-\code{goalie_milestones()} scrapes information on the goalies on milestone
-watch.
+\code{goalie_milestones()} scrapes the goalies on milestone watch.
 }
 \examples{
 goalie_milestones <- goalie_milestones()

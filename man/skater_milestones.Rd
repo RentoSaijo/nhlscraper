@@ -10,7 +10,7 @@ skater_milestones()
 data.frame with one row per player
 }
 \description{
-\code{skater_milestones()} scrapes information on the skaters on milestone watch.
+\code{skater_milestones()} scrapes the skaters on milestone watch.
 }
 \examples{
 skater_milestones <- skater_milestones()

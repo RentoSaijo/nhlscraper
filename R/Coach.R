@@ -1,6 +1,6 @@
 #' Access all the coaches
 #' 
-#' `coaches()` scrapes information on all the coaches.
+#' `coaches()` scrapes all the coaches.
 #' 
 #' @returns data.frame with one row per coach
 #' @examples
@@ -16,7 +16,7 @@ coaches <- function() {
 
 #' Access the career statistics for all the coaches
 #' 
-#' `coach_career_statistics()` scrapes the career results for all the coaches
+#' `coach_career_statistics()` scrapes the career results for all the coaches.
 #' 
 #' @returns data.frame with one row per coach
 #' @examples
@@ -40,7 +40,8 @@ coach_career_stats <- function() {
 
 #' Access the statistics for all the coaches by franchise and game type
 #' 
-#' `coach_franchise_statistics()` retrieves information on each coach ...
+#' `coach_franchise_statistics()` scrapes the statistics for all the coaches by 
+#' franchise and game type.
 #' 
 #' @returns data.frame with one row per franchise per coach per game type
 #' @examples

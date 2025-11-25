@@ -10,8 +10,7 @@ expansion_draft_picks()
 data.frame with one row per pick
 }
 \description{
-\code{expansion_draft_picks()} scrapes information on all the expansion draft
-picks
+\code{expansion_draft_picks()} scrapes all the expansion draft picks.
 }
 \examples{
 all_expansion_draft_picks <- expansion_draft_picks()
