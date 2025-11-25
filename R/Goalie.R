@@ -111,7 +111,7 @@ goalie_game_stats <- function() {
 #' @export
 
 goalie_series_statistics <- function() {
-  nhl_api(
+  stats    <- nhl_api(
     path = 'playoff-goalie-series-stats',
     type = 'r'
   )$data
