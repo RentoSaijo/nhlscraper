@@ -1,0 +1,636 @@
+  
+
+[![nhlscraper
+Logo](reference/figures/logo.png)](https://rentosaijo.github.io/nhlscraper/)
+
+## **nhlscraper**
+
+nhlscraper is a minimum-dependency R package to scrape, clean, and
+visualize NHL data via the NHL and ESPN APIs. It primarily wraps 150+
+[endpoints](https://github.com/RentoSaijo/nhlscraper/wiki) from
+high-level multi-season summaries and award winners to low-level
+decisecond replays and bookmakers’ odds, making them significantly more
+accessible. It also features cleaning and visualization functions,
+primarily for play-by-plays, to help analyze the data.
+
+### Prerequisite
+
+- R/RStudio; you can check out my
+  [tutorial](https://youtu.be/hGM1t6usDQ8) if you are not familiar!
+
+### Installation
+
+Install the official version from [CRAN](https://cran.r-project.org)
+with:
+
+``` r
+install.packages('nhlscraper')
+```
+
+Install the development version from [GitHub](https://github.com/) with:
+
+``` r
+install.packages('devtools')
+devtools::install_github('RentoSaijo/nhlscraper')
+```
+
+### Disclosure
+
+Detailed documentation for each scraping function will be released
+gradually over time. Because each function can return a large amount of
+information, users are encouraged to explore the provided examples to
+discover what is available. Most, if not all, of the endpoints accessed
+by this package are unofficially documented (i.e., hidden), so it is
+important to use them responsibly and with respect for the NHL’s data
+servers. Endpoints serving historical or otherwise mostly static data
+should ideally be queried once and then stored locally (for example, in
+a MySQL database) for further analysis, rather than being called
+repeatedly. The exact rate limits for these APIs are not publicly known,
+so users are asked to avoid excessive or abusive querying to help ensure
+continued access for everyone.
+
+### History
+
+Prior to the NHL API rework in 2023, Drew Hynes documented a
+comprehensive list of known
+[endpoints](https://gitlab.com/dword4/nhlapi/), and several R packages,
+such as [nhlapi](https://github.com/jozefhajnala/nhlapi) and
+[hockeyR](https://github.com/danmorse314/hockeyR), were built to access
+them. However, after the NHL completely transformed its API structure,
+all of these packages became mostly defunct as their authors
+understandably chose not to continue maintaining them. The community
+gathered around work by Zachary Maludzinski to discover and share new
+[endpoints](https://github.com/Zmalski/NHL-API-Reference), but progress
+naturally slowed once most of the “main” endpoints were identified. Over
+the summer of 2025, I began reverse-engineering many of the remaining,
+undocumented endpoints while searching for additional data for future
+research, with a particular focus on NHL EDGE and Records data. After I
+shared those
+[findings](https://github.com/Zmalski/NHL-API-Reference/issues/69), the
+effort to expand and refine this map of the APIs accelerated, and
+together, we ultimately identified 500+ new endpoints that expose a wide
+range of NHL data. In parallel, I also discovered many new endpoints for
+the ESPN API, extending beyond what Joseph Wilson had already
+[compiled](https://github.com/pseudo-r/Public-ESPN-API).
+
+# Package index
+
+## NHL API
+
+Functions that call the NHL APIs
+
+### League
+
+Functions to access data about the entire league
+
+- [`seasons()`](https://rentosaijo.github.io/nhlscraper/reference/seasons.md)
+  : Access all the seasons
+- [`season_now()`](https://rentosaijo.github.io/nhlscraper/reference/season_now.md)
+  : Access the season as of now
+- [`game_type_now()`](https://rentosaijo.github.io/nhlscraper/reference/game_type_now.md)
+  : Access the game type as of now
+- [`standings_rules()`](https://rentosaijo.github.io/nhlscraper/reference/standings_rules.md)
+  : Access the standings rules by season
+- [`standings()`](https://rentosaijo.github.io/nhlscraper/reference/standings.md)
+  : Access the standings for a date
+- [`schedule()`](https://rentosaijo.github.io/nhlscraper/reference/schedule.md)
+  : Access the schedule for a date
+- [`venues()`](https://rentosaijo.github.io/nhlscraper/reference/venues.md)
+  : Access all the venues
+- [`attendance()`](https://rentosaijo.github.io/nhlscraper/reference/attendance.md)
+  : Access the attendance by season and game type
+
+### Franchise
+
+Functions to access data about the franchises
+
+- [`franchises()`](https://rentosaijo.github.io/nhlscraper/reference/franchises.md)
+  : Access all the franchises
+- [`franchise_statistics()`](https://rentosaijo.github.io/nhlscraper/reference/franchise_statistics.md)
+  [`franchise_stats()`](https://rentosaijo.github.io/nhlscraper/reference/franchise_statistics.md)
+  : Access the all-time statistics for all the franchises by game type
+- [`franchise_team_statistics()`](https://rentosaijo.github.io/nhlscraper/reference/franchise_team_statistics.md)
+  [`franchise_team_stats()`](https://rentosaijo.github.io/nhlscraper/reference/franchise_team_statistics.md)
+  : Access the all-time statistics for all the franchises by team and
+  game type
+- [`franchise_season_statistics()`](https://rentosaijo.github.io/nhlscraper/reference/franchise_season_statistics.md)
+  [`franchise_season_stats()`](https://rentosaijo.github.io/nhlscraper/reference/franchise_season_statistics.md)
+  : Access the statistics for all the franchises by season and game type
+- [`franchise_versus_franchise()`](https://rentosaijo.github.io/nhlscraper/reference/franchise_versus_franchise.md)
+  [`franchise_vs_franchise()`](https://rentosaijo.github.io/nhlscraper/reference/franchise_versus_franchise.md)
+  : Access the all-time statistics versus other franchises for all the
+  franchises by game type
+- [`franchise_playoff_situational_results()`](https://rentosaijo.github.io/nhlscraper/reference/franchise_playoff_situational_results.md)
+  : Access the playoff series results for all the franchises by
+  situation
+
+### Team
+
+Functions to access data about the teams
+
+- [`teams()`](https://rentosaijo.github.io/nhlscraper/reference/teams.md)
+  : Access all the teams
+- [`team_seasons()`](https://rentosaijo.github.io/nhlscraper/reference/team_seasons.md)
+  : Access the season(s) and game type(s) in which a team played
+- [`team_report_configurations()`](https://rentosaijo.github.io/nhlscraper/reference/team_report_configurations.md)
+  [`team_report_configs()`](https://rentosaijo.github.io/nhlscraper/reference/team_report_configurations.md)
+  : Access the configurations for team reports
+- [`team_season_report()`](https://rentosaijo.github.io/nhlscraper/reference/team_season_report.md)
+  : Access various reports for a season, game type, and category for all
+  the teams by season
+- [`team_game_report()`](https://rentosaijo.github.io/nhlscraper/reference/team_game_report.md)
+  : Access various reports for a season, game type, and category for all
+  the teams by game
+- [`team_season_statistics()`](https://rentosaijo.github.io/nhlscraper/reference/team_season_statistics.md)
+  [`team_season_stats()`](https://rentosaijo.github.io/nhlscraper/reference/team_season_statistics.md)
+  : Access the statistics for all the teams by season and game type
+- [`roster()`](https://rentosaijo.github.io/nhlscraper/reference/roster.md)
+  : Access the roster for a team, season, and position
+- [`roster_statistics()`](https://rentosaijo.github.io/nhlscraper/reference/roster_statistics.md)
+  [`roster_stats()`](https://rentosaijo.github.io/nhlscraper/reference/roster_statistics.md)
+  : Access the roster statistics for a team, season, game type, and
+  position
+- [`team_prospects()`](https://rentosaijo.github.io/nhlscraper/reference/team_prospects.md)
+  : Access the prospects for a team and position
+- [`team_season_schedule()`](https://rentosaijo.github.io/nhlscraper/reference/team_season_schedule.md)
+  : Access the schedule for a team and season
+- [`team_month_schedule()`](https://rentosaijo.github.io/nhlscraper/reference/team_month_schedule.md)
+  : Access the schedule for a team and month
+- [`team_week_schedule()`](https://rentosaijo.github.io/nhlscraper/reference/team_week_schedule.md)
+  : Access the schedule for a team and week since a date
+- [`team_logos()`](https://rentosaijo.github.io/nhlscraper/reference/team_logos.md)
+  : Access all the team logos
+- [`team_edge_seasons()`](https://rentosaijo.github.io/nhlscraper/reference/team_edge_seasons.md)
+  : Access the season(s) and game type(s) in which there exists team
+  EDGE statistics
+- [`team_edge_leaders()`](https://rentosaijo.github.io/nhlscraper/reference/team_edge_leaders.md)
+  : Access the team EDGE statistics leaders for a season and game type
+- [`team_edge_summary()`](https://rentosaijo.github.io/nhlscraper/reference/team_edge_summary.md)
+  : Access the EDGE summary for a team, season, and game type
+- [`team_edge_zone_time()`](https://rentosaijo.github.io/nhlscraper/reference/team_edge_zone_time.md)
+  : Access the EDGE zone time statistics for a team, season, game type,
+  and category
+- [`team_edge_skating_distance()`](https://rentosaijo.github.io/nhlscraper/reference/team_edge_skating_distance.md)
+  : Access the EDGE skating distance statistics for a team, season, game
+  type, and category
+- [`team_edge_skating_speed()`](https://rentosaijo.github.io/nhlscraper/reference/team_edge_skating_speed.md)
+  : Access the EDGE skating speed statistics for a team, season, game
+  type, and category
+- [`team_edge_shot_location()`](https://rentosaijo.github.io/nhlscraper/reference/team_edge_shot_location.md)
+  : Access the EDGE shot location statistics for a team, season, game
+  type, and category
+- [`team_edge_shot_speed()`](https://rentosaijo.github.io/nhlscraper/reference/team_edge_shot_speed.md)
+  : Access the EDGE shot speed statistics for a team, season, game type,
+  and category
+
+### Player
+
+Functions to access data about the players at large
+
+- [`players()`](https://rentosaijo.github.io/nhlscraper/reference/players.md)
+  : Access all the players
+- [`player_seasons()`](https://rentosaijo.github.io/nhlscraper/reference/player_seasons.md)
+  : Access the season(s) and game type(s) in which a player played
+- [`player_summary()`](https://rentosaijo.github.io/nhlscraper/reference/player_summary.md)
+  : Access the summary for a player
+- [`player_game_log()`](https://rentosaijo.github.io/nhlscraper/reference/player_game_log.md)
+  : Access the game log for a player, season, and game type
+- [`spotlight_players()`](https://rentosaijo.github.io/nhlscraper/reference/spotlight_players.md)
+  : Access the spotlight players
+
+### Skater
+
+Functions to access data about the skaters
+
+- [`skater_report_configurations()`](https://rentosaijo.github.io/nhlscraper/reference/skater_report_configurations.md)
+  [`skater_report_configs()`](https://rentosaijo.github.io/nhlscraper/reference/skater_report_configurations.md)
+  : Access the configurations for skater reports
+- [`skater_season_report()`](https://rentosaijo.github.io/nhlscraper/reference/skater_season_report.md)
+  : Access various reports for a season, game type, and category for all
+  the skaters by season
+- [`skater_game_report()`](https://rentosaijo.github.io/nhlscraper/reference/skater_game_report.md)
+  : Access various reports for a season, game type, and category for all
+  the skaters by game
+- [`skater_statistics()`](https://rentosaijo.github.io/nhlscraper/reference/skater_statistics.md)
+  [`skater_stats()`](https://rentosaijo.github.io/nhlscraper/reference/skater_statistics.md)
+  : Access the career statistics for all the skaters
+- [`skater_regular_statistics()`](https://rentosaijo.github.io/nhlscraper/reference/skater_regular_statistics.md)
+  [`skater_regular_stats()`](https://rentosaijo.github.io/nhlscraper/reference/skater_regular_statistics.md)
+  : Access the career regular season statistics for all the skaters
+- [`skater_playoff_statistics()`](https://rentosaijo.github.io/nhlscraper/reference/skater_playoff_statistics.md)
+  [`skater_playoff_stats()`](https://rentosaijo.github.io/nhlscraper/reference/skater_playoff_statistics.md)
+  : Access the career playoff statistics for all the skaters
+- [`skater_season_statistics()`](https://rentosaijo.github.io/nhlscraper/reference/skater_season_statistics.md)
+  [`skater_season_stats()`](https://rentosaijo.github.io/nhlscraper/reference/skater_season_statistics.md)
+  : Access the statistics for all the skaters by season, game type, and
+  team
+- [`skater_series_statistics()`](https://rentosaijo.github.io/nhlscraper/reference/skater_series_statistics.md)
+  [`skater_series_stats()`](https://rentosaijo.github.io/nhlscraper/reference/skater_series_statistics.md)
+  : Access the playoff statistics for all the skaters by series
+- [`skater_leaders()`](https://rentosaijo.github.io/nhlscraper/reference/skater_leaders.md)
+  : Access the skater statistics leaders for a season, game type, and
+  category
+- [`skater_milestones()`](https://rentosaijo.github.io/nhlscraper/reference/skater_milestones.md)
+  : Access the skaters on milestone watch
+- [`skater_edge_seasons()`](https://rentosaijo.github.io/nhlscraper/reference/skater_edge_seasons.md)
+  : Access the season(s) and game type(s) in which there exists skater
+  EDGE statistics
+- [`skater_edge_leaders()`](https://rentosaijo.github.io/nhlscraper/reference/skater_edge_leaders.md)
+  : Access the skater EDGE statistics leaders for a season and game type
+- [`skater_edge_summary()`](https://rentosaijo.github.io/nhlscraper/reference/skater_edge_summary.md)
+  : Access the EDGE summary for a skater, season, and game type
+- [`skater_edge_zone_time()`](https://rentosaijo.github.io/nhlscraper/reference/skater_edge_zone_time.md)
+  : Access the EDGE zone time statistics for a skater, season, game
+  type, and category
+- [`skater_edge_skating_distance()`](https://rentosaijo.github.io/nhlscraper/reference/skater_edge_skating_distance.md)
+  : Access the EDGE skating distance statistics for a skater, season,
+  game type, and category
+- [`skater_edge_skating_speed()`](https://rentosaijo.github.io/nhlscraper/reference/skater_edge_skating_speed.md)
+  : Access the EDGE skating speed statistics for a skater, season, game
+  type, and category
+- [`skater_edge_shot_location()`](https://rentosaijo.github.io/nhlscraper/reference/skater_edge_shot_location.md)
+  : Access the EDGE shot location statistics for a skater, season, game
+  type, and category
+- [`skater_edge_shot_speed()`](https://rentosaijo.github.io/nhlscraper/reference/skater_edge_shot_speed.md)
+  : Access the EDGE shot speed statistics for a skater, season, game
+  type, and category
+
+### Goalie
+
+Functions to access data about the goalies
+
+- [`goalie_report_configurations()`](https://rentosaijo.github.io/nhlscraper/reference/goalie_report_configurations.md)
+  [`goalie_report_configs()`](https://rentosaijo.github.io/nhlscraper/reference/goalie_report_configurations.md)
+  : Access the configurations for goalie reports
+- [`goalie_season_report()`](https://rentosaijo.github.io/nhlscraper/reference/goalie_season_report.md)
+  : Access various reports for a season, game type, and category for all
+  the goalies by season
+- [`goalie_game_report()`](https://rentosaijo.github.io/nhlscraper/reference/goalie_game_report.md)
+  : Access various reports for a season, game type, and category for all
+  the goalies by game
+- [`goalie_statistics()`](https://rentosaijo.github.io/nhlscraper/reference/goalie_statistics.md)
+  [`goalie_stats()`](https://rentosaijo.github.io/nhlscraper/reference/goalie_statistics.md)
+  : Access the career statistics for all the goalies
+- [`goalie_regular_statistics()`](https://rentosaijo.github.io/nhlscraper/reference/goalie_regular_statistics.md)
+  [`goalie_regular_stats()`](https://rentosaijo.github.io/nhlscraper/reference/goalie_regular_statistics.md)
+  : Access the career regular season statistics for all the goalies
+- [`goalie_season_statistics()`](https://rentosaijo.github.io/nhlscraper/reference/goalie_season_statistics.md)
+  [`goalie_season_stats()`](https://rentosaijo.github.io/nhlscraper/reference/goalie_season_statistics.md)
+  : Access the statistics for all the goalies by season, game type, and
+  team.
+- [`goalie_game_statistics()`](https://rentosaijo.github.io/nhlscraper/reference/goalie_game_statistics.md)
+  [`goalie_game_stats()`](https://rentosaijo.github.io/nhlscraper/reference/goalie_game_statistics.md)
+  : Access the statistics for all the goalies by game
+- [`goalie_series_statistics()`](https://rentosaijo.github.io/nhlscraper/reference/goalie_series_statistics.md)
+  [`goalie_series_stats()`](https://rentosaijo.github.io/nhlscraper/reference/goalie_series_statistics.md)
+  : Access the playoff statistics for all the goalies by series
+- [`goalie_scoring()`](https://rentosaijo.github.io/nhlscraper/reference/goalie_scoring.md)
+  : Access the career scoring statistics for all the goalies
+- [`goalie_game_scoring()`](https://rentosaijo.github.io/nhlscraper/reference/goalie_game_scoring.md)
+  : Access the scoring statistics for all the goalies by game
+- [`goalie_leaders()`](https://rentosaijo.github.io/nhlscraper/reference/goalie_leaders.md)
+  : Access the goalie statistics leaders for a season, game type, and
+  category
+- [`goalie_milestones()`](https://rentosaijo.github.io/nhlscraper/reference/goalie_milestones.md)
+  : Access the goalies on milestone watch
+- [`goalie_edge_seasons()`](https://rentosaijo.github.io/nhlscraper/reference/goalie_edge_seasons.md)
+  : Access the season(s) and game type(s) in which there exists goalie
+  EDGE statistics
+- [`goalie_edge_leaders()`](https://rentosaijo.github.io/nhlscraper/reference/goalie_edge_leaders.md)
+  : Access the goalie EDGE statistics leaders for a season and game type
+- [`goalie_edge_summary()`](https://rentosaijo.github.io/nhlscraper/reference/goalie_edge_summary.md)
+  : Access the EDGE summary for a goalie, season, and game type
+- [`goalie_edge_save_percentage()`](https://rentosaijo.github.io/nhlscraper/reference/goalie_edge_save_percentage.md)
+  : Access the EDGE save percentage statistics for a goalie, season,
+  game type, and category
+- [`goalie_edge_five_versus_five()`](https://rentosaijo.github.io/nhlscraper/reference/goalie_edge_five_versus_five.md)
+  [`goalie_edge_5_vs_5()`](https://rentosaijo.github.io/nhlscraper/reference/goalie_edge_five_versus_five.md)
+  : Access the EDGE 5 vs. 5 statistics for a goalie, season, game type,
+  and category
+- [`goalie_edge_shot_location()`](https://rentosaijo.github.io/nhlscraper/reference/goalie_edge_shot_location.md)
+  : Access the EDGE shot location statistics for a goalie, season, game
+  type, and category
+
+### Game
+
+Functions to access data about the games
+
+- [`games()`](https://rentosaijo.github.io/nhlscraper/reference/games.md)
+  : Access all the games
+- [`scores()`](https://rentosaijo.github.io/nhlscraper/reference/scores.md)
+  : Access the scores for a date
+- [`gc_summary()`](https://rentosaijo.github.io/nhlscraper/reference/gc_summary.md)
+  : Access the GameCenter (GC) summary for a game
+- [`wsc_summary()`](https://rentosaijo.github.io/nhlscraper/reference/wsc_summary.md)
+  : Access the World Showcase (WSC) summary for a game
+- [`boxscore()`](https://rentosaijo.github.io/nhlscraper/reference/boxscore.md)
+  : Access the boxscore for a game, team, and position
+- [`game_rosters()`](https://rentosaijo.github.io/nhlscraper/reference/game_rosters.md)
+  : Access the rosters for a game
+- [`gc_play_by_play()`](https://rentosaijo.github.io/nhlscraper/reference/gc_play_by_play.md)
+  [`gc_pbp()`](https://rentosaijo.github.io/nhlscraper/reference/gc_play_by_play.md)
+  : Access the GameCenter (GC) play-by-play for a game
+- [`wsc_play_by_play()`](https://rentosaijo.github.io/nhlscraper/reference/wsc_play_by_play.md)
+  [`wsc_pbp()`](https://rentosaijo.github.io/nhlscraper/reference/wsc_play_by_play.md)
+  : Access the World Showcase (WSC) play-by-play for a game
+- [`shifts()`](https://rentosaijo.github.io/nhlscraper/reference/shifts.md)
+  : Access the shift charts for a game
+
+### Event
+
+Functions to access data about the events (plays)
+
+- [`event_replay()`](https://rentosaijo.github.io/nhlscraper/reference/event_replay.md)
+  : Access the replay for an event
+- [`penalty_shots()`](https://rentosaijo.github.io/nhlscraper/reference/penalty_shots.md)
+  [`ps()`](https://rentosaijo.github.io/nhlscraper/reference/penalty_shots.md)
+  : Access all the penalty shots
+
+### Playoff
+
+Functions to access data about the playoffs
+
+- [`series()`](https://rentosaijo.github.io/nhlscraper/reference/series.md)
+  : Access all the playoff series by game
+- [`playoff_season_statistics()`](https://rentosaijo.github.io/nhlscraper/reference/playoff_season_statistics.md)
+  [`playoff_season_stats()`](https://rentosaijo.github.io/nhlscraper/reference/playoff_season_statistics.md)
+  : Access the playoff statistics by season
+- [`bracket()`](https://rentosaijo.github.io/nhlscraper/reference/bracket.md)
+  : Access the playoff bracket for a season
+- [`series_schedule()`](https://rentosaijo.github.io/nhlscraper/reference/series_schedule.md)
+  : Access the playoff schedule for a season and series
+
+### Award
+
+Functions to access data about the awards
+
+- [`awards()`](https://rentosaijo.github.io/nhlscraper/reference/awards.md)
+  : Access all the awards
+- [`award_winners()`](https://rentosaijo.github.io/nhlscraper/reference/award_winners.md)
+  : Access all the award winners/finalists
+
+### Draft
+
+Functions to access data about the drafts
+
+- [`drafts()`](https://rentosaijo.github.io/nhlscraper/reference/drafts.md)
+  : Access all the drafts
+- [`draft_picks()`](https://rentosaijo.github.io/nhlscraper/reference/draft_picks.md)
+  : Access all the draft picks
+- [`draft_prospects()`](https://rentosaijo.github.io/nhlscraper/reference/draft_prospects.md)
+  : Access all the draft prospects
+- [`draft_rankings()`](https://rentosaijo.github.io/nhlscraper/reference/draft_rankings.md)
+  : Access the draft rankings for a class and category
+- [`combine_reports()`](https://rentosaijo.github.io/nhlscraper/reference/combine_reports.md)
+  : Access the draft combine reports
+- [`lottery_odds()`](https://rentosaijo.github.io/nhlscraper/reference/lottery_odds.md)
+  : Access the draft lottery odds
+- [`draft_tracker()`](https://rentosaijo.github.io/nhlscraper/reference/draft_tracker.md)
+  : Access the real-time draft tracker
+- [`expansion_drafts()`](https://rentosaijo.github.io/nhlscraper/reference/expansion_drafts.md)
+  : Access all the expansion drafts
+- [`expansion_draft_picks()`](https://rentosaijo.github.io/nhlscraper/reference/expansion_draft_picks.md)
+  : Access all the expansion draft picks
+
+### Manager
+
+Functions to access data about the general managers
+
+- [`general_managers()`](https://rentosaijo.github.io/nhlscraper/reference/general_managers.md)
+  [`gms()`](https://rentosaijo.github.io/nhlscraper/reference/general_managers.md)
+  : Access all the general managers
+
+### Coach
+
+Functions to access data about the coaches
+
+- [`coaches()`](https://rentosaijo.github.io/nhlscraper/reference/coaches.md)
+  : Access all the coaches
+- [`coach_career_statistics()`](https://rentosaijo.github.io/nhlscraper/reference/coach_career_statistics.md)
+  [`coach_career_stats()`](https://rentosaijo.github.io/nhlscraper/reference/coach_career_statistics.md)
+  : Access the career statistics for all the coaches
+- [`coach_franchise_statistics()`](https://rentosaijo.github.io/nhlscraper/reference/coach_franchise_statistics.md)
+  [`coach_franchise_stats()`](https://rentosaijo.github.io/nhlscraper/reference/coach_franchise_statistics.md)
+  : Access the statistics for all the coaches by franchise and game type
+
+### Official
+
+Functions to access data about the officials
+
+- [`officials()`](https://rentosaijo.github.io/nhlscraper/reference/officials.md)
+  : Access all the officials
+
+### Other
+
+Functions to acccess any other data
+
+- [`glossary()`](https://rentosaijo.github.io/nhlscraper/reference/glossary.md)
+  : Access the glossary
+- [`countries()`](https://rentosaijo.github.io/nhlscraper/reference/countries.md)
+  : Access all the countries
+- [`location()`](https://rentosaijo.github.io/nhlscraper/reference/location.md)
+  : Access the location for a zip code
+- [`streams()`](https://rentosaijo.github.io/nhlscraper/reference/streams.md)
+  : Access all the streams
+- [`tv_schedule()`](https://rentosaijo.github.io/nhlscraper/reference/tv_schedule.md)
+  : Access the NHL Network TV schedule for a date
+- [`game_partner_odds()`](https://rentosaijo.github.io/nhlscraper/reference/game_partner_odds.md)
+  : Get the real-time game odds for a country by partnered bookmaker
+
+### Deprecated
+
+Functions that are deprecated
+
+- [`get_seasons()`](https://rentosaijo.github.io/nhlscraper/reference/get_seasons.md)
+  : Access all the seasons
+- [`get_standings_information()`](https://rentosaijo.github.io/nhlscraper/reference/get_standings_information.md)
+  : Access the standings rules by season
+- [`get_standings()`](https://rentosaijo.github.io/nhlscraper/reference/get_standings.md)
+  : Access the standings for a date
+- [`get_schedule()`](https://rentosaijo.github.io/nhlscraper/reference/get_schedule.md)
+  : Access the schedule for a date
+- [`get_venues()`](https://rentosaijo.github.io/nhlscraper/reference/get_venues.md)
+  : Access all the venues
+- [`get_attendance()`](https://rentosaijo.github.io/nhlscraper/reference/get_attendance.md)
+  : Access the attendance by season and game type
+- [`get_franchises()`](https://rentosaijo.github.io/nhlscraper/reference/get_franchises.md)
+  : Access all the franchises
+- [`get_franchise_team_totals()`](https://rentosaijo.github.io/nhlscraper/reference/get_franchise_team_totals.md)
+  : Access the all-time statistics for all the franchises by team and
+  game type
+- [`get_franchise_season_by_season()`](https://rentosaijo.github.io/nhlscraper/reference/get_franchise_season_by_season.md)
+  : Access the statistics for all the franchises by season and game type
+- [`get_franchise_vs_franchise()`](https://rentosaijo.github.io/nhlscraper/reference/get_franchise_vs_franchise.md)
+  : Access the all-time statistics versus other franchises for all the
+  franchises by game type
+- [`get_teams()`](https://rentosaijo.github.io/nhlscraper/reference/get_teams.md)
+  : Access all the teams
+- [`get_team_seasons()`](https://rentosaijo.github.io/nhlscraper/reference/get_team_seasons.md)
+  : Access the season(s) and game type(s) in which a team played
+- [`get_team_roster()`](https://rentosaijo.github.io/nhlscraper/reference/get_team_roster.md)
+  : Access the roster for a team, season, and player type
+- [`get_team_roster_statistics()`](https://rentosaijo.github.io/nhlscraper/reference/get_team_roster_statistics.md)
+  : Access the roster statistics for a team, season, game type, and
+  player type
+- [`get_team_prospects()`](https://rentosaijo.github.io/nhlscraper/reference/get_team_prospects.md)
+  : Access the prospects for a team and position
+- [`get_team_schedule()`](https://rentosaijo.github.io/nhlscraper/reference/get_team_schedule.md)
+  : Access the schedule for a team and season
+- [`get_players()`](https://rentosaijo.github.io/nhlscraper/reference/get_players.md)
+  : Access all the players
+- [`get_player_landing()`](https://rentosaijo.github.io/nhlscraper/reference/get_player_landing.md)
+  : Access the summary for a player
+- [`get_player_game_log()`](https://rentosaijo.github.io/nhlscraper/reference/get_player_game_log.md)
+  : Access the game log for a player, season, and game type
+- [`get_spotlight_players()`](https://rentosaijo.github.io/nhlscraper/reference/get_spotlight_players.md)
+  : Access the spotlight players
+- [`get_skater_leaders()`](https://rentosaijo.github.io/nhlscraper/reference/get_skater_leaders.md)
+  : Access the skater statistics leaders for a season, game type, and
+  category
+- [`get_skater_milestones()`](https://rentosaijo.github.io/nhlscraper/reference/get_skater_milestones.md)
+  : Access the skaters on milestone watch
+- [`get_goalie_leaders()`](https://rentosaijo.github.io/nhlscraper/reference/get_goalie_leaders.md)
+  : Access the goalie statistics leaders for a season, game type, and
+  category
+- [`get_goalie_milestones()`](https://rentosaijo.github.io/nhlscraper/reference/get_goalie_milestones.md)
+  : Access the goalies on milestone watch
+- [`get_games()`](https://rentosaijo.github.io/nhlscraper/reference/get_games.md)
+  : Access all the games
+- [`get_scores()`](https://rentosaijo.github.io/nhlscraper/reference/get_scores.md)
+  : Access the scores for a date
+- [`get_scoreboards()`](https://rentosaijo.github.io/nhlscraper/reference/get_scoreboards.md)
+  : Access the scoreboards for a date
+- [`get_game_landing()`](https://rentosaijo.github.io/nhlscraper/reference/get_game_landing.md)
+  : Access the GameCenter (GC) summary for a game
+- [`get_game_story()`](https://rentosaijo.github.io/nhlscraper/reference/get_game_story.md)
+  : Access the World Showcase (WSC) summary for a game
+- [`get_game_boxscore()`](https://rentosaijo.github.io/nhlscraper/reference/get_game_boxscore.md)
+  : Access the boxscore for a game, team, and player type
+- [`get_gc_play_by_play()`](https://rentosaijo.github.io/nhlscraper/reference/get_gc_play_by_play.md)
+  : Access the GameCenter (GC) play-by-play for a game
+- [`get_wsc_play_by_play()`](https://rentosaijo.github.io/nhlscraper/reference/get_wsc_play_by_play.md)
+  : Access the World Showcase (WSC) play-by-play for a game
+- [`get_shift_charts()`](https://rentosaijo.github.io/nhlscraper/reference/get_shift_charts.md)
+  : Access the shift charts for a game
+- [`get_bracket()`](https://rentosaijo.github.io/nhlscraper/reference/get_bracket.md)
+  : Access the playoff bracket for a season
+- [`get_series_schedule()`](https://rentosaijo.github.io/nhlscraper/reference/get_series_schedule.md)
+  : Access the playoff schedule for a season and series
+- [`get_awards()`](https://rentosaijo.github.io/nhlscraper/reference/get_awards.md)
+  : Access all the awards
+- [`get_award_winners()`](https://rentosaijo.github.io/nhlscraper/reference/get_award_winners.md)
+  : Access all the award winners/finalists
+- [`get_drafts()`](https://rentosaijo.github.io/nhlscraper/reference/get_drafts.md)
+  : Access all the drafts
+- [`get_draft_picks()`](https://rentosaijo.github.io/nhlscraper/reference/get_draft_picks.md)
+  : Access all the draft picks
+- [`get_draft_rankings()`](https://rentosaijo.github.io/nhlscraper/reference/get_draft_rankings.md)
+  : Access the draft rankings for a year and player type
+- [`get_draft_tracker()`](https://rentosaijo.github.io/nhlscraper/reference/get_draft_tracker.md)
+  : Access the real-time draft tracker
+- [`get_officials()`](https://rentosaijo.github.io/nhlscraper/reference/get_officials.md)
+  : Access all the officials
+- [`get_glossary()`](https://rentosaijo.github.io/nhlscraper/reference/get_glossary.md)
+  : Access the glossary
+- [`get_countries()`](https://rentosaijo.github.io/nhlscraper/reference/get_countries.md)
+  : Access all the countries
+- [`get_streams()`](https://rentosaijo.github.io/nhlscraper/reference/get_streams.md)
+  : Access all the streams
+- [`get_tv_schedule()`](https://rentosaijo.github.io/nhlscraper/reference/get_tv_schedule.md)
+  : Access the NHL Network TV schedule for a date
+- [`get_partner_odds()`](https://rentosaijo.github.io/nhlscraper/reference/get_partner_odds.md)
+  : Get the real-time game odds for a country by partnered bookmaker
+
+### Defunct
+
+Functions that are defunct
+
+- [`get_season_now()`](https://rentosaijo.github.io/nhlscraper/reference/get_season_now.md)
+  : Access the season and game type as of now
+- [`get_team_statistics()`](https://rentosaijo.github.io/nhlscraper/reference/get_team_statistics.md)
+  : Access various reports for all the teams by season or game
+- [`get_team_scoreboard()`](https://rentosaijo.github.io/nhlscraper/reference/get_team_scoreboard.md)
+  : Access the team scoreboard as of now
+- [`get_skaters()`](https://rentosaijo.github.io/nhlscraper/reference/get_skaters.md)
+  : Access all the skaters for a range of seasons
+- [`get_skater_statistics()`](https://rentosaijo.github.io/nhlscraper/reference/get_skater_statistics.md)
+  : Access various reports for all the skaters by season or game
+- [`get_goalies()`](https://rentosaijo.github.io/nhlscraper/reference/get_goalies.md)
+  : Access all the goalies for a range of seasons
+- [`get_goalie_statistics()`](https://rentosaijo.github.io/nhlscraper/reference/get_goalie_statistics.md)
+  : Access various reports for all the goalies by season or game
+- [`get_series()`](https://rentosaijo.github.io/nhlscraper/reference/get_series.md)
+  : Access the playoff series for a season and round
+- [`ping()`](https://rentosaijo.github.io/nhlscraper/reference/ping.md)
+  : Ping
+- [`get_configuration()`](https://rentosaijo.github.io/nhlscraper/reference/get_configuration.md)
+  : Access the configurations for team, skater, and goalie reports
+
+## ESPN API
+
+Functions that call ESPN APIs
+
+### Team Data
+
+Functions to retrieve data about teams
+
+- [`get_espn_teams()`](https://rentosaijo.github.io/nhlscraper/reference/get_espn_teams.md)
+  : Get the ESPN teams for a season
+- [`get_espn_team()`](https://rentosaijo.github.io/nhlscraper/reference/get_espn_team.md)
+  : Get the ESPN information on a team for a season
+
+### Athlete Data
+
+Functions to retrieve data about athletes (players)
+
+- [`get_espn_athletes()`](https://rentosaijo.github.io/nhlscraper/reference/get_espn_athletes.md)
+  : Get all the ESPN athletes
+- [`get_espn_athlete()`](https://rentosaijo.github.io/nhlscraper/reference/get_espn_athlete.md)
+  : Get the ESPN information on an athlete for a season
+
+### Coach Data
+
+Functions to retrieve data about coaches
+
+- [`get_espn_coaches()`](https://rentosaijo.github.io/nhlscraper/reference/get_espn_coaches.md)
+  : Get the ESPN coaches for a season
+- [`get_espn_coach()`](https://rentosaijo.github.io/nhlscraper/reference/get_espn_coach.md)
+  : Get the ESPN information on a coach for a season
+- [`get_espn_coach_career()`](https://rentosaijo.github.io/nhlscraper/reference/get_espn_coach_career.md)
+  : Get the ESPN career records of a coach for a game type
+
+### Event Data
+
+Functions to retrieve data about events (games)
+
+- [`get_espn_events()`](https://rentosaijo.github.io/nhlscraper/reference/get_espn_events.md)
+  : Get the ESPN events for an interval of dates
+- [`get_espn_event()`](https://rentosaijo.github.io/nhlscraper/reference/get_espn_event.md)
+  : Get information on an ESPN event
+- [`get_espn_event_play_by_play()`](https://rentosaijo.github.io/nhlscraper/reference/get_espn_event_play_by_play.md)
+  [`get_espn_event_pbp()`](https://rentosaijo.github.io/nhlscraper/reference/get_espn_event_play_by_play.md)
+  : Get the play-by-play of an ESPN event
+- [`get_espn_event_stars()`](https://rentosaijo.github.io/nhlscraper/reference/get_espn_event_stars.md)
+  : Get the three stars of an ESPN event
+- [`get_espn_event_officials()`](https://rentosaijo.github.io/nhlscraper/reference/get_espn_event_officials.md)
+  : Get the officials of an event
+- [`get_espn_event_odds()`](https://rentosaijo.github.io/nhlscraper/reference/get_espn_event_odds.md)
+  : Get the odds of an ESPN event
+
+### Other Data
+
+Functions to retrieve any other data
+
+- [`get_espn_transactions()`](https://rentosaijo.github.io/nhlscraper/reference/get_espn_transactions.md)
+  : Get ESPN information on transactions for an interval of dates
+- [`get_espn_injuries()`](https://rentosaijo.github.io/nhlscraper/reference/get_espn_injuries.md)
+  : Get the real-time ESPN injury reports
+- [`get_espn_futures()`](https://rentosaijo.github.io/nhlscraper/reference/get_espn_futures.md)
+  : Get the ESPN futures for a season
+
+# Articles
+
+### All vignettes
+
+- [Example](https://rentosaijo.github.io/nhlscraper/articles/example.md):
+- [nhlscraper](https://rentosaijo.github.io/nhlscraper/articles/nhlscraper.md):
