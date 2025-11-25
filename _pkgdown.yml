@@ -63,13 +63,9 @@ reference:
     contents:
       - franchises
       - franchise_statistics
-      - franchise_stats
       - franchise_team_statistics
-      - franchise_team_stats
       - franchise_season_statistics
-      - franchise_season_stats
       - franchise_versus_franchise
-      - franchise_vs_franchise
       - franchise_playoff_situational_results
 
   - subtitle: "Team"
@@ -79,14 +75,11 @@ reference:
       - teams
       - team_seasons
       - team_report_configurations
-      - team_report_configs
       - team_season_report
       - team_game_report
       - team_season_statistics
-      - team_season_stats
       - roster
       - roster_statistics
-      - roster_stats
       - team_prospects
       - team_season_schedule
       - team_month_schedule
@@ -116,19 +109,13 @@ reference:
       Functions to access data about the skaters
     contents:
       - skater_report_configurations
-      - skater_report_configs
       - skater_season_report
       - skater_game_report
       - skater_statistics
-      - skater_stats
       - skater_regular_statistics
-      - skater_regular_stats
       - skater_playoff_statistics
-      - skater_playoff_stats
       - skater_season_statistics
-      - skater_season_stats
       - skater_series_statistics
-      - skater_series_stats
       - skater_leaders
       - skater_milestones
       - skater_edge_seasons
@@ -145,19 +132,13 @@ reference:
       Functions to access data about the goalies
     contents:
       - goalie_report_configurations
-      - goalie_report_configs
       - goalie_season_report
       - goalie_game_report
       - goalie_statistics
-      - goalie_stats
       - goalie_regular_statistics
-      - goalie_regular_stats
       - goalie_season_statistics
-      - goalie_season_stats
       - goalie_game_statistics
-      - goalie_game_stats
       - goalie_series_statistics
-      - goalie_series_stats
       - goalie_scoring
       - goalie_game_scoring
       - goalie_leaders
@@ -167,7 +148,6 @@ reference:
       - goalie_edge_summary
       - goalie_edge_save_percentage
       - goalie_edge_five_versus_five
-      - goalie_edge_5_vs_5
       - goalie_edge_shot_location
 
   - subtitle: "Game"
@@ -181,9 +161,7 @@ reference:
       - boxscore
       - game_rosters
       - gc_play_by_play
-      - gc_pbp
       - wsc_play_by_play
-      - wsc_pbp
       - shifts
   
   - subtitle: "Event"
@@ -192,7 +170,6 @@ reference:
     contents:
       - event_replay
       - penalty_shots
-      - ps
 
   - subtitle: "Playoff"
     desc: >
@@ -200,7 +177,6 @@ reference:
     contents:
       - series
       - playoff_season_statistics
-      - playoff_season_stats
       - bracket
       - series_schedule
 
@@ -230,7 +206,6 @@ reference:
       Functions to access data about the general managers
     contents:
       - general_managers
-      - gms
       
   - subtitle: "Coach"
     desc: >
@@ -238,7 +213,6 @@ reference:
     contents:
       - coaches
       - coach_career_statistics
-      - coach_career_stats
       - coach_franchise_statistics
       
   - subtitle: "Official"
