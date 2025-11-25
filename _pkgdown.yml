@@ -49,8 +49,8 @@ reference:
       Functions to access data about the entire league
     contents:
       - seasons
-      - season
-      - game_type
+      - season_now
+      - game_type_now
       - standings_rules
       - standings
       - schedule
@@ -78,6 +78,10 @@ reference:
     contents:
       - teams
       - team_seasons
+      - team_report_configurations
+      - team_report_configs
+      - team_season_report
+      - team_game_report
       - team_season_statistics
       - team_season_stats
       - roster
@@ -111,6 +115,10 @@ reference:
     desc: >
       Functions to access data about the skaters
     contents:
+      - skater_report_configurations
+      - skater_report_configs
+      - skater_season_report
+      - skater_game_report
       - skater_statistics
       - skater_stats
       - skater_regular_statistics
@@ -136,6 +144,10 @@ reference:
     desc: >
       Functions to access data about the goalies
     contents:
+      - goalie_report_configurations
+      - goalie_report_configs
+      - goalie_season_report
+      - goalie_game_report
       - goalie_statistics
       - goalie_stats
       - goalie_regular_statistics
@@ -248,11 +260,6 @@ reference:
       - streams
       - tv_schedule
       - game_partner_odds
-      
-  - subtitle: "Clean"
-    desc: >
-      Functions to clean data
-    contents:
 
   - subtitle: "Deprecated"
     desc: >
