@@ -311,3 +311,21 @@ ns_team_week_schedule <- function(team = 1, date = 'now') {
     }
   )
 }
+
+#' Access all the team logos
+#' 
+#' `ns_team_logos()` scrapes information on all the team logos.
+#' 
+#' @returns data.frame with one row per logo
+#' @examples
+#' all_team_logos <- ns_team_logos()
+#' @export
+
+ns_team_logos <- function() {
+  logos <- nhl_api(
+    path = 'logo',
+    type = 'r'
+  )$data
+  logos$id <- NULL
+  logos[order(logos$teamId, logos$startSeason), ]
+}

@@ -116,6 +116,24 @@ ns_schedule <- function(date = Sys.Date()) {
   )
 }
 
+#' Access all the venues
+#' 
+#' `ns_venues()` scrapes information on all the venues.
+#' 
+#' @returns data.frame with one row per venue
+#' @examples
+#' all_venues <- ns_venues()
+#' @export
+
+ns_venues <- function() {
+  venues    <- nhl_api(
+    path = 'venue',
+    type = 'r'
+  )$data
+  venues$id <- NULL
+  venues[order(venues$venueId), ]
+}
+
 #' Access the attendance by season and game type
 #' 
 #' `ns_attendance()` scrapes the attendance by season and game type.

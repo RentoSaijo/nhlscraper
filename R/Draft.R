@@ -54,12 +54,12 @@ ns_draft_picks <- function() {
 #' @export
 
 ns_draft_prospects <- function() {
-  prospects    <-nhl_api(
+  prospects    <- nhl_api(
     path = 'draft-prospect',
     type = 'r'
   )$data
   prospects$id <- NULL
-  prospects[order(prospects$playerId), ]
+  prospects[order(prospects$firstName, prospects$lastName), ]
 }
 
 #' Access the draft rankings for a class and category

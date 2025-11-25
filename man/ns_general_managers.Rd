@@ -3,7 +3,7 @@
 \name{ns_general_managers}
 \alias{ns_general_managers}
 \alias{ns_gms}
-\title{Get all the general managers}
+\title{Access all the general managers}
 \usage{
 ns_general_managers()
 
@@ -13,7 +13,7 @@ ns_gms()
 data.frame with one row per general manager
 }
 \description{
-\code{ns_general_managers()} retrieves information on each general manager ...
+\code{ns_general_managers()} scrapes information on all the general managers.
 }
 \examples{
 all_GMs <- ns_general_managers()

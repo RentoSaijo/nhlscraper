@@ -1,6 +1,6 @@
-#' Get all the general managers
+#' Access all the general managers
 #' 
-#' `ns_general_managers()` retrieves information on each general manager ...
+#' `ns_general_managers()` scrapes information on all the general managers.
 #' 
 #' @returns data.frame with one row per general manager
 #' @examples

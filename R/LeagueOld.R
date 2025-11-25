@@ -95,6 +95,25 @@ get_schedule <- function(date = '2025-01-01') {
   ns_schedule(date)
 }
 
+#' Access all the venues
+#' 
+#' `get_venues()` is deprecated. Use [ns_venues()] instead.
+#' 
+#' @returns data.frame with one row per venue
+#' @export
+
+get_venues <- function() {
+  .Deprecated(
+    new     = 'ns_venues()',
+    package = 'nhlscraper',
+    msg     = paste(
+      '`get_venues()` is deprecated.',
+      'Use `ns_venues()` instead.'
+    )
+  )
+  ns_venues()
+}
+
 #' Access the attendance by season and game type
 #' 
 #' `get_attendance()` is deprecated. Use [ns_attendance()] instead.
