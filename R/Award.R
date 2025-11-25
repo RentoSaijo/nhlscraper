@@ -3,7 +3,7 @@
 #' `ns_awards()` retrieves information on each award, including but not 
 #' limited to their trophy ID, name, description, creation date, and image URL.
 #' 
-#' @return data.frame with one row per award
+#' @returns data.frame with one row per award
 #' @examples
 #' all_awards <- ns_awards()
 #' @export
@@ -21,7 +21,7 @@ ns_awards <- function() {
 #' finalist, including but not limited to their player, trophy, and season IDs; 
 #' name; and vote count. 
 #' 
-#' @return data.frame with one row per winner/finalist
+#' @returns data.frame with one row per winner/finalist
 #' @examples
 #' all_award_winners <- ns_award_winners()
 #' @export

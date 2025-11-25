@@ -4,7 +4,7 @@
 #' limited to their year, type, venue, minimum and maximum player ages, and 
 #' number of rounds and picks.
 #' 
-#' @return data.frame with one row per draft
+#' @returns data.frame with one row per draft
 #' @examples
 #' all_drafts <- ns_drafts()
 #' @export
@@ -32,7 +32,7 @@ ns_drafts <- function() {
 #' not limited to their player ID, name, draft year, overall number, 
 #' bio-metrics, and the pick's team history.
 #' 
-#' @return data.frame with one row per pick
+#' @returns data.frame with one row per pick
 #' @examples
 #' # This may take >5s, so skip.
 #' \donttest{all_draft_picks <- ns_draft_picks()}
@@ -49,7 +49,7 @@ ns_draft_picks <- function() {
 #' 
 #' `ns_draft_prospects()` retrieves information on ...
 #' 
-#' @return data.frame with one row per prospect
+#' @returns data.frame with one row per prospect
 #' @examples
 #' # This may take >5s, so skip.
 #' \donttest{all_draft_prospects <- ns_draft_prospects()}
@@ -75,7 +75,7 @@ ns_draft_prospects <- function() {
 #' 'INTLS'/'INTL Skaters'/'International Skaters', 
 #' 'NAG'/'NA Goalies'/'North American Goalies',
 #' 'INTLG'/'INTL Goalies'/'International Goalies'
-#' @return data.frame with one row per player
+#' @returns data.frame with one row per player
 #' @examples
 #' draft_rankings_NA_Skaters_2025 <- ns_draft_rankings(
 #'   class    = 2025, 
@@ -124,7 +124,7 @@ ns_draft_rankings <- function(
 #' 
 #' `ns_combine_reports()` retrieves information on ...
 #' 
-#' @return data.frame with one row per player
+#' @returns data.frame with one row per player
 #' @examples
 #' combine_reports <- ns_combine_reports()
 #' @export
@@ -141,7 +141,7 @@ ns_combine_reports <- function() {
 #' 
 #' `ns_lottery_odds()` retrieves information on ...
 #' 
-#' @return data.frame with one row per draft lottery
+#' @returns data.frame with one row per draft lottery
 #' @examples
 #' lottery_odds <- ns_lottery_odds()
 #' @export
@@ -160,7 +160,7 @@ ns_lottery_odds <- function() {
 #' but not limited to each pick's team ID, name, and overall number and 
 #' selected player's name and position.
 #' 
-#' @return data.frame with one row per pick
+#' @returns data.frame with one row per pick
 #' @examples
 #' draft_tracker <- ns_draft_tracker()
 #' @export
@@ -176,7 +176,7 @@ ns_draft_tracker <- function() {
 #' 
 #' `ns_expansion_drafts()` retrieves information on ...
 #' 
-#' @return data.frame with one row per pick
+#' @returns data.frame with one row per pick
 #' @examples
 #' all_expansion_drafts <- ns_expansion_drafts()
 #' @export
@@ -192,7 +192,7 @@ ns_expansion_drafts <- function() {
 #' 
 #' `ns_expansion_draft_picks()` retrieves information on ...
 #' 
-#' @return data.frame with one row per pick
+#' @returns data.frame with one row per pick
 #' @examples
 #' all_expansion_draft_picks <- ns_expansion_draft_picks()
 #' @export

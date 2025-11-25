@@ -7,7 +7,7 @@
 #' [ns_teams()] instead.
 #'  
 #' @param season integer in YYYY (e.g., 2025)
-#' @return data.frame with one row per team
+#' @returns data.frame with one row per team
 #' @examples
 #' ESPN_teams_20242025 <- get_espn_teams(2025)
 #' @export

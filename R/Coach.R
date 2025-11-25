@@ -2,7 +2,7 @@
 #' 
 #' `ns_coaches()` retrieves information on each coach ...
 #' 
-#' @return data.frame with one row per coach
+#' @returns data.frame with one row per coach
 #' @examples
 #' all_coaches <- ns_coaches()
 #' @export
@@ -18,7 +18,7 @@ ns_coaches <- function() {
 #' 
 #' `ns_coach_career_records()` retrieves information on each coach ...
 #' 
-#' @return data.frame with one row per coach
+#' @returns data.frame with one row per coach
 #' @examples
 #' coach_career_records <- ns_coach_career_records()
 #' @export
@@ -34,7 +34,7 @@ ns_coach_career_records <- function() {
 #' 
 #' `ns_coach_franchise_records()` retrieves information on each coach ...
 #' 
-#' @return data.frame with one row per coach's franchise, separated by game type
+#' @returns data.frame with one row per coach's franchise, separated by game type
 #' @examples
 #' coach_franchise_records <- ns_coach_franchise_records()
 #' @export

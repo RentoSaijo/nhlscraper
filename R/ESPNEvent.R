@@ -9,7 +9,7 @@
 #' 
 #' @param start_date integer in YYYYMMDD (e.g., 20241004)
 #' @param end_date integer in YYYYMMDD (e.g., 20250624)
-#' @return data.frame with one row per ESPN event
+#' @returns data.frame with one row per ESPN event
 #' @examples
 #' ESPN_events_20242025 <- get_espn_events(
 #'   start_date = 20241004, 
@@ -83,7 +83,7 @@ get_espn_event <- function(event = 401687600) {
 #' `get_espn_events()` for `event` reference.
 #' 
 #' @param event integer ESPN Event ID (e.g., 401687600)
-#' @return data.frame with one row per play
+#' @returns data.frame with one row per play
 #' @examples
 #' NJD_BUF_2024_10_04_pbp <- get_espn_event_play_by_play(event = 401687600)
 #' @export
@@ -153,7 +153,7 @@ get_espn_event_officials <- function(event = 401687600) {
 #' reference.
 #'
 #' @param event integer ESPN Event ID (e.g., 401687600)
-#' @return data.frame with one row per provider
+#' @returns data.frame with one row per provider
 #' @examples
 #' NJD_BUF_2024_10_04_odds <- get_espn_event_odds(event=401687600)
 #' @export

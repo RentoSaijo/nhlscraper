@@ -7,7 +7,7 @@
 #' information. Use [ns_coaches()] instead.
 #'  
 #' @param season integer in YYYY (e.g., 2025)
-#' @return data.frame with one row per coach
+#' @returns data.frame with one row per coach
 #' @examples
 #' ESPN_coaches_20242025 <- get_espn_coaches(2025)
 #' @export

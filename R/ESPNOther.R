@@ -8,7 +8,7 @@
 #' 
 #' @param start_date integer in YYYYMMDD (e.g., 20241004)
 #' @param end_date integer in YYYYMMDD (e.g., 20250624)
-#' @return data.frame with one row per transaction
+#' @returns data.frame with one row per transaction
 #' @examples
 #' ESPN_transactions_20242025 <- get_espn_transactions(
 #'   start_date = 20241004, 
@@ -50,7 +50,7 @@ get_espn_transactions <- function(start_date = 20241004, end_date = 20250624) {
 #' `get_espn_injuries()` retrieves real-time ESPN injury reports for all the 
 #' teams.
 #' 
-#' @return nested data.frame with one row per team (outer) and player (inner)
+#' @returns nested data.frame with one row per team (outer) and player (inner)
 #' @examples
 #' ESPN_injuries_now <- get_espn_injuries()
 #' @export
@@ -70,7 +70,7 @@ get_espn_injuries <- function() {
 #' season format differs from the NHL API; will soon be fixed to accept both.
 #' 
 #' @param season integer in YYYY (e.g., 2026)
-#' @return nested data.frame with one row per type (outer) and book (inner)
+#' @returns nested data.frame with one row per type (outer) and book (inner)
 #' @examples
 #' ESPN_futures_20252026 <- get_espn_futures(2026)
 #' @export

@@ -2,7 +2,7 @@
 #' 
 #' `get_players()` is deprecated. Use [ns_players()] instead.
 #' 
-#' @return data.frame with one row per player
+#' @returns data.frame with one row per player
 #' @export
 
 get_players <- function() {
@@ -22,7 +22,7 @@ get_players <- function() {
 #' `get_player_landing()` is deprecated. Use [ns_player_summary()] instead.
 #' 
 #' @param player integer ID (e.g., 8480039)
-#' @return list with various items
+#' @returns list with various items
 #' @export
 
 get_player_landing <- function(player = 8478402) {
@@ -45,7 +45,7 @@ get_player_landing <- function(player = 8478402) {
 #' @param season integer in YYYYYYYY (e.g., 20242025)
 #' @param game_type integer in 1:3 (where 1 = pre-season, 2 = regular season, 3 
 #' = playoff/post-season) OR character of 'pre', 'regular', or 'playoff'/'post'
-#' @return data.frame with one row per game
+#' @returns data.frame with one row per game
 #' @export
 
 get_player_game_log <- function(
@@ -69,7 +69,7 @@ get_player_game_log <- function(
 #' `get_spotlight_players()` is deprecated. Use [ns_spotlight_players()] 
 #' instead.
 #' 
-#' @return data.frame with one row per player
+#' @returns data.frame with one row per player
 #' @export
 
 get_spotlight_players <- function() {

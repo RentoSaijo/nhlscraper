@@ -1,10 +1,8 @@
 #' Get all the games
 #' 
-#' `ns_games()` retrieves information on each game, including but not limited 
-#' to their ID, season, type, start date and time, and home and visiting teams' 
-#' IDs and scores.
+#' `ns_games()` returns information on all the games, including but not limited to each game's ID, start time, and competing teams.
 #' 
-#' @return data.frame with one row per game
+#' @returns data.frame with one row per game
 #' @examples
 #' # May take >5s, so skip.
 #' \donttest{
@@ -21,13 +19,10 @@ ns_games <- function() {
 
 #' Get the score(s) of the game(s) for a date
 #' 
-#' `ns_scores()` retrieves information on each game for a given `date`, 
-#' including but not limited to their ID; type; venue; start time; period and 
-#' intermission clocks; and home and away teams' IDs, names, and scores. Access 
-#' `get_seasons()` for `date` reference.
+#' `ns_scores()` returns the score(s) of the game(s) for a given `date`. Use [ns_seasons()] for `date` reference.
 #' 
 #' @param date character in 'YYYY-MM-DD' (e.g., '2025-01-01')
-#' @return data.frame with one row per game
+#' @returns data.frame with one row per game
 #' @examples
 #' scores_Halloween_2025 <- ns_scores(date = '2025-10-31')
 #' @export
@@ -47,14 +42,12 @@ ns_scores <- function(date = 'now') {
   )
 }
 
-#' Get the GameCenter (GC) summary of a game
+#' Get the GameCenter (GC) summary for a game
 #' 
-#' `ns_gc_summary()` retrieves GC-provided information on a `game`, 
-#' including but not limited to its type, venue, start time, clock, home and 
-#' away teams, and TV broadcast(s). Access `get_games()` for `game` reference.
+#' `ns_gc_summary()` returns the GameCenter (GC) summary for a game, including but not limited to the game's ID, start time, venue, competing teams, three stars, and statistics.
 #' 
 #' @param game integer ID (e.g., 2025020275)
-#' @return list of various items
+#' @returns list of various items
 #' @examples
 #' gc_summary_SCF_game_7_20232024 <- ns_gc_summary(game = 2023030417)
 #' @export
@@ -79,14 +72,12 @@ ns_gc_summary <- function(game = 2025020275) {
   )
 }
 
-#' Get the World Showcase (WSC) summary of a game
+#' Get the World Showcase (WSC) summary for a game
 #' 
-#' `ns_wsc_summary()` retrieves WSC-provided information on a `game`, including 
-#' but not limited to its type, venue, start time, clock, home and away teams, 
-#' and TV broadcast(s). Access `get_games()` for `game` reference.
+#' `ns_wsc_summary()` returns the World Showcase (WSC) summary for a given `game`, including but not limited to the game's ID, start time, venue, competing teams, three stars, and statistics.
 #' 
 #' @param game integer ID (e.g., 2025020275)
-#' @return list of various items
+#' @returns list of various items
 #' @examples
 #' wsc_summary_SCF_game_7_20232024 <- ns_wsc_summary(game = 2023030417)
 #' @export
@@ -108,17 +99,13 @@ ns_wsc_summary <- function(game = 2025020275) {
 
 #' Get the boxscore of a game for a team and position
 #' 
-#' `ns_boxscore()` retrieves information on each player for a given set 
-#' of `game`, `team`, and `player_type`, including but not limited to their ID, 
-#' name, sweater number, goals, assists, +/-, hits, blocks, shots-on-goal, 
-#' giveaways, takeaways, time on ice, and number of shifts. Access 
-#' `get_games()` for `game` reference.
+#' `ns_boxscore()` returns the boxscore for a 
 #' 
 #' @param game integer ID (e.g., 2025020275)
 #' @param team character of 'h'/'home' or 'a'/'away'
 #' @param position character of 'f'/'forwards', 'd'/'defensemen', or 
 #' 'g'/goalies'
-#' @return data.frame with one row per player
+#' @returns data.frame with one row per player
 #' @examples
 #' boxscore_SCF_game_7_20232024_FLA_defensemen <- ns_boxscore(
 #'   game     = 2023030417,
@@ -163,7 +150,7 @@ ns_boxscore <- function(
 #' `ns_game_rosters()` retrieves ...
 #' 
 #' @param game integer ID (e.g., 2025020275)
-#' @return data.frame with one row per player
+#' @returns data.frame with one row per player
 #' @examples
 #' rosters_SCF_game_7_20232024 <- ns_game_rosters(game = 2023030417)
 #' @export
@@ -192,7 +179,7 @@ ns_game_rosters <- function(game = 2025020275) {
 #' coordinates. Access `get_games()` for `game` reference.
 #' 
 #' @param game integer ID (e.g., 2025020275)
-#' @return data.frame with one row per event/play
+#' @returns data.frame with one row per event/play
 #' @examples
 #' gc_pbp_SCF_game_7_20232024 <- ns_gc_play_by_play(game = 2023030417)
 #' @export
@@ -223,7 +210,7 @@ ns_gc_pbp <- function(game = 2025020275) {
 #' `ns_wsc_play_by_play()` retrieves WSC-provided information on each play for a given `game`, including but not limited to their ID; time and strength state of occurrence; winning, losing, blocking, shooting, hitting, hit, scoring, assisting, committed-by, drawn-by, and/or served-by player IDs; and X and Y coordinates. Access `get_games()` for `game` reference.
 #'
 #' @param game integer ID (e.g., 2025020275)
-#' @return data.frame with one row per event/play
+#' @returns data.frame with one row per event/play
 #' @examples
 #' wsc_pbp_SCF_game_7_20232024 <- ns_wsc_play_by_play(game = 2023030417)
 #' @export
@@ -256,7 +243,7 @@ ns_wsc_pbp <- function(game = 2025020275) {
 #' ID and name. Access `get_games()` for `game` reference.
 #' 
 #' @param game integer ID (e.g., 2025020275)
-#' @return data.frame with one row per shift
+#' @returns data.frame with one row per shift
 #' @examples
 #' shifts_SCF_game_7_20232024 <- ns_shifts(game = 2023030417)
 #' @export

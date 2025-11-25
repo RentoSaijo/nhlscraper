@@ -7,7 +7,7 @@
 #' = playoff/post-season) OR character of 'pre', 'regular', or 'playoff'/'post'
 #' @param report_type string of 'w'/'wins', 's'/shutouts', 
 #' 's%'/'sP'/'save %'/'save percentage', or 'gaa'/'goals against average'
-#' @return data.frame with one row per goalie
+#' @returns data.frame with one row per goalie
 #' @examples
 #' gaa_leaders_regular_20242025 <- ns_goalie_leaders(
 #'   season      = 20242025,
@@ -54,7 +54,7 @@ ns_goalie_leaders <- function(
 #' `get_goalie_milestones()` retrieves information on each goalie close to a 
 #' milestone, including but not limited to their ID, name, and statistics.
 #' 
-#' @return data.frame with one row per goalie
+#' @returns data.frame with one row per goalie
 #' @examples
 #' goalie_milestones <- ns_goalie_milestones()
 #' @export
@@ -70,7 +70,7 @@ ns_goalie_milestones <- function() {
 #' 
 #' `ns_goalie_game_statistics()` retrieves information on ...
 #' 
-#' @return data.frame with one row per goalie per game
+#' @returns data.frame with one row per goalie per game
 #' @examples
 #' goalie_game_stats <- ns_goalie_game_statistics()
 #' @export
@@ -92,7 +92,7 @@ ns_goalie_game_stats <- function() {
 #' 
 #' `ns_goalie_season_statistics()` retrieves information on ...
 #' 
-#' @return data.frame with one row per goalie per season
+#' @returns data.frame with one row per goalie per season
 #' @examples
 #' goalie_season_stats <- ns_goalie_season_statistics()
 #' @export
@@ -114,7 +114,7 @@ ns_goalie_season_stats <- function() {
 #' 
 #' `ns_goalie_season_regular_statistics()` retrieves information on ...
 #' 
-#' @return data.frame with one row per goalie per season
+#' @returns data.frame with one row per goalie per season
 #' @examples
 #' goalie_season_regular_stats <- ns_goalie_season_regular_statistics()
 #' @export
@@ -136,7 +136,7 @@ ns_goalie_season_regular_stats <- function() {
 #' 
 #' `ns_goalie_career_statistics()` retrieves information on ...
 #' 
-#' @return data.frame with one row per goalie
+#' @returns data.frame with one row per goalie
 #' @examples
 #' goalie_career_stats <- ns_goalie_career_statistics()
 #' @export
@@ -158,7 +158,7 @@ ns_goalie_career_stats <- function() {
 #' 
 #' `ns_goalie_career_regular_statistics()` retrieves information on ...
 #' 
-#' @return data.frame with one row per goalie
+#' @returns data.frame with one row per goalie
 #' @examples
 #' goalie_career_regular_statistics <- ns_goalie_career_regular_statistics()
 #' @export
@@ -180,7 +180,7 @@ ns_goalie_career_regular_stats <- function() {
 #' 
 #' `ns_goalie_career_scoring()` retrieves information on ...
 #' 
-#' @return data.frame with one row per goalie
+#' @returns data.frame with one row per goalie
 #' @examples
 #' goalie_career_scoring <- ns_goalie_career_scoring()
 #' @export
@@ -196,7 +196,7 @@ ns_goalie_career_scoring <- function() {
 #' 
 #' `ns_goalie_scoring_games()` retrieves information on ...
 #' 
-#' @return data.frame with one row per goalie
+#' @returns data.frame with one row per goalie
 #' @examples
 #' goalie_scoring_games <- ns_goalie_scoring_games()
 #' @export
@@ -212,7 +212,7 @@ ns_goalie_scoring_games <- function() {
 #' 
 #' `ns_goalie_series_statistics()` retrieves information on ...
 #' 
-#' @return data.frame with one row per goalie per series
+#' @returns data.frame with one row per goalie per series
 #' @examples
 #' goalie_series_stats <- ns_goalie_series_statistics()
 #' @export

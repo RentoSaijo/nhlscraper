@@ -3,7 +3,7 @@
 #' @param path character
 #' @param query list
 #' @param type character of 'w' for web, 's' for stats, and 'r' for records
-#' @return parsed JSON (i.e., data.frame or list)
+#' @returns parsed JSON (i.e., data.frame or list)
 #' @keywords internal
 
 nhl_api <- function(path, query = list(), type) {
@@ -34,7 +34,7 @@ nhl_api <- function(path, query = list(), type) {
 #' @param path character
 #' @param query list
 #' @param type character of 'g' for general and 'c' for core
-#' @return parsed JSON (i.e., data.frame or list)
+#' @returns parsed JSON (i.e., data.frame or list)
 #' @keywords internal
 
 espn_api <- function(path, query=list(), type) {
@@ -63,7 +63,7 @@ espn_api <- function(path, query=list(), type) {
 #' 
 #' @param game_type integer in 1:3 (where 1 = pre-season, 2 = regular season, 3 
 #' = playoff/post-season) OR character of 'pre', 'regular', or 'playoff'/'post'
-#' @return integer in 1:3
+#' @returns integer in 1:3
 #' @keywords internal
 
 to_game_type_id <- function(game_type) {
@@ -84,7 +84,7 @@ to_game_type_id <- function(game_type) {
 #' 
 #' @param team integer ID (e.g., 21), character full name (e.g., 'Colorado 
 #' Avalanche'), OR three-letter code (e.g., 'COL')
-#' @return integer in 1:68, character full name, OR three-letter code
+#' @returns integer in 1:68, character full name, OR three-letter code
 #' @keywords internal
 
 normalize_team_key <- function(team) {
@@ -95,7 +95,7 @@ normalize_team_key <- function(team) {
 #'
 #' @param team integer ID (e.g., 21), character full name (e.g., 'Colorado 
 #' Avalanche'), OR three-letter code (e.g., 'COL')
-#' @return three-letter code
+#' @returns three-letter code
 #' @keywords internal
 
 to_team_tri_code <- function(team, lookup = .to_team_tri_code) {
@@ -106,7 +106,7 @@ to_team_tri_code <- function(team, lookup = .to_team_tri_code) {
 #'
 #' @param team integer ID (e.g., 21), character full name (e.g., 'Colorado 
 #' Avalanche'), OR three-letter code (e.g., 'COL')
-#' @return integer in 1:68
+#' @returns integer in 1:68
 #' @keywords internal
 
 to_team_id <- function(team, lookup = .to_team_id) {

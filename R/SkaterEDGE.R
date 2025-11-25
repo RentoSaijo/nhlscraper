@@ -3,7 +3,7 @@
 #' 
 #' `ns_skater_edge_seasons` retrieves information on each 
 #'
-#' @return data.frame with one row per season
+#' @returns data.frame with one row per season
 #' @examples
 #' skater_EDGE_seasons <- ns_skater_edge_seasons()
 #' @export
@@ -30,7 +30,7 @@ ns_skater_edge_seasons <- function() {
 #' @param season integer in YYYYYYYY (e.g., 20242025)
 #' @param game_type integer in 1:3 (where 1 = pre-season, 2 = regular season, 3 
 #' = playoff/post-season) OR character of 'pre', 'regular', or 'playoff'/'post'
-#' @return list of various items
+#' @returns list of various items
 #' @examples
 #' skater_EDGE_leaders_regular_20242025 <- ns_skater_edge_leaders(
 #'   season    = 20242025,
@@ -65,7 +65,7 @@ ns_skater_edge_leaders <- function(season = 'now', game_type = '') {
 #' @param season integer in YYYYYYYY (e.g., 20242025)
 #' @param game_type integer in 1:3 (where 1 = pre-season, 2 = regular season, 3 
 #' = playoff/post-season) OR character of 'pre', 'regular', or 'playoff'/'post'
-#' @return list of various items
+#' @returns list of various items
 #' @examples
 #' Martin_Necas_EDGE_summary_regular_20242025 <- ns_skater_edge_summary(
 #'   player    = 8480039, 
@@ -108,7 +108,7 @@ ns_skater_edge_summary <- function(
 #' @param game_type integer in 1:3 (where 1 = pre-season, 2 = regular season, 3 
 #' = playoff/post-season) OR character of 'pre', 'regular', or 'playoff'/'post'
 #' @param report_type character of 'd'/'details' or 's'/'starts'
-#' @return data.frame with one row per strength state (report_type = 'details') 
+#' @returns data.frame with one row per strength state (report_type = 'details') 
 #' or list with six items (report_type = 'starts')
 #' @examples
 #' Martin_Necas_starts_regular_20242025 <- ns_skater_edge_zone_time(
@@ -159,7 +159,7 @@ ns_skater_edge_zone_time <- function(
 #' @param game_type integer in 1:3 (where 1 = pre-season, 2 = regular season, 3 
 #' = playoff/post-season) OR character of 'pre', 'regular', or 'playoff'/'post'
 #' @param report_type character of 'd'/'details' or 'l'/'l10'/'last 10'
-#' @return data.frame with one row per strength state (report_type = 'details') 
+#' @returns data.frame with one row per strength state (report_type = 'details') 
 #' or game (report_type = 'last 10')
 #' @examples
 #' Martin_Necas_L10_skating_distance_regular_20242025 <- 
@@ -211,7 +211,7 @@ ns_skater_edge_skating_distance <- function(
 #' @param game_type integer in 1:3 (where 1 = pre-season, 2 = regular season, 3 
 #' = playoff/post-season) OR character of 'pre', 'regular', or 'playoff'/'post'
 #' @param report_type character of 'd'/'details' or 't'/'top'/'top speeds'
-#' @return list with four items (report_type = 'details') or data.frame with 
+#' @returns list with four items (report_type = 'details') or data.frame with 
 #' one row per burst (report_type = 'top speeds')
 #' @examples
 #' Martin_Necas_top_speeds_regular_20242025 <- ns_skater_edge_skating_speed(
@@ -262,7 +262,7 @@ ns_skater_edge_skating_speed <- function(
 #' @param game_type integer in 1:3 (where 1 = pre-season, 2 = regular season, 3 
 #' = playoff/post-season) OR character of 'pre', 'regular', or 'playoff'/'post'
 #' @param report_type character of 'd'/details' or 't'/'totals'
-#' @return data.frame with one row per shot location
+#' @returns data.frame with one row per shot location
 #' @examples
 #' Martin_Necas_shot_location_totals_regular_20242025 <- 
 #'   ns_skater_edge_shot_location(
@@ -313,7 +313,7 @@ ns_skater_edge_shot_location <- function(
 #' @param game_type integer in 1:3 (where 1 = pre-season, 2 = regular season, 3 
 #' = playoff/post-season) OR character of 'pre', 'regular', or 'playoff'/'post'
 #' @param report_type character of 'd'/'details' or 'h'/'hardest'
-#' @return list with six items (report_type = 'details') or data.frame with one 
+#' @returns list with six items (report_type = 'details') or data.frame with one 
 #' row per shot (report_type = 'hardest')
 #' @examples
 #' Martin_Necas_hardest_shots_regular_20242025 <- ns_skater_edge_shot_speed(

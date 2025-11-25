@@ -3,7 +3,7 @@
 #' `ns_glossary()` retrieves information on each terminology, including but not 
 #' limited to their definition and abbreviation.
 #' 
-#' @return data.frame with one row per terminology
+#' @returns data.frame with one row per terminology
 #' @examples
 #' glossary <- ns_glossary()
 #' @export
@@ -21,7 +21,7 @@ ns_glossary <- function() {
 #' possible combinations of inputs for `get_team_statistics()`, 
 #' `get_skater_statistics()`, and `get_goalie_statistics()`.
 #' 
-#' @return list with 5 items
+#' @returns list with 5 items
 #' @examples
 #' stats_config <- ns_statistics_configuration()
 #' @export
@@ -43,7 +43,7 @@ ns_stats_config <- function() {
 #' 
 #' `ns_logos()` ...
 #' 
-#' @return data.frame with one row per venue
+#' @returns data.frame with one row per venue
 #' @examples
 #' all_logos <- ns_logos()
 #' @export
@@ -60,7 +60,7 @@ ns_logos <- function() {
 #' `ns_officials()` retrieves information on each official, including but not 
 #' limited to their ID, name, and birth date and location.
 #' 
-#' @return data.frame with one row per official
+#' @returns data.frame with one row per official
 #' @examples
 #' all_officials <- ns_officials()
 #' @export
@@ -77,7 +77,7 @@ ns_officials <- function() {
 #' `ns_venues()` retrieves information on each venue, including but not limited 
 #' to their ID, name, and location.
 #' 
-#' @return data.frame with one row per venue
+#' @returns data.frame with one row per venue
 #' @examples
 #' all_venues <- ns_venues()
 #' @export
@@ -94,7 +94,7 @@ ns_venues <- function() {
 #' `ns_countries` retrieves information on each country, including but not 
 #' limited to their ID, name, 2-letter code, and 3-letter code.
 #' 
-#' @return data.frame with one row per country
+#' @returns data.frame with one row per country
 #' @examples
 #' all_countries <- ns_countries()
 #' @export
@@ -111,7 +111,7 @@ ns_countries <- function() {
 #' `ns_location()` retrieves ...
 #' 
 #' @param zip integer (e.g., 80204)
-#' @return data.frame with one row per team
+#' @returns data.frame with one row per team
 #' @examples
 #' Cranbrook_Schools <- ns_location(48304)
 #' @export
@@ -136,7 +136,7 @@ ns_location <- function(zip = 80204) {
 #' `ns_streams()` retrieves information on each stream, including but not 
 #' limited to their ID, name, and URL.
 #' 
-#' @return data.frame with one row per stream
+#' @returns data.frame with one row per stream
 #' @examples
 #' all_streams <- ns_streams()
 #' @export
@@ -155,7 +155,7 @@ ns_streams <- function() {
 #' times, and broadcast status. Access `get_seasons()` for `date` reference.
 #' 
 #' @param date character in 'YYYY-MM-DD' (e.g., '2025-01-01')
-#' @return data.frame with one row per program
+#' @returns data.frame with one row per program
 #' @examples
 #' tv_schedule_Halloween_2025 <- ns_tv_schedule(date = '2025-10-31')
 #' @export
@@ -182,7 +182,7 @@ ns_tv_schedule <- function(date = 'now') {
 #' team odds. Access `get_countries()` for `country` reference.
 #' 
 #' @param country two-letter code
-#' @return data.frame with one row per game
+#' @returns data.frame with one row per game
 #' @examples
 #' partner_odds_CA <- ns_partner_odds(country = 'CA')
 #' @export

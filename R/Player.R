@@ -1,8 +1,8 @@
 #' Get all the players
 #' 
-#' `ns_players()` returns all the players, including but not limited to each player's ID, name, and bio-metrics.
+#' `ns_players()` returns information on all the players, including but not limited to each player's ID, name, and bio-metrics.
 #'
-#' @return data.frame with one row per player
+#' @returns data.frame with one row per player
 #' @examples
 #' # This may take >5s, so skip.
 #' \donttest{all_players <- ns_players()}
@@ -21,7 +21,7 @@ ns_players <- function() {
 #' `ns_player_seasons()` returns the season(s) and game type(s) in which a player played in the NHL. Use [ns_players()] for `player` reference.
 #' 
 #' @param player integer ID (e.g., 8480039)
-#' @return data.frame with one row per season
+#' @returns data.frame with one row per season
 #' @examples
 #' Martin_Necas_seasons <- ns_player_seasons(player = 8480039)
 #' @export
@@ -46,7 +46,7 @@ ns_player_seasons <- function(player = 8478402) {
 #' `ns_player_summary()` returns the summary for a given `player`, including but not limited to his ID, name, bio-metrics, and statistics. Use [ns_players()] for `player` reference.
 #' 
 #' @param player integer ID (e.g., 8480039)
-#' @return list with various items
+#' @returns list with various items
 #' @examples
 #' Martin_Necas_landing <- ns_player_summary(player = 8480039)
 #' @export
@@ -74,7 +74,7 @@ ns_player_summary <- function(player = 8478402) {
 #' @param season integer in YYYYYYYY (e.g., 20242025)
 #' @param game_type integer in 1:3 (where 1 = pre-season, 2 = regular season, 3 
 #' = playoff/post-season) OR character of 'pre', 'regular', or 'playoff'/'post'
-#' @return data.frame with one row per game
+#' @returns data.frame with one row per game
 #' @examples
 #' Martin_Necas_gl_regular_20242025 <- ns_player_game_log(
 #'   player    = 8480039,
@@ -111,7 +111,7 @@ ns_player_game_log <- function(
 #' 
 #' `ns_spotlight_players()` returns the spotlight players, including but not limited to each player's ID, name, and team.
 #'
-#' @return data.frame with one row per player
+#' @returns data.frame with one row per player
 #' @examples
 #' spotlight_players <- ns_spotlight_players()
 #' @export

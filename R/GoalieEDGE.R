@@ -3,7 +3,7 @@
 #' 
 #' `ns_goalie_edge_seasons` retrieves information on each 
 #'
-#' @return data.frame with one row per season
+#' @returns data.frame with one row per season
 #' @examples
 #' goalie_EDGE_seasons <- ns_goalie_edge_seasons()
 #' @export
@@ -30,7 +30,7 @@ ns_goalie_edge_seasons <- function() {
 #' @param season integer in YYYYYYYY (e.g., 20242025)
 #' @param game_type integer in 1:3 (where 1 = pre-season, 2 = regular season, 3 
 #' = playoff/post-season) OR character of 'pre', 'regular', or 'playoff'/'post'
-#' @return list of various items
+#' @returns list of various items
 #' @examples
 #' goalie_EDGE_leaders_regular_20242025 <- ns_goalie_edge_leaders(
 #'   season    = 20242025,
@@ -65,7 +65,7 @@ ns_goalie_edge_leaders <- function(season = 'now', game_type = '') {
 #' @param season integer in YYYYYYYY (e.g., 20242025)
 #' @param game_type integer in 1:3 (where 1 = pre-season, 2 = regular season, 3 
 #' = playoff/post-season) OR character of 'pre', 'regular', or 'playoff'/'post'
-#' @return list of various items
+#' @returns list of various items
 #' @examples
 #' Mackenzie_Blackwood_EDGE_summary_regular_20242025 <- ns_goalie_edge_summary(
 #'   player    = 8478406, 
@@ -108,7 +108,7 @@ ns_goalie_edge_summary <- function(
 #' @param game_type integer in 1:3 (where 1 = pre-season, 2 = regular season, 3 
 #' = playoff/post-season) OR character of 'pre', 'regular', or 'playoff'/'post'
 #' @param report_type character of 'd'/'details' or 'l'/'l10'/'last 10'
-#' @return list with two items (report_type = 'details') or data.frame with one 
+#' @returns list with two items (report_type = 'details') or data.frame with one 
 #' row per game (report_type = 'last 10')
 #' @examples
 #' Mackenzie_Blackwood_L10_sP_regular_20242025 <- 
@@ -160,7 +160,7 @@ ns_goalie_edge_save_percentage <- function(
 #' @param game_type integer in 1:3 (where 1 = pre-season, 2 = regular season, 3 
 #' = playoff/post-season) OR character of 'pre', 'regular', or 'playoff'/'post'
 #' @param report_type character of 'd'/'details' or 'l'/'l10'/'last 10'
-#' @return list with four items (report_type = 'details') or data.frame with 
+#' @returns list with four items (report_type = 'details') or data.frame with 
 #' one row per game (report_type = 'last 10')
 #' @examples
 #' Mackenzie_Blackwood_L10_5_vs_5_regular_20242025 <- ns_goalie_edge_5_vs_5(
@@ -211,7 +211,7 @@ ns_goalie_edge_5_vs_5 <- function(
 #' @param game_type integer in 1:3 (where 1 = pre-season, 2 = regular season, 3 
 #' = playoff/post-season) OR character of 'pre', 'regular', or 'playoff'/'post'
 #' @param report_type character of 'd'/details' or 't'/'totals'
-#' @return data.frame with one row per shot location
+#' @returns data.frame with one row per shot location
 #' @examples
 #' Mackenzie_Blackwood_shot_location_totals_regular_20242025 <- 
 #'   ns_goalie_edge_shot_location(

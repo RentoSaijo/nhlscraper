@@ -11,7 +11,7 @@
 #' 'shg'/'shorthanded goals', 'ppg'/'powerplay goals', 'p'/'points', 
 #' 'pim'/penalty minutes'/'penalty infraction minutes', 'toi'/'time on ice', 
 #' 'pm'/'plus minus', or 'f'/'faceoffs'
-#' @return data.frame with one row per skater
+#' @returns data.frame with one row per skater
 #' @examples
 #' toi_leaders_regular_20242025 <- ns_skater_leaders(
 #'   season      = 20242025,
@@ -66,7 +66,7 @@ ns_skater_leaders <- function(
 #' `ns_skater_milestones()` retrieves information on each skater close to a 
 #' milestone, including but not limited to their ID, name, and statistics.
 #' 
-#' @return data.frame with one row per skater
+#' @returns data.frame with one row per skater
 #' @examples
 #' skater_milestones <- ns_skater_milestones()
 #' @export
@@ -82,7 +82,7 @@ ns_skater_milestones <- function() {
 #' 
 #' `ns_skater_career_statistics()` retrieves information on ...
 #' 
-#' @return data.frame with one row per skater
+#' @returns data.frame with one row per skater
 #' @examples
 #' skater_career_stats <- ns_skater_career_statistics()
 #' @export
@@ -104,7 +104,7 @@ ns_skater_career_stats <- function() {
 #' 
 #' `ns_skater_career_regular_statistics()` retrieves information on ...
 #' 
-#' @return data.frame with one row per skater
+#' @returns data.frame with one row per skater
 #' @examples
 #' skater_career_regular_statistics <- ns_skater_career_regular_statistics()
 #' @export
@@ -126,7 +126,7 @@ ns_skater_career_regular_stats <- function() {
 #' 
 #' `ns_skater_career_playoff_statistics()` retrieves information on ...
 #' 
-#' @return data.frame with one row per skater
+#' @returns data.frame with one row per skater
 #' @examples
 #' skater_career_playoff_statistics <- ns_skater_career_playoff_statistics()
 #' @export
@@ -148,7 +148,7 @@ ns_skater_career_playoff_stats <- function() {
 #' 
 #' `ns_skater_season_statistics()` retrieves information on ...
 #' 
-#' @return data.frame with one row per skater per game type per season, 
+#' @returns data.frame with one row per skater per game type per season, 
 #' separated by team when necessary
 #' @examples
 #' skater_season_stats <- ns_skater_season_statistics()
@@ -171,7 +171,7 @@ ns_skater_season_stats <- function() {
 #' 
 #' `ns_skater_series_statistics()` retrieves information on ...
 #' 
-#' @return data.frame with one row per skater per series
+#' @returns data.frame with one row per skater per series
 #' @examples
 #' skater_series_stats <- ns_skater_series_statistics()
 #' @export

@@ -2,7 +2,7 @@
 #' 
 #' `ns_general_managers()` retrieves information on each general manager ...
 #' 
-#' @return data.frame with one row per general manager
+#' @returns data.frame with one row per general manager
 #' @examples
 #' all_GMs <- ns_general_managers()
 #' @export

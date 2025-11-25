@@ -2,7 +2,7 @@
 #' 
 #' `ns_goal_replay()` retrieves ...
 #' 
-#' @return data.frame with one row per decisecond
+#' @returns data.frame with one row per decisecond
 #' @examples
 #' Gabriel_Landeskog_first_regular_goal_back_replay <- ns_goal_replay(
 #'   game  = 2025020262,
@@ -45,7 +45,7 @@ ns_goal_replay <- function(game = 2025020262, event = 751) {
 #' 
 #' `ns_penalty_shots()` retrieves ...
 #' 
-#' @return data.frame with one row per team
+#' @returns data.frame with one row per team
 #' @examples
 #' all_ps <- ns_penalty_shots()
 #' @export

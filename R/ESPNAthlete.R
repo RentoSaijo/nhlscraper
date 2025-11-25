@@ -4,7 +4,7 @@
 #' deprecated while we re-evaluate the practicality of ESPN API information. 
 #' Use [ns_players()] instead.
 #' 
-#' @return data.frame with one row per athlete
+#' @returns data.frame with one row per athlete
 #' @examples
 #' all_ESPN_athletes <- get_espn_athletes()
 #' @export

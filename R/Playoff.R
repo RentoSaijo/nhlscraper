@@ -2,7 +2,7 @@
 #' 
 #' `ns_series()` retrieves ...
 #'
-#' @return data.frame with one row per game per series
+#' @returns data.frame with one row per game per series
 #' @examples
 #' all_series <- ns_series()
 #' @export
@@ -18,7 +18,7 @@ ns_series <- function() {
 #' 
 #' `ns_series_situational_records()` retrieves ...
 #'
-#' @return data.frame with one row per series situation
+#' @returns data.frame with one row per series situation
 #' @examples
 #' series_situational_records <- ns_series_situational_records()
 #' @export
@@ -38,7 +38,7 @@ ns_series_situational_records <- function() {
 #' `get_seasons()` for `season` reference.
 #' 
 #' @param season integer in YYYYYYYY (e.g., 20242025)
-#' @return data.frame with one row per series
+#' @returns data.frame with one row per series
 #' @examples
 #' bracket_20242025 <- ns_bracket(season = 20242025)
 #' @export
@@ -67,7 +67,7 @@ ns_bracket <- function(season = ns_season()){
 #' 
 #' @param season integer in YYYYYYYY (e.g., 20242025)
 #' @param series one-letter code (e.g., 'F')
-#' @return data.frame with one row per game
+#' @returns data.frame with one row per game
 #' @examples
 #' COL_DAL_schedule_20242025 <- ns_series_schedule(
 #'   season = 20242025, 
@@ -98,7 +98,7 @@ ns_series_schedule <- function(season = ns_season(), series = 'a') {
 #' 
 #' `ns_playoff_season_statistics()` retrieves information on ...
 #' 
-#' @return data.frame with one row per season
+#' @returns data.frame with one row per season
 #' @examples
 #' playoff_season_stats <- ns_playoff_season_statistics()
 #' @export
