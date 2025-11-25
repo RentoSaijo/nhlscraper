@@ -9,8 +9,8 @@ ns_event_replay(game = 2023030417, event = 866)
 \arguments{
 \item{game}{integer ID (e.g., 2025020262); see \code{\link[=ns_games]{ns_games()}} for reference}
 
-\item{event}{integer ID (e.g., 751); see \code{\link[=gc_play_by_play]{gc_play_by_play()}} and/or
-\code{\link[=gc_wsc_play_by_play]{gc_wsc_play_by_play()}} for reference; must be a 'goal' event}
+\item{event}{integer ID (e.g., 751); see \code{\link[=ns_gc_play_by_play]{ns_gc_play_by_play()}} and/or
+\code{\link[=ns_wsc_play_by_play]{ns_wsc_play_by_play()}} for reference; must be a 'goal' event}
 }
 \value{
 data.frame with one row per decisecond

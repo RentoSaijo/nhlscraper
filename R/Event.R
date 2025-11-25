@@ -3,8 +3,8 @@
 #' `ns_event_replay()` scrapes the replay for a given `event`.
 #' 
 #' @param game integer ID (e.g., 2025020262); see [ns_games()] for reference
-#' @param event integer ID (e.g., 751); see [gc_play_by_play()] and/or 
-#' [gc_wsc_play_by_play()] for reference; must be a 'goal' event
+#' @param event integer ID (e.g., 751); see [ns_gc_play_by_play()] and/or 
+#' [ns_wsc_play_by_play()] for reference; must be a 'goal' event
 #' @returns data.frame with one row per decisecond
 #' @examples
 #' Gabriel_Landeskog_first_regular_goal_back_replay <- ns_event_replay(
