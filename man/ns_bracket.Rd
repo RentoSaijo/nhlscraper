@@ -2,21 +2,19 @@
 % Please edit documentation in R/Playoff.R
 \name{ns_bracket}
 \alias{ns_bracket}
-\title{Get the playoff bracket of a season}
+\title{Access the playoff bracket for a season}
 \usage{
 ns_bracket(season = ns_season())
 }
 \arguments{
-\item{season}{integer in YYYYYYYY (e.g., 20242025)}
+\item{season}{integer in YYYYYYYY (e.g., 20242025); see \code{\link[=ns_seasons]{ns_seasons()}} for
+reference}
 }
 \value{
 data.frame with one row per series
 }
 \description{
-\code{ns_bracket()} retrieves information on each series for a given \code{season},
-including but not limited to their title, abbreviation, 1-letter code,
-round, top and bottom seeds, and winning and losing teams' IDs. Access
-\code{get_seasons()} for \code{season} reference.
+\code{ns_bracket()} scrapes the playoff bracket for a given \code{season}.
 }
 \examples{
 bracket_20242025 <- ns_bracket(season = 20242025)

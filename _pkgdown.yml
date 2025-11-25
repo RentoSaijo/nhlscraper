@@ -69,6 +69,7 @@ reference:
       - ns_franchise_season_stats
       - ns_franchise_versus_franchise
       - ns_franchise_vs_franchise
+      - ns_franchise_playoff_situational_results
 
   - subtitle: "Team"
     desc: >
@@ -149,9 +150,11 @@ reference:
     desc: >
       Functions to access data about the playoffs
     contents:
-      - get_bracket
-      - get_series
-      - get_series_schedule
+      - ns_series
+      - ns_playoff_season_statistics
+      - ns_playoff_season_stats
+      - ns_bracket
+      - ns_series_schedule
 
   - subtitle: "Award"
     desc: >
@@ -227,6 +230,8 @@ reference:
       - get_gc_play_by_play
       - get_wsc_play_by_play
       - get_shift_charts
+      - get_bracket
+      - get_series_schedule
 
   - subtitle: "Defunct"
     desc: >
@@ -235,6 +240,7 @@ reference:
       - get_season_now
       - get_team_statistics
       - get_team_scoreboard
+      - get_series
 
   - title: "ESPN API"
     desc: >

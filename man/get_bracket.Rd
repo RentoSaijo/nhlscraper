@@ -2,9 +2,16 @@
 % Please edit documentation in R/PlayoffOld.R
 \name{get_bracket}
 \alias{get_bracket}
-\title{Get the playoff bracket of a season}
+\title{Access the playoff bracket for a season}
 \usage{
 get_bracket(season = ns_season())
+}
+\arguments{
+\item{season}{integer in YYYYYYYY (e.g., 20242025); see \code{\link[=ns_seasons]{ns_seasons()}} for
+reference}
+}
+\value{
+data.frame with one row per series
 }
 \description{
 \code{get_bracket()} is deprecated. Use \code{\link[=ns_bracket]{ns_bracket()}} instead.

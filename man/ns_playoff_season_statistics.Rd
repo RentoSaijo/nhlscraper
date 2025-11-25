@@ -3,7 +3,7 @@
 \name{ns_playoff_season_statistics}
 \alias{ns_playoff_season_statistics}
 \alias{ns_playoff_season_stats}
-\title{Get the playoff statistics for all the seasons}
+\title{Access the playoff statistics by season}
 \usage{
 ns_playoff_season_statistics()
 
@@ -13,7 +13,7 @@ ns_playoff_season_stats()
 data.frame with one row per season
 }
 \description{
-\code{ns_playoff_season_statistics()} retrieves information on ...
+\code{ns_playoff_season_statistics()} scrapes the playoff statistics by season.
 }
 \examples{
 playoff_season_stats <- ns_playoff_season_statistics()

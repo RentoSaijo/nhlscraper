@@ -2,7 +2,7 @@
 % Please edit documentation in R/Playoff.R
 \name{ns_series}
 \alias{ns_series}
-\title{Get all the playoff series (games)}
+\title{Access all the playoff series by game}
 \usage{
 ns_series()
 }
@@ -10,8 +10,9 @@ ns_series()
 data.frame with one row per game per series
 }
 \description{
-\code{ns_series()} retrieves ...
+\code{ns_series()} scrapes information on all the playoff series by game.
 }
 \examples{
-all_series <- ns_series()
+# This may take >5s, so skip.
+\donttest{all_series <- ns_series()}
 }

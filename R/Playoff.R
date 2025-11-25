@@ -1,43 +1,53 @@
-#' Get all the playoff series (games)
+#' Access all the playoff series by game
 #' 
-#' `ns_series()` retrieves ...
+#' `ns_series()` scrapes information on all the playoff series by game.
 #'
 #' @returns data.frame with one row per game per series
 #' @examples
-#' all_series <- ns_series()
+#' # This may take >5s, so skip.
+#' \donttest{all_series <- ns_series()}
 #' @export
 
 ns_series <- function() {
-  nhl_api(
+  series    <- nhl_api(
     path = 'playoff-series',
     type = 'r'
   )$data
+  series$id <- NULL
+  series    <- series[order(series$gameId), ]
+  series    <- series[order(series$playoffSeriesLetter), ]
+  series[order(series$seasonId), ]
 }
 
-#' Get all the playoff series records by situation
+#' Access the playoff statistics by season
 #' 
-#' `ns_series_situational_records()` retrieves ...
-#'
-#' @returns data.frame with one row per series situation
+#' `ns_playoff_season_statistics()` scrapes the playoff statistics by season.
+#' 
+#' @returns data.frame with one row per season
 #' @examples
-#' series_situational_records <- ns_series_situational_records()
+#' playoff_season_stats <- ns_playoff_season_statistics()
 #' @export
 
-ns_series_situational_records <- function() {
-  nhl_api(
-    path = 'series-situational-records',
+ns_playoff_season_statistics <- function() {
+  totals    <- nhl_api(
+    path = 'league-playoff-year-totals',
     type = 'r'
   )$data
+  totals$id <- NULL
+  totals[order(totals$seasonId), ]
 }
 
-#' Get the playoff bracket of a season
+#' @rdname ns_playoff_season_statistics
+#' @export
+ns_playoff_season_stats <- function() {
+  ns_playoff_season_statistics()
+}
+
+#' Access the playoff bracket for a season
 #' 
-#' `ns_bracket()` retrieves information on each series for a given `season`, 
-#' including but not limited to their title, abbreviation, 1-letter code, 
-#' round, top and bottom seeds, and winning and losing teams' IDs. Access 
-#' `get_seasons()` for `season` reference.
+#' `ns_bracket()` scrapes the playoff bracket for a given `season`.
 #' 
-#' @param season integer in YYYYYYYY (e.g., 20242025)
+#' @inheritParams ns_roster
 #' @returns data.frame with one row per series
 #' @examples
 #' bracket_20242025 <- ns_bracket(season = 20242025)
@@ -58,20 +68,19 @@ ns_bracket <- function(season = ns_season()){
   )
 }
 
-#' Get the schedule of a playoff series for a season
+#' Access the playoff schedule for a season and series
 #' 
-#' `ns_series_schedule()` retrieves information on each game for a given set of 
-#' `season` and `series`, including but not limited to their ID; venue; start 
-#' date and time; and home and away teams' IDs, names, and scores. Access 
-#' `get_seasons()` for `season` and `get_bracket()` for `series` references.
+#' `ns_series_schedule()` scrapes the playoff schedule for a given set of 
+#' `season` and `series`.
 #' 
-#' @param season integer in YYYYYYYY (e.g., 20242025)
-#' @param series one-letter code (e.g., 'F')
+#' @inheritParams ns_roster
+#' @param series one-letter code (e.g., 'O'); see [ns_series()] and/or 
+#' [ns_bracket()] for reference
 #' @returns data.frame with one row per game
 #' @examples
-#' COL_DAL_schedule_20242025 <- ns_series_schedule(
-#'   season = 20242025, 
-#'   series = 'F'
+#' SCF_schedule_20212022 <- ns_series_schedule(
+#'   season = 20212022, 
+#'   series = 'O'
 #' )
 #' @export
 
@@ -92,27 +101,4 @@ ns_series_schedule <- function(season = ns_season(), series = 'a') {
       data.frame()
     }
   )
-}
-
-#' Get the playoff statistics for all the seasons
-#' 
-#' `ns_playoff_season_statistics()` retrieves information on ...
-#' 
-#' @returns data.frame with one row per season
-#' @examples
-#' playoff_season_stats <- ns_playoff_season_statistics()
-#' @export
-
-ns_playoff_season_statistics <- function() {
-  totals <- nhl_api(
-    path = 'league-playoff-year-totals',
-    type = 'r'
-  )$data
-  totals[order(totals$seasonId), ]
-}
-
-#' @rdname ns_playoff_season_statistics
-#' @export
-ns_playoff_season_stats <- function() {
-  ns_playoff_season_statistics()
 }

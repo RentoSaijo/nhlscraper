@@ -2,27 +2,27 @@
 % Please edit documentation in R/Playoff.R
 \name{ns_series_schedule}
 \alias{ns_series_schedule}
-\title{Get the schedule of a playoff series for a season}
+\title{Access the playoff schedule for a season and series}
 \usage{
 ns_series_schedule(season = ns_season(), series = "a")
 }
 \arguments{
-\item{season}{integer in YYYYYYYY (e.g., 20242025)}
+\item{season}{integer in YYYYYYYY (e.g., 20242025); see \code{\link[=ns_seasons]{ns_seasons()}} for
+reference}
 
-\item{series}{one-letter code (e.g., 'F')}
+\item{series}{one-letter code (e.g., 'O'); see \code{\link[=ns_series]{ns_series()}} and/or
+\code{\link[=ns_bracket]{ns_bracket()}} for reference}
 }
 \value{
 data.frame with one row per game
 }
 \description{
-\code{ns_series_schedule()} retrieves information on each game for a given set of
-\code{season} and \code{series}, including but not limited to their ID; venue; start
-date and time; and home and away teams' IDs, names, and scores. Access
-\code{get_seasons()} for \code{season} and \code{get_bracket()} for \code{series} references.
+\code{ns_series_schedule()} scrapes the playoff schedule for a given set of
+\code{season} and \code{series}.
 }
 \examples{
-COL_DAL_schedule_20242025 <- ns_series_schedule(
-  season = 20242025, 
-  series = 'F'
+SCF_schedule_20212022 <- ns_series_schedule(
+  season = 20212022, 
+  series = 'O'
 )
 }

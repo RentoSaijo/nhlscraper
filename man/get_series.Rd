@@ -2,7 +2,7 @@
 % Please edit documentation in R/PlayoffOld.R
 \name{get_series}
 \alias{get_series}
-\title{Get the playoff series of a round for a season}
+\title{Access the playoff series for a season and round}
 \usage{
 get_series(season = ns_season(), round = 1)
 }
