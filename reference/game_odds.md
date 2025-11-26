@@ -1,13 +1,12 @@
 # Access the real-time game odds for a country by partnered bookmaker
 
-`get_partner_odds()` is deprecated. Use
-[`game_odds()`](https://rentosaijo.github.io/nhlscraper/reference/game_odds.md)
-instead.
+`game_odds()` scrapes the real-time game odds for a given `country` by
+partnered bookmaker.
 
 ## Usage
 
 ``` r
-get_partner_odds(country = "US")
+game_odds(country = "US")
 ```
 
 ## Arguments
@@ -21,3 +20,9 @@ get_partner_odds(country = "US")
 ## Value
 
 data.frame with one row per game
+
+## Examples
+
+``` r
+game_odds_CA <- game_odds(country = 'CA')
+```

@@ -35,7 +35,6 @@
 <url><loc>https://rentosaijo.github.io/nhlscraper/reference/espn_team_summary.html</loc></url>
 <url><loc>https://rentosaijo.github.io/nhlscraper/reference/espn_teams.html</loc></url>
 <url><loc>https://rentosaijo.github.io/nhlscraper/reference/espn_transactions.html</loc></url>
-<url><loc>https://rentosaijo.github.io/nhlscraper/reference/event_replay.html</loc></url>
 <url><loc>https://rentosaijo.github.io/nhlscraper/reference/expansion_draft_picks.html</loc></url>
 <url><loc>https://rentosaijo.github.io/nhlscraper/reference/expansion_drafts.html</loc></url>
 <url><loc>https://rentosaijo.github.io/nhlscraper/reference/franchise_playoff_situational_results.html</loc></url>
@@ -44,7 +43,7 @@
 <url><loc>https://rentosaijo.github.io/nhlscraper/reference/franchise_team_statistics.html</loc></url>
 <url><loc>https://rentosaijo.github.io/nhlscraper/reference/franchise_versus_franchise.html</loc></url>
 <url><loc>https://rentosaijo.github.io/nhlscraper/reference/franchises.html</loc></url>
-<url><loc>https://rentosaijo.github.io/nhlscraper/reference/game_partner_odds.html</loc></url>
+<url><loc>https://rentosaijo.github.io/nhlscraper/reference/game_odds.html</loc></url>
 <url><loc>https://rentosaijo.github.io/nhlscraper/reference/game_rosters.html</loc></url>
 <url><loc>https://rentosaijo.github.io/nhlscraper/reference/game_type_now.html</loc></url>
 <url><loc>https://rentosaijo.github.io/nhlscraper/reference/games.html</loc></url>
@@ -155,6 +154,7 @@
 <url><loc>https://rentosaijo.github.io/nhlscraper/reference/player_summary.html</loc></url>
 <url><loc>https://rentosaijo.github.io/nhlscraper/reference/players.html</loc></url>
 <url><loc>https://rentosaijo.github.io/nhlscraper/reference/playoff_season_statistics.html</loc></url>
+<url><loc>https://rentosaijo.github.io/nhlscraper/reference/replay.html</loc></url>
 <url><loc>https://rentosaijo.github.io/nhlscraper/reference/roster.html</loc></url>
 <url><loc>https://rentosaijo.github.io/nhlscraper/reference/roster_statistics.html</loc></url>
 <url><loc>https://rentosaijo.github.io/nhlscraper/reference/schedule.html</loc></url>

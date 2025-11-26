@@ -335,12 +335,14 @@ Functions to access data about the games
   : Access the World Showcase (WSC) play-by-play for a game
 - [`shifts()`](https://rentosaijo.github.io/nhlscraper/reference/shifts.md)
   : Access the shift charts for a game
+- [`game_odds()`](https://rentosaijo.github.io/nhlscraper/reference/game_odds.md)
+  : Access the real-time game odds for a country by partnered bookmaker
 
 ### Event
 
 Functions to access data about the events (plays)
 
-- [`event_replay()`](https://rentosaijo.github.io/nhlscraper/reference/event_replay.md)
+- [`replay()`](https://rentosaijo.github.io/nhlscraper/reference/replay.md)
   : Access the replay for an event
 - [`penalty_shots()`](https://rentosaijo.github.io/nhlscraper/reference/penalty_shots.md)
   [`ps()`](https://rentosaijo.github.io/nhlscraper/reference/penalty_shots.md)
@@ -434,8 +436,6 @@ Functions to acccess any other data
   : Access all the streams
 - [`tv_schedule()`](https://rentosaijo.github.io/nhlscraper/reference/tv_schedule.md)
   : Access the NHL Network TV schedule for a date
-- [`game_partner_odds()`](https://rentosaijo.github.io/nhlscraper/reference/game_partner_odds.md)
-  : Get the real-time game odds for a country by partnered bookmaker
 
 ### Deprecated
 
@@ -539,7 +539,7 @@ Functions that are deprecated
 - [`get_tv_schedule()`](https://rentosaijo.github.io/nhlscraper/reference/get_tv_schedule.md)
   : Access the NHL Network TV schedule for a date
 - [`get_partner_odds()`](https://rentosaijo.github.io/nhlscraper/reference/get_partner_odds.md)
-  : Get the real-time game odds for a country by partnered bookmaker
+  : Access the real-time game odds for a country by partnered bookmaker
 
 ### Defunct
 

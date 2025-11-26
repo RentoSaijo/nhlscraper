@@ -2,8 +2,12 @@
 
 ## nhlscraper 0.2.0.9000
 
+- Website now features disclosure, history, and more examples.
 - Documentation is now standardized.
-- Website now features disclosure and history.
+- All API calls now handle rate-limits (Error 429).
+- Parameters are now standardized and can handle robust arguments.
+- Error-handling is now more elegant, returning messages alongside empty
+  data.
 - New functions to access data about the entire league are now
   available:
   - [`seasons()`](https://rentosaijo.github.io/nhlscraper/reference/seasons.md)
@@ -100,9 +104,10 @@
   - [`gc_play_by_play()`](https://rentosaijo.github.io/nhlscraper/reference/gc_play_by_play.md)
   - [`wsc_play_by_play()`](https://rentosaijo.github.io/nhlscraper/reference/wsc_play_by_play.md)
   - [`shifts()`](https://rentosaijo.github.io/nhlscraper/reference/shifts.md)
+  - [`game_odds()`](https://rentosaijo.github.io/nhlscraper/reference/game_odds.md)
 - New functions to access data about the events (plays) are now
   available:
-  - [`event_replay()`](https://rentosaijo.github.io/nhlscraper/reference/event_replay.md)
+  - [`replay()`](https://rentosaijo.github.io/nhlscraper/reference/replay.md)
   - [`penalty_shots()`](https://rentosaijo.github.io/nhlscraper/reference/penalty_shots.md)
 - New functions to access data about the playoffs are now available:
   - [`series()`](https://rentosaijo.github.io/nhlscraper/reference/series.md)
@@ -137,7 +142,6 @@
   - [`location()`](https://rentosaijo.github.io/nhlscraper/reference/location.md)
   - [`streams()`](https://rentosaijo.github.io/nhlscraper/reference/streams.md)
   - [`tv_schedule()`](https://rentosaijo.github.io/nhlscraper/reference/tv_schedule.md)
-  - [`game_partner_odds()`](https://rentosaijo.github.io/nhlscraper/reference/game_partner_odds.md)
 - Some functions are now deprecated:
   - [`get_seasons()`](https://rentosaijo.github.io/nhlscraper/reference/get_seasons.md)
   - [`get_standings_information()`](https://rentosaijo.github.io/nhlscraper/reference/get_standings_information.md)

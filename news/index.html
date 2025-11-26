@@ -42,8 +42,11 @@
 
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.2.0.9000" id="nhlscraper-0209000">nhlscraper 0.2.0.9000<a class="anchor" aria-label="anchor" href="#nhlscraper-0209000"></a></h2>
-<ul><li>Documentation is now standardized.</li>
-<li>Website now features disclosure and history.</li>
+<ul><li>Website now features disclosure, history, and more examples.</li>
+<li>Documentation is now standardized.</li>
+<li>All API calls now handle rate-limits (Error 429).</li>
+<li>Parameters are now standardized and can handle robust arguments.</li>
+<li>Error-handling is now more elegant, returning messages alongside empty data.</li>
 <li>New functions to access data about the entire league are now available:
 <ul><li><code><a href="../reference/seasons.html">seasons()</a></code></li>
 <li><code><a href="../reference/season_now.html">season_now()</a></code></li>
@@ -148,9 +151,10 @@
 <li><code><a href="../reference/gc_play_by_play.html">gc_play_by_play()</a></code></li>
 <li><code><a href="../reference/wsc_play_by_play.html">wsc_play_by_play()</a></code></li>
 <li><code><a href="../reference/shifts.html">shifts()</a></code></li>
+<li><code><a href="../reference/game_odds.html">game_odds()</a></code></li>
 </ul></li>
 <li>New functions to access data about the events (plays) are now available:
-<ul><li><code><a href="../reference/event_replay.html">event_replay()</a></code></li>
+<ul><li><code><a href="../reference/replay.html">replay()</a></code></li>
 <li><code><a href="../reference/penalty_shots.html">penalty_shots()</a></code></li>
 </ul></li>
 <li>New functions to access data about the playoffs are now available:
@@ -191,7 +195,6 @@
 <li><code><a href="../reference/location.html">location()</a></code></li>
 <li><code><a href="../reference/streams.html">streams()</a></code></li>
 <li><code><a href="../reference/tv_schedule.html">tv_schedule()</a></code></li>
-<li><code><a href="../reference/game_partner_odds.html">game_partner_odds()</a></code></li>
 </ul></li>
 <li>Some functions are now deprecated:
 <ul><li><code><a href="../reference/get_seasons.html">get_seasons()</a></code></li>
