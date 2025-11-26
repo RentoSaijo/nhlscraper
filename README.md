@@ -5,7 +5,7 @@
 
 ### Overview
 
-nhlscraper is a minimum-dependency R package to scrape, clean, and visualize NHL data via the NHL and ESPN APIs. It primarily wraps 110+ [endpoints](https://github.com/RentoSaijo/nhlscraper/wiki) from high-level multi-season summaries and award winners to low-level decisecond replays and bookmakers' odds, making them significantly more accessible. It also features cleaning and visualization functions, primarily for play-by-plays, to help analyze the data.
+nhlscraper is a minimum-dependency R package to scrape, clean, and visualize NHL data via the NHL and ESPN APIs. It primarily wraps 125+ [endpoints](https://github.com/RentoSaijo/nhlscraper/wiki) from high-level multi-season summaries and award winners to low-level decisecond replays and bookmakers' odds, making them significantly more accessible. It also features cleaning and visualization functions, primarily for play-by-plays, to help analyze the data.
 
 ### Prerequisite
 
