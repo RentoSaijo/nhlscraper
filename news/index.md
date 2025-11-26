@@ -1,6 +1,6 @@
 # Changelog
 
-## nhlscraper 0.2.0.9000
+## nhlscraper 0.3.0
 
 - Website now features disclosure, history, and more examples.
 - Documentation is now standardized.
