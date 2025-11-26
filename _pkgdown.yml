@@ -231,11 +231,6 @@ reference:
       - streams
       - tv_schedule
       - game_partner_odds
-      
-  - subtitle: "Clean"
-    desc: >
-      Functions to clean data
-    contents:
 
   - subtitle: "Deprecated"
     desc: >
