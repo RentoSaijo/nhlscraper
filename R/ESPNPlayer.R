@@ -12,7 +12,7 @@ espn_players <- function() {
   all_players <- list()
   repeat {
     players <- espn_api(
-      path  = 'players',
+      path  = 'athletes',
       query = list(limit = 1000, page = page),
       type  = 'c'
     )
@@ -22,7 +22,7 @@ espn_players <- function() {
     page <- page + 1
   }
   out <- do.call(rbind, all_players)
-  id  <- sub('.*players/([0-9]+)\\?lang.*', '\\1', out[[1]])
+  id  <- sub('.*athletes/([0-9]+)\\?lang.*', '\\1', out[[1]])
   data.frame(id = id, stringsAsFactors = FALSE)
 }
 

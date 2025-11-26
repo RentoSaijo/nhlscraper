@@ -192,6 +192,37 @@
   - `get_series()`
   - `ping()`
   - `get_configuration()`
+- New ESPN functions are now available:
+  - `espn_teams()`
+  - `espn_team_summary()`
+  - `espn_players()`
+  - `espn_player_summary()`
+  - `espn_games()`
+  - `espn_game_summary()`
+  - `espn_play_by_play()`
+  - `espn_game_odds()`
+  - `espn_transactions()`
+  - `espn_futures()`
+  - `espn_injuries()`
+- Some ESPN functions are now deprecated:
+  - `get_espn_athletes()`
+  - `get_espn_athlete()`
+  - `get_espn_even()t`
+  - `get_espn_event_play_by_play()`
+  - `get_espn_event_odds()`
+  - `get_espn_injuries()`
+- Some ESPN functions are now defunct:
+  - `get_espn_teams()`
+  - `get_espn_team()`
+  - `get_espn_athlete()`
+  - `get_espn_events()`
+  - `get_espn_event_stars()`
+  - `get_espn_event_officials()`
+  - `get_espn_coaches()`
+  - `get_espn_coach()`
+  - `get_espn_coach_career()`
+  - `get_espn_transactions()`
+  - `get_espn_futures()`
 
 # nhlscraper 0.2.0
 
