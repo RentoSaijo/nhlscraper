@@ -30,10 +30,12 @@ players <- function() {
 player_seasons <- function(player = 8478402) {
   tryCatch(
     expr = {
-      nhl_api(
+      seasons <- nhl_api(
         path = sprintf('v1/player/%s/game-log/now', player),
         type = 'w'
       )$playerStatsSeasons
+      seasons[0, ]
+      seasons
     },
     error = function(e) {
       message('Invalid argument(s); refer to help file.')
@@ -62,7 +64,7 @@ player_summary <- function(player = 8478402) {
     },
     error = function(e) {
       message('Invalid argument(s); refer to help file.')
-      data.frame()
+      list()
     }
   )
 }
@@ -90,7 +92,7 @@ player_game_log <- function(
 ) {
   tryCatch(
     expr = {
-      nhl_api(
+      log <- nhl_api(
         path = sprintf(
           'v1/player/%s/game-log/%s/%s', 
           player, 
@@ -98,7 +100,9 @@ player_game_log <- function(
           game_type
         ),
         type = 'w'
-      )$gameLog
+      )
+      log$playerStatsSeasons[0, ]
+      log$gameLog
     },
     error = function(e) {
       message('Invalid argument(s); refer to help file.')

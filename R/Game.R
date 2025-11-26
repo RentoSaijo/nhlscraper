@@ -259,3 +259,32 @@ shifts <- function(game = 2023030417) {
     }
   )
 }
+
+#' Access the real-time game odds for a country by partnered bookmaker
+#' 
+#' `game_odds()` scrapes the real-time game odds for a given `country` by 
+#' partnered bookmaker.
+#' 
+#' @param country two-letter code (e.g., 'CA'); see [countries()] for 
+#' reference
+#' @returns data.frame with one row per game
+#' @examples
+#' game_odds_CA <- game_odds(country = 'CA')
+#' @export
+
+game_odds <- function(country = 'US') {
+  tryCatch(
+    expr = {
+      games <- nhl_api(
+        path = sprintf('v1/partner-game/%s/now', country),
+        type = 'w'
+      )$games
+      games[0, ]
+      games
+    },
+    error = function(e) {
+      message('Invalid argument(s); refer to help file.')
+      data.frame()
+    }
+  )
+}

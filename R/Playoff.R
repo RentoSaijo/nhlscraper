@@ -54,10 +54,13 @@ playoff_season_stats <- function() {
 bracket <- function(season = season_now()){
   tryCatch(
     expr = {
-      nhl_api(
-        path = sprintf('v1/playoff-bracket/%s', as.integer(season) %% 1e4),
+      data.frame(nhl_api(
+        path = sprintf(
+          'v1/playoff-bracket/%s', 
+          suppressWarnings(as.integer(season)) %% 1e4
+        ),
         type = 'w'
-      )$series
+      )$series)
     },
     error = function(e) {
       message('Invalid argument(s); refer to help file.')

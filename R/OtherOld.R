@@ -75,26 +75,6 @@ get_tv_schedule <- function(date = 'now') {
   tv_schedule(date)
 }
 
-#' Get the real-time game odds for a country by partnered bookmaker
-#' 
-#' `get_partner_odds()` is deprecated. Use [game_partner_odds()] instead.
-#' 
-#' @inheritParams game_partner_odds
-#' @returns data.frame with one row per game
-#' @export
-
-get_partner_odds <- function(country = 'US') {
-  .Deprecated(
-    new     = 'game_partner_odds()',
-    package = 'nhlscraper',
-    msg     = paste(
-      '`get_partner_odds()` is deprecated.',
-      'Use `game_partner_odds()` instead.'
-    )
-  )
-  game_partner_odds(country)
-}
-
 #' Ping
 #' 
 #' `ping()` is defunct.

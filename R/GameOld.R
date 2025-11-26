@@ -182,3 +182,23 @@ get_shift_charts <- function(game = 2023030417) {
   )
   shifts(game)
 }
+
+#' Access the real-time game odds for a country by partnered bookmaker
+#' 
+#' `get_partner_odds()` is deprecated. Use [game_odds()] instead.
+#' 
+#' @inheritParams game_odds
+#' @returns data.frame with one row per game
+#' @export
+
+get_partner_odds <- function(country = 'US') {
+  .Deprecated(
+    new     = 'game_odds()',
+    package = 'nhlscraper',
+    msg     = paste(
+      '`get_partner_odds()` is deprecated.',
+      'Use `game_odds()` instead.'
+    )
+  )
+  game_odds(country)
+}

@@ -43,10 +43,12 @@ countries <- function() {
 location <- function(zip = 10001) {
   tryCatch(
     expr = {
-      nhl_api(
+      location <- nhl_api(
         path = sprintf('v1/postal-lookup/%s', zip),
         type = 'w'
       )
+      location[0, ]
+      location
     },
     error = function(e) {
       message('Invalid argument(s); refer to help file.')
@@ -88,33 +90,6 @@ tv_schedule <- function(date = 'now') {
         path = sprintf('v1/network/tv-schedule/%s', date),
         type = 'w'
       )$broadcasts
-    },
-    error = function(e) {
-      message('Invalid argument(s); refer to help file.')
-      data.frame()
-    }
-  )
-}
-
-#' Get the real-time game odds for a country by partnered bookmaker
-#' 
-#' `game_partner_odds()` scrapes the real-time game odds for a given 
-#' `country` by partnered bookmaker.
-#' 
-#' @param country two-letter code (e.g., 'CA'); see [countries()] for 
-#' reference
-#' @returns data.frame with one row per game
-#' @examples
-#' game_partner_odds_CA <- game_partner_odds(country = 'CA')
-#' @export
-
-game_partner_odds <- function(country = 'US') {
-  tryCatch(
-    expr = {
-      nhl_api(
-        path = sprintf('v1/partner-game/%s/now', country),
-        type = 'w'
-      )$games
     },
     error = function(e) {
       message('Invalid argument(s); refer to help file.')

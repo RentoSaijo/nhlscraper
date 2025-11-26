@@ -109,7 +109,6 @@ team_season_report <- function(
       report[order(report$teamId), ]
     },
     error = function(e) {
-      
       message('Invalid argument(s); refer to help file.')
       data.frame()
     }
