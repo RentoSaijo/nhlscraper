@@ -197,6 +197,37 @@
   - [`get_series()`](https://rentosaijo.github.io/nhlscraper/reference/get_series.md)
   - [`ping()`](https://rentosaijo.github.io/nhlscraper/reference/ping.md)
   - [`get_configuration()`](https://rentosaijo.github.io/nhlscraper/reference/get_configuration.md)
+- New ESPN functions are now available:
+  - [`espn_teams()`](https://rentosaijo.github.io/nhlscraper/reference/espn_teams.md)
+  - [`espn_team_summary()`](https://rentosaijo.github.io/nhlscraper/reference/espn_team_summary.md)
+  - [`espn_players()`](https://rentosaijo.github.io/nhlscraper/reference/espn_players.md)
+  - [`espn_player_summary()`](https://rentosaijo.github.io/nhlscraper/reference/espn_player_summary.md)
+  - [`espn_games()`](https://rentosaijo.github.io/nhlscraper/reference/espn_games.md)
+  - [`espn_game_summary()`](https://rentosaijo.github.io/nhlscraper/reference/espn_game_summary.md)
+  - [`espn_play_by_play()`](https://rentosaijo.github.io/nhlscraper/reference/espn_play_by_play.md)
+  - [`espn_game_odds()`](https://rentosaijo.github.io/nhlscraper/reference/espn_game_odds.md)
+  - [`espn_transactions()`](https://rentosaijo.github.io/nhlscraper/reference/espn_transactions.md)
+  - [`espn_futures()`](https://rentosaijo.github.io/nhlscraper/reference/espn_futures.md)
+  - [`espn_injuries()`](https://rentosaijo.github.io/nhlscraper/reference/espn_injuries.md)
+- Some ESPN functions are now deprecated:
+  - [`get_espn_athletes()`](https://rentosaijo.github.io/nhlscraper/reference/get_espn_athletes.md)
+  - [`get_espn_athlete()`](https://rentosaijo.github.io/nhlscraper/reference/get_espn_athlete.md)
+  - `get_espn_even()t`
+  - [`get_espn_event_play_by_play()`](https://rentosaijo.github.io/nhlscraper/reference/get_espn_event_play_by_play.md)
+  - [`get_espn_event_odds()`](https://rentosaijo.github.io/nhlscraper/reference/get_espn_event_odds.md)
+  - [`get_espn_injuries()`](https://rentosaijo.github.io/nhlscraper/reference/get_espn_injuries.md)
+- Some ESPN functions are now defunct:
+  - [`get_espn_teams()`](https://rentosaijo.github.io/nhlscraper/reference/get_espn_teams.md)
+  - [`get_espn_team()`](https://rentosaijo.github.io/nhlscraper/reference/get_espn_team.md)
+  - [`get_espn_athlete()`](https://rentosaijo.github.io/nhlscraper/reference/get_espn_athlete.md)
+  - [`get_espn_events()`](https://rentosaijo.github.io/nhlscraper/reference/get_espn_events.md)
+  - [`get_espn_event_stars()`](https://rentosaijo.github.io/nhlscraper/reference/get_espn_event_stars.md)
+  - [`get_espn_event_officials()`](https://rentosaijo.github.io/nhlscraper/reference/get_espn_event_officials.md)
+  - [`get_espn_coaches()`](https://rentosaijo.github.io/nhlscraper/reference/get_espn_coaches.md)
+  - [`get_espn_coach()`](https://rentosaijo.github.io/nhlscraper/reference/get_espn_coach.md)
+  - [`get_espn_coach_career()`](https://rentosaijo.github.io/nhlscraper/reference/get_espn_coach_career.md)
+  - [`get_espn_transactions()`](https://rentosaijo.github.io/nhlscraper/reference/get_espn_transactions.md)
+  - [`get_espn_futures()`](https://rentosaijo.github.io/nhlscraper/reference/get_espn_futures.md)
 
 ## nhlscraper 0.2.0
 

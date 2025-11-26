@@ -1,32 +1,23 @@
-# Get the play-by-play of an ESPN event
+# Access the ESPN play-by-play for an event (game)
 
-`get_espn_event_play_by_play()` retrieves ESPN-provided information on
-each play for a given `event`, including but not limited to their ID,
-type, time of occurrence, strength-state, participants, and X and Y
-coordinates. Access
-[`get_espn_events()`](https://rentosaijo.github.io/nhlscraper/reference/get_espn_events.md)
-for `event` reference.
+`get_espn_event_play_by_play()` is deprecated. Use
+[`espn_play_by_play()`](https://rentosaijo.github.io/nhlscraper/reference/espn_play_by_play.md)
+instead.
 
 ## Usage
 
 ``` r
-get_espn_event_play_by_play(event = 401687600)
-
-get_espn_event_pbp(event = 401687600)
+get_espn_event_play_by_play(event = 401777460)
 ```
 
 ## Arguments
 
 - event:
 
-  integer ESPN Event ID (e.g., 401687600)
+  integer ID (e.g., 401777460); see
+  [`espn_games()`](https://rentosaijo.github.io/nhlscraper/reference/espn_games.md)
+  for reference
 
 ## Value
 
 data.frame with one row per play
-
-## Examples
-
-``` r
-NJD_BUF_2024_10_04_pbp <- get_espn_event_play_by_play(event = 401687600)
-```

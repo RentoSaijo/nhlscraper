@@ -1,10 +1,11 @@
-# Get the ESPN information on a team for a season
+# Access the ESPN summary for a team and season
 
-`get_espn_team()` is temporarily defunct while we re-evaluate the
-practicality of ESPN API information.
+`get_espn_team()` is defunct. Use
+[`espn_team_summary()`](https://rentosaijo.github.io/nhlscraper/reference/espn_team_summary.md)
+instead.
 
 ## Usage
 
 ``` r
-get_espn_team(team = 1, season = season_now()%%10000)
+get_espn_team()
 ```

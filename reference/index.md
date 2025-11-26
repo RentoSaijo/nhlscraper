@@ -495,60 +495,74 @@ Functions that are defunct
 
 Functions that call ESPN APIs
 
-### Team Data
+### Active
 
-Functions to retrieve data about teams
+Functions that are active
 
-- [`get_espn_teams()`](https://rentosaijo.github.io/nhlscraper/reference/get_espn_teams.md)
-  : Get the ESPN teams for a season
-- [`get_espn_team()`](https://rentosaijo.github.io/nhlscraper/reference/get_espn_team.md)
-  : Get the ESPN information on a team for a season
+- [`espn_teams()`](https://rentosaijo.github.io/nhlscraper/reference/espn_teams.md)
+  : Access all the ESPN teams
+- [`espn_team_summary()`](https://rentosaijo.github.io/nhlscraper/reference/espn_team_summary.md)
+  : Access the ESPN summary for a team
+- [`espn_players()`](https://rentosaijo.github.io/nhlscraper/reference/espn_players.md)
+  : Access all the ESPN players
+- [`espn_player_summary()`](https://rentosaijo.github.io/nhlscraper/reference/espn_player_summary.md)
+  : Access the ESPN summary for a player
+- [`espn_games()`](https://rentosaijo.github.io/nhlscraper/reference/espn_games.md)
+  : Access the ESPN games for a season
+- [`espn_game_summary()`](https://rentosaijo.github.io/nhlscraper/reference/espn_game_summary.md)
+  : Access the ESPN summary for a game
+- [`espn_play_by_play()`](https://rentosaijo.github.io/nhlscraper/reference/espn_play_by_play.md)
+  [`espn_pbp()`](https://rentosaijo.github.io/nhlscraper/reference/espn_play_by_play.md)
+  : Access the ESPN play-by-play for a game
+- [`espn_game_odds()`](https://rentosaijo.github.io/nhlscraper/reference/espn_game_odds.md)
+  : Access the ESPN odds for a game
+- [`espn_transactions()`](https://rentosaijo.github.io/nhlscraper/reference/espn_transactions.md)
+  : Access the ESPN transactions for a season
+- [`espn_futures()`](https://rentosaijo.github.io/nhlscraper/reference/espn_futures.md)
+  : Access the ESPN futures for a season
+- [`espn_injuries()`](https://rentosaijo.github.io/nhlscraper/reference/espn_injuries.md)
+  : Access the real-time ESPN injury reports
 
-### Athlete Data
+### Deprecated
 
-Functions to retrieve data about athletes (players)
+Functions that are deprecated
 
 - [`get_espn_athletes()`](https://rentosaijo.github.io/nhlscraper/reference/get_espn_athletes.md)
-  : Get all the ESPN athletes
+  : Access all the ESPN athletes (players)
 - [`get_espn_athlete()`](https://rentosaijo.github.io/nhlscraper/reference/get_espn_athlete.md)
-  : Get the ESPN information on an athlete for a season
-
-### Coach Data
-
-Functions to retrieve data about coaches
-
-- [`get_espn_coaches()`](https://rentosaijo.github.io/nhlscraper/reference/get_espn_coaches.md)
-  : Get the ESPN coaches for a season
-- [`get_espn_coach()`](https://rentosaijo.github.io/nhlscraper/reference/get_espn_coach.md)
-  : Get the ESPN information on a coach for a season
-- [`get_espn_coach_career()`](https://rentosaijo.github.io/nhlscraper/reference/get_espn_coach_career.md)
-  : Get the ESPN career records of a coach for a game type
-
-### Event Data
-
-Functions to retrieve data about events (games)
-
-- [`get_espn_events()`](https://rentosaijo.github.io/nhlscraper/reference/get_espn_events.md)
-  : Get the ESPN events for an interval of dates
+  : Access the ESPN summary for an athlete (player) and season
 - [`get_espn_event()`](https://rentosaijo.github.io/nhlscraper/reference/get_espn_event.md)
-  : Get information on an ESPN event
+  : Access the ESPN summary for an event (game)
 - [`get_espn_event_play_by_play()`](https://rentosaijo.github.io/nhlscraper/reference/get_espn_event_play_by_play.md)
-  [`get_espn_event_pbp()`](https://rentosaijo.github.io/nhlscraper/reference/get_espn_event_play_by_play.md)
-  : Get the play-by-play of an ESPN event
-- [`get_espn_event_stars()`](https://rentosaijo.github.io/nhlscraper/reference/get_espn_event_stars.md)
-  : Get the three stars of an ESPN event
-- [`get_espn_event_officials()`](https://rentosaijo.github.io/nhlscraper/reference/get_espn_event_officials.md)
-  : Get the officials of an event
+  : Access the ESPN play-by-play for an event (game)
 - [`get_espn_event_odds()`](https://rentosaijo.github.io/nhlscraper/reference/get_espn_event_odds.md)
-  : Get the odds of an ESPN event
-
-### Other Data
-
-Functions to retrieve any other data
-
-- [`get_espn_transactions()`](https://rentosaijo.github.io/nhlscraper/reference/get_espn_transactions.md)
-  : Get ESPN information on transactions for an interval of dates
+  : Access the ESPN odds for an event (game)
 - [`get_espn_injuries()`](https://rentosaijo.github.io/nhlscraper/reference/get_espn_injuries.md)
-  : Get the real-time ESPN injury reports
+  : Access the real-time ESPN injury reports
+
+### Defunct
+
+Functions that defunct
+
+- [`get_espn_teams()`](https://rentosaijo.github.io/nhlscraper/reference/get_espn_teams.md)
+  : Access all the ESPN teams for a season
+- [`get_espn_team()`](https://rentosaijo.github.io/nhlscraper/reference/get_espn_team.md)
+  : Access the ESPN summary for a team and season
+- [`get_espn_athlete()`](https://rentosaijo.github.io/nhlscraper/reference/get_espn_athlete.md)
+  : Access the ESPN summary for an athlete (player) and season
+- [`get_espn_events()`](https://rentosaijo.github.io/nhlscraper/reference/get_espn_events.md)
+  : Access the ESPN events (games) by start and end dates
+- [`get_espn_event_stars()`](https://rentosaijo.github.io/nhlscraper/reference/get_espn_event_stars.md)
+  : Access the three stars for an ESPN event (game)
+- [`get_espn_event_officials()`](https://rentosaijo.github.io/nhlscraper/reference/get_espn_event_officials.md)
+  : Access the officials for an ESPN event (game)
+- [`get_espn_coaches()`](https://rentosaijo.github.io/nhlscraper/reference/get_espn_coaches.md)
+  : Access the ESPN coaches for a season
+- [`get_espn_coach()`](https://rentosaijo.github.io/nhlscraper/reference/get_espn_coach.md)
+  : Access the ESPN statistics for a coach and (multiple) season(s)
+- [`get_espn_coach_career()`](https://rentosaijo.github.io/nhlscraper/reference/get_espn_coach_career.md)
+  : Access the career ESPN statistics for a coach
+- [`get_espn_transactions()`](https://rentosaijo.github.io/nhlscraper/reference/get_espn_transactions.md)
+  : Access the ESPN transactions by start and end dates
 - [`get_espn_futures()`](https://rentosaijo.github.io/nhlscraper/reference/get_espn_futures.md)
-  : Get the ESPN futures for a season
+  : Access the ESPN futures for a season

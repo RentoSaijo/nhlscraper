@@ -1,10 +1,11 @@
-# Get the ESPN career records of a coach for a game type
+# Access the career ESPN statistics for a coach
 
-`get_espn_coach_career()` is temporarily defunct while we re-evaluate
-the practicality of ESPN API information.
+`get_espn_coach_career()` is defunct. Use
+[`coach_career_statistics()`](https://rentosaijo.github.io/nhlscraper/reference/coach_career_statistics.md)
+instead.
 
 ## Usage
 
 ``` r
-get_espn_coach_career(coach = 5033, game_type = 0)
+get_espn_coach_career()
 ```

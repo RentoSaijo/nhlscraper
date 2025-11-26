@@ -1,10 +1,11 @@
-# Get the ESPN information on an athlete for a season
+# Access the ESPN summary for an athlete (player) and season
 
-`get_espn_athlete()` is temporarily defunct while we re-evaluate the
-practicality of ESPN API information.
+`get_espn_athlete()` is defunct. Use
+[`espn_player_summary()`](https://rentosaijo.github.io/nhlscraper/reference/espn_player_summary.md)
+instead.
 
 ## Usage
 
 ``` r
-get_espn_athlete(athlete = 3988803, season = season_now()%%10000)
+get_espn_athlete()
 ```
