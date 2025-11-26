@@ -231,6 +231,11 @@ reference:
       - streams
       - tv_schedule
       - game_partner_odds
+      
+  - subtitle: "Clean"
+    desc: >
+      Functions to clean data
+    contents:
 
   - subtitle: "Deprecated"
     desc: >
@@ -303,43 +308,45 @@ reference:
     desc: >
       Functions that call ESPN APIs
 
-  - subtitle: "Team Data"
+  - subtitle: "Active"
     desc: >
-      Functions to retrieve data about teams
+      Functions that are active
     contents:
-      - get_espn_teams
-      - get_espn_team
+      - espn_teams
+      - espn_team_summary
+      - espn_players
+      - espn_player_summary
+      - espn_games
+      - espn_game_summary
+      - espn_play_by_play
+      - espn_game_odds
+      - espn_transactions
+      - espn_futures
+      - espn_injuries
 
-  - subtitle: "Athlete Data"
+  - subtitle: "Deprecated"
     desc: >
-      Functions to retrieve data about athletes (players)
+      Functions that are deprecated
     contents:
       - get_espn_athletes
       - get_espn_athlete
+      - get_espn_event
+      - get_espn_event_play_by_play
+      - get_espn_event_odds
+      - get_espn_injuries
 
-  - subtitle: "Coach Data"
+  - subtitle: "Defunct"
     desc: >
-      Functions to retrieve data about coaches
+      Functions that defunct
     contents:
+      - get_espn_teams
+      - get_espn_team
+      - get_espn_athlete
+      - get_espn_events
+      - get_espn_event_stars
+      - get_espn_event_officials
       - get_espn_coaches
       - get_espn_coach
       - get_espn_coach_career
-
-  - subtitle: "Event Data"
-    desc: >
-      Functions to retrieve data about events (games)
-    contents:
-      - get_espn_events
-      - get_espn_event
-      - get_espn_event_play_by_play
-      - get_espn_event_stars
-      - get_espn_event_officials
-      - get_espn_event_odds
-
-  - subtitle: "Other Data"
-    desc: >
-      Functions to retrieve any other data
-    contents:
       - get_espn_transactions
-      - get_espn_injuries
       - get_espn_futures
