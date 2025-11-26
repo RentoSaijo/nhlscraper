@@ -66,7 +66,7 @@ gc_summary <- function(game = 2023030417) {
     },
     error = function(e) {
       message('Invalid argument(s); refer to help file.')
-      data.frame()
+      list()
     }
   )
 }
@@ -91,7 +91,7 @@ wsc_summary <- function(game = 2023030417) {
     },
     error = function(e) {
       message('Invalid argument(s); refer to help file.')
-      data.frame()
+      list()
     }
   )
 }

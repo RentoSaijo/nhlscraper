@@ -74,46 +74,54 @@ espn_games <- function(season = season_now()) {
 #' @export
 
 espn_game_summary <- function(game = 401777460) {
-  game  <- espn_api(
-    path  = sprintf('events/%s/competitions/%s', game, game),
-    type  = 'c'
+  tryCatch(
+    expr = {
+      game  <- espn_api(
+        path  = sprintf('events/%s/competitions/%s', game, game),
+        type  = 'c'
+      )
+      keeps <- setdiff(names(game), c(
+        '$ref',
+        'guid',
+        'uid',
+        'previewAvailable',
+        'recapAvailable',
+        'boxscoreAvailable',
+        'lineupAvailable',
+        'gamecastAvailable',
+        'conversationAvailable',
+        'commentaryAvailable',
+        'summaryAvailable',
+        'liveAvailable',
+        'ticketsAvailable',
+        'shotChartAvailable',
+        'possessionArrowAvailable',
+        'onWatchESPN',
+        'recent',
+        'bracketAvailable',
+        'wallclockAvailable',
+        'highlightsAvailable',
+        'gameSource',
+        'boxscoreSource',
+        'playByPlaySource',
+        'linescoreSource',
+        'statsSource',
+        'situation',
+        'status',
+        'odds',
+        'broadcasts',
+        'officials',
+        'details',
+        'links',
+        ''
+      ))
+      game[keeps]
+    },
+    error = function(e) {
+      message('Invalid argument(s); refer to help file.')
+      list()
+    }
   )
-  keeps <- setdiff(names(game), c(
-    '$ref',
-    'guid',
-    'uid',
-    'previewAvailable',
-    'recapAvailable',
-    'boxscoreAvailable',
-    'lineupAvailable',
-    'gamecastAvailable',
-    'conversationAvailable',
-    'commentaryAvailable',
-    'summaryAvailable',
-    'liveAvailable',
-    'ticketsAvailable',
-    'shotChartAvailable',
-    'possessionArrowAvailable',
-    'onWatchESPN',
-    'recent',
-    'bracketAvailable',
-    'wallclockAvailable',
-    'highlightsAvailable',
-    'gameSource',
-    'boxscoreSource',
-    'playByPlaySource',
-    'linescoreSource',
-    'statsSource',
-    'situation',
-    'status',
-    'odds',
-    'broadcasts',
-    'officials',
-    'details',
-    'links',
-    ''
-  ))
-  return(game[keeps])
 }
 
 #' Access the ESPN play-by-play for a game

@@ -57,7 +57,7 @@ goalie_edge_leaders <- function(season = 'now', game_type = '') {
     },
     error = function(e) {
       message('Invalid argument(s); refer to help file.')
-      data.frame()
+      list()
     }
   )
 }
@@ -97,7 +97,7 @@ goalie_edge_summary <- function(
     },
     error = function(e) {
       message('Invalid argument(s); refer to help file.')
-      data.frame()
+      list()
     }
   )
 }

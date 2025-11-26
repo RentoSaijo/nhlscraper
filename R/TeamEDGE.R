@@ -57,7 +57,7 @@ team_edge_leaders <- function(season = 'now', game_type = '') {
     },
     error = function(e) {
       message('Invalid argument(s); refer to help file.')
-      data.frame()
+      list()
     }
   )
 }
@@ -93,7 +93,7 @@ team_edge_summary <- function(team = 1, season = 'now', game_type = '') {
     },
     error = function(e) {
       message('Invalid argument(s); refer to help file.')
-      data.frame()
+      list()
     }
   )
 }
