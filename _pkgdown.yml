@@ -231,11 +231,6 @@ reference:
       - location
       - streams
       - tv_schedule
-      
-  - subtitle: "Clean"
-    desc: >
-      Functions to clean data
-    contents:
 
   - subtitle: "Deprecated"
     desc: >
