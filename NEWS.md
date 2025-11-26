@@ -2,7 +2,7 @@
 
 - Website now features disclosure, history, and more examples.
 - Documentation is now standardized.
-- All API calls now handle rate-limits (Error 429).
+- All API calls now handle rate-limits with exponential backoff.
 - Parameters are now standardized and can handle robust arguments.
 - Error-handling is now more elegant, returning messages alongside empty data.
 - New functions to access data about the entire league are now available:
