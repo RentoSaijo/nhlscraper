@@ -1,7 +1,8 @@
 # nhlscraper 0.2.0.9000
 
+- Website now features disclosure, history, and more examples.
 - Documentation is now standardized.
-- Website now features disclosure and history.
+- Parameters are now standardized and can handle robust arguments.
 - New functions to access data about the entire league are now available:
   - `seasons()`
   - `season_now()`
@@ -97,8 +98,9 @@
   - `gc_play_by_play()`
   - `wsc_play_by_play()`
   - `shifts()`
+  - `game_odds()`
 - New functions to access data about the events (plays) are now available:
-  - `event_replay()`
+  - `replay()`
   - `penalty_shots()`
 - New functions to access data about the playoffs are now available:
   - `series()`
@@ -132,7 +134,6 @@
   - `location()`
   - `streams()`
   - `tv_schedule()`
-  - `game_partner_odds()`
 - Some functions are now deprecated:
   - `get_seasons()`
   - `get_standings_information()`

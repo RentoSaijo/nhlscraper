@@ -163,12 +163,13 @@ reference:
       - gc_play_by_play
       - wsc_play_by_play
       - shifts
+      - game_odds
   
   - subtitle: "Event"
     desc: >
       Functions to access data about the events (plays)
     contents:
-      - event_replay
+      - replay
       - penalty_shots
 
   - subtitle: "Playoff"
@@ -230,7 +231,11 @@ reference:
       - location
       - streams
       - tv_schedule
-      - game_partner_odds
+      
+  - subtitle: "Clean"
+    desc: >
+      Functions to clean data
+    contents:
 
   - subtitle: "Deprecated"
     desc: >
