@@ -253,6 +253,7 @@ wsc_play_by_play <- function(game = 2023030417) {
       plays$homeScore <- NULL
       plays$awaySOG   <- NULL
       plays$homeSOG   <- NULL
+      plays
     },
     error = function(e) {
       message('Invalid argument(s); refer to help file.')
