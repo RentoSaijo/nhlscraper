@@ -184,10 +184,29 @@ game_rosters <- function(game = 2023030417) {
 gc_play_by_play <- function(game = 2023030417) {
   tryCatch(
     expr = {
-      nhl_api(
+      plays        <- nhl_api(
         path = sprintf('v1/gamecenter/%s/play-by-play', game),
         type = 'w'
       )$plays
+      plays$gameId <- game
+      plays        <- plays[, c('gameId', setdiff(names(plays), 'gameId'))]
+      nms          <- names(plays)
+      idx          <- grepl('\\.', nms)
+      nms[idx]     <- sub('^[^.]*\\.', '', nms[idx])
+      names(plays) <- nms
+      idx <- plays$typeDescKey == 'blocked-shot' & 
+        plays$zoneCode %in% c('O', 'D')
+      plays$zoneCode[idx] <- ifelse(
+        plays$zoneCode[idx] == 'O',
+        'D',
+        'O'
+      )
+      names(plays)[names(plays) == 'number'] <- 'periodNumber'
+      plays$awayScore <- NULL
+      plays$homeScore <- NULL
+      plays$awaySOG   <- NULL
+      plays$homeSOG   <- NULL
+      plays
     },
     error = function(e) {
       message('Invalid argument(s); refer to help file.')
@@ -215,10 +234,25 @@ gc_pbp <- function(game = 2023030417) {
 wsc_play_by_play <- function(game = 2023030417) {
   tryCatch(
     expr = {
-      nhl_api(
+      plays        <- nhl_api(
         path = sprintf('v1/wsc/play-by-play/%s', game),
         type = 'w'
       )
+      plays$id     <- NULL
+      plays$gameId <- game
+      plays[, c('gameId', setdiff(names(plays), 'gameId'))]
+      idx <- plays$typeDescKey == 'blocked-shot' & 
+        plays$zoneCode %in% c('O', 'D')
+      plays$zoneCode[idx] <- ifelse(
+        plays$zoneCode[idx] == 'O',
+        'D',
+        'O'
+      )
+      names(plays)[names(plays) == 'number'] <- 'periodNumber'
+      plays$awayScore <- NULL
+      plays$homeScore <- NULL
+      plays$awaySOG   <- NULL
+      plays$homeSOG   <- NULL
     },
     error = function(e) {
       message('Invalid argument(s); refer to help file.')
