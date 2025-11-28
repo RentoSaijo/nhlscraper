@@ -191,6 +191,7 @@ gc_play_by_play <- function(game = 2023030417) {
       plays$gameId <- game
       plays        <- plays[, c('gameId', setdiff(names(plays), 'gameId'))]
       nms          <- names(plays)
+      nms[nms == 'details.typeCode'] <- 'penaltyTypeCode'
       idx          <- grepl('\\.', nms)
       nms[idx]     <- sub('^[^.]*\\.', '', nms[idx])
       names(plays) <- nms
@@ -201,7 +202,7 @@ gc_play_by_play <- function(game = 2023030417) {
         'D',
         'O'
       )
-      names(plays)[names(plays) == 'number'] <- 'periodNumber'
+      names(plays)[names(plays) == 'number'] <- 'period'
       plays$awayScore <- NULL
       plays$homeScore <- NULL
       plays$awaySOG   <- NULL
@@ -244,7 +245,7 @@ wsc_play_by_play <- function(game = 2023030417) {
       )
       plays$id     <- NULL
       plays$gameId <- game
-      plays[, c('gameId', setdiff(names(plays), 'gameId'))]
+      plays        <- plays[, c('gameId', setdiff(names(plays), 'gameId'))]
       idx <- plays$typeDescKey == 'blocked-shot' & 
         plays$zoneCode %in% c('O', 'D')
       plays$zoneCode[idx] <- ifelse(
@@ -253,10 +254,15 @@ wsc_play_by_play <- function(game = 2023030417) {
         'O'
       )
       names(plays)[names(plays) == 'number'] <- 'periodNumber'
-      plays$awayScore <- NULL
-      plays$homeScore <- NULL
-      plays$awaySOG   <- NULL
-      plays$homeSOG   <- NULL
+      plays$awayScore        <- NULL
+      plays$homeScore        <- NULL
+      plays$awaySOG          <- NULL
+      plays$homeSOG          <- NULL
+      plays$goalModifier     <- NULL
+      plays$strength         <- NULL
+      plays$strengthCode     <- NULL
+      plays$goalCode         <- NULL
+      plays$secondsRemaining <- NULL
       plays
     },
     error = function(e) {

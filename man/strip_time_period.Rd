@@ -9,7 +9,7 @@ strip_time_period(
   data,
   game_type_id_name = "gameTypeId",
   time_in_period_name = "timeInPeriod",
-  period_number_name = "periodNumber",
+  period_name = "period",
   seconds_elapsed_in_period_name = "secondsElapsedInPeriod",
   seconds_elapsed_in_game_name = "secondsElapsedInGame"
 )
@@ -24,7 +24,7 @@ strip_time_period(
 \item{time_in_period_name}{name of column that contains time in period in
 'MM:SS'}
 
-\item{period_number_name}{name of column that contains period number}
+\item{period_name}{name of column that contains period number}
 
 \item{seconds_elapsed_in_period_name}{name of column that you want contain
 seconds elapsed in period}

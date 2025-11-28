@@ -62,7 +62,7 @@ strip_game_id <- function(
 #' [strip_game_id()] for reference
 #' @param time_in_period_name name of column that contains time in period in 
 #' 'MM:SS'
-#' @param period_number_name name of column that contains period number
+#' @param period_name name of column that contains period number
 #' @param seconds_elapsed_in_period_name name of column that you want contain 
 #' seconds elapsed in period
 #' @param seconds_elapsed_in_game_name name of column that you want contain 
@@ -81,7 +81,7 @@ strip_time_period <- function(
     data,
     game_type_id_name              = 'gameTypeId',
     time_in_period_name            = 'timeInPeriod',
-    period_number_name             = 'periodNumber',
+    period_name             = 'period',
     seconds_elapsed_in_period_name = 'secondsElapsedInPeriod',
     seconds_elapsed_in_game_name   = 'secondsElapsedInGame'
 ) {
@@ -92,7 +92,7 @@ strip_time_period <- function(
       ss  <- suppressWarnings(as.integer(sub('.*:', '', tip)))
       seconds_in_period <- mm * 60 + ss
       gtype  <- suppressWarnings(as.integer(data[[game_type_id_name]]))
-      per    <- suppressWarnings(as.integer(data[[period_number_name]]))
+      per    <- suppressWarnings(as.integer(data[[period_name]]))
       n      <- length(seconds_in_period)
       offset <- rep(NA_integer_, n)
       idx_po <- !is.na(gtype) & gtype == 3 & !is.na(per)
