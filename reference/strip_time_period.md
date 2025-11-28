@@ -11,7 +11,7 @@ strip_time_period(
   data,
   game_type_id_name = "gameTypeId",
   time_in_period_name = "timeInPeriod",
-  period_number_name = "periodNumber",
+  period_name = "period",
   seconds_elapsed_in_period_name = "secondsElapsedInPeriod",
   seconds_elapsed_in_game_name = "secondsElapsedInGame"
 )
@@ -37,7 +37,7 @@ strip_time_period(
 
   name of column that contains time in period in 'MM:SS'
 
-- period_number_name:
+- period_name:
 
   name of column that contains period number
 
