@@ -12,7 +12,7 @@
 gc_play_by_plays <- function(season = 20242025) {
   tryCatch(
     expr = {
-      read.csv(paste0(
+      utils::read.csv(paste0(
         'https://media.githubusercontent.com/media/RentoSaijo/NHL_DB/refs/',
         'heads/main/data/game/pbps/gc/NHL_PBPS_GC_',
         season,
@@ -46,7 +46,7 @@ gc_pbps <- function(season = 20242025) {
 wsc_play_by_plays <- function(season = 20242025) {
   tryCatch(
     expr = {
-      read.csv(paste0(
+      utils::read.csv(paste0(
         'https://media.githubusercontent.com/media/RentoSaijo/NHL_DB/refs/',
         'heads/main/data/game/pbps/wsc/NHL_PBPS_WSC_',
         season,
