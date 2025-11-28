@@ -2,8 +2,9 @@
 % Please edit documentation in R/Clean.R
 \name{strip_situation_code}
 \alias{strip_situation_code}
-\title{Strip the situation code into goalie and skater counts for all the events
-(plays) in a play-by-play by perspective}
+\title{Strip the situation code into goalie and skater counts, man differential,
+and strength state for all the events (plays) in a play-by-play by
+perspective}
 \usage{
 strip_situation_code(
   data,
@@ -25,7 +26,7 @@ strip_situation_code(
 \item{data}{data.frame of play-by-play(s); see \code{\link[=gc_play_by_play]{gc_play_by_play()}} and/or
 \code{\link[=wsc_play_by_play]{wsc_play_by_play()}} for reference}
 
-\item{is_home_name}{name of column that contains home/away logical
+\item{is_home_name}{name of column that contains home/not logical
 indicator; see \code{\link[=flag_is_home]{flag_is_home()}} for reference}
 
 \item{situation_code_name}{name of column that contains situation code}
@@ -65,7 +66,8 @@ data.frame with one row per event (play)
 }
 \description{
 \code{strip_situation_code()} strip the situation code into goalie and skater
-counts for all the events (plays) in a play-by-play by perspective.
+counts, man differential, and strength state for all the events (plays) in a
+play-by-play by perspective.
 }
 \examples{
 # May take >5s, so skip.
