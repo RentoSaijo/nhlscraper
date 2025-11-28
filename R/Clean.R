@@ -131,14 +131,16 @@ strip_time_period <- function(
   )
 }
 
-#' Strip the situation code into goalie and skater counts for all the events 
-#' (plays) in a play-by-play by perspective
+#' Strip the situation code into goalie and skater counts, man differential, 
+#' and strength state for all the events (plays) in a play-by-play by 
+#' perspective
 #' 
 #' `strip_situation_code()` strip the situation code into goalie and skater 
-#' counts for all the events (plays) in a play-by-play by perspective.
+#' counts, man differential, and strength state for all the events (plays) in a 
+#' play-by-play by perspective.
 #' 
 #' @inheritParams strip_game_id
-#' @param is_home_name name of column that contains home/away logical 
+#' @param is_home_name name of column that contains home/not logical 
 #' indicator; see [flag_is_home()] for reference
 #' @param situation_code_name name of column that contains situation code
 #' @param home_is_empty_net_name name of column that you want contain empty net 
@@ -244,6 +246,26 @@ strip_situation_code <- function(
   )
 }
 
+#' Flag if the event belongs to the home team or not for all the events (plays) 
+#' in a play-by-play
+#' 
+#' `flag_is_home()` flags if the event belongs to the home team or not for 
+#' all the events (plays) in a play-by-play.
+#' 
+#' @inheritParams strip_game_id
+#' @param event_owner_team_id_name name of column that contains event-owning 
+#' team's ID
+#' @param is_home_name name of column that you want contain home/not logical 
+#' indicator
+#' @returns data.frame with one row per event (play)
+#' @examples
+#' # May take >5s, so skip.
+#' \donttest{
+#'   test                 <- gc_play_by_play()
+#'   test_is_home_flagged <- flag_is_home(test)
+#' }
+#' @export
+
 flag_is_home <- function(
   data,
   game_id_name              = 'gameId',
@@ -275,14 +297,39 @@ flag_is_home <- function(
   )
 }
 
+#' Flag if the shot attempt is a rebound attempt or not for all the shots in a 
+#' play-by-play
+#' 
+#' `flag_is_rebound()` flags if the shot attempt is a rebound attempt or not 
+#' for all the shots in a play-by-play.
+#' 
+#' @inheritParams strip_situation_code
+#' @param seconds_elapsed_in_game_name name of column that contains seconds 
+#' elapsed in game; see [strip_time_period()] for reference
+#' @param sort_order_name name of column that contains sort order
+#' @param type_description_name name of column that contains event type 
+#' description
+#' @param is_rebound_name name of column that you want contain rebound/not 
+#' logical indicator
+#' @returns data.frame with one row per event (play)
+#' @examples
+#' # May take >5s, so skip.
+#' \donttest{
+#'   test                      <- gc_play_by_play()
+#'   test_time_period_stripped <- strip_time_period(test)
+#'   test_is_home_flagged      <- flag_is_home(test_time_period_stripped)
+#'   test_is_rebound_flagged   <- flag_is_rebound(test_is_home_flagged)
+#' }
+#' @export
+
 flag_is_rebound <- function(
   data,
-  game_id_name           = 'gameId',
-  sort_order_name        = 'sortOrder',
-  seconds_elapsed_in_game_name   = 'secondsElapsedInGame',
-  type_description_name  = 'typeDescKey',
-  is_home_name           = 'isHome',
-  is_rebound_name        = 'isRebound'
+  is_home_name                 = 'isHome',
+  seconds_elapsed_in_game_name = 'secondsElapsedInGame',
+  game_id_name                 = 'gameId',
+  sort_order_name              = 'sortOrder',
+  type_description_name        = 'typeDescKey',
+  is_rebound_name              = 'isRebound'
 ) {
   tryCatch(
     expr = {
@@ -290,7 +337,7 @@ flag_is_rebound <- function(
       game_id    <- as.character(data[[game_id_name]])
       sort_order <- as.numeric(data[[sort_order_name]])
       sec_game   <- as.numeric(data[[seconds_elapsed_in_game_name]])
-      is_home <- data[[is_home_name]]
+      is_home    <- data[[is_home_name]]
       if (!is.logical(is_home)) {
         is_home <- as.logical(is_home)
       }
@@ -366,15 +413,36 @@ flag_is_rebound <- function(
   )
 }
 
+#' Flag if the shot attempt is a rush attempt or not for all the shots in a 
+#' play-by-play
+#' 
+#' `flag_is_rush()` flags if the shot attempt is a rush attempt or not for all 
+#' the shots in a play-by-play.
+#' 
+#' @inheritParams flag_is_rebound
+#' @param zone_code_name name of column that contains zone code
+#' @param is_rush_name name of column that you want contain rush/not 
+#' logical indicator
+#' @returns data.frame with one row per event (play)
+#' @examples
+#' # May take >5s, so skip.
+#' \donttest{
+#'   test                      <- gc_play_by_play()
+#'   test_time_period_stripped <- strip_time_period(test)
+#'   test_is_home_flagged      <- flag_is_home(test_time_period_stripped)
+#'   test_is_rush_flagged      <- flag_is_rush(test_is_home_flagged)
+#' }
+#' @export
+
 flag_is_rush <- function(
   data,
-  game_id_name          = 'gameId',
-  sort_order_name       = 'sortOrder',
-  seconds_elapsed_in_game_name  = 'secondsElapsedInGame',
-  type_description_name = 'typeDescKey',
-  is_home_name          = 'isHome',
-  zone_code_name        = 'zoneCode',
-  is_rush_name          = 'isRush'
+  is_home_name                 = 'isHome',
+  seconds_elapsed_in_game_name = 'secondsElapsedInGame',
+  game_id_name                 = 'gameId',
+  sort_order_name              = 'sortOrder',
+  type_description_name        = 'typeDescKey',
+  zone_code_name               = 'zoneCode',
+  is_rush_name                 = 'isRush'
 ) {
   tryCatch(
     expr = {
@@ -470,11 +538,69 @@ flag_is_rush <- function(
   )
 }
 
-fill_goals_shots <- function(
+#' Count the as-of-event goal, shots on goal, Fenwick, and Corsi attempts and 
+#' differentials for all the events (plays) in a play-by-play by perspective
+#' 
+#' `count_goals_shots()` counts the as-of-event goal, shots on goal, Fenwick, 
+#' and Corsi attempts and differentials for all the events (plays) in a 
+#' play-by-play by perspective
+#' 
+#' @inheritParams flag_is_rebound
+#' @param home_goals_name name of column that you want contain goal count for 
+#' home team
+#' @param away_goals_name name of column that you want contain goal count for 
+#' away team
+#' @param home_shots_on_goal_name name of column that you want contain shots on 
+#' goal count for home team
+#' @param away_shots_on_goal_name name of column that you want contain shots on 
+#' goal count for away team
+#' @param home_fenwick_name name of column that you want contain Fenwick count 
+#' for home team
+#' @param away_fenwick_name name of column that you want contain Fenwick count 
+#' for away team
+#' @param home_corsi_name name of column that you want contain Corsi count for 
+#' home team
+#' @param away_corsi_name name of column that you want contain Corsi count for 
+#' away team
+#' @param goals_for_name name of column that you want contain goal count for 
+#' event-owning team
+#' @param goals_against_name name of column that you want contain goal count 
+#' for opposing team
+#' @param shots_on_goal_for_name name of column that you want contain shots on 
+#' goal count for event-owning team
+#' @param shots_on_goal_against_name name of column that you want contain shots 
+#' on goal count for opposing team
+#' @param fenwick_for_name name of column that you want contain Fenwick count 
+#' for event-owning team
+#' @param fenwick_against_name name of column that you want contain Fenwick 
+#" count for opposing team
+#' @param corsi_for_name name of column that you want contain Corsi count for 
+#' event-owning team
+#' @param corsi_against_name name of column that you want contain Corsi count 
+#' for opposing team
+#' @param goal_differential_name name of column that you want contain goal 
+#' differential
+#' @param shots_on_goal_differential_name name of column that you want contain 
+#' shots on goal differential
+#' @param fenwick_differential_name name of column that you want contain 
+#' Fenwick differential
+#' @param corsi_differential_name name of column that you want contain Corsi  
+#' differential
+#' @returns data.frame with one row per event (play)
+#' @examples
+#' # May take >5s, so skip.
+#' \donttest{
+#'   test                     <- gc_play_by_play()
+#'   test_is_home_flagged     <- flag_is_home(test)
+#'   test_goals_shots_counted <- count_goals_shots(test_is_home_flagged)
+#' }
+#' @export
+
+count_goals_shots <- function(
   data,
+  is_home_name                    = 'isHome',
   game_id_name                    = 'gameId',
   sort_order_name                 = 'sortOrder',
-  is_home_name                    = 'isHome',
   type_description_name           = 'typeDescKey',
   home_goals_name                 = 'homeGoals',
   away_goals_name                 = 'awayGoals',
@@ -702,6 +828,31 @@ fill_goals_shots <- function(
   )
 }
 
+#' Normalize the x and y coordinates for all the events (plays) in a 
+#' play-by-play
+#' 
+#' `normalize_coordinates()` normalizes the x and y coordinates for all the 
+#' events (plays) in a play-by-play such that they all attack towards +x.
+#' 
+#' @inheritParams flag_is_rebound
+#' @param home_team_defending_side_name name of column that contains home team 
+#' defending side
+#' @param x_coordinate_name name of column that contains x coordinate
+#' @param y_coordinate_name name of column that contains y coordinate
+#' @param x_coordinate_normalized_name name of column that you want contain 
+#' normalized x coordinate
+#' @param y_coordinate_normalized_name name of column that you want contain 
+#' normalized y coordinate
+#' @returns data.frame with one row per event (play)
+#' @examples
+#' # May take >5s, so skip.
+#' \donttest{
+#'   test                   <- gc_play_by_play()
+#'   test_is_home_flagged   <- flag_is_home(test)
+#'   test_coords_normalized <- normalize_coordinates(test_is_home_flagged)
+#' }
+#' @export
+
 normalize_coordinates <- function(
   data,
   is_home_name                     = 'isHome',
@@ -742,19 +893,43 @@ normalize_coordinates <- function(
   )
 }
 
+#' Calculate the Euclidean distance from the attacking net for all the events 
+#' (plays) in a play-by-play
+#' 
+#' `calculate_distance()` calculates the Euclidean distance from the attacking 
+#' net for all the events (plays) in a play-by-play.
+#' 
+#' @inheritParams flag_is_rebound
+#' @param x_coordinate_normalized_name name of column that contains normalized 
+#' x coordinate; see [normalize_coordinates()] for reference
+#' @param y_coordinate_normalized_name name of column that contains normalized 
+#' y coordinate; see [normalize_coordinates()] for reference
+#' @param distance_name name of column that you want contain distance
+#' @returns data.frame with one row per event (play)
+#' @examples
+#' # May take >5s, so skip.
+#' \donttest{
+#'   test                     <- gc_play_by_play()
+#'   test_is_home_flagged     <- flag_is_home(test)
+#'   test_coords_normalized   <- normalize_coordinates(test_is_home_flagged)
+#'   test_distance_calculated <- calculate_distance(test_coords_normalized)
+#' }
+#' @export
+
 calculate_distance <- function(
   data,
   x_coordinate_normalized_name = 'xCoordNorm',
-  y_coordinate_normalized_name = 'yCoordNorm'
+  y_coordinate_normalized_name = 'yCoordNorm',
+  distance_name                = 'distance'
 ) {
   tryCatch(
     expr = {
-      x <- as.numeric(data[[x_coordinate_normalized_name]])
-      y <- as.numeric(data[[y_coordinate_normalized_name]])
+      x  <- as.numeric(data[[x_coordinate_normalized_name]])
+      y  <- as.numeric(data[[y_coordinate_normalized_name]])
       dx <- 89 - x
       dy <- 0 - y
       distance <- sqrt(dx^2 + dy^2)
-      data[['distance']] <- distance
+      data[[distance_name]] <- distance
       data
     },
     error = function(e) {
@@ -764,19 +939,43 @@ calculate_distance <- function(
   )
 }
 
+#' Calculate the Euclidean angle from the attacking net for all the events 
+#' (plays) in a play-by-play
+#' 
+#' `calculate_angle()` calculates the Euclidean angle from the attacking net 
+#' for all the events (plays) in a play-by-play.
+#' 
+#' @inheritParams flag_is_rebound
+#' @param x_coordinate_normalized_name name of column that contains normalized 
+#' x coordinate; see [normalize_coordinates()] for reference
+#' @param y_coordinate_normalized_name name of column that contains normalized 
+#' y coordinate; see [normalize_coordinates()] for reference
+#' @param angle_name name of column that you want contain distance
+#' @returns data.frame with one row per event (play)
+#' @examples
+#' # May take >5s, so skip.
+#' \donttest{
+#'   test                   <- gc_play_by_play()
+#'   test_is_home_flagged   <- flag_is_home(test)
+#'   test_coords_normalized <- normalize_coordinates(test_is_home_flagged)
+#'   test_angle_calculated  <- calculate_angle(test_coords_normalized)
+#' }
+#' @export
+
 calculate_angle <- function(
   data,
   x_coordinate_normalized_name = 'xCoordNorm',
-  y_coordinate_normalized_name = 'yCoordNorm'
+  y_coordinate_normalized_name = 'yCoordNorm',
+  angle_name                   = 'angle'
 ) {
   tryCatch(
     expr = {
-      x <- as.numeric(data[[x_coordinate_normalized_name]])
-      y <- as.numeric(data[[y_coordinate_normalized_name]])
+      x  <- as.numeric(data[[x_coordinate_normalized_name]])
+      y  <- as.numeric(data[[y_coordinate_normalized_name]])
       dx <- 89 - x
       dy <- 0 - y
       angle <- atan2(abs(dy), dx) * 180 / pi
-      data[['angle']] <- angle
+      data[[angle_name]] <- angle
       data
     },
     error = function(e) {
