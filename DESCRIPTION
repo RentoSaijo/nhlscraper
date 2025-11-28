@@ -6,7 +6,7 @@ Description: Scrapes and cleans data from the 'NHL' and 'ESPN' APIs into data.fr
 License: MIT + file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = T)
-RoxygenNote: 7.3.2
+RoxygenNote: 7.3.3
 Depends:
   R (>= 3.5.0)
 Imports:
