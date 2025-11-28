@@ -190,7 +190,13 @@ strip_situation_code <- function(
 ) {
   tryCatch(
     expr = {
-      situation <- as.character(data[[situation_code_name]])
+      raw_situation <- data[[situation_code_name]]
+      situation_chr <- as.character(raw_situation)
+      situation <- rep(NA_character_, length(situation_chr))
+      valid     <- !is.na(situation_chr) & nchar(situation_chr) > 0
+      if (any(valid)) {
+        situation[valid] <- sprintf('%04d', as.integer(situation_chr[valid]))
+      }
       away_goalie_in <- as.integer(substr(situation, 1, 1))
       away_skaters   <- as.integer(substr(situation, 2, 2))
       home_skaters   <- as.integer(substr(situation, 3, 3))
