@@ -102,7 +102,7 @@ Functions to access data about the entire league
 
 ### Franchise
 
-Functions to access data about the franchises
+Functions to access data about the franchises and teams
 
 - [`franchises()`](https://rentosaijo.github.io/nhlscraper/reference/franchises.md)
   : Access all the franchises
@@ -123,11 +123,6 @@ Functions to access data about the franchises
 - [`franchise_playoff_situational_results()`](https://rentosaijo.github.io/nhlscraper/reference/franchise_playoff_situational_results.md)
   : Access the playoff series results for all the franchises by
   situation
-
-### Team
-
-Functions to access data about the teams
-
 - [`teams()`](https://rentosaijo.github.io/nhlscraper/reference/teams.md)
   : Access all the teams
 - [`team_seasons()`](https://rentosaijo.github.io/nhlscraper/reference/team_seasons.md)
@@ -183,9 +178,9 @@ Functions to access data about the teams
   : Access the EDGE shot speed statistics for a team, season, game type,
   and category
 
-### Playoff
+### Postseason
 
-Functions to access data about the playoffs
+Functions to access data about the playoffs, awards, and drafts
 
 - [`series()`](https://rentosaijo.github.io/nhlscraper/reference/series.md)
   : Access all the playoff series by game
@@ -196,20 +191,10 @@ Functions to access data about the playoffs
   : Access the playoff bracket for a season
 - [`series_schedule()`](https://rentosaijo.github.io/nhlscraper/reference/series_schedule.md)
   : Access the playoff schedule for a season and series
-
-### Award
-
-Functions to access data about the awards
-
 - [`awards()`](https://rentosaijo.github.io/nhlscraper/reference/awards.md)
   : Access all the awards
 - [`award_winners()`](https://rentosaijo.github.io/nhlscraper/reference/award_winners.md)
   : Access all the award winners/finalists
-
-### Draft
-
-Functions to access data about the drafts
-
 - [`drafts()`](https://rentosaijo.github.io/nhlscraper/reference/drafts.md)
   : Access all the drafts
 - [`draft_picks()`](https://rentosaijo.github.io/nhlscraper/reference/draft_picks.md)
@@ -229,18 +214,13 @@ Functions to access data about the drafts
 - [`expansion_draft_picks()`](https://rentosaijo.github.io/nhlscraper/reference/expansion_draft_picks.md)
   : Access all the expansion draft picks
 
-### Manager
+### Management
 
-Functions to access data about the general managers
+Functions to access data about the GMs, coaches, and officials
 
 - [`general_managers()`](https://rentosaijo.github.io/nhlscraper/reference/general_managers.md)
   [`gms()`](https://rentosaijo.github.io/nhlscraper/reference/general_managers.md)
   : Access all the general managers
-
-### Coach
-
-Functions to access data about the coaches
-
 - [`coaches()`](https://rentosaijo.github.io/nhlscraper/reference/coaches.md)
   : Access all the coaches
 - [`coach_career_statistics()`](https://rentosaijo.github.io/nhlscraper/reference/coach_career_statistics.md)
@@ -249,11 +229,6 @@ Functions to access data about the coaches
 - [`coach_franchise_statistics()`](https://rentosaijo.github.io/nhlscraper/reference/coach_franchise_statistics.md)
   [`coach_franchise_stats()`](https://rentosaijo.github.io/nhlscraper/reference/coach_franchise_statistics.md)
   : Access the statistics for all the coaches by franchise and game type
-
-### Official
-
-Functions to access data about the officials
-
 - [`officials()`](https://rentosaijo.github.io/nhlscraper/reference/officials.md)
   : Access all the officials
 
@@ -445,6 +420,54 @@ Functions to access data about the events (plays)
   [`ps()`](https://rentosaijo.github.io/nhlscraper/reference/penalty_shots.md)
   : Access all the penalty shots
 
+## Load
+
+Functions that load pre-scraped data from GitHub
+
+- [`gc_play_by_plays()`](https://rentosaijo.github.io/nhlscraper/reference/gc_play_by_plays.md)
+  [`gc_pbps()`](https://rentosaijo.github.io/nhlscraper/reference/gc_play_by_plays.md)
+  : Access the GameCenter (GC) play-by-plays for a season
+- [`wsc_play_by_plays()`](https://rentosaijo.github.io/nhlscraper/reference/wsc_play_by_plays.md)
+  [`wsc_pbps()`](https://rentosaijo.github.io/nhlscraper/reference/wsc_play_by_plays.md)
+  : Access the World Showcase (WSC) play-by-plays for a season
+
+## Clean
+
+Functions that clean the acquired data
+
+- [`strip_game_id()`](https://rentosaijo.github.io/nhlscraper/reference/strip_game_id.md)
+  : Strip the game ID into the season ID, game type ID, and game number
+  for all the events (plays) in a play-by-play
+- [`strip_time_period()`](https://rentosaijo.github.io/nhlscraper/reference/strip_time_period.md)
+  : Strip the timestamp and period number into the time elapsed in the
+  period and game for all the events (plays) in a play-by-play
+- [`strip_situation_code()`](https://rentosaijo.github.io/nhlscraper/reference/strip_situation_code.md)
+  : Strip the situation code into goalie and skater counts, man
+  differential, and strength state for all the events (plays) in a
+  play-by-play by perspective
+- [`flag_is_home()`](https://rentosaijo.github.io/nhlscraper/reference/flag_is_home.md)
+  : Flag if the event belongs to the home team or not for all the events
+  (plays) in a play-by-play
+- [`flag_is_rebound()`](https://rentosaijo.github.io/nhlscraper/reference/flag_is_rebound.md)
+  : Flag if the shot attempt is a rebound attempt or not for all the
+  shots in a play-by-play
+- [`flag_is_rush()`](https://rentosaijo.github.io/nhlscraper/reference/flag_is_rush.md)
+  : Flag if the shot attempt is a rush attempt or not for all the shots
+  in a play-by-play
+- [`count_goals_shots()`](https://rentosaijo.github.io/nhlscraper/reference/count_goals_shots.md)
+  : Count the as-of-event goal, shots on goal, Fenwick, and Corsi
+  attempts and differentials for all the events (plays) in a
+  play-by-play by perspective
+- [`normalize_coordinates()`](https://rentosaijo.github.io/nhlscraper/reference/normalize_coordinates.md)
+  : Normalize the x and y coordinates for all the events (plays) in a
+  play-by-play
+- [`calculate_distance()`](https://rentosaijo.github.io/nhlscraper/reference/calculate_distance.md)
+  : Calculate the Euclidean distance from the attacking net for all the
+  events (plays) in a play-by-play
+- [`calculate_angle()`](https://rentosaijo.github.io/nhlscraper/reference/calculate_angle.md)
+  : Calculate the Euclidean angle from the attacking net for all the
+  events (plays) in a play-by-play
+
 ## ESPN API
 
 Functions that call the ESPN APIs
@@ -473,9 +496,13 @@ Functions that call the ESPN APIs
 - [`espn_injuries()`](https://rentosaijo.github.io/nhlscraper/reference/espn_injuries.md)
   : Access the real-time ESPN injury reports
 
-## Deprecated
+## Outdated
 
-Functions that are deprecated
+Functions that are outdated.
+
+### Deprecated
+
+Functions that are deprecated.
 
 - [`get_seasons()`](https://rentosaijo.github.io/nhlscraper/reference/get_seasons.md)
   : Access all the seasons
@@ -589,7 +616,7 @@ Functions that are deprecated
 - [`get_espn_injuries()`](https://rentosaijo.github.io/nhlscraper/reference/get_espn_injuries.md)
   : Access the real-time ESPN injury reports
 
-## Defunct
+### Defunct
 
 Functions that are defunct
 

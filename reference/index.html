@@ -112,7 +112,7 @@
       </dl></div><div class="section level2">
 
       <h3 id="franchise">Franchise<a class="anchor" aria-label="anchor" href="#franchise"></a></h3>
-      <div class="section-desc"><p>Functions to access data about the franchises</p></div>
+      <div class="section-desc"><p>Functions to access data about the franchises and teams</p></div>
 
       <dl></dl></div><div class="section level2">
 
@@ -160,17 +160,8 @@
 
         </dt>
         <dd>Access the playoff series results for all the franchises by situation</dd>
-      </dl></div><div class="section level2">
 
-      <h3 id="team">Team<a class="anchor" aria-label="anchor" href="#team"></a></h3>
-      <div class="section-desc"><p>Functions to access data about the teams</p></div>
-
-      <dl></dl></div><div class="section level2">
-
-
-
-
-      <dl><dt>
+        <dt>
 
           <code><a href="teams.html">teams()</a></code>
 
@@ -318,8 +309,8 @@
         <dd>Access the EDGE shot speed statistics for a team, season, game type, and category</dd>
       </dl></div><div class="section level2">
 
-      <h3 id="playoff">Playoff<a class="anchor" aria-label="anchor" href="#playoff"></a></h3>
-      <div class="section-desc"><p>Functions to access data about the playoffs</p></div>
+      <h3 id="postseason">Postseason<a class="anchor" aria-label="anchor" href="#postseason"></a></h3>
+      <div class="section-desc"><p>Functions to access data about the playoffs, awards, and drafts</p></div>
 
       <dl></dl></div><div class="section level2">
 
@@ -353,17 +344,8 @@
 
         </dt>
         <dd>Access the playoff schedule for a season and series</dd>
-      </dl></div><div class="section level2">
 
-      <h3 id="award">Award<a class="anchor" aria-label="anchor" href="#award"></a></h3>
-      <div class="section-desc"><p>Functions to access data about the awards</p></div>
-
-      <dl></dl></div><div class="section level2">
-
-
-
-
-      <dl><dt>
+        <dt>
 
           <code><a href="awards.html">awards()</a></code>
 
@@ -376,17 +358,8 @@
 
         </dt>
         <dd>Access all the award winners/finalists</dd>
-      </dl></div><div class="section level2">
 
-      <h3 id="draft">Draft<a class="anchor" aria-label="anchor" href="#draft"></a></h3>
-      <div class="section-desc"><p>Functions to access data about the drafts</p></div>
-
-      <dl></dl></div><div class="section level2">
-
-
-
-
-      <dl><dt>
+        <dt>
 
           <code><a href="drafts.html">drafts()</a></code>
 
@@ -450,8 +423,8 @@
         <dd>Access all the expansion draft picks</dd>
       </dl></div><div class="section level2">
 
-      <h3 id="manager">Manager<a class="anchor" aria-label="anchor" href="#manager"></a></h3>
-      <div class="section-desc"><p>Functions to access data about the general managers</p></div>
+      <h3 id="management">Management<a class="anchor" aria-label="anchor" href="#management"></a></h3>
+      <div class="section-desc"><p>Functions to access data about the GMs, coaches, and officials</p></div>
 
       <dl></dl></div><div class="section level2">
 
@@ -464,17 +437,8 @@
 
         </dt>
         <dd>Access all the general managers</dd>
-      </dl></div><div class="section level2">
 
-      <h3 id="coach">Coach<a class="anchor" aria-label="anchor" href="#coach"></a></h3>
-      <div class="section-desc"><p>Functions to access data about the coaches</p></div>
-
-      <dl></dl></div><div class="section level2">
-
-
-
-
-      <dl><dt>
+        <dt>
 
           <code><a href="coaches.html">coaches()</a></code>
 
@@ -494,17 +458,8 @@
 
         </dt>
         <dd>Access the statistics for all the coaches by franchise and game type</dd>
-      </dl></div><div class="section level2">
 
-      <h3 id="official">Official<a class="anchor" aria-label="anchor" href="#official"></a></h3>
-      <div class="section-desc"><p>Functions to access data about the officials</p></div>
-
-      <dl></dl></div><div class="section level2">
-
-
-
-
-      <dl><dt>
+        <dt>
 
           <code><a href="officials.html">officials()</a></code>
 
@@ -981,6 +936,108 @@
         </dt>
         <dd>Access all the penalty shots</dd>
       </dl></div><div class="section level2">
+      <h2 id="load">Load<a class="anchor" aria-label="anchor" href="#load"></a></h2>
+
+      <div class="section-desc"><p>Functions that load pre-scraped data from GitHub</p></div>
+
+      <dl></dl></div><div class="section level2">
+
+
+
+
+      <dl><dt>
+
+          <code><a href="gc_play_by_plays.html">gc_play_by_plays()</a></code> <code><a href="gc_play_by_plays.html">gc_pbps()</a></code>
+
+        </dt>
+        <dd>Access the GameCenter (GC) play-by-plays for a season</dd>
+
+        <dt>
+
+          <code><a href="wsc_play_by_plays.html">wsc_play_by_plays()</a></code> <code><a href="wsc_play_by_plays.html">wsc_pbps()</a></code>
+
+        </dt>
+        <dd>Access the World Showcase (WSC) play-by-plays for a season</dd>
+      </dl></div><div class="section level2">
+      <h2 id="clean">Clean<a class="anchor" aria-label="anchor" href="#clean"></a></h2>
+
+      <div class="section-desc"><p>Functions that clean the acquired data</p></div>
+
+      <dl></dl></div><div class="section level2">
+
+
+
+
+      <dl><dt>
+
+          <code><a href="strip_game_id.html">strip_game_id()</a></code>
+
+        </dt>
+        <dd>Strip the game ID into the season ID, game type ID, and game number for all the events (plays) in a play-by-play</dd>
+
+        <dt>
+
+          <code><a href="strip_time_period.html">strip_time_period()</a></code>
+
+        </dt>
+        <dd>Strip the timestamp and period number into the time elapsed in the period and game for all the events (plays) in a play-by-play</dd>
+
+        <dt>
+
+          <code><a href="strip_situation_code.html">strip_situation_code()</a></code>
+
+        </dt>
+        <dd>Strip the situation code into goalie and skater counts, man differential, and strength state for all the events (plays) in a play-by-play by perspective</dd>
+
+        <dt>
+
+          <code><a href="flag_is_home.html">flag_is_home()</a></code>
+
+        </dt>
+        <dd>Flag if the event belongs to the home team or not for all the events (plays) in a play-by-play</dd>
+
+        <dt>
+
+          <code><a href="flag_is_rebound.html">flag_is_rebound()</a></code>
+
+        </dt>
+        <dd>Flag if the shot attempt is a rebound attempt or not for all the shots in a play-by-play</dd>
+
+        <dt>
+
+          <code><a href="flag_is_rush.html">flag_is_rush()</a></code>
+
+        </dt>
+        <dd>Flag if the shot attempt is a rush attempt or not for all the shots in a play-by-play</dd>
+
+        <dt>
+
+          <code><a href="count_goals_shots.html">count_goals_shots()</a></code>
+
+        </dt>
+        <dd>Count the as-of-event goal, shots on goal, Fenwick, and Corsi attempts and differentials for all the events (plays) in a play-by-play by perspective</dd>
+
+        <dt>
+
+          <code><a href="normalize_coordinates.html">normalize_coordinates()</a></code>
+
+        </dt>
+        <dd>Normalize the x and y coordinates for all the events (plays) in a play-by-play</dd>
+
+        <dt>
+
+          <code><a href="calculate_distance.html">calculate_distance()</a></code>
+
+        </dt>
+        <dd>Calculate the Euclidean distance from the attacking net for all the events (plays) in a play-by-play</dd>
+
+        <dt>
+
+          <code><a href="calculate_angle.html">calculate_angle()</a></code>
+
+        </dt>
+        <dd>Calculate the Euclidean angle from the attacking net for all the events (plays) in a play-by-play</dd>
+      </dl></div><div class="section level2">
       <h2 id="espn-api">ESPN API<a class="anchor" aria-label="anchor" href="#espn-api"></a></h2>
 
       <div class="section-desc"><p>Functions that call the ESPN APIs</p></div>
@@ -1067,9 +1124,14 @@
         </dt>
         <dd>Access the real-time ESPN injury reports</dd>
       </dl></div><div class="section level2">
-      <h2 id="deprecated">Deprecated<a class="anchor" aria-label="anchor" href="#deprecated"></a></h2>
+      <h2 id="outdated">Outdated<a class="anchor" aria-label="anchor" href="#outdated"></a></h2>
 
-      <div class="section-desc"><p>Functions that are deprecated</p></div>
+      <div class="section-desc"><p>Functions that are outdated.</p></div>
+
+      <dl></dl></div><div class="section level2">
+
+      <h3 id="deprecated">Deprecated<a class="anchor" aria-label="anchor" href="#deprecated"></a></h3>
+      <div class="section-desc"><p>Functions that are deprecated.</p></div>
 
       <dl></dl></div><div class="section level2">
 
@@ -1447,8 +1509,8 @@
         </dt>
         <dd>Access the real-time ESPN injury reports</dd>
       </dl></div><div class="section level2">
-      <h2 id="defunct">Defunct<a class="anchor" aria-label="anchor" href="#defunct"></a></h2>
 
+      <h3 id="defunct">Defunct<a class="anchor" aria-label="anchor" href="#defunct"></a></h3>
       <div class="section-desc"><p>Functions that are defunct</p></div>
 
       <dl></dl></div><div class="section level2">
