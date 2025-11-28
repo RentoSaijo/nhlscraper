@@ -194,26 +194,26 @@ gc_play_by_play <- function(game = 2023030417) {
       idx          <- grepl('\\.', nms)
       nms[idx]     <- sub('^[^.]*\\.', '', nms[idx])
       names(plays) <- nms
-      if ('typeDescKey' %in% names(plays) && 'zoneCode' %in% names(plays)) {
-        idx_bs <- plays$typeDescKey == 'blocked-shot' &
-          plays$zoneCode %in% c('O', 'D')
-        if (any(idx_bs, na.rm = TRUE)) {
-          plays$zoneCode[idx_bs] <- ifelse(
-            plays$zoneCode[idx_bs] == 'O',
-            'D',
-            'O'
-          )
-        }
-      }
+      idx <- plays$typeDescKey == 'blocked-shot' & 
+        plays$zoneCode %in% c('O', 'D')
+      plays$zoneCode[idx] <- ifelse(
+        plays$zoneCode[idx] == 'O',
+        'D',
+        'O'
+      )
       names(plays)[names(plays) == 'number'] <- 'periodNumber'
-      if ('awayScore' %in% names(plays)) plays$awayScore <- NULL
-      if ('homeScore' %in% names(plays)) plays$homeScore <- NULL
-      if ('awaySOG'   %in% names(plays)) plays$awaySOG   <- NULL
-      if ('homeSOG'   %in% names(plays)) plays$homeSOG   <- NULL
+      plays$awayScore <- NULL
+      plays$homeScore <- NULL
+      plays$awaySOG   <- NULL
+      plays$homeSOG   <- NULL
       plays
     },
     error = function(e) {
-      message('Invalid argument(s); refer to help file.')
+      message(paste(
+        'Invalid argument(s); refer to help file.',
+        '\nProvided game:',
+        game
+      ))
       data.frame()
     }
   )
@@ -245,26 +245,26 @@ wsc_play_by_play <- function(game = 2023030417) {
       plays$id     <- NULL
       plays$gameId <- game
       plays[, c('gameId', setdiff(names(plays), 'gameId'))]
-      if ('typeDescKey' %in% names(plays) && 'zoneCode' %in% names(plays)) {
-        idx_bs <- plays$typeDescKey == 'blocked-shot' &
-          plays$zoneCode %in% c('O', 'D')
-        if (any(idx_bs, na.rm = TRUE)) {
-          plays$zoneCode[idx_bs] <- ifelse(
-            plays$zoneCode[idx_bs] == 'O',
-            'D',
-            'O'
-          )
-        }
-      }
+      idx <- plays$typeDescKey == 'blocked-shot' & 
+        plays$zoneCode %in% c('O', 'D')
+      plays$zoneCode[idx] <- ifelse(
+        plays$zoneCode[idx] == 'O',
+        'D',
+        'O'
+      )
       names(plays)[names(plays) == 'number'] <- 'periodNumber'
-      if ('awayScore' %in% names(plays)) plays$awayScore <- NULL
-      if ('homeScore' %in% names(plays)) plays$homeScore <- NULL
-      if ('awaySOG'   %in% names(plays)) plays$awaySOG   <- NULL
-      if ('homeSOG'   %in% names(plays)) plays$homeSOG   <- NULL
+      plays$awayScore <- NULL
+      plays$homeScore <- NULL
+      plays$awaySOG   <- NULL
+      plays$homeSOG   <- NULL
       plays
     },
     error = function(e) {
-      message('Invalid argument(s); refer to help file.')
+      message(paste(
+        'Invalid argument(s); refer to help file.',
+        '\nProvided game:',
+        game
+      ))
       data.frame()
     }
   )
