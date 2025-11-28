@@ -303,6 +303,7 @@ flag_is_home <- function(
 #' `flag_is_rebound()` flags if the shot attempt is a rebound attempt or not 
 #' for all the shots in a play-by-play.
 #' 
+#' @inheritParams strip_game_id
 #' @inheritParams strip_situation_code
 #' @param seconds_elapsed_in_game_name name of column that contains seconds 
 #' elapsed in game; see [strip_time_period()] for reference

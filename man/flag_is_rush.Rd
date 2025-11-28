@@ -26,6 +26,8 @@ indicator; see \code{\link[=flag_is_home]{flag_is_home()}} for reference}
 \item{seconds_elapsed_in_game_name}{name of column that contains seconds
 elapsed in game; see \code{\link[=strip_time_period]{strip_time_period()}} for reference}
 
+\item{game_id_name}{name of column that contains game ID}
+
 \item{sort_order_name}{name of column that contains sort order}
 
 \item{type_description_name}{name of column that contains event type

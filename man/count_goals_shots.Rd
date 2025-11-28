@@ -40,6 +40,8 @@ count_goals_shots(
 \item{is_home_name}{name of column that contains home/not logical
 indicator; see \code{\link[=flag_is_home]{flag_is_home()}} for reference}
 
+\item{game_id_name}{name of column that contains game ID}
+
 \item{sort_order_name}{name of column that contains sort order}
 
 \item{type_description_name}{name of column that contains event type
