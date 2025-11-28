@@ -59,7 +59,7 @@ reference:
 
   - subtitle: "Franchise"
     desc: >
-      Functions to access data about the franchises
+      Functions to access data about the franchises and teams
     contents:
       - franchises
       - franchise_statistics
@@ -67,11 +67,6 @@ reference:
       - franchise_season_statistics
       - franchise_versus_franchise
       - franchise_playoff_situational_results
-
-  - subtitle: "Team"
-    desc: >
-      Functions to access data about the teams
-    contents:
       - teams
       - team_seasons
       - team_report_configurations
@@ -94,26 +89,16 @@ reference:
       - team_edge_shot_location
       - team_edge_shot_speed
       
-  - subtitle: "Playoff"
+  - subtitle: "Postseason"
     desc: >
-      Functions to access data about the playoffs
+      Functions to access data about the playoffs, awards, and drafts
     contents:
       - series
       - playoff_season_statistics
       - bracket
       - series_schedule
-
-  - subtitle: "Award"
-    desc: >
-      Functions to access data about the awards
-    contents:
       - awards
       - award_winners
-
-  - subtitle: "Draft"
-    desc: >
-      Functions to access data about the drafts
-    contents:
       - drafts
       - draft_picks
       - draft_prospects
@@ -124,24 +109,14 @@ reference:
       - expansion_drafts
       - expansion_draft_picks
       
-  - subtitle: "Manager"
+  - subtitle: "Management"
     desc: >
-      Functions to access data about the general managers
+      Functions to access data about the GMs, coaches, and officials
     contents:
       - general_managers
-      
-  - subtitle: "Coach"
-    desc: >
-      Functions to access data about the coaches
-    contents:
       - coaches
       - coach_career_statistics
       - coach_franchise_statistics
-      
-  - subtitle: "Official"
-    desc: >
-      Functions to access data about the officials
-    contents:
       - officials
 
   - subtitle: "Other"
@@ -239,6 +214,28 @@ reference:
     contents:
       - replay
       - penalty_shots
+      
+  - title: "Load"
+    desc: >
+      Functions that load pre-scraped data from GitHub
+    contents:
+      - gc_play_by_plays
+      - wsc_play_by_plays
+  
+  - title: "Clean"
+    desc: >
+      Functions that clean the acquired data
+    contents:
+      - strip_game_id
+      - strip_time_period
+      - strip_situation_code
+      - flag_is_home
+      - flag_is_rebound
+      - flag_is_rush
+      - fill_goals_shots
+      - normalize_coordinates
+      - calculate_distance
+      - calculate_angle
 
   - title: "ESPN API"
     desc: >
@@ -256,9 +253,13 @@ reference:
       - espn_futures
       - espn_injuries
 
-  - title: "Deprecated"
+  - title: "Outdated"
     desc: >
-      Functions that are deprecated
+      Functions that are outdated.
+      
+  - subtitle: "Deprecated"
+    desc: >
+      Functions that are deprecated.
     contents:
       - get_seasons
       - get_standings_information
@@ -314,7 +315,7 @@ reference:
       - get_espn_event_odds
       - get_espn_injuries
 
-  - title: "Defunct"
+  - subtitle: "Defunct"
     desc: >
       Functions that are defunct
     contents:
