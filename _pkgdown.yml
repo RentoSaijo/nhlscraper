@@ -232,7 +232,7 @@ reference:
       - flag_is_home
       - flag_is_rebound
       - flag_is_rush
-      - fill_goals_shots
+      - count_goals_shots
       - normalize_coordinates
       - calculate_distance
       - calculate_angle
