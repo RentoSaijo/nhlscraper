@@ -13,7 +13,7 @@
 
 draw_rink_circle <- function(x, y, r, n = 200, col = 'black', lwd = 1) {
   theta <- seq(0, 2 * pi, length.out = n)
-  lines(x + r * cos(theta), y + r * sin(theta), col = col, lwd = lwd)
+  graphics::lines(x + r * cos(theta), y + r * sin(theta), col = col, lwd = lwd)
 }
 
 #' Draw an arc on the rink
@@ -35,7 +35,10 @@ draw_rink_arc <- function(
   cx, cy, r, theta1, theta2, n = 100, col = 'black', lwd = 1
 ) {
   theta <- seq(theta1, theta2, length.out = n)
-  lines(cx + r * cos(theta), cy + r * sin(theta), col = col, lwd = lwd)
+  graphics::lines(
+    cx + r * cos(theta), cy + r * sin(theta), 
+    col = col, lwd = lwd
+  )
 }
 
 #' Draw a full NHL rink
@@ -50,13 +53,13 @@ draw_rink_arc <- function(
 #' @export
 
 draw_NHL_rink <- function() {
-  old_par <- par(
+  old_par <- graphics::par(
     xaxs = 'r',
     yaxs = 'r',
     mar  = c(1, 1, 3, 1),
     oma  = c(0, 0, 0, 0)
   )
-  on.exit(par(old_par))
+  on.exit(graphics::par(old_par))
   plot(
     NA, NA,
     xlim = c(-100, 100),
@@ -91,15 +94,15 @@ draw_NHL_rink <- function() {
   cx_left  <- x_min + corner_r
   cy_top   <- y_max - corner_r
   cy_bot   <- y_min + corner_r
-  segments(
+  graphics::segments(
     center_line, y_min, center_line, y_max,
     col = center_line_col, lwd = line_lwd
   )
-  segments(
+  graphics::segments(
     blue_line, y_min,  blue_line, y_max,
     col = blue_line_col, lwd = line_lwd
   )
-  segments(
+  graphics::segments(
     -blue_line, y_min, -blue_line, y_max,
     col = blue_line_col, lwd = line_lwd
   )
@@ -107,11 +110,11 @@ draw_NHL_rink <- function() {
   dy_goal  <- sqrt(corner_r^2 - dx_goal^2)
   y_goal_top    <- cy_top + dy_goal
   y_goal_bottom <- cy_bot - dy_goal
-  segments(
+  graphics::segments(
     goal_line,  y_goal_bottom,  goal_line,  y_goal_top,
     col = goal_line_col, lwd = line_lwd
   )
-  segments(
+  graphics::segments(
     -goal_line,  y_goal_bottom, -goal_line,  y_goal_top,
     col = goal_line_col, lwd = line_lwd
   )
@@ -137,31 +140,31 @@ draw_NHL_rink <- function() {
   )
   crease_r <- 6
   theta <- seq(-pi / 2, pi / 2, length.out = 200)
-  lines(
+  graphics::lines(
     goal_line - crease_r * cos(theta),
     0         + crease_r * sin(theta),
     col = crease_col,
     lwd = line_lwd
   )
-  lines(
+  graphics::lines(
     -goal_line + crease_r * cos(theta),
     0          + crease_r * sin(theta),
     col = crease_col,
     lwd = line_lwd
   )
-  segments(
+  graphics::segments(
     -straight_top_bottom_x,  y_max, straight_top_bottom_x,  y_max,
     col = board_col, lwd = line_lwd
   )
-  segments(
+  graphics::segments(
     -straight_top_bottom_x,  y_min, straight_top_bottom_x,  y_min,
     col = board_col, lwd = line_lwd
   )
-  segments(
+  graphics::segments(
     x_min, -straight_side_y, x_min, straight_side_y,
     col = board_col, lwd = line_lwd
   )
-  segments(
+  graphics::segments(
     x_max, -straight_side_y, x_max,  straight_side_y,
     col = board_col, lwd = line_lwd
   )

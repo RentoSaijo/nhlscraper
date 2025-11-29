@@ -144,7 +144,7 @@ ig_game_shot_location_summary <- function(
         lo <- breaks[i]
         hi <- breaks[i + 1L]
         if (i == 1L) {
-          color_labels[i] <- sprintf('≤ %.2f xG', hi)
+          color_labels[i] <- sprintf('\u2264 %.2f xG', hi)
         } else if (i == k) {
           color_labels[i] <- sprintf('> %.2f xG', lo)
         } else {
@@ -164,13 +164,13 @@ ig_game_shot_location_summary <- function(
         pch = pch_vec,
         col = col_vec
       )
-      usr   <- par('usr')
+      usr   <- graphics::par('usr')
       rng_y <- usr[4] - usr[3]
       x_mid <- (usr[1] + usr[2]) / 2
       y_top_shapes <- usr[4] + 0.12 * rng_y
       y_top_colors <- usr[4] + 0.06 * rng_y
-      old_xpd <- par('xpd')
-      par(xpd = NA)
+      old_xpd <- graphics::par('xpd')
+      graphics::par(xpd = NA)
       graphics::legend(
         x      = x_mid,
         y      = y_top_shapes - 3,
@@ -201,7 +201,7 @@ ig_game_shot_location_summary <- function(
         labels = 'Data acquired and modeled via R package \'nhlscraper\'',
         cex    = 0.7
       )
-      par(xpd = old_xpd)
+      graphics::par(xpd = old_xpd)
       invisible(NULL)
     },
     error = function(e) {
