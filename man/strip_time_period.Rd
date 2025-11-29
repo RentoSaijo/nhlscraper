@@ -5,35 +5,17 @@
 \title{Strip the timestamp and period number into the time elapsed in the period
 and game for all the events (plays) in a play-by-play}
 \usage{
-strip_time_period(
-  data,
-  game_type_id_name = "gameTypeId",
-  time_in_period_name = "timeInPeriod",
-  period_name = "period",
-  seconds_elapsed_in_period_name = "secondsElapsedInPeriod",
-  seconds_elapsed_in_game_name = "secondsElapsedInGame"
-)
+strip_time_period(play_by_play)
 }
 \arguments{
-\item{data}{data.frame of play-by-play(s); see \code{\link[=gc_play_by_play]{gc_play_by_play()}} and/or
-\code{\link[=wsc_play_by_play]{wsc_play_by_play()}} for reference}
-
-\item{game_type_id_name}{name of column that contains game type ID; see
-\code{\link[=strip_game_id]{strip_game_id()}} for reference}
-
-\item{time_in_period_name}{name of column that contains time in period in
-'MM:SS'}
-
-\item{period_name}{name of column that contains period number}
-
-\item{seconds_elapsed_in_period_name}{name of column that you want contain
-seconds elapsed in period}
-
-\item{seconds_elapsed_in_game_name}{name of column that you want contain
-seconds elapsed in game}
+\item{play_by_play}{data.frame of play-by-play(s); see \code{\link[=gc_play_by_play]{gc_play_by_play()}}
+and/or \code{\link[=wsc_play_by_play]{wsc_play_by_play()}} for reference; must be untouched by
+non-nhlscraper functions; saves time if \code{\link[=strip_game_id]{strip_game_id()}} has already been
+called}
 }
 \value{
-data.frame with one row per event (play)
+data.frame with one row per event (play) and added columns
+\code{secondsElapsedInPeriod} and \code{secondsElapsedInGame}
 }
 \description{
 \code{strip_time_period()} strip the timestamp and period number into the time

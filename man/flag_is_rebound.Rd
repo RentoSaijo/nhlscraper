@@ -5,38 +5,16 @@
 \title{Flag if the shot attempt is a rebound attempt or not for all the shots in a
 play-by-play}
 \usage{
-flag_is_rebound(
-  data,
-  is_home_name = "isHome",
-  seconds_elapsed_in_game_name = "secondsElapsedInGame",
-  game_id_name = "gameId",
-  sort_order_name = "sortOrder",
-  type_description_name = "typeDescKey",
-  is_rebound_name = "isRebound"
-)
+flag_is_rebound(play_by_play)
 }
 \arguments{
-\item{data}{data.frame of play-by-play(s); see \code{\link[=gc_play_by_play]{gc_play_by_play()}} and/or
-\code{\link[=wsc_play_by_play]{wsc_play_by_play()}} for reference}
-
-\item{is_home_name}{name of column that contains home/not logical
-indicator; see \code{\link[=flag_is_home]{flag_is_home()}} for reference}
-
-\item{seconds_elapsed_in_game_name}{name of column that contains seconds
-elapsed in game; see \code{\link[=strip_time_period]{strip_time_period()}} for reference}
-
-\item{game_id_name}{name of column that contains game ID}
-
-\item{sort_order_name}{name of column that contains sort order}
-
-\item{type_description_name}{name of column that contains event type
-description}
-
-\item{is_rebound_name}{name of column that you want contain rebound/not
-logical indicator}
+\item{play_by_play}{data.frame of play-by-play(s); see \code{\link[=gc_play_by_play]{gc_play_by_play()}}
+and/or \code{\link[=wsc_play_by_play]{wsc_play_by_play()}} for reference; must be untouched by
+non-nhlscraper functions; saves time if \code{\link[=flag_is_home]{flag_is_home()}} and/or}
 }
 \value{
-data.frame with one row per event (play)
+data.frame with one row per event (play) and added \code{isRebound}
+column
 }
 \description{
 \code{flag_is_rebound()} flags if the shot attempt is a rebound attempt or not
@@ -46,8 +24,9 @@ for all the shots in a play-by-play.
 # May take >5s, so skip.
 \donttest{
   test                      <- gc_play_by_play()
-  test_time_period_stripped <- strip_time_period(test)
-  test_is_home_flagged      <- flag_is_home(test_time_period_stripped)
-  test_is_rebound_flagged   <- flag_is_rebound(test_is_home_flagged)
+  test_is_home_flagged      <- flag_is_home(test)
+  test_game_id_stripped     <- strip_game_id(test_is_home_flagged)
+  test_time_period_stripped <- strip_time_period(test_game_id_stripped)
+  test_is_rebound_flagged   <- flag_is_rebound(test_time_period_stripped)
 }
 }

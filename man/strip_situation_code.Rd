@@ -6,63 +6,19 @@
 and strength state for all the events (plays) in a play-by-play by
 perspective}
 \usage{
-strip_situation_code(
-  data,
-  is_home_name = "isHome",
-  situation_code_name = "situationCode",
-  home_is_empty_net_name = "homeIsEmptyNet",
-  away_is_empty_net_name = "awayIsEmptyNet",
-  home_skater_count_name = "homeSkaterCount",
-  away_skater_count_name = "awaySkaterCount",
-  is_empty_net_for_name = "isEmptyNetFor",
-  is_empty_net_against_name = "isEmptyNetAgainst",
-  skater_count_for_name = "skaterCountFor",
-  skater_count_against_name = "skaterCountAgainst",
-  man_differential_name = "manDifferential",
-  strength_state_name = "strengthState"
-)
+strip_situation_code(play_by_play)
 }
 \arguments{
-\item{data}{data.frame of play-by-play(s); see \code{\link[=gc_play_by_play]{gc_play_by_play()}} and/or
-\code{\link[=wsc_play_by_play]{wsc_play_by_play()}} for reference}
-
-\item{is_home_name}{name of column that contains home/not logical
-indicator; see \code{\link[=flag_is_home]{flag_is_home()}} for reference}
-
-\item{situation_code_name}{name of column that contains situation code}
-
-\item{home_is_empty_net_name}{name of column that you want contain empty net
-indicator for home team}
-
-\item{away_is_empty_net_name}{name of column that you want contain empty net
-indicator for away team}
-
-\item{home_skater_count_name}{name of column that you want contain skater
-count for home team}
-
-\item{away_skater_count_name}{name of column that you want contain skater
-count for away team}
-
-\item{is_empty_net_for_name}{name of column that you want contain empty net
-indicator for event-owning team}
-
-\item{is_empty_net_against_name}{name of column that you want contain empty
-net indicator for opposing team}
-
-\item{skater_count_for_name}{name of column that you want contain skater
-count for event-owning team}
-
-\item{skater_count_against_name}{name of column that you want contain skater
-count for opposing team}
-
-\item{man_differential_name}{name of column that you want contain man
-differential}
-
-\item{strength_state_name}{name of column that you want contain strength
-state}
+\item{play_by_play}{data.frame of play-by-play(s); see \code{\link[=gc_play_by_play]{gc_play_by_play()}}
+and/or \code{\link[=wsc_play_by_play]{wsc_play_by_play()}} for reference; must be untouched by
+non-nhlscraper functions; saves time if \code{\link[=flag_is_home]{flag_is_home()}} has already been
+called}
 }
 \value{
-data.frame with one row per event (play)
+data.frame with one row per event (play) and added columns:
+\code{homeIsEmptyNet}, \code{awayIsEmptyNet}, \code{homeSkaterCount}, \code{awaySkaterCount},
+\code{isEmptyNetFor}, \code{isEmptyNetAgainst}, \code{skaterCountFor},
+\code{skaterCountAgainst}, \code{manDifferential}, and \code{strengthState}
 }
 \description{
 \code{strip_situation_code()} strip the situation code into goalie and skater

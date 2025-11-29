@@ -5,27 +5,16 @@
 \title{Calculate the Euclidean distance from the attacking net for all the events
 (plays) in a play-by-play}
 \usage{
-calculate_distance(
-  data,
-  x_coordinate_normalized_name = "xCoordNorm",
-  y_coordinate_normalized_name = "yCoordNorm",
-  distance_name = "distance"
-)
+calculate_distance(play_by_play)
 }
 \arguments{
-\item{data}{data.frame of play-by-play(s); see \code{\link[=gc_play_by_play]{gc_play_by_play()}} and/or
-\code{\link[=wsc_play_by_play]{wsc_play_by_play()}} for reference}
-
-\item{x_coordinate_normalized_name}{name of column that contains normalized
-x coordinate; see \code{\link[=normalize_coordinates]{normalize_coordinates()}} for reference}
-
-\item{y_coordinate_normalized_name}{name of column that contains normalized
-y coordinate; see \code{\link[=normalize_coordinates]{normalize_coordinates()}} for reference}
-
-\item{distance_name}{name of column that you want contain distance}
+\item{play_by_play}{data.frame of play-by-play(s); see \code{\link[=gc_play_by_play]{gc_play_by_play()}}
+and/or \code{\link[=wsc_play_by_play]{wsc_play_by_play()}} for reference; must be untouched by
+non-nhlscraper functions; saves time if \code{\link[=normalize_coordinates]{normalize_coordinates()}} has
+already been called}
 }
 \value{
-data.frame with one row per event (play)
+data.frame with one row per event (play) and added \code{distance} column
 }
 \description{
 \code{calculate_distance()} calculates the Euclidean distance from the attacking

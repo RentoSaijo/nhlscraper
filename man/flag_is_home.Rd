@@ -5,27 +5,15 @@
 \title{Flag if the event belongs to the home team or not for all the events (plays)
 in a play-by-play}
 \usage{
-flag_is_home(
-  data,
-  game_id_name = "gameId",
-  event_owner_team_id_name = "eventOwnerTeamId",
-  is_home_name = "isHome"
-)
+flag_is_home(play_by_play)
 }
 \arguments{
-\item{data}{data.frame of play-by-play(s); see \code{\link[=gc_play_by_play]{gc_play_by_play()}} and/or
-\code{\link[=wsc_play_by_play]{wsc_play_by_play()}} for reference}
-
-\item{game_id_name}{name of column that contains game ID}
-
-\item{event_owner_team_id_name}{name of column that contains event-owning
-team's ID}
-
-\item{is_home_name}{name of column that you want contain home/not logical
-indicator}
+\item{play_by_play}{data.frame of play-by-play(s); see \code{\link[=gc_play_by_play]{gc_play_by_play()}}
+and/or \code{\link[=wsc_play_by_play]{wsc_play_by_play()}} for reference; must be untouched by
+non-nhlscraper functions}
 }
 \value{
-data.frame with one row per event (play)
+data.frame with one row per event (play) and added \code{isHome} column
 }
 \description{
 \code{flag_is_home()} flags if the event belongs to the home team or not for

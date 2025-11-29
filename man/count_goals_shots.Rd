@@ -5,114 +5,26 @@
 \title{Count the as-of-event goal, shots on goal, Fenwick, and Corsi attempts and
 differentials for all the events (plays) in a play-by-play by perspective}
 \usage{
-count_goals_shots(
-  data,
-  is_home_name = "isHome",
-  game_id_name = "gameId",
-  sort_order_name = "sortOrder",
-  type_description_name = "typeDescKey",
-  home_goals_name = "homeGoals",
-  away_goals_name = "awayGoals",
-  home_shots_on_goal_name = "homeSOG",
-  away_shots_on_goal_name = "awaySOG",
-  home_fenwick_name = "homeFenwick",
-  away_fenwick_name = "awayFenwick",
-  home_corsi_name = "homeCorsi",
-  away_corsi_name = "awayCorsi",
-  goals_for_name = "goalsFor",
-  goals_against_name = "goalsAgainst",
-  shots_on_goal_for_name = "SOGFor",
-  shots_on_goal_against_name = "SOGAgainst",
-  fenwick_for_name = "fenwickFor",
-  fenwick_against_name = "fenwickAgainst",
-  corsi_for_name = "corsiFor",
-  corsi_against_name = "corsiAgainst",
-  goal_differential_name = "goalDifferential",
-  shots_on_goal_differential_name = "SOGDifferential",
-  fenwick_differential_name = "fenwickDifferential",
-  corsi_differential_name = "corsiDifferential"
-)
+count_goals_shots(play_by_play)
 }
 \arguments{
-\item{data}{data.frame of play-by-play(s); see \code{\link[=gc_play_by_play]{gc_play_by_play()}} and/or
-\code{\link[=wsc_play_by_play]{wsc_play_by_play()}} for reference}
-
-\item{is_home_name}{name of column that contains home/not logical
-indicator; see \code{\link[=flag_is_home]{flag_is_home()}} for reference}
-
-\item{game_id_name}{name of column that contains game ID}
-
-\item{sort_order_name}{name of column that contains sort order}
-
-\item{type_description_name}{name of column that contains event type
-description}
-
-\item{home_goals_name}{name of column that you want contain goal count for
-home team}
-
-\item{away_goals_name}{name of column that you want contain goal count for
-away team}
-
-\item{home_shots_on_goal_name}{name of column that you want contain shots on
-goal count for home team}
-
-\item{away_shots_on_goal_name}{name of column that you want contain shots on
-goal count for away team}
-
-\item{home_fenwick_name}{name of column that you want contain Fenwick count
-for home team}
-
-\item{away_fenwick_name}{name of column that you want contain Fenwick count
-for away team}
-
-\item{home_corsi_name}{name of column that you want contain Corsi count for
-home team}
-
-\item{away_corsi_name}{name of column that you want contain Corsi count for
-away team}
-
-\item{goals_for_name}{name of column that you want contain goal count for
-event-owning team}
-
-\item{goals_against_name}{name of column that you want contain goal count
-for opposing team}
-
-\item{shots_on_goal_for_name}{name of column that you want contain shots on
-goal count for event-owning team}
-
-\item{shots_on_goal_against_name}{name of column that you want contain shots
-on goal count for opposing team}
-
-\item{fenwick_for_name}{name of column that you want contain Fenwick count
-for event-owning team}
-
-\item{fenwick_against_name}{name of column that you want contain Fenwick}
-
-\item{corsi_for_name}{name of column that you want contain Corsi count for
-event-owning team}
-
-\item{corsi_against_name}{name of column that you want contain Corsi count
-for opposing team}
-
-\item{goal_differential_name}{name of column that you want contain goal
-differential}
-
-\item{shots_on_goal_differential_name}{name of column that you want contain
-shots on goal differential}
-
-\item{fenwick_differential_name}{name of column that you want contain
-Fenwick differential}
-
-\item{corsi_differential_name}{name of column that you want contain Corsi
-differential}
+\item{play_by_play}{data.frame of play-by-play(s); see \code{\link[=gc_play_by_play]{gc_play_by_play()}}
+and/or \code{\link[=wsc_play_by_play]{wsc_play_by_play()}} for reference; must be untouched by
+non-nhlscraper functions; saves time if \code{\link[=flag_is_home]{flag_is_home()}} has already been
+called}
 }
 \value{
-data.frame with one row per event (play)
+data.frame with one row per event (play) and added columns:
+\code{homeGoals}, \code{awayGoals}, \code{homeSOG}, \code{awaySOG}, \code{homeFenwick},
+\code{awayFenwick}, \code{homeCorsi}, \code{awayCorsi}, \code{goalsFor}, \code{goalsAgainst},
+\code{SOGFor}, \code{SOGAgainst}, \code{fenwickFor}, \code{fenwickAgainst}, \code{corsiFor},
+\code{corsiAgainst}, \code{goalDifferential}, \code{SOGDifferential},
+\code{fenwickDifferential}, and \code{corsiDifferential}
 }
 \description{
 \code{count_goals_shots()} counts the as-of-event goal, shots on goal, Fenwick,
 and Corsi attempts and differentials for all the events (plays) in a
-play-by-play by perspective
+play-by-play by perspective.
 }
 \examples{
 # May take >5s, so skip.

@@ -4,49 +4,41 @@
 #' `strip_game_id()` strips the game ID into the season ID, game type ID, and 
 #' game number for all the events (plays) in a play-by-play.
 #' 
-#' @param data data.frame of play-by-play(s); see [gc_play_by_play()] and/or 
-#' [wsc_play_by_play()] for reference
-#' @param game_id_name name of column that contains game ID
-#' @param season_id_name name of column that you want contain season ID
-#' @param game_type_id_name name of column that you want contain game type ID
-#' @param game_number_name name of column that you want contain game number
-#' @returns data.frame with one row per event (play)
+#' @param play_by_play data.frame of play-by-play(s); see [gc_play_by_play()] 
+#' and/or [wsc_play_by_play()] for reference; must be untouched by 
+#' non-nhlscraper functions
+#' @returns data.frame with one row per event (play) and added columns:
+#' `seasonId`, `gameTypeId`, and `gameNumber`
 #' @examples
 #' # May take >5s, so skip.
 #' \donttest{
-#'   test                 <- gc_play_by_play()
-#'   test_gameId_stripped <- strip_game_id(test)
+#'   test                  <- gc_play_by_play()
+#'   test_game_id_stripped <- strip_game_id(test)
 #' }
 #' @export
 
-strip_game_id <- function(
-  data,
-  game_id_name      = 'gameId',
-  season_id_name    = 'seasonId',
-  game_type_id_name = 'gameTypeId',
-  game_number_name  = 'gameNumber'
-) {
+strip_game_id <- function(play_by_play) {
   tryCatch(
     expr = {
-      gid_chr      <- as.character(data[[game_id_name]])
+      gid_chr      <- as.character(play_by_play[['gameId']])
       season_start <- as.integer(substr(gid_chr, 1, 4))
       game_type    <- as.integer(substr(gid_chr, 5, 6))
       game_number  <- as.integer(substr(gid_chr, 7, 10))
       season_id <- ifelse(
         is.na(season_start),
         NA_integer_,
-        season_start * 1e5 + (season_start + 1)
+        season_start * 1e5 + (season_start + 1L)
       )
-      data[[season_id_name]]    <- season_id
-      data[[game_type_id_name]] <- game_type
-      data[[game_number_name]]  <- game_number
-      new_cols   <- c(season_id_name, game_type_id_name, game_number_name)
-      other_cols <- setdiff(names(data), new_cols)
-      data[c(new_cols, other_cols)]
+      play_by_play[['seasonId']]   <- season_id
+      play_by_play[['gameTypeId']] <- game_type
+      play_by_play[['gameNumber']] <- game_number
+      new_cols   <- c('seasonId', 'gameTypeId', 'gameNumber')
+      other_cols <- setdiff(names(play_by_play), new_cols)
+      play_by_play[c(new_cols, other_cols)]
     },
     error = function(e) {
       message('Invalid argument(s); refer to help file.')
-      data
+      play_by_play
     }
   )
 }
@@ -57,17 +49,12 @@ strip_game_id <- function(
 #' `strip_time_period()` strip the timestamp and period number into the time 
 #' elapsed in the period and game for all the events (plays) in a play-by-play.
 #' 
-#' @inheritParams strip_game_id
-#' @param game_type_id_name name of column that contains game type ID; see 
-#' [strip_game_id()] for reference
-#' @param time_in_period_name name of column that contains time in period in 
-#' 'MM:SS'
-#' @param period_name name of column that contains period number
-#' @param seconds_elapsed_in_period_name name of column that you want contain 
-#' seconds elapsed in period
-#' @param seconds_elapsed_in_game_name name of column that you want contain 
-#' seconds elapsed in game
-#' @returns data.frame with one row per event (play)
+#' @param play_by_play data.frame of play-by-play(s); see [gc_play_by_play()] 
+#' and/or [wsc_play_by_play()] for reference; must be untouched by 
+#' non-nhlscraper functions; saves time if [strip_game_id()] has already been 
+#' called
+#' @returns data.frame with one row per event (play) and added columns
+#' `secondsElapsedInPeriod` and `secondsElapsedInGame`
 #' @examples
 #' # May take >5s, so skip.
 #' \donttest{
@@ -77,56 +64,64 @@ strip_game_id <- function(
 #' }
 #' @export
 
-strip_time_period <- function(
-    data,
-    game_type_id_name              = 'gameTypeId',
-    time_in_period_name            = 'timeInPeriod',
-    period_name             = 'period',
-    seconds_elapsed_in_period_name = 'secondsElapsedInPeriod',
-    seconds_elapsed_in_game_name   = 'secondsElapsedInGame'
-) {
+strip_time_period <- function(play_by_play) {
   tryCatch(
     expr = {
-      tip <- as.character(data[[time_in_period_name]])
+      had_season_id   <- 'seasonId'   %in% names(play_by_play)
+      had_game_type   <- 'gameTypeId' %in% names(play_by_play)
+      had_game_number <- 'gameNumber' %in% names(play_by_play)
+      if (!had_game_type) {
+        play_by_play <- strip_game_id(play_by_play)
+      }
+      tip <- as.character(play_by_play[['timeInPeriod']])
       mm  <- suppressWarnings(as.integer(sub(':.*', '', tip)))
       ss  <- suppressWarnings(as.integer(sub('.*:', '', tip)))
-      seconds_in_period <- mm * 60 + ss
-      gtype  <- suppressWarnings(as.integer(data[[game_type_id_name]]))
-      per    <- suppressWarnings(as.integer(data[[period_name]]))
+      seconds_in_period <- mm * 60L + ss
+      gtype <- suppressWarnings(as.integer(play_by_play[['gameTypeId']]))
+      per   <- suppressWarnings(as.integer(play_by_play[['period']]))
       n      <- length(seconds_in_period)
       offset <- rep(NA_integer_, n)
-      idx_po <- !is.na(gtype) & gtype == 3 & !is.na(per)
+      idx_po <- !is.na(gtype) & gtype == 3L & !is.na(per)
       if (any(idx_po)) {
-        offset[idx_po] <- (pmax(per[idx_po], 1) - 1) * 1200
+        offset[idx_po] <- (pmax(per[idx_po], 1L) - 1L) * 1200L
       }
-      idx_rs <- !is.na(gtype) & gtype %in% c(1, 2) & !is.na(per)
+      idx_rs <- !is.na(gtype) & gtype %in% c(1L, 2L) & !is.na(per)
       if (any(idx_rs)) {
-        p                <- per[idx_rs]
-        off_rs           <- rep(NA_integer_, length(p))
-        idx_123          <- p <= 3
-        off_rs[idx_123]  <- (p[idx_123] - 1) * 1200
-        idx_4 <- p == 4
+        p      <- per[idx_rs]
+        off_rs <- rep(NA_integer_, length(p))
+        idx_123         <- p <= 3L
+        off_rs[idx_123] <- (p[idx_123] - 1L) * 1200L
+        idx_4 <- p == 4L
         if (any(idx_4)) {
-          off_rs[idx_4]  <- 3 * 1200
+          off_rs[idx_4] <- 3L * 1200L
         }
-        idx_5p <- p >= 5
+        idx_5p <- p >= 5L
         if (any(idx_5p)) {
-          off_rs[idx_5p] <- 3 * 1200 + 300
+          off_rs[idx_5p] <- 3L * 1200L + 300L
         }
-        offset[idx_rs]   <- off_rs
+        offset[idx_rs] <- off_rs
       }
-      idx_other <- !is.na(gtype) & !(gtype %in% c(1, 2, 3)) & !is.na(per)
+      idx_other <- !is.na(gtype) & !(gtype %in% c(1L, 2L, 3L)) & !is.na(per)
       if (any(idx_other)) {
-        offset[idx_other] <- (pmax(per[idx_other], 1) - 1) * 1200
+        offset[idx_other] <- (pmax(per[idx_other], 1L) - 1L) * 1200L
       }
       seconds_in_game <- offset + seconds_in_period
-      data[[seconds_elapsed_in_period_name]] <- seconds_in_period
-      data[[seconds_elapsed_in_game_name]]   <- seconds_in_game
-      data
+      play_by_play[['secondsElapsedInPeriod']] <- seconds_in_period
+      play_by_play[['secondsElapsedInGame']]   <- seconds_in_game
+      if (!had_season_id   && 'seasonId'   %in% names(play_by_play)) {
+        play_by_play[['seasonId']] <- NULL
+      }
+      if (!had_game_number && 'gameNumber' %in% names(play_by_play)) {
+        play_by_play[['gameNumber']] <- NULL
+      }
+      if (!had_game_type   && 'gameTypeId' %in% names(play_by_play)) {
+        play_by_play[['gameTypeId']] <- NULL
+      }
+      play_by_play
     },
     error = function(e) {
       message('Invalid argument(s); refer to help file.')
-      data
+      play_by_play
     }
   )
 }
@@ -139,31 +134,14 @@ strip_time_period <- function(
 #' counts, man differential, and strength state for all the events (plays) in a 
 #' play-by-play by perspective.
 #' 
-#' @inheritParams strip_game_id
-#' @param is_home_name name of column that contains home/not logical 
-#' indicator; see [flag_is_home()] for reference
-#' @param situation_code_name name of column that contains situation code
-#' @param home_is_empty_net_name name of column that you want contain empty net 
-#' indicator for home team
-#' @param away_is_empty_net_name name of column that you want contain empty net 
-#' indicator for away team
-#' @param home_skater_count_name name of column that you want contain skater 
-#' count for home team
-#' @param away_skater_count_name name of column that you want contain skater 
-#' count for away team
-#' @param is_empty_net_for_name name of column that you want contain empty net 
-#' indicator for event-owning team
-#' @param is_empty_net_against_name name of column that you want contain empty 
-#' net indicator for opposing team
-#' @param skater_count_for_name name of column that you want contain skater 
-#' count for event-owning team
-#' @param skater_count_against_name name of column that you want contain skater 
-#' count for opposing team
-#' @param man_differential_name name of column that you want contain man 
-#' differential
-#' @param strength_state_name name of column that you want contain strength 
-#' state
-#' @returns data.frame with one row per event (play)
+#' @param play_by_play data.frame of play-by-play(s); see [gc_play_by_play()] 
+#' and/or [wsc_play_by_play()] for reference; must be untouched by 
+#' non-nhlscraper functions; saves time if [flag_is_home()] has already been 
+#' called
+#' @returns data.frame with one row per event (play) and added columns:
+#' `homeIsEmptyNet`, `awayIsEmptyNet`, `homeSkaterCount`, `awaySkaterCount`,
+#' `isEmptyNetFor`, `isEmptyNetAgainst`, `skaterCountFor`, 
+#' `skaterCountAgainst`, `manDifferential`, and `strengthState`
 #' @examples
 #' # May take >5s, so skip.
 #' \donttest{
@@ -173,41 +151,31 @@ strip_time_period <- function(
 #' }
 #' @export
 
-strip_situation_code <- function(
-  data,
-  is_home_name              = 'isHome',
-  situation_code_name       = 'situationCode',
-  home_is_empty_net_name    = 'homeIsEmptyNet',
-  away_is_empty_net_name    = 'awayIsEmptyNet',
-  home_skater_count_name    = 'homeSkaterCount',
-  away_skater_count_name    = 'awaySkaterCount',
-  is_empty_net_for_name     = 'isEmptyNetFor',
-  is_empty_net_against_name = 'isEmptyNetAgainst',
-  skater_count_for_name     = 'skaterCountFor',
-  skater_count_against_name = 'skaterCountAgainst',
-  man_differential_name     = 'manDifferential',
-  strength_state_name       = 'strengthState'
-) {
+strip_situation_code <- function(play_by_play) {
   tryCatch(
     expr = {
-      raw_situation <- data[[situation_code_name]]
+      had_is_home <- 'isHome' %in% names(play_by_play)
+      if (!had_is_home) {
+        play_by_play <- flag_is_home(play_by_play)
+      }
+      raw_situation <- play_by_play[['situationCode']]
       situation_chr <- as.character(raw_situation)
-      situation <- rep(NA_character_, length(situation_chr))
-      valid     <- !is.na(situation_chr) & nchar(situation_chr) > 0
+      situation     <- rep(NA_character_, length(situation_chr))
+      valid         <- !is.na(situation_chr) & nchar(situation_chr) > 0L
       if (any(valid)) {
         situation[valid] <- sprintf('%04d', as.integer(situation_chr[valid]))
       }
-      away_goalie_in <- as.integer(substr(situation, 1, 1))
-      away_skaters   <- as.integer(substr(situation, 2, 2))
-      home_skaters   <- as.integer(substr(situation, 3, 3))
-      home_goalie_in <- as.integer(substr(situation, 4, 4))
-      away_empty <- ifelse(is.na(away_goalie_in), NA, away_goalie_in == 0)
-      home_empty <- ifelse(is.na(home_goalie_in), NA, home_goalie_in == 0)
-      data[[home_is_empty_net_name]] <- home_empty
-      data[[away_is_empty_net_name]] <- away_empty
-      data[[home_skater_count_name]] <- home_skaters
-      data[[away_skater_count_name]] <- away_skaters
-      is_home <- data[[is_home_name]]
+      away_goalie_in <- as.integer(substr(situation, 1L, 1L))
+      away_skaters   <- as.integer(substr(situation, 2L, 2L))
+      home_skaters   <- as.integer(substr(situation, 3L, 3L))
+      home_goalie_in <- as.integer(substr(situation, 4L, 4L))
+      away_empty <- ifelse(is.na(away_goalie_in), NA, away_goalie_in == 0L)
+      home_empty <- ifelse(is.na(home_goalie_in), NA, home_goalie_in == 0L)
+      play_by_play[['homeIsEmptyNet']] <- home_empty
+      play_by_play[['awayIsEmptyNet']] <- away_empty
+      play_by_play[['homeSkaterCount']] <- home_skaters
+      play_by_play[['awaySkaterCount']] <- away_skaters
+      is_home <- play_by_play[['isHome']]
       if (!is.logical(is_home)) {
         is_home <- as.logical(is_home)
       }
@@ -230,24 +198,27 @@ strip_situation_code <- function(
         skater_for[away_idx]     <- away_skaters[away_idx]
         skater_against[away_idx] <- home_skaters[away_idx]
       }
-      is_empty_for     <- ifelse(is.na(goalie_for), NA, goalie_for == 0)
-      is_empty_against <- ifelse(is.na(goalie_against), NA, goalie_against == 0)
-      data[[is_empty_net_for_name]]     <- is_empty_for
-      data[[is_empty_net_against_name]] <- is_empty_against
-      data[[skater_count_for_name]]     <- skater_for
-      data[[skater_count_against_name]] <- skater_against
+      is_empty_for     <- ifelse(is.na(goalie_for), NA, goalie_for == 0L)
+      is_empty_against <- ifelse(is.na(goalie_against), NA, goalie_against == 0L)
+      play_by_play[['isEmptyNetFor']]     <- is_empty_for
+      play_by_play[['isEmptyNetAgainst']] <- is_empty_against
+      play_by_play[['skaterCountFor']]    <- skater_for
+      play_by_play[['skaterCountAgainst']] <- skater_against
       man_diff <- (goalie_for + skater_for) - (goalie_against + skater_against)
-      data[[man_differential_name]] <- man_diff
+      play_by_play[['manDifferential']] <- man_diff
       strength_state <- rep(NA_character_, n)
-      strength_state[!is.na(man_diff) & man_diff == 0]  <- 'even-strength'
-      strength_state[!is.na(man_diff) & man_diff >  0]  <- 'power-play'
-      strength_state[!is.na(man_diff) & man_diff <  0]  <- 'penalty-kill'
-      data[[strength_state_name]] <- strength_state
-      data
+      strength_state[!is.na(man_diff) & man_diff == 0L]  <- 'even-strength'
+      strength_state[!is.na(man_diff) & man_diff >  0L]  <- 'power-play'
+      strength_state[!is.na(man_diff) & man_diff <  0L]  <- 'penalty-kill'
+      play_by_play[['strengthState']] <- strength_state
+      if (!had_is_home && 'isHome' %in% names(play_by_play)) {
+        play_by_play[['isHome']] <- NULL
+      }
+      play_by_play
     },
     error = function(e) {
       message('Invalid argument(s); refer to help file.')
-      data
+      play_by_play
     }
   )
 }
@@ -258,12 +229,10 @@ strip_situation_code <- function(
 #' `flag_is_home()` flags if the event belongs to the home team or not for 
 #' all the events (plays) in a play-by-play.
 #' 
-#' @inheritParams strip_game_id
-#' @param event_owner_team_id_name name of column that contains event-owning 
-#' team's ID
-#' @param is_home_name name of column that you want contain home/not logical 
-#' indicator
-#' @returns data.frame with one row per event (play)
+#' @param play_by_play data.frame of play-by-play(s); see [gc_play_by_play()] 
+#' and/or [wsc_play_by_play()] for reference; must be untouched by 
+#' non-nhlscraper functions
+#' @returns data.frame with one row per event (play) and added `isHome` column
 #' @examples
 #' # May take >5s, so skip.
 #' \donttest{
@@ -272,33 +241,27 @@ strip_situation_code <- function(
 #' }
 #' @export
 
-flag_is_home <- function(
-  data,
-  game_id_name              = 'gameId',
-  event_owner_team_id_name  = 'eventOwnerTeamId',
-  is_home_name              = 'isHome'
-) {
+flag_is_home <- function(play_by_play) {
   tryCatch(
     expr = {
       games         <- games()
-      data_game_id  <- as.character(data[[game_id_name]])
+      data_game_id  <- as.character(play_by_play[['gameId']])
       games_game_id <- as.character(games[['id']])
       idx           <- match(data_game_id, games_game_id)
-      home_ids      <- games[['homeTeamId']][idx]
-      owner_ids     <- data[[event_owner_team_id_name]]
-      is_home       <- rep(NA, length(owner_ids))
-      valid         <- !is.na(owner_ids) & !is.na(home_ids)
+      home_ids  <- games[['homeTeamId']][idx]
+      owner_ids <- play_by_play[['eventOwnerTeamId']]
+      is_home <- rep(NA, length(owner_ids))
+      valid   <- !is.na(owner_ids) & !is.na(home_ids)
       if (any(valid)) {
-        is_home[valid] <- 
+        is_home[valid] <-
           as.character(owner_ids[valid]) == as.character(home_ids[valid])
       }
-      data[[is_home_name]] <- is_home
-      data
+      play_by_play[['isHome']] <- is_home
+      play_by_play
     },
     error = function(e) {
-      message(e)
       message('Invalid argument(s); refer to help file.')
-      data
+      play_by_play
     }
   )
 }
@@ -309,46 +272,42 @@ flag_is_home <- function(
 #' `flag_is_rebound()` flags if the shot attempt is a rebound attempt or not 
 #' for all the shots in a play-by-play.
 #' 
-#' @inheritParams strip_game_id
-#' @inheritParams strip_situation_code
-#' @param seconds_elapsed_in_game_name name of column that contains seconds 
-#' elapsed in game; see [strip_time_period()] for reference
-#' @param sort_order_name name of column that contains sort order
-#' @param type_description_name name of column that contains event type 
-#' description
-#' @param is_rebound_name name of column that you want contain rebound/not 
-#' logical indicator
-#' @returns data.frame with one row per event (play)
+#' @param play_by_play data.frame of play-by-play(s); see [gc_play_by_play()] 
+#' and/or [wsc_play_by_play()] for reference; must be untouched by 
+#' non-nhlscraper functions; saves time if [flag_is_home()] and/or 
+#' @returns data.frame with one row per event (play) and added `isRebound` 
+#' column
 #' @examples
 #' # May take >5s, so skip.
 #' \donttest{
 #'   test                      <- gc_play_by_play()
-#'   test_time_period_stripped <- strip_time_period(test)
-#'   test_is_home_flagged      <- flag_is_home(test_time_period_stripped)
-#'   test_is_rebound_flagged   <- flag_is_rebound(test_is_home_flagged)
+#'   test_is_home_flagged      <- flag_is_home(test)
+#'   test_game_id_stripped     <- strip_game_id(test_is_home_flagged)
+#'   test_time_period_stripped <- strip_time_period(test_game_id_stripped)
+#'   test_is_rebound_flagged   <- flag_is_rebound(test_time_period_stripped)
 #' }
 #' @export
 
-flag_is_rebound <- function(
-  data,
-  is_home_name                 = 'isHome',
-  seconds_elapsed_in_game_name = 'secondsElapsedInGame',
-  game_id_name                 = 'gameId',
-  sort_order_name              = 'sortOrder',
-  type_description_name        = 'typeDescKey',
-  is_rebound_name              = 'isRebound'
-) {
+flag_is_rebound <- function(play_by_play) {
   tryCatch(
     expr = {
-      n <- nrow(data)
-      game_id    <- as.character(data[[game_id_name]])
-      sort_order <- as.numeric(data[[sort_order_name]])
-      sec_game   <- as.numeric(data[[seconds_elapsed_in_game_name]])
-      is_home    <- data[[is_home_name]]
+      had_is_home      <- 'isHome' %in% names(play_by_play)
+      had_sec_elapsed  <- 'secondsElapsedInGame' %in% names(play_by_play)
+      if (!had_is_home) {
+        play_by_play <- flag_is_home(play_by_play)
+      }
+      if (!had_sec_elapsed) {
+        play_by_play <- strip_time_period(play_by_play)
+      }
+      n <- nrow(play_by_play)
+      game_id    <- as.character(play_by_play[['gameId']])
+      sort_order <- as.numeric(play_by_play[['sortOrder']])
+      sec_game   <- as.numeric(play_by_play[['secondsElapsedInGame']])
+      is_home <- play_by_play[['isHome']]
       if (!is.logical(is_home)) {
         is_home <- as.logical(is_home)
       }
-      type <- as.character(data[[type_description_name]])
+      type <- as.character(play_by_play[['typeDescKey']])
       is_attempt <- !is.na(type) & type %in% c(
         'goal',
         'shot-on-goal',
@@ -366,7 +325,7 @@ flag_is_rebound <- function(
       uniq_games <- uniq_games[!is.na(uniq_games)]
       for (g in uniq_games) {
         idx <- which(game_id == g)
-        if (length(idx) == 0) next
+        if (length(idx) == 0L) next
         ord     <- order(sort_order[idx], na.last = TRUE)
         idx_ord <- idx[ord]
         last_home_time <- NA_real_
@@ -410,12 +369,18 @@ flag_is_rebound <- function(
           }
         }
       }
-      data[[is_rebound_name]] <- is_rebound
-      data
+      play_by_play[['isRebound']] <- is_rebound
+      if (!had_is_home && 'isHome' %in% names(play_by_play)) {
+        play_by_play[['isHome']] <- NULL
+      }
+      if (!had_sec_elapsed && 'secondsElapsedInGame' %in% names(play_by_play)) {
+        play_by_play[['secondsElapsedInGame']] <- NULL
+      }
+      play_by_play
     },
     error = function(e) {
       message('Invalid argument(s); refer to help file.')
-      data
+      play_by_play
     }
   )
 }
@@ -426,43 +391,43 @@ flag_is_rebound <- function(
 #' `flag_is_rush()` flags if the shot attempt is a rush attempt or not for all 
 #' the shots in a play-by-play.
 #' 
-#' @inheritParams flag_is_rebound
-#' @param zone_code_name name of column that contains zone code
-#' @param is_rush_name name of column that you want contain rush/not 
-#' logical indicator
-#' @returns data.frame with one row per event (play)
+#' @param play_by_play data.frame of play-by-play(s); see [gc_play_by_play()] 
+#' and/or [wsc_play_by_play()] for reference; must be untouched by 
+#' non-nhlscraper functions; saves time if [flag_is_home()] and 
+#' [strip_time_period()] had already been called
+#' @returns data.frame with one row per event (play) and added `isRush` column
 #' @examples
 #' # May take >5s, so skip.
 #' \donttest{
 #'   test                      <- gc_play_by_play()
-#'   test_time_period_stripped <- strip_time_period(test)
-#'   test_is_home_flagged      <- flag_is_home(test_time_period_stripped)
-#'   test_is_rush_flagged      <- flag_is_rush(test_is_home_flagged)
+#'   test_is_home_flagged      <- flag_is_home(test)
+#'   test_game_id_stripped     <- strip_game_id(test_is_home_flagged)
+#'   test_time_period_stripped <- strip_time_period(test_game_id_stripped)
+#'   test_is_rush_flagged      <- flag_is_rush(test_time_period_stripped)
 #' }
 #' @export
 
-flag_is_rush <- function(
-  data,
-  is_home_name                 = 'isHome',
-  seconds_elapsed_in_game_name = 'secondsElapsedInGame',
-  game_id_name                 = 'gameId',
-  sort_order_name              = 'sortOrder',
-  type_description_name        = 'typeDescKey',
-  zone_code_name               = 'zoneCode',
-  is_rush_name                 = 'isRush'
-) {
+flag_is_rush <- function(play_by_play) {
   tryCatch(
     expr = {
-      n <- nrow(data)
-      game_id    <- as.character(data[[game_id_name]])
-      sort_order <- as.numeric(data[[sort_order_name]])
-      sec_game   <- as.numeric(data[[seconds_elapsed_in_game_name]])
-      is_home <- data[[is_home_name]]
+      had_is_home     <- 'isHome' %in% names(play_by_play)
+      had_sec_elapsed <- 'secondsElapsedInGame' %in% names(play_by_play)
+      if (!had_is_home) {
+        play_by_play <- flag_is_home(play_by_play)
+      }
+      if (!had_sec_elapsed) {
+        play_by_play <- strip_time_period(play_by_play)
+      }
+      n <- nrow(play_by_play)
+      game_id    <- as.character(play_by_play[['gameId']])
+      sort_order <- as.numeric(play_by_play[['sortOrder']])
+      sec_game   <- as.numeric(play_by_play[['secondsElapsedInGame']])
+      is_home <- play_by_play[['isHome']]
       if (!is.logical(is_home)) {
         is_home <- as.logical(is_home)
       }
-      type       <- as.character(data[[type_description_name]])
-      zone_owner <- as.character(data[[zone_code_name]])
+      type       <- as.character(play_by_play[['typeDescKey']])
+      zone_owner <- as.character(play_by_play[['zoneCode']])
       is_attempt <- !is.na(type) & type %in% c(
         'goal',
         'shot-on-goal',
@@ -471,7 +436,6 @@ flag_is_rush <- function(
       )
       is_faceoff <- !is.na(type) & type == 'faceoff'
       is_rush <- rep(FALSE, n)
-      
       flip_zone_single <- function(z) {
         if (is.na(z)) return(NA_character_)
         if (z == 'O') return('D')
@@ -479,7 +443,6 @@ flag_is_rush <- function(
         if (z == 'N') return('N')
         NA_character_
       }
-      
       uniq_games <- unique(game_id)
       uniq_games <- uniq_games[!is.na(uniq_games)]
       for (g in uniq_games) {
@@ -525,7 +488,6 @@ flag_is_rush <- function(
               z_away <- z_owner
               z_home <- flip_zone_single(z_owner)
             }
-            
             if (!is.na(z_home) && z_home %in% c('D', 'N')) {
               last_ND_home <- t
             }
@@ -535,12 +497,18 @@ flag_is_rush <- function(
           }
         }
       }
-      data[[is_rush_name]] <- is_rush
-      data
+      play_by_play[['isRush']] <- is_rush
+      if (!had_is_home && 'isHome' %in% names(play_by_play)) {
+        play_by_play[['isHome']] <- NULL
+      }
+      if (!had_sec_elapsed && 'secondsElapsedInGame' %in% names(play_by_play)) {
+        play_by_play[['secondsElapsedInGame']] <- NULL
+      }
+      play_by_play
     },
     error = function(e) {
       message('Invalid argument(s); refer to help file.')
-      data
+      play_by_play
     }
   )
 }
@@ -550,50 +518,18 @@ flag_is_rush <- function(
 #' 
 #' `count_goals_shots()` counts the as-of-event goal, shots on goal, Fenwick, 
 #' and Corsi attempts and differentials for all the events (plays) in a 
-#' play-by-play by perspective
+#' play-by-play by perspective.
 #' 
-#' @inheritParams flag_is_rebound
-#' @param home_goals_name name of column that you want contain goal count for 
-#' home team
-#' @param away_goals_name name of column that you want contain goal count for 
-#' away team
-#' @param home_shots_on_goal_name name of column that you want contain shots on 
-#' goal count for home team
-#' @param away_shots_on_goal_name name of column that you want contain shots on 
-#' goal count for away team
-#' @param home_fenwick_name name of column that you want contain Fenwick count 
-#' for home team
-#' @param away_fenwick_name name of column that you want contain Fenwick count 
-#' for away team
-#' @param home_corsi_name name of column that you want contain Corsi count for 
-#' home team
-#' @param away_corsi_name name of column that you want contain Corsi count for 
-#' away team
-#' @param goals_for_name name of column that you want contain goal count for 
-#' event-owning team
-#' @param goals_against_name name of column that you want contain goal count 
-#' for opposing team
-#' @param shots_on_goal_for_name name of column that you want contain shots on 
-#' goal count for event-owning team
-#' @param shots_on_goal_against_name name of column that you want contain shots 
-#' on goal count for opposing team
-#' @param fenwick_for_name name of column that you want contain Fenwick count 
-#' for event-owning team
-#' @param fenwick_against_name name of column that you want contain Fenwick 
-#" count for opposing team
-#' @param corsi_for_name name of column that you want contain Corsi count for 
-#' event-owning team
-#' @param corsi_against_name name of column that you want contain Corsi count 
-#' for opposing team
-#' @param goal_differential_name name of column that you want contain goal 
-#' differential
-#' @param shots_on_goal_differential_name name of column that you want contain 
-#' shots on goal differential
-#' @param fenwick_differential_name name of column that you want contain 
-#' Fenwick differential
-#' @param corsi_differential_name name of column that you want contain Corsi  
-#' differential
-#' @returns data.frame with one row per event (play)
+#' @param play_by_play data.frame of play-by-play(s); see [gc_play_by_play()] 
+#' and/or [wsc_play_by_play()] for reference; must be untouched by 
+#' non-nhlscraper functions; saves time if [flag_is_home()] has already been 
+#' called
+#' @returns data.frame with one row per event (play) and added columns:
+#' `homeGoals`, `awayGoals`, `homeSOG`, `awaySOG`, `homeFenwick`, 
+#' `awayFenwick`, `homeCorsi`, `awayCorsi`, `goalsFor`, `goalsAgainst`, 
+#' `SOGFor`, `SOGAgainst`, `fenwickFor`, `fenwickAgainst`, `corsiFor`, 
+#' `corsiAgainst`, `goalDifferential`, `SOGDifferential`, 
+#' `fenwickDifferential`, and `corsiDifferential`
 #' @examples
 #' # May take >5s, so skip.
 #' \donttest{
@@ -603,48 +539,25 @@ flag_is_rush <- function(
 #' }
 #' @export
 
-count_goals_shots <- function(
-  data,
-  is_home_name                    = 'isHome',
-  game_id_name                    = 'gameId',
-  sort_order_name                 = 'sortOrder',
-  type_description_name           = 'typeDescKey',
-  home_goals_name                 = 'homeGoals',
-  away_goals_name                 = 'awayGoals',
-  home_shots_on_goal_name         = 'homeSOG',
-  away_shots_on_goal_name         = 'awaySOG',
-  home_fenwick_name               = 'homeFenwick',
-  away_fenwick_name               = 'awayFenwick',
-  home_corsi_name                 = 'homeCorsi',
-  away_corsi_name                 = 'awayCorsi',
-  goals_for_name                  = 'goalsFor',
-  goals_against_name              = 'goalsAgainst',
-  shots_on_goal_for_name          = 'SOGFor',
-  shots_on_goal_against_name      = 'SOGAgainst',
-  fenwick_for_name                = 'fenwickFor',
-  fenwick_against_name            = 'fenwickAgainst',
-  corsi_for_name                  = 'corsiFor',
-  corsi_against_name              = 'corsiAgainst',
-  goal_differential_name          = 'goalDifferential',
-  shots_on_goal_differential_name = 'SOGDifferential',
-  fenwick_differential_name       = 'fenwickDifferential',
-  corsi_differential_name         = 'corsiDifferential'
-) {
+count_goals_shots <- function(play_by_play) {
   tryCatch(
     expr = {
-      n <- nrow(data)
-      game_id    <- as.character(data[[game_id_name]])
-      sort_order <- as.numeric(data[[sort_order_name]])
-      is_home    <- data[[is_home_name]]
+      had_is_home <- 'isHome' %in% names(play_by_play)
+      if (!had_is_home) {
+        play_by_play <- flag_is_home(play_by_play)
+      }
+      n <- nrow(play_by_play)
+      game_id    <- as.character(play_by_play[['gameId']])
+      sort_order <- as.numeric(play_by_play[['sortOrder']])
+      is_home <- play_by_play[['isHome']]
       if (!is.logical(is_home)) {
         is_home <- as.logical(is_home)
       }
-      type <- as.character(data[[type_description_name]])
-      is_goal   <- !is.na(type) & type == 'goal'
-      is_sog    <- is_goal | (!is.na(type) & type == 'shot-on-goal')
-      is_fen    <- is_sog  | (!is.na(type) & type == 'missed-shot')
-      is_corsi  <- is_fen  | (!is.na(type) & type == 'blocked-shot')
-      
+      type <- as.character(play_by_play[['typeDescKey']])
+      is_goal  <- !is.na(type) & type == 'goal'
+      is_sog   <- is_goal | (!is.na(type) & type == 'shot-on-goal')
+      is_fen   <- is_sog  | (!is.na(type) & type == 'missed-shot')
+      is_corsi <- is_fen  | (!is.na(type) & type == 'blocked-shot')
       goals_for         <- rep(NA_integer_, n)
       goals_against     <- rep(NA_integer_, n)
       sog_for           <- rep(NA_integer_, n)
@@ -653,7 +566,6 @@ count_goals_shots <- function(
       fen_against       <- rep(NA_integer_, n)
       corsi_for         <- rep(NA_integer_, n)
       corsi_against     <- rep(NA_integer_, n)
-      
       home_goals_vec    <- rep(NA_integer_, n)
       away_goals_vec    <- rep(NA_integer_, n)
       home_sog_vec      <- rep(NA_integer_, n)
@@ -662,24 +574,21 @@ count_goals_shots <- function(
       away_fen_vec      <- rep(NA_integer_, n)
       home_corsi_vec    <- rep(NA_integer_, n)
       away_corsi_vec    <- rep(NA_integer_, n)
-      
       uniq_games <- unique(game_id)
       uniq_games <- uniq_games[!is.na(uniq_games)]
       for (g in uniq_games) {
         idx <- which(game_id == g)
-        if (length(idx) == 0) next
-        ord <- order(sort_order[idx], na.last = TRUE)
+        if (length(idx) == 0L) next
+        ord     <- order(sort_order[idx], na.last = TRUE)
         idx_ord <- idx[ord]
-        
-        home_goals   <- 0
-        away_goals   <- 0
-        home_sog     <- 0
-        away_sog     <- 0
-        home_fen     <- 0
-        away_fen     <- 0
-        home_corsi   <- 0
-        away_corsi   <- 0
-        
+        home_goals <- 0L
+        away_goals <- 0L
+        home_sog   <- 0L
+        away_sog   <- 0L
+        home_fen   <- 0L
+        away_fen   <- 0L
+        home_corsi <- 0L
+        away_corsi <- 0L
         last_goals_for         <- NA_integer_
         last_goals_against     <- NA_integer_
         last_sog_for           <- NA_integer_
@@ -688,11 +597,9 @@ count_goals_shots <- function(
         last_fen_against       <- NA_integer_
         last_corsi_for         <- NA_integer_
         last_corsi_against     <- NA_integer_
-        
         for (pos in seq_along(idx_ord)) {
           i  <- idx_ord[pos]
           ih <- is_home[i]
-          
           home_goals_vec[i] <- home_goals
           away_goals_vec[i] <- away_goals
           home_sog_vec[i]   <- home_sog
@@ -701,32 +608,26 @@ count_goals_shots <- function(
           away_fen_vec[i]   <- away_fen
           home_corsi_vec[i] <- home_corsi
           away_corsi_vec[i] <- away_corsi
-          
           if (!is.na(ih)) {
             if (ih) {
-              
-              gf  <- home_goals
-              ga  <- away_goals
-              sf  <- home_sog
-              sa  <- away_sog
-              ff  <- home_fen
-              fa  <- away_fen
-              cf  <- home_corsi
-              ca  <- away_corsi
-              
+              gf <- home_goals
+              ga <- away_goals
+              sf <- home_sog
+              sa <- away_sog
+              ff <- home_fen
+              fa <- away_fen
+              cf <- home_corsi
+              ca <- away_corsi
             } else {
-              
-              gf  <- away_goals
-              ga  <- home_goals
-              sf  <- away_sog
-              sa  <- home_sog
-              ff  <- away_fen
-              fa  <- home_fen
-              cf  <- away_corsi
-              ca  <- home_corsi
-              
+              gf <- away_goals
+              ga <- home_goals
+              sf <- away_sog
+              sa <- home_sog
+              ff <- away_fen
+              fa <- home_fen
+              cf <- away_corsi
+              ca <- home_corsi
             }
-            
             goals_for[i]     <- gf
             goals_against[i] <- ga
             sog_for[i]       <- sf
@@ -735,25 +636,18 @@ count_goals_shots <- function(
             fen_against[i]   <- fa
             corsi_for[i]     <- cf
             corsi_against[i] <- ca
-            
             if (ih) {
-              
-              if (is_goal[i])  home_goals <- home_goals + 1
-              if (is_sog[i])   home_sog   <- home_sog   + 1
-              if (is_fen[i])   home_fen   <- home_fen   + 1
-              if (is_corsi[i]) home_corsi <- home_corsi + 1
-              
+              if (is_goal[i])  home_goals <- home_goals + 1L
+              if (is_sog[i])   home_sog   <- home_sog   + 1L
+              if (is_fen[i])   home_fen   <- home_fen   + 1L
+              if (is_corsi[i]) home_corsi <- home_corsi + 1L
             } else {
-              
-              if (is_goal[i])  away_goals <- away_goals + 1
-              if (is_sog[i])   away_sog   <- away_sog   + 1
-              if (is_fen[i])   away_fen   <- away_fen   + 1
-              if (is_corsi[i]) away_corsi <- away_corsi + 1
-              
+              if (is_goal[i])  away_goals <- away_goals + 1L
+              if (is_sog[i])   away_sog   <- away_sog   + 1L
+              if (is_fen[i])   away_fen   <- away_fen   + 1L
+              if (is_corsi[i]) away_corsi <- away_corsi + 1L
             }
-            
             if (ih) {
-              
               last_goals_for         <- home_goals
               last_goals_against     <- away_goals
               last_sog_for           <- home_sog
@@ -762,9 +656,7 @@ count_goals_shots <- function(
               last_fen_against       <- away_fen
               last_corsi_for         <- home_corsi
               last_corsi_against     <- away_corsi
-              
             } else {
-              
               last_goals_for         <- away_goals
               last_goals_against     <- home_goals
               last_sog_for           <- away_sog
@@ -773,11 +665,9 @@ count_goals_shots <- function(
               last_fen_against       <- home_fen
               last_corsi_for         <- away_corsi
               last_corsi_against     <- home_corsi
-              
             }
           } else {
             if (!is.na(last_goals_for)) {
-              
               goals_for[i]     <- last_goals_for
               goals_against[i] <- last_goals_against
               sog_for[i]       <- last_sog_for
@@ -786,9 +676,7 @@ count_goals_shots <- function(
               fen_against[i]   <- last_fen_against
               corsi_for[i]     <- last_corsi_for
               corsi_against[i] <- last_corsi_against
-              
             } else {
-              
               goals_for[i]     <- home_goals
               goals_against[i] <- away_goals
               sog_for[i]       <- home_sog
@@ -797,40 +685,38 @@ count_goals_shots <- function(
               fen_against[i]   <- away_fen
               corsi_for[i]     <- home_corsi
               corsi_against[i] <- away_corsi
-              
             }
           }
         }
       }
-      
-      data[[home_goals_name]]                   <- home_goals_vec
-      data[[away_goals_name]]                   <- away_goals_vec
-      data[[home_shots_on_goal_name]]           <- home_sog_vec
-      data[[away_shots_on_goal_name]]           <- away_sog_vec
-      data[[home_fenwick_name]]                 <- home_fen_vec
-      data[[away_fenwick_name]]                 <- away_fen_vec
-      data[[home_corsi_name]]                   <- home_corsi_vec
-      data[[away_corsi_name]]                   <- away_corsi_vec
-      
-      data[[goals_for_name]]                    <- goals_for
-      data[[goals_against_name]]                <- goals_against
-      data[[shots_on_goal_for_name]]            <- sog_for
-      data[[shots_on_goal_against_name]]        <- sog_against
-      data[[fenwick_for_name]]                  <- fen_for
-      data[[fenwick_against_name]]              <- fen_against
-      data[[corsi_for_name]]                    <- corsi_for
-      data[[corsi_against_name]]                <- corsi_against
-      
-      data[[goal_differential_name]]            <- goals_for - goals_against
-      data[[shots_on_goal_differential_name]]   <- sog_for   - sog_against
-      data[[fenwick_differential_name]]         <- fen_for   - fen_against
-      data[[corsi_differential_name]]           <- corsi_for - corsi_against
-      
-      data
+      play_by_play[['homeGoals']]    <- home_goals_vec
+      play_by_play[['awayGoals']]    <- away_goals_vec
+      play_by_play[['homeSOG']]      <- home_sog_vec
+      play_by_play[['awaySOG']]      <- away_sog_vec
+      play_by_play[['homeFenwick']]  <- home_fen_vec
+      play_by_play[['awayFenwick']]  <- away_fen_vec
+      play_by_play[['homeCorsi']]    <- home_corsi_vec
+      play_by_play[['awayCorsi']]    <- away_corsi_vec
+      play_by_play[['goalsFor']]     <- goals_for
+      play_by_play[['goalsAgainst']] <- goals_against
+      play_by_play[['SOGFor']]       <- sog_for
+      play_by_play[['SOGAgainst']]   <- sog_against
+      play_by_play[['fenwickFor']]   <- fen_for
+      play_by_play[['fenwickAgainst']] <- fen_against
+      play_by_play[['corsiFor']]     <- corsi_for
+      play_by_play[['corsiAgainst']] <- corsi_against
+      play_by_play[['goalDifferential']]    <- goals_for - goals_against
+      play_by_play[['SOGDifferential']]     <- sog_for   - sog_against
+      play_by_play[['fenwickDifferential']] <- fen_for   - fen_against
+      play_by_play[['corsiDifferential']]   <- corsi_for - corsi_against
+      if (!had_is_home && 'isHome' %in% names(play_by_play)) {
+        play_by_play[['isHome']] <- NULL
+      }
+      play_by_play
     },
     error = function(e) {
       message('Invalid argument(s); refer to help file.')
-      data
+      play_by_play
     }
   )
 }
@@ -841,16 +727,12 @@ count_goals_shots <- function(
 #' `normalize_coordinates()` normalizes the x and y coordinates for all the 
 #' events (plays) in a play-by-play such that they all attack towards +x.
 #' 
-#' @inheritParams flag_is_rebound
-#' @param home_team_defending_side_name name of column that contains home team 
-#' defending side
-#' @param x_coordinate_name name of column that contains x coordinate
-#' @param y_coordinate_name name of column that contains y coordinate
-#' @param x_coordinate_normalized_name name of column that you want contain 
-#' normalized x coordinate
-#' @param y_coordinate_normalized_name name of column that you want contain 
-#' normalized y coordinate
-#' @returns data.frame with one row per event (play)
+#' @param play_by_play data.frame of play-by-play(s); see [gc_play_by_play()] 
+#' and/or [wsc_play_by_play()] for reference; must be untouched by 
+#' non-nhlscraper functions; saves time if [flag_is_home()] has already been 
+#' called
+#' @returns data.frame with one row per event (play) and added columns 
+#' `xCoordNorm` and `yCoordNorm`
 #' @examples
 #' # May take >5s, so skip.
 #' \donttest{
@@ -860,42 +742,41 @@ count_goals_shots <- function(
 #' }
 #' @export
 
-normalize_coordinates <- function(
-  data,
-  is_home_name                     = 'isHome',
-  home_team_defending_side_name    = 'homeTeamDefendingSide',
-  x_coordinate_name                = 'xCoord',
-  y_coordinate_name                = 'yCoord',
-  x_coordinate_normalized_name     = 'xCoordNorm',
-  y_coordinate_normalized_name     = 'yCoordNorm'
-) {
+normalize_coordinates <- function(play_by_play) {
   tryCatch(
     expr = {
-      is_home  <- data[[is_home_name]]
+      had_is_home <- 'isHome' %in% names(play_by_play)
+      if (!had_is_home) {
+        play_by_play <- flag_is_home(play_by_play)
+      }
+      is_home <- play_by_play[['isHome']]
       if (!is.logical(is_home)) {
         is_home <- as.logical(is_home)
       }
-      home_def <- tolower(as.character(data[[home_team_defending_side_name]]))
-      x        <- as.numeric(data[[x_coordinate_name]])
-      y        <- as.numeric(data[[y_coordinate_name]])
-      n <- length(x)
+      home_def <- tolower(as.character(play_by_play[['homeTeamDefendingSide']]))
+      x        <- as.numeric(play_by_play[['xCoord']])
+      y        <- as.numeric(play_by_play[['yCoord']])
+      n    <- length(x)
       mult <- rep(NA_integer_, n)
       valid <- !is.na(is_home) & !is.na(home_def)
-      left_idx  <- valid & home_def == 'left'
+      left_idx <- valid & home_def == 'left'
       if (any(left_idx)) {
-        mult[left_idx] <- ifelse(is_home[left_idx],  1, -1)
+        mult[left_idx] <- ifelse(is_home[left_idx],  1L, -1L)
       }
       right_idx <- valid & home_def == 'right'
       if (any(right_idx)) {
-        mult[right_idx] <- ifelse(is_home[right_idx], -1,  1)
+        mult[right_idx] <- ifelse(is_home[right_idx], -1L,  1L)
       }
-      data[[x_coordinate_normalized_name]] <- x * mult
-      data[[y_coordinate_normalized_name]] <- y * mult
-      data
+      play_by_play[['xCoordNorm']] <- x * mult
+      play_by_play[['yCoordNorm']] <- y * mult
+      if (!had_is_home && 'isHome' %in% names(play_by_play)) {
+        play_by_play[['isHome']] <- NULL
+      }
+      play_by_play
     },
     error = function(e) {
       message('Invalid argument(s); refer to help file.')
-      data
+      play_by_play
     }
   )
 }
@@ -906,13 +787,11 @@ normalize_coordinates <- function(
 #' `calculate_distance()` calculates the Euclidean distance from the attacking 
 #' net for all the events (plays) in a play-by-play.
 #' 
-#' @inheritParams flag_is_rebound
-#' @param x_coordinate_normalized_name name of column that contains normalized 
-#' x coordinate; see [normalize_coordinates()] for reference
-#' @param y_coordinate_normalized_name name of column that contains normalized 
-#' y coordinate; see [normalize_coordinates()] for reference
-#' @param distance_name name of column that you want contain distance
-#' @returns data.frame with one row per event (play)
+#' @param play_by_play data.frame of play-by-play(s); see [gc_play_by_play()] 
+#' and/or [wsc_play_by_play()] for reference; must be untouched by 
+#' non-nhlscraper functions; saves time if [normalize_coordinates()] has 
+#' already been called
+#' @returns data.frame with one row per event (play) and added `distance` column
 #' @examples
 #' # May take >5s, so skip.
 #' \donttest{
@@ -923,25 +802,31 @@ normalize_coordinates <- function(
 #' }
 #' @export
 
-calculate_distance <- function(
-  data,
-  x_coordinate_normalized_name = 'xCoordNorm',
-  y_coordinate_normalized_name = 'yCoordNorm',
-  distance_name                = 'distance'
-) {
+calculate_distance <- function(play_by_play) {
   tryCatch(
     expr = {
-      x  <- as.numeric(data[[x_coordinate_normalized_name]])
-      y  <- as.numeric(data[[y_coordinate_normalized_name]])
+      had_x_norm <- 'xCoordNorm' %in% names(play_by_play)
+      had_y_norm <- 'yCoordNorm' %in% names(play_by_play)
+      if (!had_x_norm || !had_y_norm) {
+        play_by_play <- normalize_coordinates(play_by_play)
+      }
+      x  <- as.numeric(play_by_play[['xCoordNorm']])
+      y  <- as.numeric(play_by_play[['yCoordNorm']])
       dx <- 89 - x
       dy <- 0 - y
       distance <- sqrt(dx^2 + dy^2)
-      data[[distance_name]] <- distance
-      data
+      play_by_play[['distance']] <- distance
+      if (!had_x_norm && 'xCoordNorm' %in% names(play_by_play)) {
+        play_by_play[['xCoordNorm']] <- NULL
+      }
+      if (!had_y_norm && 'yCoordNorm' %in% names(play_by_play)) {
+        play_by_play[['yCoordNorm']] <- NULL
+      }
+      play_by_play
     },
     error = function(e) {
       message('Invalid argument(s); refer to help file.')
-      data
+      play_by_play
     }
   )
 }
@@ -952,13 +837,11 @@ calculate_distance <- function(
 #' `calculate_angle()` calculates the Euclidean angle from the attacking net 
 #' for all the events (plays) in a play-by-play.
 #' 
-#' @inheritParams flag_is_rebound
-#' @param x_coordinate_normalized_name name of column that contains normalized 
-#' x coordinate; see [normalize_coordinates()] for reference
-#' @param y_coordinate_normalized_name name of column that contains normalized 
-#' y coordinate; see [normalize_coordinates()] for reference
-#' @param angle_name name of column that you want contain distance
-#' @returns data.frame with one row per event (play)
+#' @param play_by_play data.frame of play-by-play(s); see [gc_play_by_play()] 
+#' and/or [wsc_play_by_play()] for reference; must be untouched by 
+#' non-nhlscraper functions; saves time if [normalize_coordinates()] has 
+#' already been called
+#' @returns data.frame with one row per event (play) and added `angle` column
 #' @examples
 #' # May take >5s, so skip.
 #' \donttest{
@@ -969,25 +852,428 @@ calculate_distance <- function(
 #' }
 #' @export
 
-calculate_angle <- function(
-  data,
-  x_coordinate_normalized_name = 'xCoordNorm',
-  y_coordinate_normalized_name = 'yCoordNorm',
-  angle_name                   = 'angle'
-) {
+calculate_angle <- function(play_by_play) {
   tryCatch(
     expr = {
-      x  <- as.numeric(data[[x_coordinate_normalized_name]])
-      y  <- as.numeric(data[[y_coordinate_normalized_name]])
+      had_x_norm <- 'xCoordNorm' %in% names(play_by_play)
+      had_y_norm <- 'yCoordNorm' %in% names(play_by_play)
+      if (!had_x_norm || !had_y_norm) {
+        play_by_play <- normalize_coordinates(play_by_play)
+      }
+      x  <- as.numeric(play_by_play[['xCoordNorm']])
+      y  <- as.numeric(play_by_play[['yCoordNorm']])
       dx <- 89 - x
       dy <- 0 - y
       angle <- atan2(abs(dy), dx) * 180 / pi
-      data[[angle_name]] <- angle
-      data
+      play_by_play[['angle']] <- angle
+      if (!had_x_norm && 'xCoordNorm' %in% names(play_by_play)) {
+        play_by_play[['xCoordNorm']] <- NULL
+      }
+      if (!had_y_norm && 'yCoordNorm' %in% names(play_by_play)) {
+        play_by_play[['yCoordNorm']] <- NULL
+      }
+      play_by_play
     },
     error = function(e) {
       message('Invalid argument(s); refer to help file.')
-      data
+      play_by_play
+    }
+  )
+}
+
+#' Calculate version 1 of the expected goals for all the events (plays) in a 
+#' play-by-play
+#' 
+#' `calculate_expected_goals_v1()` calculates version 1 of the expected goals 
+#' for all the events (plays) in a play-by-play using a pre-estimated logistic 
+#' regression model of goal probability on distance, angle, empty net, and 
+#' strength state.
+#'
+#' @param play_by_play data.frame of play-by-play(s); see [gc_play_by_play()] 
+#' and/or [wsc_play_by_play()] for reference; must be untouched by 
+#' non-nhlscraper functions; saves time if [calculate_distance()], 
+#' [calculate_angle()], and/or [strip_situation_code()] have already been called
+#'
+#' @returns data.frame with one row per event (play) and added `xG_v1` column
+#' @examples
+#' # May take >5s, so skip.
+#' \donttest{
+#'   test <- gc_play_by_play()
+#'   test <- calculate_expected_goals_v1(test)
+#' }
+#' @export
+
+calculate_expected_goals_v1 <- function(play_by_play) {
+  tryCatch(
+    expr = {
+      beta0   <- -1.8999656
+      beta_d  <- -0.0337112
+      beta_a  <- -0.0077118
+      beta_en <-  4.3321873
+      beta_pk <-  0.6454842
+      beta_pp <-  0.4080557
+      original_names <- names(play_by_play)
+      had_is_home   <- 'isHome'            %in% names(play_by_play)
+      had_distance  <- 'distance'          %in% names(play_by_play)
+      had_angle     <- 'angle'             %in% names(play_by_play)
+      had_ena       <- 'isEmptyNetAgainst' %in% names(play_by_play)
+      had_strength  <- 'strengthState'     %in% names(play_by_play)
+      if (!had_is_home) {
+        play_by_play <- flag_is_home(play_by_play)
+      }
+      if (!had_ena || !had_strength) {
+        play_by_play <- strip_situation_code(play_by_play)
+      }
+      if (!had_distance) {
+        play_by_play <- calculate_distance(play_by_play)
+      }
+      if (!had_angle) {
+        play_by_play <- calculate_angle(play_by_play)
+      }
+      n  <- nrow(play_by_play)
+      xg <- rep(NA_real_, n)
+      distance <- as.numeric(play_by_play[['distance']])
+      angle    <- as.numeric(play_by_play[['angle']])
+      ena      <- as.logical(play_by_play[['isEmptyNetAgainst']])
+      strength <- as.character(play_by_play[['strengthState']])
+      raw_situation <- play_by_play[['situationCode']]
+      situation_chr <- as.character(raw_situation)
+      situation_pad <- rep(NA_character_, length(situation_chr))
+      valid_sit     <- !is.na(situation_chr) & nchar(situation_chr) > 0L
+      if (any(valid_sit)) {
+        situation_pad[valid_sit] <- sprintf(
+          '%04d',
+          as.integer(situation_chr[valid_sit])
+        )
+      }
+      situation <- situation_pad
+      type <- as.character(play_by_play[['typeDescKey']])
+      bad_situation <- situation %in% c('0101', '1010')
+      shot_types    <- c('goal', 'shot-on-goal', 'missed-shot', 'blocked-shot')
+      is_shot       <- !is.na(type) & type %in% shot_types
+      idx <- !is.na(situation) & !bad_situation & is_shot
+      if (!any(idx)) {
+        play_by_play[['xG_v1']] <- xg
+        final_names <- names(play_by_play)
+        new_names   <- setdiff(final_names, original_names)
+        allowed_new <- c('xG_v1')
+        drop_names  <- setdiff(new_names, allowed_new)
+        if (length(drop_names) > 0L) {
+          play_by_play[drop_names] <- NULL
+        }
+        if (!had_is_home && 'isHome' %in% names(play_by_play)) {
+          play_by_play[['isHome']] <- NULL
+        }
+        return(play_by_play)
+      }
+      ii <- which(idx)
+      lp <- rep(beta0, length(ii))
+      lp <- lp + beta_d * distance[ii]
+      lp <- lp + beta_a * angle[ii]
+      lp <- lp + beta_en * as.numeric(!is.na(ena[ii]) & ena[ii])
+      st     <- strength[ii]
+      pk_idx <- !is.na(st) & st == 'penalty-kill'
+      pp_idx <- !is.na(st) & st == 'power-play'
+      if (any(pk_idx)) {
+        lp[pk_idx] <- lp[pk_idx] + beta_pk
+      }
+      if (any(pp_idx)) {
+        lp[pp_idx] <- lp[pp_idx] + beta_pp
+      }
+      xg[ii] <- 1 / (1 + exp(-lp))
+      play_by_play[['xG_v1']] <- xg
+      final_names <- names(play_by_play)
+      new_names   <- setdiff(final_names, original_names)
+      allowed_new <- c('xG_v1')
+      drop_names  <- setdiff(new_names, allowed_new)
+      if (length(drop_names) > 0L) {
+        play_by_play[drop_names] <- NULL
+      }
+      if (!had_is_home && 'isHome' %in% names(play_by_play)) {
+        play_by_play[['isHome']] <- NULL
+      }
+      play_by_play
+    },
+    error = function(e) {
+      message('Invalid argument(s); refer to help file.')
+      play_by_play
+    }
+  )
+}
+
+#' Calculate version 2 of the expected goals for all the events (plays) in a 
+#' play-by-play
+#' 
+#' `calculate_expected_goals_v2()` calculates version 2 of the expected goals 
+#' for all the events (plays) in a play-by-play using a pre-estimated logistic 
+#' regression model of goal probability on distance, angle, empty net, strength 
+#' state, rebound, and rush indicators.
+#' 
+#' @param play_by_play data.frame of play-by-play(s); see [gc_play_by_play()] 
+#' and/or [wsc_play_by_play()] for reference; must be untouched by 
+#' non-nhlscraper functions; saves time if [calculate_distance()], 
+#' [calculate_angle()], [strip_situation_code()], [flag_is_rebound()], and/or 
+#' [flag_is_rush()] have already been called
+#' @returns data.frame with one row per event (play) and added `xG_v2` column
+#' @examples
+#' # May take >5s, so skip.
+#' \donttest{
+#'   test <- gc_play_by_play()
+#'   test <- calculate_expected_goals_v2(test)
+#' }
+#' @export
+
+calculate_expected_goals_v2 <- function(play_by_play) {
+  tryCatch(
+    expr = {
+      beta0   <- -1.9963221
+      beta_d  <- -0.0315542
+      beta_a  <- -0.0080897
+      beta_en <-  4.2879873
+      beta_pk <-  0.6673946
+      beta_pp <-  0.4089630
+      beta_rb <-  0.4133378
+      beta_rs <- -0.0657790
+      original_names <- names(play_by_play)
+      had_is_home  <- 'isHome'            %in% names(play_by_play)
+      had_distance <- 'distance'          %in% names(play_by_play)
+      had_angle    <- 'angle'             %in% names(play_by_play)
+      had_ena      <- 'isEmptyNetAgainst' %in% names(play_by_play)
+      had_strength <- 'strengthState'     %in% names(play_by_play)
+      had_rebound  <- 'isRebound'         %in% names(play_by_play)
+      had_rush     <- 'isRush'            %in% names(play_by_play)
+      if (!had_is_home) {
+        play_by_play <- flag_is_home(play_by_play)
+      }
+      if (!had_ena || !had_strength) {
+        play_by_play <- strip_situation_code(play_by_play)
+      }
+      if (!had_distance) {
+        play_by_play <- calculate_distance(play_by_play)
+      }
+      if (!had_angle) {
+        play_by_play <- calculate_angle(play_by_play)
+      }
+      if (!had_rebound) {
+        play_by_play <- flag_is_rebound(play_by_play)
+      }
+      if (!had_rush) {
+        play_by_play <- flag_is_rush(play_by_play)
+      }
+      n  <- nrow(play_by_play)
+      xg <- rep(NA_real_, n)
+      distance <- as.numeric(play_by_play[['distance']])
+      angle    <- as.numeric(play_by_play[['angle']])
+      ena      <- as.logical(play_by_play[['isEmptyNetAgainst']])
+      strength <- as.character(play_by_play[['strengthState']])
+      rebound  <- as.logical(play_by_play[['isRebound']])
+      rush     <- as.logical(play_by_play[['isRush']])
+      raw_situation <- play_by_play[['situationCode']]
+      situation_chr <- as.character(raw_situation)
+      situation_pad <- rep(NA_character_, length(situation_chr))
+      valid_sit     <- !is.na(situation_chr) & nchar(situation_chr) > 0L
+      if (any(valid_sit)) {
+        situation_pad[valid_sit] <- sprintf(
+          '%04d', 
+          as.integer(situation_chr[valid_sit])
+        )
+      }
+      situation <- situation_pad
+      type <- as.character(play_by_play[['typeDescKey']])
+      bad_situation <- situation %in% c('0101', '1010')
+      shot_types    <- c('goal', 'shot-on-goal', 'missed-shot', 'blocked-shot')
+      is_shot       <- !is.na(type) & type %in% shot_types
+      idx <- !is.na(situation) & !bad_situation & is_shot
+      if (!any(idx)) {
+        play_by_play[['xG_v2']] <- xg
+        final_names <- names(play_by_play)
+        new_names   <- setdiff(final_names, original_names)
+        allowed_new <- c('xG_v2')
+        drop_names  <- setdiff(new_names, allowed_new)
+        if (length(drop_names) > 0L) {
+          play_by_play[drop_names] <- NULL
+        }
+        if (!had_is_home && 'isHome' %in% names(play_by_play)) {
+          play_by_play[['isHome']] <- NULL
+        }
+        return(play_by_play)
+      }
+      ii <- which(idx)
+      lp <- rep(beta0, length(ii))
+      lp <- lp + beta_d * distance[ii]
+      lp <- lp + beta_a * angle[ii]
+      lp <- lp + beta_en * as.numeric(!is.na(ena[ii]) & ena[ii])
+      st     <- strength[ii]
+      pk_idx <- !is.na(st) & st == 'penalty-kill'
+      pp_idx <- !is.na(st) & st == 'power-play'
+      if (any(pk_idx)) {
+        lp[pk_idx] <- lp[pk_idx] + beta_pk
+      }
+      if (any(pp_idx)) {
+        lp[pp_idx] <- lp[pp_idx] + beta_pp
+      }
+      lp <- lp + beta_rb * as.numeric(!is.na(rebound[ii]) & rebound[ii])
+      lp <- lp + beta_rs * as.numeric(!is.na(rush[ii]) & rush[ii])
+      xg[ii] <- 1 / (1 + exp(-lp))
+      play_by_play[['xG_v2']] <- xg
+      final_names <- names(play_by_play)
+      new_names   <- setdiff(final_names, original_names)
+      allowed_new <- c('xG_v2')
+      drop_names  <- setdiff(new_names, allowed_new)
+      if (length(drop_names) > 0L) {
+        play_by_play[drop_names] <- NULL
+      }
+      if (!had_is_home && 'isHome' %in% names(play_by_play)) {
+        play_by_play[['isHome']] <- NULL
+      }
+      play_by_play
+    },
+    error = function(e) {
+      message('Invalid argument(s); refer to help file.')
+      play_by_play
+    }
+  )
+}
+
+#' Calculate version 3 of the expected goals for all the events (plays) in a 
+#' play-by-play
+#' 
+#' `calculate_expected_goals_v3()` calculates version 3 of the expected goals 
+#' for all the events (plays) in a play-by-play using a pre-estimated logistic 
+#' regression model of goal probability on distance, angle, empty net, strength 
+#' state, rebound, rush, and goal differential.
+#' 
+#' @param play_by_play data.frame of play-by-play(s); see [gc_play_by_play()] 
+#' and/or [wsc_play_by_play()] for reference; must be untouched by 
+#' non-nhlscraper functions; saves time if [calculate_distance()], 
+#' [calculate_angle()], [strip_situation_code()], [flag_is_rebound()], 
+#' [flag_is_rush()], and/or [count_goals_shots()] have already been called
+#' @returns data.frame with one row per event (play) and an added `xG_v3` 
+#' column containing expected goals for applicable shot attempts.
+#' @examples
+#' # May take >5s, so skip.
+#' \donttest{
+#'   test <- gc_play_by_play()
+#'   test <- calculate_expected_goals_v3(test)
+#' }
+#' @export
+
+calculate_expected_goals_v3 <- function(play_by_play) {
+  tryCatch(
+    expr = {
+      beta0   <- -1.9942500
+      beta_d  <- -0.0315190
+      beta_a  <- -0.0080823
+      beta_en <-  4.2126061
+      beta_pk <-  0.6601609
+      beta_pp <-  0.4106154
+      beta_rb <-  0.4172151
+      beta_rs <- -0.0709434
+      beta_gd <-  0.0424470
+      original_names <- names(play_by_play)
+      had_is_home  <- 'isHome'            %in% names(play_by_play)
+      had_distance <- 'distance'          %in% names(play_by_play)
+      had_angle    <- 'angle'             %in% names(play_by_play)
+      had_ena      <- 'isEmptyNetAgainst' %in% names(play_by_play)
+      had_strength <- 'strengthState'     %in% names(play_by_play)
+      had_rebound  <- 'isRebound'         %in% names(play_by_play)
+      had_rush     <- 'isRush'            %in% names(play_by_play)
+      had_gd       <- 'goalDifferential'  %in% names(play_by_play)
+      if (!had_is_home) {
+        play_by_play <- flag_is_home(play_by_play)
+      }
+      if (!had_ena || !had_strength) {
+        play_by_play <- strip_situation_code(play_by_play)
+      }
+      if (!had_distance) {
+        play_by_play <- calculate_distance(play_by_play)
+      }
+      if (!had_angle) {
+        play_by_play <- calculate_angle(play_by_play)
+      }
+      if (!had_rebound) {
+        play_by_play <- flag_is_rebound(play_by_play)
+      }
+      if (!had_rush) {
+        play_by_play <- flag_is_rush(play_by_play)
+      }
+      if (!had_gd) {
+        play_by_play <- count_goals_shots(play_by_play)
+      }
+      n  <- nrow(play_by_play)
+      xg <- rep(NA_real_, n)
+      distance <- as.numeric(play_by_play[['distance']])
+      angle    <- as.numeric(play_by_play[['angle']])
+      ena      <- as.logical(play_by_play[['isEmptyNetAgainst']])
+      strength <- as.character(play_by_play[['strengthState']])
+      rebound  <- as.logical(play_by_play[['isRebound']])
+      rush     <- as.logical(play_by_play[['isRush']])
+      gd       <- as.numeric(play_by_play[['goalDifferential']])
+      raw_situation <- play_by_play[['situationCode']]
+      situation_chr <- as.character(raw_situation)
+      situation_pad <- rep(NA_character_, length(situation_chr))
+      valid_sit     <- !is.na(situation_chr) & nchar(situation_chr) > 0L
+      if (any(valid_sit)) {
+        situation_pad[valid_sit] <- sprintf(
+          '%04d',
+          as.integer(situation_chr[valid_sit])
+        )
+      }
+      situation <- situation_pad
+      type <- as.character(play_by_play[['typeDescKey']])
+      bad_situation <- situation %in% c('0101', '1010')
+      shot_types    <- c('goal', 'shot-on-goal', 'missed-shot', 'blocked-shot')
+      is_shot       <- !is.na(type) & type %in% shot_types
+      idx <- !is.na(situation) & !bad_situation & is_shot
+      if (!any(idx)) {
+        play_by_play[['xG_v3']] <- xg
+        final_names <- names(play_by_play)
+        new_names   <- setdiff(final_names, original_names)
+        allowed_new <- c('xG_v3')
+        drop_names  <- setdiff(new_names, allowed_new)
+        if (length(drop_names) > 0L) {
+          play_by_play[drop_names] <- NULL
+        }
+        if (!had_is_home && 'isHome' %in% names(play_by_play)) {
+          play_by_play[['isHome']] <- NULL
+        }
+        return(play_by_play)
+      }
+      ii <- which(idx)
+      lp <- rep(beta0, length(ii))
+      lp <- lp + beta_d * distance[ii]
+      lp <- lp + beta_a * angle[ii]
+      lp <- lp + beta_en * as.numeric(!is.na(ena[ii]) & ena[ii])
+      st     <- strength[ii]
+      pk_idx <- !is.na(st) & st == 'penalty-kill'
+      pp_idx <- !is.na(st) & st == 'power-play'
+      
+      if (any(pk_idx)) {
+        lp[pk_idx] <- lp[pk_idx] + beta_pk
+      }
+      if (any(pp_idx)) {
+        lp[pp_idx] <- lp[pp_idx] + beta_pp
+      }
+      lp <- lp + beta_rb * as.numeric(!is.na(rebound[ii]) & rebound[ii])
+      lp <- lp + beta_rs * as.numeric(!is.na(rush[ii]) & rush[ii])
+      lp <- lp + beta_gd * gd[ii]
+      xg[ii] <- 1 / (1 + exp(-lp))
+      play_by_play[['xG_v3']] <- xg
+      final_names <- names(play_by_play)
+      new_names   <- setdiff(final_names, original_names)
+      allowed_new <- c('xG_v3')
+      drop_names  <- setdiff(new_names, allowed_new)
+      if (length(drop_names) > 0L) {
+        play_by_play[drop_names] <- NULL
+      }
+      if (!had_is_home && 'isHome' %in% names(play_by_play)) {
+        play_by_play[['isHome']] <- NULL
+      }
+      play_by_play
+    },
+    error = function(e) {
+      message('Invalid argument(s); refer to help file.')
+      play_by_play
     }
   )
 }
