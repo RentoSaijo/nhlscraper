@@ -42,7 +42,7 @@ authors:
 reference:
   - title: "High-level"
     desc: >
-      Functions that call the NHL APIs for high-level data
+      Functions to call the NHL APIs for high-level data
 
   - subtitle: "League"
     desc: >
@@ -131,7 +131,7 @@ reference:
       
   - title: "Mid-level"
     desc: >
-      Functions that call the NHL APIs for mid-level data
+      Functions to call the NHL APIs for mid-level data
       
   - subtitle: "Player"
     desc: >
@@ -191,7 +191,7 @@ reference:
 
   - title: "Low-level"
     desc: >
-      Functions that call the NHL APIs for low-level data
+      Functions to call the NHL APIs for low-level data
       
   - subtitle: "Game"
     desc: >
@@ -217,18 +217,18 @@ reference:
   
   - title: "Analyze"
     desc: >
-      Functions that help analyze the play-by-play data
+      Functions to help analyze the play-by-play data
       
   - subtitle: "Load"
     desc: >
-      Functions that load pre-scraped full season play-by-plays
+      Functions to load pre-scraped full season play-by-plays
     contents:
       - gc_play_by_plays
       - wsc_play_by_plays
       
   - subtitle: "Clean"
     desc: >
-      Functions that help clean the data
+      Functions to help clean the data
     contents:
       - strip_game_id
       - strip_time_period
@@ -243,7 +243,7 @@ reference:
   
   - subtitle: "Model"
     desc: >
-      Functions that run built-in models
+      Functions to run built-in models
     contents:
       - calculate_expected_goals_v1
       - calculate_expected_goals_v2
@@ -251,20 +251,22 @@ reference:
       
   - subtitle: "Graph"
     desc: >
-      Functions that help graph the data (WIP)
+      Functions to help graph the data (WIP)
     contents:
       - draw_NHL_rink
       
   - subtitle: "Share"
     desc: >
-      Functions that help share the data (WIP)
+      Functions to help share the data (WIP)
     contents:
-      - ig_game_shot_location_summary
-      - x_game_shot_location_summary
+      - ig_game_shot_locations
+      - x_game_shot_locations
+      - ig_game_cumulative_expected_goals
+      - x_game_cumulative_expected_goals
 
   - title: "ESPN API"
     desc: >
-      Functions that call the ESPN APIs
+      Functions to call the ESPN APIs
     contents:
       - espn_teams
       - espn_team_summary

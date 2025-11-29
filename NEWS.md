@@ -1,6 +1,32 @@
+# nhlscraper 0.4.0
+
+- Website now features proper example.
+- New functions to help clean the data are now available:
+  - `strip_game_id()`
+  - `strip_time_period()`
+  - `strip_situation_code()`
+  - `flag_is_home()`
+  - `flag_is_rebound()`
+  - `flag_is_rush()`
+  - `count_goals_shots()`
+  - `normalize_coordinates()`
+  - `calculate_distance()`
+  - `calculate_angle()`
+- New functions to run built-in models are now available:
+  - `calculate_expected_goals_v1()`
+  - `calculate_expected_goals_v2()`
+  - `calculate_expected_goals_v3()`
+- New function to help graph the data is now available:
+  - `draw_NHL_rink()`
+- New functions to help share the data are now available:
+  - `ig_game_shot_locations()`
+  - `x_game_shot_locations()`
+  - `ig_game_cumulative_expected_goals()`
+  - `x_game_cumulative_expected_goals()`
+
 # nhlscraper 0.3.0
 
-- Website now features disclosure, history, and more examples.
+- Website now features disclosure and history.
 - Documentation is now standardized.
 - All API calls now handle rate-limits with exponential backoff.
 - Parameters are now standardized and can handle robust arguments.
