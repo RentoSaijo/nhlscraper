@@ -154,7 +154,8 @@
 <url><loc>https://rentosaijo.github.io/nhlscraper/reference/goalie_season_statistics.html</loc></url>
 <url><loc>https://rentosaijo.github.io/nhlscraper/reference/goalie_series_statistics.html</loc></url>
 <url><loc>https://rentosaijo.github.io/nhlscraper/reference/goalie_statistics.html</loc></url>
-<url><loc>https://rentosaijo.github.io/nhlscraper/reference/ig_game_shot_location_summary.html</loc></url>
+<url><loc>https://rentosaijo.github.io/nhlscraper/reference/ig_game_cumulative_expected_goals.html</loc></url>
+<url><loc>https://rentosaijo.github.io/nhlscraper/reference/ig_game_shot_locations.html</loc></url>
 <url><loc>https://rentosaijo.github.io/nhlscraper/reference/index.html</loc></url>
 <url><loc>https://rentosaijo.github.io/nhlscraper/reference/location.html</loc></url>
 <url><loc>https://rentosaijo.github.io/nhlscraper/reference/lottery_odds.html</loc></url>
@@ -231,5 +232,7 @@
 <url><loc>https://rentosaijo.github.io/nhlscraper/reference/wsc_play_by_play.html</loc></url>
 <url><loc>https://rentosaijo.github.io/nhlscraper/reference/wsc_play_by_plays.html</loc></url>
 <url><loc>https://rentosaijo.github.io/nhlscraper/reference/wsc_summary.html</loc></url>
+<url><loc>https://rentosaijo.github.io/nhlscraper/reference/x_game_cumulative_expected_goals.html</loc></url>
+<url><loc>https://rentosaijo.github.io/nhlscraper/reference/x_game_shot_locations.html</loc></url>
 </urlset>
 

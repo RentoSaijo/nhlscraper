@@ -1,8 +1,34 @@
 # Changelog
 
+## nhlscraper 0.4.0
+
+- Website now features proper example.
+- New functions to help clean the data are now available:
+  - [`strip_game_id()`](https://rentosaijo.github.io/nhlscraper/reference/strip_game_id.md)
+  - [`strip_time_period()`](https://rentosaijo.github.io/nhlscraper/reference/strip_time_period.md)
+  - [`strip_situation_code()`](https://rentosaijo.github.io/nhlscraper/reference/strip_situation_code.md)
+  - [`flag_is_home()`](https://rentosaijo.github.io/nhlscraper/reference/flag_is_home.md)
+  - [`flag_is_rebound()`](https://rentosaijo.github.io/nhlscraper/reference/flag_is_rebound.md)
+  - [`flag_is_rush()`](https://rentosaijo.github.io/nhlscraper/reference/flag_is_rush.md)
+  - [`count_goals_shots()`](https://rentosaijo.github.io/nhlscraper/reference/count_goals_shots.md)
+  - [`normalize_coordinates()`](https://rentosaijo.github.io/nhlscraper/reference/normalize_coordinates.md)
+  - [`calculate_distance()`](https://rentosaijo.github.io/nhlscraper/reference/calculate_distance.md)
+  - [`calculate_angle()`](https://rentosaijo.github.io/nhlscraper/reference/calculate_angle.md)
+- New functions to run built-in models are now available:
+  - [`calculate_expected_goals_v1()`](https://rentosaijo.github.io/nhlscraper/reference/calculate_expected_goals_v1.md)
+  - [`calculate_expected_goals_v2()`](https://rentosaijo.github.io/nhlscraper/reference/calculate_expected_goals_v2.md)
+  - [`calculate_expected_goals_v3()`](https://rentosaijo.github.io/nhlscraper/reference/calculate_expected_goals_v3.md)
+- New function to help graph the data is now available:
+  - [`draw_NHL_rink()`](https://rentosaijo.github.io/nhlscraper/reference/draw_NHL_rink.md)
+- New functions to help share the data are now available:
+  - [`ig_game_shot_locations()`](https://rentosaijo.github.io/nhlscraper/reference/ig_game_shot_locations.md)
+  - [`x_game_shot_locations()`](https://rentosaijo.github.io/nhlscraper/reference/x_game_shot_locations.md)
+  - [`ig_game_cumulative_expected_goals()`](https://rentosaijo.github.io/nhlscraper/reference/ig_game_cumulative_expected_goals.md)
+  - [`x_game_cumulative_expected_goals()`](https://rentosaijo.github.io/nhlscraper/reference/x_game_cumulative_expected_goals.md)
+
 ## nhlscraper 0.3.0
 
-- Website now features disclosure, history, and more examples.
+- Website now features disclosure and history.
 - Documentation is now standardized.
 - All API calls now handle rate-limits with exponential backoff.
 - Parameters are now standardized and can handle robust arguments.

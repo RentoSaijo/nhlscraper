@@ -4,5 +4,5 @@
 library(nhlscraper)
 ```
 
-For further usage, check out the documentation and example on our
+Please see documentation and examples on our
 [website](https://rentosaijo.github.io/nhlscraper/).

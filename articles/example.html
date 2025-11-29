@@ -5,7 +5,7 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<title>Example • nhlscraper</title>
+<title>Building and Understanding our Expected Goals (xG) Models • nhlscraper</title>
 <!-- favicons --><link rel="icon" type="image/png" sizes="96x96" href="../favicon-96x96.png">
 <link rel="icon" type="”image/svg+xml”" href="../favicon.svg">
 <link rel="apple-touch-icon" sizes="180x180" href="../apple-touch-icon.png">
@@ -15,7 +15,7 @@
 <link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
 <script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
 <link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
-<script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Example">
+<script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Building and Understanding our Expected Goals (xG) Models">
 </head>
 <body>
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
@@ -65,7 +65,7 @@
 
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
-      <img src="../logo.png" class="logo" alt=""><h1>Example</h1>
+      <img src="../logo.png" class="logo" alt=""><h1>Building and Understanding our Expected Goals (xG) Models</h1>
             
       
       <small class="dont-index">Source: <a href="https://github.com/RentoSaijo/nhlscraper/blob/main/vignettes/example.Rmd" class="external-link"><code>vignettes/example.Rmd</code></a></small>
@@ -74,12 +74,606 @@
 
     
     
-<p>This example explores how one may create <code>ggplot2</code> line
-graphs for total attendance and attendance per game across all seasons.
-Please contact me with your cool examples, and I can add them here
-too!</p>
-<p><img src="Example1.png" alt="Example1"><img src="Example2.png" alt="Example2"></p>
-  </main>
+<div class="section level2">
+<h2 id="overview">Overview<a class="anchor" aria-label="anchor" href="#overview"></a>
+</h2>
+<p>This example walks through how the expected goals (xG) models in
+<code>nhlscraper</code> are built and how to interpret them. Our goals
+are twofold: first, to show which features contribute to a shot
+attempt’s xG value; and second, to demonstrate how the package’s data
+acquisition and cleaning utilities support that modeling workflow. For
+all hockey-related technical terms and definitions (e.g., Corsi/SAT,
+Fenwick/USAT, rebound, rush), we can access the glossary.</p>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Load library.</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://rentosaijo.github.io/nhlscraper/">nhlscraper</a></span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Access glossary.</span></span>
+<span><span class="va">glossary</span> <span class="op">&lt;-</span> <span class="fu">nhlscraper</span><span class="fu">::</span><span class="fu"><a href="../reference/glossary.html">glossary</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+</div>
+<div class="section level2">
+<h2 id="wrangling">Wrangling<a class="anchor" aria-label="anchor" href="#wrangling"></a>
+</h2>
+<div class="section level3">
+<h3 id="scraping">Scraping<a class="anchor" aria-label="anchor" href="#scraping"></a>
+</h3>
+<p>We begin by assembling the dataset used to fit and evaluate our xG
+models. In earlier versions of this workflow, we had to manually loop
+over every game in the seasons of interest, fetch each game’s
+play-by-play, and then stitch them together as demonstrated in the
+legacy code <a href="https://github.com/RentoSaijo/NHL_DB/blob/main/R/Game.R" class="external-link">here</a>.
+With the new update <code>0.4.0</code>, this process is much simpler: we
+can retrieve a full season’s worth of play-by-plays with a single
+function call, and then combine multiple seasons into one modeling
+dataset.</p>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Load data.</span></span>
+<span><span class="va">gc_pbps_20222023</span> <span class="op">&lt;-</span> <span class="fu">nhlscraper</span><span class="fu">::</span><span class="fu"><a href="../reference/gc_play_by_plays.html">gc_pbps</a></span><span class="op">(</span><span class="fl">20222023</span><span class="op">)</span></span>
+<span><span class="va">gc_pbps_20232024</span> <span class="op">&lt;-</span> <span class="fu">nhlscraper</span><span class="fu">::</span><span class="fu"><a href="../reference/gc_play_by_plays.html">gc_pbps</a></span><span class="op">(</span><span class="fl">20232024</span><span class="op">)</span></span>
+<span><span class="va">gc_pbps_20242025</span> <span class="op">&lt;-</span> <span class="fu">nhlscraper</span><span class="fu">::</span><span class="fu"><a href="../reference/gc_play_by_plays.html">gc_pbps</a></span><span class="op">(</span><span class="fl">20242025</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Aggregate data.</span></span>
+<span><span class="va">common_cols</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/funprog.html" class="external-link">Reduce</a></span><span class="op">(</span></span>
+<span>  <span class="va">intersect</span>,</span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">gc_pbps_20222023</span><span class="op">)</span>,</span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">gc_pbps_20232024</span><span class="op">)</span>,</span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">gc_pbps_20242025</span><span class="op">)</span></span>
+<span>  <span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span><span class="va">gc_pbps_20222025</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">rbind</a></span><span class="op">(</span></span>
+<span>  <span class="va">gc_pbps_20222023</span><span class="op">[</span><span class="va">common_cols</span><span class="op">]</span>, </span>
+<span>  <span class="va">gc_pbps_20232024</span><span class="op">[</span><span class="va">common_cols</span><span class="op">]</span>, </span>
+<span>  <span class="va">gc_pbps_20242025</span><span class="op">[</span><span class="va">common_cols</span><span class="op">]</span></span>
+<span><span class="op">)</span></span></code></pre></div>
+</div>
+<div class="section level3">
+<h3 id="cleaning">Cleaning<a class="anchor" aria-label="anchor" href="#cleaning"></a>
+</h3>
+<p>Next, we prepare the play-by-play data for modeling by resolving a
+number of quirks and inconsistencies in the raw feed. For each event, we
+attach basic context such as whether the team is home or away, split the
+game ID into season, game type, and game number, and convert period/time
+information into continuous seconds elapsed in the game.</p>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Flag home/away.</span></span>
+<span><span class="va">gc_pbps_20222025_is_home_flagged</span>         <span class="op">&lt;-</span> </span>
+<span>  <span class="fu">nhlscraper</span><span class="fu">::</span><span class="fu"><a href="../reference/flag_is_home.html">flag_is_home</a></span><span class="op">(</span><span class="va">gc_pbps_20222025</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Strip game ID.</span></span>
+<span><span class="va">gc_pbps_20222025_game_id_stripped</span>        <span class="op">&lt;-</span> </span>
+<span>  <span class="fu">nhlscraper</span><span class="fu">::</span><span class="fu"><a href="../reference/strip_game_id.html">strip_game_id</a></span><span class="op">(</span><span class="va">gc_pbps_20222025_is_home_flagged</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Strip time and period.</span></span>
+<span><span class="va">gc_pbps_20222025_time_period_stripped</span>    <span class="op">&lt;-</span> </span>
+<span>  <span class="fu">nhlscraper</span><span class="fu">::</span><span class="fu"><a href="../reference/strip_time_period.html">strip_time_period</a></span><span class="op">(</span><span class="va">gc_pbps_20222025_game_id_stripped</span><span class="op">)</span></span></code></pre></div>
+<p>We then derive the key hockey and game-state features that drive xG:
+strength situation (empty net status, skater counts, man-advantage
+differential, and strength state labels), rebound and rush indicators,
+and shot-volume measures such as goals, shots on goal, Fenwick (USAT),
+and Corsi (SAT).</p>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Strip situation code.</span></span>
+<span><span class="va">gc_pbps_20222025_situation_code_stripped</span> <span class="op">&lt;-</span> </span>
+<span>  <span class="fu">nhlscraper</span><span class="fu">::</span><span class="fu"><a href="../reference/strip_situation_code.html">strip_situation_code</a></span><span class="op">(</span><span class="va">gc_pbps_20222025_time_period_stripped</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Flag rebound shot attempts.</span></span>
+<span><span class="va">gc_pbps_20222025_is_rebound_flagged</span>      <span class="op">&lt;-</span> </span>
+<span>  <span class="fu">nhlscraper</span><span class="fu">::</span><span class="fu"><a href="../reference/flag_is_rebound.html">flag_is_rebound</a></span><span class="op">(</span><span class="va">gc_pbps_20222025_situation_code_stripped</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Flag rush shot attempts.</span></span>
+<span><span class="va">gc_pbps_20222025_is_rush_flagged</span>         <span class="op">&lt;-</span> </span>
+<span>  <span class="fu">nhlscraper</span><span class="fu">::</span><span class="fu"><a href="../reference/flag_is_rush.html">flag_is_rush</a></span><span class="op">(</span><span class="va">gc_pbps_20222025_is_rebound_flagged</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Count goals, SOG, Fenwick, and Corsi.</span></span>
+<span><span class="va">gc_pbps_20222025_goals_shots_counted</span>     <span class="op">&lt;-</span> </span>
+<span>  <span class="fu">nhlscraper</span><span class="fu">::</span><span class="fu"><a href="../reference/count_goals_shots.html">count_goals_shots</a></span><span class="op">(</span><span class="va">gc_pbps_20222025_is_rush_flagged</span><span class="op">)</span></span></code></pre></div>
+<p>Finally, we normalize coordinates so that all shots are taken toward
+the +x direction and compute the Euclidean distance and angle to the
+net, restricting the dataset to non-shootout, non-penalty-shot
+attempts.</p>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Normalize coordinates to +x.</span></span>
+<span><span class="va">gc_pbps_20222025_coordinates_normalized</span>  <span class="op">&lt;-</span> </span>
+<span>  <span class="fu">nhlscraper</span><span class="fu">::</span><span class="fu"><a href="../reference/normalize_coordinates.html">normalize_coordinates</a></span><span class="op">(</span><span class="va">gc_pbps_20222025_goals_shots_counted</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Calculate distance.</span></span>
+<span><span class="va">gc_pbps_20222025_distance_calculated</span>     <span class="op">&lt;-</span> </span>
+<span>  <span class="fu">nhlscraper</span><span class="fu">::</span><span class="fu"><a href="../reference/calculate_distance.html">calculate_distance</a></span><span class="op">(</span><span class="va">gc_pbps_20222025_coordinates_normalized</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Calculate angle.</span></span>
+<span><span class="va">gc_pbps_20222025_angle_calculated</span>        <span class="op">&lt;-</span> </span>
+<span>  <span class="fu">nhlscraper</span><span class="fu">::</span><span class="fu"><a href="../reference/calculate_angle.html">calculate_angle</a></span><span class="op">(</span><span class="va">gc_pbps_20222025_distance_calculated</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Keep only shots.</span></span>
+<span><span class="va">gc_shots_20222025</span> <span class="op">&lt;-</span> <span class="va">gc_pbps_20222025_angle_calculated</span><span class="op">[</span></span>
+<span>  <span class="va">gc_pbps_20222025_angle_calculated</span><span class="op">$</span><span class="va">typeDescKey</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> </span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'goal'</span>, <span class="st">'shot-on-goal'</span>, <span class="st">'missed-shot'</span>, <span class="st">'blocked-shot'</span><span class="op">)</span>,</span>
+<span><span class="op">]</span></span>
+<span></span>
+<span><span class="co"># Remove shootouts and penalty shots.</span></span>
+<span><span class="va">gc_shots_20222025_final</span> <span class="op">&lt;-</span> <span class="va">gc_shots_20222025</span><span class="op">[</span></span>
+<span>  <span class="op">!</span><span class="op">(</span><span class="va">gc_shots_20222025</span><span class="op">$</span><span class="va">situationCode</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'0101'</span>, <span class="st">'1010'</span><span class="op">)</span><span class="op">)</span>,</span>
+<span><span class="op">]</span></span>
+<span></span>
+<span><span class="co"># Indicate goal or not.</span></span>
+<span><span class="va">gc_shots_20222025_final</span><span class="op">$</span><span class="va">isGoal</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/integer.html" class="external-link">as.integer</a></span><span class="op">(</span></span>
+<span>  <span class="va">gc_shots_20222025_final</span><span class="op">$</span><span class="va">typeDescKey</span> <span class="op">==</span> <span class="st">'goal'</span></span>
+<span><span class="op">)</span></span></code></pre></div>
+</div>
+</div>
+<div class="section level2">
+<h2 id="modeling">Modeling<a class="anchor" aria-label="anchor" href="#modeling"></a>
+</h2>
+<div class="section level3">
+<h3 id="baseline-xg_v1">Baseline: <code>xG_v1</code><a class="anchor" aria-label="anchor" href="#baseline-xg_v1"></a>
+</h3>
+<p>The first model, <code>xG_v1</code>, is a baseline logistic
+regression for shot success. The response is <code>isGoal</code> (1 if
+the shot is a goal, 0 otherwise), and the predictors are
+<code>distance</code> (Euclidean distance from the shooter to the net),
+<code>angle</code> (shot angle relative to the center of the net),
+<code>isEmptyNetAgainst</code> (whether the opposing goalie has been
+pulled), and <code>strengthState</code> (game state at the time of the
+shot, such as even-strength, power-play, or penalty-kill).</p>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Build xG model version 1.</span></span>
+<span><span class="va">xG_v1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/glm.html" class="external-link">glm</a></span><span class="op">(</span></span>
+<span>  <span class="va">isGoal</span> <span class="op">~</span></span>
+<span>    <span class="va">distance</span> <span class="op">+</span></span>
+<span>    <span class="va">angle</span> <span class="op">+</span></span>
+<span>    <span class="va">isEmptyNetAgainst</span> <span class="op">+</span></span>
+<span>    <span class="va">strengthState</span>,</span>
+<span>  family <span class="op">=</span> <span class="va">binomial</span>,</span>
+<span>  data   <span class="op">=</span> <span class="va">gc_shots_20222025_final</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Summarize model 1.</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">xG_v1</span><span class="op">)</span></span></code></pre></div>
+<table class="table">
+<colgroup>
+<col width="34%">
+<col width="15%">
+<col width="15%">
+<col width="11%">
+<col width="12%">
+<col width="11%">
+</colgroup>
+<thead><tr class="header">
+<th>Term</th>
+<th align="right">Estimate</th>
+<th align="right">Std. Error</th>
+<th align="right">z value</th>
+<th align="center">Pr(&gt;abs(z))</th>
+<th align="center">Signif.</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td>(Intercept)</td>
+<td align="right">-1.8999656</td>
+<td align="right">0.0153661</td>
+<td align="right">-123.65</td>
+<td align="center">&lt;2e-16</td>
+<td align="center">***</td>
+</tr>
+<tr class="even">
+<td>distance</td>
+<td align="right">-0.0337112</td>
+<td align="right">0.0004019</td>
+<td align="right">-83.89</td>
+<td align="center">&lt;2e-16</td>
+<td align="center">***</td>
+</tr>
+<tr class="odd">
+<td>angle</td>
+<td align="right">-0.0077118</td>
+<td align="right">0.0002960</td>
+<td align="right">-26.06</td>
+<td align="center">&lt;2e-16</td>
+<td align="center">***</td>
+</tr>
+<tr class="even">
+<td>isEmptyNetAgainstTRUE</td>
+<td align="right">4.3321873</td>
+<td align="right">0.0468759</td>
+<td align="right">92.42</td>
+<td align="center">&lt;2e-16</td>
+<td align="center">***</td>
+</tr>
+<tr class="odd">
+<td>strengthStatepenalty-kill</td>
+<td align="right">0.6454842</td>
+<td align="right">0.0395962</td>
+<td align="right">16.30</td>
+<td align="center">&lt;2e-16</td>
+<td align="center">***</td>
+</tr>
+<tr class="even">
+<td>strengthStatepower-play</td>
+<td align="right">0.4080557</td>
+<td align="right">0.0158283</td>
+<td align="right">25.78</td>
+<td align="center">&lt;2e-16</td>
+<td align="center">***</td>
+</tr>
+</tbody>
+</table>
+<p>On the log-odds scale, both <code>distance</code> and
+<code>angle</code> have negative coefficients: as you move farther from
+the net or shoot from a sharper angle, the probability of scoring
+decreases. The strong positive coefficient on
+<code>isEmptyNetAgainstTRUE</code> reflects how much easier it is to
+score into an empty net. Relative to even strength, both power-play and
+penalty-kill situations have positive effects, indicating higher
+conversion rates for shots taken in those states, conditional on a shot
+occurring.</p>
+</div>
+<div class="section level3">
+<h3 id="extended-xg_v2">Extended: <code>xG_v2</code><a class="anchor" aria-label="anchor" href="#extended-xg_v2"></a>
+</h3>
+<p>The second model, <code>xG_v2</code>, extends the baseline
+specification by adding two play-context features:
+<code>isRebound</code> and <code>isRush</code>. The response is still
+<code>isGoal</code>, and we retain all the predictors from
+<code>xG_v1</code> (<code>distance</code>, <code>angle</code>,
+<code>isEmptyNetAgainst</code>, and <code>strengthState</code>) while
+allowing the model to account for whether the shot is a rebound (fired
+shortly after a previous shot without a change of possession) or a rush
+chance (taken quickly following a transition up ice). The exact
+definitions are defined in the glossary and <a href="https://www.naturalstattrick.com/glossary.php?teams" class="external-link">here</a>.</p>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Build xG model version 2.</span></span>
+<span><span class="va">xG_v2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/glm.html" class="external-link">glm</a></span><span class="op">(</span></span>
+<span>  <span class="va">isGoal</span> <span class="op">~</span></span>
+<span>    <span class="va">distance</span> <span class="op">+</span></span>
+<span>    <span class="va">angle</span> <span class="op">+</span></span>
+<span>    <span class="va">isEmptyNetAgainst</span> <span class="op">+</span></span>
+<span>    <span class="va">strengthState</span> <span class="op">+</span></span>
+<span>    <span class="va">isRebound</span> <span class="op">+</span></span>
+<span>    <span class="va">isRush</span>,</span>
+<span>  family <span class="op">=</span> <span class="va">binomial</span>,</span>
+<span>  data   <span class="op">=</span> <span class="va">gc_shots_20222025_final</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Summarize model 2.</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">xG_v2</span><span class="op">)</span></span></code></pre></div>
+<table class="table">
+<colgroup>
+<col width="33%">
+<col width="15%">
+<col width="15%">
+<col width="12%">
+<col width="12%">
+<col width="11%">
+</colgroup>
+<thead><tr class="header">
+<th>Term</th>
+<th align="right">Estimate</th>
+<th align="right">Std. Error</th>
+<th align="right">z value</th>
+<th align="center">Pr(&gt;abs(z))</th>
+<th align="center">Signif.</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td>(Intercept)</td>
+<td align="right">-1.9963221</td>
+<td align="right">0.0160219</td>
+<td align="right">-124.600</td>
+<td align="center">&lt;2e-16</td>
+<td align="center">***</td>
+</tr>
+<tr class="even">
+<td>distance</td>
+<td align="right">-0.0315542</td>
+<td align="right">0.0004081</td>
+<td align="right">-77.314</td>
+<td align="center">&lt;2e-16</td>
+<td align="center">***</td>
+</tr>
+<tr class="odd">
+<td>angle</td>
+<td align="right">-0.0080897</td>
+<td align="right">0.0002955</td>
+<td align="right">-27.374</td>
+<td align="center">&lt;2e-16</td>
+<td align="center">***</td>
+</tr>
+<tr class="even">
+<td>isEmptyNetAgainstTRUE</td>
+<td align="right">4.2879873</td>
+<td align="right">0.0463690</td>
+<td align="right">92.475</td>
+<td align="center">&lt;2e-16</td>
+<td align="center">***</td>
+</tr>
+<tr class="odd">
+<td>strengthStatepenalty-kill</td>
+<td align="right">0.6673946</td>
+<td align="right">0.0397394</td>
+<td align="right">16.794</td>
+<td align="center">&lt;2e-16</td>
+<td align="center">***</td>
+</tr>
+<tr class="even">
+<td>strengthStatepower-play</td>
+<td align="right">0.4089630</td>
+<td align="right">0.0158707</td>
+<td align="right">25.768</td>
+<td align="center">&lt;2e-16</td>
+<td align="center">***</td>
+</tr>
+<tr class="odd">
+<td>isReboundTRUE</td>
+<td align="right">0.4133378</td>
+<td align="right">0.0180973</td>
+<td align="right">22.840</td>
+<td align="center">&lt;2e-16</td>
+<td align="center">***</td>
+</tr>
+<tr class="even">
+<td>isRushTRUE</td>
+<td align="right">-0.0657790</td>
+<td align="right">0.0376508</td>
+<td align="right">-1.747</td>
+<td align="center">0.0806</td>
+<td align="center">.</td>
+</tr>
+</tbody>
+</table>
+<p>Compared to <code>xG_v1</code>, the coefficients for
+<code>distance</code>, <code>angle</code>, and the strength-related
+variables are broadly similar, but the model captures additional
+structure in how certain shot types perform. Rebound shots
+(<code>isReboundTRUE</code>) have a strongly positive and highly
+significant coefficient, reflecting the fact that rebounds, on average,
+are much more dangerous than non-rebound attempts once distance and
+angle are controlled for. Rush shots (<code>isRushTRUE</code>) have a
+slightly negative coefficient with only marginal statistical
+significance at conventional levels. This suggests that, conditional on
+location and other covariates, rush shots are not systematically more
+(or may even be slightly less) efficient than non-rush shots in this
+sample, even though they may intuitively feel more dangerous. The
+addition of <code>isRebound</code> and <code>isRush</code> reduces the
+residual deviance compared to <code>xG_v1</code>, indicating a modest
+but meaningful improvement in model fit while preserving the core
+spatial and game-state effects.</p>
+</div>
+<div class="section level3">
+<h3 id="contextual-xg_v3">Contextual: <code>xG_v3</code><a class="anchor" aria-label="anchor" href="#contextual-xg_v3"></a>
+</h3>
+<p>The third model, <code>xG_v3</code>, builds on <code>xG_v2</code> by
+adding a simple game-context variable: <code>goalDifferential</code>. As
+before, the response is <code>isGoal</code>, and we include all of the
+spatial and play-context predictors from the previous models
+(<code>distance</code>, <code>angle</code>,
+<code>isEmptyNetAgainst</code>, <code>strengthState</code>,
+<code>isRebound</code>, and <code>isRush</code>). The new term,
+<code>goalDifferential</code>, captures the score state from the
+shooting team’s perspective at the time of the shot (for example,
+leading vs. trailing).</p>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Build xG model version 3.</span></span>
+<span><span class="va">xG_v3</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/glm.html" class="external-link">glm</a></span><span class="op">(</span></span>
+<span>  <span class="va">isGoal</span> <span class="op">~</span></span>
+<span>    <span class="va">distance</span> <span class="op">+</span></span>
+<span>    <span class="va">angle</span> <span class="op">+</span></span>
+<span>    <span class="va">isEmptyNetAgainst</span> <span class="op">+</span></span>
+<span>    <span class="va">strengthState</span> <span class="op">+</span></span>
+<span>    <span class="va">isRebound</span> <span class="op">+</span></span>
+<span>    <span class="va">isRush</span> <span class="op">+</span></span>
+<span>    <span class="va">goalDifferential</span>,</span>
+<span>  family <span class="op">=</span> <span class="va">binomial</span>,</span>
+<span>  data   <span class="op">=</span> <span class="va">gc_shots_20222025_final</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Summarize model 3.</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">xG_v3</span><span class="op">)</span></span></code></pre></div>
+<table class="table">
+<colgroup>
+<col width="33%">
+<col width="15%">
+<col width="15%">
+<col width="12%">
+<col width="12%">
+<col width="11%">
+</colgroup>
+<thead><tr class="header">
+<th>Term</th>
+<th align="right">Estimate</th>
+<th align="right">Std. Error</th>
+<th align="right">z value</th>
+<th align="center">Pr(&gt;abs(z))</th>
+<th align="center">Signif.</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td>(Intercept)</td>
+<td align="right">-1.9942500</td>
+<td align="right">0.0160242</td>
+<td align="right">-124.452</td>
+<td align="center">&lt;2e-16</td>
+<td align="center">***</td>
+</tr>
+<tr class="even">
+<td>distance</td>
+<td align="right">-0.0315190</td>
+<td align="right">0.0004081</td>
+<td align="right">-77.239</td>
+<td align="center">&lt;2e-16</td>
+<td align="center">***</td>
+</tr>
+<tr class="odd">
+<td>angle</td>
+<td align="right">-0.0080823</td>
+<td align="right">0.0002957</td>
+<td align="right">-27.336</td>
+<td align="center">&lt;2e-16</td>
+<td align="center">***</td>
+</tr>
+<tr class="even">
+<td>isEmptyNetAgainstTRUE</td>
+<td align="right">4.2126061</td>
+<td align="right">0.0468320</td>
+<td align="right">89.952</td>
+<td align="center">&lt;2e-16</td>
+<td align="center">***</td>
+</tr>
+<tr class="odd">
+<td>strengthStatepenalty-kill</td>
+<td align="right">0.6601609</td>
+<td align="right">0.0397645</td>
+<td align="right">16.602</td>
+<td align="center">&lt;2e-16</td>
+<td align="center">***</td>
+</tr>
+<tr class="even">
+<td>strengthStatepower-play</td>
+<td align="right">0.4106154</td>
+<td align="right">0.0158741</td>
+<td align="right">25.867</td>
+<td align="center">&lt;2e-16</td>
+<td align="center">***</td>
+</tr>
+<tr class="odd">
+<td>isReboundTRUE</td>
+<td align="right">0.4172151</td>
+<td align="right">0.0181043</td>
+<td align="right">23.045</td>
+<td align="center">&lt;2e-16</td>
+<td align="center">***</td>
+</tr>
+<tr class="even">
+<td>isRushTRUE</td>
+<td align="right">-0.0709434</td>
+<td align="right">0.0376484</td>
+<td align="right">-1.884</td>
+<td align="center">0.0595</td>
+<td align="center">.</td>
+</tr>
+<tr class="odd">
+<td>goalDifferential</td>
+<td align="right">0.0424470</td>
+<td align="right">0.0039014</td>
+<td align="right">10.880</td>
+<td align="center">&lt;2e-16</td>
+<td align="center">***</td>
+</tr>
+</tbody>
+</table>
+<p>Most of the core coefficients are very similar to those in
+<code>xG_v2</code>. Closer, more central shots (<code>distance</code>,
+<code>angle</code>) are still substantially more dangerous, empty-net
+attempts remain extremely likely to result in goals, and both
+penalty-kill and power-play states continue to show elevated finishing
+rates relative to five-on-five. Rebound shots retain a strong positive
+effect, while rush attempts again show a small negative coefficient with
+marginal statistical significance. The new <code>goalDifferential</code>
+term is positive and highly significant, indicating that, conditional on
+location and other covariates, shots taken when the shooting team is
+further ahead on the scoreboard convert at slightly higher rates than
+those taken when the game is tied or the team is trailing. This effect
+is modest in magnitude compared to the big spatial and empty-net
+effects, but it does capture additional structure in how game context
+influences finishing. The reduction in residual deviance relative to
+<code>xG_v2</code> is incremental but consistent with an overall
+improvement in fit.</p>
+</div>
+</div>
+<div class="section level2">
+<h2 id="visualizing">Visualizing<a class="anchor" aria-label="anchor" href="#visualizing"></a>
+</h2>
+<p>So far we’ve focused on how the xG models are built. In practice,
+though, most people experience expected goals through visual summaries
+rather than coefficient tables. In this section, we show how the three
+xG models introduced above can be used to summarize individual games,
+with users free to choose which model (the three from earlier) to
+apply.</p>
+<div class="section level3">
+<h3 id="shot-locations">Shot Locations<a class="anchor" aria-label="anchor" href="#shot-locations"></a>
+</h3>
+<p>The first pair of plots shows all shot attempts for one team,
+normalized so that they always attack to the right. Marker shape encodes
+the outcome (goal, shot on goal, missed, blocked) and color encodes the
+shot’s xG bin, from low-danger attempts in dark blue to the most
+dangerous chances in bright red.</p>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Plot shot locations for Game 7 Stanley Cup Finals 2025.</span></span>
+<span><span class="fu"><a href="../reference/ig_game_shot_locations.html">ig_game_shot_locations</a></span><span class="op">(</span></span>
+<span>  game  <span class="op">=</span> <span class="fl">2023030417</span>, </span>
+<span>  model <span class="op">=</span> <span class="fl">1</span>, </span>
+<span>  team  <span class="op">=</span> <span class="st">'H'</span></span>
+<span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/ig_game_shot_locations.html">ig_game_shot_locations</a></span><span class="op">(</span></span>
+<span>  game  <span class="op">=</span> <span class="fl">2023030417</span>, </span>
+<span>  model <span class="op">=</span> <span class="fl">1</span>, </span>
+<span>  team  <span class="op">=</span> <span class="st">'A'</span></span>
+<span><span class="op">)</span></span></code></pre></div>
+<p><img src="ig_shot_locs_2023030417_home_xG_v1.png" class="r-plt" alt="Shot Locations for Game 7 SCF 2025" width="90%" style="display: block; margin: auto;"><img src="ig_shot_locs_2023030417_away_xG_v1.png" class="r-plt" alt="Shot Locations for Game 7 SCF 2025" width="90%" style="display: block; margin: auto;"></p>
+<p>Looking at the home view, we can quickly pick out the team’s
+preferred shooting areas. In the example game, many of the Panthers’
+attempts cluster around the slot and net-front, with several high-xG red
+markers just off the crease. That pattern is consistent with a team that
+frequently gets inside position, generates tips and rebounds, and is
+comfortable attacking through the middle of the ice. Switching to the
+away perspective, the Oilers’ shot map looks different. There are still
+dangerous chances around the crease, but we also see a higher volume of
+lower-xG shots from the outside such as point wristers, sharp-angle
+attempts, or quick shots off the rush that never quite reach the
+interior. This kind of map is a nice way to talk about “shot quality
+vs. shot volume”: a team may outshoot the opponent in raw attempts, but
+if most of those are blue markers from the perimeter, the expected goals
+will tell a more balanced story.</p>
+</div>
+<div class="section level3">
+<h3 id="cumulative-xg">Cumulative xG<a class="anchor" aria-label="anchor" href="#cumulative-xg"></a>
+</h3>
+<p>The second visualization shows cumulative xG over seconds elapsed in
+game for both teams at once. The x-axis runs from 0 to the end of
+regulation, with tick marks every 300 seconds (five minutes). The y-axis
+tracks the running sum of xG, so each step up corresponds to a new
+scoring chance; flat stretches indicate long periods without meaningful
+offense.</p>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Plot cumulative xG for Game 7 Stanley Cup Finals 2025.</span></span>
+<span><span class="fu"><a href="../reference/ig_game_cumulative_expected_goals.html">ig_game_cumulative_expected_goals</a></span><span class="op">(</span></span>
+<span>  game  <span class="op">=</span> <span class="fl">2023030417</span>, </span>
+<span>  model <span class="op">=</span> <span class="fl">1</span></span>
+<span><span class="op">)</span></span></code></pre></div>
+<p><img src="ig_cum_xG_2023030417_xG_v1.png" class="r-plt" alt="Cumulative xG over Time for Game 7 SCF 2025" width="90%" style="display: block; margin: auto;"></p>
+<p>In our example, the red line (Florida) and blue line (Edmonton) track
+closely for much of the night. Early on, both teams climb in near
+lockstep, suggesting a fairly even trade of chances. Mid-game, Florida
+opens a small xG gap with a series of higher-quality looks, visible as a
+steeper red slope around the 1,000-1,200 second mark. Edmonton answers
+back later, narrowing the gap with their own sustained push. By the end
+of regulation the lines finish at similar heights, with Florida holding
+a modest xG edge. This is the classic “deserve-to-win-o-meter” view:
+rather than arguing from shots or goals alone, we can say that Florida
+generated slightly better chances overall, but the game was competitive
+throughout.</p>
+</div>
+</div>
+<div class="section level2">
+<h2 id="outlook">Outlook<a class="anchor" aria-label="anchor" href="#outlook"></a>
+</h2>
+<p>As useful as these three xG models are, they are far from perfect.
+They are deliberately simple, interpretable logistic regressions built
+on a limited set of features. That makes them great for understanding
+how basic factors like distance, angle, strength state, and game
+situation shape scoring chances, but it also means there is plenty of
+room to improve their predictive power. That gap is part of the point of
+<code>nhlscraper</code>. The package is designed not just to ship a set
+of “finished” xG models, but to make it easy for anyone to download,
+clean, and reshape NHL data so they can experiment on their own;
+ultimately, the goal is to give you the tools to ask and answer your own
+hockey questions, whether that means building a better xG model,
+evaluating special teams, profiling individual shooters, or creating
+entirely new metrics. If you come up with something interesting, we’d
+love for <code>nhlscraper</code> to be part of the story.</p>
+</div>
+  </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
+    </nav></aside>
 </div>
 
 

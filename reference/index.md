@@ -2,7 +2,7 @@
 
 ## High-level
 
-Functions that call the NHL APIs for high-level data
+Functions to call the NHL APIs for high-level data
 
 ### League
 
@@ -174,7 +174,7 @@ Functions to acccess any other data
 
 ## Mid-level
 
-Functions that call the NHL APIs for mid-level data
+Functions to call the NHL APIs for mid-level data
 
 ### Player
 
@@ -306,7 +306,7 @@ Functions to access data about the goalies
 
 ## Low-level
 
-Functions that call the NHL APIs for low-level data
+Functions to call the NHL APIs for low-level data
 
 ### Game
 
@@ -347,11 +347,11 @@ Functions to access data about the events (plays)
 
 ## Analyze
 
-Functions that help analyze the play-by-play data
+Functions to help analyze the play-by-play data
 
 ### Load
 
-Functions that load pre-scraped full season play-by-plays
+Functions to load pre-scraped full season play-by-plays
 
 - [`gc_play_by_plays()`](https://rentosaijo.github.io/nhlscraper/reference/gc_play_by_plays.md)
   [`gc_pbps()`](https://rentosaijo.github.io/nhlscraper/reference/gc_play_by_plays.md)
@@ -362,7 +362,7 @@ Functions that load pre-scraped full season play-by-plays
 
 ### Clean
 
-Functions that help clean the data
+Functions to help clean the data
 
 - [`strip_game_id()`](https://rentosaijo.github.io/nhlscraper/reference/strip_game_id.md)
   : Strip the game ID into the season ID, game type ID, and game number
@@ -399,7 +399,7 @@ Functions that help clean the data
 
 ### Model
 
-Functions that run built-in models
+Functions to run built-in models
 
 - [`calculate_expected_goals_v1()`](https://rentosaijo.github.io/nhlscraper/reference/calculate_expected_goals_v1.md)
   [`calculate_xG_v1()`](https://rentosaijo.github.io/nhlscraper/reference/calculate_expected_goals_v1.md)
@@ -416,23 +416,33 @@ Functions that run built-in models
 
 ### Graph
 
-Functions that help graph the data (WIP)
+Functions to help graph the data (WIP)
 
-- [`ig_game_shot_location_summary()`](https://rentosaijo.github.io/nhlscraper/reference/ig_game_shot_location_summary.md)
-  : Save an Instagram (IG) share-able shot summary for a game
 - [`draw_NHL_rink()`](https://rentosaijo.github.io/nhlscraper/reference/draw_NHL_rink.md)
   : Draw a full NHL rink
 
 ### Share
 
-Functions that help share the data (WIP)
+Functions to help share the data (WIP)
 
-- [`ig_game_shot_location_summary()`](https://rentosaijo.github.io/nhlscraper/reference/ig_game_shot_location_summary.md)
-  : Save an Instagram (IG) share-able shot summary for a game
+- [`ig_game_shot_locations()`](https://rentosaijo.github.io/nhlscraper/reference/ig_game_shot_locations.md)
+  [`ig_game_shot_locs()`](https://rentosaijo.github.io/nhlscraper/reference/ig_game_shot_locations.md)
+  : Save an Instagram (IG) share-able shot-location plot for a game
+- [`x_game_shot_locations()`](https://rentosaijo.github.io/nhlscraper/reference/x_game_shot_locations.md)
+  [`x_game_shot_locs()`](https://rentosaijo.github.io/nhlscraper/reference/x_game_shot_locations.md)
+  : Save an X (Twitter) share-able shot-location plot for a game
+- [`ig_game_cumulative_expected_goals()`](https://rentosaijo.github.io/nhlscraper/reference/ig_game_cumulative_expected_goals.md)
+  [`ig_game_cum_xG()`](https://rentosaijo.github.io/nhlscraper/reference/ig_game_cumulative_expected_goals.md)
+  : Save an Instagram (IG) share-able cumulative expected goals (xG)
+  time-series plot for a game
+- [`x_game_cumulative_expected_goals()`](https://rentosaijo.github.io/nhlscraper/reference/x_game_cumulative_expected_goals.md)
+  [`x_game_cum_xG()`](https://rentosaijo.github.io/nhlscraper/reference/x_game_cumulative_expected_goals.md)
+  : Save an X (Twitter) share-able cumulative expected goals (xG)
+  time-series plot for a game
 
 ## ESPN API
 
-Functions that call the ESPN APIs
+Functions to call the ESPN APIs
 
 - [`espn_teams()`](https://rentosaijo.github.io/nhlscraper/reference/espn_teams.md)
   : Access all the ESPN teams
