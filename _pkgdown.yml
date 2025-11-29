@@ -222,9 +222,13 @@ reference:
       - gc_play_by_plays
       - wsc_play_by_plays
   
-  - title: "Clean"
+  - title: "Analyze"
     desc: >
-      Functions that clean the acquired data
+      Functions that help analyze the data
+      
+  - subtitle: "Clean"
+    desc: >
+      Functions that help clean the data
     contents:
       - strip_game_id
       - strip_time_period
@@ -237,7 +241,7 @@ reference:
       - calculate_distance
       - calculate_angle
   
-  - title: "Model"
+  - subtitle: "Model"
     desc: >
       Functions that run built-in models
     contents:
@@ -245,12 +249,18 @@ reference:
       - calculate_expected_goals_v2
       - calculate_expected_goals_v3
       
-  - title: "Plot"
+  - subtitle: "Graph"
     desc: >
-      Functions that plot the acquired data (WIP)
+      Functions that help graph the data (WIP)
     contents:
-      - plot_game_xG
-      - plot_full_rink
+      - ig_game_shot_location_summary
+      - draw_NHL_rink
+      
+  - subtitle: "Share"
+    desc: >
+      Functions that help share the data (WIP)
+    contents:
+      - ig_game_shot_location_summary
 
   - title: "ESPN API"
     desc: >
