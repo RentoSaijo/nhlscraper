@@ -7,51 +7,26 @@ play-by-play.
 ## Usage
 
 ``` r
-strip_time_period(
-  data,
-  game_type_id_name = "gameTypeId",
-  time_in_period_name = "timeInPeriod",
-  period_name = "period",
-  seconds_elapsed_in_period_name = "secondsElapsedInPeriod",
-  seconds_elapsed_in_game_name = "secondsElapsedInGame"
-)
+strip_time_period(play_by_play)
 ```
 
 ## Arguments
 
-- data:
+- play_by_play:
 
   data.frame of play-by-play(s); see
   [`gc_play_by_play()`](https://rentosaijo.github.io/nhlscraper/reference/gc_play_by_play.md)
   and/or
   [`wsc_play_by_play()`](https://rentosaijo.github.io/nhlscraper/reference/wsc_play_by_play.md)
-  for reference
-
-- game_type_id_name:
-
-  name of column that contains game type ID; see
+  for reference; must be untouched by non-nhlscraper functions; saves
+  time if
   [`strip_game_id()`](https://rentosaijo.github.io/nhlscraper/reference/strip_game_id.md)
-  for reference
-
-- time_in_period_name:
-
-  name of column that contains time in period in 'MM:SS'
-
-- period_name:
-
-  name of column that contains period number
-
-- seconds_elapsed_in_period_name:
-
-  name of column that you want contain seconds elapsed in period
-
-- seconds_elapsed_in_game_name:
-
-  name of column that you want contain seconds elapsed in game
+  has already been called
 
 ## Value
 
-data.frame with one row per event (play)
+data.frame with one row per event (play) and added columns
+`secondsElapsedInPeriod` and `secondsElapsedInGame`
 
 ## Examples
 

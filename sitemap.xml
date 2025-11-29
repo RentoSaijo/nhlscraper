@@ -15,6 +15,9 @@
 <url><loc>https://rentosaijo.github.io/nhlscraper/reference/bracket.html</loc></url>
 <url><loc>https://rentosaijo.github.io/nhlscraper/reference/calculate_angle.html</loc></url>
 <url><loc>https://rentosaijo.github.io/nhlscraper/reference/calculate_distance.html</loc></url>
+<url><loc>https://rentosaijo.github.io/nhlscraper/reference/calculate_expected_goals_v1.html</loc></url>
+<url><loc>https://rentosaijo.github.io/nhlscraper/reference/calculate_expected_goals_v2.html</loc></url>
+<url><loc>https://rentosaijo.github.io/nhlscraper/reference/calculate_expected_goals_v3.html</loc></url>
 <url><loc>https://rentosaijo.github.io/nhlscraper/reference/coach_career_statistics.html</loc></url>
 <url><loc>https://rentosaijo.github.io/nhlscraper/reference/coach_franchise_statistics.html</loc></url>
 <url><loc>https://rentosaijo.github.io/nhlscraper/reference/coaches.html</loc></url>
@@ -162,7 +165,11 @@
 <url><loc>https://rentosaijo.github.io/nhlscraper/reference/player_summary.html</loc></url>
 <url><loc>https://rentosaijo.github.io/nhlscraper/reference/players.html</loc></url>
 <url><loc>https://rentosaijo.github.io/nhlscraper/reference/playoff_season_statistics.html</loc></url>
+<url><loc>https://rentosaijo.github.io/nhlscraper/reference/plot_full_rink.html</loc></url>
+<url><loc>https://rentosaijo.github.io/nhlscraper/reference/plot_game_xG.html</loc></url>
 <url><loc>https://rentosaijo.github.io/nhlscraper/reference/replay.html</loc></url>
+<url><loc>https://rentosaijo.github.io/nhlscraper/reference/rink_draw_arc.html</loc></url>
+<url><loc>https://rentosaijo.github.io/nhlscraper/reference/rink_draw_circle.html</loc></url>
 <url><loc>https://rentosaijo.github.io/nhlscraper/reference/roster.html</loc></url>
 <url><loc>https://rentosaijo.github.io/nhlscraper/reference/roster_statistics.html</loc></url>
 <url><loc>https://rentosaijo.github.io/nhlscraper/reference/schedule.html</loc></url>

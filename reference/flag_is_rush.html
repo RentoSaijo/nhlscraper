@@ -50,62 +50,23 @@ the shots in a play-by-play.</p>
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">flag_is_rush</span><span class="op">(</span></span>
-<span>  <span class="va">data</span>,</span>
-<span>  is_home_name <span class="op">=</span> <span class="st">"isHome"</span>,</span>
-<span>  seconds_elapsed_in_game_name <span class="op">=</span> <span class="st">"secondsElapsedInGame"</span>,</span>
-<span>  game_id_name <span class="op">=</span> <span class="st">"gameId"</span>,</span>
-<span>  sort_order_name <span class="op">=</span> <span class="st">"sortOrder"</span>,</span>
-<span>  type_description_name <span class="op">=</span> <span class="st">"typeDescKey"</span>,</span>
-<span>  zone_code_name <span class="op">=</span> <span class="st">"zoneCode"</span>,</span>
-<span>  is_rush_name <span class="op">=</span> <span class="st">"isRush"</span></span>
-<span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">flag_is_rush</span><span class="op">(</span><span class="va">play_by_play</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
 
 
-<dl><dt id="arg-data">data<a class="anchor" aria-label="anchor" href="#arg-data"></a></dt>
-<dd><p>data.frame of play-by-play(s); see <code><a href="gc_play_by_play.html">gc_play_by_play()</a></code> and/or
-<code><a href="wsc_play_by_play.html">wsc_play_by_play()</a></code> for reference</p></dd>
-
-
-<dt id="arg-is-home-name">is_home_name<a class="anchor" aria-label="anchor" href="#arg-is-home-name"></a></dt>
-<dd><p>name of column that contains home/not logical
-indicator; see <code><a href="flag_is_home.html">flag_is_home()</a></code> for reference</p></dd>
-
-
-<dt id="arg-seconds-elapsed-in-game-name">seconds_elapsed_in_game_name<a class="anchor" aria-label="anchor" href="#arg-seconds-elapsed-in-game-name"></a></dt>
-<dd><p>name of column that contains seconds
-elapsed in game; see <code><a href="strip_time_period.html">strip_time_period()</a></code> for reference</p></dd>
-
-
-<dt id="arg-game-id-name">game_id_name<a class="anchor" aria-label="anchor" href="#arg-game-id-name"></a></dt>
-<dd><p>name of column that contains game ID</p></dd>
-
-
-<dt id="arg-sort-order-name">sort_order_name<a class="anchor" aria-label="anchor" href="#arg-sort-order-name"></a></dt>
-<dd><p>name of column that contains sort order</p></dd>
-
-
-<dt id="arg-type-description-name">type_description_name<a class="anchor" aria-label="anchor" href="#arg-type-description-name"></a></dt>
-<dd><p>name of column that contains event type
-description</p></dd>
-
-
-<dt id="arg-zone-code-name">zone_code_name<a class="anchor" aria-label="anchor" href="#arg-zone-code-name"></a></dt>
-<dd><p>name of column that contains zone code</p></dd>
-
-
-<dt id="arg-is-rush-name">is_rush_name<a class="anchor" aria-label="anchor" href="#arg-is-rush-name"></a></dt>
-<dd><p>name of column that you want contain rush/not
-logical indicator</p></dd>
+<dl><dt id="arg-play-by-play">play_by_play<a class="anchor" aria-label="anchor" href="#arg-play-by-play"></a></dt>
+<dd><p>data.frame of play-by-play(s); see <code><a href="gc_play_by_play.html">gc_play_by_play()</a></code>
+and/or <code><a href="wsc_play_by_play.html">wsc_play_by_play()</a></code> for reference; must be untouched by
+non-nhlscraper functions; saves time if <code><a href="flag_is_home.html">flag_is_home()</a></code> and
+<code><a href="strip_time_period.html">strip_time_period()</a></code> had already been called</p></dd>
 
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p>data.frame with one row per event (play)</p>
+    <p>data.frame with one row per event (play) and added <code>isRush</code> column</p>
     </div>
 
     <div class="section level2">
@@ -113,9 +74,10 @@ logical indicator</p></dd>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># May take &gt;5s, so skip.</span></span></span>
 <span class="r-in"><span><span class="co"># \donttest{</span></span></span>
 <span class="r-in"><span>  <span class="va">test</span>                      <span class="op">&lt;-</span> <span class="fu"><a href="gc_play_by_play.html">gc_play_by_play</a></span><span class="op">(</span><span class="op">)</span></span></span>
-<span class="r-in"><span>  <span class="va">test_time_period_stripped</span> <span class="op">&lt;-</span> <span class="fu"><a href="strip_time_period.html">strip_time_period</a></span><span class="op">(</span><span class="va">test</span><span class="op">)</span></span></span>
-<span class="r-in"><span>  <span class="va">test_is_home_flagged</span>      <span class="op">&lt;-</span> <span class="fu"><a href="flag_is_home.html">flag_is_home</a></span><span class="op">(</span><span class="va">test_time_period_stripped</span><span class="op">)</span></span></span>
-<span class="r-in"><span>  <span class="va">test_is_rush_flagged</span>      <span class="op">&lt;-</span> <span class="fu">flag_is_rush</span><span class="op">(</span><span class="va">test_is_home_flagged</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="va">test_is_home_flagged</span>      <span class="op">&lt;-</span> <span class="fu"><a href="flag_is_home.html">flag_is_home</a></span><span class="op">(</span><span class="va">test</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="va">test_game_id_stripped</span>     <span class="op">&lt;-</span> <span class="fu"><a href="strip_game_id.html">strip_game_id</a></span><span class="op">(</span><span class="va">test_is_home_flagged</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="va">test_time_period_stripped</span> <span class="op">&lt;-</span> <span class="fu"><a href="strip_time_period.html">strip_time_period</a></span><span class="op">(</span><span class="va">test_game_id_stripped</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="va">test_is_rush_flagged</span>      <span class="op">&lt;-</span> <span class="fu">flag_is_rush</span><span class="op">(</span><span class="va">test_time_period_stripped</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="co"># }</span></span></span>
 </code></pre></div>
     </div>

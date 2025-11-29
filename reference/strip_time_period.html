@@ -50,52 +50,24 @@ elapsed in the period and game for all the events (plays) in a play-by-play.</p>
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">strip_time_period</span><span class="op">(</span></span>
-<span>  <span class="va">data</span>,</span>
-<span>  game_type_id_name <span class="op">=</span> <span class="st">"gameTypeId"</span>,</span>
-<span>  time_in_period_name <span class="op">=</span> <span class="st">"timeInPeriod"</span>,</span>
-<span>  period_name <span class="op">=</span> <span class="st">"period"</span>,</span>
-<span>  seconds_elapsed_in_period_name <span class="op">=</span> <span class="st">"secondsElapsedInPeriod"</span>,</span>
-<span>  seconds_elapsed_in_game_name <span class="op">=</span> <span class="st">"secondsElapsedInGame"</span></span>
-<span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">strip_time_period</span><span class="op">(</span><span class="va">play_by_play</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
 
 
-<dl><dt id="arg-data">data<a class="anchor" aria-label="anchor" href="#arg-data"></a></dt>
-<dd><p>data.frame of play-by-play(s); see <code><a href="gc_play_by_play.html">gc_play_by_play()</a></code> and/or
-<code><a href="wsc_play_by_play.html">wsc_play_by_play()</a></code> for reference</p></dd>
-
-
-<dt id="arg-game-type-id-name">game_type_id_name<a class="anchor" aria-label="anchor" href="#arg-game-type-id-name"></a></dt>
-<dd><p>name of column that contains game type ID; see
-<code><a href="strip_game_id.html">strip_game_id()</a></code> for reference</p></dd>
-
-
-<dt id="arg-time-in-period-name">time_in_period_name<a class="anchor" aria-label="anchor" href="#arg-time-in-period-name"></a></dt>
-<dd><p>name of column that contains time in period in
-'MM:SS'</p></dd>
-
-
-<dt id="arg-period-name">period_name<a class="anchor" aria-label="anchor" href="#arg-period-name"></a></dt>
-<dd><p>name of column that contains period number</p></dd>
-
-
-<dt id="arg-seconds-elapsed-in-period-name">seconds_elapsed_in_period_name<a class="anchor" aria-label="anchor" href="#arg-seconds-elapsed-in-period-name"></a></dt>
-<dd><p>name of column that you want contain
-seconds elapsed in period</p></dd>
-
-
-<dt id="arg-seconds-elapsed-in-game-name">seconds_elapsed_in_game_name<a class="anchor" aria-label="anchor" href="#arg-seconds-elapsed-in-game-name"></a></dt>
-<dd><p>name of column that you want contain
-seconds elapsed in game</p></dd>
+<dl><dt id="arg-play-by-play">play_by_play<a class="anchor" aria-label="anchor" href="#arg-play-by-play"></a></dt>
+<dd><p>data.frame of play-by-play(s); see <code><a href="gc_play_by_play.html">gc_play_by_play()</a></code>
+and/or <code><a href="wsc_play_by_play.html">wsc_play_by_play()</a></code> for reference; must be untouched by
+non-nhlscraper functions; saves time if <code><a href="strip_game_id.html">strip_game_id()</a></code> has already been
+called</p></dd>
 
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p>data.frame with one row per event (play)</p>
+    <p>data.frame with one row per event (play) and added columns
+<code>secondsElapsedInPeriod</code> and <code>secondsElapsedInGame</code></p>
     </div>
 
     <div class="section level2">
