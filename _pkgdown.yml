@@ -236,6 +236,21 @@ reference:
       - normalize_coordinates
       - calculate_distance
       - calculate_angle
+  
+  - title: "Model"
+    desc: >
+      Functions that run built-in models
+    contents:
+      - calculate_expected_goals_v1
+      - calculate_expected_goals_v2
+      - calculate_expected_goals_v3
+      
+  - title: "Plot"
+    desc: >
+      Functions that plot the acquired data (WIP)
+    contents:
+      - plot_game_xG
+      - plot_full_rink
 
   - title: "ESPN API"
     desc: >
