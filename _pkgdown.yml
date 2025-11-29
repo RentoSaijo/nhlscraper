@@ -214,17 +214,17 @@ reference:
     contents:
       - replay
       - penalty_shots
-      
-  - title: "Load"
-    desc: >
-      Functions that load pre-scraped data from GitHub
-    contents:
-      - gc_play_by_plays
-      - wsc_play_by_plays
   
   - title: "Analyze"
     desc: >
-      Functions that help analyze the data
+      Functions that help analyze the play-by-play data
+      
+  - subtitle: "Load"
+    desc: >
+      Functions that load pre-scraped full season play-by-plays
+    contents:
+      - gc_play_by_plays
+      - wsc_play_by_plays
       
   - subtitle: "Clean"
     desc: >
