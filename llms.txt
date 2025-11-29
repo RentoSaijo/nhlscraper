@@ -420,9 +420,13 @@ Functions to access data about the events (plays)
   [`ps()`](https://rentosaijo.github.io/nhlscraper/reference/penalty_shots.md)
   : Access all the penalty shots
 
-## Load
+## Analyze
 
-Functions that load pre-scraped data from GitHub
+Functions that help analyze the play-by-play data
+
+### Load
+
+Functions that load pre-scraped full season play-by-plays
 
 - [`gc_play_by_plays()`](https://rentosaijo.github.io/nhlscraper/reference/gc_play_by_plays.md)
   [`gc_pbps()`](https://rentosaijo.github.io/nhlscraper/reference/gc_play_by_plays.md)
@@ -431,9 +435,9 @@ Functions that load pre-scraped data from GitHub
   [`wsc_pbps()`](https://rentosaijo.github.io/nhlscraper/reference/wsc_play_by_plays.md)
   : Access the World Showcase (WSC) play-by-plays for a season
 
-## Clean
+### Clean
 
-Functions that clean the acquired data
+Functions that help clean the data
 
 - [`strip_game_id()`](https://rentosaijo.github.io/nhlscraper/reference/strip_game_id.md)
   : Strip the game ID into the season ID, game type ID, and game number
@@ -468,7 +472,7 @@ Functions that clean the acquired data
   : Calculate the Euclidean angle from the attacking net for all the
   events (plays) in a play-by-play
 
-## Model
+### Model
 
 Functions that run built-in models
 
@@ -485,14 +489,21 @@ Functions that run built-in models
   : Calculate version 3 of the expected goals for all the events (plays)
   in a play-by-play
 
-## Plot
+### Graph
 
-Functions that plot the acquired data (WIP)
+Functions that help graph the data (WIP)
 
-- [`plot_game_xG()`](https://rentosaijo.github.io/nhlscraper/reference/plot_game_xG.md)
-  : Plot all shot attempts in a game on a full rink
-- [`plot_full_rink()`](https://rentosaijo.github.io/nhlscraper/reference/plot_full_rink.md)
-  : Draw a full NHL rink using base graphics
+- [`ig_game_shot_location_summary()`](https://rentosaijo.github.io/nhlscraper/reference/ig_game_shot_location_summary.md)
+  : Save an Instagram (IG) share-able shot summary for a game
+- [`draw_NHL_rink()`](https://rentosaijo.github.io/nhlscraper/reference/draw_NHL_rink.md)
+  : Draw a full NHL rink
+
+### Share
+
+Functions that help share the data (WIP)
+
+- [`ig_game_shot_location_summary()`](https://rentosaijo.github.io/nhlscraper/reference/ig_game_shot_location_summary.md)
+  : Save an Instagram (IG) share-able shot summary for a game
 
 ## ESPN API
 
