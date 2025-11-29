@@ -120,6 +120,7 @@ calculate_expected_goals_v1 <- function(play_by_play) {
 
 #' @rdname calculate_expected_goals_v1
 #' @export
+
 calculate_xG_v1 <- function(play_by_play) {
   calculate_expected_goals_v1(play_by_play)
 }
@@ -260,6 +261,7 @@ calculate_expected_goals_v2 <- function(play_by_play) {
 
 #' @rdname calculate_expected_goals_v2
 #' @export
+
 calculate_xG_v2 <- function(play_by_play) {
   calculate_expected_goals_v2(play_by_play)
 }
@@ -409,6 +411,7 @@ calculate_expected_goals_v3 <- function(play_by_play) {
 
 #' @rdname calculate_expected_goals_v3
 #' @export
+
 calculate_xG_v3 <- function(play_by_play) {
   calculate_expected_goals_v2(play_by_play)
 }

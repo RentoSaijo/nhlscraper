@@ -253,7 +253,6 @@ reference:
     desc: >
       Functions that help graph the data (WIP)
     contents:
-      - ig_game_shot_location_summary
       - draw_NHL_rink
       
   - subtitle: "Share"
@@ -261,6 +260,7 @@ reference:
       Functions that help share the data (WIP)
     contents:
       - ig_game_shot_location_summary
+      - x_game_shot_location_summary
 
   - title: "ESPN API"
     desc: >
