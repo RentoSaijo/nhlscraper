@@ -8,16 +8,23 @@
 #' (e.g., 1); see [calculate_expected_goals_v1()], 
 #' [calculate_expected_goals_v2()], and/or [calculate_expected_goals_v3()] for 
 #' reference
+#' @param save logical only FALSE for tests
 #' @returns `NULL`
 #' @examples
-#' # Saves PNG file, so skip.
-#' \donttest{ig_game_shot_locations(2023030417, model = 1, team = 'H')}
+#' # May take >5s, so skip.
+#' \donttest{ig_game_shot_locations(
+#'   game  = 2023030417, 
+#'   model = 1, 
+#'   team  = 'H', 
+#'   save  = FALSE
+#' )}
 #' @export
 
 ig_game_shot_locations <- function(
-    game  = 2023030417,
-    team  = 'home',
-    model = 1
+  game  = 2023030417,
+  team  = 'home',
+  model = 1,
+  save  = TRUE
 ) {
   tryCatch(
     expr = {
@@ -68,13 +75,15 @@ ig_game_shot_locations <- function(
           opp_abbrev
         )
       }
-      grDevices::png(
-        filename = file_name,
-        width    = 1080 * 1.25,
-        height   = 566 * 1.25,
-        res      = 144
-      )
-      on.exit(grDevices::dev.off(), add = TRUE)
+      if (isTRUE(save)) {
+        grDevices::png(
+          filename = file_name,
+          width    = 1080 * 1.25,
+          height   = 566 * 1.25,
+          res      = 144
+        )
+        on.exit(grDevices::dev.off(), add = TRUE)
+      }
       pbp <- gc_play_by_play(game)
       pbp <- flag_is_home(pbp)
       pbp <- normalize_coordinates(pbp)
@@ -227,14 +236,20 @@ ig_game_shot_locs <- function(game = 2023030417, team = 'home', model = 1) {
 #' @inheritParams ig_game_shot_locations
 #' @returns `NULL`
 #' @examples
-#' # Saves PNG file, so skip.
-#' \donttest{x_game_shot_locations(2023030417, model = 1, team = 'H')}
+#' # May take >5s, so skip.
+#' \donttest{x_game_shot_locations(
+#'   game  = 2023030417, 
+#'   model = 1, 
+#'   team  = 'H',
+#'   save  = FALSE
+#' )}
 #' @export
 
 x_game_shot_locations <- function(
   game  = 2023030417,
   team  = 'home',
-  model = 1
+  model = 1,
+  save  = TRUE
 ) {
   tryCatch(
     expr = {
@@ -285,13 +300,15 @@ x_game_shot_locations <- function(
           opp_abbrev
         )
       }
-      grDevices::png(
-        filename = file_name,
-        width    = 1200 * 1.25,
-        height   = 675 * 1.25,
-        res      = 144
-      )
-      on.exit(grDevices::dev.off(), add = TRUE)
+      if (isTRUE(save)) {
+        grDevices::png(
+          filename = file_name,
+          width    = 1200 * 1.25,
+          height   = 675 * 1.25,
+          res      = 144
+        )
+        on.exit(grDevices::dev.off(), add = TRUE)
+      }
       pbp <- gc_play_by_play(game)
       pbp <- flag_is_home(pbp)
       pbp <- normalize_coordinates(pbp)
@@ -444,13 +461,18 @@ x_game_shot_locs <- function(game = 2023030417, team = 'home', model = 1) {
 #' @inheritParams ig_game_shot_locations
 #' @returns `NULL`
 #' @examples
-#' # Saves PNG file, so skip.
-#' \donttest{ig_game_cumulative_expected_goals(2023030417, model = 1)}
+#' # May take >5s, so skip.
+#' \donttest{ig_game_cumulative_expected_goals(
+#'   game  = 2023030417, 
+#'   model = 1, 
+#'   save  = FALSE
+#' )}
 #' @export
 
 ig_game_cumulative_expected_goals <- function(
   game  = 2023030417,
-  model = 1
+  model = 1,
+  save  = TRUE
 ) {
   tryCatch(
     expr = {
@@ -488,13 +510,15 @@ ig_game_cumulative_expected_goals <- function(
           home_abbrev
         )
       }
-      grDevices::png(
-        filename = file_name,
-        width    = 1080 * 1.25,
-        height   = 566 * 1.25,
-        res      = 144
-      )
-      on.exit(grDevices::dev.off(), add = TRUE)
+      if (isTRUE(save)) {
+        grDevices::png(
+          filename = file_name,
+          width    = 1080 * 1.25,
+          height   = 566 * 1.25,
+          res      = 144
+        )
+        on.exit(grDevices::dev.off(), add = TRUE)
+      }
       pbp <- gc_play_by_play(game)
       pbp <- flag_is_home(pbp)
       pbp <- strip_time_period(pbp)
@@ -636,13 +660,18 @@ ig_game_cum_xG <- function(game = 2023030417, model = 1) {
 #' @inheritParams ig_game_shot_locations
 #' @returns `NULL`
 #' @examples
-#' # Saves PNG file, so skip.
-#' \donttest{x_game_cumulative_expected_goals(2023030417, model = 1)}
+#' # May take >5s, so skip.
+#' \donttest{x_game_cumulative_expected_goals(
+#'   game  = 2023030417, 
+#'   model = 1,
+#'   save  = FALSE
+#' )}
 #' @export
 
 x_game_cumulative_expected_goals <- function(
   game  = 2023030417,
-  model = 1
+  model = 1,
+  save  = TRUE
 ) {
   tryCatch(
     expr = {
@@ -680,13 +709,15 @@ x_game_cumulative_expected_goals <- function(
           home_abbrev
         )
       }
-      grDevices::png(
-        filename = file_name,
-        width    = 1200 * 1.25,
-        height   = 675 * 1.25,
-        res      = 144
-      )
-      on.exit(grDevices::dev.off(), add = TRUE)
+      if (isTRUE(save)) {
+        grDevices::png(
+          filename = file_name,
+          width    = 1200 * 1.25,
+          height   = 675 * 1.25,
+          res      = 144
+        )
+        on.exit(grDevices::dev.off(), add = TRUE)
+      }
       pbp <- gc_play_by_play(game)
       pbp <- flag_is_home(pbp)
       pbp <- strip_time_period(pbp)

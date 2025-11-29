@@ -5,7 +5,7 @@
 \alias{x_game_shot_locs}
 \title{Save an X (Twitter) share-able shot-location plot for a game}
 \usage{
-x_game_shot_locations(game = 2023030417, team = "home", model = 1)
+x_game_shot_locations(game = 2023030417, team = "home", model = 1, save = TRUE)
 
 x_game_shot_locs(game = 2023030417, team = "home", model = 1)
 }
@@ -18,6 +18,8 @@ x_game_shot_locs(game = 2023030417, team = "home", model = 1)
 (e.g., 1); see \code{\link[=calculate_expected_goals_v1]{calculate_expected_goals_v1()}},
 \code{\link[=calculate_expected_goals_v2]{calculate_expected_goals_v2()}}, and/or \code{\link[=calculate_expected_goals_v3]{calculate_expected_goals_v3()}} for
 reference}
+
+\item{save}{logical only FALSE for tests}
 }
 \value{
 \code{NULL}
@@ -27,6 +29,11 @@ reference}
 given \code{game}.
 }
 \examples{
-# Saves PNG file, so skip.
-\donttest{x_game_shot_locations(2023030417, model = 1, team = 'H')}
+# May take >5s, so skip.
+\donttest{x_game_shot_locations(
+  game  = 2023030417, 
+  model = 1, 
+  team  = 'H',
+  save  = FALSE
+)}
 }
