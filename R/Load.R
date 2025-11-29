@@ -12,12 +12,24 @@
 gc_play_by_plays <- function(season = 20242025) {
   tryCatch(
     expr = {
-      utils::read.csv(paste0(
+      pbps <- utils::read.csv(paste0(
         'https://media.githubusercontent.com/media/RentoSaijo/NHL_DB/refs/',
         'heads/main/data/game/pbps/gc/NHL_PBPS_GC_',
         season,
         '.csv'
       ))
+      raw_situation <- pbps[['situationCode']]
+      situation_chr <- as.character(raw_situation)
+      situation_pad <- rep(NA_character_, length(situation_chr))
+      valid         <- !is.na(situation_chr) & nchar(situation_chr) > 0
+      if (any(valid)) {
+        situation_pad[valid] <- sprintf(
+          '%04d', 
+          as.integer(situation_chr[valid])
+        )
+      }
+      pbps[['situationCode']] <- situation_pad
+      pbps
     },
     error = function(e) {
       message('Invalid argument(s); refer to help file.')
@@ -46,12 +58,24 @@ gc_pbps <- function(season = 20242025) {
 wsc_play_by_plays <- function(season = 20242025) {
   tryCatch(
     expr = {
-      utils::read.csv(paste0(
+      pbps <- utils::read.csv(paste0(
         'https://media.githubusercontent.com/media/RentoSaijo/NHL_DB/refs/',
         'heads/main/data/game/pbps/wsc/NHL_PBPS_WSC_',
         season,
         '.csv'
       ))
+      raw_situation <- pbps[['situationCode']]
+      situation_chr <- as.character(raw_situation)
+      situation_pad <- rep(NA_character_, length(situation_chr))
+      valid         <- !is.na(situation_chr) & nchar(situation_chr) > 0
+      if (any(valid)) {
+        situation_pad[valid] <- sprintf(
+          '%04d', 
+          as.integer(situation_chr[valid])
+        )
+      }
+      pbps[['situationCode']] <- situation_pad
+      pbps
     },
     error = function(e) {
       message('Invalid argument(s); refer to help file.')
