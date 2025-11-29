@@ -555,13 +555,13 @@ ig_game_cumulative_expected_goals <- function(
       if (!is.finite(game_end_sec) || game_end_sec <= 0) {
         game_end_sec <- 3600
       }
-      if (tail(home_t, 1L) < game_end_sec) {
+      if (utils::tail(home_t, 1L) < game_end_sec) {
         home_t   <- c(home_t, game_end_sec)
-        home_cum <- c(home_cum, tail(home_cum, 1L))
+        home_cum <- c(home_cum, utils::tail(home_cum, 1L))
       }
-      if (tail(away_t, 1L) < game_end_sec) {
+      if (utils::tail(away_t, 1L) < game_end_sec) {
         away_t   <- c(away_t, game_end_sec)
-        away_cum <- c(away_cum, tail(away_cum, 1L))
+        away_cum <- c(away_cum, utils::tail(away_cum, 1L))
       }
       max_time <- game_end_sec
       max_xg   <- max(c(home_cum, away_cum), na.rm = TRUE)
@@ -747,13 +747,13 @@ x_game_cumulative_expected_goals <- function(
       if (!is.finite(game_end_sec) || game_end_sec <= 0) {
         game_end_sec <- 3600
       }
-      if (tail(home_t, 1L) < game_end_sec) {
+      if (utils::tail(home_t, 1L) < game_end_sec) {
         home_t   <- c(home_t, game_end_sec)
-        home_cum <- c(home_cum, tail(home_cum, 1L))
+        home_cum <- c(home_cum, utils::tail(home_cum, 1L))
       }
-      if (tail(away_t, 1L) < game_end_sec) {
+      if (utils::tail(away_t, 1L) < game_end_sec) {
         away_t   <- c(away_t, game_end_sec)
-        away_cum <- c(away_cum, tail(away_cum, 1L))
+        away_cum <- c(away_cum, utils::tail(away_cum, 1L))
       }
       max_time <- game_end_sec
       max_xg   <- max(c(home_cum, away_cum), na.rm = TRUE)
