@@ -2,6 +2,8 @@
 
 ## nhlscraper 0.4.0
 
+CRAN release: 2025-11-30
+
 - Website now features proper example.
 - New functions to help clean the data are now available:
   - [`strip_game_id()`](https://rentosaijo.github.io/nhlscraper/reference/strip_game_id.md)
