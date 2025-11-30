@@ -1,3 +1,5 @@
+# nhlscraper (development version)
+
 # nhlscraper 0.4.0
 
 - Website now features proper example.
