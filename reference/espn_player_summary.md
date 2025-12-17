@@ -24,5 +24,5 @@ data.frame with one row
 
 ``` r
 ESPN_summary_Charlie_McAvoy <- espn_player_summary(player = 3988803)
-#> Unable to create connection; please try again later.
+#> Invalid argument(s); refer to help file.
 ```
