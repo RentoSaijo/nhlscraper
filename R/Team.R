@@ -155,7 +155,6 @@ team_game_report <- function(
       report[order(report$teamId, report$gameId), ]
     },
     error = function(e) {
-      
       message('Invalid argument(s); refer to help file.')
       data.frame()
     }
