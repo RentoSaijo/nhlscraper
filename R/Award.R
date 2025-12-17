@@ -8,10 +8,15 @@
 #' @export
 
 awards <- function() {
-  nhl_api(
-    path = 'trophy',
-    type = 'r'
-  )$data
+  tryCatch({
+    nhl_api(
+      path = 'trophy',
+      type = 'r'
+    )$data
+  }, error = function(e) {
+    message('Unable to create connection; please try again later.')
+    data.frame()
+  })
 }
 
 #' Access all the award winners/finalists
@@ -24,10 +29,15 @@ awards <- function() {
 #' @export
 
 award_winners <- function() {
-  winners    <- nhl_api(
-    path = 'award-details',
-    type = 'r'
-  )$data
-  winners$id <- NULL
-  winners[order(winners$trophyId, winners$seasonId, winners$status), ]
+  tryCatch({
+    winners    <- nhl_api(
+      path = 'award-details',
+      type = 'r'
+    )$data
+    winners$id <- NULL
+    winners[order(winners$trophyId, winners$seasonId, winners$status), ]
+  }, error = function(e) {
+    message('Unable to create connection; please try again later.')
+    data.frame()
+  })
 }

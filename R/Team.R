@@ -8,11 +8,16 @@
 #' @export
 
 teams <- function() {
-  teams <- nhl_api(
-    path = 'en/team',
-    type = 's'
-  )$data
-  teams[order(teams$id), ]
+  tryCatch({
+    teams <- nhl_api(
+      path = 'en/team',
+      type = 's'
+    )$data
+    teams[order(teams$id), ]
+  }, error = function(e) {
+    message('Unable to create connection; please try again later.')
+    data.frame()
+  })
 }
 
 #' Access the season(s) and game type(s) in which a team played
@@ -55,14 +60,20 @@ team_seasons <- function(team = 1) {
 #' @export
 
 team_report_configurations <- function() {
-  nhl_api(
-    path = 'en/config',
-    type = 's'
-  )$teamReportData
+  tryCatch({
+    nhl_api(
+      path = 'en/config',
+      type = 's'
+    )$teamReportData
+  }, error = function(e) {
+    message('Unable to create connection; please try again later.')
+    data.frame()
+  })
 }
 
 #' @rdname team_report_configurations
 #' @export
+
 team_report_configs <- function() {
   team_report_configurations()
 }
@@ -173,19 +184,25 @@ team_game_report <- function(
 #' @export
 
 team_season_statistics <- function() {
-  stats <- nhl_api(
-    path = 'team-stats',
-    type = 'r'
-  )$data
-  stats[order(
-    stats$`id.db:TEAMID`, 
-    stats$`id.db:SEASON`, 
-    stats$`id.db:GAMETYPE`
-  ), ]
+  tryCatch({
+    stats <- nhl_api(
+      path = 'team-stats',
+      type = 'r'
+    )$data
+    stats[order(
+      stats$`id.db:TEAMID`, 
+      stats$`id.db:SEASON`, 
+      stats$`id.db:GAMETYPE`
+    ), ]
+  }, error = function(e) {
+    message('Unable to create connection; please try again later.')
+    data.frame()
+  })
 }
 
 #' @rdname team_season_statistics
 #' @export
+
 team_season_stats <- function() {
   team_season_statistics()
 }
@@ -443,10 +460,15 @@ team_week_schedule <- function(team = 1, date = 'now') {
 #' @export
 
 team_logos <- function() {
-  logos <- nhl_api(
-    path = 'logo',
-    type = 'r'
-  )$data
-  logos$id <- NULL
-  logos[order(logos$teamId, logos$startSeason), ]
+  tryCatch({
+    logos <- nhl_api(
+      path = 'logo',
+      type = 'r'
+    )$data
+    logos$id <- NULL
+    logos[order(logos$teamId, logos$startSeason), ]
+  }, error = function(e) {
+    message('Unable to create connection; please try again later.')
+    data.frame()
+  })
 }

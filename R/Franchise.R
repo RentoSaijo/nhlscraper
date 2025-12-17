@@ -8,18 +8,23 @@
 #' @export
 
 franchises <- function() {
-  franchises <- nhl_api(
-    path = 'franchise',
-    type = 'r'
-  )$data
-  details    <- nhl_api(
-    path = 'franchise-detail',
-    type = 'r'
-  )$data
-  details$firstSeasonId    <- NULL
-  details$mostRecentTeamId <- NULL
-  details$teamAbbrev       <- NULL
-  merge(franchises[order(franchises$id), ], details, by = 'id')
+  tryCatch({
+    franchises <- nhl_api(
+      path = 'franchise',
+      type = 'r'
+    )$data
+    details    <- nhl_api(
+      path = 'franchise-detail',
+      type = 'r'
+    )$data
+    details$firstSeasonId    <- NULL
+    details$mostRecentTeamId <- NULL
+    details$teamAbbrev       <- NULL
+    merge(franchises[order(franchises$id), ], details, by = 'id')
+  }, error = function(e) {
+    message('Unable to create connection; please try again later.')
+    data.frame()
+  })
 }
 
 #' Access the all-time statistics for all the franchises by game type
@@ -33,16 +38,22 @@ franchises <- function() {
 #' @export
 
 franchise_statistics <- function() {
-  stats <- nhl_api(
-    path = 'franchise-totals',
-    type = 'r'
-  )$data
-  stats$id <- NULL
-  stats[order(stats$franchiseId, stats$gameTypeId), ]
+  tryCatch({
+    stats <- nhl_api(
+      path = 'franchise-totals',
+      type = 'r'
+    )$data
+    stats$id <- NULL
+    stats[order(stats$franchiseId, stats$gameTypeId), ]
+  }, error = function(e) {
+    message('Unable to create connection; please try again later.')
+    data.frame()
+  })
 }
 
 #' @rdname franchise_statistics
 #' @export
+
 franchise_stats <- function() {
   franchise_statistics()
 }
@@ -58,16 +69,22 @@ franchise_stats <- function() {
 #' @export
 
 franchise_team_statistics <- function() {
-  stats <- nhl_api(
-    path = 'franchise-team-totals',
-    type = 'r'
-  )$data
-  stats$id <- NULL
-  stats[order(stats$franchiseId, stats$teamId, stats$gameTypeId), ]
+  tryCatch({
+    stats <- nhl_api(
+      path = 'franchise-team-totals',
+      type = 'r'
+    )$data
+    stats$id <- NULL
+    stats[order(stats$franchiseId, stats$teamId, stats$gameTypeId), ]
+  }, error = function(e) {
+    message('Unable to create connection; please try again later.')
+    data.frame()
+  })
 }
 
 #' @rdname franchise_team_statistics
 #' @export
+
 franchise_team_stats <- function() {
   franchise_team_statistics()
 }
@@ -84,16 +101,22 @@ franchise_team_stats <- function() {
 #' @export
 
 franchise_season_statistics <- function() {
-  stats <- nhl_api(
-    path = 'franchise-season-results',
-    type = 'r'
-  )$data
-  stats$id <- NULL
-  stats[order(stats$franchiseId, stats$seasonId, stats$gameTypeId), ]
+  tryCatch({
+    stats <- nhl_api(
+      path = 'franchise-season-results',
+      type = 'r'
+    )$data
+    stats$id <- NULL
+    stats[order(stats$franchiseId, stats$seasonId, stats$gameTypeId), ]
+  }, error = function(e) {
+    message('Unable to create connection; please try again later.')
+    data.frame()
+  })
 }
 
 #' @rdname franchise_season_statistics
 #' @export
+
 franchise_season_stats <- function() {
   franchise_season_statistics()
 }
@@ -111,18 +134,23 @@ franchise_season_stats <- function() {
 #' @export
 
 franchise_versus_franchise <- function() {
-  versus <- nhl_api(
-    path = 'all-time-record-vs-franchise',
-    type = 'r'
-  )$data
-  versus$id <- NULL
-  versus[order(
-    versus$teamFranchiseId, 
-    versus$teamId, 
-    versus$opponentFranchiseId, 
-    versus$opponentTeamId, 
-    versus$gameTypeId
-  ), ]
+  tryCatch({
+    versus <- nhl_api(
+      path = 'all-time-record-vs-franchise',
+      type = 'r'
+    )$data
+    versus$id <- NULL
+    versus[order(
+      versus$teamFranchiseId, 
+      versus$teamId, 
+      versus$opponentFranchiseId, 
+      versus$opponentTeamId, 
+      versus$gameTypeId
+    ), ]
+  }, error = function(e) {
+    message('Unable to create connection; please try again later.')
+    data.frame()
+  })
 }
 
 #' @rdname franchise_versus_franchise
@@ -143,10 +171,15 @@ franchise_vs_franchise <- function() {
 #' @export
 
 franchise_playoff_situational_results <- function() {
-  results    <- nhl_api(
-    path = 'series-situational-records',
-    type = 'r'
-  )$data
-  results$id <- NULL
-  results[order(results$franchiseId, results$seriesSituation), ]
+  tryCatch({
+    results    <- nhl_api(
+      path = 'series-situational-records',
+      type = 'r'
+    )$data
+    results$id <- NULL
+    results[order(results$franchiseId, results$seriesSituation), ]
+  }, error = function(e) {
+    message('Unable to create connection; please try again later.')
+    data.frame()
+  })
 }

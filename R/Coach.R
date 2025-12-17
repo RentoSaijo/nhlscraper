@@ -8,10 +8,15 @@
 #' @export
 
 coaches <- function() {
-  nhl_api(
-    path = 'coach',
-    type = 'r'
-  )$data
+  tryCatch({
+    nhl_api(
+      path = 'coach',
+      type = 'r'
+    )$data
+  }, error = function(e) {
+    message('Unable to create connection; please try again later.')
+    data.frame()
+  })
 }
 
 #' Access the career statistics for all the coaches
@@ -24,16 +29,22 @@ coaches <- function() {
 #' @export
 
 coach_career_statistics <- function() {
-  results <- nhl_api(
-    path = 'coach-career-records-regular-plus-playoffs',
-    type = 'r'
-  )$data
-  results$id <- NULL
-  results[order(results$coachId), ]
+  tryCatch({
+    results <- nhl_api(
+      path = 'coach-career-records-regular-plus-playoffs',
+      type = 'r'
+    )$data
+    results$id <- NULL
+    results[order(results$coachId), ]
+  }, error = function(e) {
+    message('Unable to create connection; please try again later.')
+    data.frame()
+  })
 }
 
 #' @rdname coach_career_statistics
 #' @export
+
 coach_career_stats <- function() {
   coach_career_statistics()
 }
@@ -49,16 +60,22 @@ coach_career_stats <- function() {
 #' @export
 
 coach_franchise_statistics <- function() {
-  stats    <- nhl_api(
-    path = 'coach-franchise-records',
-    type = 'r'
-  )$data
-  stats$id <- NULL
-  stats[order(stats$coachName, stats$firstCoachedDate), ]
+  tryCatch({
+    stats    <- nhl_api(
+      path = 'coach-franchise-records',
+      type = 'r'
+    )$data
+    stats$id <- NULL
+    stats[order(stats$coachName, stats$firstCoachedDate), ]
+  }, error = function(e) {
+    message('Unable to create connection; please try again later.')
+    data.frame()
+  })
 }
 
 #' @rdname coach_franchise_statistics
 #' @export
+
 coach_franchise_stats <- function() {
   coach_franchise_statistics()
 }

@@ -9,14 +9,20 @@
 #' @export
 
 skater_report_configurations <- function() {
-  nhl_api(
-    path = 'en/config',
-    type = 's'
-  )$playerReportData
+  tryCatch({
+    nhl_api(
+      path = 'en/config',
+      type = 's'
+    )$playerReportData
+  }, error = function(e) {
+    message('Unable to create connection; please try again later.')
+    data.frame()
+  })
 }
 
 #' @rdname skater_report_configurations
 #' @export
+
 skater_report_configs <- function() {
   skater_report_configurations()
 }
@@ -182,16 +188,22 @@ skater_game_report <- function(
 #' @export
 
 skater_statistics <- function() {
-  stats    <- nhl_api(
-    path = 'skater-career-scoring-regular-plus-playoffs',
-    type = 'r'
-  )$data
-  stats$id <- NULL
-  stats[order(stats$playerId), ]
+  tryCatch({
+    stats    <- nhl_api(
+      path = 'skater-career-scoring-regular-plus-playoffs',
+      type = 'r'
+    )$data
+    stats$id <- NULL
+    stats[order(stats$playerId), ]
+  }, error = function(e) {
+    message('Unable to create connection; please try again later.')
+    data.frame()
+  })
 }
 
 #' @rdname skater_statistics
 #' @export
+
 skater_stats <- function() {
   skater_statistics()
 }
@@ -207,14 +219,20 @@ skater_stats <- function() {
 #' @export
 
 skater_regular_statistics <- function() {
-  nhl_api(
-    path = 'skater-career-scoring-regular-season',
-    type = 'r'
-  )$data
+  tryCatch({
+    nhl_api(
+      path = 'skater-career-scoring-regular-season',
+      type = 'r'
+    )$data
+  }, error = function(e) {
+    message('Unable to create connection; please try again later.')
+    data.frame()
+  })
 }
 
 #' @rdname skater_regular_statistics
 #' @export
+
 skater_regular_stats <- function() {
   skater_regular_statistics()
 }
@@ -230,14 +248,20 @@ skater_regular_stats <- function() {
 #' @export
 
 skater_playoff_statistics <- function() {
-  nhl_api(
-    path = 'skater-career-scoring-playoffs',
-    type = 'r'
-  )$data
+  tryCatch({
+    nhl_api(
+      path = 'skater-career-scoring-playoffs',
+      type = 'r'
+    )$data
+  }, error = function(e) {
+    message('Unable to create connection; please try again later.')
+    data.frame()
+  })
 }
 
 #' @rdname skater_playoff_statistics
 #' @export
+
 skater_playoff_stats <- function() {
   skater_playoff_statistics()
 }
@@ -255,16 +279,22 @@ skater_playoff_stats <- function() {
 #' @export
 
 skater_season_statistics <- function() {
-  stats                    <- nhl_api(
-    path = 'player-stats',
-    type = 'r'
-  )$data
-  stats$`id.db:SEQUENCENO` <- NULL
-  stats[order(stats$`id.db:PLAYERID`, stats$`id.db:SEASON`), ]
+  tryCatch({
+    stats                    <- nhl_api(
+      path = 'player-stats',
+      type = 'r'
+    )$data
+    stats$`id.db:SEQUENCENO` <- NULL
+    stats[order(stats$`id.db:PLAYERID`, stats$`id.db:SEASON`), ]
+  }, error = function(e) {
+    message('Unable to create connection; please try again later.')
+    data.frame()
+  })
 }
 
 #' @rdname skater_season_statistics
 #' @export
+
 skater_season_stats <- function() {
   skater_season_statistics()
 }
@@ -281,16 +311,22 @@ skater_season_stats <- function() {
 #' @export
 
 skater_series_statistics <- function() {
-  stats    <- nhl_api(
-    path = 'playoff-skater-series-stats',
-    type = 'r'
-  )$data
-  stats$id <- NULL
-  stats
+  tryCatch({
+    stats    <- nhl_api(
+      path = 'playoff-skater-series-stats',
+      type = 'r'
+    )$data
+    stats$id <- NULL
+    stats
+  }, error = function(e) {
+    message('Unable to create connection; please try again later.')
+    data.frame()
+  })
 }
 
 #' @rdname skater_series_statistics
 #' @export
+
 skater_series_stats <- function() {
   skater_series_statistics()
 }
@@ -365,8 +401,13 @@ skater_leaders <- function(
 #' @export
 
 skater_milestones <- function() {
-  nhl_api(
-    path = 'en/milestones/skaters',
-    type = 's'
-  )$data
+  tryCatch({
+    nhl_api(
+      path = 'en/milestones/skaters',
+      type = 's'
+    )$data
+  }, error = function(e) {
+    message('Unable to create connection; please try again later.')
+    data.frame()
+  })
 }

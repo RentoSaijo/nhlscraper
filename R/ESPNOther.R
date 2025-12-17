@@ -111,10 +111,15 @@ espn_futures <- function(season = season_now()) {
 #' @export
 
 espn_injuries <- function() {
-  teams <- espn_api(
-    path  = 'injuries',
-    query = list(limit = 1000),
-    type  = 'g'
-  )$injuries
-  teams[order(as.integer(teams$id)), ]
+  tryCatch({
+    teams <- espn_api(
+      path  = 'injuries',
+      query = list(limit = 1000),
+      type  = 'g'
+    )$injuries
+    teams[order(as.integer(teams$id)), ]
+  }, error = function(e) {
+    message('Unable to create connection; please try again later.')
+    data.frame()
+  })
 }

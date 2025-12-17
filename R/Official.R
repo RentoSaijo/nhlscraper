@@ -8,8 +8,13 @@
 #' @export
 
 officials <- function() {
-  nhl_api(
-    path = 'officials',
-    type = 'r'
-  )$data
+  tryCatch({
+    nhl_api(
+      path = 'officials',
+      type = 'r'
+    )$data
+  }, error = function(e) {
+    message('Unable to create connection; please try again later.')
+    data.frame()
+  })
 }

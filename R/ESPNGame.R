@@ -152,6 +152,7 @@ espn_play_by_play <- function(game = 401777460) {
 
 #' @rdname espn_play_by_play
 #' @export
+
 espn_pbp <- function(game = 401777460) {
   espn_play_by_play(game)
 }

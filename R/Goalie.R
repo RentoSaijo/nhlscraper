@@ -9,14 +9,20 @@
 #' @export
 
 goalie_report_configurations <- function() {
-  nhl_api(
-    path = 'en/config',
-    type = 's'
-  )$goalieReportData
+  tryCatch({
+    nhl_api(
+      path = 'en/config',
+      type = 's'
+    )$goalieReportData
+  }, error = function(e) {
+    message('Unable to create connection; please try again later.')
+    list()
+  })
 }
 
 #' @rdname goalie_report_configurations
 #' @export
+
 goalie_report_configs <- function() {
   goalie_report_configurations()
 }
@@ -129,16 +135,22 @@ goalie_game_report <- function(
 #' @export
 
 goalie_statistics <- function() {
-  stats    <- nhl_api(
-    path = 'goalie_career_stats_incl_playoffs',
-    type = 'r'
-  )$data
-  stats$id <- NULL
-  stats[order(stats$playerId), ]
+  tryCatch({
+    stats    <- nhl_api(
+      path = 'goalie_career_stats_incl_playoffs',
+      type = 'r'
+    )$data
+    stats$id <- NULL
+    stats[order(stats$playerId), ]
+  }, error = function(e) {
+    message('Unable to create connection; please try again later.')
+    data.frame()
+  })
 }
 
 #' @rdname goalie_statistics
 #' @export
+
 goalie_stats <- function() {
   goalie_statistics()
 }
@@ -154,16 +166,22 @@ goalie_stats <- function() {
 #' @export
 
 goalie_regular_statistics <- function() {
-  stats    <- nhl_api(
-    path = 'goalie-career-stats',
-    type = 'r'
-  )$data
-  stats$id <- NULL
-  stats[order(stats$playerId), ]
+  tryCatch({
+    stats    <- nhl_api(
+      path = 'goalie-career-stats',
+      type = 'r'
+    )$data
+    stats$id <- NULL
+    stats[order(stats$playerId), ]
+  }, error = function(e) {
+    message('Unable to create connection; please try again later.')
+    data.frame()
+  })
 }
 
 #' @rdname goalie_regular_statistics
 #' @export
+
 goalie_regular_stats <- function() {
   goalie_regular_statistics()
 }
@@ -181,16 +199,22 @@ goalie_regular_stats <- function() {
 #' @export
 
 goalie_season_statistics <- function() {
-  stats    <- nhl_api(
-    path = 'goalie-season-stats',
-    type = 'r'
-  )$data
-  stats$id <- NULL
-  stats[order(stats$playerId, stats$seasonId, stats$gameType), ]
+  tryCatch({
+    stats    <- nhl_api(
+      path = 'goalie-season-stats',
+      type = 'r'
+    )$data
+    stats$id <- NULL
+    stats[order(stats$playerId, stats$seasonId, stats$gameType), ]
+  }, error = function(e) {
+    message('Unable to create connection; please try again later.')
+    data.frame()
+  })
 }
 
 #' @rdname goalie_season_statistics
 #' @export
+
 goalie_season_stats <- function() {
   goalie_season_statistics()
 }
@@ -206,16 +230,22 @@ goalie_season_stats <- function() {
 #' @export
 
 goalie_game_statistics <- function() {
-  stats    <- nhl_api(
-    path = 'goalie-game-stats',
-    type = 'r'
-  )$data
-  stats$id <- NULL
-  stats[order(stats$playerId, stats$gameId), ]
+  tryCatch({
+    stats    <- nhl_api(
+      path = 'goalie-game-stats',
+      type = 'r'
+    )$data
+    stats$id <- NULL
+    stats[order(stats$playerId, stats$gameId), ]
+  }, error = function(e) {
+    message('Unable to create connection; please try again later.')
+    data.frame()
+  })
 }
 
 #' @rdname goalie_game_statistics
 #' @export
+
 goalie_game_stats <- function() {
   goalie_game_statistics()
 }
@@ -231,16 +261,22 @@ goalie_game_stats <- function() {
 #' @export
 
 goalie_series_statistics <- function() {
-  stats    <- nhl_api(
-    path = 'playoff-goalie-series-stats',
-    type = 'r'
-  )$data
-  stats$id <- NULL
-  stats
+  tryCatch({
+    stats    <- nhl_api(
+      path = 'playoff-goalie-series-stats',
+      type = 'r'
+    )$data
+    stats$id <- NULL
+    stats
+  }, error = function(e) {
+    message('Unable to create connection; please try again later.')
+    data.frame()
+  })
 }
 
 #' @rdname goalie_series_statistics
 #' @export
+
 goalie_series_stats <- function() {
   goalie_series_statistics()
 }
@@ -256,12 +292,17 @@ goalie_series_stats <- function() {
 #' @export
 
 goalie_scoring <- function() {
-  scoring    <- nhl_api(
-    path = 'goalie-career-scoring',
-    type = 'r'
-  )$data
-  scoring$id <- NULL
-  scoring[order(scoring$playerId), ]
+  tryCatch({
+    scoring    <- nhl_api(
+      path = 'goalie-career-scoring',
+      type = 'r'
+    )$data
+    scoring$id <- NULL
+    scoring[order(scoring$playerId), ]
+  }, error = function(e) {
+    message('Unable to create connection; please try again later.')
+    data.frame()
+  })
 }
 
 #' Access the scoring statistics for all the goalies by game
@@ -275,12 +316,17 @@ goalie_scoring <- function() {
 #' @export
 
 goalie_game_scoring <- function() {
-  scoring    <- nhl_api(
-    path = 'goalie-game-scoring',
-    type = 'r'
-  )$data
-  scoring$id <- NULL
-  scoring[order(scoring$playerId, scoring$gameId), ]
+  tryCatch({
+    scoring    <- nhl_api(
+      path = 'goalie-game-scoring',
+      type = 'r'
+    )$data
+    scoring$id <- NULL
+    scoring[order(scoring$playerId, scoring$gameId), ]
+  }, error = function(e) {
+    message('Unable to create connection; please try again later.')
+    data.frame()
+  })
 }
 
 #' Access the goalie statistics leaders for a season, game type, and category
@@ -326,7 +372,6 @@ goalie_leaders <- function(
       )[[category]]
     },
     error = function(e) {
-      
       message('Invalid argument(s); refer to help file.')
       data.frame()
     }
@@ -343,8 +388,13 @@ goalie_leaders <- function(
 #' @export
 
 goalie_milestones <- function() {
-  nhl_api(
-    path = 'en/milestones/goalies',
-    type = 's'
-  )$data
+  tryCatch({
+    nhl_api(
+      path = 'en/milestones/goalies',
+      type = 's'
+    )$data
+  }, error = function(e) {
+    message('Unable to create connection; please try again later.')
+    data.frame()
+  })
 }

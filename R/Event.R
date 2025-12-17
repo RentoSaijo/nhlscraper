@@ -62,16 +62,22 @@ replay <- function(game = 2023030417, event = 866) {
 #' @export
 
 penalty_shots <- function() {
-  ps <- nhl_api(
-    path = 'penalty-shots',
-    type = 'r'
-  )$data
-  ps$id <- NULL
-  ps[order(ps$gameId), ]
+  tryCatch({
+    ps <- nhl_api(
+      path = 'penalty-shots',
+      type = 'r'
+    )$data
+    ps$id <- NULL
+    ps[order(ps$gameId), ]
+  }, error = function(e) {
+    message('Unable to create connection; please try again later.')
+    data.frame()
+  })
 }
 
 #' @rdname penalty_shots
 #' @export
+
 ps <- function() {
   penalty_shots()
 }

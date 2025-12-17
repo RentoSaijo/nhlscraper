@@ -9,11 +9,16 @@
 #' @export
 
 players <- function() {
-  players <- nhl_api(
-    path = 'player',
-    type = 'r'
-  )$data
-  players[order(players$id), ]
+  tryCatch({
+    players <- nhl_api(
+      path = 'player',
+      type = 'r'
+    )$data
+    players[order(players$id), ]
+  }, error = function(e) {
+    message('Unable to create connection; please try again later.')
+    data.frame()
+  })
 }
 
 #' Access the season(s) and game type(s) in which a player played
@@ -121,8 +126,13 @@ player_game_log <- function(
 #' @export
 
 spotlight_players <- function() {
-  nhl_api(
-    path = 'v1/player-spotlight',
-    type = 'w'
-  )
+  tryCatch({
+    nhl_api(
+      path = 'v1/player-spotlight',
+      type = 'w'
+    )
+  }, error = function(e) {
+    message('Unable to create connection; please try again later.')
+    data.frame()
+  })
 }

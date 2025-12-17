@@ -8,11 +8,16 @@
 #' @export
 
 seasons <- function() {
-  seasons <- nhl_api(
-    path = 'en/season',
-    type = 's'
-  )$data
-  seasons[order(seasons$id), ]
+  tryCatch({
+    seasons <- nhl_api(
+      path = 'en/season',
+      type = 's'
+    )$data
+    seasons[order(seasons$id), ]
+  }, error = function(e) {
+    message('Unable to create connection; please try again later.')
+    data.frame()
+  })
 }
 
 #' Access the season as of now
@@ -25,10 +30,15 @@ seasons <- function() {
 #' @export
 
 season_now <- function() {
-  nhl_api(
-    path = 'en/componentSeason',
-    type = 's'
-  )$data$seasonId
+  tryCatch({
+    nhl_api(
+      path = 'en/componentSeason',
+      type = 's'
+    )$data$seasonId
+  }, error = function(e) {
+    message('Unable to create connection; please try again later.')
+    -1
+  })
 }
 
 #' Access the game type as of now
@@ -42,10 +52,15 @@ season_now <- function() {
 #' @export
 
 game_type_now <- function() {
-  nhl_api(
-    path = 'en/componentSeason',
-    type = 's'
-  )$data$gameTypeId
+  tryCatch({
+    nhl_api(
+      path = 'en/componentSeason',
+      type = 's'
+    )$data$gameTypeId
+  }, error = function(e) {
+    message('Unable to create connection; please try again later.')
+    -1
+  })
 }
 
 #' Access the standings rules by season
@@ -58,10 +73,15 @@ game_type_now <- function() {
 #' @export
 
 standings_rules <- function() {
-  nhl_api(
-    path = 'v1/standings-season',
-    type = 'w'
-  )$seasons
+  tryCatch({
+    nhl_api(
+      path = 'v1/standings-season',
+      type = 'w'
+    )$seasons
+  }, error = function(e) {
+    message('Unable to create connection; please try again later.')
+    data.frame()
+  })
 }
 
 #' Access the standings for a date
@@ -126,12 +146,17 @@ schedule <- function(date = Sys.Date()) {
 #' @export
 
 venues <- function() {
-  venues    <- nhl_api(
-    path = 'venue',
-    type = 'r'
-  )$data
-  venues$id <- NULL
-  venues[order(venues$venueId), ]
+  tryCatch({
+    venues    <- nhl_api(
+      path = 'venue',
+      type = 'r'
+    )$data
+    venues$id <- NULL
+    venues[order(venues$venueId), ]
+  }, error = function(e) {
+    message('Unable to create connection; please try again later.')
+    data.frame()
+  })
 }
 
 #' Access the attendance by season and game type
@@ -144,10 +169,15 @@ venues <- function() {
 #' @export
 
 attendance <- function() {
-  attendance <- nhl_api(
-    path = 'attendance',
-    type = 'r'
-  )$data
-  attendance$id <- NULL
-  attendance[order(attendance$seasonId), ]
+  tryCatch({
+    attendance <- nhl_api(
+      path = 'attendance',
+      type = 'r'
+    )$data
+    attendance$id <- NULL
+    attendance[order(attendance$seasonId), ]
+  }, error = function(e) {
+    message('Unable to create connection; please try again later.')
+    data.frame()
+  })
 }

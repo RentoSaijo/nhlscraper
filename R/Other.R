@@ -8,10 +8,15 @@
 #' @export
 
 glossary <- function() {
-  nhl_api(
-    path = 'en/glossary',
-    type = 's'
-  )$data
+  tryCatch({
+    nhl_api(
+      path = 'en/glossary',
+      type = 's'
+    )$data
+  }, error = function(e) {
+    message('Unable to create connection; please try again later.')
+    data.frame()
+  })
 }
 
 #' Access all the countries
@@ -24,10 +29,15 @@ glossary <- function() {
 #' @export
 
 countries <- function() {
-  nhl_api(
-    path = 'en/country',
-    type = 's'
-  )$data
+  tryCatch({
+    nhl_api(
+      path = 'en/country',
+      type = 's'
+    )$data
+  }, error = function(e) {
+    message('Unable to create connection; please try again later.')
+    data.frame()
+  })
 }
 
 #' Access the location for a zip code
@@ -67,10 +77,15 @@ location <- function(zip = 10001) {
 #' @export
 
 streams <- function() {
-  nhl_api(
-    path = 'v1/where-to-watch',
-    type = 'w'
-  )
+  tryCatch({
+    nhl_api(
+      path = 'v1/where-to-watch',
+      type = 'w'
+    )
+  }, error = function(e) {
+    message('Unable to create connection; please try again later.')
+    data.frame()
+  })
 }
 
 #' Access the NHL Network TV schedule for a date

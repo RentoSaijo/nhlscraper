@@ -9,12 +9,17 @@
 #' @export
 
 series <- function() {
-  series    <- nhl_api(
-    path = 'playoff-series',
-    type = 'r'
-  )$data
-  series$id <- NULL
-  series[order(series$seasonId, series$playoffSeriesLetter, series$gameId), ]
+  tryCatch({
+    series    <- nhl_api(
+      path = 'playoff-series',
+      type = 'r'
+    )$data
+    series$id <- NULL
+    series[order(series$seasonId, series$playoffSeriesLetter, series$gameId), ]
+  }, error = function(e) {
+    message('Unable to create connection; please try again later.')
+    data.frame()
+  })
 }
 
 #' Access the playoff statistics by season
@@ -27,16 +32,22 @@ series <- function() {
 #' @export
 
 playoff_season_statistics <- function() {
-  totals    <- nhl_api(
-    path = 'league-playoff-year-totals',
-    type = 'r'
-  )$data
-  totals$id <- NULL
-  totals[order(totals$seasonId), ]
+  tryCatch({
+    totals    <- nhl_api(
+      path = 'league-playoff-year-totals',
+      type = 'r'
+    )$data
+    totals$id <- NULL
+    totals[order(totals$seasonId), ]
+  }, error = function(e) {
+    message('Unable to create connection; please try again later.')
+    data.frame()
+  })
 }
 
 #' @rdname playoff_season_statistics
 #' @export
+
 playoff_season_stats <- function() {
   playoff_season_statistics()
 }

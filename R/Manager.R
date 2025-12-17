@@ -8,14 +8,20 @@
 #' @export
 
 general_managers <- function() {
-  nhl_api(
-    path = 'general-manager',
-    type = 'r'
-  )$data
+  tryCatch({
+    nhl_api(
+      path = 'general-manager',
+      type = 'r'
+    )$data
+  }, error = function(e) {
+    message('Unable to create connection; please try again later.')
+    data.frame()
+  })
 }
 
 #' @rdname general_managers
 #' @export
+
 gms <- function() {
   general_managers()
 }

@@ -8,22 +8,27 @@
 #' @export
 
 espn_teams <- function() {
-  page <- 1
-  all_teams <- list()
-  repeat {
-    teams <- espn_api(
-      path  = 'teams',
-      query = list(limit = 1000, page = page),
-      type  = 'c'
-    )
-    df   <- as.data.frame(teams$items, stringsAsFactors = FALSE)
-    all_teams[[length(all_teams) + 1]] <- df
-    if (nrow(df) < 1000) break
-    page <- page + 1
-  }
-  out <- do.call(rbind, all_teams)
-  id  <- sub('.*teams/([0-9]+)\\?lang.*', '\\1', out[[1]])
-  data.frame(id = id, stringsAsFactors = FALSE)
+  tryCatch({
+    page <- 1
+    all_teams <- list()
+    repeat {
+      teams <- espn_api(
+        path  = 'teams',
+        query = list(limit = 1000, page = page),
+        type  = 'c'
+      )
+      df   <- as.data.frame(teams$items, stringsAsFactors = FALSE)
+      all_teams[[length(all_teams) + 1]] <- df
+      if (nrow(df) < 1000) break
+      page <- page + 1
+    }
+    out <- do.call(rbind, all_teams)
+    id  <- sub('.*teams/([0-9]+)\\?lang.*', '\\1', out[[1]])
+    data.frame(id = id, stringsAsFactors = FALSE)
+  }, error = function(e) {
+    message('Unable to create connection; please try again later.')
+    data.frame()
+  })
 }
 
 #' Access the ESPN summary for a team
@@ -54,7 +59,7 @@ espn_team_summary <- function(team = 3988803) {
     ),
     error = function(e) {
       message('Invalid argument(s); refer to help file.')
-      return(NULL)
+      NULL
     }
   )
   if (is.null(team)) {

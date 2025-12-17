@@ -9,11 +9,16 @@
 #' @export
 
 games <- function() {
-  games <- nhl_api(
-    path = 'en/game',
-    type = 's'
-  )$data
-  games[order(games$id), ]
+  tryCatch({
+    games <- nhl_api(
+      path = 'en/game',
+      type = 's'
+    )$data
+    games[order(games$id), ]
+  }, error = function(e) {
+    message('Unable to create connection; please try again later.')
+    data.frame()
+  })
 }
 
 #' Access the scores for a date
@@ -222,6 +227,7 @@ gc_play_by_play <- function(game = 2023030417) {
 
 #' @rdname gc_play_by_play
 #' @export
+
 gc_pbp <- function(game = 2023030417) {
   gc_play_by_play(game)
 }
@@ -278,6 +284,7 @@ wsc_play_by_play <- function(game = 2023030417) {
 
 #' @rdname wsc_play_by_play
 #' @export
+
 wsc_pbp <- function(game = 2023030417) {
   wsc_play_by_play(game)
 }

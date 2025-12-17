@@ -8,20 +8,25 @@
 #' @export
 
 drafts <- function() {
-  master <- nhl_api(
-    path = 'draft-master',
-    type = 'r'
-  )$data
-  rounds <- nhl_api(
-    path = 'en/draft',
-    type = 's'
-  )$data
-  rounds$id        <- NULL
-  drafts           <- merge(master, rounds, by = 'draftYear')
-  column_to_move   <- 'id'
-  other_columns    <- setdiff(names(drafts), column_to_move)
-  new_column_order <- c(column_to_move, other_columns)
-  drafts[, new_column_order]
+  tryCatch({
+    master <- nhl_api(
+      path = 'draft-master',
+      type = 'r'
+    )$data
+    rounds <- nhl_api(
+      path = 'en/draft',
+      type = 's'
+    )$data
+    rounds$id        <- NULL
+    drafts           <- merge(master, rounds, by = 'draftYear')
+    column_to_move   <- 'id'
+    other_columns    <- setdiff(names(drafts), column_to_move)
+    new_column_order <- c(column_to_move, other_columns)
+    drafts[, new_column_order]
+  }, error = function(e) {
+    message('Unable to create connection; please try again later.')
+    data.frame()
+  })
 }
 
 #' Access all the draft picks
@@ -35,12 +40,17 @@ drafts <- function() {
 #' @export
 
 draft_picks <- function() {
-  picks    <- nhl_api(
-    path = 'draft',
-    type = 'r'
-  )$data
-  picks$id <- NULL
-  picks[order(picks$draftYear), ]
+  tryCatch({
+    picks    <- nhl_api(
+      path = 'draft',
+      type = 'r'
+    )$data
+    picks$id <- NULL
+    picks[order(picks$draftYear), ]
+  }, error = function(e) {
+    message('Unable to create connection; please try again later.')
+    data.frame()
+  })
 }
 
 #' Access all the draft prospects
@@ -54,12 +64,17 @@ draft_picks <- function() {
 #' @export
 
 draft_prospects <- function() {
-  prospects    <- nhl_api(
-    path = 'draft-prospect',
-    type = 'r'
-  )$data
-  prospects$id <- NULL
-  prospects[order(prospects$firstName, prospects$lastName), ]
+  tryCatch({
+    prospects    <- nhl_api(
+      path = 'draft-prospect',
+      type = 'r'
+    )$data
+    prospects$id <- NULL
+    prospects[order(prospects$firstName, prospects$lastName), ]
+  }, error = function(e) {
+    message('Unable to create connection; please try again later.')
+    data.frame()
+  })
 }
 
 #' Access the draft rankings for a class and category
@@ -129,12 +144,17 @@ draft_rankings <- function(
 #' @export
 
 combine_reports <- function() {
-  combine    <- nhl_api(
-    path = 'combine',
-    type = 'r'
-  )$data
-  combine$id <- NULL
-  combine[order(combine$draftYear, combine$event), ]
+  tryCatch({
+    combine    <- nhl_api(
+      path = 'combine',
+      type = 'r'
+    )$data
+    combine$id <- NULL
+    combine[order(combine$draftYear, combine$event), ]
+  }, error = function(e) {
+    message('Unable to create connection; please try again later.')
+    data.frame()
+  })
 }
 
 #' Access the draft lottery odds
@@ -147,12 +167,17 @@ combine_reports <- function() {
 #' @export
 
 lottery_odds <- function() {
-  lotteries    <- nhl_api(
-    path = 'draft-lottery-odds',
-    type = 'r'
-  )$data
-  lotteries$id <- NULL
-  lotteries[order(lotteries$draftYear), ]
+  tryCatch({
+    lotteries    <- nhl_api(
+      path = 'draft-lottery-odds',
+      type = 'r'
+    )$data
+    lotteries$id <- NULL
+    lotteries[order(lotteries$draftYear), ]
+  }, error = function(e) {
+    message('Unable to create connection; please try again later.')
+    data.frame()
+  })
 }
 
 #' Access the real-time draft tracker
@@ -165,10 +190,15 @@ lottery_odds <- function() {
 #' @export
 
 draft_tracker <- function() {
-  nhl_api(
-    path = 'v1/draft-tracker/picks/now',
-    type = 'w'
-  )$picks
+  tryCatch({
+    nhl_api(
+      path = 'v1/draft-tracker/picks/now',
+      type = 'w'
+    )$picks
+  }, error = function(e) {
+    message('Unable to create connection; please try again later.')
+    data.frame()
+  })
 }
 
 #' Access all the expansion drafts
@@ -181,12 +211,17 @@ draft_tracker <- function() {
 #' @export
 
 expansion_drafts <- function() {
-  drafts    <- nhl_api(
-    path = 'expansion-draft-rules',
-    type = 'r'
-  )$data
-  drafts$id <- NULL
-  drafts[order(drafts$seasonId), ]
+  tryCatch({
+    drafts    <- nhl_api(
+      path = 'expansion-draft-rules',
+      type = 'r'
+    )$data
+    drafts$id <- NULL
+    drafts[order(drafts$seasonId), ]
+  }, error = function(e) {
+    message('Unable to create connection; please try again later.')
+    data.frame()
+  })
 }
 
 #' Access all the expansion draft picks
@@ -199,10 +234,15 @@ expansion_drafts <- function() {
 #' @export
 
 expansion_draft_picks <- function() {
-  drafts    <- nhl_api(
-    path = 'expansion-draft-picks',
-    type = 'r'
-  )$data
-  drafts$id <- NULL
-  drafts[order(drafts$seasonId, drafts$teamId), ]
+  tryCatch({
+    drafts    <- nhl_api(
+      path = 'expansion-draft-picks',
+      type = 'r'
+    )$data
+    drafts$id <- NULL
+    drafts[order(drafts$seasonId, drafts$teamId), ]
+  }, error = function(e) {
+    message('Unable to create connection; please try again later.')
+    data.frame()
+  })
 }
