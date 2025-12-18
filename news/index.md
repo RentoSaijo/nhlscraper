@@ -4,6 +4,8 @@
 
 ## nhlscraper 0.4.1
 
+CRAN release: 2025-12-17
+
 - All API call functions are now wrapped with try-catch.
 
 ## nhlscraper 0.4.0
