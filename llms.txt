@@ -16,7 +16,8 @@ primarily for play-by-plays, to help analyze the data.
 ### Prerequisite
 
 - R/RStudio; you can check out my
-  [tutorial](https://youtu.be/hGM1t6usDQ8) if you are not familiar!
+  [tutorial](https://youtu.be/CUXzeuXJCPs?si=tCqyepM-MZK2gqou) if you
+  are not familiar!
 
 ### Installation
 
