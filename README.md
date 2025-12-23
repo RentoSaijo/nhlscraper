@@ -1,6 +1,6 @@
 # nhlscraper <a href="https://rentosaijo.github.io/nhlscraper/"><img src="man/figures/logo.png" align="right" height="138" alt="nhlscraper website" /></a>
 [![CRAN Status](https://www.r-pkg.org/badges/version/nhlscraper)](https://CRAN.R-project.org/package=nhlscraper)
-[![Dev Version](https://img.shields.io/badge/dev%20ver-0.4.0.9000-red.svg)](https://github.com/RentoSaijo/nhlscraper)
+[![Dev Version](https://img.shields.io/badge/dev%20ver-0.4.1.9000-red.svg)](https://github.com/RentoSaijo/nhlscraper)
 ![Downloads](https://cranlogs.r-pkg.org/badges/grand-total/nhlscraper)
 
 ### Overview
@@ -9,7 +9,7 @@ nhlscraper is a minimum-dependency R package to scrape, clean, and visualize NHL
 
 ### Prerequisite
 
-- R/RStudio; you can check out my [tutorial](https://youtu.be/hGM1t6usDQ8) if you are not familiar!
+- R/RStudio; you can check out my [tutorial](https://youtu.be/CUXzeuXJCPs?si=bkWFAm-hSXhUsxaN) if you are not familiar!
 
 ### Installation
 

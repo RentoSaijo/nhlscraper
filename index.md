@@ -11,7 +11,7 @@ nhlscraper is a minimum-dependency R package to scrape, clean, and visualize NHL
 
 ### Prerequisite
 
-- R/RStudio; you can check out my [tutorial](https://youtu.be/hGM1t6usDQ8) if you are not familiar!
+- R/RStudio; you can check out my [tutorial](https://youtu.be/CUXzeuXJCPs?si=tCqyepM-MZK2gqou) if you are not familiar!
 
 ### Installation
 
