@@ -16,4 +16,5 @@ data.frame with one row per stream
 
 ``` r
 all_streams <- streams()
+#> Unable to create connection; please try again later.
 ```

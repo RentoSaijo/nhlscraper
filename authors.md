@@ -12,13 +12,13 @@
 Source:
 [`DESCRIPTION`](https://github.com/RentoSaijo/nhlscraper/blob/main/DESCRIPTION)
 
-Saijo R (2025). *nhlscraper: Scraper for National Hockey League Data*. R
+Saijo R (2026). *nhlscraper: Scraper for National Hockey League Data*. R
 package version 0.4.1.9000, <https://rentosaijo.github.io/nhlscraper/>.
 
     @Manual{,
       title = {nhlscraper: Scraper for National Hockey League Data},
       author = {Rento Saijo},
-      year = {2025},
+      year = {2026},
       note = {R package version 0.4.1.9000},
       url = {https://rentosaijo.github.io/nhlscraper/},
     }

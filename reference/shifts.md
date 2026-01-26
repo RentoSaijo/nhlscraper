@@ -1,6 +1,8 @@
 # Access the shift charts for a game
 
-`shifts()` scrapes the shift charts for a given `game`.
+`shifts()` is deprecated. Use
+[`shift_chart()`](https://rentosaijo.github.io/nhlscraper/reference/shift_chart.md)
+instead.
 
 ## Usage
 
@@ -19,9 +21,3 @@ shifts(game = 2023030417)
 ## Value
 
 data.frame with one row per shift
-
-## Examples
-
-``` r
-shifts_Martin_Necas_legacy_game <- shifts(game = 2025020275)
-```

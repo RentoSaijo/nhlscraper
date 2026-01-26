@@ -1,7 +1,9 @@
-# Flag if the shot attempt is a rebound attempt or not for all the shots in a play-by-play
+# Flag if the shot attempt is a rebound attempt or creates a rebound for all the shots in a play-by-play
 
-`flag_is_rebound()` flags if the shot attempt is a rebound attempt or
-not for all the shots in a play-by-play.
+`flag_is_rebound()` flags whether a shot attempt is a rebound attempt
+(i.e., taken within 3 seconds of a prior blocked, missed, or saved
+attempt with no stoppage in between), and whether a shot attempt creates
+a rebound under the same definition.
 
 ## Usage
 
@@ -17,24 +19,9 @@ flag_is_rebound(play_by_play)
   [`gc_play_by_play()`](https://rentosaijo.github.io/nhlscraper/reference/gc_play_by_play.md)
   and/or
   [`wsc_play_by_play()`](https://rentosaijo.github.io/nhlscraper/reference/wsc_play_by_play.md)
-  for reference; must be untouched by non-nhlscraper functions; saves
-  time if
-  [`flag_is_home()`](https://rentosaijo.github.io/nhlscraper/reference/flag_is_home.md)
-  and/or
+  for reference
 
 ## Value
 
-data.frame with one row per event (play) and added `isRebound` column
-
-## Examples
-
-``` r
-# May take >5s, so skip.
-# \donttest{
-  test                      <- gc_play_by_play()
-  test_is_home_flagged      <- flag_is_home(test)
-  test_game_id_stripped     <- strip_game_id(test_is_home_flagged)
-  test_time_period_stripped <- strip_time_period(test_game_id_stripped)
-  test_is_rebound_flagged   <- flag_is_rebound(test_time_period_stripped)
-# }
-```
+data.frame with one row per event (play) and added columns:
+`createdRebound` and `isRebound`
