@@ -252,8 +252,7 @@ gc_play_by_play <- function(game = 2023030417) {
       message(paste(
         'Invalid argument(s); refer to help file.',
         '\nProvided game:',
-        game,
-        e
+        game
       ))
       data.frame()
     }

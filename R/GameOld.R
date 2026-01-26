@@ -173,7 +173,7 @@ get_wsc_play_by_play <- function(game = 2023030417) {
 
 get_shift_charts <- function(game = 2023030417) {
   .Deprecated(
-    new     = 'shifts()',
+    new     = 'shift_chart()',
     package = 'nhlscraper',
     msg     = paste(
       '`get_shift_charts()` is deprecated.',
@@ -191,9 +191,9 @@ get_shift_charts <- function(game = 2023030417) {
 #' @returns data.frame with one row per shift
 #' @export
 
-get_shift_charts <- function(game = 2023030417) {
+shifts <- function(game = 2023030417) {
   .Deprecated(
-    new     = 'shifts()',
+    new     = 'shift_chart()',
     package = 'nhlscraper',
     msg     = paste(
       '`get_shift_charts()` is deprecated.',
