@@ -205,7 +205,7 @@ reference:
       - game_rosters
       - gc_play_by_play
       - wsc_play_by_play
-      - shifts
+      - shift_chart
       - game_odds
   
   - subtitle: "Event"
@@ -288,6 +288,7 @@ reference:
     desc: >
       Functions that are deprecated.
     contents:
+      - shifts
       - get_seasons
       - get_standings_information
       - get_standings
