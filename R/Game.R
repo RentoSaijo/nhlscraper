@@ -14,7 +14,8 @@ games <- function() {
       path = 'en/game',
       type = 's'
     )$data
-    games[order(games$id), ]
+    names(games)[names(games) == 'id'] <- 'gameId'
+    games[order(games$gameId), ]
   }, error = function(e) {
     message('Unable to create connection; please try again later.')
     data.frame()
@@ -34,10 +35,14 @@ games <- function() {
 scores <- function(date = 'now') {
   tryCatch(
     expr = {
-      nhl_api(
+      games <- nhl_api(
         path = sprintf('v1/score/%s', date),
         type = 'w'
       )$games
+      names(games)[names(games) == 'id']       <- 'gameId'
+      names(games)[names(games) == 'season']   <- 'seasonId'
+      names(games)[names(games) == 'gameType'] <- 'gameTypeId'
+      games[order(games$gameId), ]
     },
     error = function(e) {
       message('Invalid argument(s); refer to help file.')
@@ -67,7 +72,11 @@ gc_summary <- function(game = 2023030417) {
         path = sprintf('v1/gamecenter/%s/right-rail', game),
         type = 'w'
       )
-      c(landing, right_rail)
+      summary <- c(landing, right_rail)
+      names(summary)[names(summary) == 'id']       <- 'gameId'
+      names(summary)[names(summary) == 'season']   <- 'seasonId'
+      names(summary)[names(summary) == 'gameType'] <- 'gameTypeId'
+      summary
     },
     error = function(e) {
       message('Invalid argument(s); refer to help file.')
@@ -89,10 +98,14 @@ gc_summary <- function(game = 2023030417) {
 wsc_summary <- function(game = 2023030417) {
   tryCatch(
     expr = {
-      nhl_api(
+      summary <- nhl_api(
         path = sprintf('v1/wsc/game-story/%s', game),
         type = 'w'
       )
+      names(summary)[names(summary) == 'id']       <- 'gameId'
+      names(summary)[names(summary) == 'season']   <- 'seasonId'
+      names(summary)[names(summary) == 'gameType'] <- 'gameTypeId'
+      summary
     },
     error = function(e) {
       message('Invalid argument(s); refer to help file.')
@@ -103,8 +116,7 @@ wsc_summary <- function(game = 2023030417) {
 
 #' Access the boxscore for a game, team, and position
 #' 
-#' `boxscore()` scrapes the boxscore for a given set of `game`, `team`, and 
-#' `position`.
+#' `boxscore()` scrapes the boxscore for a given set of `game`, `team`, and `position`.
 #' 
 #' @inheritParams gc_summary
 #' @inheritParams roster
@@ -140,7 +152,9 @@ boxscore <- function(
         path = sprintf('v1/gamecenter/%s/boxscore', game),
         type = 'w'
       )$playerByGameStats
-      boxscore[[paste0(team, 'Team')]][[position]]
+      boxscore <- boxscore[[paste0(team, 'Team')]][[position]]
+      names(boxscore)[names(boxscore) == 'position'] <- 'positionCode'
+      boxscore
     },
     error = function(e) {
       message('Invalid argument(s); refer to help file.')
@@ -188,30 +202,50 @@ game_rosters <- function(game = 2023030417) {
 
 gc_play_by_play <- function(game = 2023030417) {
   tryCatch(
-    expr = {
-      plays        <- nhl_api(
+    expr  = {
+      game  <- as.integer(game)
+      plays <- nhl_api(
         path = sprintf('v1/gamecenter/%s/play-by-play', game),
         type = 'w'
       )$plays
+
+      # Rename columns.
       plays$gameId <- game
       plays        <- plays[, c('gameId', setdiff(names(plays), 'gameId'))]
-      nms          <- names(plays)
+      nms <- names(plays)
       nms[nms == 'details.typeCode'] <- 'penaltyTypeCode'
       idx          <- grepl('\\.', nms)
       nms[idx]     <- sub('^[^.]*\\.', '', nms[idx])
+      nms[nms == 'number'] <- 'period'
       names(plays) <- nms
-      idx <- plays$typeDescKey == 'blocked-shot' & 
+
+      # Fix zoneCode for blocked shots.
+      idx <- plays$typeDescKey == 'blocked-shot' &
         plays$zoneCode %in% c('O', 'D')
       plays$zoneCode[idx] <- ifelse(
         plays$zoneCode[idx] == 'O',
         'D',
         'O'
       )
-      names(plays)[names(plays) == 'number'] <- 'period'
+
+      # Remove inconsistent columns.
+      plays$timeRemaining <- NULL
+
+      # Clean.
+      plays <- strip_game_id(plays) |>
+        strip_time_period() |>
+        flag_is_home() |>
+        strip_situation_code() |>
+        normalize_coordinates() |>
+        calculate_distance() |>
+        calculate_angle() |>
+        flag_is_rush() |>
+        flag_is_rebound() |>
+        count_goals_shots()
+
+      # Remove redundant columns.
       plays$awayScore <- NULL
       plays$homeScore <- NULL
-      plays$awaySOG   <- NULL
-      plays$homeSOG   <- NULL
       plays
     },
     error = function(e) {
@@ -249,26 +283,42 @@ wsc_play_by_play <- function(game = 2023030417) {
         path = sprintf('v1/wsc/play-by-play/%s', game),
         type = 'w'
       )
+      # Rename column.
       plays$id     <- NULL
       plays$gameId <- game
       plays        <- plays[, c('gameId', setdiff(names(plays), 'gameId'))]
-      idx <- plays$typeDescKey == 'blocked-shot' & 
+      
+      # Fix zoneCode for blocked shots.
+      idx <- plays$typeDescKey == 'blocked-shot' &
         plays$zoneCode %in% c('O', 'D')
       plays$zoneCode[idx] <- ifelse(
         plays$zoneCode[idx] == 'O',
         'D',
         'O'
       )
-      names(plays)[names(plays) == 'number'] <- 'periodNumber'
-      plays$awayScore        <- NULL
-      plays$homeScore        <- NULL
-      plays$awaySOG          <- NULL
-      plays$homeSOG          <- NULL
+
+      # Remove inconsistent columns.
       plays$goalModifier     <- NULL
       plays$strength         <- NULL
       plays$strengthCode     <- NULL
       plays$goalCode         <- NULL
       plays$secondsRemaining <- NULL
+
+      # Clean.
+      plays <- strip_game_id(plays) |>
+        strip_time_period() |>
+        flag_is_home() |>
+        strip_situation_code() |>
+        normalize_coordinates() |>
+        calculate_distance() |>
+        calculate_angle() |>
+        flag_is_rush() |>
+        flag_is_rebound() |>
+        count_goals_shots()
+
+      # Remove redundant columns.
+      plays$awayScore <- NULL
+      plays$homeScore <- NULL
       plays
     },
     error = function(e) {
@@ -289,17 +339,17 @@ wsc_pbp <- function(game = 2023030417) {
   wsc_play_by_play(game)
 }
 
-#' Access the shift charts for a game
+#' Access the shift chart for a game
 #' 
-#' `shifts()` scrapes the shift charts for a given `game`.
+#' `shift_chart()` scrapes the shift chart for a given `game`.
 #' 
 #' @inheritParams gc_summary
 #' @returns data.frame with one row per shift
 #' @examples
-#' shifts_Martin_Necas_legacy_game <- shifts(game = 2025020275)
+#' shifts_Martin_Necas_legacy_game <- shift_chart(game = 2025020275)
 #' @export
 
-shifts <- function(game = 2023030417) {
+shift_chart <- function(game = 2023030417) {
   tryCatch(
     expr = {
       shifts <- nhl_api(
