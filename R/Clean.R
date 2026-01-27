@@ -143,22 +143,26 @@ strip_situation_code <- function(play_by_play) {
 #' @keywords internal
 
 flag_is_home <- function(play_by_play) {
-  pbp       <- play_by_play[order(play_by_play$sortOrder), ]
+  pbp <- play_by_play[order(play_by_play$sortOrder), ]
+  n   <- nrow(pbp)
   fill_down <- function(x) {
-    x[1L] <- ifelse(is.na(x[1L]), 0L, x[1L])
-    for (i in 2L:length(x)) if (is.na(x[i])) x[i] <- x[i - 1L]
+    if (is.null(x)) return(rep(NA_real_, n))
+    x[1L] <- ifelse(is.na(x[1L]), 0, x[1L])
+    if (length(x) > 1L) for (i in 2L:length(x)) if (is.na(x[i])) x[i] <- x[i - 1L]
     x
   }
   hs  <- fill_down(pbp$homeScore)
   as  <- fill_down(pbp$awayScore)
   ho  <- fill_down(pbp$homeSOG)
   ao  <- fill_down(pbp$awaySOG)
-  dhs <- c(0L, diff(hs))
-  das <- c(0L, diff(as))
-  dho <- c(0L, diff(ho))
-  dao <- c(0L, diff(ao))
-  homeVotes <- pbp$eventOwnerTeamId[(dhs > 0 | dho > 0) & !is.na(pbp$eventOwnerTeamId)]
-  awayVotes <- pbp$eventOwnerTeamId[(das > 0 | dao > 0) & !is.na(pbp$eventOwnerTeamId)]
+  dhs <- c(0, diff(hs))
+  das <- c(0, diff(as))
+  dho <- c(0, diff(ho))
+  dao <- c(0, diff(ao))
+  inc_home  <- (!is.na(dhs) & dhs > 0) | (!is.na(dho) & dho > 0)
+  inc_away  <- (!is.na(das) & das > 0) | (!is.na(dao) & dao > 0)
+  homeVotes <- pbp$eventOwnerTeamId[inc_home & !is.na(pbp$eventOwnerTeamId)]
+  awayVotes <- pbp$eventOwnerTeamId[inc_away & !is.na(pbp$eventOwnerTeamId)]
   homeId    <- as.integer(names(which.max(table(homeVotes))))
   awayId    <- as.integer(names(which.max(table(awayVotes))))
   play_by_play$isHome <- ifelse(
