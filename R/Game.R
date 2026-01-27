@@ -382,7 +382,7 @@ shift_chart <- function(game = 2023030417) {
       shifts$endSecondsElapsedInPeriod   <- e_elp
       shifts$startSecondsElapsedInGame   <- base + s_elp
       shifts$endSecondsElapsedInGame     <- base + e_elp
-      shifts$duration                    <- shifts$startSecondsElapsedInGame - shifts$endSecondsElapsedInGame
+      shifts$duration                    <- shifts$endSecondsElapsedInGame - shifts$startSecondsElapsedInGame
       shifts
     },
     error = function(e) {
