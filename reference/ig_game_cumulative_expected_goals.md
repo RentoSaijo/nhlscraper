@@ -46,5 +46,4 @@ ig_game_cumulative_expected_goals(
   model = 1, 
   save  = FALSE
 )
-#> Invalid argument(s); refer to help file.
 ```
