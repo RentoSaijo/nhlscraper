@@ -357,10 +357,40 @@ shift_chart <- function(game = 2023030417) {
         query = list(cayenneExp = sprintf('gameId = %s', game)),
         type  = 's'
       )$data
-      shifts[order(shifts$teamId), ]
+      shifts <- shifts[order(shifts$teamId), ]
+      shifts <- shifts[is.na(shifts$eventDescription), ]
+      shifts <- shifts[, c('id', 'gameId', 'teamId', 'playerId', 'eventNumber', 'shiftNumber', 'period', 'startTime', 'endTime')]
+      is_playoffs <- game %/% 1e4 %% 1e2 == 3
+      base        <- ifelse(
+        shifts$period <= 3L,
+        (shifts$period - 1L) * 1200L,
+        ifelse(
+          is_playoffs,
+          3600L + (shifts$period - 4L) * 1200L,
+          3600L + (shifts$period - 4L) * 300L
+        )
+      )
+      tp_s  <- strsplit(shifts$startTime, ':', fixed = TRUE)
+      s_min <- as.integer(vapply(tp_s, `[`, '', 1L))
+      s_sec <- as.integer(vapply(tp_s, `[`, '', 2L))
+      s_elp <- 60L * s_min + s_sec
+      tp_e  <- strsplit(shifts$endTime, ':', fixed = TRUE)
+      e_min <- as.integer(vapply(tp_e, `[`, '', 1L))
+      e_sec <- as.integer(vapply(tp_e, `[`, '', 2L))
+      e_elp <- 60L * e_min + e_sec
+      shifts$startSecondsElapsedInPeriod <- s_elp
+      shifts$endSecondsElapsedInPeriod   <- e_elp
+      shifts$startSecondsElapsedInGame   <- base + s_elp
+      shifts$endSecondsElapsedInGame     <- base + e_elp
+      shifts$duration                    <- endSecondsElapsedInGame - startSecondsElapsedInGame
+      shifts
     },
     error = function(e) {
-      message('Invalid argument(s); refer to help file.')
+      message(paste(
+        'Invalid argument(s); refer to help file.',
+        '\nProvided game:',
+        game
+      ))
       data.frame()
     }
   )
