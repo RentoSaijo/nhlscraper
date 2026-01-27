@@ -24,4 +24,6 @@ data.frame with one row per shift
 
 ``` r
 shifts_Martin_Necas_legacy_game <- shift_chart(game = 2025020275)
+#> Invalid argument(s); refer to help file. 
+#> Provided game: 2025020275
 ```
