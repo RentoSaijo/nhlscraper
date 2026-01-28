@@ -226,21 +226,12 @@ reference:
       - gc_play_by_plays
       - wsc_play_by_plays
       - shift_charts
-      
+  
   - subtitle: "Clean"
     desc: >
       Functions to help clean the data
     contents:
-      - strip_game_id
-      - strip_time_period
-      - strip_situation_code
-      - flag_is_home
-      - flag_is_rebound
-      - flag_is_rush
-      - count_goals_shots
-      - normalize_coordinates
-      - calculate_distance
-      - calculate_angle
+      - add_on_ice_players
   
   - subtitle: "Model"
     desc: >

@@ -31,7 +31,7 @@ glossary <- nhlscraper::glossary()
 ## Wrangling
 ### Scraping
 
-We begin by assembling the dataset used to fit and evaluate our xG models. In earlier versions of this workflow, we had to manually loop over every game in the seasons of interest, fetch each game’s play-by-play, and then stitch them together as demonstrated in the legacy code [here](https://github.com/RentoSaijo/NHL_DB/blob/main/R/Game.R). With the new update `0.4.0`, this process is much simpler: we can retrieve a full season’s worth of play-by-plays with a single function call, and then combine multiple seasons into one modeling dataset.
+We begin by assembling the dataset used to fit and evaluate our xG models. In earlier versions of this workflow, we had to manually loop over every game in the seasons of interest, fetch each game’s play-by-play, and then stitch them together as demonstrated in the legacy code [here](https://huggingface.co/datasets/RentoSaijo/NHL_DB/blob/main/R/Game.R). With the new update `0.4.0`, this process is much simpler: we can retrieve a full season’s worth of play-by-plays with a single function call, and then combine multiple seasons into one modeling dataset.
 
 ```{r load, eval = FALSE}
 # Load data.

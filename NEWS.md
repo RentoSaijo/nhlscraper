@@ -1,4 +1,14 @@
 # nhlscraper 0.4.1.9000
+- `shift()` is now deprecated; use `shift_chart()` instead.
+- `shift_charts()` is now added to access season-aggregate shift charts.
+- `add_on_ice_players()` is now added to merge play-by-plays with shift charts.
+- Previous cleaning functions are now internalized and implemented by default to:
+  - `gc_play_by_play()`
+  - `gc_play_by_plays()`
+  - `wsc_play_by_play()`
+  - `wsc_play_by_plays()`
+  - `shift_chart()`
+  - `shift_charts()`
 
 # nhlscraper 0.4.1
 - All API call functions are now wrapped with try-catch.

@@ -387,10 +387,10 @@ count_goals_shots <- function(play_by_play) {
     hS <- as.integer(SOG[idx]     & is_home); aS <- as.integer(SOG[idx]     & is_away)
     hF <- as.integer(fenwick[idx] & is_home); aF <- as.integer(fenwick[idx] & is_away)
     hC <- as.integer(corsi[idx]   & is_home); aC <- as.integer(corsi[idx]   & is_away)
-    homeGoals   <- c(0L, head(cumsum(hG), -1L)); awayGoals   <- c(0L, head(cumsum(aG), -1L))
-    homeSOG     <- c(0L, head(cumsum(hS), -1L)); awaySOG     <- c(0L, head(cumsum(aS), -1L))
-    homeFenwick <- c(0L, head(cumsum(hF), -1L)); awayFenwick <- c(0L, head(cumsum(aF), -1L))
-    homeCorsi   <- c(0L, head(cumsum(hC), -1L)); awayCorsi   <- c(0L, head(cumsum(aC), -1L))
+    homeGoals   <- c(0L, utils::head(cumsum(hG), -1L)); awayGoals   <- c(0L, utils::head(cumsum(aG), -1L))
+    homeSOG     <- c(0L, utils::head(cumsum(hS), -1L)); awaySOG     <- c(0L, utils::head(cumsum(aS), -1L))
+    homeFenwick <- c(0L, utils::head(cumsum(hF), -1L)); awayFenwick <- c(0L, utils::head(cumsum(aF), -1L))
+    homeCorsi   <- c(0L, utils::head(cumsum(hC), -1L)); awayCorsi   <- c(0L, utils::head(cumsum(aC), -1L))
     play_by_play$homeGoals[idx]           <- homeGoals
     play_by_play$awayGoals[idx]           <- awayGoals
     play_by_play$homeSOG[idx]             <- homeSOG
@@ -419,5 +419,146 @@ count_goals_shots <- function(play_by_play) {
   )
   keep   <- setdiff(names(play_by_play), insert)
   after  <- match('createdRebound', keep)
+  play_by_play[, c(keep[seq_len(after)], insert, keep[(after + 1L):length(keep)])]
+}
+
+#' Add on-ice player IDs to a play-by-play by merging with shift charts
+#' 
+#' `add_on_ice_players()` merges a play-by-play with a shift chart to determine which players are on the ice at each event. It adds home- and away-team on-ice player ID lists, as well as event-perspective for/against player ID lists when `isHome` is available.
+#' 
+#' @param play_by_play data.frame of shift chart rows; see [gc_play_by_play()], [gc_play_by_plays()], [wsc_play_by_play()], or [wsc_play_by_plays()] for reference; the original columns must exist
+#' @param shift_chart data.frame of shift chart rows; see [shift_chart()] or [shift_charts()] for reference; the original columns must exist
+#' @returns data.frame with one row per event (play) and added list-columns:
+#' `homePlayerIds`, `awayPlayerIds`, `playerIdsFor`, and `playerIdsAgainst`
+#' @examples
+#' # May take >5s, so skip.
+#' \donttest{gc_pbp_enhanced <- add_on_ice_players(gc_pbp(), shift_chart())}
+#' @export
+
+add_on_ice_players <- function(play_by_play, shift_chart) {
+  n           <- nrow(play_by_play)
+  home_ids    <- rep(list(integer()), n)
+  away_ids    <- rep(list(integer()), n)
+  for_ids     <- rep(list(integer()), n)
+  against_ids <- rep(list(integer()), n)
+  if (!('isHome' %in% names(shift_chart))) {
+    homeTeamId <- as.integer(names(which.max(table(
+      play_by_play$eventOwnerTeamId[play_by_play$isHome %in% TRUE & !is.na(play_by_play$eventOwnerTeamId)]
+    ))))
+    awayTeamId <- as.integer(names(which.max(table(
+      play_by_play$eventOwnerTeamId[play_by_play$isHome %in% FALSE & !is.na(play_by_play$eventOwnerTeamId)]
+    ))))
+    shift_chart$isHome <- ifelse(
+      shift_chart$teamId == homeTeamId,
+      TRUE,
+      ifelse(shift_chart$teamId == awayTeamId, FALSE, NA)
+    )
+  }
+  post_types <- c('period-start', 'faceoff')
+  use_post   <- play_by_play$typeDescKey %in% post_types
+  for (g in unique(play_by_play$gameId)) {
+    p_idx <- which(play_by_play$gameId == g)
+    s_idx <- which(shift_chart$gameId == g)
+    if (!length(p_idx) || !length(s_idx)) next
+    p_idx <- p_idx[order(
+      play_by_play$secondsElapsedInGame[p_idx],
+      play_by_play$sortOrder[p_idx],
+      na.last = TRUE
+    )]
+    sc <- shift_chart[s_idx, ]
+    sc <- sc[order(sc$startSecondsElapsedInGame, sc$endSecondsElapsedInGame, na.last = TRUE), ]
+    for (team_home in c(TRUE, FALSE)) {
+      s_t <- sc[sc$isHome %in% team_home, ]
+      if (!nrow(s_t)) next
+      starts <- s_t$startSecondsElapsedInGame
+      ends   <- s_t$endSecondsElapsedInGame
+      pids   <- s_t$playerId
+      j_pre    <- 1L
+      j_post   <- 1L
+      act_pre  <- integer()
+      end_pre  <- numeric()
+      act_post <- integer()
+      end_post <- numeric()
+      for (i in p_idx) {
+        t <- play_by_play$secondsElapsedInGame[i]
+        if (is.na(t)) next
+        while (j_pre <= length(starts) && starts[j_pre] < t) {
+          pid <- pids[j_pre]
+          en  <- ends[j_pre]
+          k   <- match(pid, act_pre, nomatch = 0L)
+          if (k == 0L) {
+            act_pre <- c(act_pre, pid)
+            end_pre <- c(end_pre, en)
+          } else {
+            end_pre[k] <- max(end_pre[k], en)
+          }
+          j_pre <- j_pre + 1L
+        }
+        while (j_post <= length(starts) && starts[j_post] <= t) {
+          pid <- pids[j_post]
+          en  <- ends[j_post]
+          k   <- match(pid, act_post, nomatch = 0L)
+          if (k == 0L) {
+            act_post <- c(act_post, pid)
+            end_post <- c(end_post, en)
+          } else {
+            end_post[k] <- max(end_post[k], en)
+          }
+          j_post <- j_post + 1L
+        }
+        if (length(act_pre)) {
+          keep    <- end_pre >= t
+          act_pre <- act_pre[keep]
+          end_pre <- end_pre[keep]
+        }
+        if (length(act_post)) {
+          keep     <- end_post > t
+          act_post <- act_post[keep]
+          end_post <- end_post[keep]
+        }
+        active <- if (use_post[i]) act_post else act_pre
+        if (team_home) {
+          home_ids[i] <- list(sort(unique(active)))
+        } else {
+          away_ids[i] <- list(sort(unique(active)))
+        }
+      }
+    }
+  }
+  for (i in seq_len(n)) {
+    if (isTRUE(play_by_play$isHome[i])) {
+      for_ids[i]     <- home_ids[i]
+      against_ids[i] <- away_ids[i]
+    } else if (identical(play_by_play$isHome[i], FALSE)) {
+      for_ids[i]     <- away_ids[i]
+      against_ids[i] <- home_ids[i]
+    } else {
+      for_ids[i]     <- list(NULL)
+      against_ids[i] <- list(NULL)
+    }
+  }
+  is_ps_so <- play_by_play$situationCode %in% c('0101', '1010')
+  if (any(is_ps_so, na.rm = TRUE)) {
+    for (i in which(is_ps_so)) {
+      f <- if (is.na(play_by_play$shootingPlayerId[i])) integer() else as.integer(play_by_play$shootingPlayerId[i])
+      a <- if (is.na(play_by_play$goalieInNetId[i]))    integer() else as.integer(play_by_play$goalieInNetId[i])
+      for_ids[i]     <- list(f)
+      against_ids[i] <- list(a)
+      if (isTRUE(play_by_play$isHome[i])) {
+        home_ids[i] <- list(f)
+        away_ids[i] <- list(a)
+      } else if (identical(play_by_play$isHome[i], FALSE)) {
+        home_ids[i] <- list(a)
+        away_ids[i] <- list(f)
+      }
+    }
+  }
+  play_by_play$homePlayerIds    <- home_ids
+  play_by_play$awayPlayerIds    <- away_ids
+  play_by_play$playerIdsFor     <- for_ids
+  play_by_play$playerIdsAgainst <- against_ids
+  insert <- c('homePlayerIds', 'awayPlayerIds', 'playerIdsFor', 'playerIdsAgainst')
+  keep   <- setdiff(names(play_by_play), insert)
+  after  <- match('strengthState', keep)
   play_by_play[, c(keep[seq_len(after)], insert, keep[(after + 1L):length(keep)])]
 }
