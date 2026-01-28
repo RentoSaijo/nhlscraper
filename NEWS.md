@@ -1,4 +1,4 @@
-# nhlscraper 0.4.1.9000
+# nhlscraper 0.4.2
 - `shift()` is now deprecated; use `shift_chart()` instead.
 - `shift_charts()` is now added to access season-aggregate shift charts.
 - `add_on_ice_players()` is now added to merge play-by-plays with shift charts.
