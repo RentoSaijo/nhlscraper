@@ -2,6 +2,22 @@
 
 ## nhlscraper 0.4.1.9000
 
+- `shift()` is now deprecated; use
+  [`shift_chart()`](https://rentosaijo.github.io/nhlscraper/reference/shift_chart.md)
+  instead.
+- [`shift_charts()`](https://rentosaijo.github.io/nhlscraper/reference/shift_charts.md)
+  is now added to access season-aggregate shift charts.
+- [`add_on_ice_players()`](https://rentosaijo.github.io/nhlscraper/reference/add_on_ice_players.md)
+  is now added to merge play-by-plays with shift charts.
+- Previous cleaning functions are now internalized and implemented by
+  default to:
+  - [`gc_play_by_play()`](https://rentosaijo.github.io/nhlscraper/reference/gc_play_by_play.md)
+  - [`gc_play_by_plays()`](https://rentosaijo.github.io/nhlscraper/reference/gc_play_by_plays.md)
+  - [`wsc_play_by_play()`](https://rentosaijo.github.io/nhlscraper/reference/wsc_play_by_play.md)
+  - [`wsc_play_by_plays()`](https://rentosaijo.github.io/nhlscraper/reference/wsc_play_by_plays.md)
+  - [`shift_chart()`](https://rentosaijo.github.io/nhlscraper/reference/shift_chart.md)
+  - [`shift_charts()`](https://rentosaijo.github.io/nhlscraper/reference/shift_charts.md)
+
 ## nhlscraper 0.4.1
 
 CRAN release: 2025-12-17

@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">nhlscraper</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.4.1.9000</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.4.2</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -41,7 +41,21 @@
 
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.4.1.9000" id="nhlscraper-0419000">nhlscraper 0.4.1.9000<a class="anchor" aria-label="anchor" href="#nhlscraper-0419000"></a></h2>
-</div>
+<ul><li>
+<code>shift()</code> is now deprecated; use <code><a href="../reference/shift_chart.html">shift_chart()</a></code> instead.</li>
+<li>
+<code><a href="../reference/shift_charts.html">shift_charts()</a></code> is now added to access season-aggregate shift charts.</li>
+<li>
+<code><a href="../reference/add_on_ice_players.html">add_on_ice_players()</a></code> is now added to merge play-by-plays with shift charts.</li>
+<li>Previous cleaning functions are now internalized and implemented by default to:
+<ul><li><code><a href="../reference/gc_play_by_play.html">gc_play_by_play()</a></code></li>
+<li><code><a href="../reference/gc_play_by_plays.html">gc_play_by_plays()</a></code></li>
+<li><code><a href="../reference/wsc_play_by_play.html">wsc_play_by_play()</a></code></li>
+<li><code><a href="../reference/wsc_play_by_plays.html">wsc_play_by_plays()</a></code></li>
+<li><code><a href="../reference/shift_chart.html">shift_chart()</a></code></li>
+<li><code><a href="../reference/shift_charts.html">shift_charts()</a></code></li>
+</ul></li>
+</ul></div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.4.1" id="nhlscraper-041">nhlscraper 0.4.1<a class="anchor" aria-label="anchor" href="#nhlscraper-041"></a></h2><p class="text-muted">CRAN release: 2025-12-17</p>
 <ul><li>All API call functions are now wrapped with try-catch.</li>

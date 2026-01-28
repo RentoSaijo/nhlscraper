@@ -442,38 +442,8 @@ Functions to load pre-scraped full season play-by-plays & shift charts
 
 Functions to help clean the data
 
-- [`strip_game_id()`](https://rentosaijo.github.io/nhlscraper/reference/strip_game_id.md)
-  : Strip the game ID into the season ID, game type ID, and game number
-  for all the events (plays) in a play-by-play
-- [`strip_time_period()`](https://rentosaijo.github.io/nhlscraper/reference/strip_time_period.md)
-  : Strip the timestamp and period number into the time elapsed in the
-  period and game for all the events (plays) in a play-by-play
-- [`strip_situation_code()`](https://rentosaijo.github.io/nhlscraper/reference/strip_situation_code.md)
-  : Strip the situation code into goalie and skater counts, man
-  differential, and strength state for all the events (plays) in a
-  play-by-play by perspective
-- [`flag_is_home()`](https://rentosaijo.github.io/nhlscraper/reference/flag_is_home.md)
-  : Flag if the event belongs to the home team or not for all the events
-  (plays) in a play-by-play
-- [`flag_is_rebound()`](https://rentosaijo.github.io/nhlscraper/reference/flag_is_rebound.md)
-  : Flag if the shot attempt is a rebound attempt or creates a rebound
-  for all the shots in a play-by-play
-- [`flag_is_rush()`](https://rentosaijo.github.io/nhlscraper/reference/flag_is_rush.md)
-  : Flag if the shot attempt is a rush attempt or not for all the shots
-  in a play-by-play
-- [`count_goals_shots()`](https://rentosaijo.github.io/nhlscraper/reference/count_goals_shots.md)
-  : Count the as-of-event goal, shots on goal, Fenwick, and Corsi
-  attempts and differentials for all the events (plays) in a
-  play-by-play by perspective
-- [`normalize_coordinates()`](https://rentosaijo.github.io/nhlscraper/reference/normalize_coordinates.md)
-  : Normalize the x and y coordinates for all the events (plays) in a
-  play-by-play
-- [`calculate_distance()`](https://rentosaijo.github.io/nhlscraper/reference/calculate_distance.md)
-  : Calculate the Euclidean distance from the attacking net for all the
-  events (plays) in a play-by-play
-- [`calculate_angle()`](https://rentosaijo.github.io/nhlscraper/reference/calculate_angle.md)
-  : Calculate the Euclidean angle from the attacking net for all the
-  events (plays) in a play-by-play
+- [`add_on_ice_players()`](https://rentosaijo.github.io/nhlscraper/reference/add_on_ice_players.md)
+  : Add on-ice player IDs to a play-by-play by merging with shift charts
 
 ### Model
 

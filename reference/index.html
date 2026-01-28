@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">nhlscraper</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.4.1.9000</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.4.2</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -981,73 +981,10 @@
 
       <dl><dt>
 
-          <code><a href="strip_game_id.html">strip_game_id()</a></code>
+          <code><a href="add_on_ice_players.html">add_on_ice_players()</a></code>
 
         </dt>
-        <dd>Strip the game ID into the season ID, game type ID, and game number for all the events (plays) in a play-by-play</dd>
-
-        <dt>
-
-          <code><a href="strip_time_period.html">strip_time_period()</a></code>
-
-        </dt>
-        <dd>Strip the timestamp and period number into the time elapsed in the period and game for all the events (plays) in a play-by-play</dd>
-
-        <dt>
-
-          <code><a href="strip_situation_code.html">strip_situation_code()</a></code>
-
-        </dt>
-        <dd>Strip the situation code into goalie and skater counts, man differential, and strength state for all the events (plays) in a play-by-play by perspective</dd>
-
-        <dt>
-
-          <code><a href="flag_is_home.html">flag_is_home()</a></code>
-
-        </dt>
-        <dd>Flag if the event belongs to the home team or not for all the events (plays) in a play-by-play</dd>
-
-        <dt>
-
-          <code><a href="flag_is_rebound.html">flag_is_rebound()</a></code>
-
-        </dt>
-        <dd>Flag if the shot attempt is a rebound attempt or creates a rebound for all the shots in a play-by-play</dd>
-
-        <dt>
-
-          <code><a href="flag_is_rush.html">flag_is_rush()</a></code>
-
-        </dt>
-        <dd>Flag if the shot attempt is a rush attempt or not for all the shots in a play-by-play</dd>
-
-        <dt>
-
-          <code><a href="count_goals_shots.html">count_goals_shots()</a></code>
-
-        </dt>
-        <dd>Count the as-of-event goal, shots on goal, Fenwick, and Corsi attempts and differentials for all the events (plays) in a play-by-play by perspective</dd>
-
-        <dt>
-
-          <code><a href="normalize_coordinates.html">normalize_coordinates()</a></code>
-
-        </dt>
-        <dd>Normalize the x and y coordinates for all the events (plays) in a play-by-play</dd>
-
-        <dt>
-
-          <code><a href="calculate_distance.html">calculate_distance()</a></code>
-
-        </dt>
-        <dd>Calculate the Euclidean distance from the attacking net for all the events (plays) in a play-by-play</dd>
-
-        <dt>
-
-          <code><a href="calculate_angle.html">calculate_angle()</a></code>
-
-        </dt>
-        <dd>Calculate the Euclidean angle from the attacking net for all the events (plays) in a play-by-play</dd>
+        <dd>Add on-ice player IDs to a play-by-play by merging with shift charts</dd>
       </dl></div><div class="section level2">
 
       <h3 id="model">Model<a class="anchor" aria-label="anchor" href="#model"></a></h3>
