@@ -427,7 +427,7 @@ Functions to help analyze the play-by-play data
 
 ### Load
 
-Functions to load pre-scraped full season play-by-plays
+Functions to load pre-scraped full season play-by-plays & shift charts
 
 - [`gc_play_by_plays()`](https://rentosaijo.github.io/nhlscraper/reference/gc_play_by_plays.md)
   [`gc_pbps()`](https://rentosaijo.github.io/nhlscraper/reference/gc_play_by_plays.md)
@@ -435,6 +435,8 @@ Functions to load pre-scraped full season play-by-plays
 - [`wsc_play_by_plays()`](https://rentosaijo.github.io/nhlscraper/reference/wsc_play_by_plays.md)
   [`wsc_pbps()`](https://rentosaijo.github.io/nhlscraper/reference/wsc_play_by_plays.md)
   : Access the World Showcase (WSC) play-by-plays for a season
+- [`shift_charts()`](https://rentosaijo.github.io/nhlscraper/reference/shift_charts.md)
+  : Access the shift charts for a season
 
 ### Clean
 
