@@ -8,7 +8,7 @@ navbar:
   title: "nhlscraper"
   structure:
     left: [intro, reference, example, news]
-    right: [search, github, instagram, lightswitch]
+    right: [search, github, x, lightswitch]
   components:
     intro:
       icon: fa-home fa-lg
@@ -26,8 +26,8 @@ navbar:
       icon: fa-github
       href: https://github.com/RentoSaijo/nhlscraper
     instagram:
-      icon: fa-instagram
-      href: https://www.instagram.com/nhlscraper/
+      icon: fa-x
+      href: https://x.com/nhlscraper
 
 authors:
   Rento Saijo:
@@ -221,10 +221,11 @@ reference:
       
   - subtitle: "Load"
     desc: >
-      Functions to load pre-scraped full season play-by-plays
+      Functions to load pre-scraped full season play-by-plays & shift charts
     contents:
       - gc_play_by_plays
       - wsc_play_by_plays
+      - shift_charts
       
   - subtitle: "Clean"
     desc: >
