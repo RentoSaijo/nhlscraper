@@ -1,6 +1,6 @@
 # Changelog
 
-## nhlscraper 0.4.1.9000
+## nhlscraper 0.4.2
 
 - `shift()` is now deprecated; use
   [`shift_chart()`](https://rentosaijo.github.io/nhlscraper/reference/shift_chart.md)
