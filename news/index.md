@@ -1,5 +1,7 @@
 # Changelog
 
+## nhlscraper (development version)
+
 ## nhlscraper 0.4.2
 
 CRAN release: 2026-01-28
