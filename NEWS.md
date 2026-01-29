@@ -1,3 +1,5 @@
+# nhlscraper (development version)
+
 # nhlscraper 0.4.2
 - `shift()` is now deprecated; use `shift_chart()` instead.
 - `shift_charts()` is now added to access season-aggregate shift charts.
