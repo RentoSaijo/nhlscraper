@@ -22,7 +22,9 @@ drafts <- function() {
     column_to_move   <- 'id'
     other_columns    <- setdiff(names(drafts), column_to_move)
     new_column_order <- c(column_to_move, other_columns)
-    drafts[, new_column_order]
+    drafts <- drafts[, new_column_order]
+    names(drafts)[names(drafts) == 'id']   <- 'draftId'
+    drafts
   }, error = function(e) {
     message('Unable to create connection; please try again later.')
     data.frame()
@@ -41,12 +43,13 @@ drafts <- function() {
 
 draft_picks <- function() {
   tryCatch({
-    picks    <- nhl_api(
+    picks <- nhl_api(
       path = 'draft',
       type = 'r'
     )$data
-    picks$id <- NULL
-    picks[order(picks$draftYear), ]
+    picks <- picks[order(picks$draftYear), ]
+    names(picks)[names(picks) == 'id'] <- 'draftPickId'
+    picks
   }, error = function(e) {
     message('Unable to create connection; please try again later.')
     data.frame()
@@ -65,12 +68,14 @@ draft_picks <- function() {
 
 draft_prospects <- function() {
   tryCatch({
-    prospects    <- nhl_api(
+    prospects <- nhl_api(
       path = 'draft-prospect',
       type = 'r'
     )$data
-    prospects$id <- NULL
-    prospects[order(prospects$firstName, prospects$lastName), ]
+    prospects <- prospects[order(prospects$firstName, prospects$lastName), ]
+    names(prospects)[names(prospects) == 'id']       <- 'prospectId'
+    names(prospects)[names(prospects) == 'playerid'] <- 'playerId'
+    prospects
   }, error = function(e) {
     message('Unable to create connection; please try again later.')
     data.frame()
@@ -106,21 +111,21 @@ draft_rankings <- function(
       category <- switch(
         tolower(category),
         `1`                      = 1,
-        NAS                      = 1,
-        `NA Skaters`             = 1,
-        `North American Skaters` = 1,
+        nas                      = 1,
+        `na skaters`             = 1,
+        `north american skaters` = 1,
         `2`                      = 2,
-        INTLS                    = 2,
-        `INTL Skaters`           = 2,
-        `International Skaters`  = 2,
+        intls                    = 2,
+        `intl skaters`           = 2,
+        `international skaters`  = 2,
         `3`                      = 3,
-        NAG                      = 3,
-        `NA Goalies`             = 3,
-        `North American Goalies` = 3,
+        nag                      = 3,
+        `na goalies`             = 3,
+        `north american goalies` = 3,
         `4`                      = 4,
-        INTLG                    = 4,
-        `INTL Goalies`           = 4,
-        `International Goalies`  = 4
+        intlg                    = 4,
+        `intl goalies`           = 4,
+        `international goalies`  = 4
       )
       nhl_api(
         path = sprintf('v1/draft/rankings/%s/%s', class, category),
@@ -145,12 +150,12 @@ draft_rankings <- function(
 
 combine_reports <- function() {
   tryCatch({
-    combine    <- nhl_api(
+    reports    <- nhl_api(
       path = 'combine',
       type = 'r'
     )$data
-    combine$id <- NULL
-    combine[order(combine$draftYear, combine$event), ]
+    reports$id <- NULL
+    reports[order(reports$draftYear, reports$event), ]
   }, error = function(e) {
     message('Unable to create connection; please try again later.')
     data.frame()
@@ -168,12 +173,13 @@ combine_reports <- function() {
 
 lottery_odds <- function() {
   tryCatch({
-    lotteries    <- nhl_api(
+    lotteries <- nhl_api(
       path = 'draft-lottery-odds',
       type = 'r'
     )$data
-    lotteries$id <- NULL
-    lotteries[order(lotteries$draftYear), ]
+    lotteries <- lotteries[order(lotteries$draftYear), ]
+    names(lotteries)[names(lotteries) == 'id'] <- 'lotteryId'
+    lotteries
   }, error = function(e) {
     message('Unable to create connection; please try again later.')
     data.frame()

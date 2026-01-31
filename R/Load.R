@@ -118,7 +118,9 @@ shift_charts <- function(season = 20242025) {
       utils::download.file(u, tmp, mode = 'wb', quiet = TRUE)
       con <- gzfile(tmp, open = 'rt')
       on.exit(close(con), add = TRUE)
-      utils::read.csv(con)
+      shifts    <- utils::read.csv(con)
+      shifts$id <- NULL
+      shifts
     },
     error = function(e) {
       message('Invalid argument(s); refer to help file.')

@@ -9,10 +9,12 @@
 
 coaches <- function() {
   tryCatch({
-    nhl_api(
+    coaches <- nhl_api(
       path = 'coach',
       type = 'r'
     )$data
+    names(coaches)[names(coaches) == 'id'] <- 'coachId'
+    coaches
   }, error = function(e) {
     message('Unable to create connection; please try again later.')
     data.frame()
@@ -35,7 +37,10 @@ coach_career_statistics <- function() {
       type = 'r'
     )$data
     results$id <- NULL
-    results[order(results$coachId), ]
+    results    <- results[order(results$coachId), ]
+    names(results)[names(results) == 'startSeason'] <- 'startSeasonId'
+    names(results)[names(results) == 'endSeason']   <- 'endSeasonId'
+    results
   }, error = function(e) {
     message('Unable to create connection; please try again later.')
     data.frame()
@@ -66,7 +71,10 @@ coach_franchise_statistics <- function() {
       type = 'r'
     )$data
     stats$id <- NULL
-    stats[order(stats$coachName, stats$firstCoachedDate), ]
+    stats    <- stats[order(stats$coachName, stats$firstCoachedDate), ]
+    names(stats)[names(stats) == 'startSeason'] <- 'startSeasonId'
+    names(stats)[names(stats) == 'endSeason']   <- 'endSeasonId'
+    stats
   }, error = function(e) {
     message('Unable to create connection; please try again later.')
     data.frame()

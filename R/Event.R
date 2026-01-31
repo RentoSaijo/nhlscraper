@@ -58,17 +58,19 @@ replay <- function(game = 2023030417, event = 866) {
 #' 
 #' @returns data.frame with one row per penalty shot
 #' @examples
-#' all_ps <- penalty_shots()
+#' all_pss <- penalty_shots()
 #' @export
 
 penalty_shots <- function() {
   tryCatch({
-    ps <- nhl_api(
+    pss    <- nhl_api(
       path = 'penalty-shots',
       type = 'r'
     )$data
-    ps$id <- NULL
-    ps[order(ps$gameId), ]
+    pss$id <- NULL
+    pss    <- pss[order(pss$gameId), ]
+    names(pss)[names(pss) == 'season'] <- 'seasonId'
+    pss
   }, error = function(e) {
     message('Unable to create connection; please try again later.')
     data.frame()
@@ -78,6 +80,6 @@ penalty_shots <- function() {
 #' @rdname penalty_shots
 #' @export
 
-ps <- function() {
+pss <- function() {
   penalty_shots()
 }

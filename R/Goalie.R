@@ -205,7 +205,9 @@ goalie_season_statistics <- function() {
       type = 'r'
     )$data
     stats$id <- NULL
-    stats[order(stats$playerId, stats$seasonId, stats$gameType), ]
+    stats    <- stats[order(stats$playerId, stats$seasonId, stats$gameType), ]
+    names(stats)[names(stats) == 'gameType'] <- 'gameTypeId'
+    stats
   }, error = function(e) {
     message('Unable to create connection; please try again later.')
     data.frame()
@@ -366,10 +368,13 @@ goalie_leaders <- function(
         gaa                     = 'goalsAgainstAverage',
         `goals against average` = 'goalsAgainstAverage'
       )
-      nhl_api(
+      goalies <- nhl_api(
         path  = sprintf('v1/goalie-stats-leaders/%s/%s', season, game_type),
         type  = 'w'
       )[[category]]
+      names(goalies)[names(goalies) == 'id']       <- 'playerId'
+      names(goalies)[names(goalies) == 'position'] <- 'positionCode'
+      goalies
     },
     error = function(e) {
       message('Invalid argument(s); refer to help file.')
@@ -389,10 +394,12 @@ goalie_leaders <- function(
 
 goalie_milestones <- function() {
   tryCatch({
-    nhl_api(
+    milestones    <- nhl_api(
       path = 'en/milestones/goalies',
       type = 's'
     )$data
+    milestones$id <- NULL
+    milestones
   }, error = function(e) {
     message('Unable to create connection; please try again later.')
     data.frame()

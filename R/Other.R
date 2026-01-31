@@ -9,10 +9,12 @@
 
 glossary <- function() {
   tryCatch({
-    nhl_api(
+    terms <- nhl_api(
       path = 'en/glossary',
       type = 's'
     )$data
+    names(terms)[names(terms) == 'id'] <- 'terminologyId'
+    terms
   }, error = function(e) {
     message('Unable to create connection; please try again later.')
     data.frame()
@@ -30,10 +32,12 @@ glossary <- function() {
 
 countries <- function() {
   tryCatch({
-    nhl_api(
+    countries <- nhl_api(
       path = 'en/country',
       type = 's'
     )$data
+    names(countries)[names(countries) == 'id'] <- 'countryId'
+    countries
   }, error = function(e) {
     message('Unable to create connection; please try again later.')
     data.frame()

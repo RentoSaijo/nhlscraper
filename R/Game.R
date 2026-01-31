@@ -14,7 +14,8 @@ games <- function() {
       path = 'en/game',
       type = 's'
     )$data
-    names(games)[names(games) == 'id'] <- 'gameId'
+    names(games)[names(games) == 'id']       <- 'gameId'
+    names(games)[names(games) == 'gameType'] <- 'gameTypeId'
     games[order(games$gameId), ]
   }, error = function(e) {
     message('Unable to create connection; please try again later.')
@@ -383,6 +384,7 @@ shift_chart <- function(game = 2023030417) {
       shifts$startSecondsElapsedInGame   <- base + s_elp
       shifts$endSecondsElapsedInGame     <- base + e_elp
       shifts$duration                    <- shifts$endSecondsElapsedInGame - shifts$startSecondsElapsedInGame
+      shifts$id <- NULL
       shifts
     },
     error = function(e) {
@@ -415,7 +417,7 @@ game_odds <- function(country = 'US') {
         path = sprintf('v1/partner-game/%s/now', country),
         type = 'w'
       )$games
-      games[0, ]
+      names(games)[names(games) == 'gameType'] <- 'gameTypeId'
       games
     },
     error = function(e) {

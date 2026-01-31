@@ -14,7 +14,9 @@ players <- function() {
       path = 'player',
       type = 'r'
     )$data
-    players[order(players$id), ]
+    players <- players[order(players$id), ]
+    names(players)[names(players) == 'id'] <- 'playerId'
+    players
   }, error = function(e) {
     message('Unable to create connection; please try again later.')
     data.frame()
@@ -39,7 +41,8 @@ player_seasons <- function(player = 8478402) {
         path = sprintf('v1/player/%s/game-log/now', player),
         type = 'w'
       )$playerStatsSeasons
-      seasons[0, ]
+      names(seasons)[names(seasons) == 'season']    <- 'seasonId'
+      names(seasons)[names(seasons) == 'gameTypes'] <- 'gameTypeIds'
       seasons
     },
     error = function(e) {
@@ -62,10 +65,12 @@ player_seasons <- function(player = 8478402) {
 player_summary <- function(player = 8478402) {
   tryCatch(
     expr = {
-      nhl_api(
+      summary <- nhl_api(
         path = sprintf('v1/player/%s/landing', player),
         type = 'w'
       )
+      names(summary)[names(summary) == 'position'] <- 'positionCode'
+      summary
     },
     error = function(e) {
       message('Invalid argument(s); refer to help file.')
@@ -127,10 +132,12 @@ player_game_log <- function(
 
 spotlight_players <- function() {
   tryCatch({
-    nhl_api(
+    players <- nhl_api(
       path = 'v1/player-spotlight',
       type = 'w'
     )
+    names(players)[names(players) == 'position'] <- 'positionCode'
+    players
   }, error = function(e) {
     message('Unable to create connection; please try again later.')
     data.frame()

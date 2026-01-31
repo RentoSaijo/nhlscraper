@@ -119,7 +119,7 @@ skater_game_report <- function(
         )$data
       } else {
         seasons_tbl <- seasons()
-        season_row  <- seasons_tbl[seasons_tbl$id == season, ]
+        season_row  <- seasons_tbl[seasons_tbl$seasonId == season, ]
         if (!nrow(season_row)) {
           stop('No season metadata found for season: ', season)
         }
@@ -220,10 +220,12 @@ skater_stats <- function() {
 
 skater_regular_statistics <- function() {
   tryCatch({
-    nhl_api(
+    stats    <- nhl_api(
       path = 'skater-career-scoring-regular-season',
       type = 'r'
     )$data
+    stats$id <- NULL
+    stats
   }, error = function(e) {
     message('Unable to create connection; please try again later.')
     data.frame()
@@ -249,10 +251,12 @@ skater_regular_stats <- function() {
 
 skater_playoff_statistics <- function() {
   tryCatch({
-    nhl_api(
+    stats    <- nhl_api(
       path = 'skater-career-scoring-playoffs',
       type = 'r'
     )$data
+    stats$id <- NULL
+    stats
   }, error = function(e) {
     message('Unable to create connection; please try again later.')
     data.frame()
@@ -285,7 +289,12 @@ skater_season_statistics <- function() {
       type = 'r'
     )$data
     stats$`id.db:SEQUENCENO` <- NULL
-    stats[order(stats$`id.db:PLAYERID`, stats$`id.db:SEASON`), ]
+    stats <- stats[order(stats$`id.db:PLAYERID`, stats$`id.db:SEASON`), ]
+    names(stats)[names(stats) == 'id.db:PLAYERID'] <- 'playerId'
+    names(stats)[names(stats) == 'id.db:TEAMID']   <- 'teamId'
+    names(stats)[names(stats) == 'id.db:SEASON']   <- 'seasonId'
+    names(stats)[names(stats) == 'id.db:GAMETYPE'] <- 'gameTypeId'
+    stats
   }, error = function(e) {
     message('Unable to create connection; please try again later.')
     data.frame()
@@ -379,10 +388,13 @@ skater_leaders <- function(
         f                            = 'faceoffLeaders',
         faceoffs                     = 'faceoffLeaders'
       )
-      nhl_api(
+      skaters <- nhl_api(
         path  = sprintf('v1/skater-stats-leaders/%s/%s', season, game_type),
         type  = 'w'
       )[[category]]
+      names(skaters)[names(skaters) == 'id']       <- 'playerId'
+      names(skaters)[names(skaters) == 'position'] <- 'positionCode'
+      skaters
     },
     error = function(e) {
       message('Invalid argument(s); refer to help file.')
@@ -402,10 +414,12 @@ skater_leaders <- function(
 
 skater_milestones <- function() {
   tryCatch({
-    nhl_api(
+    milestones <- nhl_api(
       path = 'en/milestones/skaters',
       type = 's'
     )$data
+    milestones$id <- NULL
+    milestones
   }, error = function(e) {
     message('Unable to create connection; please try again later.')
     data.frame()

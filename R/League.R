@@ -13,7 +13,9 @@ seasons <- function() {
       path = 'en/season',
       type = 's'
     )$data
-    seasons[order(seasons$id), ]
+    seasons <- seasons[order(seasons$id), ]
+    names(seasons)[names(seasons) == 'id'] <- 'seasonId'
+    seasons
   }, error = function(e) {
     message('Unable to create connection; please try again later.')
     data.frame()
@@ -74,10 +76,12 @@ game_type_now <- function() {
 
 standings_rules <- function() {
   tryCatch({
-    nhl_api(
+    seasons <- nhl_api(
       path = 'v1/standings-season',
       type = 'w'
     )$seasons
+    names(seasons)[names(seasons) == 'id'] <- 'seasonId'
+    seasons
   }, error = function(e) {
     message('Unable to create connection; please try again later.')
     data.frame()
@@ -127,7 +131,11 @@ schedule <- function(date = Sys.Date()) {
         path = sprintf('v1/schedule/%s', date),
         type = 'w'
       )$gameWeek
-      gameWeek[gameWeek$date == date, ]$games[[1]]
+      gameWeek <- gameWeek[gameWeek$date == date, ]$games[[1]]
+      names(gameWeek)[names(gameWeek) == 'id']       <- 'gameId'
+      names(gameWeek)[names(gameWeek) == 'season']   <- 'seasonId'
+      names(gameWeek)[names(gameWeek) == 'gameType'] <- 'gameTypeId'
+      gameWeek
     },
     error = function(e) {
       message('Invalid argument(s); refer to help file.')

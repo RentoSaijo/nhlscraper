@@ -13,7 +13,9 @@ teams <- function() {
       path = 'en/team',
       type = 's'
     )$data
-    teams[order(teams$id), ]
+    teams <- teams[order(teams$id), ]
+    names(teams)[names(teams) == 'id'] <- 'teamId'
+    teams
   }, error = function(e) {
     message('Unable to create connection; please try again later.')
     data.frame()
@@ -37,10 +39,13 @@ teams <- function() {
 team_seasons <- function(team = 1) {
   tryCatch(
     expr = {
-      nhl_api(
+      seasons <- nhl_api(
         path = sprintf('v1/club-stats-season/%s', to_team_tri_code(team)),
         type = 'w'
       )
+      names(seasons)[names(seasons) == 'season'] <- 'seasonId'
+      names(seasons)[names(seasons) == 'gameTypes'] <- 'gameTypeIds'
+      seasons
     },
     error = function(e) {
       message('Invalid argument(s); refer to help file.')
@@ -189,11 +194,15 @@ team_season_statistics <- function() {
       path = 'team-stats',
       type = 'r'
     )$data
-    stats[order(
+    stats <- stats[order(
       stats$`id.db:TEAMID`, 
       stats$`id.db:SEASON`, 
       stats$`id.db:GAMETYPE`
     ), ]
+    names(stats)[names(stats) == 'id.db:TEAMID']   <- 'teamId'
+    names(stats)[names(stats) == 'id.db:SEASON']   <- 'seasonId'
+    names(stats)[names(stats) == 'id.db:GAMETYPE'] <- 'gameTypeId'
+    stats
   }, error = function(e) {
     message('Unable to create connection; please try again later.')
     data.frame()
@@ -239,10 +248,12 @@ roster <- function(
         d = 'defensemen',
         g = 'goalies'
       )
-      nhl_api(
+      players <- nhl_api(
         path = sprintf('v1/roster/%s/%s', to_team_tri_code(team), season),
         type = 'w'
       )[[position]]
+      names(players)[names(players) == 'id'] <- 'playerId'
+      players
     },
     error = function(e) {
       message('Invalid argument(s); refer to help file.')
@@ -336,10 +347,12 @@ team_prospects <- function(team = 1, position = 'forwards') {
         d = 'defensemen',
         g = 'goalies'
       )
-      nhl_api(
+      players <- nhl_api(
         path = sprintf('v1/prospects/%s', to_team_tri_code(team)),
         type = 'w'
       )[[position]]
+      names(players)[names(players) == 'id'] <- 'playerId'
+      players
     },
     error = function(e) {
       message('Invalid argument(s); refer to help file.')
@@ -365,7 +378,7 @@ team_prospects <- function(team = 1, position = 'forwards') {
 team_season_schedule <- function(team = 1, season = 'now') {
   tryCatch(
     expr = {
-      nhl_api(
+      games <- nhl_api(
         path = sprintf(
           'v1/club-schedule-season/%s/%s', 
           to_team_tri_code(team), 
@@ -373,6 +386,10 @@ team_season_schedule <- function(team = 1, season = 'now') {
         ),
         type = 'w'
       )$games
+      names(games)[names(games) == 'id']       <- 'gameId'
+      names(games)[names(games) == 'season']   <- 'seasonId'
+      names(games)[names(games) == 'gameType'] <- 'gameTypeId'
+      games
     },
     error = function(e) {
       message('Invalid argument(s); refer to help file.')
@@ -400,7 +417,7 @@ team_season_schedule <- function(team = 1, season = 'now') {
 team_month_schedule <- function(team = 1, month = 'now') {
   tryCatch(
     expr = {
-      nhl_api(
+      games <- nhl_api(
         path = sprintf(
           'v1/club-schedule/%s/month/%s', 
           to_team_tri_code(team), 
@@ -408,6 +425,10 @@ team_month_schedule <- function(team = 1, month = 'now') {
         ),
         type = 'w'
       )$games
+      names(games)[names(games) == 'id']       <- 'gameId'
+      names(games)[names(games) == 'season']   <- 'seasonId'
+      names(games)[names(games) == 'gameType'] <- 'gameTypeId'
+      games
     },
     error = function(e) {
       message('Invalid argument(s); refer to help file.')
@@ -434,7 +455,7 @@ team_month_schedule <- function(team = 1, month = 'now') {
 team_week_schedule <- function(team = 1, date = 'now') {
   tryCatch(
     expr = {
-      nhl_api(
+      games <- nhl_api(
         path = sprintf(
           'v1/club-schedule/%s/week/%s', 
           to_team_tri_code(team), 
@@ -442,6 +463,10 @@ team_week_schedule <- function(team = 1, date = 'now') {
         ),
         type = 'w'
       )$games
+      names(games)[names(games) == 'id']       <- 'gameId'
+      names(games)[names(games) == 'season']   <- 'seasonId'
+      names(games)[names(games) == 'gameType'] <- 'gameTypeId'
+      games
     },
     error = function(e) {
       message('Invalid argument(s); refer to help file.')
@@ -466,7 +491,10 @@ team_logos <- function() {
       type = 'r'
     )$data
     logos$id <- NULL
-    logos[order(logos$teamId, logos$startSeason), ]
+    logos    <- logos[order(logos$teamId, logos$startSeason), ]
+    names(logos)[names(logos) == 'startSeason'] <- 'startSeasonId'
+    names(logos)[names(logos) == 'endSeason']   <- 'endSeasonId'
+    logos
   }, error = function(e) {
     message('Unable to create connection; please try again later.')
     data.frame()

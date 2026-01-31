@@ -26,7 +26,7 @@ navbar:
       icon: fa-github
       href: https://github.com/RentoSaijo/nhlscraper
     instagram:
-      icon: fa-x
+      icon: fa-x-twitter
       href: https://x.com/nhlscraper
 
 authors:

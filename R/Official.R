@@ -9,10 +9,12 @@
 
 officials <- function() {
   tryCatch({
-    nhl_api(
+    officials <- nhl_api(
       path = 'officials',
       type = 'r'
     )$data
+    names(officials)[names(officials) == 'id'] <- 'officialId'
+    officials
   }, error = function(e) {
     message('Unable to create connection; please try again later.')
     data.frame()

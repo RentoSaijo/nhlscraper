@@ -96,10 +96,10 @@ bracket <- function(season = season_now()){
 #' )
 #' @export
 
-series_schedule <- function(season = season_now(), series = 'a') {
+series_schedule <- function(season = season_now() - 10001, series = 'a') {
   tryCatch(
     expr = {
-      nhl_api(
+      games <- nhl_api(
         path = sprintf(
           'v1/schedule/playoff-series/%s/%s', 
           season, 
@@ -107,6 +107,10 @@ series_schedule <- function(season = season_now(), series = 'a') {
         ),
         type = 'w'
       )$games
+      names(games)[names(games) == 'id']       <- 'gameId'
+      names(games)[names(games) == 'season']   <- 'seasonId'
+      names(games)[names(games) == 'gameType'] <- 'gameTypeId'
+      games
     },
     error = function(e) {
       message('Invalid argument(s); refer to help file.')

@@ -2,12 +2,12 @@
 % Please edit documentation in R/Event.R
 \name{penalty_shots}
 \alias{penalty_shots}
-\alias{ps}
+\alias{pss}
 \title{Access all the penalty shots}
 \usage{
 penalty_shots()
 
-ps()
+pss()
 }
 \value{
 data.frame with one row per penalty shot
@@ -16,5 +16,5 @@ data.frame with one row per penalty shot
 \code{penalty_shots()} scrapes all the penalty shots.
 }
 \examples{
-all_ps <- penalty_shots()
+all_pss <- penalty_shots()
 }

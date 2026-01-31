@@ -12,10 +12,13 @@
 goalie_edge_seasons <- function() {
   tryCatch(
     expr = {
-      nhl_api(
+      seasons <- nhl_api(
         path = sprintf('v1/edge/goalie-landing/now'),
         type = 'w'
       )$seasonsWithEdgeStats
+      names(seasons)[names(seasons) == 'id']        <- 'seasonId'
+      names(seasons)[names(seasons) == 'gameTypes'] <- 'gameTypeIds'
+      seasons
     },
     error = function(e) {
       message('Invalid argument(s); refer to help file.')

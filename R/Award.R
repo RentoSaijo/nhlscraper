@@ -9,10 +9,12 @@
 
 awards <- function() {
   tryCatch({
-    nhl_api(
+    trophies <- nhl_api(
       path = 'trophy',
       type = 'r'
     )$data
+    names(trophies)[names(trophies) == 'id'] <- 'trophyId'
+    trophies
   }, error = function(e) {
     message('Unable to create connection; please try again later.')
     data.frame()

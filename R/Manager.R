@@ -9,10 +9,12 @@
 
 general_managers <- function() {
   tryCatch({
-    nhl_api(
+    gms <- nhl_api(
       path = 'general-manager',
       type = 'r'
     )$data
+    names(gms)[names(gms) == 'id'] <- 'generalManagerId'
+    gms
   }, error = function(e) {
     message('Unable to create connection; please try again later.')
     data.frame()

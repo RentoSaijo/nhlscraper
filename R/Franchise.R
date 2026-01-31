@@ -20,7 +20,9 @@ franchises <- function() {
     details$firstSeasonId    <- NULL
     details$mostRecentTeamId <- NULL
     details$teamAbbrev       <- NULL
-    merge(franchises[order(franchises$id), ], details, by = 'id')
+    franchises <- merge(franchises[order(franchises$id), ], details, by = 'id')
+    names(franchises)[names(franchises) == 'id'] <- 'franchiseId'
+    franchises
   }, error = function(e) {
     message('Unable to create connection; please try again later.')
     data.frame()
@@ -135,18 +137,20 @@ franchise_season_stats <- function() {
 
 franchise_versus_franchise <- function() {
   tryCatch({
-    versus <- nhl_api(
+    versus    <- nhl_api(
       path = 'all-time-record-vs-franchise',
       type = 'r'
     )$data
     versus$id <- NULL
-    versus[order(
+    versus    <- versus[order(
       versus$teamFranchiseId, 
       versus$teamId, 
       versus$opponentFranchiseId, 
       versus$opponentTeamId, 
       versus$gameTypeId
     ), ]
+    names(versus)[names(versus) == 'teamFranchiseId'] <- 'franchiseId'
+    versus
   }, error = function(e) {
     message('Unable to create connection; please try again later.')
     data.frame()
