@@ -7,7 +7,7 @@
 ``` r
 penalty_shots()
 
-ps()
+pss()
 ```
 
 ## Value
@@ -17,5 +17,5 @@ data.frame with one row per penalty shot
 ## Examples
 
 ``` r
-all_ps <- penalty_shots()
+all_pss <- penalty_shots()
 ```

@@ -24,4 +24,5 @@ data.frame with one row per ESPN game
 
 ``` r
 ESPN_games_20242025 <- espn_games(season = 20242025)
+#> Invalid argument(s); refer to help file.
 ```

@@ -24,4 +24,5 @@ data.frame with one row per transaction
 
 ``` r
 ESPN_transactions_20242025 <- espn_transactions(season = 20242025)
+#> Invalid argument(s); refer to help file.
 ```

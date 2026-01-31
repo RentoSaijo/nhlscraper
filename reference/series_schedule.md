@@ -6,7 +6,7 @@
 ## Usage
 
 ``` r
-series_schedule(season = season_now(), series = "a")
+series_schedule(season = season_now() - 10001, series = "a")
 ```
 
 ## Arguments

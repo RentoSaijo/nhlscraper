@@ -1,6 +1,5 @@
 <urlset xmlns = 'http://www.sitemaps.org/schemas/sitemap/0.9'>
 <url><loc>https://rentosaijo.github.io/nhlscraper/404.html</loc></url>
-<url><loc>https://rentosaijo.github.io/nhlscraper/LICENSE-text.html</loc></url>
 <url><loc>https://rentosaijo.github.io/nhlscraper/LICENSE.html</loc></url>
 <url><loc>https://rentosaijo.github.io/nhlscraper/articles/example.html</loc></url>
 <url><loc>https://rentosaijo.github.io/nhlscraper/articles/index.html</loc></url>
@@ -171,6 +170,7 @@
 <url><loc>https://rentosaijo.github.io/nhlscraper/reference/player_summary.html</loc></url>
 <url><loc>https://rentosaijo.github.io/nhlscraper/reference/players.html</loc></url>
 <url><loc>https://rentosaijo.github.io/nhlscraper/reference/playoff_season_statistics.html</loc></url>
+<url><loc>https://rentosaijo.github.io/nhlscraper/reference/ps.html</loc></url>
 <url><loc>https://rentosaijo.github.io/nhlscraper/reference/replay.html</loc></url>
 <url><loc>https://rentosaijo.github.io/nhlscraper/reference/roster.html</loc></url>
 <url><loc>https://rentosaijo.github.io/nhlscraper/reference/roster_statistics.html</loc></url>

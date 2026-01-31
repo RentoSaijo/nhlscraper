@@ -418,7 +418,7 @@ Functions to access data about the events (plays)
 - [`replay()`](https://rentosaijo.github.io/nhlscraper/reference/replay.md)
   : Access the replay for an event
 - [`penalty_shots()`](https://rentosaijo.github.io/nhlscraper/reference/penalty_shots.md)
-  [`ps()`](https://rentosaijo.github.io/nhlscraper/reference/penalty_shots.md)
+  [`pss()`](https://rentosaijo.github.io/nhlscraper/reference/penalty_shots.md)
   : Access all the penalty shots
 
 ## Analyze
@@ -526,6 +526,8 @@ Functions that are deprecated.
 
 - [`shifts()`](https://rentosaijo.github.io/nhlscraper/reference/shifts.md)
   : Access the shift charts for a game
+- [`ps()`](https://rentosaijo.github.io/nhlscraper/reference/ps.md) :
+  Access all the penalty shots
 - [`get_seasons()`](https://rentosaijo.github.io/nhlscraper/reference/get_seasons.md)
   : Access all the seasons
 - [`get_standings_information()`](https://rentosaijo.github.io/nhlscraper/reference/get_standings_information.md)

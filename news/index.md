@@ -1,14 +1,18 @@
 # Changelog
 
-## nhlscraper (development version)
+## nhlscraper 0.4.2.9000
+
+- All return IDs are now standardized (i.e., no more arbitrary `id`
+  columns).
+- [`ps()`](https://rentosaijo.github.io/nhlscraper/reference/ps.md) is
+  now deprecated; use
+  [`pss()`](https://rentosaijo.github.io/nhlscraper/reference/penalty_shots.md)
+  instead.
 
 ## nhlscraper 0.4.2
 
 CRAN release: 2026-01-28
 
-- `shift()` is now deprecated; use
-  [`shift_chart()`](https://rentosaijo.github.io/nhlscraper/reference/shift_chart.md)
-  instead.
 - [`shift_charts()`](https://rentosaijo.github.io/nhlscraper/reference/shift_charts.md)
   is now added to access season-aggregate shift charts.
 - [`add_on_ice_players()`](https://rentosaijo.github.io/nhlscraper/reference/add_on_ice_players.md)
@@ -21,6 +25,10 @@ CRAN release: 2026-01-28
   - [`wsc_play_by_plays()`](https://rentosaijo.github.io/nhlscraper/reference/wsc_play_by_plays.md)
   - [`shift_chart()`](https://rentosaijo.github.io/nhlscraper/reference/shift_chart.md)
   - [`shift_charts()`](https://rentosaijo.github.io/nhlscraper/reference/shift_charts.md)
+- [`shifts()`](https://rentosaijo.github.io/nhlscraper/reference/shifts.md)
+  is now deprecated; use
+  [`shift_chart()`](https://rentosaijo.github.io/nhlscraper/reference/shift_chart.md)
+  instead.
 
 ## nhlscraper 0.4.1
 
