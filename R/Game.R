@@ -417,6 +417,7 @@ game_odds <- function(country = 'US') {
         path = sprintf('v1/partner-game/%s/now', country),
         type = 'w'
       )$games
+      games[[1]]
       names(games)[names(games) == 'gameType'] <- 'gameTypeId'
       games
     },

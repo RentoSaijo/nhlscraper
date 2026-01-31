@@ -41,6 +41,7 @@ player_seasons <- function(player = 8478402) {
         path = sprintf('v1/player/%s/game-log/now', player),
         type = 'w'
       )$playerStatsSeasons
+      seasons[[1]]
       names(seasons)[names(seasons) == 'season']    <- 'seasonId'
       names(seasons)[names(seasons) == 'gameTypes'] <- 'gameTypeIds'
       seasons

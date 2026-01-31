@@ -281,6 +281,7 @@ reference:
       Functions that are deprecated.
     contents:
       - shifts
+      - ps
       - get_seasons
       - get_standings_information
       - get_standings
