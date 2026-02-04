@@ -64,20 +64,20 @@
     <h1>xG Model Feature Importance & Calibration</h1>
     <p class="subtitle">Analysis of nhlscraper expected goals models (v1, v2, v3)</p>
 
-    <!-- Summary Stats -->
+    <!-- Summary Stats - REAL DATA from deep_xg_analysis.py -->
     <h2>Model Overview</h2>
     <div class="stat-grid">
       <div class="stat-box">
-        <div class="stat-value">3</div>
-        <div class="stat-label">Model Versions</div>
-      </div>
-      <div class="stat-box">
-        <div class="stat-value">8</div>
-        <div class="stat-label">Total Features</div>
-      </div>
-      <div class="stat-box">
-        <div class="stat-value">451K</div>
+        <div class="stat-value">501,336</div>
         <div class="stat-label">Shots Analyzed</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-value" style="color: #4ade80;">25,785</div>
+        <div class="stat-label">Actual Goals (5.14%)</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-value" style="color: #a78bfa;">31,578</div>
+        <div class="stat-label">Predicted xG (6.30%)</div>
       </div>
       <div class="stat-box">
         <div class="stat-value" style="color: #f87171;">-22.5%</div>
@@ -122,135 +122,87 @@
       </ul>
     </div>
 
-    <!-- Calibration Summary -->
-    <h2>Calibration: Predicted vs Actual Goals</h2>
-    <div class="card">
-      <div class="card-title">xG Total vs Actual Goals by Season</div>
-      <div class="chart-container-lg">
-        <canvas id="calibrationChart"></canvas>
+    <!-- Calibration Summary - REAL DATA -->
+    <h2>Calibration: Where the Model Fails</h2>
+    <div class="grid">
+      <div class="card">
+        <div class="card-title">By Strength State</div>
+        <div class="chart-container">
+          <canvas id="strengthChart"></canvas>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-title">By Situation</div>
+        <div class="chart-container">
+          <canvas id="situationChart"></canvas>
+        </div>
       </div>
     </div>
 
-    <h3>Season-by-Season Breakdown</h3>
+    <h3>Feature Calibration (Real Data)</h3>
     <table>
       <thead>
         <tr>
-          <th>Season</th>
-          <th>Total Shots</th>
-          <th>Actual Goals</th>
-          <th>xG v1</th>
-          <th>xG v2</th>
-          <th>xG v3</th>
-          <th>v3 Diff</th>
-          <th>v3 % Diff</th>
+          <th>Feature</th>
+          <th>Shots</th>
+          <th>Actual %</th>
+          <th>xG %</th>
+          <th>Error</th>
+          <th>Status</th>
         </tr>
       </thead>
       <tbody>
         <tr>
-          <td>2019-2020</td>
-          <td>54,001</td>
-          <td>5,011</td>
-          <td>5,052</td>
-          <td>5,035</td>
-          <td>5,018</td>
-          <td class="negative">-7</td>
-          <td class="negative">-0.14%</td>
+          <td>Even Strength</td>
+          <td>406,829</td>
+          <td>4.4%</td>
+          <td>4.5%</td>
+          <td class="positive">-0.1%</td>
+          <td class="positive">✓ Good</td>
         </tr>
         <tr>
-          <td>2020-2021</td>
-          <td>86,274</td>
-          <td>8,150</td>
-          <td>8,215</td>
-          <td>8,185</td>
-          <td>8,158</td>
-          <td class="negative">-8</td>
-          <td class="negative">-0.10%</td>
+          <td>Power Play</td>
+          <td>45,549</td>
+          <td>8.3%</td>
+          <td>7.2%</td>
+          <td class="positive">+1.1%</td>
+          <td class="positive">✓ Good</td>
         </tr>
         <tr>
-          <td>2021-2022</td>
-          <td>87,339</td>
-          <td>8,260</td>
-          <td>8,328</td>
-          <td>8,295</td>
-          <td>8,268</td>
-          <td class="negative">-8</td>
-          <td class="negative">-0.10%</td>
+          <td>Penalty Kill</td>
+          <td>48,958</td>
+          <td>8.4%</td>
+          <td>20.6%</td>
+          <td class="negative">-12.2%</td>
+          <td class="negative">✗ Broken</td>
         </tr>
         <tr>
-          <td>2022-2023</td>
-          <td>88,107</td>
-          <td>8,087</td>
-          <td>8,153</td>
-          <td>8,120</td>
-          <td>8,095</td>
-          <td class="negative">-8</td>
-          <td class="negative">-0.10%</td>
+          <td>Goalie In Net</td>
+          <td>493,677</td>
+          <td>5.0%</td>
+          <td>5.1%</td>
+          <td class="positive">-0.1%</td>
+          <td class="positive">✓ Good</td>
         </tr>
         <tr>
-          <td>2023-2024</td>
-          <td>81,517</td>
-          <td>7,905</td>
-          <td>7,968</td>
-          <td>7,938</td>
-          <td>7,912</td>
-          <td class="negative">-7</td>
-          <td class="negative">-0.09%</td>
+          <td>Empty Net</td>
+          <td>7,659</td>
+          <td>13.6%</td>
+          <td>82.2%</td>
+          <td class="negative">-68.7%</td>
+          <td class="negative">✗ Very Broken</td>
         </tr>
         <tr>
-          <td>2024-2025*</td>
-          <td>53,910</td>
-          <td>5,427</td>
-          <td>5,468</td>
-          <td>5,450</td>
-          <td>5,433</td>
-          <td class="negative">-6</td>
-          <td class="negative">-0.11%</td>
-        </tr>
-        <tr style="font-weight: bold; background: #334155;">
-          <td>TOTAL</td>
-          <td>451,148</td>
-          <td>42,840</td>
-          <td>43,184</td>
-          <td>43,023</td>
-          <td>42,884</td>
-          <td class="negative">-44</td>
-          <td class="negative">-0.10%</td>
+          <td>0-10ft Distance</td>
+          <td>60,790</td>
+          <td>11.1%</td>
+          <td>11.1%</td>
+          <td class="positive">0.0%</td>
+          <td class="positive">✓ Perfect</td>
         </tr>
       </tbody>
     </table>
-    <p style="color: #64748b; font-size: 0.8rem; margin-top: 10px;">* 2024-2025 season partial (through early 2025)</p>
-
-    <!-- Calibration Curve -->
-    <h2>Calibration Curve (Model v3)</h2>
-    <div class="grid">
-      <div class="card">
-        <div class="card-title">Predicted vs Actual Goal Rate by Decile</div>
-        <div class="chart-container">
-          <canvas id="calibrationCurve"></canvas>
-        </div>
-        <div class="legend">
-          <div class="legend-item"><span class="legend-dot" style="background: #38bdf8;"></span> Predicted xG</div>
-          <div class="legend-item"><span class="legend-dot" style="background: #f472b6;"></span> Actual Goal Rate</div>
-          <div class="legend-item"><span class="legend-dot" style="background: #64748b; width: 20px; height: 2px; border-radius: 0;"></span> Perfect Calibration</div>
-        </div>
-      </div>
-      <div class="card">
-        <div class="card-title">Calibration Error by Bin</div>
-        <div class="chart-container">
-          <canvas id="errorChart"></canvas>
-        </div>
-      </div>
-    </div>
-
-    <div class="insight-box">
-      <div class="insight-title">Calibration Analysis</div>
-      <ul>
-        <li><strong>Models are well-calibrated:</strong> Total xG within 0.03% of actual goals</li>
-        <li><strong>v3 is most accurate:</strong> Each version improves calibration slightly</li>
-        <li><strong>Low-xG shots:</strong> Slight overestimation in 0-10% range (most shots)</li>
-        <li><strong>High-xG shots:</strong> Very accurate (empty net situations)</li>
-      </ul>
-    </div>
+    <p style="color: #64748b; font-size: 0.8rem; margin-top: 10px;">Data: 501,336 shots from 2022-2025 seasons. See <a href="xg_deep_analysis.html" style="color: #38bdf8;">xg_deep_analysis.html</a> for full breakdown.</p>
 
     <!-- Feature Details Table -->
     <h2>Feature Coefficient Details</h2>
@@ -386,24 +338,14 @@
       }
     });
 
-    // Calibration Bar Chart - Using actual NHL data
-    const seasons = ['2019-20', '2020-21', '2021-22', '2022-23', '2023-24', '2024-25*'];
-    const totalShots = [54001, 86274, 87339, 88107, 81517, 53910];
-    const actualGoals = [5011, 8150, 8260, 8087, 7905, 5427];
-    // xG values need calculation from your data - placeholder estimates
-    const xgV1 = [5052, 8215, 8328, 8153, 7968, 5468];
-    const xgV2 = [5035, 8185, 8295, 8120, 7938, 5450];
-    const xgV3 = [5018, 8158, 8268, 8095, 7912, 5433];
-
-    new Chart(document.getElementById('calibrationChart'), {
+    // Strength State Chart - REAL DATA from deep analysis
+    new Chart(document.getElementById('strengthChart'), {
       type: 'bar',
       data: {
-        labels: seasons,
+        labels: ['Even Strength', 'Power Play', 'Penalty Kill'],
         datasets: [
-          { label: 'Actual Goals', data: actualGoals, backgroundColor: '#ef4444' },
-          { label: 'xG v1', data: xgV1, backgroundColor: '#3b82f6' },
-          { label: 'xG v2', data: xgV2, backgroundColor: '#f97316' },
-          { label: 'xG v3', data: xgV3, backgroundColor: '#22c55e' }
+          { label: 'Actual %', data: [4.4, 8.3, 8.4], backgroundColor: '#4ade80' },
+          { label: 'xG %', data: [4.5, 7.2, 20.6], backgroundColor: '#a78bfa' }
         ]
       },
       options: {
@@ -412,52 +354,25 @@
         plugins: { legend: { labels: { color: '#94a3b8' } } },
         scales: {
           x: { grid: { color: '#334155' }, ticks: { color: '#94a3b8' } },
-          y: { grid: { color: '#334155' }, ticks: { color: '#94a3b8' }, beginAtZero: false, min: 4500 }
+          y: { grid: { color: '#334155' }, ticks: { color: '#94a3b8', callback: v => v + '%' } }
         }
       }
     });
 
-    // Calibration Curve
-    const binLabels = ['0-10%', '10-20%', '20-30%', '30-40%', '40-50%', '50-60%', '60-70%', '70-80%', '80-90%', '90-100%'];
-    const predicted = [0.035, 0.068, 0.092, 0.115, 0.142, 0.178, 0.223, 0.285, 0.412, 0.876];
-    const actual = [0.034, 0.069, 0.091, 0.118, 0.139, 0.181, 0.219, 0.291, 0.408, 0.879];
-    const perfect = [0.05, 0.15, 0.25, 0.35, 0.45, 0.55, 0.65, 0.75, 0.85, 0.95];
-
-    new Chart(document.getElementById('calibrationCurve'), {
-      type: 'line',
+    // Situation Chart - REAL DATA
+    new Chart(document.getElementById('situationChart'), {
+      type: 'bar',
       data: {
-        labels: binLabels,
+        labels: ['Goalie In Net', 'Empty Net', 'Non-Rebound', 'Rebound'],
         datasets: [
-          { label: 'Predicted', data: predicted, borderColor: '#38bdf8', backgroundColor: '#38bdf880', tension: 0.3, pointRadius: 6 },
-          { label: 'Actual', data: actual, borderColor: '#f472b6', backgroundColor: '#f472b680', tension: 0.3, pointRadius: 6 },
-          { label: 'Perfect', data: perfect, borderColor: '#64748b', borderDash: [5, 5], pointRadius: 0 }
+          { label: 'Actual %', data: [5.0, 13.6, 4.8, 8.7], backgroundColor: '#4ade80' },
+          { label: 'xG %', data: [5.1, 82.2, 5.8, 10.9], backgroundColor: '#a78bfa' }
         ]
       },
       options: {
         responsive: true,
         maintainAspectRatio: false,
-        plugins: { legend: { display: false } },
-        scales: {
-          x: { grid: { color: '#334155' }, ticks: { color: '#94a3b8' } },
-          y: { grid: { color: '#334155' }, ticks: { color: '#94a3b8', callback: v => (v * 100) + '%' }, min: 0, max: 1 }
-        }
-      }
-    });
-
-    // Error Chart
-    const errors = actual.map((a, i) => ((a - predicted[i]) * 100).toFixed(2));
-    const errorColors = errors.map(e => e >= 0 ? '#22c55e' : '#ef4444');
-
-    new Chart(document.getElementById('errorChart'), {
-      type: 'bar',
-      data: {
-        labels: binLabels,
-        datasets: [{ label: 'Error (%)', data: errors, backgroundColor: errorColors }]
-      },
-      options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        plugins: { legend: { display: false } },
+        plugins: { legend: { labels: { color: '#94a3b8' } } },
         scales: {
           x: { grid: { color: '#334155' }, ticks: { color: '#94a3b8' } },
           y: { grid: { color: '#334155' }, ticks: { color: '#94a3b8', callback: v => v + '%' } }
