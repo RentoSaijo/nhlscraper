@@ -366,6 +366,9 @@ Functions to load pre-scraped full season play-by-plays & shift charts
 
 Functions to help clean the data
 
+- [`calculate_speed()`](https://rentosaijo.github.io/nhlscraper/reference/calculate_speed.md)
+  : Calculate event-to-event deltas and speeds in normalized x/y,
+  distance, and angle for a play-by-play
 - [`add_on_ice_players()`](https://rentosaijo.github.io/nhlscraper/reference/add_on_ice_players.md)
   : Add on-ice player IDs to a play-by-play by merging with shift charts
 

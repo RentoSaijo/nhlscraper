@@ -15,7 +15,7 @@ add_on_ice_players(play_by_play, shift_chart)
 
 - play_by_play:
 
-  data.frame of shift chart rows; see
+  data.frame of play-by-play(s); see
   [`gc_play_by_play()`](https://rentosaijo.github.io/nhlscraper/reference/gc_play_by_play.md),
   [`gc_play_by_plays()`](https://rentosaijo.github.io/nhlscraper/reference/gc_play_by_plays.md),
   [`wsc_play_by_play()`](https://rentosaijo.github.io/nhlscraper/reference/wsc_play_by_play.md),
@@ -25,7 +25,7 @@ add_on_ice_players(play_by_play, shift_chart)
 
 - shift_chart:
 
-  data.frame of shift chart rows; see
+  data.frame of shift chart(s); see
   [`shift_chart()`](https://rentosaijo.github.io/nhlscraper/reference/shift_chart.md)
   or
   [`shift_charts()`](https://rentosaijo.github.io/nhlscraper/reference/shift_charts.md)

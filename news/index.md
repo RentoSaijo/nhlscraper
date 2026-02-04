@@ -4,6 +4,8 @@
 
 - All return IDs are now standardized (i.e., no more arbitrary `id`
   columns).
+- [`calculate_speed()`](https://rentosaijo.github.io/nhlscraper/reference/calculate_speed.md)
+  is now added to calculate event-to-event deltas in play-by-plays.
 - [`ps()`](https://rentosaijo.github.io/nhlscraper/reference/ps.md) is
   now deprecated; use
   [`pss()`](https://rentosaijo.github.io/nhlscraper/reference/penalty_shots.md)
