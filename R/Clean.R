@@ -426,8 +426,8 @@ count_goals_shots <- function(play_by_play) {
 #' 
 #' `add_on_ice_players()` merges a play-by-play with a shift chart to determine which players are on the ice at each event. It adds home- and away-team on-ice player ID lists, as well as event-perspective for/against player ID lists when `isHome` is available.
 #' 
-#' @param play_by_play data.frame of shift chart rows; see [gc_play_by_play()], [gc_play_by_plays()], [wsc_play_by_play()], or [wsc_play_by_plays()] for reference; the original columns must exist
-#' @param shift_chart data.frame of shift chart rows; see [shift_chart()] or [shift_charts()] for reference; the original columns must exist
+#' @param play_by_play data.frame of play-by-play(s); see [gc_play_by_play()], [gc_play_by_plays()], [wsc_play_by_play()], or [wsc_play_by_plays()] for reference; the original columns must exist
+#' @param shift_chart data.frame of shift chart(s); see [shift_chart()] or [shift_charts()] for reference; the original columns must exist
 #' @returns data.frame with one row per event (play) and added list-columns:
 #' `homePlayerIds`, `awayPlayerIds`, `playerIdsFor`, and `playerIdsAgainst`
 #' @examples
@@ -561,4 +561,68 @@ add_on_ice_players <- function(play_by_play, shift_chart) {
   keep   <- setdiff(names(play_by_play), insert)
   after  <- match('strengthState', keep)
   play_by_play[, c(keep[seq_len(after)], insert, keep[(after + 1L):length(keep)])]
+}
+
+#' Calculate event-to-event deltas and speeds in normalized x/y, distance, and angle for a play-by-play
+#'
+#' `calculate_speed()` calculates event-to-event deltas and speeds in normalized x/y, distance, and angle for a play-by-play.
+#'
+#' @inheritParams add_on_ice_players
+#' @returns data.frame with one row per event (play) and added columns: `dXN`, `dYN`, `dD`, `dA`, `dT`, `dXNdT`, `dYNdT`, `dDdT`, `dAdT`
+#' @export
+
+calculate_speed <- function(play_by_play) {
+  t <- play_by_play$secondsElapsedInGame
+  x <- play_by_play$xCoordNorm
+  y <- play_by_play$yCoordNorm
+  n <- nrow(play_by_play)
+  dXN <- rep(NA_real_, n)
+  dYN <- rep(NA_real_, n)
+  dD  <- rep(NA_real_, n)
+  dA  <- rep(NA_real_, n)
+  dT  <- rep(NA_real_, n)
+  dXNdT <- rep(NA_real_, n)
+  dYNdT <- rep(NA_real_, n)
+  dDdT  <- rep(NA_real_, n)
+  dAdT  <- rep(NA_real_, n)
+  for (g in unique(play_by_play$gameId)) {
+    idx <- which(play_by_play$gameId == g)
+    idx <- idx[order(t[idx], play_by_play$sortOrder[idx], na.last = TRUE)]
+    if (length(idx) <= 1L) next
+    prev <- idx[-length(idx)]
+    curr <- idx[-1L]
+    dt <- t[curr] - t[prev]
+    dx <- x[curr] - x[prev]
+    dy <- y[curr] - y[prev]
+    dd <- play_by_play$distance[curr] - play_by_play$distance[prev]
+    da <- play_by_play$angle[curr]    - play_by_play$angle[prev]
+    dT[curr]  <- dt
+    dXN[curr] <- dx
+    dYN[curr] <- dy
+    dD[curr]  <- dd
+    dA[curr]  <- da
+    ok <- !is.na(dt) & dt > 0
+    j  <- which(ok)
+    if (length(j)) {
+      cc <- curr[j]
+      denom <- dt[j]
+      dXNdT[cc] <- dx[j] / denom
+      dYNdT[cc] <- dy[j] / denom
+      dDdT[cc]  <- dd[j] / denom
+      dAdT[cc]  <- da[j] / denom
+    }
+  }
+  play_by_play$dXN   <- dXN
+  play_by_play$dYN   <- dYN
+  play_by_play$dD    <- dD
+  play_by_play$dA    <- dA
+  play_by_play$dT    <- dT
+  play_by_play$dXNdT <- dXNdT
+  play_by_play$dYNdT <- dYNdT
+  play_by_play$dDdT  <- dDdT
+  play_by_play$dAdT  <- dAdT
+  after  <- match('angle', names(play_by_play))
+  insert <- c('dXN', 'dYN', 'dD', 'dA', 'dT', 'dXNdT', 'dYNdT', 'dDdT', 'dAdT')
+  nms    <- names(play_by_play)
+  play_by_play[, c(nms[seq_len(after)], insert, setdiff(nms[-seq_len(after)], insert))]
 }

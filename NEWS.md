@@ -1,5 +1,6 @@
 # nhlscraper 0.4.2.9000
 - All return IDs are now standardized (i.e., no more arbitrary `id` columns).
+- `calculate_speed()` is now added to calculate event-to-event deltas in play-by-plays.
 - `ps()` is now deprecated; use `pss()` instead.
 
 # nhlscraper 0.4.2

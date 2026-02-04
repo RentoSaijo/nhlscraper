@@ -7,9 +7,9 @@
 add_on_ice_players(play_by_play, shift_chart)
 }
 \arguments{
-\item{play_by_play}{data.frame of shift chart rows; see \code{\link[=gc_play_by_play]{gc_play_by_play()}}, \code{\link[=gc_play_by_plays]{gc_play_by_plays()}}, \code{\link[=wsc_play_by_play]{wsc_play_by_play()}}, or \code{\link[=wsc_play_by_plays]{wsc_play_by_plays()}} for reference; the original columns must exist}
+\item{play_by_play}{data.frame of play-by-play(s); see \code{\link[=gc_play_by_play]{gc_play_by_play()}}, \code{\link[=gc_play_by_plays]{gc_play_by_plays()}}, \code{\link[=wsc_play_by_play]{wsc_play_by_play()}}, or \code{\link[=wsc_play_by_plays]{wsc_play_by_plays()}} for reference; the original columns must exist}
 
-\item{shift_chart}{data.frame of shift chart rows; see \code{\link[=shift_chart]{shift_chart()}} or \code{\link[=shift_charts]{shift_charts()}} for reference; the original columns must exist}
+\item{shift_chart}{data.frame of shift chart(s); see \code{\link[=shift_chart]{shift_chart()}} or \code{\link[=shift_charts]{shift_charts()}} for reference; the original columns must exist}
 }
 \value{
 data.frame with one row per event (play) and added list-columns:
