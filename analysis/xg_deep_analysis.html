@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>xG Model Deep Analysis</title>
+  <title>xG Model Deep Analysis - Real Data</title>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -65,91 +65,173 @@
       margin: 20px 0;
       border-radius: 0 12px 12px 0;
     }
-    .bar-positive { background: linear-gradient(90deg, #22c55e, #16a34a); }
-    .bar-negative { background: linear-gradient(90deg, #ef4444, #dc2626); }
+    .finding {
+      background: linear-gradient(135deg, #14532d 0%, #052e16 100%);
+      border-left: 4px solid #4ade80;
+      padding: 15px 20px;
+      margin: 20px 0;
+      border-radius: 0 12px 12px 0;
+    }
+    .warning {
+      background: linear-gradient(135deg, #713f12 0%, #451a03 100%);
+      border-left: 4px solid #fbbf24;
+      padding: 15px 20px;
+      margin: 20px 0;
+      border-radius: 0 12px 12px 0;
+    }
   </style>
 </head>
 <body>
   <div class="container">
-    <h1>xG Model Deep Analysis</h1>
-    <p class="subtitle">Calibration, Feature Importance & Probability Distributions</p>
+    <h1>xG Model Calibration Analysis</h1>
+    <p class="subtitle">Real NHL Data: 2022-2025 Seasons (501,336 shots)</p>
 
     <!-- Alert Banner -->
     <div class="alert">
-      <div class="alert-title">⚠️ CALIBRATION ISSUE DETECTED</div>
+      <div class="alert-title">⚠️ MAJOR CALIBRATION ISSUES DETECTED</div>
       <div class="alert-text">
-        The current xG model <strong>overestimates goals by ~19%</strong>.
-        This means the model predicts more goals than actually occur.
-        See analysis below for breakdown by feature.
+        The xG model <strong>overestimates goals by 22.5%</strong>.
+        Primary issues: <strong>Empty Net</strong> (predicts 82%, actual 14%) and
+        <strong>Penalty Kill</strong> (predicts 21%, actual 8%).
       </div>
     </div>
 
     <!-- Summary Stats -->
     <div class="stat-grid">
       <div class="stat-box">
-        <div class="stat-value blue">903,503</div>
+        <div class="stat-value blue">501,336</div>
         <div class="stat-label">Total Shots</div>
       </div>
       <div class="stat-box">
-        <div class="stat-value green">47,121</div>
-        <div class="stat-label">Actual Goals</div>
+        <div class="stat-value green">25,785</div>
+        <div class="stat-label">Actual Goals (5.14%)</div>
       </div>
       <div class="stat-box">
-        <div class="stat-value purple">56,027</div>
-        <div class="stat-label">Predicted xG</div>
+        <div class="stat-value purple">31,578</div>
+        <div class="stat-label">Predicted xG (6.30%)</div>
       </div>
       <div class="stat-box">
-        <div class="stat-value red">-18.9%</div>
+        <div class="stat-value red">-22.5%</div>
         <div class="stat-label">Calibration Error</div>
+      </div>
+    </div>
+
+    <!-- Key Findings -->
+    <h2>Key Findings</h2>
+    <div class="grid-3">
+      <div class="alert" style="margin: 0;">
+        <div class="alert-title">🚨 Empty Net Detection</div>
+        <div class="alert-text">
+          Model predicts <strong>82.2%</strong> conversion<br>
+          Actual: <strong>13.6%</strong><br>
+          Error: <strong>-68.7%</strong>
+        </div>
+      </div>
+      <div class="alert" style="margin: 0;">
+        <div class="alert-title">🚨 Penalty Kill</div>
+        <div class="alert-text">
+          Model predicts <strong>20.6%</strong> conversion<br>
+          Actual: <strong>8.4%</strong><br>
+          Error: <strong>-12.2%</strong>
+        </div>
+      </div>
+      <div class="finding" style="margin: 0;">
+        <div style="color: #86efac; font-weight: 700; font-size: 1.2rem; margin-bottom: 10px;">✓ Even Strength</div>
+        <div style="color: #bbf7d0;">
+          Model predicts <strong>4.5%</strong> conversion<br>
+          Actual: <strong>4.4%</strong><br>
+          Error: <strong>-0.1%</strong> (Good!)
+        </div>
+      </div>
+    </div>
+
+    <!-- Shot Type Analysis -->
+    <h2>Shot Type Analysis (NOT in current model)</h2>
+    <div class="warning">
+      <strong>Shot type is a significant predictor not included in the model.</strong>
+      Snap shots convert at 8.8% but model predicts 5.4% — a 3.5% underestimate.
+    </div>
+    <div class="grid">
+      <div class="card">
+        <div class="card-title">Actual vs Predicted by Shot Type</div>
+        <div class="chart-container">
+          <canvas id="shotTypeChart"></canvas>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-title">Shot Type Calibration Error</div>
+        <div class="chart-container">
+          <canvas id="shotTypeError"></canvas>
+        </div>
+      </div>
+    </div>
+
+    <!-- Strength State -->
+    <h2>Strength State Analysis</h2>
+    <div class="grid">
+      <div class="card">
+        <div class="card-title">Actual vs Predicted by Strength</div>
+        <div class="chart-container">
+          <canvas id="strengthChart"></canvas>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-title">Volume by Strength State</div>
+        <div class="chart-container">
+          <canvas id="strengthVolume"></canvas>
+        </div>
+      </div>
+    </div>
+
+    <!-- Distance Analysis -->
+    <h2>Distance Analysis</h2>
+    <div class="grid">
+      <div class="card">
+        <div class="card-title">Actual vs Predicted by Distance</div>
+        <div class="chart-container">
+          <canvas id="distanceChart"></canvas>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-title">Shots by Distance</div>
+        <div class="chart-container">
+          <canvas id="distanceVolume"></canvas>
+        </div>
+      </div>
+    </div>
+
+    <!-- Empty Net / Rebound -->
+    <h2>Situation Analysis</h2>
+    <div class="grid">
+      <div class="card">
+        <div class="card-title">Empty Net vs Goalie In</div>
+        <div class="chart-container">
+          <canvas id="emptyNetChart"></canvas>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-title">Rebound vs Non-Rebound</div>
+        <div class="chart-container">
+          <canvas id="reboundChart"></canvas>
+        </div>
       </div>
     </div>
 
     <!-- Calibration Buckets -->
     <h2>Calibration by xG Probability Bucket</h2>
+    <div class="card">
+      <div class="card-title">Where the Model Fails</div>
+      <div class="chart-container-lg">
+        <canvas id="bucketChart"></canvas>
+      </div>
+    </div>
     <div class="insight">
-      <strong>How to read:</strong> For well-calibrated model, actual rate should equal predicted rate.
-      Bars above 0 = model underestimates. Bars below 0 = model overestimates.
-    </div>
-    <div class="grid">
-      <div class="card">
-        <div class="card-title">Predicted vs Actual Goal Rate</div>
-        <div class="chart-container">
-          <canvas id="calibrationBuckets"></canvas>
-        </div>
-      </div>
-      <div class="card">
-        <div class="card-title">Calibration Error by Bucket</div>
-        <div class="chart-container">
-          <canvas id="calibrationError"></canvas>
-        </div>
-      </div>
+      <strong>High xG buckets (35-50%) are massively wrong</strong> because they contain empty net shots.
+      The model assigns ~80% xG to empty nets but actual conversion is only ~14%.
     </div>
 
-    <!-- Feature Analysis -->
-    <h2>Goal Rate by Feature</h2>
-    <div class="grid-3">
-      <div class="card">
-        <div class="card-title">By Distance to Net</div>
-        <div class="chart-container">
-          <canvas id="byDistance"></canvas>
-        </div>
-      </div>
-      <div class="card">
-        <div class="card-title">By Strength State</div>
-        <div class="chart-container">
-          <canvas id="byStrength"></canvas>
-        </div>
-      </div>
-      <div class="card">
-        <div class="card-title">By Situation</div>
-        <div class="chart-container">
-          <canvas id="bySituation"></canvas>
-        </div>
-      </div>
-    </div>
-
-    <!-- Feature Analysis Table -->
-    <h2>Detailed Feature Calibration</h2>
+    <!-- Detailed Table -->
+    <h2>Feature Calibration Summary</h2>
     <div class="card">
       <table>
         <thead>
@@ -157,93 +239,102 @@
             <th>Feature</th>
             <th>Shots</th>
             <th>Goals</th>
-            <th>Actual Rate</th>
-            <th>xG Rate</th>
-            <th>Difference</th>
-            <th>Assessment</th>
+            <th>Actual %</th>
+            <th>xG %</th>
+            <th>Error</th>
+            <th>Status</th>
           </tr>
         </thead>
         <tbody>
           <tr>
-            <td><strong>Empty Net (Yes)</strong></td>
-            <td>~15,000</td>
-            <td>~11,000</td>
-            <td>73.3%</td>
-            <td>88.2%</td>
-            <td class="negative">-14.9%</td>
-            <td class="negative">Overestimates</td>
-          </tr>
-          <tr>
-            <td><strong>Empty Net (No)</strong></td>
-            <td>~888,000</td>
-            <td>~36,000</td>
-            <td>4.1%</td>
-            <td>5.0%</td>
-            <td class="negative">-0.9%</td>
-            <td class="negative">Overestimates</td>
+            <td><strong>Even Strength</strong></td>
+            <td>406,829</td>
+            <td>17,872</td>
+            <td>4.4%</td>
+            <td>4.5%</td>
+            <td class="positive">-0.1%</td>
+            <td class="positive">✓ Good</td>
           </tr>
           <tr>
             <td><strong>Power Play</strong></td>
-            <td>~150,000</td>
-            <td>~10,500</td>
-            <td>7.0%</td>
-            <td>8.1%</td>
-            <td class="negative">-1.1%</td>
-            <td class="negative">Overestimates</td>
-          </tr>
-          <tr>
-            <td><strong>Even Strength</strong></td>
-            <td>~700,000</td>
-            <td>~33,000</td>
-            <td>4.7%</td>
-            <td>5.7%</td>
-            <td class="negative">-1.0%</td>
-            <td class="negative">Overestimates</td>
+            <td>45,549</td>
+            <td>3,803</td>
+            <td>8.3%</td>
+            <td>7.2%</td>
+            <td class="positive">+1.1%</td>
+            <td class="positive">✓ Good</td>
           </tr>
           <tr>
             <td><strong>Penalty Kill</strong></td>
-            <td>~50,000</td>
-            <td>~3,500</td>
-            <td>7.0%</td>
-            <td>8.8%</td>
-            <td class="negative">-1.8%</td>
-            <td class="negative">Overestimates</td>
+            <td>48,958</td>
+            <td>4,110</td>
+            <td>8.4%</td>
+            <td>20.6%</td>
+            <td class="negative">-12.2%</td>
+            <td class="negative">✗ Bad</td>
           </tr>
           <tr>
-            <td><strong>Rebounds</strong></td>
-            <td>~45,000</td>
-            <td>~4,200</td>
-            <td>9.3%</td>
-            <td>11.5%</td>
-            <td class="negative">-2.2%</td>
-            <td class="negative">Overestimates</td>
+            <td><strong>Goalie In Net</strong></td>
+            <td>493,677</td>
+            <td>24,746</td>
+            <td>5.0%</td>
+            <td>5.1%</td>
+            <td class="positive">-0.1%</td>
+            <td class="positive">✓ Good</td>
+          </tr>
+          <tr>
+            <td><strong>Empty Net</strong></td>
+            <td>7,659</td>
+            <td>1,039</td>
+            <td>13.6%</td>
+            <td>82.2%</td>
+            <td class="negative">-68.7%</td>
+            <td class="negative">✗ Very Bad</td>
+          </tr>
+          <tr>
+            <td><strong>Non-Rebound</strong></td>
+            <td>452,682</td>
+            <td>21,532</td>
+            <td>4.8%</td>
+            <td>5.8%</td>
+            <td class="negative">-1.1%</td>
+            <td style="color: #fbbf24;">~ OK</td>
+          </tr>
+          <tr>
+            <td><strong>Rebound</strong></td>
+            <td>48,654</td>
+            <td>4,253</td>
+            <td>8.7%</td>
+            <td>10.9%</td>
+            <td class="negative">-2.1%</td>
+            <td style="color: #fbbf24;">~ OK</td>
           </tr>
           <tr>
             <td><strong>0-10ft Distance</strong></td>
-            <td>~80,000</td>
-            <td>~12,000</td>
-            <td>15.0%</td>
-            <td>18.2%</td>
-            <td class="negative">-3.2%</td>
-            <td class="negative">Overestimates</td>
+            <td>60,790</td>
+            <td>6,750</td>
+            <td>11.1%</td>
+            <td>11.1%</td>
+            <td class="positive">0.0%</td>
+            <td class="positive">✓ Perfect</td>
           </tr>
           <tr>
-            <td><strong>10-20ft Distance</strong></td>
-            <td>~200,000</td>
-            <td>~14,000</td>
-            <td>7.0%</td>
-            <td>8.5%</td>
-            <td class="negative">-1.5%</td>
-            <td class="negative">Overestimates</td>
+            <td><strong>Snap Shot</strong></td>
+            <td>61,313</td>
+            <td>5,420</td>
+            <td>8.8%</td>
+            <td>5.4%</td>
+            <td class="positive">+3.5%</td>
+            <td style="color: #fbbf24;">Underestimates</td>
           </tr>
           <tr>
-            <td><strong>50+ft Distance</strong></td>
-            <td>~150,000</td>
-            <td>~1,500</td>
-            <td>1.0%</td>
-            <td>1.2%</td>
-            <td class="negative">-0.2%</td>
-            <td class="negative">Slight overestimate</td>
+            <td><strong>Wrist Shot</strong></td>
+            <td>188,956</td>
+            <td>12,176</td>
+            <td>6.4%</td>
+            <td>5.5%</td>
+            <td class="positive">+0.9%</td>
+            <td style="color: #fbbf24;">Underestimates</td>
           </tr>
         </tbody>
       </table>
@@ -253,131 +344,82 @@
     <h2>xG Probability Distribution</h2>
     <div class="grid">
       <div class="card">
-        <div class="card-title">Distribution of Shot xG Values</div>
-        <div class="chart-container-lg">
-          <canvas id="xgDistribution"></canvas>
+        <div class="card-title">Distribution of xG Values</div>
+        <div class="chart-container">
+          <canvas id="distChart"></canvas>
         </div>
       </div>
       <div class="card">
-        <div class="card-title">xG Statistics</div>
+        <div class="card-title">Statistics</div>
         <table>
-          <tr><th>Statistic</th><th>Value</th></tr>
-          <tr><td>Mean xG</td><td>6.2%</td></tr>
-          <tr><td>Median xG</td><td>3.8%</td></tr>
-          <tr><td>Std Dev</td><td>8.5%</td></tr>
-          <tr><td>10th Percentile</td><td>1.2%</td></tr>
-          <tr><td>25th Percentile</td><td>2.1%</td></tr>
-          <tr><td>75th Percentile</td><td>7.2%</td></tr>
-          <tr><td>90th Percentile</td><td>15.8%</td></tr>
-          <tr><td>95th Percentile</td><td>25.3%</td></tr>
-          <tr><td>99th Percentile</td><td>55.2%</td></tr>
+          <tr><th>Metric</th><th>Value</th></tr>
+          <tr><td>Mean xG</td><td>6.30%</td></tr>
+          <tr><td>Median xG</td><td>4.44%</td></tr>
+          <tr><td>Std Dev</td><td>10.06%</td></tr>
+          <tr><td>10th Percentile</td><td>1.83%</td></tr>
+          <tr><td>25th Percentile</td><td>2.73%</td></tr>
+          <tr><td>75th Percentile</td><td>6.87%</td></tr>
+          <tr><td>90th Percentile</td><td>9.66%</td></tr>
+          <tr><td>95th Percentile</td><td>12.49%</td></tr>
+          <tr><td>99th Percentile</td><td>80.08%</td></tr>
         </table>
-        <div class="insight" style="margin-top: 20px;">
-          <strong>Interpretation:</strong> Most shots have very low xG (&lt;5%).
-          High xG shots (&gt;20%) are rare but include empty nets and close-range chances.
-        </div>
       </div>
     </div>
 
     <!-- Recommendations -->
-    <h2>Recommendations for a Better Model</h2>
+    <h2>Recommendations</h2>
     <div class="card">
-      <div class="card-title">Options to Fix Calibration</div>
       <table>
-        <thead>
-          <tr><th>Option</th><th>Description</th><th>Difficulty</th></tr>
-        </thead>
+        <thead><tr><th>Priority</th><th>Issue</th><th>Fix</th></tr></thead>
         <tbody>
           <tr>
-            <td><strong>1. Simple Rescaling</strong></td>
-            <td>Multiply all xG by 0.84 (47121/56027) to match actual goals</td>
-            <td>Easy</td>
+            <td><strong>1. Critical</strong></td>
+            <td>Empty net detection is broken</td>
+            <td>Check situationCode parsing - likely detecting too many empty nets</td>
           </tr>
           <tr>
-            <td><strong>2. Retrain Intercept</strong></td>
-            <td>Keep feature weights, adjust intercept from -1.99 to ~-2.20</td>
-            <td>Easy</td>
+            <td><strong>2. Critical</strong></td>
+            <td>Penalty kill massively overestimates</td>
+            <td>Verify strength state logic - may be mislabeling situations</td>
           </tr>
           <tr>
-            <td><strong>3. Retrain Full Model</strong></td>
-            <td>Use shots_for_modeling.csv to train new logistic regression</td>
-            <td>Medium</td>
+            <td><strong>3. High</strong></td>
+            <td>Shot type not in model</td>
+            <td>Add shotType feature - snap shots are 3.5% more dangerous than predicted</td>
           </tr>
           <tr>
-            <td><strong>4. Add Shot Type</strong></td>
-            <td>Include shotType feature (wrist, slap, tip-in, etc.)</td>
-            <td>Medium</td>
+            <td><strong>4. Medium</strong></td>
+            <td>Distance overestimates beyond 10ft</td>
+            <td>Retrain distance coefficient or add non-linear term</td>
           </tr>
           <tr>
-            <td><strong>5. Use Gradient Boosting</strong></td>
-            <td>Train XGBoost/LightGBM model with more features</td>
-            <td>Advanced</td>
+            <td><strong>5. Quick Fix</strong></td>
+            <td>Overall calibration</td>
+            <td>Scale all xG by 0.816 (25785/31578) as interim fix</td>
           </tr>
         </tbody>
       </table>
     </div>
+
   </div>
 
   <script>
-    // Calibration Buckets Chart
-    const bucketLabels = ['0-10%', '10-20%', '20-30%', '30-40%', '40-50%', '50-60%', '60-70%', '70-80%', '80-90%', '90-100%'];
-    const predictedRates = [0.035, 0.065, 0.095, 0.135, 0.175, 0.225, 0.275, 0.345, 0.455, 0.875];
-    const actualRates = [0.028, 0.055, 0.082, 0.118, 0.155, 0.195, 0.245, 0.305, 0.405, 0.735];
+    // Shot Type Chart
+    const shotTypes = ['wrist', 'snap', 'slap', 'tip-in', 'backhand', 'deflected', 'wrap', 'poke', 'bat'];
+    const shotActual = [6.4, 8.8, 4.9, 8.3, 8.2, 9.3, 5.7, 13.2, 13.6];
+    const shotXG = [5.5, 5.4, 4.5, 8.9, 8.0, 9.5, 7.0, 11.7, 10.4];
 
-    new Chart(document.getElementById('calibrationBuckets'), {
+    new Chart(document.getElementById('shotTypeChart'), {
       type: 'bar',
       data: {
-        labels: bucketLabels,
+        labels: shotTypes,
         datasets: [
-          { label: 'Predicted xG', data: predictedRates.map(v => v * 100), backgroundColor: '#a78bfa' },
-          { label: 'Actual Rate', data: actualRates.map(v => v * 100), backgroundColor: '#4ade80' }
+          { label: 'Actual %', data: shotActual, backgroundColor: '#4ade80' },
+          { label: 'xG %', data: shotXG, backgroundColor: '#a78bfa' }
         ]
       },
       options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        plugins: { legend: { labels: { color: '#94a3b8' } } },
-        scales: {
-          x: { grid: { color: '#334155' }, ticks: { color: '#94a3b8' } },
-          y: { grid: { color: '#334155' }, ticks: { color: '#94a3b8', callback: v => v + '%' }, title: { display: true, text: 'Goal Rate %', color: '#94a3b8' } }
-        }
-      }
-    });
-
-    // Calibration Error Chart
-    const errors = actualRates.map((a, i) => (a - predictedRates[i]) * 100);
-    const errorColors = errors.map(e => e >= 0 ? '#4ade80' : '#f87171');
-
-    new Chart(document.getElementById('calibrationError'), {
-      type: 'bar',
-      data: {
-        labels: bucketLabels,
-        datasets: [{ label: 'Calibration Error', data: errors, backgroundColor: errorColors }]
-      },
-      options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        plugins: { legend: { display: false } },
-        scales: {
-          x: { grid: { color: '#334155' }, ticks: { color: '#94a3b8' } },
-          y: { grid: { color: '#334155' }, ticks: { color: '#94a3b8', callback: v => v + '%' }, title: { display: true, text: 'Error (Actual - Predicted)', color: '#94a3b8' } }
-        }
-      }
-    });
-
-    // By Distance
-    new Chart(document.getElementById('byDistance'), {
-      type: 'bar',
-      data: {
-        labels: ['0-10ft', '10-20ft', '20-30ft', '30-40ft', '40-50ft', '50+ft'],
-        datasets: [
-          { label: 'Actual', data: [15.0, 7.0, 4.5, 2.8, 1.5, 1.0], backgroundColor: '#4ade80' },
-          { label: 'xG', data: [18.2, 8.5, 5.5, 3.4, 1.8, 1.2], backgroundColor: '#a78bfa' }
-        ]
-      },
-      options: {
-        responsive: true,
-        maintainAspectRatio: false,
+        responsive: true, maintainAspectRatio: false,
         plugins: { legend: { labels: { color: '#94a3b8' } } },
         scales: {
           x: { grid: { color: '#334155' }, ticks: { color: '#94a3b8' } },
@@ -386,19 +428,37 @@
       }
     });
 
-    // By Strength
-    new Chart(document.getElementById('byStrength'), {
+    // Shot Type Error
+    const shotError = shotActual.map((a, i) => (a - shotXG[i]).toFixed(1));
+    const shotErrorColors = shotError.map(e => e >= 0 ? '#4ade80' : '#f87171');
+    new Chart(document.getElementById('shotTypeError'), {
+      type: 'bar',
+      data: {
+        labels: shotTypes,
+        datasets: [{ label: 'Error', data: shotError, backgroundColor: shotErrorColors }]
+      },
+      options: {
+        responsive: true, maintainAspectRatio: false,
+        plugins: { legend: { display: false } },
+        scales: {
+          x: { grid: { color: '#334155' }, ticks: { color: '#94a3b8' } },
+          y: { grid: { color: '#334155' }, ticks: { color: '#94a3b8', callback: v => v + '%' } }
+        }
+      }
+    });
+
+    // Strength Chart
+    new Chart(document.getElementById('strengthChart'), {
       type: 'bar',
       data: {
         labels: ['Even Strength', 'Power Play', 'Penalty Kill'],
         datasets: [
-          { label: 'Actual', data: [4.7, 7.0, 7.0], backgroundColor: '#4ade80' },
-          { label: 'xG', data: [5.7, 8.1, 8.8], backgroundColor: '#a78bfa' }
+          { label: 'Actual %', data: [4.4, 8.3, 8.4], backgroundColor: '#4ade80' },
+          { label: 'xG %', data: [4.5, 7.2, 20.6], backgroundColor: '#a78bfa' }
         ]
       },
       options: {
-        responsive: true,
-        maintainAspectRatio: false,
+        responsive: true, maintainAspectRatio: false,
         plugins: { legend: { labels: { color: '#94a3b8' } } },
         scales: {
           x: { grid: { color: '#334155' }, ticks: { color: '#94a3b8' } },
@@ -407,19 +467,31 @@
       }
     });
 
-    // By Situation
-    new Chart(document.getElementById('bySituation'), {
+    // Strength Volume
+    new Chart(document.getElementById('strengthVolume'), {
+      type: 'doughnut',
+      data: {
+        labels: ['Even Strength (406,829)', 'Penalty Kill (48,958)', 'Power Play (45,549)'],
+        datasets: [{ data: [406829, 48958, 45549], backgroundColor: ['#3b82f6', '#f87171', '#4ade80'] }]
+      },
+      options: {
+        responsive: true, maintainAspectRatio: false,
+        plugins: { legend: { labels: { color: '#94a3b8' } } }
+      }
+    });
+
+    // Distance Chart
+    new Chart(document.getElementById('distanceChart'), {
       type: 'bar',
       data: {
-        labels: ['Goalie In', 'Empty Net', 'Rebound', 'Non-Rebound'],
+        labels: ['0-10ft', '10-20ft', '20-30ft', '30-40ft', '40-50ft', '50+ft'],
         datasets: [
-          { label: 'Actual', data: [4.1, 73.3, 9.3, 4.8], backgroundColor: '#4ade80' },
-          { label: 'xG', data: [5.0, 88.2, 11.5, 5.8], backgroundColor: '#a78bfa' }
+          { label: 'Actual %', data: [11.1, 6.7, 5.7, 4.0, 2.4, 1.9], backgroundColor: '#4ade80' },
+          { label: 'xG %', data: [11.1, 8.8, 6.5, 5.0, 4.1, 2.9], backgroundColor: '#a78bfa' }
         ]
       },
       options: {
-        responsive: true,
-        maintainAspectRatio: false,
+        responsive: true, maintainAspectRatio: false,
         plugins: { legend: { labels: { color: '#94a3b8' } } },
         scales: {
           x: { grid: { color: '#334155' }, ticks: { color: '#94a3b8' } },
@@ -428,27 +500,96 @@
       }
     });
 
-    // xG Distribution
-    const distBins = Array.from({length: 50}, (_, i) => (i * 2) + '%');
-    const distCounts = [180000, 150000, 120000, 95000, 75000, 60000, 48000, 38000, 30000, 24000,
-                        19000, 15000, 12000, 9500, 7500, 6000, 4800, 3800, 3000, 2400,
-                        1900, 1500, 1200, 950, 750, 600, 480, 380, 300, 240,
-                        190, 150, 120, 95, 75, 60, 48, 38, 30, 24,
-                        19, 15, 12000, 11000, 10000, 9000, 8000, 7000, 6000, 5000];
-
-    new Chart(document.getElementById('xgDistribution'), {
+    // Distance Volume
+    new Chart(document.getElementById('distanceVolume'), {
       type: 'bar',
       data: {
-        labels: distBins,
-        datasets: [{ label: 'Shot Count', data: distCounts, backgroundColor: '#38bdf8' }]
+        labels: ['0-10ft', '10-20ft', '20-30ft', '30-40ft', '40-50ft', '50+ft'],
+        datasets: [{ label: 'Shots', data: [60790, 104466, 92066, 88459, 66038, 89513], backgroundColor: '#38bdf8' }]
       },
       options: {
-        responsive: true,
-        maintainAspectRatio: false,
+        responsive: true, maintainAspectRatio: false,
         plugins: { legend: { display: false } },
         scales: {
-          x: { grid: { color: '#334155' }, ticks: { color: '#94a3b8', maxTicksLimit: 10 }, title: { display: true, text: 'xG Value', color: '#94a3b8' } },
-          y: { grid: { color: '#334155' }, ticks: { color: '#94a3b8' }, title: { display: true, text: 'Number of Shots', color: '#94a3b8' } }
+          x: { grid: { color: '#334155' }, ticks: { color: '#94a3b8' } },
+          y: { grid: { color: '#334155' }, ticks: { color: '#94a3b8' } }
+        }
+      }
+    });
+
+    // Empty Net Chart
+    new Chart(document.getElementById('emptyNetChart'), {
+      type: 'bar',
+      data: {
+        labels: ['Goalie In Net', 'Empty Net'],
+        datasets: [
+          { label: 'Actual %', data: [5.0, 13.6], backgroundColor: '#4ade80' },
+          { label: 'xG %', data: [5.1, 82.2], backgroundColor: '#a78bfa' }
+        ]
+      },
+      options: {
+        responsive: true, maintainAspectRatio: false,
+        plugins: { legend: { labels: { color: '#94a3b8' } } },
+        scales: {
+          x: { grid: { color: '#334155' }, ticks: { color: '#94a3b8' } },
+          y: { grid: { color: '#334155' }, ticks: { color: '#94a3b8', callback: v => v + '%' } }
+        }
+      }
+    });
+
+    // Rebound Chart
+    new Chart(document.getElementById('reboundChart'), {
+      type: 'bar',
+      data: {
+        labels: ['Non-Rebound', 'Rebound'],
+        datasets: [
+          { label: 'Actual %', data: [4.8, 8.7], backgroundColor: '#4ade80' },
+          { label: 'xG %', data: [5.8, 10.9], backgroundColor: '#a78bfa' }
+        ]
+      },
+      options: {
+        responsive: true, maintainAspectRatio: false,
+        plugins: { legend: { labels: { color: '#94a3b8' } } },
+        scales: {
+          x: { grid: { color: '#334155' }, ticks: { color: '#94a3b8' } },
+          y: { grid: { color: '#334155' }, ticks: { color: '#94a3b8', callback: v => v + '%' } }
+        }
+      }
+    });
+
+    // Calibration Buckets
+    new Chart(document.getElementById('bucketChart'), {
+      type: 'bar',
+      data: {
+        labels: ['0-5%', '5-10%', '10-15%', '15-20%', '20-25%', '25-30%', '30-35%', '35-40%', '40-45%', '45-50%'],
+        datasets: [
+          { label: 'Actual %', data: [4.4, 11.7, 14.6, 25.0, 32.1, 31.6, 26.0, 15.1, 10.1, 12.8], backgroundColor: '#4ade80' },
+          { label: 'Predicted %', data: [4.5, 12.7, 21.9, 33.5, 45.1, 53.4, 63.5, 73.4, 82.1, 90.6], backgroundColor: '#a78bfa' }
+        ]
+      },
+      options: {
+        responsive: true, maintainAspectRatio: false,
+        plugins: { legend: { labels: { color: '#94a3b8' } } },
+        scales: {
+          x: { grid: { color: '#334155' }, ticks: { color: '#94a3b8' } },
+          y: { grid: { color: '#334155' }, ticks: { color: '#94a3b8', callback: v => v + '%' }, max: 100 }
+        }
+      }
+    });
+
+    // Distribution
+    new Chart(document.getElementById('distChart'), {
+      type: 'bar',
+      data: {
+        labels: ['0-2%', '2-4%', '4-6%', '6-8%', '8-10%', '10-15%', '15-20%', '20-50%', '50%+'],
+        datasets: [{ label: 'Shots', data: [89000, 180000, 120000, 50000, 25000, 15000, 5000, 8000, 9000], backgroundColor: '#38bdf8' }]
+      },
+      options: {
+        responsive: true, maintainAspectRatio: false,
+        plugins: { legend: { display: false } },
+        scales: {
+          x: { grid: { color: '#334155' }, ticks: { color: '#94a3b8' } },
+          y: { grid: { color: '#334155' }, ticks: { color: '#94a3b8' } }
         }
       }
     });
