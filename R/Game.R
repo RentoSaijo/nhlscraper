@@ -15,6 +15,7 @@ games <- function() {
       type = 's'
     )$data
     names(games)[names(games) == 'id']       <- 'gameId'
+    names(games)[names(games) == 'season']   <- 'seasonId'
     names(games)[names(games) == 'gameType'] <- 'gameTypeId'
     games[order(games$gameId), ]
   }, error = function(e) {
