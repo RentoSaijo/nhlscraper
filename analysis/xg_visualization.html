@@ -80,7 +80,7 @@
         <div class="stat-label">Shots Analyzed</div>
       </div>
       <div class="stat-box">
-        <div class="stat-value">~0.1%</div>
+        <div class="stat-value" style="color: #f87171;">-22.5%</div>
         <div class="stat-label">Calibration Error</div>
       </div>
     </div>
@@ -102,13 +102,23 @@
       </div>
     </div>
 
+    <div class="insight-box" style="background: #7f1d1d; border-color: #dc2626;">
+      <div class="insight-title" style="color: #fca5a5;">⚠️ CALIBRATION WARNING</div>
+      <ul style="color: #fecaca;">
+        <li><strong>Model overestimates by 22.5%</strong> - See xg_deep_analysis.html for full breakdown</li>
+        <li><strong>Empty Net broken:</strong> Predicts 82%, actual is 14%</li>
+        <li><strong>Penalty Kill broken:</strong> Predicts 21%, actual is 8%</li>
+        <li><strong>Shot type not in model:</strong> Snap shots underestimated by 3.5%</li>
+      </ul>
+    </div>
+
     <div class="insight-box">
-      <div class="insight-title">Key Insights from Feature Importance</div>
+      <div class="insight-title">Feature Coefficients (from model)</div>
       <ul>
-        <li><strong>Empty Net is dominant:</strong> ~67x multiplier on goal probability</li>
-        <li><strong>Distance matters most</strong> for spatial features (-0.032 per foot)</li>
-        <li><strong>Rebounds are dangerous:</strong> 52% higher conversion rate</li>
-        <li><strong>Rush shots are NOT more efficient:</strong> Slightly negative coefficient suggests controlling for location, rush shots convert at similar or slightly lower rates</li>
+        <li><strong>Empty Net coefficient:</strong> +4.21 (but detection is broken)</li>
+        <li><strong>Distance:</strong> -0.032 per foot (works well at close range)</li>
+        <li><strong>Rebounds:</strong> +0.42 (slight overestimate)</li>
+        <li><strong>Rush:</strong> -0.07 (slightly negative, as expected)</li>
       </ul>
     </div>
 
