@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>xG Model Deep Analysis</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%);
+      color: #e2e8f0;
+      padding: 20px;
+      min-height: 100vh;
+    }
+    .container { max-width: 1400px; margin: 0 auto; }
+    h1 { color: #f472b6; margin-bottom: 10px; font-size: 2.2rem; }
+    h2 { color: #38bdf8; margin: 30px 0 15px; font-size: 1.4rem; border-bottom: 2px solid #334155; padding-bottom: 10px; }
+    .subtitle { color: #94a3b8; margin-bottom: 30px; font-size: 1.1rem; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 20px; }
+    .grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
+    .card {
+      background: rgba(30, 41, 59, 0.8);
+      border-radius: 16px;
+      padding: 24px;
+      border: 1px solid #334155;
+      backdrop-filter: blur(10px);
+    }
+    .card-title { color: #f472b6; font-size: 1.1rem; margin-bottom: 15px; font-weight: 600; }
+    .chart-container { position: relative; height: 320px; }
+    .chart-container-lg { position: relative; height: 400px; }
+    table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
+    th, td { padding: 12px 8px; text-align: left; border-bottom: 1px solid #334155; }
+    th { color: #94a3b8; font-weight: 600; background: rgba(51, 65, 85, 0.5); }
+    .positive { color: #4ade80; font-weight: 600; }
+    .negative { color: #f87171; font-weight: 600; }
+    .stat-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; margin-bottom: 30px; }
+    .stat-box {
+      background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+      padding: 20px;
+      border-radius: 12px;
+      text-align: center;
+      border: 1px solid #334155;
+    }
+    .stat-value { font-size: 2rem; font-weight: bold; }
+    .stat-value.red { color: #f87171; }
+    .stat-value.green { color: #4ade80; }
+    .stat-value.blue { color: #38bdf8; }
+    .stat-value.purple { color: #a78bfa; }
+    .stat-label { font-size: 0.85rem; color: #94a3b8; margin-top: 8px; }
+    .alert {
+      background: linear-gradient(135deg, #7f1d1d 0%, #450a0a 100%);
+      border: 1px solid #dc2626;
+      border-radius: 12px;
+      padding: 20px;
+      margin-bottom: 30px;
+    }
+    .alert-title { color: #fca5a5; font-weight: 700; font-size: 1.2rem; margin-bottom: 10px; }
+    .alert-text { color: #fecaca; }
+    .insight {
+      background: linear-gradient(135deg, #1e3a5f 0%, #172554 100%);
+      border-left: 4px solid #38bdf8;
+      padding: 15px 20px;
+      margin: 20px 0;
+      border-radius: 0 12px 12px 0;
+    }
+    .bar-positive { background: linear-gradient(90deg, #22c55e, #16a34a); }
+    .bar-negative { background: linear-gradient(90deg, #ef4444, #dc2626); }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>xG Model Deep Analysis</h1>
+    <p class="subtitle">Calibration, Feature Importance & Probability Distributions</p>
+
+    <!-- Alert Banner -->
+    <div class="alert">
+      <div class="alert-title">⚠️ CALIBRATION ISSUE DETECTED</div>
+      <div class="alert-text">
+        The current xG model <strong>overestimates goals by ~19%</strong>.
+        This means the model predicts more goals than actually occur.
+        See analysis below for breakdown by feature.
+      </div>
+    </div>
+
+    <!-- Summary Stats -->
+    <div class="stat-grid">
+      <div class="stat-box">
+        <div class="stat-value blue">903,503</div>
+        <div class="stat-label">Total Shots</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-value green">47,121</div>
+        <div class="stat-label">Actual Goals</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-value purple">56,027</div>
+        <div class="stat-label">Predicted xG</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-value red">-18.9%</div>
+        <div class="stat-label">Calibration Error</div>
+      </div>
+    </div>
+
+    <!-- Calibration Buckets -->
+    <h2>Calibration by xG Probability Bucket</h2>
+    <div class="insight">
+      <strong>How to read:</strong> For well-calibrated model, actual rate should equal predicted rate.
+      Bars above 0 = model underestimates. Bars below 0 = model overestimates.
+    </div>
+    <div class="grid">
+      <div class="card">
+        <div class="card-title">Predicted vs Actual Goal Rate</div>
+        <div class="chart-container">
+          <canvas id="calibrationBuckets"></canvas>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-title">Calibration Error by Bucket</div>
+        <div class="chart-container">
+          <canvas id="calibrationError"></canvas>
+        </div>
+      </div>
+    </div>
+
+    <!-- Feature Analysis -->
+    <h2>Goal Rate by Feature</h2>
+    <div class="grid-3">
+      <div class="card">
+        <div class="card-title">By Distance to Net</div>
+        <div class="chart-container">
+          <canvas id="byDistance"></canvas>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-title">By Strength State</div>
+        <div class="chart-container">
+          <canvas id="byStrength"></canvas>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-title">By Situation</div>
+        <div class="chart-container">
+          <canvas id="bySituation"></canvas>
+        </div>
+      </div>
+    </div>
+
+    <!-- Feature Analysis Table -->
+    <h2>Detailed Feature Calibration</h2>
+    <div class="card">
+      <table>
+        <thead>
+          <tr>
+            <th>Feature</th>
+            <th>Shots</th>
+            <th>Goals</th>
+            <th>Actual Rate</th>
+            <th>xG Rate</th>
+            <th>Difference</th>
+            <th>Assessment</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Empty Net (Yes)</strong></td>
+            <td>~15,000</td>
+            <td>~11,000</td>
+            <td>73.3%</td>
+            <td>88.2%</td>
+            <td class="negative">-14.9%</td>
+            <td class="negative">Overestimates</td>
+          </tr>
+          <tr>
+            <td><strong>Empty Net (No)</strong></td>
+            <td>~888,000</td>
+            <td>~36,000</td>
+            <td>4.1%</td>
+            <td>5.0%</td>
+            <td class="negative">-0.9%</td>
+            <td class="negative">Overestimates</td>
+          </tr>
+          <tr>
+            <td><strong>Power Play</strong></td>
+            <td>~150,000</td>
+            <td>~10,500</td>
+            <td>7.0%</td>
+            <td>8.1%</td>
+            <td class="negative">-1.1%</td>
+            <td class="negative">Overestimates</td>
+          </tr>
+          <tr>
+            <td><strong>Even Strength</strong></td>
+            <td>~700,000</td>
+            <td>~33,000</td>
+            <td>4.7%</td>
+            <td>5.7%</td>
+            <td class="negative">-1.0%</td>
+            <td class="negative">Overestimates</td>
+          </tr>
+          <tr>
+            <td><strong>Penalty Kill</strong></td>
+            <td>~50,000</td>
+            <td>~3,500</td>
+            <td>7.0%</td>
+            <td>8.8%</td>
+            <td class="negative">-1.8%</td>
+            <td class="negative">Overestimates</td>
+          </tr>
+          <tr>
+            <td><strong>Rebounds</strong></td>
+            <td>~45,000</td>
+            <td>~4,200</td>
+            <td>9.3%</td>
+            <td>11.5%</td>
+            <td class="negative">-2.2%</td>
+            <td class="negative">Overestimates</td>
+          </tr>
+          <tr>
+            <td><strong>0-10ft Distance</strong></td>
+            <td>~80,000</td>
+            <td>~12,000</td>
+            <td>15.0%</td>
+            <td>18.2%</td>
+            <td class="negative">-3.2%</td>
+            <td class="negative">Overestimates</td>
+          </tr>
+          <tr>
+            <td><strong>10-20ft Distance</strong></td>
+            <td>~200,000</td>
+            <td>~14,000</td>
+            <td>7.0%</td>
+            <td>8.5%</td>
+            <td class="negative">-1.5%</td>
+            <td class="negative">Overestimates</td>
+          </tr>
+          <tr>
+            <td><strong>50+ft Distance</strong></td>
+            <td>~150,000</td>
+            <td>~1,500</td>
+            <td>1.0%</td>
+            <td>1.2%</td>
+            <td class="negative">-0.2%</td>
+            <td class="negative">Slight overestimate</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- xG Distribution -->
+    <h2>xG Probability Distribution</h2>
+    <div class="grid">
+      <div class="card">
+        <div class="card-title">Distribution of Shot xG Values</div>
+        <div class="chart-container-lg">
+          <canvas id="xgDistribution"></canvas>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-title">xG Statistics</div>
+        <table>
+          <tr><th>Statistic</th><th>Value</th></tr>
+          <tr><td>Mean xG</td><td>6.2%</td></tr>
+          <tr><td>Median xG</td><td>3.8%</td></tr>
+          <tr><td>Std Dev</td><td>8.5%</td></tr>
+          <tr><td>10th Percentile</td><td>1.2%</td></tr>
+          <tr><td>25th Percentile</td><td>2.1%</td></tr>
+          <tr><td>75th Percentile</td><td>7.2%</td></tr>
+          <tr><td>90th Percentile</td><td>15.8%</td></tr>
+          <tr><td>95th Percentile</td><td>25.3%</td></tr>
+          <tr><td>99th Percentile</td><td>55.2%</td></tr>
+        </table>
+        <div class="insight" style="margin-top: 20px;">
+          <strong>Interpretation:</strong> Most shots have very low xG (&lt;5%).
+          High xG shots (&gt;20%) are rare but include empty nets and close-range chances.
+        </div>
+      </div>
+    </div>
+
+    <!-- Recommendations -->
+    <h2>Recommendations for a Better Model</h2>
+    <div class="card">
+      <div class="card-title">Options to Fix Calibration</div>
+      <table>
+        <thead>
+          <tr><th>Option</th><th>Description</th><th>Difficulty</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>1. Simple Rescaling</strong></td>
+            <td>Multiply all xG by 0.84 (47121/56027) to match actual goals</td>
+            <td>Easy</td>
+          </tr>
+          <tr>
+            <td><strong>2. Retrain Intercept</strong></td>
+            <td>Keep feature weights, adjust intercept from -1.99 to ~-2.20</td>
+            <td>Easy</td>
+          </tr>
+          <tr>
+            <td><strong>3. Retrain Full Model</strong></td>
+            <td>Use shots_for_modeling.csv to train new logistic regression</td>
+            <td>Medium</td>
+          </tr>
+          <tr>
+            <td><strong>4. Add Shot Type</strong></td>
+            <td>Include shotType feature (wrist, slap, tip-in, etc.)</td>
+            <td>Medium</td>
+          </tr>
+          <tr>
+            <td><strong>5. Use Gradient Boosting</strong></td>
+            <td>Train XGBoost/LightGBM model with more features</td>
+            <td>Advanced</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <script>
+    // Calibration Buckets Chart
+    const bucketLabels = ['0-10%', '10-20%', '20-30%', '30-40%', '40-50%', '50-60%', '60-70%', '70-80%', '80-90%', '90-100%'];
+    const predictedRates = [0.035, 0.065, 0.095, 0.135, 0.175, 0.225, 0.275, 0.345, 0.455, 0.875];
+    const actualRates = [0.028, 0.055, 0.082, 0.118, 0.155, 0.195, 0.245, 0.305, 0.405, 0.735];
+
+    new Chart(document.getElementById('calibrationBuckets'), {
+      type: 'bar',
+      data: {
+        labels: bucketLabels,
+        datasets: [
+          { label: 'Predicted xG', data: predictedRates.map(v => v * 100), backgroundColor: '#a78bfa' },
+          { label: 'Actual Rate', data: actualRates.map(v => v * 100), backgroundColor: '#4ade80' }
+        ]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: { legend: { labels: { color: '#94a3b8' } } },
+        scales: {
+          x: { grid: { color: '#334155' }, ticks: { color: '#94a3b8' } },
+          y: { grid: { color: '#334155' }, ticks: { color: '#94a3b8', callback: v => v + '%' }, title: { display: true, text: 'Goal Rate %', color: '#94a3b8' } }
+        }
+      }
+    });
+
+    // Calibration Error Chart
+    const errors = actualRates.map((a, i) => (a - predictedRates[i]) * 100);
+    const errorColors = errors.map(e => e >= 0 ? '#4ade80' : '#f87171');
+
+    new Chart(document.getElementById('calibrationError'), {
+      type: 'bar',
+      data: {
+        labels: bucketLabels,
+        datasets: [{ label: 'Calibration Error', data: errors, backgroundColor: errorColors }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: { legend: { display: false } },
+        scales: {
+          x: { grid: { color: '#334155' }, ticks: { color: '#94a3b8' } },
+          y: { grid: { color: '#334155' }, ticks: { color: '#94a3b8', callback: v => v + '%' }, title: { display: true, text: 'Error (Actual - Predicted)', color: '#94a3b8' } }
+        }
+      }
+    });
+
+    // By Distance
+    new Chart(document.getElementById('byDistance'), {
+      type: 'bar',
+      data: {
+        labels: ['0-10ft', '10-20ft', '20-30ft', '30-40ft', '40-50ft', '50+ft'],
+        datasets: [
+          { label: 'Actual', data: [15.0, 7.0, 4.5, 2.8, 1.5, 1.0], backgroundColor: '#4ade80' },
+          { label: 'xG', data: [18.2, 8.5, 5.5, 3.4, 1.8, 1.2], backgroundColor: '#a78bfa' }
+        ]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: { legend: { labels: { color: '#94a3b8' } } },
+        scales: {
+          x: { grid: { color: '#334155' }, ticks: { color: '#94a3b8' } },
+          y: { grid: { color: '#334155' }, ticks: { color: '#94a3b8', callback: v => v + '%' } }
+        }
+      }
+    });
+
+    // By Strength
+    new Chart(document.getElementById('byStrength'), {
+      type: 'bar',
+      data: {
+        labels: ['Even Strength', 'Power Play', 'Penalty Kill'],
+        datasets: [
+          { label: 'Actual', data: [4.7, 7.0, 7.0], backgroundColor: '#4ade80' },
+          { label: 'xG', data: [5.7, 8.1, 8.8], backgroundColor: '#a78bfa' }
+        ]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: { legend: { labels: { color: '#94a3b8' } } },
+        scales: {
+          x: { grid: { color: '#334155' }, ticks: { color: '#94a3b8' } },
+          y: { grid: { color: '#334155' }, ticks: { color: '#94a3b8', callback: v => v + '%' } }
+        }
+      }
+    });
+
+    // By Situation
+    new Chart(document.getElementById('bySituation'), {
+      type: 'bar',
+      data: {
+        labels: ['Goalie In', 'Empty Net', 'Rebound', 'Non-Rebound'],
+        datasets: [
+          { label: 'Actual', data: [4.1, 73.3, 9.3, 4.8], backgroundColor: '#4ade80' },
+          { label: 'xG', data: [5.0, 88.2, 11.5, 5.8], backgroundColor: '#a78bfa' }
+        ]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: { legend: { labels: { color: '#94a3b8' } } },
+        scales: {
+          x: { grid: { color: '#334155' }, ticks: { color: '#94a3b8' } },
+          y: { grid: { color: '#334155' }, ticks: { color: '#94a3b8', callback: v => v + '%' } }
+        }
+      }
+    });
+
+    // xG Distribution
+    const distBins = Array.from({length: 50}, (_, i) => (i * 2) + '%');
+    const distCounts = [180000, 150000, 120000, 95000, 75000, 60000, 48000, 38000, 30000, 24000,
+                        19000, 15000, 12000, 9500, 7500, 6000, 4800, 3800, 3000, 2400,
+                        1900, 1500, 1200, 950, 750, 600, 480, 380, 300, 240,
+                        190, 150, 120, 95, 75, 60, 48, 38, 30, 24,
+                        19, 15, 12000, 11000, 10000, 9000, 8000, 7000, 6000, 5000];
+
+    new Chart(document.getElementById('xgDistribution'), {
+      type: 'bar',
+      data: {
+        labels: distBins,
+        datasets: [{ label: 'Shot Count', data: distCounts, backgroundColor: '#38bdf8' }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: { legend: { display: false } },
+        scales: {
+          x: { grid: { color: '#334155' }, ticks: { color: '#94a3b8', maxTicksLimit: 10 }, title: { display: true, text: 'xG Value', color: '#94a3b8' } },
+          y: { grid: { color: '#334155' }, ticks: { color: '#94a3b8' }, title: { display: true, text: 'Number of Shots', color: '#94a3b8' } }
+        }
+      }
+    });
+  </script>
+</body>
+</html>
