@@ -232,6 +232,8 @@ reference:
       Functions to help clean the data
     contents:
       - calculate_speed
+      - add_shooter_biometrics
+      - add_goalie_biometrics
       - add_on_ice_players
   
   - subtitle: "Model"

@@ -422,6 +422,172 @@ count_goals_shots <- function(play_by_play) {
   play_by_play[, c(keep[seq_len(after)], insert, keep[(after + 1L):length(keep)])]
 }
 
+#' Calculate event-to-event deltas and speeds in normalized x/y, distance, and angle for a play-by-play
+#'
+#' `calculate_speed()` calculates event-to-event deltas and speeds in normalized x/y, distance, and angle for a play-by-play.
+#'
+#' @inheritParams add_on_ice_players
+#' @returns data.frame with one row per event (play) and added columns: `dXN`, `dYN`, `dD`, `dA`, `dT`, `dXNdT`, `dYNdT`, `dDdT`, `dAdT`
+#' @export
+
+calculate_speed <- function(play_by_play) {
+  t <- play_by_play$secondsElapsedInGame
+  x <- play_by_play$xCoordNorm
+  y <- play_by_play$yCoordNorm
+  n <- nrow(play_by_play)
+  dXN <- rep(NA_real_, n)
+  dYN <- rep(NA_real_, n)
+  dD  <- rep(NA_real_, n)
+  dA  <- rep(NA_real_, n)
+  dT  <- rep(NA_real_, n)
+  dXNdT <- rep(NA_real_, n)
+  dYNdT <- rep(NA_real_, n)
+  dDdT  <- rep(NA_real_, n)
+  dAdT  <- rep(NA_real_, n)
+  for (g in unique(play_by_play$gameId)) {
+    idx <- which(play_by_play$gameId == g)
+    idx <- idx[order(t[idx], play_by_play$sortOrder[idx], na.last = TRUE)]
+    if (length(idx) <= 1L) next
+    prev <- idx[-length(idx)]
+    curr <- idx[-1L]
+    dt <- t[curr] - t[prev]
+    dx <- x[curr] - x[prev]
+    dy <- y[curr] - y[prev]
+    dd <- play_by_play$distance[curr] - play_by_play$distance[prev]
+    da <- play_by_play$angle[curr]    - play_by_play$angle[prev]
+    dT[curr]  <- dt
+    dXN[curr] <- dx
+    dYN[curr] <- dy
+    dD[curr]  <- dd
+    dA[curr]  <- da
+    ok <- !is.na(dt) & dt > 0
+    j  <- which(ok)
+    if (length(j)) {
+      cc <- curr[j]
+      denom <- dt[j]
+      dXNdT[cc] <- dx[j] / denom
+      dYNdT[cc] <- dy[j] / denom
+      dDdT[cc]  <- dd[j] / denom
+      dAdT[cc]  <- da[j] / denom
+    }
+  }
+  play_by_play$dXN   <- dXN
+  play_by_play$dYN   <- dYN
+  play_by_play$dD    <- dD
+  play_by_play$dA    <- dA
+  play_by_play$dT    <- dT
+  play_by_play$dXNdT <- dXNdT
+  play_by_play$dYNdT <- dYNdT
+  play_by_play$dDdT  <- dDdT
+  play_by_play$dAdT  <- dAdT
+  after  <- match('angle', names(play_by_play))
+  insert <- c('dXN', 'dYN', 'dD', 'dA', 'dT', 'dXNdT', 'dYNdT', 'dDdT', 'dAdT')
+  nms    <- names(play_by_play)
+  play_by_play[, c(nms[seq_len(after)], insert, setdiff(nms[-seq_len(after)], insert))]
+}
+
+#' Add shooter biometrics to (a) play-by-play(s)
+#'
+#' `add_shooter_biometrics()` adds shooter biometrics (height, weight, age at game date, and onwing/offwing/neutral side) to (a) play-by-play(s) for Fenwick events.
+#'
+#' @inheritParams add_on_ice_players
+#' @param neutral_threshold integer; absolute yCoordNorm at or below which `shooterSide` is set to 'neutral'
+#' @returns data.frame with one row per event (play) and added columns: `shooterHeight`, `shooterWeight`, `shooterAge`, `shooterSide`
+#' @export
+
+add_shooter_biometrics <- function(play_by_play, neutral_threshold = 5) {
+  bios  <- players()
+  games <- games()
+  shooterId <- ifelse(!is.na(play_by_play$scoringPlayerId), play_by_play$scoringPlayerId, play_by_play$shootingPlayerId)
+  is_block <- play_by_play$typeDescKey == 'blocked-shot'
+  shooterId[is_block] <- NA
+  gidx <- match(play_by_play$gameId, games$gameId)
+  gd   <- as.Date(games$gameDate[gidx])
+  pidx <- match(shooterId, bios$playerId)
+  ht   <- bios$height[pidx]
+  wt   <- bios$weight[pidx]
+  hand <- bios$shootsCatches[pidx]
+  bd   <- as.Date(bios$birthDate[pidx])
+  gy   <- as.integer(format(gd, '%Y'))
+  by   <- as.integer(format(bd, '%Y'))
+  gm   <- as.integer(format(gd, '%m'))
+  bm   <- as.integer(format(bd, '%m'))
+  gD   <- as.integer(format(gd, '%d'))
+  bD   <- as.integer(format(bd, '%d'))
+  had_bday <- (gm > bm) | (gm == bm & gD >= bD)
+  age  <- (gy - by) - ifelse(had_bday, 0L, 1L)
+  age[is.na(gd) | is.na(bd)] <- NA_integer_
+  y    <- play_by_play$yCoordNorm
+  back <- play_by_play$shotType == 'backhand'
+  side <- rep(NA_character_, nrow(play_by_play))
+  has_shooter <- !is.na(shooterId)
+  neutral <- has_shooter & !is.na(y) & abs(y) <= neutral_threshold
+  side[neutral] <- 'neutral'
+  non_neutral <- has_shooter & !neutral & !is.na(y) & !is.na(hand)
+  r       <- non_neutral & hand == 'R'
+  l       <- non_neutral & hand == 'L'
+  off_f_r <- r & (y > 0)
+  off_f_l <- l & (y < 0)
+  off_b_r <- r & back & (y < 0)
+  off_b_l <- l & back & (y > 0)
+  off     <- (off_f_r | off_f_l) & !back
+  off     <- off | off_b_r | off_b_l
+  side[non_neutral] <- ifelse(off[non_neutral], 'offwing', 'onwing')
+  play_by_play$shooterHeight <- ht
+  play_by_play$shooterWeight <- wt
+  play_by_play$shooterAge    <- age
+  play_by_play$shooterSide   <- side
+  play_by_play
+}
+
+#' Add goalie biometrics to (a) play-by-play(s)
+#'
+#' `add_goalie_biometrics()` adds goalie biometrics (height, weight, age at game date, and glove/blocker/neutral side) to (a) play-by-play(s) for Fenwick events.
+#'
+#' @inheritParams add_on_ice_players
+#' @param neutral_threshold integer; absolute yCoordNorm at or below which goalieSide is set to 'neutral'
+#' @returns data.frame with one row per event (play) and added columns: `goalieHeight`, `goalieWeight`, `goalieAge`, `goalieSide`
+#' @export
+
+add_goalie_biometrics <- function(play_by_play, neutral_threshold = 5) {
+  bios  <- players()
+  games <- games()
+  goalieId <- play_by_play$goalieInNetId
+  gidx <- match(play_by_play$gameId, games$gameId)
+  gd   <- as.Date(games$gameDate[gidx])
+  pidx <- match(goalieId, bios$playerId)
+  ht   <- bios$height[pidx]
+  wt   <- bios$weight[pidx]
+  hand <- bios$shootsCatches[pidx]
+  bd   <- as.Date(bios$birthDate[pidx])
+  gy   <- as.integer(format(gd, '%Y'))
+  by   <- as.integer(format(bd, '%Y'))
+  gm   <- as.integer(format(gd, '%m'))
+  bm   <- as.integer(format(bd, '%m'))
+  gD   <- as.integer(format(gd, '%d'))
+  bD   <- as.integer(format(bd, '%d'))
+  had_bday <- (gm > bm) | (gm == bm & gD >= bD)
+  age <- (gy - by) - ifelse(had_bday, 0L, 1L)
+  age[is.na(gd) | is.na(bd)] <- NA_integer_
+  y <- play_by_play$yCoordNorm
+  side <- rep(NA_character_, nrow(play_by_play))
+  has_goalie <- !is.na(goalieId)
+  neutral <- has_goalie & !is.na(y) & abs(y) <= neutral_threshold
+  side[neutral] <- 'neutral'
+  non_neutral   <- has_goalie & !neutral & !is.na(y) & !is.na(hand)
+  l <- non_neutral & hand == 'L'
+  r <- non_neutral & hand == 'R'
+  glove <- rep(FALSE, nrow(play_by_play))
+  glove[l & (y > 0)] <- TRUE
+  glove[r & (y < 0)] <- TRUE
+  side[non_neutral]  <- ifelse(glove[non_neutral], 'glove', 'blocker')
+  play_by_play$goalieHeight <- ht
+  play_by_play$goalieWeight <- wt
+  play_by_play$goalieAge    <- age
+  play_by_play$goalieSide   <- side
+  play_by_play
+}
+
 #' Add on-ice player IDs to a play-by-play by merging with shift charts
 #' 
 #' `add_on_ice_players()` merges a play-by-play with a shift chart to determine which players are on the ice at each event. It adds home- and away-team on-ice player ID lists, as well as event-perspective for/against player ID lists when `isHome` is available.
@@ -561,68 +727,4 @@ add_on_ice_players <- function(play_by_play, shift_chart) {
   keep   <- setdiff(names(play_by_play), insert)
   after  <- match('strengthState', keep)
   play_by_play[, c(keep[seq_len(after)], insert, keep[(after + 1L):length(keep)])]
-}
-
-#' Calculate event-to-event deltas and speeds in normalized x/y, distance, and angle for a play-by-play
-#'
-#' `calculate_speed()` calculates event-to-event deltas and speeds in normalized x/y, distance, and angle for a play-by-play.
-#'
-#' @inheritParams add_on_ice_players
-#' @returns data.frame with one row per event (play) and added columns: `dXN`, `dYN`, `dD`, `dA`, `dT`, `dXNdT`, `dYNdT`, `dDdT`, `dAdT`
-#' @export
-
-calculate_speed <- function(play_by_play) {
-  t <- play_by_play$secondsElapsedInGame
-  x <- play_by_play$xCoordNorm
-  y <- play_by_play$yCoordNorm
-  n <- nrow(play_by_play)
-  dXN <- rep(NA_real_, n)
-  dYN <- rep(NA_real_, n)
-  dD  <- rep(NA_real_, n)
-  dA  <- rep(NA_real_, n)
-  dT  <- rep(NA_real_, n)
-  dXNdT <- rep(NA_real_, n)
-  dYNdT <- rep(NA_real_, n)
-  dDdT  <- rep(NA_real_, n)
-  dAdT  <- rep(NA_real_, n)
-  for (g in unique(play_by_play$gameId)) {
-    idx <- which(play_by_play$gameId == g)
-    idx <- idx[order(t[idx], play_by_play$sortOrder[idx], na.last = TRUE)]
-    if (length(idx) <= 1L) next
-    prev <- idx[-length(idx)]
-    curr <- idx[-1L]
-    dt <- t[curr] - t[prev]
-    dx <- x[curr] - x[prev]
-    dy <- y[curr] - y[prev]
-    dd <- play_by_play$distance[curr] - play_by_play$distance[prev]
-    da <- play_by_play$angle[curr]    - play_by_play$angle[prev]
-    dT[curr]  <- dt
-    dXN[curr] <- dx
-    dYN[curr] <- dy
-    dD[curr]  <- dd
-    dA[curr]  <- da
-    ok <- !is.na(dt) & dt > 0
-    j  <- which(ok)
-    if (length(j)) {
-      cc <- curr[j]
-      denom <- dt[j]
-      dXNdT[cc] <- dx[j] / denom
-      dYNdT[cc] <- dy[j] / denom
-      dDdT[cc]  <- dd[j] / denom
-      dAdT[cc]  <- da[j] / denom
-    }
-  }
-  play_by_play$dXN   <- dXN
-  play_by_play$dYN   <- dYN
-  play_by_play$dD    <- dD
-  play_by_play$dA    <- dA
-  play_by_play$dT    <- dT
-  play_by_play$dXNdT <- dXNdT
-  play_by_play$dYNdT <- dYNdT
-  play_by_play$dDdT  <- dDdT
-  play_by_play$dAdT  <- dAdT
-  after  <- match('angle', names(play_by_play))
-  insert <- c('dXN', 'dYN', 'dD', 'dA', 'dT', 'dXNdT', 'dYNdT', 'dDdT', 'dAdT')
-  nms    <- names(play_by_play)
-  play_by_play[, c(nms[seq_len(after)], insert, setdiff(nms[-seq_len(after)], insert))]
 }
