@@ -4,7 +4,7 @@ pkgdown_sha: ~
 articles:
   example: example.html
   nhlscraper: nhlscraper.html
-last_built: 2026-02-05T20:56Z
+last_built: 2026-02-05T23:31Z
 urls:
   reference: https://rentosaijo.github.io/nhlscraper/reference
   article: https://rentosaijo.github.io/nhlscraper/articles
