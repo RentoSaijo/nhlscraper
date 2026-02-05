@@ -6,6 +6,12 @@
   columns).
 - [`calculate_speed()`](https://rentosaijo.github.io/nhlscraper/reference/calculate_speed.md)
   is now added to calculate event-to-event deltas in play-by-plays.
+- [`add_shooter_biometrics()`](https://rentosaijo.github.io/nhlscraper/reference/add_shooter_biometrics.md)
+  is now added to add shooter biometrics to Fenewick events in
+  play-by-plays.
+- [`add_goalie_biometrics()`](https://rentosaijo.github.io/nhlscraper/reference/add_goalie_biometrics.md)
+  is now added to add goalie biometrics to Fenewick events in
+  play-by-plays.
 - [`ps()`](https://rentosaijo.github.io/nhlscraper/reference/ps.md) is
   now deprecated; use
   [`pss()`](https://rentosaijo.github.io/nhlscraper/reference/penalty_shots.md)
