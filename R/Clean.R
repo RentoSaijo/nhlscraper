@@ -444,12 +444,35 @@ calculate_speed <- function(play_by_play) {
   dYNdT <- rep(NA_real_, n)
   dDdT  <- rep(NA_real_, n)
   dAdT  <- rep(NA_real_, n)
+  is_faceoff <- play_by_play$typeDescKey == "faceoff"
   for (g in unique(play_by_play$gameId)) {
     idx <- which(play_by_play$gameId == g)
     idx <- idx[order(t[idx], play_by_play$sortOrder[idx], na.last = TRUE)]
     if (length(idx) <= 1L) next
-    prev <- idx[-length(idx)]
-    curr <- idx[-1L]
+    m <- length(idx)
+    valid_spatial <- !is.na(x[idx]) & !is.na(y[idx]) &
+      !is.na(play_by_play$distance[idx]) & !is.na(play_by_play$angle[idx])
+    prev_pos <- rep(NA_integer_, m)
+    last_valid_since_faceoff <- NA_integer_
+    for (k in seq_len(m)) {
+      i <- idx[k]
+      if (k == 1L) {
+        prev_pos[k] <- NA_integer_
+      } else if (is_faceoff[i]) {
+        prev_pos[k] <- k - 1L
+      } else {
+        prev_pos[k] <- last_valid_since_faceoff
+      }
+      if (is_faceoff[i]) {
+        last_valid_since_faceoff <- if (valid_spatial[k]) k else NA_integer_
+      } else if (valid_spatial[k]) {
+        last_valid_since_faceoff <- k
+      }
+    }
+    curr_k <- which(!is.na(prev_pos))
+    if (!length(curr_k)) next
+    curr <- idx[curr_k]
+    prev <- idx[prev_pos[curr_k]]
     dt <- t[curr] - t[prev]
     dx <- x[curr] - x[prev]
     dy <- y[curr] - y[prev]
@@ -460,11 +483,12 @@ calculate_speed <- function(play_by_play) {
     dYN[curr] <- dy
     dD[curr]  <- dd
     dA[curr]  <- da
-    ok <- !is.na(dt) & dt > 0
+    ok <- !is.na(dt) & dt >= 0
     j  <- which(ok)
     if (length(j)) {
       cc <- curr[j]
       denom <- dt[j]
+      denom[denom == 0] <- 0.5
       dXNdT[cc] <- dx[j] / denom
       dYNdT[cc] <- dy[j] / denom
       dDdT[cc]  <- dd[j] / denom
@@ -480,8 +504,8 @@ calculate_speed <- function(play_by_play) {
   play_by_play$dYNdT <- dYNdT
   play_by_play$dDdT  <- dDdT
   play_by_play$dAdT  <- dAdT
-  after  <- match('angle', names(play_by_play))
-  insert <- c('dXN', 'dYN', 'dD', 'dA', 'dT', 'dXNdT', 'dYNdT', 'dDdT', 'dAdT')
+  after  <- match("angle", names(play_by_play))
+  insert <- c("dXN","dYN","dD","dA","dT","dXNdT","dYNdT","dDdT","dAdT")
   nms    <- names(play_by_play)
   play_by_play[, c(nms[seq_len(after)], insert, setdiff(nms[-seq_len(after)], insert))]
 }
