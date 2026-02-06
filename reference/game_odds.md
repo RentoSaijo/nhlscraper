@@ -25,4 +25,5 @@ data.frame with one row per game
 
 ``` r
 game_odds_CA <- game_odds(country = 'CA')
+#> Invalid argument(s); refer to help file.
 ```
