@@ -15,7 +15,9 @@ players <- function() {
       type = 'r'
     )$data
     players <- players[order(players$id), ]
-    names(players)[names(players) == 'id'] <- 'playerId'
+    names(players)[names(players) == 'id']       <- 'playerId'
+    names(players)[names(players) == 'position'] <- 'positionCode'
+    names(players)[names(players) == 'centralRegistryPosition'] <- 'centralRegistryPositionCode'
     players
   }, error = function(e) {
     message('Unable to create connection; please try again later.')
