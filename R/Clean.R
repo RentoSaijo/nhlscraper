@@ -444,7 +444,7 @@ calculate_speed <- function(play_by_play) {
   dYNdT <- rep(NA_real_, n)
   dDdT  <- rep(NA_real_, n)
   dAdT  <- rep(NA_real_, n)
-  is_faceoff <- play_by_play$typeDescKey == "faceoff"
+  is_faceoff <- play_by_play$typeDescKey == 'faceoff'
   for (g in unique(play_by_play$gameId)) {
     idx <- which(play_by_play$gameId == g)
     idx <- idx[order(t[idx], play_by_play$sortOrder[idx], na.last = TRUE)]
@@ -504,8 +504,8 @@ calculate_speed <- function(play_by_play) {
   play_by_play$dYNdT <- dYNdT
   play_by_play$dDdT  <- dDdT
   play_by_play$dAdT  <- dAdT
-  after  <- match("angle", names(play_by_play))
-  insert <- c("dXN","dYN","dD","dA","dT","dXNdT","dYNdT","dDdT","dAdT")
+  after  <- match('angle', names(play_by_play))
+  insert <- c('dXN', 'dYN', 'dD', 'dA', 'dT', 'dXNdT', 'dYNdT', 'dDdT', 'dAdT')
   nms    <- names(play_by_play)
   play_by_play[, c(nms[seq_len(after)], insert, setdiff(nms[-seq_len(after)], insert))]
 }
@@ -531,6 +531,7 @@ add_shooter_biometrics <- function(play_by_play, neutral_threshold = 5) {
   ht   <- bios$height[pidx]
   wt   <- bios$weight[pidx]
   hand <- bios$shootsCatches[pidx]
+  pos  <- bios$position[pidx]
   bd   <- as.Date(bios$birthDate[pidx])
   gy   <- as.integer(format(gd, '%Y'))
   by   <- as.integer(format(bd, '%Y'))
@@ -557,10 +558,11 @@ add_shooter_biometrics <- function(play_by_play, neutral_threshold = 5) {
   off     <- (off_f_r | off_f_l) & !back
   off     <- off | off_b_r | off_b_l
   side[non_neutral] <- ifelse(off[non_neutral], 'offwing', 'onwing')
-  play_by_play$shooterHeight <- ht
-  play_by_play$shooterWeight <- wt
-  play_by_play$shooterAge    <- age
-  play_by_play$shooterSide   <- side
+  play_by_play$shooterHeight   <- ht
+  play_by_play$shooterWeight   <- wt
+  play_by_play$shooterAge      <- age
+  play_by_play$shooterSide     <- side
+  play_by_play$shooterPosition <- pos
   play_by_play
 }
 
