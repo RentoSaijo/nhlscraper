@@ -531,7 +531,7 @@ add_shooter_biometrics <- function(play_by_play, neutral_threshold = 5) {
   ht   <- bios$height[pidx]
   wt   <- bios$weight[pidx]
   hand <- bios$shootsCatches[pidx]
-  pos  <- bios$position[pidx]
+  pos  <- bios$positionCode[pidx]
   bd   <- as.Date(bios$birthDate[pidx])
   gy   <- as.integer(format(gd, '%Y'))
   by   <- as.integer(format(bd, '%Y'))
@@ -558,11 +558,11 @@ add_shooter_biometrics <- function(play_by_play, neutral_threshold = 5) {
   off     <- (off_f_r | off_f_l) & !back
   off     <- off | off_b_r | off_b_l
   side[non_neutral] <- ifelse(off[non_neutral], 'offwing', 'onwing')
-  play_by_play$shooterHeight   <- ht
-  play_by_play$shooterWeight   <- wt
-  play_by_play$shooterAge      <- age
-  play_by_play$shooterSide     <- side
-  play_by_play$shooterPosition <- pos
+  play_by_play$shooterHeight       <- ht
+  play_by_play$shooterWeight       <- wt
+  play_by_play$shooterAge          <- age
+  play_by_play$shooterSide         <- side
+  play_by_play$shooterPositionCode <- pos
   play_by_play
 }
 
