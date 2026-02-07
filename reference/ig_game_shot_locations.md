@@ -30,13 +30,8 @@ ig_game_shot_locs(game = 2023030417, team = "home", model = 1)
 
 - model:
 
-  integer in 1:3 indicating which expected goals model to use (e.g., 1);
-  see
-  [`calculate_expected_goals_v1()`](https://rentosaijo.github.io/nhlscraper/reference/calculate_expected_goals_v1.md),
-  [`calculate_expected_goals_v2()`](https://rentosaijo.github.io/nhlscraper/reference/calculate_expected_goals_v2.md),
-  and/or
-  [`calculate_expected_goals_v3()`](https://rentosaijo.github.io/nhlscraper/reference/calculate_expected_goals_v3.md)
-  for reference
+  integer in 1:4 indicating which expected goals model to use; see web
+  documentation for what variables each version considers
 
 - save:
 
@@ -56,4 +51,5 @@ ig_game_shot_locations(
   team  = 'H', 
   save  = FALSE
 )
+#> Invalid argument(s); refer to help file.
 ```

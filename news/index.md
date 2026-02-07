@@ -4,6 +4,8 @@
 
 - All return IDs are now standardized (i.e., no more arbitrary `id`
   columns).
+- [`calculate_expected_goals()`](https://rentosaijo.github.io/nhlscraper/reference/calculate_expected_goals.md)
+  now combines the previous xG calculation functions.
 - [`calculate_speed()`](https://rentosaijo.github.io/nhlscraper/reference/calculate_speed.md)
   is now added to calculate event-to-event deltas in play-by-plays.
 - [`add_shooter_biometrics()`](https://rentosaijo.github.io/nhlscraper/reference/add_shooter_biometrics.md)
@@ -61,9 +63,9 @@ CRAN release: 2025-11-30
   - [`calculate_distance()`](https://rentosaijo.github.io/nhlscraper/reference/calculate_distance.md)
   - [`calculate_angle()`](https://rentosaijo.github.io/nhlscraper/reference/calculate_angle.md)
 - New functions to run built-in models are now available:
-  - [`calculate_expected_goals_v1()`](https://rentosaijo.github.io/nhlscraper/reference/calculate_expected_goals_v1.md)
-  - [`calculate_expected_goals_v2()`](https://rentosaijo.github.io/nhlscraper/reference/calculate_expected_goals_v2.md)
-  - [`calculate_expected_goals_v3()`](https://rentosaijo.github.io/nhlscraper/reference/calculate_expected_goals_v3.md)
+  - `calculate_expected_goals_v1()`
+  - `calculate_expected_goals_v2()`
+  - `calculate_expected_goals_v3()`
 - New function to help graph the data is now available:
   - [`draw_NHL_rink()`](https://rentosaijo.github.io/nhlscraper/reference/draw_NHL_rink.md)
 - New functions to help share the data are now available:

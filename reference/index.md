@@ -378,24 +378,15 @@ Functions to help clean the data
 
 ### Model
 
-Functions to run built-in models
+Function to run built-in models (WIP)
 
-- [`calculate_expected_goals_v1()`](https://rentosaijo.github.io/nhlscraper/reference/calculate_expected_goals_v1.md)
-  [`calculate_xG_v1()`](https://rentosaijo.github.io/nhlscraper/reference/calculate_expected_goals_v1.md)
-  : Calculate version 1 of the expected goals for all the events (plays)
-  in a play-by-play
-- [`calculate_expected_goals_v2()`](https://rentosaijo.github.io/nhlscraper/reference/calculate_expected_goals_v2.md)
-  [`calculate_xG_v2()`](https://rentosaijo.github.io/nhlscraper/reference/calculate_expected_goals_v2.md)
-  : Calculate version 2 of the expected goals for all the events (plays)
-  in a play-by-play
-- [`calculate_expected_goals_v3()`](https://rentosaijo.github.io/nhlscraper/reference/calculate_expected_goals_v3.md)
-  [`calculate_xG_v3()`](https://rentosaijo.github.io/nhlscraper/reference/calculate_expected_goals_v3.md)
-  : Calculate version 3 of the expected goals for all the events (plays)
-  in a play-by-play
+- [`calculate_expected_goals()`](https://rentosaijo.github.io/nhlscraper/reference/calculate_expected_goals.md)
+  [`calculate_xG()`](https://rentosaijo.github.io/nhlscraper/reference/calculate_expected_goals.md)
+  : Calculate the expected goals for all the shots in (a) play-by-plays
 
 ### Graph
 
-Functions to help graph the data (WIP)
+Function to help graph the data (WIP)
 
 - [`draw_NHL_rink()`](https://rentosaijo.github.io/nhlscraper/reference/draw_NHL_rink.md)
   : Draw a full NHL rink
