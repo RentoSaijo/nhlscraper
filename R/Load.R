@@ -42,6 +42,7 @@ gc_play_by_plays <- function(season = 20242025) {
 
 #' @rdname gc_play_by_plays
 #' @export
+
 gc_pbps <- function(season = 20242025) {
   gc_play_by_plays(season)
 }
@@ -90,6 +91,7 @@ wsc_play_by_plays <- function(season = 20242025) {
 
 #' @rdname wsc_play_by_plays
 #' @export
+
 wsc_pbps <- function(season = 20242025) {
   wsc_play_by_plays(season)
 }

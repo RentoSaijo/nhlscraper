@@ -13,10 +13,7 @@ ig_game_cum_xG(game = 2023030417, model = 1)
 \arguments{
 \item{game}{integer ID (e.g., 2025020275); see \code{\link[=games]{games()}} for reference}
 
-\item{model}{integer in 1:3 indicating which expected goals model to use
-(e.g., 1); see \code{\link[=calculate_expected_goals_v1]{calculate_expected_goals_v1()}},
-\code{\link[=calculate_expected_goals_v2]{calculate_expected_goals_v2()}}, and/or \code{\link[=calculate_expected_goals_v3]{calculate_expected_goals_v3()}} for
-reference}
+\item{model}{integer in 1:4 indicating which expected goals model to use; see web documentation for what variables each version considers}
 
 \item{save}{logical only FALSE for tests}
 }

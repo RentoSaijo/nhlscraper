@@ -1,5 +1,6 @@
 # nhlscraper 0.4.2.9000
 - All return IDs are now standardized (i.e., no more arbitrary `id` columns).
+- `calculate_expected_goals()` now combines the previous xG calculation functions.
 - `calculate_speed()` is now added to calculate event-to-event deltas in play-by-plays.
 - `add_shooter_biometrics()` is now added to add shooter biometrics to Fenewick events in play-by-plays.
 - `add_goalie_biometrics()` is now added to add goalie biometrics to Fenewick events in play-by-plays.
@@ -21,7 +22,6 @@
 - All API call functions are now wrapped with try-catch.
 
 # nhlscraper 0.4.0
-
 - Website now features proper example.
 - New functions to help clean the data are now available:
   - `strip_game_id()`
@@ -47,7 +47,6 @@
   - `x_game_cumulative_expected_goals()`
 
 # nhlscraper 0.3.0
-
 - Website now features disclosure and history.
 - Documentation is now standardized.
 - All API calls now handle rate-limits with exponential backoff.
@@ -276,7 +275,6 @@
   - `get_espn_futures()`
 
 # nhlscraper 0.2.0
-
 - Website now features dark theme and example.
 - New functions to access data about the franchises are now available:
   - `get_franchise_season_by_season()`
@@ -315,11 +313,9 @@
   - `get_espn_futures()`
 
 # nhlscraper 0.1.1
-
 - Some functions are now more optimized.
 
 # nhlscraper 0.1.0
-
 - `News.md` now tracks changelog.
 - New functions to access data about the entire league are now available:
   - `get_seasons()`

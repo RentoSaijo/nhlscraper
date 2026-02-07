@@ -238,15 +238,13 @@ reference:
   
   - subtitle: "Model"
     desc: >
-      Functions to run built-in models
+      Function to run built-in models (WIP)
     contents:
-      - calculate_expected_goals_v1
-      - calculate_expected_goals_v2
-      - calculate_expected_goals_v3
+      - calculate_expected_goals
       
   - subtitle: "Graph"
     desc: >
-      Functions to help graph the data (WIP)
+      Function to help graph the data (WIP)
     contents:
       - draw_NHL_rink
       

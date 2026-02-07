@@ -4,10 +4,7 @@
 #' given `game`.
 #' 
 #' @inheritParams boxscore
-#' @param model integer in 1:3 indicating which expected goals model to use 
-#' (e.g., 1); see [calculate_expected_goals_v1()], 
-#' [calculate_expected_goals_v2()], and/or [calculate_expected_goals_v3()] for 
-#' reference
+#' @param model integer in 1:4 indicating which expected goals model to use; see web documentation for what variables each version considers
 #' @param save logical only FALSE for tests
 #' @returns `NULL`
 #' @examples
