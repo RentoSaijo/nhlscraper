@@ -12,6 +12,7 @@
 #'   pbp_with_xG_v3 <- calculate_expected_goals(play_by_play = pbp, model = 3)
 #' }
 #' @export
+
 calculate_expected_goals <- function(play_by_play, model = 1) {
   tryCatch(
     expr = {
@@ -21,17 +22,10 @@ calculate_expected_goals <- function(play_by_play, model = 1) {
         calculate_speed() |>
         add_shooter_biometrics() |>
         add_goalie_biometrics()
-      if (!'shootingPlayerId' %in% names(pbp)) pbp$shootingPlayerId <- NA_integer_
-      if (!'scoringPlayerId' %in% names(pbp)) pbp$scoringPlayerId <- NA_integer_
-      pbp$shootingPlayerId <- ifelse(is.na(pbp$shootingPlayerId), pbp$scoringPlayerId, pbp$shootingPlayerId)
-      if (!'gameTypeId' %in% names(pbp)) pbp$gameTypeId <- NA_integer_
-      pbp$isPlayoff <- pbp$gameTypeId == 3
-      if (!'shotType' %in% names(pbp)) pbp$shotType <- NA_character_
-      pbp$shotType[is.na(pbp$shotType)] <- 'wrist'
-      if (!'shooterSide' %in% names(pbp)) pbp$shooterSide <- NA_character_
+      pbp$shotType[is.na(pbp$shotType)] <- 'backhand'
       pbp$shooterSide[is.na(pbp$shooterSide)] <- 'neutral'
-      if (!'goalieSide' %in% names(pbp)) pbp$goalieSide <- NA_character_
-      pbp$goalieSide[is.na(pbp$goalieSide)] <- 'neutral'
+      pbp$shooterPositionCode[is.na(pbp$shooterPositionCode)] <- 'C'
+      pbp$goalieSide[is.na(pbp$goalieSide)] <- 'blocker'
 
       # Store coefficients.
       COEFS <- list(
@@ -387,12 +381,27 @@ calculate_expected_goals <- function(play_by_play, model = 1) {
         )
       )
 
+      # Match training factor levels.
+      .LEVELS <- list(
+        shotType = c("backhand","bat","between-legs","cradle","deflected","poke","slap","snap","tip-in","wrap-around","wrist"),
+        shooterSide = c("neutral","offwing","onwing"),
+        shooterPositionCode = c("C","D","G","L","R"),
+        goalieSide = c("blocker","glove","neutral")
+      )
+      .REF <- list(
+        shotType = "backhand",
+        shooterSide = "neutral",
+        shooterPositionCode = "C",
+        goalieSide = "blocker"
+      )
+
       # ----- Helpers ----- #
 
       .get_num <- function(df, nm) {
         n <- nrow(df)
         if (!nm %in% names(df)) return(rep(0, n))
         v <- df[[nm]]
+        if (is.logical(v)) return(as.numeric(!is.na(v) & v))
         if (is.factor(v)) v <- as.character(v)
         v <- suppressWarnings(as.numeric(v))
         v[is.na(v)] <- 0
@@ -406,44 +415,62 @@ calculate_expected_goals <- function(play_by_play, model = 1) {
         as.numeric(!is.na(vv) & (vv == 'TRUE' | vv == 'T' | vv == '1'))
       }
 
+      .coerce_factor <- function(x, levels, ref) {
+        xx <- as.character(x)
+        xx[!(xx %in% levels)] <- NA_character_
+        xx[is.na(xx)] <- ref
+        factor(xx, levels = levels)
+      }
+
       .prob <- function(df, beta) {
         beta <- beta
         beta[is.na(beta)] <- 0
         m <- nrow(df)
         if (m == 0L) return(numeric(0))
-        st <- if ('shotType' %in% names(df)) as.character(df$shotType) else rep('wrist', m)
-        st[is.na(st)] <- 'wrist'
-        ss <- if ('shooterSide' %in% names(df)) as.character(df$shooterSide) else rep('neutral', m)
-        ss[is.na(ss)] <- 'neutral'
-        spc <- if ('shooterPositionCode' %in% names(df)) as.character(df$shooterPositionCode) else rep('C', m)
-        spc[is.na(spc)] <- 'C'
-        gs <- if ('goalieSide' %in% names(df)) as.character(df$goalieSide) else rep('neutral', m)
-        gs[is.na(gs)] <- 'neutral'
+        # Coerce to training levels (prevents baseline drift).
+        st <- if ('shotType' %in% names(df)) df$shotType else rep(.REF$shotType, m)
+        ss <- if ('shooterSide' %in% names(df)) df$shooterSide else rep(.REF$shooterSide, m)
+        spc <- if ('shooterPositionCode' %in% names(df)) df$shooterPositionCode else rep(.REF$shooterPositionCode, m)
+        gs <- if ('goalieSide' %in% names(df)) df$goalieSide else rep(.REF$goalieSide, m)
+        st <- .coerce_factor(st, .LEVELS$shotType, .REF$shotType)
+        ss <- .coerce_factor(ss, .LEVELS$shooterSide, .REF$shooterSide)
+        spc <- .coerce_factor(spc, .LEVELS$shooterPositionCode, .REF$shooterPositionCode)
+        gs <- .coerce_factor(gs, .LEVELS$goalieSide, .REF$goalieSide)
         eta <- rep(0, m)
         for (nm in names(beta)) {
           b <- beta[[nm]]
           if (b == 0) next
           if (nm == '(Intercept)') {
             eta <- eta + b
-          } else if (substr(nm, 1L, 7L) == 'shotType') {
+            next
+          }
+          if (substr(nm, 1L, 7L) == 'shotType') {
             lvl <- substr(nm, 8L, nchar(nm))
-            eta <- eta + b * (st == lvl)
-          } else if (substr(nm, 1L, 10L) == 'shooterSide') {
+            eta <- eta + b * (as.character(st) == lvl)
+            next
+          }
+          if (substr(nm, 1L, 10L) == 'shooterSide') {
             lvl <- substr(nm, 11L, nchar(nm))
-            eta <- eta + b * (ss == lvl)
-          } else if (substr(nm, 1L, 19L) == 'shooterPositionCode') {
+            eta <- eta + b * (as.character(ss) == lvl)
+            next
+          }
+          if (substr(nm, 1L, 19L) == 'shooterPositionCode') {
             lvl <- substr(nm, 20L, nchar(nm))
-            eta <- eta + b * (spc == lvl)
-          } else if (substr(nm, 1L, 9L) == 'goalieSide') {
+            eta <- eta + b * (as.character(spc) == lvl)
+            next
+          }
+          if (substr(nm, 1L, 9L) == 'goalieSide') {
             lvl <- substr(nm, 10L, nchar(nm))
-            eta <- eta + b * (gs == lvl)
-          } else if (nchar(nm) >= 4L && substr(nm, nchar(nm) - 3L, nchar(nm)) == 'TRUE') {
+            eta <- eta + b * (as.character(gs) == lvl)
+            next
+          }
+          if (nchar(nm) >= 4L && substr(nm, nchar(nm) - 3L, nchar(nm)) == 'TRUE') {
             var <- substr(nm, 1L, nchar(nm) - 4L)
             v01 <- if (var %in% names(df)) .to01(df[[var]]) else rep(0, m)
             eta <- eta + b * v01
-          } else {
-            eta <- eta + b * .get_num(df, nm)
+            next
           }
+          eta <- eta + b * .get_num(df, nm)
         }
         1 / (1 + exp(-eta))
       }
