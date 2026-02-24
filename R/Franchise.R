@@ -1,6 +1,6 @@
 #' Access all the franchises
-#' 
-#' `franchises()` scrapes all the franchises.
+#'
+#' `franchises()` retrieves all the franchises as a `data.frame` where each row represents franchise and includes detail on team identity, affiliation, and matchup-side context.
 #'
 #' @returns data.frame with one row per franchise
 #' @examples
@@ -30,10 +30,9 @@ franchises <- function() {
 }
 
 #' Access the all-time statistics for all the franchises by game type
-#' 
-#' `franchise_statistics()` scrapes the all-time statistics for all the 
-#' franchises by game type.
-#' 
+#'
+#' `franchise_statistics()` retrieves the all-time statistics for all the franchises by game type as a `data.frame` where each row represents franchise per game type and includes detail on date/season filtering windows and chronological context, team identity, affiliation, and matchup-side context, and production, workload, efficiency, and result-level performance outcomes.
+#'
 #' @returns data.frame with one row per franchise per game type
 #' @examples
 #' franchise_stats <- franchise_statistics()
@@ -61,10 +60,9 @@ franchise_stats <- function() {
 }
 
 #' Access the all-time statistics for all the franchises by team and game type
-#' 
-#' `franchise_team_statistics()` scrapes the all-time statistics for all the 
-#' franchises by team and game type.
-#' 
+#'
+#' `franchise_team_statistics()` retrieves the all-time statistics for all the franchises by team and game type as a `data.frame` where each row represents team per franchise per game type and includes detail on date/season filtering windows and chronological context, team identity, affiliation, and matchup-side context, and production, workload, efficiency, and result-level performance outcomes.
+#'
 #' @returns data.frame with one row per team per franchise per game type
 #' @examples
 #' franchise_team_stats <- franchise_team_statistics()
@@ -92,10 +90,9 @@ franchise_team_stats <- function() {
 }
 
 #' Access the statistics for all the franchises by season and game type
-#' 
-#' `franchise_season_statistics()` scrapes the statistics for all the 
-#' franchises by season and game type.
-#' 
+#'
+#' `franchise_season_statistics()` retrieves the statistics for all the franchises by season and game type as a `data.frame` where each row represents franchise per season per game type and includes detail on date/season filtering windows and chronological context, team identity, affiliation, and matchup-side context, and production, workload, efficiency, and result-level performance outcomes.
+#'
 #' @returns data.frame with one row per franchise per season per game type
 #' @examples
 #' # May take >5s, so skip.
@@ -125,10 +122,9 @@ franchise_season_stats <- function() {
 
 #' Access the all-time statistics versus other franchises for all the 
 #' franchises by game type
-#' 
-#' `franchise_versus_franchise()` scrapes the all-time statistics versus 
-#' other franchises for all the franchises by game type.
-#' 
+#'
+#' `franchise_versus_franchise()` retrieves the all-time statistics versus other franchises for all the franchises by game type as a `data.frame` where each row represents franchise per franchise per game type and includes detail on date/season filtering windows and chronological context plus team identity, affiliation, and matchup-side context.
+#'
 #' @returns data.frame with one row per franchise per franchise per game type
 #' @examples
 #' # May take >5s, so skip.
@@ -164,9 +160,8 @@ franchise_vs_franchise <- function() {
 }
 
 #' Access the playoff series results for all the franchises by situation
-#' 
-#' `franchise_playoff_situational_results()` scrapes the playoff series 
-#' results for all the franchises by situation.
+#'
+#' `franchise_playoff_situational_results()` retrieves the playoff series results for all the franchises by situation as a `data.frame` where each row represents franchise per situation and includes detail on team identity, affiliation, and matchup-side context.
 #'
 #' @returns data.frame with one row per franchise per situation
 #' @examples

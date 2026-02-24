@@ -14,7 +14,7 @@ scores(date = "now")
 data.frame with one row per game
 }
 \description{
-\code{scores()} scrapes the scores for a given \code{date}.
+\code{scores()} retrieves the scores for a date as a \code{data.frame} where each row represents game and includes detail on game timeline state, period/clock progression, and matchup flow, date/season filtering windows and chronological context, and team identity, affiliation, and matchup-side context.
 }
 \examples{
 scores_Halloween_2025 <- scores(date = '2025-10-31')

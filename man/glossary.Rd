@@ -10,7 +10,7 @@ glossary()
 data.frame with one row per terminology
 }
 \description{
-\code{glossary()} scrapes the glossary.
+\code{glossary()} retrieves the glossary as a \code{data.frame} where each row represents terminology and includes detail on reference definitions and rules-framework information.
 }
 \examples{
 glossary <- glossary()

@@ -22,8 +22,7 @@ support pre-season}
 data.frame with one row per player
 }
 \description{
-\code{goalie_leaders()} scrapes the goalie statistics leaders for a given set of
-\code{season}, \code{game_type}, and \code{category}.
+\code{goalie_leaders()} retrieves the goalie statistics leaders for a season, game type, and category as a \code{data.frame} where each row represents player and includes detail on player identity, role, handedness, and biographical profile.
 }
 \examples{
 GAA_leaders_regular_20242025 <- goalie_leaders(

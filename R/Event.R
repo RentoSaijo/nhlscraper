@@ -1,10 +1,11 @@
 #' Access the replay for an event
-#' 
-#' `replay()` scrapes the replay for a given `event`.
-#' 
+#'
+#' `replay()` retrieves the replay for an event as a `data.frame` where each row represents decisecond and includes detail on team identity, affiliation, and matchup-side context plus player identity, role, handedness, and biographical profile.
+#'
 #' @param game integer ID (e.g., 2025020262); see [games()] for reference
 #' @param event integer ID (e.g., 751); see [gc_play_by_play()] and/or 
 #' [wsc_play_by_play()] for reference; must be a 'goal' event
+#'
 #' @returns data.frame with one row per decisecond
 #' @examples
 #' Gabriel_Landeskog_first_regular_goal_back_replay <- replay(
@@ -53,9 +54,9 @@ replay <- function(game = 2023030417, event = 866) {
 }
 
 #' Access all the penalty shots
-#' 
-#' `penalty_shots()` scrapes all the penalty shots.
-#' 
+#'
+#' `penalty_shots()` retrieves all the penalty shots as a `data.frame` where each row represents penalty shot and includes detail on game timeline state, period/clock progression, and matchup flow plus date/season filtering windows and chronological context.
+#'
 #' @returns data.frame with one row per penalty shot
 #' @examples
 #' all_pss <- penalty_shots()

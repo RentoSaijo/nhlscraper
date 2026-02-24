@@ -19,8 +19,7 @@ for reference}
 data.frame with one row per game
 }
 \description{
-\code{team_month_schedule()} scrapes the schedule for a given set of \code{team}
-and \code{month}.
+\code{team_month_schedule()} retrieves the schedule for a team and month as a \code{data.frame} where each row represents game and includes detail on game timeline state, period/clock progression, and matchup flow, date/season filtering windows and chronological context, and team identity, affiliation, and matchup-side context.
 }
 \examples{
 COL_schedule_December_2025 <- team_month_schedule(

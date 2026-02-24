@@ -13,7 +13,7 @@ player_summary(player = 8478402)
 list with various items
 }
 \description{
-\code{player_summary()} scrapes the summary for a given \code{player}.
+\code{player_summary()} retrieves the summary for a player as a nested \code{list} that separates summary and detail blocks for player identity, role, handedness, and biographical profile.
 }
 \examples{
 Martin_Necas_summary <- player_summary(player = 8480039)

@@ -13,8 +13,7 @@ team_report_configs()
 list with various items
 }
 \description{
-\code{team_report_configurations()} scrapes the configurations for
-\code{\link[=team_season_report]{team_season_report()}} and \code{\link[=team_game_report]{team_game_report()}}.
+\code{team_report_configurations()} retrieves the configurations for team reports as a nested \code{list} that separates summary and detail blocks for situational splits across home/road, strength state, and overtime/shootout states plus configuration catalogs for valid report categories and filters.
 }
 \examples{
 team_report_configs <- team_report_configurations()

@@ -10,7 +10,7 @@ spotlight_players()
 data.frame with one row per player
 }
 \description{
-\code{spotlight_players()} scrapes the spotlight players.
+\code{spotlight_players()} retrieves the spotlight players as a \code{data.frame} where each row represents player and includes detail on team identity, affiliation, and matchup-side context plus player identity, role, handedness, and biographical profile.
 }
 \examples{
 spotlight_players <- spotlight_players()

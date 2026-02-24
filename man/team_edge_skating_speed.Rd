@@ -33,8 +33,7 @@ data.frame with one row per position (category = 'details') or
 burst (category = 'top speeds')
 }
 \description{
-\code{team_edge_skating_speed()} scrapes the EDGE skating speed statistics for
-a given set of \code{team}, \code{season}, \code{game_type}, and \code{category}.
+\code{team_edge_skating_speed()} retrieves the EDGE skating speed statistics for a team, season, game type, and category as a \code{data.frame} where each row represents position and includes detail on team identity, affiliation, and matchup-side context, player identity, role, handedness, and biographical profile, and ranking movement, points pace, and division/conference position signals.
 }
 \examples{
 COL_top_speeds_regular_20242025 <- team_edge_skating_speed(

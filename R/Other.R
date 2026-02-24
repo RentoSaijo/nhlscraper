@@ -1,7 +1,7 @@
 #' Access the glossary
-#' 
-#' `glossary()` scrapes the glossary.
-#' 
+#'
+#' `glossary()` retrieves the glossary as a `data.frame` where each row represents terminology and includes detail on reference definitions and rules-framework information.
+#'
 #' @returns data.frame with one row per terminology
 #' @examples
 #' glossary <- glossary()
@@ -22,9 +22,9 @@ glossary <- function() {
 }
 
 #' Access all the countries
-#' 
-#' `countries` scrapes all the countries.
-#' 
+#'
+#' `countries()` retrieves all the countries as a `data.frame` where each row represents country and includes detail on reference metadata, regional context, and media availability detail.
+#'
 #' @returns data.frame with one row per country
 #' @examples
 #' all_countries <- countries()
@@ -45,10 +45,11 @@ countries <- function() {
 }
 
 #' Access the location for a zip code
-#' 
-#' `location()` scrapes the location for a given `zip` code.
-#' 
+#'
+#' `location()` retrieves the location for a zip code as a `data.frame` where each row represents team and includes detail on venue/location geography and regional metadata.
+#'
 #' @param zip integer (e.g., 48304)
+#'
 #' @returns data.frame with one row per team
 #' @examples
 #' Cranbrook_Schools <- location(48304)
@@ -72,9 +73,9 @@ location <- function(zip = 10001) {
 }
 
 #' Access all the streams
-#' 
-#' `streams()` scrapes all the streams.
-#' 
+#'
+#' `streams()` retrieves all the streams as a `data.frame` where each row represents stream and includes detail on reference metadata, regional context, and media availability detail.
+#'
 #' @returns data.frame with one row per stream
 #' @examples
 #' all_streams <- streams()
@@ -93,10 +94,11 @@ streams <- function() {
 }
 
 #' Access the NHL Network TV schedule for a date
-#' 
-#' `tv_schedule()` scrapes the NHL Network TV schedule for a given `date`.
-#' 
+#'
+#' `tv_schedule()` retrieves the NHL Network TV schedule for a date as a `data.frame` where each row represents program and includes detail on date/season filtering windows and chronological context.
+#'
 #' @inheritParams standings
+#'
 #' @returns data.frame with one row per program
 #' @examples
 #' tv_schedule_Halloween_2025 <- tv_schedule(date = '2025-10-31')

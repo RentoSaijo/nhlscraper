@@ -14,7 +14,7 @@ tv_schedule(date = "now")
 data.frame with one row per program
 }
 \description{
-\code{tv_schedule()} scrapes the NHL Network TV schedule for a given \code{date}.
+\code{tv_schedule()} retrieves the NHL Network TV schedule for a date as a \code{data.frame} where each row represents program and includes detail on date/season filtering windows and chronological context.
 }
 \examples{
 tv_schedule_Halloween_2025 <- tv_schedule(date = '2025-10-31')

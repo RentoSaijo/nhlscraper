@@ -10,7 +10,7 @@ players()
 data.frame with one row per player
 }
 \description{
-\code{players()} scrapes all the players.
+\code{players()} retrieves all the players as a \code{data.frame} where each row represents player and includes detail on player identity, role, handedness, and biographical profile.
 }
 \examples{
 # May take >5s, so skip.

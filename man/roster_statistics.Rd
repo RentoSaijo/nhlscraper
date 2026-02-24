@@ -34,8 +34,7 @@ support pre-season}
 data.frame with one row per player
 }
 \description{
-\code{roster_statistics()} scrapes the roster statistics for a given set of
-\code{team}, \code{season}, \code{game_type}, and \code{position}.
+\code{roster_statistics()} retrieves the roster statistics for a team, season, game type, and position as a \code{data.frame} where each row represents player and includes detail on player identity, role, handedness, and biographical profile plus production, workload, efficiency, and result-level performance outcomes.
 }
 \examples{
 COL_goalies_statistics_regular_20242025 <- roster_statistics(

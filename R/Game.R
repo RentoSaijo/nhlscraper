@@ -1,7 +1,7 @@
 #' Access all the games
-#' 
-#' `games()` scrapes all the games.
-#' 
+#'
+#' `games()` retrieves all the games as a `data.frame` where each row represents game and includes detail on game timeline state, period/clock progression, and matchup flow plus date/season filtering windows and chronological context.
+#'
 #' @returns data.frame with one row per game
 #' @examples
 #' # May take >5s, so skip.
@@ -25,10 +25,11 @@ games <- function() {
 }
 
 #' Access the scores for a date
-#' 
-#' `scores()` scrapes the scores for a given `date`.
-#' 
+#'
+#' `scores()` retrieves the scores for a date as a `data.frame` where each row represents game and includes detail on game timeline state, period/clock progression, and matchup flow, date/season filtering windows and chronological context, and team identity, affiliation, and matchup-side context.
+#'
 #' @inheritParams standings
+#'
 #' @returns data.frame with one row per game
 #' @examples
 #' scores_Halloween_2025 <- scores(date = '2025-10-31')
@@ -54,10 +55,11 @@ scores <- function(date = 'now') {
 }
 
 #' Access the GameCenter (GC) summary for a game
-#' 
-#' `gc_summary()` scrapes the GC summary for a given `game`.
-#' 
+#'
+#' `gc_summary()` retrieves the GameCenter (GC) summary for a game as a nested `list` that separates summary and detail blocks for game timeline state, period/clock progression, and matchup flow, date/season filtering windows and chronological context, and venue/location geography and regional metadata.
+#'
 #' @param game integer ID (e.g., 2025020275); see [games()] for reference
+#'
 #' @returns list of various items
 #' @examples
 #' gc_summary_Martin_Necas_legacy_game <- gc_summary(game = 2025020275)
@@ -88,10 +90,11 @@ gc_summary <- function(game = 2023030417) {
 }
 
 #' Access the World Showcase (WSC) summary for a game
-#' 
-#' `wsc_summary()` scrapes the WSC summary for a given `game`.
-#' 
+#'
+#' `wsc_summary()` retrieves the World Showcase (WSC) summary for a game as a nested `list` that separates summary and detail blocks for game timeline state, period/clock progression, and matchup flow, date/season filtering windows and chronological context, and venue/location geography and regional metadata.
+#'
 #' @inheritParams gc_summary
+#'
 #' @returns list of various items
 #' @examples
 #' wsc_summary_Martin_Necas_legacy_game <- wsc_summary(game = 2025020275)
@@ -117,12 +120,13 @@ wsc_summary <- function(game = 2023030417) {
 }
 
 #' Access the boxscore for a game, team, and position
-#' 
-#' `boxscore()` scrapes the boxscore for a given set of `game`, `team`, and `position`.
-#' 
+#'
+#' `boxscore()` retrieves the boxscore for a game, team, and position as a `data.frame` where each row represents player and includes detail on player identity, role, handedness, and biographical profile plus production, workload, efficiency, and result-level performance outcomes.
+#'
 #' @inheritParams gc_summary
 #' @inheritParams roster
 #' @param team character of 'h'/'home' or 'a'/'away'
+#'
 #' @returns data.frame with one row per player
 #' @examples
 #' boxscore_COL_forwards_Martin_Necas_legacy_game <- boxscore(
@@ -166,10 +170,11 @@ boxscore <- function(
 }
 
 #' Access the rosters for a game
-#' 
-#' `game_rosters()` scrapes the rosters for a given `game`.
-#' 
+#'
+#' `game_rosters()` retrieves the rosters for a game as a `data.frame` where each row represents player and includes detail on team identity, affiliation, and matchup-side context plus player identity, role, handedness, and biographical profile.
+#'
 #' @inheritParams gc_summary
+#'
 #' @returns data.frame with one row per player
 #' @examples
 #' rosters_Martin_Necas_legacy_game <- game_rosters(game = 2025020275)
@@ -193,10 +198,11 @@ game_rosters <- function(game = 2023030417) {
 }
 
 #' Access the GameCenter (GC) play-by-play for a game
-#' 
-#' `gc_play_by_play()` scrapes the GC play-by-play for a given `game`.
-#' 
+#'
+#' `gc_play_by_play()` retrieves the GameCenter (GC) play-by-play for a game as a `data.frame` where each row represents event and includes detail on game timeline state, period/clock progression, and matchup flow, date/season filtering windows and chronological context, and player identity, role, handedness, and biographical profile.
+#'
 #' @inheritParams gc_summary
+#'
 #' @returns data.frame with one row per event (play)
 #' @examples
 #' gc_pbp_Martin_Necas_legacy_game <- gc_play_by_play(game = 2025020275)
@@ -269,10 +275,11 @@ gc_pbp <- function(game = 2023030417) {
 }
 
 #' Access the World Showcase (WSC) play-by-play for a game
-#' 
-#' `wsc_play_by_play()` scrapes the WSC play-by-play for given `game`.
-#' 
+#'
+#' `wsc_play_by_play()` retrieves the World Showcase (WSC) play-by-play for a game as a `data.frame` where each row represents event and includes detail on game timeline state, period/clock progression, and matchup flow, date/season filtering windows and chronological context, and player identity, role, handedness, and biographical profile.
+#'
 #' @inheritParams gc_summary
+#'
 #' @returns data.frame with one row per event (play)
 #' @examples
 #' wsc_pbp_Martin_Necas_legacy_game <- wsc_play_by_play(game = 2025020275)
@@ -342,10 +349,11 @@ wsc_pbp <- function(game = 2023030417) {
 }
 
 #' Access the shift chart for a game
-#' 
-#' `shift_chart()` scrapes the shift chart for a given `game`.
-#' 
+#'
+#' `shift_chart()` retrieves the shift chart for a game as a `data.frame` where each row represents shift and includes detail on game timeline state, period/clock progression, and matchup flow, date/season filtering windows and chronological context, and team identity, affiliation, and matchup-side context.
+#'
 #' @inheritParams gc_summary
+#'
 #' @returns data.frame with one row per shift
 #' @examples
 #' shifts_Martin_Necas_legacy_game <- shift_chart(game = 2025020275)
@@ -400,12 +408,12 @@ shift_chart <- function(game = 2023030417) {
 }
 
 #' Access the real-time game odds for a country by partnered bookmaker
-#' 
-#' `game_odds()` scrapes the real-time game odds for a given `country` by 
-#' partnered bookmaker.
-#' 
+#'
+#' `game_odds()` retrieves the real-time game odds for a country by partnered bookmaker as a `data.frame` where each row represents game and includes detail on betting market lines, prices, and provider-level context.
+#'
 #' @param country two-letter code (e.g., 'CA'); see [countries()] for 
 #' reference
+#'
 #' @returns data.frame with one row per game
 #' @examples
 #' game_odds_CA <- game_odds(country = 'CA')

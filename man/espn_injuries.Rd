@@ -10,8 +10,7 @@ espn_injuries()
 nested data.frame with one row per team (outer) and player (inner)
 }
 \description{
-\code{espn_injuries()} scrapes the real-time ESPN injury reports for all the
-teams.
+\code{espn_injuries()} retrieves the real-time ESPN injury reports as a \code{data.frame} where each row represents team and includes detail on availability status tracking for injuries or transactions.
 }
 \examples{
 ESPN_injuries_now <- espn_injuries()

@@ -13,7 +13,7 @@ gms()
 data.frame with one row per general manager
 }
 \description{
-\code{general_managers()} scrapes all the general managers.
+\code{general_managers()} retrieves all the general managers as a \code{data.frame} where each row represents general manager and includes detail on player identity, role, handedness, and biographical profile.
 }
 \examples{
 all_GMs <- general_managers()

@@ -33,8 +33,7 @@ data.frame with one row per location (category = 'details') or
 combination of strength state and position (category = 'totals')
 }
 \description{
-\code{team_edge_shot_location()} scrapes the EDGE shot location statistics for
-a given set of \code{team}, \code{season}, \code{game_type}, and \code{category}.
+\code{team_edge_shot_location()} retrieves the EDGE shot location statistics for a team, season, game type, and category as a \code{data.frame} where each row represents location and includes detail on production, workload, efficiency, and result-level performance outcomes plus NHL EDGE style tracking outputs and relative-performance context.
 }
 \examples{
 COL_shot_location_totals_regular_20242025 <- team_edge_shot_location(

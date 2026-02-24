@@ -13,8 +13,7 @@ franchise_season_stats()
 data.frame with one row per franchise per season per game type
 }
 \description{
-\code{franchise_season_statistics()} scrapes the statistics for all the
-franchises by season and game type.
+\code{franchise_season_statistics()} retrieves the statistics for all the franchises by season and game type as a \code{data.frame} where each row represents franchise per season per game type and includes detail on date/season filtering windows and chronological context, team identity, affiliation, and matchup-side context, and production, workload, efficiency, and result-level performance outcomes.
 }
 \examples{
 # May take >5s, so skip.

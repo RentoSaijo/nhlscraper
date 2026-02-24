@@ -11,7 +11,7 @@ integer in 1:3 (where 1 = pre-season, 2 = regular season, 3
 = playoff/post-season)
 }
 \description{
-\code{game_type_now()} scrapes the current game type.
+\code{game_type_now()} retrieves the game type as of now and returns a scalar integer used as the current-context default in season/game-type dependent wrappers.
 }
 \examples{
 game_type_now <- game_type_now()

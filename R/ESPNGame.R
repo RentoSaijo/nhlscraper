@@ -1,8 +1,9 @@
 #' Access the ESPN games for a season
-#' 
-#' `espn_games()` scrapes the ESPN games for a given `season`.
-#' 
+#'
+#' `espn_games()` retrieves the ESPN games for a season as a `data.frame` where each row represents ESPN and includes detail on game timing, matchup state, scoring flow, and situational event detail.
+#'
 #' @inheritParams roster
+#'
 #' @returns data.frame with one row per ESPN game
 #' @examples
 #' ESPN_games_20242025 <- espn_games(season = 20242025)
@@ -63,11 +64,12 @@ espn_games <- function(season = season_now()) {
 }
 
 #' Access the ESPN summary for a game
-#' 
-#' `espn_game_summary()` scrapes the ESPN summary for a `game`.
-#' 
+#'
+#' `espn_game_summary()` retrieves the ESPN summary for a game as a nested `list` that separates summary and detail blocks for date/season filtering windows and chronological context, venue/location geography and regional metadata, and playoff-series progression, round status, and series leverage.
+#'
 #' @param game integer ID (e.g., 401777460); see [espn_games()] for 
 #' reference
+#'
 #' @returns list with various items
 #' @examples
 #' ESPN_summary_SCF_20242025 <- espn_game_summary(game = 401777460)
@@ -125,10 +127,11 @@ espn_game_summary <- function(game = 401777460) {
 }
 
 #' Access the ESPN play-by-play for a game
-#' 
-#' `espn_play_by_play()` scrapes the ESPN play-by-play for a given `game`.
-#' 
+#'
+#' `espn_play_by_play()` retrieves the ESPN play-by-play for a game as a `data.frame` where each row represents event and includes detail on game timeline state, period/clock progression, and matchup flow, team identity, affiliation, and matchup-side context, and situational splits across home/road, strength state, and overtime/shootout states.
+#'
 #' @inheritParams espn_game_summary
+#'
 #' @returns data.frame with one row per event (play)
 #' @examples
 #' ESPN_pbp_SCF_20242025 <- espn_play_by_play(game = 401777460)
@@ -158,10 +161,11 @@ espn_pbp <- function(game = 401777460) {
 }
 
 #' Access the ESPN odds for a game
-#' 
-#' `espn_game_odds()` scrapes the ESPN odds for a given `game`.
+#'
+#' `espn_game_odds()` retrieves the ESPN odds for a game as a `data.frame` where each row represents provider and includes detail on team identity, affiliation, and matchup-side context plus betting market snapshots with side/total prices and provider variation.
 #'
 #' @inheritParams espn_game_summary
+#'
 #' @returns data.frame with one row per provider
 #' @examples
 #' ESPN_odds_SCF_20242025 <- espn_game_odds(game = 401777460)

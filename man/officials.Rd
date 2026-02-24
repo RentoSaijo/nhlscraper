@@ -10,7 +10,7 @@ officials()
 data.frame with one row per official
 }
 \description{
-\code{officials()} scrapes all the officials.
+\code{officials()} retrieves all the officials as a \code{data.frame} where each row represents official and includes detail on player identity, role, handedness, and biographical profile plus coach/management/officiating identity and assignment history.
 }
 \examples{
 all_officials <- officials()

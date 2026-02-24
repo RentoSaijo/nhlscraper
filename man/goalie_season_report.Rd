@@ -27,8 +27,7 @@ support pre-season}
 data.frame with one row per player
 }
 \description{
-\code{goalie_season_report()} scrapes various reports for a given set of
-\code{season}, \code{game_type}, and \code{category} for all the goalies by season.
+\code{goalie_season_report()} retrieves various reports for a season, game type, and category for all the goalies by season as a \code{data.frame} where each row represents player and includes detail on date/season filtering windows and chronological context, player identity, role, handedness, and biographical profile, and production, workload, efficiency, and result-level performance outcomes.
 }
 \examples{
 # May take >5s, so skip.

@@ -27,8 +27,7 @@ support pre-season}
 data.frame with one row per team
 }
 \description{
-\code{team_season_report()} scrapes various reports for a given set of \code{season},
-\code{game_type}, and \code{category} for all the teams by season.
+\code{team_season_report()} retrieves various reports for a season, game type, and category for all the teams by season as a \code{data.frame} where each row represents team and includes detail on date/season filtering windows and chronological context, team identity, affiliation, and matchup-side context, and production, workload, efficiency, and result-level performance outcomes.
 }
 \examples{
 situational_team_season_report_playoffs_20212022 <- team_season_report(

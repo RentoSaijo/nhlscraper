@@ -10,7 +10,7 @@ skater_milestones()
 data.frame with one row per player
 }
 \description{
-\code{skater_milestones()} scrapes the skaters on milestone watch.
+\code{skater_milestones()} retrieves the skaters on milestone watch as a \code{data.frame} where each row represents player and includes detail on date/season filtering windows and chronological context, player identity, role, handedness, and biographical profile, and production, workload, efficiency, and result-level performance outcomes.
 }
 \examples{
 skater_milestones <- skater_milestones()

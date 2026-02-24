@@ -10,7 +10,7 @@ coaches()
 data.frame with one row per coach
 }
 \description{
-\code{coaches()} scrapes all the coaches.
+\code{coaches()} retrieves all the coaches as a \code{data.frame} where each row represents coach and includes detail on team identity, affiliation, and matchup-side context plus player identity, role, handedness, and biographical profile.
 }
 \examples{
 all_coaches <- coaches()

@@ -1,6 +1,6 @@
 #' Access all the playoff series by game
-#' 
-#' `series()` scrapes all the playoff series by game.
+#'
+#' `series()` retrieves all the playoff series by game as a `data.frame` where each row represents game per series and includes detail on game timeline state, period/clock progression, and matchup flow, date/season filtering windows and chronological context, and playoff-series progression, round status, and series leverage.
 #'
 #' @returns data.frame with one row per game per series
 #' @examples
@@ -23,9 +23,9 @@ series <- function() {
 }
 
 #' Access the playoff statistics by season
-#' 
-#' `playoff_season_statistics()` scrapes the playoff statistics by season.
-#' 
+#'
+#' `playoff_season_statistics()` retrieves the playoff statistics by season as a `data.frame` where each row represents season and includes detail on date/season filtering windows and chronological context.
+#'
 #' @returns data.frame with one row per season
 #' @examples
 #' playoff_season_stats <- playoff_season_statistics()
@@ -53,10 +53,11 @@ playoff_season_stats <- function() {
 }
 
 #' Access the playoff bracket for a season
-#' 
-#' `bracket()` scrapes the playoff bracket for a given `season`.
-#' 
+#'
+#' `bracket()` retrieves the playoff bracket for a season as a `data.frame` where each row represents series and includes detail on team identity, affiliation, and matchup-side context.
+#'
 #' @inheritParams roster
+#'
 #' @returns data.frame with one row per series
 #' @examples
 #' bracket_20242025 <- bracket(season = 20242025)
@@ -81,13 +82,13 @@ bracket <- function(season = season_now()){
 }
 
 #' Access the playoff schedule for a season and series
-#' 
-#' `series_schedule()` scrapes the playoff schedule for a given set of 
-#' `season` and `series`.
-#' 
+#'
+#' `series_schedule()` retrieves the playoff schedule for a season and series as a `data.frame` where each row represents game and includes detail on game timeline state, period/clock progression, and matchup flow, date/season filtering windows and chronological context, and team identity, affiliation, and matchup-side context.
+#'
 #' @inheritParams roster
 #' @param series one-letter code (e.g., 'O'); see [series()] and/or 
 #' [bracket()] for reference
+#'
 #' @returns data.frame with one row per game
 #' @examples
 #' SCF_schedule_20212022 <- series_schedule(

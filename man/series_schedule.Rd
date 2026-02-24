@@ -17,8 +17,7 @@ reference}
 data.frame with one row per game
 }
 \description{
-\code{series_schedule()} scrapes the playoff schedule for a given set of
-\code{season} and \code{series}.
+\code{series_schedule()} retrieves the playoff schedule for a season and series as a \code{data.frame} where each row represents game and includes detail on game timeline state, period/clock progression, and matchup flow, date/season filtering windows and chronological context, and team identity, affiliation, and matchup-side context.
 }
 \examples{
 SCF_schedule_20212022 <- series_schedule(

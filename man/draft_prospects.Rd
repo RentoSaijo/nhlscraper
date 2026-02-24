@@ -10,7 +10,7 @@ draft_prospects()
 data.frame with one row per player
 }
 \description{
-\code{draft_prospects()} scrapes all the draft prospects.
+\code{draft_prospects()} retrieves all the draft prospects as a \code{data.frame} where each row represents player and includes detail on player identity, role, handedness, and biographical profile plus broadcast carriage, media availability, and viewing-link metadata.
 }
 \examples{
 # May take >5s, so skip.

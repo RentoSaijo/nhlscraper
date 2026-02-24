@@ -14,7 +14,7 @@ reference}
 data.frame with one row
 }
 \description{
-\code{espn_player_summary()} scrapes the ESPN summary for a \code{player}.
+\code{espn_player_summary()} retrieves the ESPN summary for a player as a \code{data.frame} where each row represents one result and includes detail on game timing, matchup state, scoring flow, and situational event detail.
 }
 \examples{
 ESPN_summary_Charlie_McAvoy <- espn_player_summary(player = 3988803)

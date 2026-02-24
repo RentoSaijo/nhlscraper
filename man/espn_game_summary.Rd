@@ -14,7 +14,7 @@ reference}
 list with various items
 }
 \description{
-\code{espn_game_summary()} scrapes the ESPN summary for a \code{game}.
+\code{espn_game_summary()} retrieves the ESPN summary for a game as a nested \code{list} that separates summary and detail blocks for date/season filtering windows and chronological context, venue/location geography and regional metadata, and playoff-series progression, round status, and series leverage.
 }
 \examples{
 ESPN_summary_SCF_20242025 <- espn_game_summary(game = 401777460)

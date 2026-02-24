@@ -11,8 +11,7 @@ goalie_edge_seasons()
 data.frame with one row per season
 }
 \description{
-\code{goalie_edge_seasons} scrapes the season(s) and game type(s) in which the
-NHL recorded goalie EDGE statistics.
+\code{goalie_edge_seasons()} retrieves the season(s) and game type(s) in which there exists goalie EDGE statistics as a \code{data.frame} where each row represents season and includes detail on date/season filtering windows and chronological context plus NHL EDGE style tracking outputs and relative-performance context.
 }
 \examples{
 goalie_EDGE_seasons <- goalie_edge_seasons()

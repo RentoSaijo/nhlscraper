@@ -13,7 +13,7 @@ game_rosters(game = 2023030417)
 data.frame with one row per player
 }
 \description{
-\code{game_rosters()} scrapes the rosters for a given \code{game}.
+\code{game_rosters()} retrieves the rosters for a game as a \code{data.frame} where each row represents player and includes detail on team identity, affiliation, and matchup-side context plus player identity, role, handedness, and biographical profile.
 }
 \examples{
 rosters_Martin_Necas_legacy_game <- game_rosters(game = 2025020275)

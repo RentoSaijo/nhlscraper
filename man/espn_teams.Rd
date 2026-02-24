@@ -10,7 +10,7 @@ espn_teams()
 data.frame with one row per ESPN team
 }
 \description{
-\code{espn_teams()} scrapes all the ESPN teams.
+\code{espn_teams()} retrieves all the ESPN teams as a \code{data.frame} where each row represents ESPN team and includes detail on team composition, matchup context, and season progression detail.
 }
 \examples{
 all_ESPN_teams <- espn_teams()

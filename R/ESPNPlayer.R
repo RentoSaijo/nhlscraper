@@ -1,7 +1,7 @@
 #' Access all the ESPN players
-#' 
-#' `espn_players()` scrapes all the ESPN players.
-#' 
+#'
+#' `espn_players()` retrieves all the ESPN players as a `data.frame` where each row represents ESPN player and includes detail on person-level profile context and performance history with situational splits.
+#'
 #' @returns data.frame with one row per ESPN player
 #' @examples
 #' all_ESPN_players <- espn_players()
@@ -32,11 +32,12 @@ espn_players <- function() {
 }
 
 #' Access the ESPN summary for a player
-#' 
-#' `espn_player_summary()` scrapes the ESPN summary for a `player`.
-#' 
+#'
+#' `espn_player_summary()` retrieves the ESPN summary for a player as a `data.frame` where each row represents one result and includes detail on game timing, matchup state, scoring flow, and situational event detail.
+#'
 #' @param player integer ID (e.g., 3988803); see [espn_players()] for 
 #' reference
+#'
 #' @returns data.frame with one row
 #' @examples
 #' ESPN_summary_Charlie_McAvoy <- espn_player_summary(player = 3988803)

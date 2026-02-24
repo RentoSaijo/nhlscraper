@@ -1,6 +1,6 @@
 #' Access all the seasons
-#' 
-#' `seasons()` scrapes all the seasons.
+#'
+#' `seasons()` retrieves all the seasons as a `data.frame` where each row represents season and includes detail on date/season filtering windows and chronological context.
 #'
 #' @returns data.frame with one row per season
 #' @examples
@@ -23,9 +23,9 @@ seasons <- function() {
 }
 
 #' Access the season as of now
-#' 
-#' `season_now` scrapes the current season.
-#' 
+#'
+#' `season_now()` retrieves the season as of now and returns a scalar integer used as the current-context default in season/game-type dependent wrappers.
+#'
 #' @returns integer in YYYYYYYY (e.g., 20242025)
 #' @examples
 #' season_now <- season_now()
@@ -44,9 +44,9 @@ season_now <- function() {
 }
 
 #' Access the game type as of now
-#' 
-#' `game_type_now()` scrapes the current game type.
-#' 
+#'
+#' `game_type_now()` retrieves the game type as of now and returns a scalar integer used as the current-context default in season/game-type dependent wrappers.
+#'
 #' @returns integer in 1:3 (where 1 = pre-season, 2 = regular season, 3 
 #' = playoff/post-season)
 #' @examples
@@ -66,9 +66,9 @@ game_type_now <- function() {
 }
 
 #' Access the standings rules by season
-#' 
-#' `standings_rules()` scrapes the standings rules by season.
-#' 
+#'
+#' `standings_rules()` retrieves the standings rules by season as a `data.frame` where each row represents season and includes detail on date/season filtering windows and chronological context.
+#'
 #' @returns data.frame with one row per season
 #' @examples
 #' standings_rules <- standings_rules()
@@ -89,11 +89,12 @@ standings_rules <- function() {
 }
 
 #' Access the standings for a date
-#' 
-#' `standings()` scrapes the standings for a given `date`.
-#' 
+#'
+#' `standings()` retrieves the standings for a date as a `data.frame` where each row represents team and includes detail on date/season filtering windows and chronological context, production, workload, efficiency, and result-level performance outcomes, and ranking movement, points pace, and division/conference position signals.
+#'
 #' @param date character in 'YYYY-MM-DD' (e.g., '2025-01-01'); see 
 #' [seasons()] for reference
+#'
 #' @returns data.frame with one row per team
 #' @examples
 #' standings_Halloween_2025 <- standings(date = '2025-10-31')
@@ -115,10 +116,11 @@ standings <- function(date = 'now') {
 }
 
 #' Access the schedule for a date
-#' 
-#' `schedule()` scrapes the schedule for a given `date`.
-#' 
+#'
+#' `schedule()` retrieves the schedule for a date as a `data.frame` where each row represents game and includes detail on game timing, matchup state, scoring flow, and situational event detail.
+#'
 #' @inheritParams standings
+#'
 #' @returns data.frame with one row per game
 #' @examples
 #' schedule_Halloween_2025 <- schedule(date = '2025-10-31')
@@ -145,9 +147,9 @@ schedule <- function(date = Sys.Date()) {
 }
 
 #' Access all the venues
-#' 
-#' `venues()` scrapes all the venues.
-#' 
+#'
+#' `venues()` retrieves all the venues as a `data.frame` where each row represents venue and includes detail on venue/location geography and regional metadata.
+#'
 #' @returns data.frame with one row per venue
 #' @examples
 #' all_venues <- venues()
@@ -168,9 +170,9 @@ venues <- function() {
 }
 
 #' Access the attendance by season and game type
-#' 
-#' `attendance()` scrapes the attendance by season and game type.
-#' 
+#'
+#' `attendance()` retrieves the attendance by season and game type as a `data.frame` where each row represents season and includes detail on date/season filtering windows and chronological context.
+#'
 #' @returns data.frame with one row per season
 #' @examples
 #' all_attendance <- attendance()

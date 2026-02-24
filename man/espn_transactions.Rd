@@ -14,7 +14,7 @@ year is included}
 data.frame with one row per transaction
 }
 \description{
-\code{espn_transactions()} scrapes the ESPN transactions for a given \code{season}.
+\code{espn_transactions()} retrieves the ESPN transactions for a season as a \code{data.frame} where each row represents transaction and includes detail on availability and transaction-status tracking detail.
 }
 \examples{
 ESPN_transactions_20242025 <- espn_transactions(season = 20242025)

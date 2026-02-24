@@ -10,8 +10,7 @@ franchise_playoff_situational_results()
 data.frame with one row per franchise per situation
 }
 \description{
-\code{franchise_playoff_situational_results()} scrapes the playoff series
-results for all the franchises by situation.
+\code{franchise_playoff_situational_results()} retrieves the playoff series results for all the franchises by situation as a \code{data.frame} where each row represents franchise per situation and includes detail on team identity, affiliation, and matchup-side context.
 }
 \examples{
 franchise_playoff_situational_results <- 

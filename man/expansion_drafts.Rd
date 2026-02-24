@@ -10,7 +10,7 @@ expansion_drafts()
 data.frame with one row per expansion draft
 }
 \description{
-\code{expansion_drafts()} scrapes all the expansion drafts.
+\code{expansion_drafts()} retrieves all the expansion drafts as a \code{data.frame} where each row represents expansion draft and includes detail on date/season filtering windows and chronological context plus reference definitions and rules-framework information.
 }
 \examples{
 all_expansion_drafts <- expansion_drafts()

@@ -10,7 +10,7 @@ drafts()
 data.frame with one row per draft
 }
 \description{
-\code{drafts()} scrapes all the drafts.
+\code{drafts()} retrieves all the drafts as a \code{data.frame} where each row represents draft and includes detail on venue/location geography and regional metadata.
 }
 \examples{
 all_drafts <- drafts()

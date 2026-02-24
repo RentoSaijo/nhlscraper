@@ -13,7 +13,7 @@ pss()
 data.frame with one row per penalty shot
 }
 \description{
-\code{penalty_shots()} scrapes all the penalty shots.
+\code{penalty_shots()} retrieves all the penalty shots as a \code{data.frame} where each row represents penalty shot and includes detail on game timeline state, period/clock progression, and matchup flow plus date/season filtering windows and chronological context.
 }
 \examples{
 all_pss <- penalty_shots()

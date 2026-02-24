@@ -18,7 +18,7 @@ boxscore(game = 2023030417, team = "home", position = "forwards")
 data.frame with one row per player
 }
 \description{
-\code{boxscore()} scrapes the boxscore for a given set of \code{game}, \code{team}, and \code{position}.
+\code{boxscore()} retrieves the boxscore for a game, team, and position as a \code{data.frame} where each row represents player and includes detail on player identity, role, handedness, and biographical profile plus production, workload, efficiency, and result-level performance outcomes.
 }
 \examples{
 boxscore_COL_forwards_Martin_Necas_legacy_game <- boxscore(

@@ -10,7 +10,7 @@ games()
 data.frame with one row per game
 }
 \description{
-\code{games()} scrapes all the games.
+\code{games()} retrieves all the games as a \code{data.frame} where each row represents game and includes detail on game timeline state, period/clock progression, and matchup flow plus date/season filtering windows and chronological context.
 }
 \examples{
 # May take >5s, so skip.

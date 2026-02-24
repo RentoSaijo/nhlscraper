@@ -1,7 +1,7 @@
 #' Access all the ESPN teams
-#' 
-#' `espn_teams()` scrapes all the ESPN teams.
-#' 
+#'
+#' `espn_teams()` retrieves all the ESPN teams as a `data.frame` where each row represents ESPN team and includes detail on team composition, matchup context, and season progression detail.
+#'
 #' @returns data.frame with one row per ESPN team
 #' @examples
 #' all_ESPN_teams <- espn_teams()
@@ -32,11 +32,12 @@ espn_teams <- function() {
 }
 
 #' Access the ESPN summary for a team
-#' 
-#' `espn_team_summary()` scrapes the ESPN summary for a `team`.
-#' 
+#'
+#' `espn_team_summary()` retrieves the ESPN summary for a team as a `data.frame` where each row represents one result and includes detail on game timing, matchup state, scoring flow, and situational event detail.
+#'
 #' @param team integer ID (e.g., 1); see [espn_teams()] for 
 #' reference
+#'
 #' @returns data.frame with one row
 #' @examples
 #' ESPN_summary_Boston_Bruins <- espn_team_summary(team = 1)

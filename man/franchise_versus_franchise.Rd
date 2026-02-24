@@ -14,8 +14,7 @@ franchise_vs_franchise()
 data.frame with one row per franchise per franchise per game type
 }
 \description{
-\code{franchise_versus_franchise()} scrapes the all-time statistics versus
-other franchises for all the franchises by game type.
+\code{franchise_versus_franchise()} retrieves the all-time statistics versus other franchises for all the franchises by game type as a \code{data.frame} where each row represents franchise per franchise per game type and includes detail on date/season filtering windows and chronological context plus team identity, affiliation, and matchup-side context.
 }
 \examples{
 # May take >5s, so skip.

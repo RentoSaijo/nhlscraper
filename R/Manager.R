@@ -1,7 +1,7 @@
 #' Access all the general managers
-#' 
-#' `general_managers()` scrapes all the general managers.
-#' 
+#'
+#' `general_managers()` retrieves all the general managers as a `data.frame` where each row represents general manager and includes detail on player identity, role, handedness, and biographical profile.
+#'
 #' @returns data.frame with one row per general manager
 #' @examples
 #' all_GMs <- general_managers()

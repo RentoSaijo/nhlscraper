@@ -10,7 +10,7 @@ awards()
 data.frame with one row per award
 }
 \description{
-\code{awards()} scrapes all the awards.
+\code{awards()} retrieves all the awards as a \code{data.frame} where each row represents award and includes detail on recognition, leaderboard, and milestone-watch context.
 }
 \examples{
 all_awards <- awards()

@@ -16,7 +16,7 @@ replay(game = 2023030417, event = 866)
 data.frame with one row per decisecond
 }
 \description{
-\code{replay()} scrapes the replay for a given \code{event}.
+\code{replay()} retrieves the replay for an event as a \code{data.frame} where each row represents decisecond and includes detail on team identity, affiliation, and matchup-side context plus player identity, role, handedness, and biographical profile.
 }
 \examples{
 Gabriel_Landeskog_first_regular_goal_back_replay <- replay(

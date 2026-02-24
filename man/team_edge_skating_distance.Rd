@@ -34,9 +34,7 @@ position (category = 'details') or game (category = 'last 10')
 game
 }
 \description{
-\code{team_edge_skating_distance()} scrapes the EDGE skating distance
-statistics for a given set of \code{team}, \code{season}, \code{game_type}, and
-\code{category}.
+\code{team_edge_skating_distance()} retrieves the EDGE skating distance statistics for a team, season, game type, and category as a \code{data.frame} where each row represents combination of strength state and position and includes detail on team identity, affiliation, and matchup-side context, ranking movement, points pace, and division/conference position signals, and NHL EDGE style tracking outputs and relative-performance context.
 }
 \examples{
 COL_L10_skating_distance_regular_20242025 <- team_edge_skating_distance(

@@ -13,8 +13,7 @@ goalie_regular_stats()
 data.frame with one row per goalie
 }
 \description{
-\code{goalie_regular_statistics()} scrapes the career regular season statistics
-for all the goalies.
+\code{goalie_regular_statistics()} retrieves the career regular season statistics for all the goalies as a \code{data.frame} where each row represents goalie and includes detail on date/season filtering windows and chronological context, team identity, affiliation, and matchup-side context, and player identity, role, handedness, and biographical profile.
 }
 \examples{
 goalie_career_regular_statistics <- goalie_regular_statistics()

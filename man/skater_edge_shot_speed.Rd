@@ -30,8 +30,7 @@ list with six items (category = 'details') or data.frame with one
 row per shot (category = 'hardest')
 }
 \description{
-\code{skater_edge_shot_speed()} scrapes the EDGE shot speed statistics for a
-given set of \code{skater}, \code{season}, \code{game_type}, and \code{category}.
+\code{skater_edge_shot_speed()} retrieves the EDGE shot speed statistics for a skater, season, game type, and category as a nested \code{list} that separates summary and detail blocks for NHL EDGE style tracking outputs and relative-performance context.
 }
 \examples{
 Martin_Necas_hardest_shots_regular_20242025 <- skater_edge_shot_speed(

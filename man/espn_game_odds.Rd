@@ -14,7 +14,7 @@ reference}
 data.frame with one row per provider
 }
 \description{
-\code{espn_game_odds()} scrapes the ESPN odds for a given \code{game}.
+\code{espn_game_odds()} retrieves the ESPN odds for a game as a \code{data.frame} where each row represents provider and includes detail on team identity, affiliation, and matchup-side context plus betting market snapshots with side/total prices and provider variation.
 }
 \examples{
 ESPN_odds_SCF_20242025 <- espn_game_odds(game = 401777460)

@@ -13,8 +13,7 @@ skater_playoff_stats()
 data.frame with one row per player
 }
 \description{
-\code{skater_playoff_statistics()} scrapes the career playoff statistics for all
-the skaters.
+\code{skater_playoff_statistics()} retrieves the career playoff statistics for all the skaters as a \code{data.frame} where each row represents player and includes detail on team identity, affiliation, and matchup-side context, player identity, role, handedness, and biographical profile, and production, workload, efficiency, and result-level performance outcomes.
 }
 \examples{
 skater_playoff_stats <- skater_playoff_statistics()

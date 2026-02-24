@@ -16,7 +16,7 @@ wsc_pbp(game = 2023030417)
 data.frame with one row per event (play)
 }
 \description{
-\code{wsc_play_by_play()} scrapes the WSC play-by-play for given \code{game}.
+\code{wsc_play_by_play()} retrieves the World Showcase (WSC) play-by-play for a game as a \code{data.frame} where each row represents event and includes detail on game timeline state, period/clock progression, and matchup flow, date/season filtering windows and chronological context, and player identity, role, handedness, and biographical profile.
 }
 \examples{
 wsc_pbp_Martin_Necas_legacy_game <- wsc_play_by_play(game = 2025020275)

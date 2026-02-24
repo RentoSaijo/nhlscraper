@@ -10,7 +10,7 @@ series()
 data.frame with one row per game per series
 }
 \description{
-\code{series()} scrapes all the playoff series by game.
+\code{series()} retrieves all the playoff series by game as a \code{data.frame} where each row represents game per series and includes detail on game timeline state, period/clock progression, and matchup flow, date/season filtering windows and chronological context, and playoff-series progression, round status, and series leverage.
 }
 \examples{
 # May take >5s, so skip.

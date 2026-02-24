@@ -19,8 +19,7 @@ reference; ID is preferable as there now exists duplicate three-letter codes
 data.frame with one row per player
 }
 \description{
-\code{team_prospects()} scrapes the prospects for a given set of \code{team} and
-\code{position}.
+\code{team_prospects()} retrieves the prospects for a team and position as a \code{data.frame} where each row represents player and includes detail on player identity, role, handedness, and biographical profile.
 }
 \examples{
 COL_forward_prospects <- team_prospects(

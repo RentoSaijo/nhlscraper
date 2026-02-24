@@ -10,7 +10,7 @@ espn_players()
 data.frame with one row per ESPN player
 }
 \description{
-\code{espn_players()} scrapes all the ESPN players.
+\code{espn_players()} retrieves all the ESPN players as a \code{data.frame} where each row represents ESPN player and includes detail on person-level profile context and performance history with situational splits.
 }
 \examples{
 all_ESPN_players <- espn_players()

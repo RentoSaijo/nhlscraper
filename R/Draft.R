@@ -1,7 +1,7 @@
 #' Access all the drafts
-#' 
-#' `drafts()` scrapes all the drafts.
-#' 
+#'
+#' `drafts()` retrieves all the drafts as a `data.frame` where each row represents draft and includes detail on venue/location geography and regional metadata.
+#'
 #' @returns data.frame with one row per draft
 #' @examples
 #' all_drafts <- drafts()
@@ -32,9 +32,9 @@ drafts <- function() {
 }
 
 #' Access all the draft picks
-#' 
-#' `draft_picks()` scrapes all the draft picks.
-#' 
+#'
+#' `draft_picks()` retrieves all the draft picks as a `data.frame` where each row represents pick and includes detail on team identity, affiliation, and matchup-side context plus player identity, role, handedness, and biographical profile.
+#'
 #' @returns data.frame with one row per pick
 #' @examples
 #' # May take >5s, so skip.
@@ -57,9 +57,9 @@ draft_picks <- function() {
 }
 
 #' Access all the draft prospects
-#' 
-#' `draft_prospects()` scrapes all the draft prospects.
-#' 
+#'
+#' `draft_prospects()` retrieves all the draft prospects as a `data.frame` where each row represents player and includes detail on player identity, role, handedness, and biographical profile plus broadcast carriage, media availability, and viewing-link metadata.
+#'
 #' @returns data.frame with one row per player
 #' @examples
 #' # May take >5s, so skip.
@@ -83,10 +83,9 @@ draft_prospects <- function() {
 }
 
 #' Access the draft rankings for a class and category
-#' 
-#' `draft_rankings()` scrapes the draft rankings for a given set of `class` 
-#' and `category`.
-#' 
+#'
+#' `draft_rankings()` retrieves the draft rankings for a class and category as a `data.frame` where each row represents player and includes detail on player identity, role, handedness, and biographical profile plus draft-board context, scouting background, and pick/round progression.
+#'
 #' @param class integer in YYYY (e.g., 2017); see [drafts()] for reference
 #' @param category integer in 1:4 (where 1 = North American Skaters, 
 #' 2 = International Skaters, 3 = North American Goalies, and 4 = International 
@@ -94,6 +93,7 @@ draft_prospects <- function() {
 #' 'INTLS'/'INTL Skaters'/'International Skaters', 
 #' 'NAG'/'NA Goalies'/'North American Goalies',
 #' 'INTLG'/'INTL Goalies'/'International Goalies'
+#'
 #' @returns data.frame with one row per player
 #' @examples
 #' draft_rankings_INTL_Skaters_2017 <- draft_rankings(
@@ -140,9 +140,9 @@ draft_rankings <- function(
 }
 
 #' Access the draft combine reports
-#' 
-#' `combine_reports()` scrapes the draft combine reports.
-#' 
+#'
+#' `combine_reports()` retrieves the draft combine reports as a `data.frame` where each row represents player and includes detail on player identity, role, handedness, and biographical profile.
+#'
 #' @returns data.frame with one row per player
 #' @examples
 #' combine_reports <- combine_reports()
@@ -163,9 +163,9 @@ combine_reports <- function() {
 }
 
 #' Access the draft lottery odds
-#' 
-#' `lottery_odds()` scrapes the draft lottery odds.
-#' 
+#'
+#' `lottery_odds()` retrieves the draft lottery odds as a `data.frame` where each row represents draft lottery and includes detail on draft-cycle evaluation, ranking, and selection tracking detail.
+#'
 #' @returns data.frame with one row per draft lottery
 #' @examples
 #' lottery_odds <- lottery_odds()
@@ -187,9 +187,9 @@ lottery_odds <- function() {
 }
 
 #' Access the real-time draft tracker
-#' 
-#' `draft_tracker()` scrapes the real-time draft tracker.
-#' 
+#'
+#' `draft_tracker()` retrieves the real-time draft tracker as a `data.frame` where each row represents player and includes detail on team identity, affiliation, and matchup-side context, player identity, role, handedness, and biographical profile, and venue/location geography and regional metadata.
+#'
 #' @returns data.frame with one row per player
 #' @examples
 #' draft_tracker <- draft_tracker()
@@ -208,9 +208,9 @@ draft_tracker <- function() {
 }
 
 #' Access all the expansion drafts
-#' 
-#' `expansion_drafts()` scrapes all the expansion drafts.
-#' 
+#'
+#' `expansion_drafts()` retrieves all the expansion drafts as a `data.frame` where each row represents expansion draft and includes detail on date/season filtering windows and chronological context plus reference definitions and rules-framework information.
+#'
 #' @returns data.frame with one row per expansion draft
 #' @examples
 #' all_expansion_drafts <- expansion_drafts()
@@ -231,9 +231,9 @@ expansion_drafts <- function() {
 }
 
 #' Access all the expansion draft picks
-#' 
-#' `expansion_draft_picks()` scrapes all the expansion draft picks.
-#' 
+#'
+#' `expansion_draft_picks()` retrieves all the expansion draft picks as a `data.frame` where each row represents pick and includes detail on date/season filtering windows and chronological context plus team identity, affiliation, and matchup-side context.
+#'
 #' @returns data.frame with one row per pick
 #' @examples
 #' all_expansion_draft_picks <- expansion_draft_picks()

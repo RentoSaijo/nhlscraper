@@ -10,7 +10,7 @@ draft_tracker()
 data.frame with one row per player
 }
 \description{
-\code{draft_tracker()} scrapes the real-time draft tracker.
+\code{draft_tracker()} retrieves the real-time draft tracker as a \code{data.frame} where each row represents player and includes detail on team identity, affiliation, and matchup-side context, player identity, role, handedness, and biographical profile, and venue/location geography and regional metadata.
 }
 \examples{
 draft_tracker <- draft_tracker()

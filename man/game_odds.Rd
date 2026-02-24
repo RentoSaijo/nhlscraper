@@ -14,8 +14,7 @@ reference}
 data.frame with one row per game
 }
 \description{
-\code{game_odds()} scrapes the real-time game odds for a given \code{country} by
-partnered bookmaker.
+\code{game_odds()} retrieves the real-time game odds for a country by partnered bookmaker as a \code{data.frame} where each row represents game and includes detail on betting market lines, prices, and provider-level context.
 }
 \examples{
 game_odds_CA <- game_odds(country = 'CA')

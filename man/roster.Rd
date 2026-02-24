@@ -22,8 +22,7 @@ reference}
 data.frame with one row per player
 }
 \description{
-\code{roster()} scrapes the roster for a given set of \code{team}, \code{season}, and
-\code{position}.
+\code{roster()} retrieves the roster for a team, season, and position as a \code{data.frame} where each row represents player and includes detail on player identity, role, handedness, and biographical profile.
 }
 \examples{
 COL_defensemen_20242025 <- roster(

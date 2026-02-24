@@ -13,7 +13,7 @@ playoff_season_stats()
 data.frame with one row per season
 }
 \description{
-\code{playoff_season_statistics()} scrapes the playoff statistics by season.
+\code{playoff_season_statistics()} retrieves the playoff statistics by season as a \code{data.frame} where each row represents season and includes detail on date/season filtering windows and chronological context.
 }
 \examples{
 playoff_season_stats <- playoff_season_statistics()

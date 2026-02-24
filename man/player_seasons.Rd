@@ -13,8 +13,7 @@ player_seasons(player = 8478402)
 data.frame with one row per season
 }
 \description{
-\code{player_seasons()} scrapes the season(s) and game type(s) in which a
-player played in the NHL.
+\code{player_seasons()} retrieves the season(s) and game type(s) in which a player played as a \code{data.frame} where each row represents season and includes detail on date/season filtering windows and chronological context.
 }
 \examples{
 Martin_Necas_seasons <- player_seasons(player = 8480039)

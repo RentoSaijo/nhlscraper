@@ -19,8 +19,7 @@ will NOT support pre-season}
 list of various items
 }
 \description{
-\code{skater_edge_leaders()} scrapes the skater EDGE statistics leaders for a
-given set of \code{season} and \code{game_type}.
+\code{skater_edge_leaders()} retrieves the skater EDGE statistics leaders for a season and game type as a nested \code{list} that separates summary and detail blocks for NHL EDGE style tracking outputs and relative-performance context.
 }
 \examples{
 skater_EDGE_leaders_regular_20242025 <- skater_edge_leaders(

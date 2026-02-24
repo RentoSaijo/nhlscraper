@@ -1,7 +1,7 @@
 #' Access all the players
-#' 
-#' `players()` scrapes all the players.
-#' 
+#'
+#' `players()` retrieves all the players as a `data.frame` where each row represents player and includes detail on player identity, role, handedness, and biographical profile.
+#'
 #' @returns data.frame with one row per player
 #' @examples
 #' # May take >5s, so skip.
@@ -26,11 +26,11 @@ players <- function() {
 }
 
 #' Access the season(s) and game type(s) in which a player played
-#' 
-#' `player_seasons()` scrapes the season(s) and game type(s) in which a 
-#' player played in the NHL.
-#' 
+#'
+#' `player_seasons()` retrieves the season(s) and game type(s) in which a player played as a `data.frame` where each row represents season and includes detail on date/season filtering windows and chronological context.
+#'
 #' @param player integer ID (e.g., 8480039); see [players()] for reference
+#'
 #' @returns data.frame with one row per season
 #' @examples
 #' Martin_Necas_seasons <- player_seasons(player = 8480039)
@@ -56,10 +56,11 @@ player_seasons <- function(player = 8478402) {
 }
 
 #' Access the summary for a player
-#' 
-#' `player_summary()` scrapes the summary for a given `player`.
-#' 
+#'
+#' `player_summary()` retrieves the summary for a player as a nested `list` that separates summary and detail blocks for player identity, role, handedness, and biographical profile.
+#'
 #' @inheritParams player_seasons
+#'
 #' @returns list with various items
 #' @examples
 #' Martin_Necas_summary <- player_summary(player = 8480039)
@@ -83,12 +84,12 @@ player_summary <- function(player = 8478402) {
 }
 
 #' Access the game log for a player, season, and game type
-#' 
-#' `player_game_log()` scrapes the game log for a given set of `player`, 
-#' `season`, and `game_type`.
+#'
+#' `player_game_log()` retrieves the game log for a player, season, and game type as a `data.frame` where each row represents game and includes detail on game timeline state, period/clock progression, and matchup flow plus production, workload, efficiency, and result-level performance outcomes.
 #'
 #' @inheritParams player_seasons
 #' @inheritParams roster_statistics
+#'
 #' @returns data.frame with one row per game
 #' @examples
 #' Martin_Necas_game_log_regular_20242025 <- player_game_log(
@@ -125,8 +126,8 @@ player_game_log <- function(
 }
 
 #' Access the spotlight players
-#' 
-#' `spotlight_players()` scrapes the spotlight players.
+#'
+#' `spotlight_players()` retrieves the spotlight players as a `data.frame` where each row represents player and includes detail on team identity, affiliation, and matchup-side context plus player identity, role, handedness, and biographical profile.
 #'
 #' @returns data.frame with one row per player
 #' @examples

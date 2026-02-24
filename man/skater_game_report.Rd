@@ -27,8 +27,7 @@ support pre-season}
 data.frame with one row per game per player
 }
 \description{
-\code{skater_game_report()} scrapes various reports for a given set of
-\code{season}, \code{game_type}, and \code{category} for all the skaters by game.
+\code{skater_game_report()} retrieves various reports for a season, game type, and category for all the skaters by game as a \code{data.frame} where each row represents game per player and includes detail on game timeline state, period/clock progression, and matchup flow, player identity, role, handedness, and biographical profile, and production, workload, efficiency, and result-level performance outcomes.
 }
 \examples{
 # May take >5s, so skip.

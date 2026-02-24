@@ -24,8 +24,7 @@ will NOT support pre-season}
 list of various items
 }
 \description{
-\code{team_edge_summary()} scrapes the EDGE summary for a given set of \code{team},
-\code{season}, and \code{game_type}.
+\code{team_edge_summary()} retrieves the EDGE summary for a team, season, and game type as a nested \code{list} that separates summary and detail blocks for team identity, affiliation, and matchup-side context plus NHL EDGE style tracking outputs and relative-performance context.
 }
 \examples{
 COL_EDGE_summary_regular_20242025 <- team_edge_summary(
