@@ -530,7 +530,7 @@ add_shooter_biometrics <- function(play_by_play, neutral_threshold = 5) {
   pidx <- match(shooterId, bios$playerId)
   ht   <- bios$height[pidx]
   wt   <- bios$weight[pidx]
-  hand <- bios$shootsCatches[pidx]
+  hand <- bios$handCode[pidx]
   pos  <- bios$positionCode[pidx]
   bd   <- as.Date(bios$birthDate[pidx])
   gy   <- as.integer(format(gd, '%Y'))
@@ -584,7 +584,7 @@ add_goalie_biometrics <- function(play_by_play, neutral_threshold = 5) {
   pidx <- match(goalieId, bios$playerId)
   ht   <- bios$height[pidx]
   wt   <- bios$weight[pidx]
-  hand <- bios$shootsCatches[pidx]
+  hand <- bios$handCode[pidx]
   bd   <- as.Date(bios$birthDate[pidx])
   gy   <- as.integer(format(gd, '%Y'))
   by   <- as.integer(format(bd, '%Y'))

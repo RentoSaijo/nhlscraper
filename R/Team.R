@@ -14,7 +14,10 @@ teams <- function() {
       type = 's'
     )$data
     teams <- teams[order(teams$id), ]
-    names(teams)[names(teams) == 'id'] <- 'teamId'
+    names(teams)[names(teams) == 'id']         <- 'teamId'
+    names(teams)[names(teams) == 'fullName']   <- 'teamFullName'
+    names(teams)[names(teams) == 'triCode']    <- 'teamTriCode'
+    names(teams)[names(teams) == 'rawTricode'] <- 'teamTriCodeRaw'
     teams
   }, error = function(e) {
     message('Unable to create connection; please try again later.')
@@ -121,6 +124,7 @@ team_season_report <- function(
         ),
         type  = 's'
       )$data
+      names(report) <- normalize_team_abbrev_cols(names(report))
       report[order(report$teamId), ]
     },
     error = function(e) {
@@ -167,6 +171,7 @@ team_game_report <- function(
         ),
         type  = 's'
       )$data
+      names(report) <- normalize_team_abbrev_cols(names(report))
       report[order(report$teamId, report$gameId), ]
     },
     error = function(e) {
@@ -251,6 +256,8 @@ roster <- function(
         type = 'w'
       )[[position]]
       names(players)[names(players) == 'id'] <- 'playerId'
+      names(players) <- normalize_locale_names(names(players))
+      names(players) <- scope_person_name_cols(names(players), 'player')
       players
     },
     error = function(e) {
@@ -294,7 +301,7 @@ roster_statistics <- function(
         s = 'skaters',
         g = 'goalies'
       )
-      nhl_api(
+      players <- nhl_api(
         path = sprintf(
           'v1/club-stats/%s/%s/%s', 
           to_team_tri_code(team), 
@@ -303,6 +310,9 @@ roster_statistics <- function(
         ),
         type = 'w'
       )[[position]]
+      names(players) <- normalize_locale_names(names(players))
+      names(players) <- scope_person_name_cols(names(players), 'player')
+      players
     },
     error = function(e) {
       message('Invalid argument(s); refer to help file.')
@@ -350,6 +360,8 @@ team_prospects <- function(team = 1, position = 'forwards') {
         type = 'w'
       )[[position]]
       names(players)[names(players) == 'id'] <- 'playerId'
+      names(players) <- normalize_locale_names(names(players))
+      names(players) <- scope_person_name_cols(names(players), 'player')
       players
     },
     error = function(e) {
@@ -387,6 +399,8 @@ team_season_schedule <- function(team = 1, season = 'now') {
       names(games)[names(games) == 'id']       <- 'gameId'
       names(games)[names(games) == 'season']   <- 'seasonId'
       names(games)[names(games) == 'gameType'] <- 'gameTypeId'
+      names(games) <- normalize_locale_names(names(games))
+      names(games) <- normalize_team_abbrev_cols(names(games))
       games
     },
     error = function(e) {
@@ -426,6 +440,8 @@ team_month_schedule <- function(team = 1, month = 'now') {
       names(games)[names(games) == 'id']       <- 'gameId'
       names(games)[names(games) == 'season']   <- 'seasonId'
       names(games)[names(games) == 'gameType'] <- 'gameTypeId'
+      names(games) <- normalize_locale_names(names(games))
+      names(games) <- normalize_team_abbrev_cols(names(games))
       games
     },
     error = function(e) {
@@ -464,6 +480,8 @@ team_week_schedule <- function(team = 1, date = 'now') {
       names(games)[names(games) == 'id']       <- 'gameId'
       names(games)[names(games) == 'season']   <- 'seasonId'
       names(games)[names(games) == 'gameType'] <- 'gameTypeId'
+      names(games) <- normalize_locale_names(names(games))
+      names(games) <- normalize_team_abbrev_cols(names(games))
       games
     },
     error = function(e) {

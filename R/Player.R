@@ -15,8 +15,15 @@ players <- function() {
       type = 'r'
     )$data
     players <- players[order(players$id), ]
-    names(players)[names(players) == 'id']       <- 'playerId'
-    names(players)[names(players) == 'position'] <- 'positionCode'
+    names(players)[names(players) == 'id']            <- 'playerId'
+    names(players)[names(players) == 'addNames']      <- 'playerAddNames'
+    names(players)[names(players) == 'firstName']     <- 'playerFirstName'
+    names(players)[names(players) == 'fullName']      <- 'playerFullName'
+    names(players)[names(players) == 'lastName']      <- 'playerLastName'
+    names(players)[names(players) == 'middleName']    <- 'playerMiddleName'
+    names(players)[names(players) == 'position']      <- 'positionCode'
+    names(players)[names(players) == 'prName']        <- 'playerPrName'
+    names(players)[names(players) == 'shootsCatches'] <- 'handCode'
     names(players)[names(players) == 'centralRegistryPosition'] <- 'centralRegistryPositionCode'
     players
   }, error = function(e) {
@@ -73,7 +80,11 @@ player_summary <- function(player = 8478402) {
         path = sprintf('v1/player/%s/landing', player),
         type = 'w'
       )
-      names(summary)[names(summary) == 'position'] <- 'positionCode'
+      names(summary)[names(summary) == 'firstName']    <- 'playerFirstName'
+      names(summary)[names(summary) == 'lastName']     <- 'playerLastName'
+      names(summary)[names(summary) == 'position']     <- 'positionCode'
+      names(summary)[names(summary) == 'fullTeamName'] <- 'teamFullName'
+      names(summary) <- normalize_team_abbrev_cols(names(summary))
       summary
     },
     error = function(e) {
@@ -116,7 +127,10 @@ player_game_log <- function(
         type = 'w'
       )
       log$playerStatsSeasons[0, ]
-      log$gameLog
+      out <- log$gameLog
+      names(out) <- normalize_locale_names(names(out))
+      names(out) <- normalize_team_abbrev_cols(names(out))
+      out
     },
     error = function(e) {
       message('Invalid argument(s); refer to help file.')
@@ -141,6 +155,8 @@ spotlight_players <- function() {
       type = 'w'
     )
     names(players)[names(players) == 'position'] <- 'positionCode'
+    names(players) <- normalize_locale_names(names(players))
+    names(players) <- scope_person_name_cols(names(players), 'player')
     players
   }, error = function(e) {
     message('Unable to create connection; please try again later.')

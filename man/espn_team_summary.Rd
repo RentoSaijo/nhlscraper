@@ -4,7 +4,7 @@
 \alias{espn_team_summary}
 \title{Access the ESPN summary for a team}
 \usage{
-espn_team_summary(team = 3988803)
+espn_team_summary(team = 1)
 }
 \arguments{
 \item{team}{integer ID (e.g., 1); see \code{\link[=espn_teams]{espn_teams()}} for

@@ -21,7 +21,9 @@ franchises <- function() {
     details$mostRecentTeamId <- NULL
     details$teamAbbrev       <- NULL
     franchises <- merge(franchises[order(franchises$id), ], details, by = 'id')
-    names(franchises)[names(franchises) == 'id'] <- 'franchiseId'
+    names(franchises)[names(franchises) == 'id']       <- 'franchiseId'
+    names(franchises)[names(franchises) == 'fullName'] <- 'franchiseFullName'
+    names(franchises) <- normalize_team_abbrev_cols(names(franchises))
     franchises
   }, error = function(e) {
     message('Unable to create connection; please try again later.')
@@ -45,6 +47,8 @@ franchise_statistics <- function() {
       type = 'r'
     )$data
     stats$id <- NULL
+    names(stats)[names(stats) == 'teamAbbrev'] <- 'teamTriCode'
+    names(stats) <- normalize_team_abbrev_cols(names(stats))
     stats[order(stats$franchiseId, stats$gameTypeId), ]
   }, error = function(e) {
     message('Unable to create connection; please try again later.')
@@ -75,6 +79,8 @@ franchise_team_statistics <- function() {
       type = 'r'
     )$data
     stats$id <- NULL
+    names(stats)[names(stats) == 'triCode'] <- 'teamTriCode'
+    names(stats) <- normalize_team_abbrev_cols(names(stats))
     stats[order(stats$franchiseId, stats$teamId, stats$gameTypeId), ]
   }, error = function(e) {
     message('Unable to create connection; please try again later.')
@@ -106,6 +112,8 @@ franchise_season_statistics <- function() {
       type = 'r'
     )$data
     stats$id <- NULL
+    names(stats)[names(stats) == 'triCode'] <- 'teamTriCode'
+    names(stats) <- normalize_team_abbrev_cols(names(stats))
     stats[order(stats$franchiseId, stats$seasonId, stats$gameTypeId), ]
   }, error = function(e) {
     message('Unable to create connection; please try again later.')

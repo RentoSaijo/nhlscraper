@@ -13,7 +13,8 @@ glossary <- function() {
       path = 'en/glossary',
       type = 's'
     )$data
-    names(terms)[names(terms) == 'id'] <- 'terminologyId'
+    names(terms)[names(terms) == 'id']       <- 'terminologyId'
+    names(terms)[names(terms) == 'fullName'] <- 'terminologyFullName'
     terms
   }, error = function(e) {
     message('Unable to create connection; please try again later.')
@@ -36,7 +37,8 @@ countries <- function() {
       path = 'en/country',
       type = 's'
     )$data
-    names(countries)[names(countries) == 'id'] <- 'countryId'
+    names(countries)[names(countries) == 'id']           <- 'countryId'
+    names(countries)[names(countries) == 'country3Code'] <- 'countryTriCode'
     countries
   }, error = function(e) {
     message('Unable to create connection; please try again later.')
@@ -63,6 +65,9 @@ location <- function(zip = 10001) {
         type = 'w'
       )
       location[0, ]
+      names(location)[names(location) == 'country'] <- 'countryCode'
+      names(location) <- normalize_locale_names(names(location))
+      names(location) <- normalize_team_abbrev_cols(names(location))
       location
     },
     error = function(e) {

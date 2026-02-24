@@ -66,13 +66,16 @@ playoff_season_stats <- function() {
 bracket <- function(season = season_now()){
   tryCatch(
     expr = {
-      data.frame(nhl_api(
+      series <- data.frame(nhl_api(
         path = sprintf(
           'v1/playoff-bracket/%s', 
           suppressWarnings(as.integer(season)) %% 1e4
         ),
         type = 'w'
       )$series)
+      names(series) <- normalize_locale_names(names(series))
+      names(series) <- normalize_team_abbrev_cols(names(series))
+      series
     },
     error = function(e) {
       message('Invalid argument(s); refer to help file.')
@@ -111,6 +114,8 @@ series_schedule <- function(season = season_now() - 10001, series = 'a') {
       names(games)[names(games) == 'id']       <- 'gameId'
       names(games)[names(games) == 'season']   <- 'seasonId'
       names(games)[names(games) == 'gameType'] <- 'gameTypeId'
+      names(games) <- normalize_locale_names(names(games))
+      names(games) <- normalize_team_abbrev_cols(names(games))
       games
     },
     error = function(e) {

@@ -112,3 +112,76 @@ to_team_tri_code <- function(team, lookup = .to_team_tri_code) {
 to_team_id <- function(team, lookup = .to_team_id) {
   unname(lookup[normalize_team_key(team)])
 }
+
+#' Convert dot-delimited names to camelCase
+#' 
+#' @param x character vector
+#' @returns character vector
+#' @keywords internal
+
+dot_to_camel <- function(x) {
+  parts <- strsplit(x, '\\.')
+  vapply(parts, function(p) {
+    if (length(p) == 1L) return(p)
+    paste0(
+      p[1],
+      paste0(
+        toupper(substr(p[-1], 1, 1)),
+        substr(p[-1], 2, nchar(p[-1])),
+        collapse = ''
+      )
+    )
+  }, character(1))
+}
+
+#' Normalize locale-style dotted columns to camelCase
+#' 
+#' Converts dotted names (e.g., firstName.default, name.cs) to camelCase and
+#' removes trailing `Default` from default-language fields.
+#'
+#' @param x character vector
+#' @returns character vector
+#' @keywords internal
+
+normalize_locale_names <- function(x) {
+  x <- dot_to_camel(x)
+  sub('Default$', '', x)
+}
+
+#' Scope generic person-name columns to an entity
+#'
+#' @param x character vector
+#' @param prefix character scalar (e.g., 'player', 'goalie', 'skater')
+#' @returns character vector
+#' @keywords internal
+
+scope_person_name_cols <- function(x, prefix) {
+  x <- gsub('^firstName([A-Z].*)?$', paste0(prefix, 'FirstName\\1'), x, perl = TRUE)
+  x <- gsub('^lastName([A-Z].*)?$', paste0(prefix, 'LastName\\1'), x, perl = TRUE)
+  x <- gsub('^fullName([A-Z].*)?$', paste0(prefix, 'FullName\\1'), x, perl = TRUE)
+  x <- gsub('^name([A-Z].*)?$', paste0(prefix, 'Name\\1'), x, perl = TRUE)
+  x
+}
+
+#' Normalize team abbreviation columns to team tri-code names
+#'
+#' @param x character vector
+#' @returns character vector
+#' @keywords internal
+
+normalize_team_abbrev_cols <- function(x) {
+  x <- sub('TeamAbbreviations$', 'TeamTriCodes', x, perl = TRUE)
+  x <- sub('TeamAbbreviation$', 'TeamTriCode', x, perl = TRUE)
+  x <- sub('TeamAbbrevs$', 'TeamTriCodes', x, perl = TRUE)
+  x <- sub('TeamAbbrev$', 'TeamTriCode', x, perl = TRUE)
+  map <- c(
+    opponentAbbrev = 'opponentTeamTriCode',
+    teamAbbreviation  = 'teamTriCode',
+    teamAbbreviations = 'teamTriCodes',
+    teamAbbrev     = 'teamTriCode',
+    teamAbbrevs    = 'teamTriCodes'
+  )
+  idx <- match(x, names(map))
+  x[!is.na(idx)] <- unname(map[idx[!is.na(idx)]])
+  x
+}

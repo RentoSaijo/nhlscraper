@@ -17,6 +17,19 @@
 replay <- function(game = 2023030417, event = 866) {
   tryCatch(
     expr = {
+      to_num <- function(x) suppressWarnings(as.numeric(x))
+      to_replay_x_coord <- function(x_raw) {
+        x_raw <- to_num(x_raw)
+        (x_raw / 12) - 100
+      }
+      to_replay_y_coord <- function(y_raw) {
+        y_raw <- to_num(y_raw)
+        42.5 - (y_raw / 12)
+      }
+      is_missing_chr <- function(x) {
+        x_chr <- trimws(as.character(x))
+        is.na(x_chr) | x_chr == ''
+      }
       base   <- 'https://wsr.nhle.com/'
       year   <- game %/% 1e6
       season <- paste0(as.character(year), as.character(year + 1))
@@ -39,12 +52,79 @@ replay <- function(game = 2023030417, event = 866) {
         backoff      = function(attempt) 2 ^ (attempt - 1),
         is_transient = function(resp) httr2::resp_status(resp) == 429
       )
-      resp <- httr2::req_perform(req)
-      jsonlite::fromJSON(
+      resp   <- httr2::req_perform(req)
+      replay <- jsonlite::fromJSON(
         httr2::resp_body_string(resp, encoding = 'UTF-8'),
         simplifyVector = TRUE,
         flatten        = TRUE
       )
+      id_cols <- grep('^onIce\\.[^.]+\\.id$', names(replay), value = TRUE)
+      if (!length(id_cols)) {
+        return(data.frame(timeStamp = replay$timeStamp))
+      }
+      slots <- sub('\\.id$', '', id_cols)
+      get_slot_col <- function(slot, field) {
+        col <- paste0(slot, '.', field)
+        if (col %in% names(replay)) replay[[col]] else rep(NA, nrow(replay))
+      }
+      puck_candidates <- vapply(
+        slots,
+        function(slot) {
+          player_id <- get_slot_col(slot, 'playerId')
+          x_raw  <- to_num(get_slot_col(slot, 'x'))
+          y_raw  <- to_num(get_slot_col(slot, 'y'))
+          id_raw <- to_num(get_slot_col(slot, 'id'))
+          all(is_missing_chr(player_id)) &&
+            (any(!is.na(x_raw)) || any(!is.na(y_raw))) &&
+            (grepl('^onIce\\.1$', slot) || any(id_raw == 1, na.rm = TRUE))
+        },
+        logical(1)
+      )
+      if (any(puck_candidates)) {
+        puck_slot <- slots[which(puck_candidates)[1]]
+      } else {
+        fallback <- vapply(
+          slots,
+          function(slot) {
+            player_id <- get_slot_col(slot, 'playerId')
+            x_raw <- to_num(get_slot_col(slot, 'x'))
+            y_raw <- to_num(get_slot_col(slot, 'y'))
+            all(is_missing_chr(player_id)) &&
+              (any(!is.na(x_raw)) || any(!is.na(y_raw)))
+          },
+          logical(1)
+        )
+        if (any(fallback)) {
+          puck_slot <- slots[which(fallback)[1]]
+        } else if ('onIce.1' %in% slots) {
+          puck_slot <- 'onIce.1'
+        } else {
+          puck_slot <- slots[1]
+        }
+      }
+      out <- data.frame(timeStamp = replay$timeStamp, stringsAsFactors = FALSE)
+      puck_x_raw <- to_num(get_slot_col(puck_slot, 'x'))
+      puck_y_raw <- to_num(get_slot_col(puck_slot, 'y'))
+      out$puckXCoordRaw <- puck_x_raw
+      out$puckYCoordRaw <- puck_y_raw
+      out$puckXCoord <- to_replay_x_coord(puck_x_raw)
+      out$puckYCoord <- to_replay_y_coord(puck_y_raw)
+      player_slots   <- slots[slots != puck_slot]
+      for (i in seq_along(player_slots)) {
+        slot  <- player_slots[i]
+        stem  <- paste0('player', i)
+        x_raw <- to_num(get_slot_col(slot, 'x'))
+        y_raw <- to_num(get_slot_col(slot, 'y'))
+        out[[paste0(stem, 'PPTId')]] <- to_num(get_slot_col(slot, 'id'))
+        out[[paste0(stem, 'PlayerId')]]  <- to_num(get_slot_col(slot, 'playerId'))
+        out[[paste0(stem, 'XCoordRaw')]] <- x_raw
+        out[[paste0(stem, 'YCoordRaw')]] <- y_raw
+        out[[paste0(stem, 'XCoord')]] <- to_replay_x_coord(x_raw)
+        out[[paste0(stem, 'YCoord')]] <- to_replay_y_coord(y_raw)
+        out[[paste0(stem, 'TeamId')]] <- to_num(get_slot_col(slot, 'teamId'))
+        out[[paste0(stem, 'TeamTriCode')]] <- as.character(get_slot_col(slot, 'teamAbbrev'))
+      }
+      out
     },
     error = function(e) {
       message('Invalid argument(s); refer to help file.')
@@ -70,7 +150,9 @@ penalty_shots <- function() {
     )$data
     pss$id <- NULL
     pss    <- pss[order(pss$gameId), ]
-    names(pss)[names(pss) == 'season'] <- 'seasonId'
+    names(pss)[names(pss) == 'season']   <- 'seasonId'
+    names(pss)[names(pss) == 'gameType'] <- 'gameTypeId'
+    names(pss) <- normalize_team_abbrev_cols(names(pss))
     pss
   }, error = function(e) {
     message('Unable to create connection; please try again later.')

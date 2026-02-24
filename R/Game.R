@@ -45,6 +45,8 @@ scores <- function(date = 'now') {
       names(games)[names(games) == 'id']       <- 'gameId'
       names(games)[names(games) == 'season']   <- 'seasonId'
       names(games)[names(games) == 'gameType'] <- 'gameTypeId'
+      names(games) <- normalize_locale_names(names(games))
+      names(games) <- normalize_team_abbrev_cols(names(games))
       games[order(games$gameId), ]
     },
     error = function(e) {
@@ -160,6 +162,8 @@ boxscore <- function(
       )$playerByGameStats
       boxscore <- boxscore[[paste0(team, 'Team')]][[position]]
       names(boxscore)[names(boxscore) == 'position'] <- 'positionCode'
+      names(boxscore) <- normalize_locale_names(names(boxscore))
+      names(boxscore) <- scope_person_name_cols(names(boxscore), 'player')
       boxscore
     },
     error = function(e) {
@@ -187,6 +191,8 @@ game_rosters <- function(game = 2023030417) {
         path = sprintf('v1/gamecenter/%s/play-by-play', game),
         type = 'w'
       )$rosterSpots
+      names(rosters) <- normalize_locale_names(names(rosters))
+      names(rosters) <- scope_person_name_cols(names(rosters), 'player')
       rosters <- rosters[order(rosters$sweaterNumber), ]
       rosters[order(rosters$teamId), ]
     },
@@ -411,8 +417,7 @@ shift_chart <- function(game = 2023030417) {
 #'
 #' `game_odds()` retrieves the real-time game odds for a country by partnered bookmaker as a `data.frame` where each row represents game and includes detail on betting market lines, prices, and provider-level context.
 #'
-#' @param country two-letter code (e.g., 'CA'); see [countries()] for 
-#' reference
+#' @param country two-letter code (e.g., 'CA'); see [countries()] for reference
 #'
 #' @returns data.frame with one row per game
 #' @examples
@@ -428,6 +433,8 @@ game_odds <- function(country = 'US') {
       )$games
       games[[1]]
       names(games)[names(games) == 'gameType'] <- 'gameTypeId'
+      names(games) <- normalize_locale_names(names(games))
+      names(games) <- normalize_team_abbrev_cols(names(games))
       games
     },
     error = function(e) {

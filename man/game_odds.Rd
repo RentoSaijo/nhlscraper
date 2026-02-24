@@ -7,8 +7,7 @@
 game_odds(country = "US")
 }
 \arguments{
-\item{country}{two-letter code (e.g., 'CA'); see \code{\link[=countries]{countries()}} for
-reference}
+\item{country}{two-letter code (e.g., 'CA'); see \code{\link[=countries]{countries()}} for reference}
 }
 \value{
 data.frame with one row per game

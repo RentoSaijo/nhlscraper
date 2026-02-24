@@ -14,24 +14,28 @@ espn_transactions <- function(season = season_now()) {
   tryCatch(
     expr = {
       seasons_tbl <- seasons()
-      idx         <- which(seasons_tbl$id == season)
+      idx         <- which(seasons_tbl$seasonId == season)
+      if (!length(idx)) {
+        stop('No season metadata found for season: ', season)
+      }
+      idx         <- idx[[1]]
       this_season <- seasons_tbl[idx, , drop = FALSE]
-      start_src   <- this_season$preseasonStartdate
+      start_src   <- this_season$preseasonStartdate[[1]]
       if (is.null(start_src) || is.na(start_src)) {
-        start_src <- this_season$startDate
+        start_src <- this_season$startDate[[1]]
       }
       if (idx < nrow(seasons_tbl)) {
         next_season  <- seasons_tbl[idx + 1, , drop = FALSE]
-        next_start   <- next_season$preseasonStartdate
+        next_start   <- next_season$preseasonStartdate[[1]]
         if (is.null(next_start) || is.na(next_start)) {
-          next_start <- next_season$startDate
+          next_start <- next_season$startDate[[1]]
         }
         if (!inherits(next_start, 'Date')) {
           next_start <- as.Date(as.character(next_start))
         }
         end_src <- next_start - 1
       } else {
-        end_src <- this_season$endDate
+        end_src <- this_season$endDate[[1]]
       }
       if (!inherits(start_src, 'Date')) {
         start_date <- as.Date(as.character(start_src))
@@ -64,9 +68,18 @@ espn_transactions <- function(season = season_now()) {
         }
         page <- page + 1
       }
-      do.call(rbind, all_transactions)
+      transactions <- do.call(rbind, all_transactions)
+      if (!is.null(transactions) && ncol(transactions)) {
+        nms <- names(transactions)
+        nms <- normalize_locale_names(nms)
+        nms <- normalize_team_abbrev_cols(nms)
+        nms <- ifelse(nms == 'teamId', 'espnTeamId', nms)
+        names(transactions) <- nms
+      }
+      transactions
     },
     error = function(e) {
+      message(e)
       message('Invalid argument(s); refer to help file.')
       data.frame()
     }
@@ -88,11 +101,15 @@ espn_futures <- function(season = season_now()) {
   tryCatch(
     expr = {
       season <- season %% 1e4
-      espn_api(
+      futures <- espn_api(
         path  = sprintf('seasons/%s/futures', season),
         query = list(lang = 'en', region = 'us', limit = 1000),
         type  = 'c'
       )$items
+      names(futures)[names(futures) == 'id']          <- 'espnFutureId'
+      names(futures)[names(futures) == 'name']        <- 'futureName'
+      names(futures)[names(futures) == 'displayName'] <- 'futureDisplayName'
+      futures
     },
     error = function(e) {
       message('Invalid argument(s); refer to help file.')
@@ -117,7 +134,9 @@ espn_injuries <- function() {
       query = list(limit = 1000),
       type  = 'g'
     )$injuries
-    teams[order(as.integer(teams$id)), ]
+    names(teams)[names(teams) == 'id']          <- 'espnTeamId'
+    names(teams)[names(teams) == 'displayName'] <- 'teamDisplayName'
+    teams[order(as.integer(teams$espnTeamId)), ]
   }, error = function(e) {
     message('Unable to create connection; please try again later.')
     data.frame()

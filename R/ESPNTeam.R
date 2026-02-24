@@ -24,7 +24,7 @@ espn_teams <- function() {
     }
     out <- do.call(rbind, all_teams)
     id  <- sub('.*teams/([0-9]+)\\?lang.*', '\\1', out[[1]])
-    data.frame(id = id, stringsAsFactors = FALSE)
+    data.frame(espnTeamId = id, stringsAsFactors = FALSE)
   }, error = function(e) {
     message('Unable to create connection; please try again later.')
     data.frame()
@@ -43,7 +43,7 @@ espn_teams <- function() {
 #' ESPN_summary_Boston_Bruins <- espn_team_summary(team = 1)
 #' @export
 
-espn_team_summary <- function(team = 3988803) {
+espn_team_summary <- function(team = 1) {
   get_or_na <- function(x, ...) {
     tryCatch({
       for (nm in list(...)) {
@@ -59,6 +59,7 @@ espn_team_summary <- function(team = 3988803) {
       type = 'c'
     ),
     error = function(e) {
+      message(e)
       message('Invalid argument(s); refer to help file.')
       NULL
     }
@@ -67,11 +68,11 @@ espn_team_summary <- function(team = 3988803) {
     return(data.frame())
   }
   data.frame(
-    location = get_or_na(team, 'location'),
-    name     = get_or_na(team, 'name'),
-    fullName = get_or_na(team, 'displayName'),
-    triCode  = get_or_na(team, 'abbreviation'),
-    isActive = get_or_na(team, 'isActive'),
+    location      = get_or_na(team, 'location'),
+    teamName      = get_or_na(team, 'name'),
+    teamFullName  = get_or_na(team, 'displayName'),
+    teamTriCode   = get_or_na(team, 'abbreviation'),
+    isActive      = get_or_na(team, 'isActive'),
     stringsAsFactors = FALSE
   )
 }

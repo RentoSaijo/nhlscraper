@@ -67,7 +67,10 @@ goalie_season_report <- function(
         ),
         type  = 's'
       )$data
-      report[order(report$playerId), ]
+      report <- report[order(report$playerId), ]
+      names(report)[names(report) == 'lastName'] <- 'goalieLastName'
+      names(report) <- normalize_team_abbrev_cols(names(report))
+      report
     },
     error = function(e) {
       message('Invalid argument(s); refer to help file.')
@@ -115,7 +118,10 @@ goalie_game_report <- function(
         ),
         type  = 's'
       )$data
-      report[order(report$playerId, report$gameId), ]
+      report <- report[order(report$playerId, report$gameId), ]
+      names(report)[names(report) == 'lastName'] <- 'goalieLastName'
+      names(report) <- normalize_team_abbrev_cols(names(report))
+      report
     },
     error = function(e) {
       message('Invalid argument(s); refer to help file.')
@@ -140,6 +146,9 @@ goalie_statistics <- function() {
       type = 'r'
     )$data
     stats$id <- NULL
+    names(stats)[names(stats) == 'firstName'] <- 'goalieFirstName'
+    names(stats)[names(stats) == 'lastName']  <- 'goalieLastName'
+    names(stats) <- normalize_team_abbrev_cols(names(stats))
     stats[order(stats$playerId), ]
   }, error = function(e) {
     message('Unable to create connection; please try again later.')
@@ -170,6 +179,9 @@ goalie_regular_statistics <- function() {
       type = 'r'
     )$data
     stats$id <- NULL
+    names(stats)[names(stats) == 'firstName'] <- 'goalieFirstName'
+    names(stats)[names(stats) == 'lastName']  <- 'goalieLastName'
+    names(stats) <- normalize_team_abbrev_cols(names(stats))
     stats[order(stats$playerId), ]
   }, error = function(e) {
     message('Unable to create connection; please try again later.')
@@ -203,7 +215,10 @@ goalie_season_statistics <- function() {
     )$data
     stats$id <- NULL
     stats    <- stats[order(stats$playerId, stats$seasonId, stats$gameType), ]
-    names(stats)[names(stats) == 'gameType'] <- 'gameTypeId'
+    names(stats)[names(stats) == 'firstName'] <- 'goalieFirstName'
+    names(stats)[names(stats) == 'gameType']  <- 'gameTypeId'
+    names(stats)[names(stats) == 'lastName']  <- 'goalieLastName'
+    names(stats) <- normalize_team_abbrev_cols(names(stats))
     stats
   }, error = function(e) {
     message('Unable to create connection; please try again later.')
@@ -234,6 +249,12 @@ goalie_game_statistics <- function() {
       type = 'r'
     )$data
     stats$id <- NULL
+    names(stats)[names(stats) == 'firstName']       <- 'goalieFirstName'
+    names(stats)[names(stats) == 'lastName']        <- 'goalieLastName'
+    names(stats)[names(stats) == 'triCode']         <- 'teamTriCode'
+    names(stats)[names(stats) == 'opponentTriCode'] <- 'opponentTeamTriCode'
+    names(stats)[names(stats) == 'opponentName']    <- 'opponentTeamName'
+    names(stats) <- normalize_team_abbrev_cols(names(stats))
     stats[order(stats$playerId, stats$gameId), ]
   }, error = function(e) {
     message('Unable to create connection; please try again later.')
@@ -264,6 +285,9 @@ goalie_series_statistics <- function() {
       type = 'r'
     )$data
     stats$id <- NULL
+    names(stats)[names(stats) == 'firstName'] <- 'goalieFirstName'
+    names(stats)[names(stats) == 'lastName']  <- 'goalieLastName'
+    names(stats) <- normalize_team_abbrev_cols(names(stats))
     stats
   }, error = function(e) {
     message('Unable to create connection; please try again later.')
@@ -294,6 +318,9 @@ goalie_scoring <- function() {
       type = 'r'
     )$data
     scoring$id <- NULL
+    names(scoring)[names(scoring) == 'firstName'] <- 'goalieFirstName'
+    names(scoring)[names(scoring) == 'lastName']  <- 'goalieLastName'
+    names(scoring) <- normalize_team_abbrev_cols(names(scoring))
     scoring[order(scoring$playerId), ]
   }, error = function(e) {
     message('Unable to create connection; please try again later.')
@@ -317,6 +344,9 @@ goalie_game_scoring <- function() {
       type = 'r'
     )$data
     scoring$id <- NULL
+    names(scoring)[names(scoring) == 'firstName'] <- 'goalieFirstName'
+    names(scoring)[names(scoring) == 'lastName']  <- 'goalieLastName'
+    names(scoring) <- normalize_team_abbrev_cols(names(scoring))
     scoring[order(scoring$playerId, scoring$gameId), ]
   }, error = function(e) {
     message('Unable to create connection; please try again later.')
@@ -367,6 +397,9 @@ goalie_leaders <- function(
       )[[category]]
       names(goalies)[names(goalies) == 'id']       <- 'playerId'
       names(goalies)[names(goalies) == 'position'] <- 'positionCode'
+      names(goalies) <- normalize_locale_names(names(goalies))
+      names(goalies) <- scope_person_name_cols(names(goalies), 'goalie')
+      names(goalies) <- normalize_team_abbrev_cols(names(goalies))
       goalies
     },
     error = function(e) {
@@ -392,6 +425,9 @@ goalie_milestones <- function() {
       type = 's'
     )$data
     milestones$id <- NULL
+    names(milestones)[names(milestones) == 'firstName'] <- 'goalieFirstName'
+    names(milestones)[names(milestones) == 'lastName']  <- 'goalieLastName'
+    names(milestones) <- normalize_team_abbrev_cols(names(milestones))
     milestones
   }, error = function(e) {
     message('Unable to create connection; please try again later.')

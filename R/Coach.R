@@ -13,7 +13,11 @@ coaches <- function() {
       path = 'coach',
       type = 'r'
     )$data
-    names(coaches)[names(coaches) == 'id'] <- 'coachId'
+    names(coaches)[names(coaches) == 'id']                <- 'coachId'
+    names(coaches)[names(coaches) == 'firstName']         <- 'coachFirstName'
+    names(coaches)[names(coaches) == 'fullName']          <- 'coachFullName'
+    names(coaches)[names(coaches) == 'lastName']          <- 'coachLastName'
+    names(coaches)[names(coaches) == 'birthCountry3code'] <- 'birthCountryTriCode'
     coaches
   }, error = function(e) {
     message('Unable to create connection; please try again later.')
@@ -40,6 +44,7 @@ coach_career_statistics <- function() {
     results    <- results[order(results$coachId), ]
     names(results)[names(results) == 'startSeason'] <- 'startSeasonId'
     names(results)[names(results) == 'endSeason']   <- 'endSeasonId'
+    names(results) <- normalize_team_abbrev_cols(names(results))
     results
   }, error = function(e) {
     message('Unable to create connection; please try again later.')
@@ -73,6 +78,9 @@ coach_franchise_statistics <- function() {
     stats    <- stats[order(stats$coachName, stats$firstCoachedDate), ]
     names(stats)[names(stats) == 'startSeason'] <- 'startSeasonId'
     names(stats)[names(stats) == 'endSeason']   <- 'endSeasonId'
+    names(stats)[names(stats) == 'firstName']   <- 'coachFirstName'
+    names(stats)[names(stats) == 'lastName']    <- 'coachLastName'
+    names(stats) <- normalize_team_abbrev_cols(names(stats))
     stats
   }, error = function(e) {
     message('Unable to create connection; please try again later.')

@@ -103,10 +103,13 @@ standings_rules <- function() {
 standings <- function(date = 'now') {
   tryCatch(
     expr = {
-      nhl_api(
+      standings <- nhl_api(
         path = sprintf('v1/standings/%s', date),
         type = 'w'
       )$standings
+      names(standings) <- normalize_locale_names(names(standings))
+      names(standings) <- normalize_team_abbrev_cols(names(standings))
+      standings
     },
     error = function(e) {
       message('Invalid argument(s); refer to help file.')
@@ -137,6 +140,8 @@ schedule <- function(date = Sys.Date()) {
       names(gameWeek)[names(gameWeek) == 'id']       <- 'gameId'
       names(gameWeek)[names(gameWeek) == 'season']   <- 'seasonId'
       names(gameWeek)[names(gameWeek) == 'gameType'] <- 'gameTypeId'
+      names(gameWeek) <- normalize_locale_names(names(gameWeek))
+      names(gameWeek) <- normalize_team_abbrev_cols(names(gameWeek))
       gameWeek
     },
     error = function(e) {

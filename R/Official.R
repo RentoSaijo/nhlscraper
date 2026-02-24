@@ -13,7 +13,10 @@ officials <- function() {
       path = 'officials',
       type = 'r'
     )$data
-    names(officials)[names(officials) == 'id'] <- 'officialId'
+    names(officials)[names(officials) == 'id']                   <- 'officialId'
+    names(officials)[names(officials) == 'firstName']            <- 'officialFirstName'
+    names(officials)[names(officials) == 'lastName']             <- 'officialLastName'
+    names(officials)[names(officials) == 'referreeAssociationId'] <- 'refereeAssociationId'
     officials
   }, error = function(e) {
     message('Unable to create connection; please try again later.')

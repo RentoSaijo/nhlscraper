@@ -13,7 +13,10 @@ general_managers <- function() {
       path = 'general-manager',
       type = 'r'
     )$data
-    names(gms)[names(gms) == 'id'] <- 'generalManagerId'
+    names(gms)[names(gms) == 'id']        <- 'generalManagerId'
+    names(gms)[names(gms) == 'firstName'] <- 'generalManagerFirstName'
+    names(gms)[names(gms) == 'fullName']  <- 'generalManagerFullName'
+    names(gms)[names(gms) == 'lastName']  <- 'generalManagerLastName'
     gms
   }, error = function(e) {
     message('Unable to create connection; please try again later.')

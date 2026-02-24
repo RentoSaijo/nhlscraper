@@ -82,20 +82,10 @@ ig_game_shot_locations <- function(
         on.exit(grDevices::dev.off(), add = TRUE)
       }
       pbp <- gc_play_by_play(game)
-      pbp <- flag_is_home(pbp)
-      pbp <- normalize_coordinates(pbp)
+      pbp <- calculate_expected_goals(pbp, model = model)
       x_col <- 'xCoordNorm'
       y_col <- 'yCoordNorm'
-      if (model == 1L) {
-        pbp   <- calculate_expected_goals_v1(pbp)
-        xg_col <- 'xG_v1'
-      } else if (model == 2L) {
-        pbp   <- calculate_expected_goals_v2(pbp)
-        xg_col <- 'xG_v2'
-      } else {
-        pbp   <- calculate_expected_goals_v3(pbp)
-        xg_col <- 'xG_v3'
-      }
+      xg_col <- 'xG'
       type <- as.character(pbp[['typeDescKey']])
       shot_types <- c('goal', 'shot-on-goal', 'missed-shot', 'blocked-shot')
       idx_shot <- !is.na(type) & type %in% shot_types
@@ -117,47 +107,44 @@ ig_game_shot_locations <- function(
       type_shot <- as.character(shots[['typeDescKey']])
       x <- as.numeric(shots[[x_col]])
       y <- as.numeric(shots[[y_col]])
-      x_j <- x + stats::runif(length(x), -0.8, 0.8)
-      y_j <- y + stats::runif(length(y), -0.4, 0.4)
+      x_j <- x + stats::runif(length(x), -0.6, 0.6)
+      y_j <- y + stats::runif(length(y), -0.3, 0.3)
       xg <- as.numeric(shots[[xg_col]])
-      xg[is.na(xg) | xg < 0] <- 0
+      xg[!is.finite(xg) | xg < 0] <- 0
       xg[xg > 1] <- 1
-      nz <- xg[xg > 0]
-      if (length(nz) < 5L) {
-        breaks <- c(0, 0.02, 0.05, 0.10, 0.20, 1.00)
-      } else {
-        qs <- unname(stats::quantile(
-          nz,
-          probs = c(0.20, 0.40, 0.60, 0.80),
-          na.rm = TRUE
-        ))
-        breaks <- c(0, qs, 1)
-      }
-      breaks <- sort(unique(breaks))
-      bin <- cut(
-        xg,
-        breaks = breaks,
-        include.lowest = TRUE,
-        labels = FALSE
+      pos_xg <- xg[is.finite(xg) & xg > 0]
+      xg_cap <- suppressWarnings(
+        stats::quantile(
+          pos_xg,
+          probs = 0.98,
+          na.rm = TRUE,
+          names = FALSE
+        )
       )
-      base_pal <- c('blue', '#4B6FD8', '#A15DD5', '#F8766D', 'red')
-      pal <- base_pal[seq_len(max(bin, na.rm = TRUE))]
-      col_vec <- pal[bin]
-      col_vec[is.na(col_vec)] <- 'blue'
-      col_vec <- grDevices::adjustcolor(col_vec, alpha.f = 0.9)
-      k <- length(breaks) - 1L
-      color_labels <- character(k)
-      for (i in seq_len(k)) {
-        lo <- breaks[i]
-        hi <- breaks[i + 1L]
-        if (i == 1L) {
-          color_labels[i] <- sprintf('\u2264 %.2f xG', hi)
-        } else if (i == k) {
-          color_labels[i] <- sprintf('> %.2f xG', lo)
-        } else {
-          color_labels[i] <- sprintf('%.2f-%.2f xG', lo, hi)
-        }
+      if (!is.finite(xg_cap) || xg_cap <= 0) {
+        xg_cap <- 0.20
       }
+      xg_cap <- min(1, xg_cap)
+      scale_xg <- function(v) {
+        vv <- pmax(0, pmin(v, xg_cap))
+        log1p(99 * (vv / xg_cap)) / log(100)
+      }
+      pal_cont <- grDevices::colorRampPalette(
+        c('#2166AC', '#67A9CF', '#D1E5F0', '#FDAE61', '#B2182B')
+      )(256)
+      col_idx <- 1L + floor(scale_xg(xg) * 255)
+      col_idx[!is.finite(col_idx)] <- 1L
+      col_idx <- pmax(1L, pmin(256L, as.integer(col_idx)))
+      col_vec <- pal_cont[col_idx]
+      n_ticks <- 4L
+      legend_scaled <- seq(0, 1, length.out = n_ticks)
+      legend_vals <- xg_cap * (exp(legend_scaled * log(100)) - 1) / 99
+      legend_vals[1] <- 0
+      legend_vals[n_ticks] <- xg_cap
+      label_fmt <- if (xg_cap < 0.1) '%.3f xG' else '%.2f xG'
+      top_fmt <- if (xg_cap < 0.1) '%.3f+ xG' else '%.2f+ xG'
+      color_labels <- sprintf(label_fmt, legend_vals)
+      color_labels[length(color_labels)] <- sprintf(top_fmt, xg_cap)
       pch_vec <- rep(16L, length(type_shot))
       pch_vec[type_shot == 'goal']         <- 8
       pch_vec[type_shot == 'shot-on-goal'] <- 16
@@ -190,17 +177,44 @@ ig_game_shot_locations <- function(
         bty    = 'n',
         cex    = 0.8
       )
-      graphics::legend(
-        x      = x_mid,
-        y      = y_top_colors - 3,
-        horiz  = TRUE,
-        xjust  = 0.5,
-        legend = color_labels,
-        pch    = 18,
-        col    = pal,
-        pt.cex = 1.25,
-        bty    = 'n',
-        cex    = 0.8
+      y_bar_center <- y_top_colors - 7
+      rng_x <- usr[2] - usr[1]
+      bar_half_w <- 0.20 * rng_x
+      bar_h <- 1.7
+      x_left <- x_mid - bar_half_w
+      x_right <- x_mid + bar_half_w
+      y_bottom <- y_bar_center - bar_h / 2
+      y_top <- y_bar_center + bar_h / 2
+      bar_img <- grDevices::as.raster(matrix(pal_cont, nrow = 1L))
+      graphics::rasterImage(
+        image       = bar_img,
+        xleft       = x_left,
+        ybottom     = y_bottom,
+        xright      = x_right,
+        ytop        = y_top,
+        interpolate = FALSE
+      )
+      graphics::rect(
+        xleft   = x_left,
+        ybottom = y_bottom,
+        xright  = x_right,
+        ytop    = y_top,
+        border  = 'black',
+        lwd     = 0.75
+      )
+      tick_x <- x_left + legend_scaled * (x_right - x_left)
+      graphics::segments(
+        x0  = tick_x,
+        y0  = y_bottom,
+        x1  = tick_x,
+        y1  = y_bottom - 0.8
+      )
+      graphics::text(
+        x      = tick_x,
+        y      = y_bottom - 1.4,
+        labels = color_labels,
+        cex    = 0.7,
+        adj    = c(0.5, 1)
       )
       graphics::text(
         x      = 65,
@@ -307,20 +321,10 @@ x_game_shot_locations <- function(
         on.exit(grDevices::dev.off(), add = TRUE)
       }
       pbp <- gc_play_by_play(game)
-      pbp <- flag_is_home(pbp)
-      pbp <- normalize_coordinates(pbp)
+      pbp <- calculate_expected_goals(pbp, model = model)
       x_col <- 'xCoordNorm'
       y_col <- 'yCoordNorm'
-      if (model == 1L) {
-        pbp   <- calculate_expected_goals_v1(pbp)
-        xg_col <- 'xG_v1'
-      } else if (model == 2L) {
-        pbp   <- calculate_expected_goals_v2(pbp)
-        xg_col <- 'xG_v2'
-      } else {
-        pbp   <- calculate_expected_goals_v3(pbp)
-        xg_col <- 'xG_v3'
-      }
+      xg_col <- 'xG'
       type <- as.character(pbp[['typeDescKey']])
       shot_types <- c('goal', 'shot-on-goal', 'missed-shot', 'blocked-shot')
       idx_shot <- !is.na(type) & type %in% shot_types
@@ -341,47 +345,44 @@ x_game_shot_locations <- function(
       type_shot <- as.character(shots[['typeDescKey']])
       x <- as.numeric(shots[[x_col]])
       y <- as.numeric(shots[[y_col]])
-      x_j <- x + stats::runif(length(x), -0.8, 0.8)
-      y_j <- y + stats::runif(length(y), -0.4, 0.4)
+      x_j <- x + stats::runif(length(x), -0.6, 0.6)
+      y_j <- y + stats::runif(length(y), -0.3, 0.3)
       xg <- as.numeric(shots[[xg_col]])
-      xg[is.na(xg) | xg < 0] <- 0
+      xg[!is.finite(xg) | xg < 0] <- 0
       xg[xg > 1] <- 1
-      nz <- xg[xg > 0]
-      if (length(nz) < 5L) {
-        breaks <- c(0, 0.02, 0.05, 0.10, 0.20, 1.00)
-      } else {
-        qs <- unname(stats::quantile(
-          nz,
-          probs = c(0.20, 0.40, 0.60, 0.80),
-          na.rm = TRUE
-        ))
-        breaks <- c(0, qs, 1)
-      }
-      breaks <- sort(unique(breaks))
-      bin <- cut(
-        xg,
-        breaks = breaks,
-        include.lowest = TRUE,
-        labels = FALSE
+      pos_xg <- xg[is.finite(xg) & xg > 0]
+      xg_cap <- suppressWarnings(
+        stats::quantile(
+          pos_xg,
+          probs = 0.98,
+          na.rm = TRUE,
+          names = FALSE
+        )
       )
-      base_pal <- c('blue', '#4B6FD8', '#A15DD5', '#F8766D', 'red')
-      pal <- base_pal[seq_len(max(bin, na.rm = TRUE))]
-      col_vec <- pal[bin]
-      col_vec[is.na(col_vec)] <- 'blue'
-      col_vec <- grDevices::adjustcolor(col_vec, alpha.f = 0.9)
-      k <- length(breaks) - 1L
-      color_labels <- character(k)
-      for (i in seq_len(k)) {
-        lo <- breaks[i]
-        hi <- breaks[i + 1L]
-        if (i == 1L) {
-          color_labels[i] <- sprintf('\u2264 %.2f xG', hi)
-        } else if (i == k) {
-          color_labels[i] <- sprintf('> %.2f xG', lo)
-        } else {
-          color_labels[i] <- sprintf('%.2f-%.2f xG', lo, hi)
-        }
+      if (!is.finite(xg_cap) || xg_cap <= 0) {
+        xg_cap <- 0.20
       }
+      xg_cap <- min(1, xg_cap)
+      scale_xg <- function(v) {
+        vv <- pmax(0, pmin(v, xg_cap))
+        log1p(99 * (vv / xg_cap)) / log(100)
+      }
+      pal_cont <- grDevices::colorRampPalette(
+        c('#2166AC', '#67A9CF', '#D1E5F0', '#FDAE61', '#B2182B')
+      )(256)
+      col_idx <- 1L + floor(scale_xg(xg) * 255)
+      col_idx[!is.finite(col_idx)] <- 1L
+      col_idx <- pmax(1L, pmin(256L, as.integer(col_idx)))
+      col_vec <- pal_cont[col_idx]
+      n_ticks <- 4L
+      legend_scaled <- seq(0, 1, length.out = n_ticks)
+      legend_vals <- xg_cap * (exp(legend_scaled * log(100)) - 1) / 99
+      legend_vals[1] <- 0
+      legend_vals[n_ticks] <- xg_cap
+      label_fmt <- if (xg_cap < 0.1) '%.3f xG' else '%.2f xG'
+      top_fmt <- if (xg_cap < 0.1) '%.3f+ xG' else '%.2f+ xG'
+      color_labels <- sprintf(label_fmt, legend_vals)
+      color_labels[length(color_labels)] <- sprintf(top_fmt, xg_cap)
       pch_vec <- rep(16L, length(type_shot))
       pch_vec[type_shot == 'goal']         <- 8
       pch_vec[type_shot == 'shot-on-goal'] <- 16
@@ -414,17 +415,44 @@ x_game_shot_locations <- function(
         bty    = 'n',
         cex    = 0.8
       )
-      graphics::legend(
-        x      = x_mid,
-        y      = y_top_colors - 9,
-        horiz  = TRUE,
-        xjust  = 0.5,
-        legend = color_labels,
-        pch    = 18,
-        col    = pal,
-        pt.cex = 1.25,
-        bty    = 'n',
-        cex    = 0.8
+      y_bar_center <- y_top_colors - 13
+      rng_x <- usr[2] - usr[1]
+      bar_half_w <- 0.20 * rng_x
+      bar_h <- 1.7
+      x_left <- x_mid - bar_half_w
+      x_right <- x_mid + bar_half_w
+      y_bottom <- y_bar_center - bar_h / 2
+      y_top <- y_bar_center + bar_h / 2
+      bar_img <- grDevices::as.raster(matrix(pal_cont, nrow = 1L))
+      graphics::rasterImage(
+        image       = bar_img,
+        xleft       = x_left,
+        ybottom     = y_bottom,
+        xright      = x_right,
+        ytop        = y_top,
+        interpolate = FALSE
+      )
+      graphics::rect(
+        xleft   = x_left,
+        ybottom = y_bottom,
+        xright  = x_right,
+        ytop    = y_top,
+        border  = 'black',
+        lwd     = 0.75
+      )
+      tick_x <- x_left + legend_scaled * (x_right - x_left)
+      graphics::segments(
+        x0  = tick_x,
+        y0  = y_bottom,
+        x1  = tick_x,
+        y1  = y_bottom - 0.8
+      )
+      graphics::text(
+        x      = tick_x,
+        y      = y_bottom - 1.4,
+        labels = color_labels,
+        cex    = 0.7,
+        adj    = c(0.5, 1)
       )
       graphics::text(
         x      = 65,
@@ -517,18 +545,8 @@ ig_game_cumulative_expected_goals <- function(
         on.exit(grDevices::dev.off(), add = TRUE)
       }
       pbp <- gc_play_by_play(game)
-      pbp <- flag_is_home(pbp)
-      pbp <- strip_time_period(pbp)
-      if (model == 1L) {
-        pbp   <- calculate_expected_goals_v1(pbp)
-        xg_col <- 'xG_v1'
-      } else if (model == 2L) {
-        pbp   <- calculate_expected_goals_v2(pbp)
-        xg_col <- 'xG_v2'
-      } else {
-        pbp   <- calculate_expected_goals_v3(pbp)
-        xg_col <- 'xG_v3'
-      }
+      pbp <- calculate_expected_goals(pbp, model = model)
+      xg_col <- 'xG'
       type <- as.character(pbp[['typeDescKey']])
       shot_types <- c('goal', 'shot-on-goal', 'missed-shot', 'blocked-shot')
       idx_shot <- !is.na(type) & type %in% shot_types
@@ -716,18 +734,8 @@ x_game_cumulative_expected_goals <- function(
         on.exit(grDevices::dev.off(), add = TRUE)
       }
       pbp <- gc_play_by_play(game)
-      pbp <- flag_is_home(pbp)
-      pbp <- strip_time_period(pbp)
-      if (model == 1L) {
-        pbp   <- calculate_expected_goals_v1(pbp)
-        xg_col <- 'xG_v1'
-      } else if (model == 2L) {
-        pbp   <- calculate_expected_goals_v2(pbp)
-        xg_col <- 'xG_v2'
-      } else {
-        pbp   <- calculate_expected_goals_v3(pbp)
-        xg_col <- 'xG_v3'
-      }
+      pbp <- calculate_expected_goals(pbp, model = model)
+      xg_col <- 'xG'
       type <- as.character(pbp[['typeDescKey']])
       shot_types <- c('goal', 'shot-on-goal', 'missed-shot', 'blocked-shot')
       idx_shot <- !is.na(type) & type %in% shot_types

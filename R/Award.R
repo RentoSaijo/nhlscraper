@@ -13,7 +13,9 @@ awards <- function() {
       path = 'trophy',
       type = 'r'
     )$data
-    names(trophies)[names(trophies) == 'id'] <- 'trophyId'
+    names(trophies)[names(trophies) == 'id']        <- 'trophyId'
+    names(trophies)[names(trophies) == 'name']      <- 'trophyName'
+    names(trophies)[names(trophies) == 'shortName'] <- 'trophyShortName'
     trophies
   }, error = function(e) {
     message('Unable to create connection; please try again later.')
@@ -37,6 +39,7 @@ award_winners <- function() {
       type = 'r'
     )$data
     winners$id <- NULL
+    names(winners)[names(winners) == 'fullName'] <- 'playerFullName'
     winners[order(winners$trophyId, winners$seasonId, winners$status), ]
   }, error = function(e) {
     message('Unable to create connection; please try again later.')

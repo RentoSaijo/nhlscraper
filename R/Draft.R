@@ -48,7 +48,11 @@ draft_picks <- function() {
       type = 'r'
     )$data
     picks <- picks[order(picks$draftYear), ]
-    names(picks)[names(picks) == 'id'] <- 'draftPickId'
+    names(picks)[names(picks) == 'id']        <- 'draftPickId'
+    names(picks)[names(picks) == 'firstName'] <- 'playerFirstName'
+    names(picks)[names(picks) == 'lastName']  <- 'playerLastName'
+    names(picks)[names(picks) == 'position']  <- 'positionCode'
+    names(picks)[names(picks) == 'triCode']   <- 'teamTriCode'
     picks
   }, error = function(e) {
     message('Unable to create connection; please try again later.')
@@ -73,8 +77,12 @@ draft_prospects <- function() {
       type = 'r'
     )$data
     prospects <- prospects[order(prospects$firstName, prospects$lastName), ]
-    names(prospects)[names(prospects) == 'id']       <- 'prospectId'
-    names(prospects)[names(prospects) == 'playerid'] <- 'playerId'
+    names(prospects)[names(prospects) == 'id']                 <- 'prospectId'
+    names(prospects)[names(prospects) == 'playerid']           <- 'playerId'
+    names(prospects)[names(prospects) == 'firstName']          <- 'playerFirstName'
+    names(prospects)[names(prospects) == 'lastName']           <- 'playerLastName'
+    names(prospects)[names(prospects) == 'birthCountry3code']  <- 'birthCountryTriCode'
+    names(prospects)[names(prospects) == 'birthStateProvCode'] <- 'birthStateProvinceCode'
     prospects
   }, error = function(e) {
     message('Unable to create connection; please try again later.')
@@ -127,10 +135,13 @@ draft_rankings <- function(
         `intl goalies`           = 4,
         `international goalies`  = 4
       )
-      nhl_api(
+      rankings <- nhl_api(
         path = sprintf('v1/draft/rankings/%s/%s', class, category),
         type = 'w'
       )$rankings
+      names(rankings)[names(rankings) == 'firstName'] <- 'playerFirstName'
+      names(rankings)[names(rankings) == 'lastName']  <- 'playerLastName'
+      rankings
     },
     error = function(e) {
       message('Invalid argument(s); refer to help file.')
@@ -155,7 +166,10 @@ combine_reports <- function() {
       type = 'r'
     )$data
     reports$id <- NULL
-    reports[order(reports$draftYear, reports$event), ]
+    reports    <- reports[order(reports$draftYear, reports$event), ]
+    names(reports)[names(reports) == 'firstName'] <- 'playerFirstName'
+    names(reports)[names(reports) == 'lastName']  <- 'playerLastName'
+    reports
   }, error = function(e) {
     message('Unable to create connection; please try again later.')
     data.frame()
@@ -197,10 +211,14 @@ lottery_odds <- function() {
 
 draft_tracker <- function() {
   tryCatch({
-    nhl_api(
+    picks <- nhl_api(
       path = 'v1/draft-tracker/picks/now',
       type = 'w'
     )$picks
+    names(picks) <- normalize_locale_names(names(picks))
+    names(picks) <- scope_person_name_cols(names(picks), 'player')
+    names(picks) <- normalize_team_abbrev_cols(names(picks))
+    picks
   }, error = function(e) {
     message('Unable to create connection; please try again later.')
     data.frame()
