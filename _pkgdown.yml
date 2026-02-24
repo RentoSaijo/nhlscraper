@@ -221,8 +221,9 @@ reference:
       
   - subtitle: "Load"
     desc: >
-      Functions to load pre-scraped full season play-by-plays & shift charts
+      Functions to load pre-scraped contracts and full season play-by-plays & shift charts
     contents:
+      - contracts
       - gc_play_by_plays
       - wsc_play_by_plays
       - shift_charts

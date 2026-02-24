@@ -3,4 +3,3 @@ test_that("attendance() returns non-empty data.frame", {
   test <- attendance()
   expect_true(is.data.frame(test) && nrow(test) > 0)
 })
-

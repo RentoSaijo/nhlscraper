@@ -3,4 +3,3 @@ test_that("goalie_regular_stats() returns non-empty data.frame", {
   test <- goalie_regular_stats()
   expect_true(is.data.frame(test) && nrow(test) > 0)
 })
-

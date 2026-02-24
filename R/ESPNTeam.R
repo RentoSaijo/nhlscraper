@@ -53,26 +53,28 @@ espn_team_summary <- function(team = 1) {
       if (is.null(x)) NA else x
     }, error = function(e) NA)
   }
-  team <- tryCatch(
-    espn_api(
-      path = sprintf('teams/%s', team),
-      type = 'c'
-    ),
+  tryCatch(
+    expr = {
+      team <- as.integer(team[[1]])
+      if (is.na(team)) {
+        stop('Invalid team.')
+      }
+      team <- espn_api(
+        path = sprintf('teams/%s', team),
+        type = 'c'
+      )
+      data.frame(
+        location      = get_or_na(team, 'location'),
+        teamName      = get_or_na(team, 'name'),
+        teamFullName  = get_or_na(team, 'displayName'),
+        teamTriCode   = get_or_na(team, 'abbreviation'),
+        isActive      = get_or_na(team, 'isActive'),
+        stringsAsFactors = FALSE
+      )
+    },
     error = function(e) {
-      message(e)
       message('Invalid argument(s); refer to help file.')
-      NULL
+      data.frame()
     }
-  )
-  if (is.null(team)) {
-    return(data.frame())
-  }
-  data.frame(
-    location      = get_or_na(team, 'location'),
-    teamName      = get_or_na(team, 'name'),
-    teamFullName  = get_or_na(team, 'displayName'),
-    teamTriCode   = get_or_na(team, 'abbreviation'),
-    isActive      = get_or_na(team, 'isActive'),
-    stringsAsFactors = FALSE
   )
 }

@@ -3,4 +3,3 @@ test_that("coach_franchise_statistics() returns non-empty data.frame", {
   test <- coach_franchise_statistics()
   expect_true(is.data.frame(test) && nrow(test) > 0)
 })
-

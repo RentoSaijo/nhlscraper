@@ -3,4 +3,3 @@ test_that("playoff_season_statistics() returns non-empty data.frame", {
   test <- playoff_season_statistics()
   expect_true(is.data.frame(test) && nrow(test) > 0)
 })
-

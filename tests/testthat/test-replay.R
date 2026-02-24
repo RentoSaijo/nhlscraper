@@ -12,4 +12,3 @@ test_that("replay(0) returns message and empty data.frame", {
   )
   expect_true(is.data.frame(test) && nrow(test) == 0)
 })
-

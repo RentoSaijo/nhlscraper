@@ -3,4 +3,3 @@ test_that("games() returns non-empty data.frame", {
   test <- games()
   expect_true(is.data.frame(test) && nrow(test) > 0)
 })
-

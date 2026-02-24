@@ -12,4 +12,3 @@ test_that("wsc_play_by_play(0) returns message and empty data.frame", {
   )
   expect_true(is.data.frame(test) && nrow(test) == 0)
 })
-

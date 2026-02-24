@@ -3,4 +3,3 @@ test_that("goalie_report_configurations() returns non-empty list", {
   test <- goalie_report_configurations()
   expect_true(is.list(test) && length(test) > 0)
 })
-

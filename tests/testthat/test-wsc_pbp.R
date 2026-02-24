@@ -3,4 +3,3 @@ test_that("wsc_pbp() returns non-empty data.frame", {
   test <- wsc_pbp()
   expect_true(is.data.frame(test) && nrow(test) > 0)
 })
-

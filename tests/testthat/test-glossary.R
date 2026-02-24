@@ -3,4 +3,3 @@ test_that("glossary() returns non-empty data.frame", {
   test <- glossary()
   expect_true(is.data.frame(test) && nrow(test) > 0)
 })
-

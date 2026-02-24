@@ -153,7 +153,12 @@ if (file.exists('R/sysdata.rda')) {
   load('R/sysdata.rda', envir = save_env)
 }
 assign('.contracts_base', out, envir = save_env)
-save(list = ls(save_env, all.names = TRUE), file = 'R/sysdata.rda', envir = save_env)
+save(
+  list = ls(save_env, all.names = TRUE),
+  file = 'R/sysdata.rda',
+  envir = save_env,
+  compress = 'xz'
+)
 message(
   sprintf(
     'Saved .contracts_base to R/sysdata.rda (%s rows; %s duplicate rows removed; %s invalid-season rows removed).',

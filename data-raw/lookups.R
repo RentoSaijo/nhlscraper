@@ -47,4 +47,9 @@ if (file.exists('R/sysdata.rda')) {
 }
 assign('.to_team_tri_code', .to_team_tri_code, envir = save_env)
 assign('.to_team_id', .to_team_id, envir = save_env)
-save(list = ls(save_env, all.names = TRUE), file = 'R/sysdata.rda', envir = save_env)
+save(
+  list = ls(save_env, all.names = TRUE),
+  file = 'R/sysdata.rda',
+  envir = save_env,
+  compress = 'xz'
+)

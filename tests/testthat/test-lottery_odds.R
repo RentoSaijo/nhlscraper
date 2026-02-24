@@ -3,4 +3,3 @@ test_that("lottery_odds() returns non-empty data.frame", {
   test <- lottery_odds()
   expect_true(is.data.frame(test) && nrow(test) > 0)
 })
-

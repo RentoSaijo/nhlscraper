@@ -3,4 +3,3 @@ test_that("franchise_playoff_situational_results() returns non-empty data.frame"
   test <- franchise_playoff_situational_results()
   expect_true(is.data.frame(test) && nrow(test) > 0)
 })
-

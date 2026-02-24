@@ -3,4 +3,3 @@ test_that("standings_rules() returns non-empty data.frame", {
   test <- standings_rules()
   expect_true(is.data.frame(test) && nrow(test) > 0)
 })
-

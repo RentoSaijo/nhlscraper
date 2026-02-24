@@ -3,4 +3,3 @@ test_that("game_type_now() returns scalar integer", {
   test <- game_type_now()
   expect_true(is.integer(test) && length(test) == 1)
 })
-

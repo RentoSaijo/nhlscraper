@@ -12,4 +12,3 @@ test_that("goalie_edge_five_versus_five(0) returns message and empty list", {
   )
   expect_true(is.list(test) && length(test) == 0)
 })
-

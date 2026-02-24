@@ -3,4 +3,3 @@ test_that("combine_reports() returns non-empty data.frame", {
   test <- combine_reports()
   expect_true(is.data.frame(test) && nrow(test) > 0)
 })
-

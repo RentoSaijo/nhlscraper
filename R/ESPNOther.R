@@ -13,6 +13,10 @@
 espn_transactions <- function(season = season_now()) {
   tryCatch(
     expr = {
+      season <- as.integer(season[[1]])
+      if (is.na(season)) {
+        stop('Invalid season.')
+      }
       seasons_tbl <- seasons()
       idx         <- which(seasons_tbl$seasonId == season)
       if (!length(idx)) {
@@ -79,7 +83,6 @@ espn_transactions <- function(season = season_now()) {
       transactions
     },
     error = function(e) {
-      message(e)
       message('Invalid argument(s); refer to help file.')
       data.frame()
     }
@@ -100,12 +103,19 @@ espn_transactions <- function(season = season_now()) {
 espn_futures <- function(season = season_now()) {
   tryCatch(
     expr = {
+      season <- as.integer(season[[1]])
+      if (is.na(season) || !season %in% seasons()$seasonId) {
+        stop('Invalid season.')
+      }
       season <- season %% 1e4
       futures <- espn_api(
         path  = sprintf('seasons/%s/futures', season),
         query = list(lang = 'en', region = 'us', limit = 1000),
         type  = 'c'
       )$items
+      if (!is.data.frame(futures)) {
+        futures <- as.data.frame(futures, stringsAsFactors = FALSE)
+      }
       names(futures)[names(futures) == 'id']          <- 'espnFutureId'
       names(futures)[names(futures) == 'name']        <- 'futureName'
       names(futures)[names(futures) == 'displayName'] <- 'futureDisplayName'

@@ -3,4 +3,3 @@ test_that("coaches() returns non-empty data.frame", {
   test <- coaches()
   expect_true(is.data.frame(test) && nrow(test) > 0)
 })
-

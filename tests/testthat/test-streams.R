@@ -3,4 +3,3 @@ test_that("streams() returns data.frame", {
   test <- streams()
   expect_true(is.data.frame(test))
 })
-

@@ -3,4 +3,3 @@ test_that("add_on_ice_players(gc_pbp(), shift_chart()) returns non-empty data.fr
   test <- add_on_ice_players(gc_pbp(), shift_chart())
   expect_true(is.data.frame(test) && nrow(test) > 0)
 })
-

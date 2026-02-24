@@ -12,4 +12,3 @@ test_that("skater_edge_shot_speed(0) returns message and empty list", {
   )
   expect_true(is.list(test) && length(test) == 0)
 })
-

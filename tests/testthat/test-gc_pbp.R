@@ -3,4 +3,3 @@ test_that("gc_pbp() returns non-empty data.frame", {
   test <- gc_pbp()
   expect_true(is.data.frame(test) && nrow(test) > 0)
 })
-

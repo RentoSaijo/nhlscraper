@@ -12,4 +12,3 @@ test_that("schedule(20250101) returns message and empty data.frame", {
   )
   expect_true(is.data.frame(test) && nrow(test) == 0)
 })
-

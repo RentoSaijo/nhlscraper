@@ -3,4 +3,3 @@ test_that("awards() returns non-empty data.frame", {
   test <- awards()
   expect_true(is.data.frame(test) && nrow(test) > 0)
 })
-
