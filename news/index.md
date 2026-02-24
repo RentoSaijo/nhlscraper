@@ -1,6 +1,6 @@
 # Changelog
 
-## nhlscraper 0.4.2.9000
+## nhlscraper 0.5.0
 
 - All return IDs, codes, and names are now standardized (i.e., no more
   arbitrary `id` columns and inconsistent column names across
