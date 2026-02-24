@@ -23,8 +23,10 @@
 <url><loc>https://rentosaijo.github.io/nhlscraper/reference/coach_franchise_statistics.html</loc></url>
 <url><loc>https://rentosaijo.github.io/nhlscraper/reference/coaches.html</loc></url>
 <url><loc>https://rentosaijo.github.io/nhlscraper/reference/combine_reports.html</loc></url>
+<url><loc>https://rentosaijo.github.io/nhlscraper/reference/contracts.html</loc></url>
 <url><loc>https://rentosaijo.github.io/nhlscraper/reference/count_goals_shots.html</loc></url>
 <url><loc>https://rentosaijo.github.io/nhlscraper/reference/countries.html</loc></url>
+<url><loc>https://rentosaijo.github.io/nhlscraper/reference/dot_to_camel.html</loc></url>
 <url><loc>https://rentosaijo.github.io/nhlscraper/reference/draft_picks.html</loc></url>
 <url><loc>https://rentosaijo.github.io/nhlscraper/reference/draft_prospects.html</loc></url>
 <url><loc>https://rentosaijo.github.io/nhlscraper/reference/draft_rankings.html</loc></url>
@@ -162,6 +164,8 @@
 <url><loc>https://rentosaijo.github.io/nhlscraper/reference/lottery_odds.html</loc></url>
 <url><loc>https://rentosaijo.github.io/nhlscraper/reference/nhl_api.html</loc></url>
 <url><loc>https://rentosaijo.github.io/nhlscraper/reference/normalize_coordinates.html</loc></url>
+<url><loc>https://rentosaijo.github.io/nhlscraper/reference/normalize_locale_names.html</loc></url>
+<url><loc>https://rentosaijo.github.io/nhlscraper/reference/normalize_team_abbrev_cols.html</loc></url>
 <url><loc>https://rentosaijo.github.io/nhlscraper/reference/normalize_team_key.html</loc></url>
 <url><loc>https://rentosaijo.github.io/nhlscraper/reference/officials.html</loc></url>
 <url><loc>https://rentosaijo.github.io/nhlscraper/reference/penalty_shots.html</loc></url>
@@ -176,6 +180,7 @@
 <url><loc>https://rentosaijo.github.io/nhlscraper/reference/roster.html</loc></url>
 <url><loc>https://rentosaijo.github.io/nhlscraper/reference/roster_statistics.html</loc></url>
 <url><loc>https://rentosaijo.github.io/nhlscraper/reference/schedule.html</loc></url>
+<url><loc>https://rentosaijo.github.io/nhlscraper/reference/scope_person_name_cols.html</loc></url>
 <url><loc>https://rentosaijo.github.io/nhlscraper/reference/scores.html</loc></url>
 <url><loc>https://rentosaijo.github.io/nhlscraper/reference/season_now.html</loc></url>
 <url><loc>https://rentosaijo.github.io/nhlscraper/reference/seasons.html</loc></url>

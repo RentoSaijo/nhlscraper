@@ -1,7 +1,9 @@
 # Access the goalie EDGE statistics leaders for a season and game type
 
-`goalie_edge_leaders()` scrapes the goalie EDGE statistics leaders for a
-given set of `season` and `game_type`.
+`goalie_edge_leaders()` retrieves the goalie EDGE statistics leaders for
+a season and game type as a nested `list` that separates summary and
+detail blocks for NHL EDGE style tracking outputs and
+relative-performance context.
 
 ## Usage
 

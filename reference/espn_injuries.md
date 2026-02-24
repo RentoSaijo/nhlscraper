@@ -1,7 +1,8 @@
 # Access the real-time ESPN injury reports
 
-`espn_injuries()` scrapes the real-time ESPN injury reports for all the
-teams.
+`espn_injuries()` retrieves the real-time ESPN injury reports as a
+`data.frame` where each row represents team and includes detail on
+availability status tracking for injuries or transactions.
 
 ## Usage
 

@@ -1,6 +1,8 @@
 # Access the summary for a player
 
-`player_summary()` scrapes the summary for a given `player`.
+`player_summary()` retrieves the summary for a player as a nested `list`
+that separates summary and detail blocks for player identity, role,
+handedness, and biographical profile.
 
 ## Usage
 

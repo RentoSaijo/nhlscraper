@@ -1,7 +1,9 @@
 # Access the EDGE summary for a team, season, and game type
 
-`team_edge_summary()` scrapes the EDGE summary for a given set of
-`team`, `season`, and `game_type`.
+`team_edge_summary()` retrieves the EDGE summary for a team, season, and
+game type as a nested `list` that separates summary and detail blocks
+for team identity, affiliation, and matchup-side context plus NHL EDGE
+style tracking outputs and relative-performance context.
 
 ## Usage
 

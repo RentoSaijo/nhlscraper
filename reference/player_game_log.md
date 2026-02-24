@@ -1,7 +1,10 @@
 # Access the game log for a player, season, and game type
 
-`player_game_log()` scrapes the game log for a given set of `player`,
-`season`, and `game_type`.
+`player_game_log()` retrieves the game log for a player, season, and
+game type as a `data.frame` where each row represents game and includes
+detail on game timeline state, period/clock progression, and matchup
+flow plus production, workload, efficiency, and result-level performance
+outcomes.
 
 ## Usage
 

@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">nhlscraper</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.4.2.9000</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.5.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -41,9 +41,13 @@
 
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.4.2.9000" id="nhlscraper-0429000">nhlscraper 0.4.2.9000<a class="anchor" aria-label="anchor" href="#nhlscraper-0429000"></a></h2>
-<ul><li>All return IDs are now standardized (i.e., no more arbitrary <code>id</code> columns).</li>
+<ul><li>All return IDs, codes, and names are now standardized (i.e., no more arbitrary <code>id</code> columns and inconsistent column names across functions).</li>
 <li>
-<code><a href="../reference/calculate_expected_goals.html">calculate_expected_goals()</a></code> now combines the previous xG calculation functions.</li>
+<code><a href="../reference/contracts.html">contracts()</a></code> is now added to get all NHL contracts since the 2011-2012 season.</li>
+<li>
+<code><a href="../reference/ig_game_shot_locations.html">ig_game_shot_locations()</a></code> and <code><a href="../reference/x_game_shot_locations.html">x_game_shot_locations()</a></code> now use continuous xG scale instead of bins.</li>
+<li>
+<code><a href="../reference/calculate_expected_goals.html">calculate_expected_goals()</a></code> now combines the previous xG calculation functions; as a result, <code>calculate_expected_goals_v1()</code>, <code>calculate_expected_goals_v2()</code>, and <code>calculate_expected_goals_v3()</code> are now defunct.</li>
 <li>
 <code><a href="../reference/calculate_speed.html">calculate_speed()</a></code> is now added to calculate event-to-event deltas in play-by-plays.</li>
 <li>

@@ -427,8 +427,11 @@ Functions to help analyze the play-by-play data
 
 ### Load
 
-Functions to load pre-scraped full season play-by-plays & shift charts
+Functions to load pre-scraped contracts and full season play-by-plays &
+shift charts
 
+- [`contracts()`](https://rentosaijo.github.io/nhlscraper/reference/contracts.md)
+  : Access all contracts from packaged internal data
 - [`gc_play_by_plays()`](https://rentosaijo.github.io/nhlscraper/reference/gc_play_by_plays.md)
   [`gc_pbps()`](https://rentosaijo.github.io/nhlscraper/reference/gc_play_by_plays.md)
   : Access the GameCenter (GC) play-by-plays for a season

@@ -1,6 +1,9 @@
 # Access all the draft picks
 
-`draft_picks()` scrapes all the draft picks.
+`draft_picks()` retrieves all the draft picks as a `data.frame` where
+each row represents pick and includes detail on team identity,
+affiliation, and matchup-side context plus player identity, role,
+handedness, and biographical profile.
 
 ## Usage
 

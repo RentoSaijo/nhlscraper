@@ -1,6 +1,8 @@
 # Access the season as of now
 
-`season_now` scrapes the current season.
+`season_now()` retrieves the season as of now and returns a scalar
+integer used as the current-context default in season/game-type
+dependent wrappers.
 
 ## Usage
 

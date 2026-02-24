@@ -1,6 +1,8 @@
 # Access the glossary
 
-`glossary()` scrapes the glossary.
+`glossary()` retrieves the glossary as a `data.frame` where each row
+represents terminology and includes detail on reference definitions and
+rules-framework information.
 
 ## Usage
 

@@ -1,6 +1,8 @@
 # Access all the players
 
-`players()` scrapes all the players.
+`players()` retrieves all the players as a `data.frame` where each row
+represents player and includes detail on player identity, role,
+handedness, and biographical profile.
 
 ## Usage
 

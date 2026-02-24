@@ -1,6 +1,10 @@
 # Access the World Showcase (WSC) summary for a game
 
-`wsc_summary()` scrapes the WSC summary for a given `game`.
+`wsc_summary()` retrieves the World Showcase (WSC) summary for a game as
+a nested `list` that separates summary and detail blocks for game
+timeline state, period/clock progression, and matchup flow, date/season
+filtering windows and chronological context, and venue/location
+geography and regional metadata.
 
 ## Usage
 

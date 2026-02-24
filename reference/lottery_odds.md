@@ -1,6 +1,8 @@
 # Access the draft lottery odds
 
-`lottery_odds()` scrapes the draft lottery odds.
+`lottery_odds()` retrieves the draft lottery odds as a `data.frame`
+where each row represents draft lottery and includes detail on
+draft-cycle evaluation, ranking, and selection tracking detail.
 
 ## Usage
 

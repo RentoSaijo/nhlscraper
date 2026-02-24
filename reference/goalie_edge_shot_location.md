@@ -1,7 +1,11 @@
 # Access the EDGE shot location statistics for a goalie, season, game type, and category
 
-`goalie_edge_shot_location()` scrapes the EDGE shot location statistics
-for a given set of `goalie`, `season`, `game_type`, and `category`.
+`goalie_edge_shot_location()` retrieves the EDGE shot location
+statistics for a goalie, season, game type, and category as a
+`data.frame` where each row represents shot location and includes detail
+on production, workload, efficiency, and result-level performance
+outcomes plus NHL EDGE style tracking outputs and relative-performance
+context.
 
 ## Usage
 

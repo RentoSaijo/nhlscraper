@@ -1,7 +1,9 @@
 # Access the boxscore for a game, team, and position
 
-`boxscore()` scrapes the boxscore for a given set of `game`, `team`, and
-`position`.
+`boxscore()` retrieves the boxscore for a game, team, and position as a
+`data.frame` where each row represents player and includes detail on
+player identity, role, handedness, and biographical profile plus
+production, workload, efficiency, and result-level performance outcomes.
 
 ## Usage
 

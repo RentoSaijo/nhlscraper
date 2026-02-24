@@ -1,7 +1,9 @@
 # Access the team EDGE statistics leaders for a season and game type
 
-`team_edge_leaders()` scrapes the team EDGE statistics leaders for a
-given set of `season` and `game_type`.
+`team_edge_leaders()` retrieves the team EDGE statistics leaders for a
+season and game type as a nested `list` that separates summary and
+detail blocks for NHL EDGE style tracking outputs and
+relative-performance context.
 
 ## Usage
 

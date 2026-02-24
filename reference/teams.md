@@ -1,6 +1,8 @@
 # Access all the teams
 
-`teams()` scrapes all the teams.
+`teams()` retrieves all the teams as a `data.frame` where each row
+represents team and includes detail on team identity, affiliation, and
+matchup-side context.
 
 ## Usage
 

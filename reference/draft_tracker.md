@@ -1,6 +1,10 @@
 # Access the real-time draft tracker
 
-`draft_tracker()` scrapes the real-time draft tracker.
+`draft_tracker()` retrieves the real-time draft tracker as a
+`data.frame` where each row represents player and includes detail on
+team identity, affiliation, and matchup-side context, player identity,
+role, handedness, and biographical profile, and venue/location geography
+and regional metadata.
 
 ## Usage
 

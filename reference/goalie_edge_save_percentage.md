@@ -1,8 +1,9 @@
 # Access the EDGE save percentage statistics for a goalie, season, game type, and category
 
-`goalie_edge_save_percentage()` scrapes the EDGE save percentage
-statistics for a given set of `goalie`, `season`, `game_type`, and
-`category`.
+`goalie_edge_save_percentage()` retrieves the EDGE save percentage
+statistics for a goalie, season, game type, and category as a nested
+`list` that separates summary and detail blocks for NHL EDGE style
+tracking outputs and relative-performance context.
 
 ## Usage
 

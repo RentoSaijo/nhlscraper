@@ -1,6 +1,8 @@
 # Access all the awards
 
-`awards()` scrapes all the awards.
+`awards()` retrieves all the awards as a `data.frame` where each row
+represents award and includes detail on recognition, leaderboard, and
+milestone-watch context.
 
 ## Usage
 

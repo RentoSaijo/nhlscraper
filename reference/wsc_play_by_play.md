@@ -1,6 +1,10 @@
 # Access the World Showcase (WSC) play-by-play for a game
 
-`wsc_play_by_play()` scrapes the WSC play-by-play for given `game`.
+`wsc_play_by_play()` retrieves the World Showcase (WSC) play-by-play for
+a game as a `data.frame` where each row represents event and includes
+detail on game timeline state, period/clock progression, and matchup
+flow, date/season filtering windows and chronological context, and
+player identity, role, handedness, and biographical profile.
 
 ## Usage
 

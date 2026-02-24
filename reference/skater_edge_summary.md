@@ -1,7 +1,9 @@
 # Access the EDGE summary for a skater, season, and game type
 
-`skater_edge_summary()` scrapes the EDGE summary for a given set of
-`skater`, `season`, and `game_type`.
+`skater_edge_summary()` retrieves the EDGE summary for a skater, season,
+and game type as a nested `list` that separates summary and detail
+blocks for player identity, role, handedness, and biographical profile
+plus NHL EDGE style tracking outputs and relative-performance context.
 
 ## Usage
 

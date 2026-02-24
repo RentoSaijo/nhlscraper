@@ -1,6 +1,10 @@
 # Access the ESPN summary for a game
 
-`espn_game_summary()` scrapes the ESPN summary for a `game`.
+`espn_game_summary()` retrieves the ESPN summary for a game as a nested
+`list` that separates summary and detail blocks for date/season
+filtering windows and chronological context, venue/location geography
+and regional metadata, and playoff-series progression, round status, and
+series leverage.
 
 ## Usage
 

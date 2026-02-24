@@ -1,7 +1,9 @@
 # Access the goalie statistics leaders for a season, game type, and category
 
-`goalie_leaders()` scrapes the goalie statistics leaders for a given set
-of `season`, `game_type`, and `category`.
+`goalie_leaders()` retrieves the goalie statistics leaders for a season,
+game type, and category as a `data.frame` where each row represents
+player and includes detail on player identity, role, handedness, and
+biographical profile.
 
 ## Usage
 

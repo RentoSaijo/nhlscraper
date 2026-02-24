@@ -1,6 +1,10 @@
 # Access the GameCenter (GC) summary for a game
 
-`gc_summary()` scrapes the GC summary for a given `game`.
+`gc_summary()` retrieves the GameCenter (GC) summary for a game as a
+nested `list` that separates summary and detail blocks for game timeline
+state, period/clock progression, and matchup flow, date/season filtering
+windows and chronological context, and venue/location geography and
+regional metadata.
 
 ## Usage
 

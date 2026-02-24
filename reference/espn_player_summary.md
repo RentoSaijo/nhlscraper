@@ -1,6 +1,8 @@
 # Access the ESPN summary for a player
 
-`espn_player_summary()` scrapes the ESPN summary for a `player`.
+`espn_player_summary()` retrieves the ESPN summary for a player as a
+`data.frame` where each row represents one result and includes detail on
+game timing, matchup state, scoring flow, and situational event detail.
 
 ## Usage
 
@@ -24,5 +26,4 @@ data.frame with one row
 
 ``` r
 ESPN_summary_Charlie_McAvoy <- espn_player_summary(player = 3988803)
-#> Invalid argument(s); refer to help file.
 ```

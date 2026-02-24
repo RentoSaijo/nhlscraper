@@ -1,7 +1,9 @@
 # Access the EDGE zone time statistics for a team, season, game type, and category
 
-`team_edge_zone_time()` scrapes the EDGE zone time statistics for a
-given set of `team`, `season`, `game_type`, and `category`.
+`team_edge_zone_time()` retrieves the EDGE zone time statistics for a
+team, season, game type, and category as a `data.frame` where each row
+represents strength state and includes detail on NHL EDGE style tracking
+outputs and relative-performance context.
 
 ## Usage
 

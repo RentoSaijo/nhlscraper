@@ -1,6 +1,8 @@
 # Access all the ESPN teams
 
-`espn_teams()` scrapes all the ESPN teams.
+`espn_teams()` retrieves all the ESPN teams as a `data.frame` where each
+row represents ESPN team and includes detail on team composition,
+matchup context, and season progression detail.
 
 ## Usage
 

@@ -1,7 +1,9 @@
 # Access the season(s) and game type(s) in which a player played
 
-`player_seasons()` scrapes the season(s) and game type(s) in which a
-player played in the NHL.
+`player_seasons()` retrieves the season(s) and game type(s) in which a
+player played as a `data.frame` where each row represents season and
+includes detail on date/season filtering windows and chronological
+context.
 
 ## Usage
 

@@ -1,6 +1,9 @@
 # Access the replay for an event
 
-`replay()` scrapes the replay for a given `event`.
+`replay()` retrieves the replay for an event as a `data.frame` where
+each row represents decisecond and includes detail on team identity,
+affiliation, and matchup-side context plus player identity, role,
+handedness, and biographical profile.
 
 ## Usage
 

@@ -1,6 +1,8 @@
 # Access the playoff statistics by season
 
-`playoff_season_statistics()` scrapes the playoff statistics by season.
+`playoff_season_statistics()` retrieves the playoff statistics by season
+as a `data.frame` where each row represents season and includes detail
+on date/season filtering windows and chronological context.
 
 ## Usage
 

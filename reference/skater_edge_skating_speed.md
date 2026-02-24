@@ -1,7 +1,9 @@
 # Access the EDGE skating speed statistics for a skater, season, game type, and category
 
-`skater_edge_skating_speed()` scrapes the EDGE skating speed statistics
-for a given set of `skater`, `season`, `game_type`, and `category`.
+`skater_edge_skating_speed()` retrieves the EDGE skating speed
+statistics for a skater, season, game type, and category as a nested
+`list` that separates summary and detail blocks for NHL EDGE style
+tracking outputs and relative-performance context.
 
 ## Usage
 

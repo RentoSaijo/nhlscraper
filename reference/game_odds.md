@@ -1,7 +1,9 @@
 # Access the real-time game odds for a country by partnered bookmaker
 
-`game_odds()` scrapes the real-time game odds for a given `country` by
-partnered bookmaker.
+`game_odds()` retrieves the real-time game odds for a country by
+partnered bookmaker as a `data.frame` where each row represents game and
+includes detail on betting market lines, prices, and provider-level
+context.
 
 ## Usage
 
@@ -25,5 +27,4 @@ data.frame with one row per game
 
 ``` r
 game_odds_CA <- game_odds(country = 'CA')
-#> Invalid argument(s); refer to help file.
 ```

@@ -1,6 +1,9 @@
 # Access the rosters for a game
 
-`game_rosters()` scrapes the rosters for a given `game`.
+`game_rosters()` retrieves the rosters for a game as a `data.frame`
+where each row represents player and includes detail on team identity,
+affiliation, and matchup-side context plus player identity, role,
+handedness, and biographical profile.
 
 ## Usage
 

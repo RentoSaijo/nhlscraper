@@ -1,6 +1,9 @@
 # Access the spotlight players
 
-`spotlight_players()` scrapes the spotlight players.
+`spotlight_players()` retrieves the spotlight players as a `data.frame`
+where each row represents player and includes detail on team identity,
+affiliation, and matchup-side context plus player identity, role,
+handedness, and biographical profile.
 
 ## Usage
 

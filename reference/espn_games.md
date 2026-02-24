@@ -1,6 +1,8 @@
 # Access the ESPN games for a season
 
-`espn_games()` scrapes the ESPN games for a given `season`.
+`espn_games()` retrieves the ESPN games for a season as a `data.frame`
+where each row represents ESPN and includes detail on game timing,
+matchup state, scoring flow, and situational event detail.
 
 ## Usage
 
@@ -24,5 +26,4 @@ data.frame with one row per ESPN game
 
 ``` r
 ESPN_games_20242025 <- espn_games(season = 20242025)
-#> Invalid argument(s); refer to help file.
 ```

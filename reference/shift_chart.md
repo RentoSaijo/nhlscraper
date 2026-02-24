@@ -1,6 +1,10 @@
 # Access the shift chart for a game
 
-`shift_chart()` scrapes the shift chart for a given `game`.
+`shift_chart()` retrieves the shift chart for a game as a `data.frame`
+where each row represents shift and includes detail on game timeline
+state, period/clock progression, and matchup flow, date/season filtering
+windows and chronological context, and team identity, affiliation, and
+matchup-side context.
 
 ## Usage
 

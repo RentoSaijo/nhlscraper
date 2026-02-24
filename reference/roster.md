@@ -1,7 +1,8 @@
 # Access the roster for a team, season, and position
 
-`roster()` scrapes the roster for a given set of `team`, `season`, and
-`position`.
+`roster()` retrieves the roster for a team, season, and position as a
+`data.frame` where each row represents player and includes detail on
+player identity, role, handedness, and biographical profile.
 
 ## Usage
 

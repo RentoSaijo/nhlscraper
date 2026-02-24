@@ -1,6 +1,8 @@
 # Access all the team logos
 
-`team_logos()` scrapes all the team logos.
+`team_logos()` retrieves all the team logos as a `data.frame` where each
+row represents logo and includes detail on team identity, affiliation,
+and matchup-side context.
 
 ## Usage
 

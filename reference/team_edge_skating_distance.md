@@ -1,8 +1,11 @@
 # Access the EDGE skating distance statistics for a team, season, game type, and category
 
-`team_edge_skating_distance()` scrapes the EDGE skating distance
-statistics for a given set of `team`, `season`, `game_type`, and
-`category`.
+`team_edge_skating_distance()` retrieves the EDGE skating distance
+statistics for a team, season, game type, and category as a `data.frame`
+where each row represents combination of strength state and position and
+includes detail on team identity, affiliation, and matchup-side context,
+ranking movement, points pace, and division/conference position signals,
+and NHL EDGE style tracking outputs and relative-performance context.
 
 ## Usage
 

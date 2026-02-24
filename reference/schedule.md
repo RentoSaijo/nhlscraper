@@ -1,6 +1,8 @@
 # Access the schedule for a date
 
-`schedule()` scrapes the schedule for a given `date`.
+`schedule()` retrieves the schedule for a date as a `data.frame` where
+each row represents game and includes detail on game timing, matchup
+state, scoring flow, and situational event detail.
 
 ## Usage
 

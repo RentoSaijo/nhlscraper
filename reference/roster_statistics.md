@@ -1,7 +1,10 @@
 # Access the roster statistics for a team, season, game type, and position
 
-`roster_statistics()` scrapes the roster statistics for a given set of
-`team`, `season`, `game_type`, and `position`.
+`roster_statistics()` retrieves the roster statistics for a team,
+season, game type, and position as a `data.frame` where each row
+represents player and includes detail on player identity, role,
+handedness, and biographical profile plus production, workload,
+efficiency, and result-level performance outcomes.
 
 ## Usage
 

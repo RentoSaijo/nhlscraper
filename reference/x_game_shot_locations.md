@@ -46,5 +46,4 @@ x_game_shot_locations(
   team  = 'H',
   save  = FALSE
 )
-#> Invalid argument(s); refer to help file.
 ```

@@ -1,6 +1,8 @@
 # Access the game type as of now
 
-`game_type_now()` scrapes the current game type.
+`game_type_now()` retrieves the game type as of now and returns a scalar
+integer used as the current-context default in season/game-type
+dependent wrappers.
 
 ## Usage
 

@@ -1,7 +1,8 @@
 # Access the ESPN transactions for a season
 
-`espn_transactions()` scrapes the ESPN transactions for a given
-`season`.
+`espn_transactions()` retrieves the ESPN transactions for a season as a
+`data.frame` where each row represents transaction and includes detail
+on availability and transaction-status tracking detail.
 
 ## Usage
 
@@ -24,5 +25,4 @@ data.frame with one row per transaction
 
 ``` r
 ESPN_transactions_20242025 <- espn_transactions(season = 20242025)
-#> Invalid argument(s); refer to help file.
 ```

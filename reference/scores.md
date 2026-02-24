@@ -1,6 +1,10 @@
 # Access the scores for a date
 
-`scores()` scrapes the scores for a given `date`.
+`scores()` retrieves the scores for a date as a `data.frame` where each
+row represents game and includes detail on game timeline state,
+period/clock progression, and matchup flow, date/season filtering
+windows and chronological context, and team identity, affiliation, and
+matchup-side context.
 
 ## Usage
 

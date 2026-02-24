@@ -1,6 +1,8 @@
 # Access all the countries
 
-`countries` scrapes all the countries.
+`countries()` retrieves all the countries as a `data.frame` where each
+row represents country and includes detail on reference metadata,
+regional context, and media availability detail.
 
 ## Usage
 

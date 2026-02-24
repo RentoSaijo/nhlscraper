@@ -1,6 +1,8 @@
 # Access all the franchises
 
-`franchises()` scrapes all the franchises.
+`franchises()` retrieves all the franchises as a `data.frame` where each
+row represents franchise and includes detail on team identity,
+affiliation, and matchup-side context.
 
 ## Usage
 

@@ -1,7 +1,11 @@
 # Access various reports for a season, game type, and category for all the goalies by season
 
-`goalie_season_report()` scrapes various reports for a given set of
-`season`, `game_type`, and `category` for all the goalies by season.
+`goalie_season_report()` retrieves various reports for a season, game
+type, and category for all the goalies by season as a `data.frame` where
+each row represents player and includes detail on date/season filtering
+windows and chronological context, player identity, role, handedness,
+and biographical profile, and production, workload, efficiency, and
+result-level performance outcomes.
 
 ## Usage
 

@@ -1,6 +1,9 @@
 # Access the ESPN odds for a game
 
-`espn_game_odds()` scrapes the ESPN odds for a given `game`.
+`espn_game_odds()` retrieves the ESPN odds for a game as a `data.frame`
+where each row represents provider and includes detail on team identity,
+affiliation, and matchup-side context plus betting market snapshots with
+side/total prices and provider variation.
 
 ## Usage
 

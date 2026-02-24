@@ -2,10 +2,19 @@
 
 ## nhlscraper 0.4.2.9000
 
-- All return IDs are now standardized (i.e., no more arbitrary `id`
-  columns).
+- All return IDs, codes, and names are now standardized (i.e., no more
+  arbitrary `id` columns and inconsistent column names across
+  functions).
+- [`contracts()`](https://rentosaijo.github.io/nhlscraper/reference/contracts.md)
+  is now added to get all NHL contracts since the 2011-2012 season.
+- [`ig_game_shot_locations()`](https://rentosaijo.github.io/nhlscraper/reference/ig_game_shot_locations.md)
+  and
+  [`x_game_shot_locations()`](https://rentosaijo.github.io/nhlscraper/reference/x_game_shot_locations.md)
+  now use continuous xG scale instead of bins.
 - [`calculate_expected_goals()`](https://rentosaijo.github.io/nhlscraper/reference/calculate_expected_goals.md)
-  now combines the previous xG calculation functions.
+  now combines the previous xG calculation functions; as a result,
+  `calculate_expected_goals_v1()`, `calculate_expected_goals_v2()`, and
+  `calculate_expected_goals_v3()` are now defunct.
 - [`calculate_speed()`](https://rentosaijo.github.io/nhlscraper/reference/calculate_speed.md)
   is now added to calculate event-to-event deltas in play-by-plays.
 - [`add_shooter_biometrics()`](https://rentosaijo.github.io/nhlscraper/reference/add_shooter_biometrics.md)

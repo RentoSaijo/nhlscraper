@@ -1,6 +1,10 @@
 # Access the GameCenter (GC) play-by-play for a game
 
-`gc_play_by_play()` scrapes the GC play-by-play for a given `game`.
+`gc_play_by_play()` retrieves the GameCenter (GC) play-by-play for a
+game as a `data.frame` where each row represents event and includes
+detail on game timeline state, period/clock progression, and matchup
+flow, date/season filtering windows and chronological context, and
+player identity, role, handedness, and biographical profile.
 
 ## Usage
 

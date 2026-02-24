@@ -1,7 +1,9 @@
 # Access the skater statistics leaders for a season, game type, and category
 
-`skater_leaders()` scrapes the skater statistics leaders for a given set
-of `season`, `game_type`, and `category`.
+`skater_leaders()` retrieves the skater statistics leaders for a season,
+game type, and category as a `data.frame` where each row represents
+player and includes detail on player identity, role, handedness, and
+biographical profile.
 
 ## Usage
 

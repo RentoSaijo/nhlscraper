@@ -1,6 +1,8 @@
 # Access the standings rules by season
 
-`standings_rules()` scrapes the standings rules by season.
+`standings_rules()` retrieves the standings rules by season as a
+`data.frame` where each row represents season and includes detail on
+date/season filtering windows and chronological context.
 
 ## Usage
 
