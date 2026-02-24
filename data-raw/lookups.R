@@ -40,5 +40,11 @@ keys_id <- c(
 values_id <- rep(ids, times = 3)
 .to_team_id <- setNames(values_id, keys_id)
 
-# Save both objects into sysdata.rda.
-save(list = c('.to_team_tri_code', '.to_team_id'), file = 'R/sysdata.rda')
+# Save objects into sysdata.rda while preserving existing internal objects.
+save_env <- new.env(parent = emptyenv())
+if (file.exists('R/sysdata.rda')) {
+  load('R/sysdata.rda', envir = save_env)
+}
+assign('.to_team_tri_code', .to_team_tri_code, envir = save_env)
+assign('.to_team_id', .to_team_id, envir = save_env)
+save(list = ls(save_env, all.names = TRUE), file = 'R/sysdata.rda', envir = save_env)

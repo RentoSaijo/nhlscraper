@@ -1,6 +1,8 @@
 # nhlscraper 0.4.2.9000
-- All return IDs are now standardized (i.e., no more arbitrary `id` columns).
-- `calculate_expected_goals()` now combines the previous xG calculation functions.
+- All return IDs, codes, and names are now standardized (i.e., no more arbitrary `id` columns and inconsistent column names across functions).
+- `contracts()` is now added to get all NHL contracts since the 2011-2012 season.
+- `ig_game_shot_locations()` and `x_game_shot_locations()` now use continuous xG scale instead of bins.
+- `calculate_expected_goals()` now combines the previous xG calculation functions; as a result, `calculate_expected_goals_v1()`, `calculate_expected_goals_v2()`, and `calculate_expected_goals_v3()` are now defunct.
 - `calculate_speed()` is now added to calculate event-to-event deltas in play-by-plays.
 - `add_shooter_biometrics()` is now added to add shooter biometrics to Fenewick events in play-by-plays.
 - `add_goalie_biometrics()` is now added to add goalie biometrics to Fenewick events in play-by-plays.
