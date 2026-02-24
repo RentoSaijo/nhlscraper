@@ -1,4 +1,4 @@
-# nhlscraper 0.4.2.9000
+# nhlscraper 0.5.0
 - All return IDs, codes, and names are now standardized (i.e., no more arbitrary `id` columns and inconsistent column names across functions).
 - `contracts()` is now added to get all NHL contracts since the 2011-2012 season.
 - `ig_game_shot_locations()` and `x_game_shot_locations()` now use continuous xG scale instead of bins.
