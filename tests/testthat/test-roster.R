@@ -1,10 +1,10 @@
-test_that('roster(1, 20242025) returns non-empty data.frame', {
+test_that("roster(1, 20242025, 3) returns non-empty data.frame", {
   skip_if_offline()
-  test <- roster(1, 20242025) 
+  test <- roster(1, 20242025, 3)
   expect_true(is.data.frame(test) && nrow(test) > 0)
 })
 
-test_that('roster(0) returns message and empty data.frame', {
+test_that("roster(0) returns message and empty data.frame", {
   skip_if_offline()
   expect_message(
     test <- roster(0),
@@ -12,3 +12,4 @@ test_that('roster(0) returns message and empty data.frame', {
   )
   expect_true(is.data.frame(test) && nrow(test) == 0)
 })
+

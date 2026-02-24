@@ -1,10 +1,10 @@
-test_that('player_summary() returns non-empty list', {
+test_that("player_summary(8478402) returns non-empty list", {
   skip_if_offline()
-  test <- player_summary()
+  test <- player_summary(8478402)
   expect_true(is.list(test) && length(test) > 0)
 })
 
-test_that('player_summary(0) returns message and empty list', {
+test_that("player_summary(0) returns message and empty list", {
   skip_if_offline()
   expect_message(
     test <- player_summary(0),
@@ -12,3 +12,4 @@ test_that('player_summary(0) returns message and empty list', {
   )
   expect_true(is.list(test) && length(test) == 0)
 })
+

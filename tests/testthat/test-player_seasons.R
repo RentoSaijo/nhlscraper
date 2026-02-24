@@ -1,10 +1,10 @@
-test_that('player_seasons() returns non-empty data.frame', {
+test_that("player_seasons(8478402) returns non-empty data.frame", {
   skip_if_offline()
-  test <- player_seasons()
+  test <- player_seasons(8478402)
   expect_true(is.data.frame(test) && nrow(test) > 0)
 })
 
-test_that('player_seasons(0) returns message and empty data.frame', {
+test_that("player_seasons(0) returns message and empty data.frame", {
   skip_if_offline()
   expect_message(
     test <- player_seasons(0),
@@ -12,3 +12,4 @@ test_that('player_seasons(0) returns message and empty data.frame', {
   )
   expect_true(is.data.frame(test) && nrow(test) == 0)
 })
+
