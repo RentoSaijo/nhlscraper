@@ -2,6 +2,8 @@
 
 ## nhlscraper 0.5.0
 
+CRAN release: 2026-02-24
+
 - All return IDs, codes, and names are now standardized (i.e., no more
   arbitrary `id` columns and inconsistent column names across
   functions).
