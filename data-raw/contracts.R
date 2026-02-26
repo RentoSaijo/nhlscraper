@@ -1,11 +1,11 @@
 # Build internal contracts data object (.contracts_base) for package runtime.
-csv_paths <- c(
-  'data-raw/NHL_Contracts_2010s.csv',
-  'data-raw/NHL_Contracts_2020s.csv'
-)
-missing_paths <- csv_paths[!file.exists(csv_paths)]
-if (length(missing_paths)) {
-  stop('Missing contract CSV file(s): ', paste(missing_paths, collapse = ', '))
+csv_paths <- sort(list.files(
+  path = 'data-raw',
+  pattern = '^NHL_Contracts_.*\\.csv$',
+  full.names = TRUE
+))
+if (!length(csv_paths)) {
+  stop("No contract CSV files found in 'data-raw' matching NHL_Contracts_*.csv")
 }
 normalize_key <- function(x) {
   x <- as.character(x)
