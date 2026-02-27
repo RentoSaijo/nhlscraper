@@ -222,7 +222,6 @@ gc_play_by_play <- function(game = 2023030417) {
         path = sprintf('v1/gamecenter/%s/play-by-play', game),
         type = 'w'
       )$plays
-
       # Rename columns.
       plays$gameId <- game
       plays        <- plays[, c('gameId', setdiff(names(plays), 'gameId'))]
@@ -232,7 +231,6 @@ gc_play_by_play <- function(game = 2023030417) {
       nms[idx]     <- sub('^[^.]*\\.', '', nms[idx])
       nms[nms == 'number'] <- 'period'
       names(plays) <- nms
-
       # Fix zoneCode for blocked shots.
       idx <- plays$typeDescKey == 'blocked-shot' &
         plays$zoneCode %in% c('O', 'D')
@@ -241,10 +239,8 @@ gc_play_by_play <- function(game = 2023030417) {
         'D',
         'O'
       )
-
       # Remove inconsistent columns.
       plays$timeRemaining <- NULL
-
       # Clean.
       plays <- strip_game_id(plays) |>
         strip_time_period() |>
@@ -256,7 +252,6 @@ gc_play_by_play <- function(game = 2023030417) {
         flag_is_rush() |>
         flag_is_rebound() |>
         count_goals_shots()
-
       # Remove redundant columns.
       plays$awayScore <- NULL
       plays$homeScore <- NULL
@@ -302,7 +297,6 @@ wsc_play_by_play <- function(game = 2023030417) {
       plays$id     <- NULL
       plays$gameId <- game
       plays        <- plays[, c('gameId', setdiff(names(plays), 'gameId'))]
-      
       # Fix zoneCode for blocked shots.
       idx <- plays$typeDescKey == 'blocked-shot' &
         plays$zoneCode %in% c('O', 'D')
@@ -311,14 +305,12 @@ wsc_play_by_play <- function(game = 2023030417) {
         'D',
         'O'
       )
-
       # Remove inconsistent columns.
       plays$goalModifier     <- NULL
       plays$strength         <- NULL
       plays$strengthCode     <- NULL
       plays$goalCode         <- NULL
       plays$secondsRemaining <- NULL
-
       # Clean.
       plays <- strip_game_id(plays) |>
         strip_time_period() |>
@@ -330,7 +322,6 @@ wsc_play_by_play <- function(game = 2023030417) {
         flag_is_rush() |>
         flag_is_rebound() |>
         count_goals_shots()
-
       # Remove redundant columns.
       plays$awayScore <- NULL
       plays$homeScore <- NULL

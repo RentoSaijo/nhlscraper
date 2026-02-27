@@ -8,7 +8,7 @@
 
 strip_game_id <- function(play_by_play) {
   game                    <- unique(play_by_play$gameId)
-  play_by_play$seasonId   <- game %/% 1e6
+  play_by_play$seasonId   <- game %/% 1e6 * 1e4 + game %/% 1e6 + 1
   play_by_play$gameTypeId <- game %/% 1e4 %% 1e2
   play_by_play$gameNumber <- game %% 1e4
   front                   <- c('gameId', 'eventId', 'seasonId', 'gameTypeId', 'gameNumber', 'sortOrder')
