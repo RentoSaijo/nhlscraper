@@ -442,6 +442,8 @@ shift charts
   : Access the World Showcase (WSC) play-by-plays for a season
 - [`shift_charts()`](https://rentosaijo.github.io/nhlscraper/reference/shift_charts.md)
   : Access the shift charts for a season
+- [`replays()`](https://rentosaijo.github.io/nhlscraper/reference/replays.md)
+  : Access the replays for a season
 
 ### Clean
 
