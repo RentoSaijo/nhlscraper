@@ -68,8 +68,10 @@ undocumented endpoints while searching for additional data for future
 research, with a particular focus on NHL EDGE and Records data. After I
 shared those
 [findings](https://github.com/Zmalski/NHL-API-Reference/issues/69), the
-effort to expand and refine this map of the APIs accelerated, and
-together, we ultimately identified 400+ new endpoints that expose a wide
-range of NHL data. In parallel, I also discovered many new endpoints for
-the ESPN API, extending beyond what Joseph Wilson had already
+effort to expand and refine this map of the APIs accelerated, and with
+the addition of David Fleischer’s
+[effort](https://github.com/dfleis/nhl-api-docs), we ultimately
+identified 400+ new endpoints that expose a wide range of NHL data. In
+parallel, I also discovered many new endpoints for the ESPN API,
+extending beyond what Joseph Wilson had already
 [compiled](https://github.com/pseudo-r/Public-ESPN-API).

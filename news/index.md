@@ -1,5 +1,13 @@
 # Changelog
 
+## nhlscraper 0.5.0.9000
+
+- [`contracts()`](https://rentosaijo.github.io/nhlscraper/reference/contracts.md)
+  now returns more contracts, dating back to the 90’s (and then some).
+- [`shift_chart()`](https://rentosaijo.github.io/nhlscraper/reference/shift_chart.md)
+  now returns for all games where at least either one of API or HTML
+  report is available.
+
 ## nhlscraper 0.5.0
 
 CRAN release: 2026-02-24

@@ -7,6 +7,9 @@
 
 - **[Lars Skytte](https://hockey-statistics.com)**. Contributor.
 
+- **[Jack Pallotta](https://www.linkedin.com/in/jack-pallotta)**.
+  Contributor. [](https://orcid.org/0009-0004-0744-6977)
+
 ## Citation
 
 Source:
