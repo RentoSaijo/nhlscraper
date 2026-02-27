@@ -25,7 +25,7 @@ navbar:
     github:
       icon: fa-github
       href: https://github.com/RentoSaijo/nhlscraper
-    instagram:
+    x:
       icon: fa-x-twitter
       href: https://x.com/nhlscraper
 
@@ -34,6 +34,8 @@ authors:
     href: https://github.com/RentoSaijo
   Lars Skytte:
     href: https://hockey-statistics.com
+  Jack Pallotta:
+    href: https://www.linkedin.com/in/jack-pallotta
   footer:
     roles: [aut, ctb]
   sidebar:

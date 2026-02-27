@@ -43,12 +43,24 @@ teams <- read.csv(
   'data-raw/NHL_Teams_19171918_20252026.csv',
   stringsAsFactors = FALSE
 )
-team_keys <- c(
-  normalize_key(teams$id),
-  normalize_key(teams$triCode),
-  normalize_key(teams$fullName)
+required_team_cols <- c('teamId', 'teamTriCode', 'teamFullName')
+missing_team_cols <- required_team_cols[!required_team_cols %in% names(teams)]
+if (length(missing_team_cols)) {
+  stop(
+    'Missing required team column(s): ',
+    paste(missing_team_cols, collapse = ', ')
+  )
+}
+team_key_blocks <- list(
+  normalize_key(teams$teamId),
+  normalize_key(teams$teamTriCode),
+  normalize_key(teams$teamFullName)
 )
-team_vals <- rep(as.character(teams$id), times = 3)
+if ('teamTriCodeRaw' %in% names(teams)) {
+  team_key_blocks <- append(team_key_blocks, list(normalize_key(teams$teamTriCodeRaw)))
+}
+team_keys <- unlist(team_key_blocks, use.names = FALSE)
+team_vals <- rep(as.character(teams$teamId), times = length(team_key_blocks))
 .team_id_lookup <- setNames(team_vals, team_keys)
 to_team_id_local <- function(team) {
   unname(.team_id_lookup[normalize_key(team)])

@@ -4,6 +4,15 @@ NHL_Teams <- read.csv(
   stringsAsFactors = FALSE
 )
 
+required_cols <- c('teamId', 'teamTriCode', 'teamFullName')
+missing_cols <- required_cols[!required_cols %in% names(NHL_Teams)]
+if (length(missing_cols)) {
+  stop(
+    'Missing required team column(s): ',
+    paste(missing_cols, collapse = ', ')
+  )
+}
+
 # Define helper.
 normalize_key <- function(x) {
   x <- as.character(x)
@@ -13,31 +22,39 @@ normalize_key <- function(x) {
 }
 
 # Define base vectors.
-tri_codes <- toupper(NHL_Teams$triCode)
-ids       <- as.character(NHL_Teams$id)
+tri_codes <- toupper(NHL_Teams$teamTriCode)
+ids       <- as.character(NHL_Teams$teamId)
 
 ## ------------------------------------------------------------------
 ## Lookup 1: any key -> tri-code  (.to_team_tri_code)
 ## ------------------------------------------------------------------
 
-keys_tri <- c(
-  normalize_key(NHL_Teams$id),
-  normalize_key(NHL_Teams$triCode),
-  normalize_key(NHL_Teams$fullName)
+key_blocks_tri <- list(
+  normalize_key(NHL_Teams$teamId),
+  normalize_key(NHL_Teams$teamTriCode),
+  normalize_key(NHL_Teams$teamFullName)
 )
-values_tri <- rep(tri_codes, times = 3)
+if ('teamTriCodeRaw' %in% names(NHL_Teams)) {
+  key_blocks_tri <- append(key_blocks_tri, list(normalize_key(NHL_Teams$teamTriCodeRaw)))
+}
+keys_tri <- unlist(key_blocks_tri, use.names = FALSE)
+values_tri <- rep(tri_codes, times = length(key_blocks_tri))
 .to_team_tri_code <- setNames(values_tri, keys_tri)
 
 ## ------------------------------------------------------------------
 ## Lookup 2: any key -> id  (.to_team_id)
 ## ------------------------------------------------------------------
 
-keys_id <- c(
-  normalize_key(NHL_Teams$id),
-  normalize_key(NHL_Teams$triCode),
-  normalize_key(NHL_Teams$fullName)
+key_blocks_id <- list(
+  normalize_key(NHL_Teams$teamId),
+  normalize_key(NHL_Teams$teamTriCode),
+  normalize_key(NHL_Teams$teamFullName)
 )
-values_id <- rep(ids, times = 3)
+if ('teamTriCodeRaw' %in% names(NHL_Teams)) {
+  key_blocks_id <- append(key_blocks_id, list(normalize_key(NHL_Teams$teamTriCodeRaw)))
+}
+keys_id <- unlist(key_blocks_id, use.names = FALSE)
+values_id <- rep(ids, times = length(key_blocks_id))
 .to_team_id <- setNames(values_id, keys_id)
 
 # Save objects into sysdata.rda while preserving existing internal objects.
