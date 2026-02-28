@@ -7,6 +7,11 @@
 - [`shift_chart()`](https://rentosaijo.github.io/nhlscraper/reference/shift_chart.md)
   now returns for all games where at least either one of API or HTML
   report is available.
+- [`replays()`](https://rentosaijo.github.io/nhlscraper/reference/replays.md)
+  is now added to retrieve season-aggregate replays.
+- Model 4 on
+  [`calculate_expected_goals()`](https://rentosaijo.github.io/nhlscraper/reference/calculate_expected_goals.md)
+  is already flagged as problematic; a patch is coming soon.
 
 ## nhlscraper 0.5.0
 

@@ -46,9 +46,12 @@ important to use them responsibly and with respect for the NHL’s data
 servers. Endpoints serving historical or otherwise mostly static data
 should ideally be queried once and then stored locally (for example, in
 a MySQL database) for further analysis, rather than being called
-repeatedly. The exact rate limits for these APIs are not publicly known,
-so users are asked to avoid excessive or abusive querying to help ensure
-continued access for everyone.
+repeatedly; the [load
+functions](https://rentosaijo.github.io/nhlscraper/reference/index.html#load)
+attempt to mitigate this risk by providing pre-scraped data, so please
+make use of them. The exact rate limits for these APIs are not publicly
+known, so users are asked to avoid excessive or abusive querying to help
+ensure continued access for everyone.
 
 ### History
 
@@ -71,7 +74,6 @@ shared those
 effort to expand and refine this map of the APIs accelerated, and with
 the addition of David Fleischer’s
 [effort](https://github.com/dfleis/nhl-api-docs), we ultimately
-identified 400+ new endpoints that expose a wide range of NHL data. In
-parallel, I also discovered many new endpoints for the ESPN API,
-extending beyond what Joseph Wilson had already
-[compiled](https://github.com/pseudo-r/Public-ESPN-API).
+identified 400+ new endpoints. In parallel, I also discovered many new
+endpoints for the ESPN API, extending beyond what Joseph Wilson had
+already [compiled](https://github.com/pseudo-r/Public-ESPN-API).
