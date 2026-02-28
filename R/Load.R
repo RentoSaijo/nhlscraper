@@ -334,19 +334,20 @@ shift_charts <- function(season = 20242025) {
 #' @export
 
 replays <- function(season = 20242025) {
+  old_timeout <- getOption('timeout')
+  on.exit(options(timeout = old_timeout), add = TRUE)
+  options(timeout = 600)
   tryCatch(
     expr = {
       u <- paste0(
         'https://huggingface.co/datasets/RentoSaijo/NHL_DB/resolve/main/',
-        'data/event/replays/NHL_REPLAYS_',
-        season,
+        'data/event/replays/NHL_REPLAYS_', 
+        season, 
         '.csv.gz'
       )
       tmp <- tempfile(fileext = '.csv.gz')
-      utils::download.file(u, tmp, mode = 'wb', quiet = TRUE)
-      con <- gzfile(tmp, open = 'rt')
-      on.exit(close(con), add = TRUE)
-      utils::read.csv(con)
+      utils::download.file(u, tmp, mode = 'wb', quiet = TRUE, method = 'libcurl')
+      utils::read.csv(gzfile(tmp, open = 'rt'))
     },
     error = function(e) {
       message('Invalid argument(s); refer to help file.')

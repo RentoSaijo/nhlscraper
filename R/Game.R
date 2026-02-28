@@ -359,7 +359,7 @@ wsc_pbp <- function(game = 2023030417) {
 shift_chart <- function(game = 2023030417) {
   tryCatch(
     expr = {
-      game   <- as.numeric(game)
+      game   <- as.integer(game)
       shifts <- nhl_api(
         path  = 'en/shiftcharts',
         query = list(cayenneExp = sprintf('gameId = %s', game)),
