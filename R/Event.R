@@ -134,6 +134,7 @@ replay <- function(game = 2023030417, event = 866) {
         '\nProvided event:',
         event
       ))
+      data.frame()
     }
   )
 }

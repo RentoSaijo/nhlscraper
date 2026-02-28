@@ -207,13 +207,11 @@ gc_play_by_plays <- function(season = 20242025) {
         'https://huggingface.co/datasets/RentoSaijo/NHL_DB/resolve/main/',
         'data/game/pbps/gc/NHL_PBPS_GC_',
         season,
-        '.csv.gz'
+        '.parquet'
       )
-      tmp <- tempfile(fileext = '.csv.gz')
+      tmp <- tempfile(fileext = '.parquet')
       utils::download.file(u, tmp, mode = 'wb', quiet = TRUE)
-      con <- gzfile(tmp, open = 'rt')
-      on.exit(close(con), add = TRUE)
-      pbps <- utils::read.csv(con)
+      pbps <- as.data.frame(arrow::read_parquet(tmp), stringsAsFactors = FALSE)
       raw_situation <- pbps[['situationCode']]
       situation_chr <- as.character(raw_situation)
       situation_pad <- rep(NA_character_, length(situation_chr))
@@ -256,13 +254,11 @@ wsc_play_by_plays <- function(season = 20242025) {
         'https://huggingface.co/datasets/RentoSaijo/NHL_DB/resolve/main/',
         'data/game/pbps/wsc/NHL_PBPS_WSC_',
         season,
-        '.csv.gz'
+        '.parquet'
       )
-      tmp <- tempfile(fileext = '.csv.gz')
+      tmp <- tempfile(fileext = '.parquet')
       utils::download.file(u, tmp, mode = 'wb', quiet = TRUE)
-      con <- gzfile(tmp, open = 'rt')
-      on.exit(close(con), add = TRUE)
-      pbps <- utils::read.csv(con)
+      pbps <- as.data.frame(arrow::read_parquet(tmp), stringsAsFactors = FALSE)
       raw_situation <- pbps[['situationCode']]
       situation_chr <- as.character(raw_situation)
       situation_pad <- rep(NA_character_, length(situation_chr))
@@ -305,13 +301,11 @@ shift_charts <- function(season = 20242025) {
         'https://huggingface.co/datasets/RentoSaijo/NHL_DB/resolve/main/',
         'data/game/scs/NHL_SCS_',
         season,
-        '.csv.gz'
+        '.parquet'
       )
-      tmp <- tempfile(fileext = '.csv.gz')
+      tmp <- tempfile(fileext = '.parquet')
       utils::download.file(u, tmp, mode = 'wb', quiet = TRUE)
-      con <- gzfile(tmp, open = 'rt')
-      on.exit(close(con), add = TRUE)
-      shifts    <- utils::read.csv(con)
+      shifts <- as.data.frame(arrow::read_parquet(tmp), stringsAsFactors = FALSE)
       shifts$id <- NULL
       shifts
     },
@@ -330,7 +324,7 @@ shift_charts <- function(season = 20242025) {
 #' @returns data.frame with one row per decisecond
 #' @examples
 #' # May take >5s, so skip.
-#' \donttest{replays_20232024 <- replays(season = 20232024)}
+#' \donttest{replays_20252026 <- replays(season = 20252026)}
 #' @export
 
 replays <- function(season = 20242025) {
@@ -343,11 +337,11 @@ replays <- function(season = 20242025) {
         'https://huggingface.co/datasets/RentoSaijo/NHL_DB/resolve/main/',
         'data/event/replays/NHL_REPLAYS_', 
         season, 
-        '.csv.gz'
+        '.parquet'
       )
-      tmp <- tempfile(fileext = '.csv.gz')
+      tmp <- tempfile(fileext = '.parquet')
       utils::download.file(u, tmp, mode = 'wb', quiet = TRUE, method = 'libcurl')
-      utils::read.csv(gzfile(tmp, open = 'rt'))
+      as.data.frame(arrow::read_parquet(tmp), stringsAsFactors = FALSE)
     },
     error = function(e) {
       message('Invalid argument(s); refer to help file.')

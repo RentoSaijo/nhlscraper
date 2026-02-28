@@ -1,6 +1,8 @@
 # nhlscraper 0.5.0.9000
 - `contracts()` now returns more contracts, dating back to the 90's (and then some).
 - `shift_chart()` now returns for all games where at least either one of API or HTML report is available.
+- `replays()` is now added to retrieve season-aggregate replays.
+- Model 4 on `calculate_expected_goals()` is already flagged as problematic; a patch is coming soon.
 
 # nhlscraper 0.5.0
 - All return IDs, codes, and names are now standardized (i.e., no more arbitrary `id` columns and inconsistent column names across functions).
