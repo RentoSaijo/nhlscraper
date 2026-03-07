@@ -13,10 +13,16 @@ add_on_ice_players(play_by_play, shift_chart)
 }
 \value{
 data.frame with one row per event (play) and added list-columns:
-\code{homePlayerIds}, \code{awayPlayerIds}, \code{playerIdsFor}, and \code{playerIdsAgainst}
+\code{homePlayerIds}, \code{awayPlayerIds}, \code{playerIdsFor}, \code{playerIdsAgainst},
+\code{homeSecondsElapsedInShift}, \code{awaySecondsElapsedInShift},
+\code{secondsElapsedInShiftFor}, \code{secondsElapsedInShiftAgainst},
+\code{homeSecondsElapsedInPeriodSinceLastShift},
+\code{awaySecondsElapsedInPeriodSinceLastShift},
+\code{secondsElapsedInPeriodSinceLastShiftFor}, and
+\code{secondsElapsedInPeriodSinceLastShiftAgainst}
 }
 \description{
-\code{add_on_ice_players()} merges a play-by-play with a shift chart to determine which players are on the ice at each event. It adds home- and away-team on-ice player ID lists, as well as event-perspective for/against player ID lists when \code{isHome} is available.
+\code{add_on_ice_players()} merges a play-by-play with a shift chart to determine which players are on the ice at each event. It adds home- and away-team on-ice player ID lists, event-perspective for/against player ID lists when \code{isHome} is available, elapsed time in the current shift for each listed player, and elapsed time since the end of the player's prior shift within the same period. For the first shift of a period, the "since last shift" value is set to \code{300 + secondsElapsedInPeriod}. For shootout and penalty-shot rows (\code{0101}/\code{1010}), the elapsed-time list-columns are returned as \code{NA}. When \code{goalieInNetId} is missing on blocked-shot rows, it is inferred from the defending/on-ice goalie in \code{playerIdsAgainst} when the net is not empty.
 }
 \examples{
 # May take >5s, so skip.

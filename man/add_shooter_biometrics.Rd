@@ -4,16 +4,14 @@
 \alias{add_shooter_biometrics}
 \title{Add shooter biometrics to (a) play-by-play(s)}
 \usage{
-add_shooter_biometrics(play_by_play, neutral_threshold = 5)
+add_shooter_biometrics(play_by_play)
 }
 \arguments{
 \item{play_by_play}{data.frame of play-by-play(s); see \code{\link[=gc_play_by_play]{gc_play_by_play()}}, \code{\link[=gc_play_by_plays]{gc_play_by_plays()}}, \code{\link[=wsc_play_by_play]{wsc_play_by_play()}}, or \code{\link[=wsc_play_by_plays]{wsc_play_by_plays()}} for reference; the original columns must exist}
-
-\item{neutral_threshold}{integer; absolute yCoordNorm at or below which \code{shooterSide} is set to 'neutral'}
 }
 \value{
-data.frame with one row per event (play) and added columns: \code{shooterHeight}, \code{shooterWeight}, \code{shooterAge}, \code{shooterSide}
+data.frame with one row per event (play) and added columns: \code{shooterHeight}, \code{shooterWeight}, \code{shooterHandCode}, \code{shooterAge}, and \code{shooterPositionCode}
 }
 \description{
-\code{add_shooter_biometrics()} adds shooter biometrics (height, weight, age at game date, and onwing/offwing/neutral side) to (a) play-by-play(s) for Fenwick events.
+\code{add_shooter_biometrics()} adds shooter biometrics (height, weight, hand, age at game date, and position) to (a) play-by-play(s) for shot attempts.
 }

@@ -23,9 +23,7 @@ calculate_expected_goals <- function(play_by_play, model = 1) {
         add_shooter_biometrics() |>
         add_goalie_biometrics()
       pbp$shotType[is.na(pbp$shotType)] <- 'backhand'
-      pbp$shooterSide[is.na(pbp$shooterSide)] <- 'neutral'
       pbp$shooterPositionCode[is.na(pbp$shooterPositionCode)] <- 'C'
-      pbp$goalieSide[is.na(pbp$goalieSide)] <- 'blocker'
 
       # Store coefficients.
       COEFS <- list(

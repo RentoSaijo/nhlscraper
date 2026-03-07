@@ -4,16 +4,14 @@
 \alias{add_goalie_biometrics}
 \title{Add goalie biometrics to (a) play-by-play(s)}
 \usage{
-add_goalie_biometrics(play_by_play, neutral_threshold = 5)
+add_goalie_biometrics(play_by_play)
 }
 \arguments{
 \item{play_by_play}{data.frame of play-by-play(s); see \code{\link[=gc_play_by_play]{gc_play_by_play()}}, \code{\link[=gc_play_by_plays]{gc_play_by_plays()}}, \code{\link[=wsc_play_by_play]{wsc_play_by_play()}}, or \code{\link[=wsc_play_by_plays]{wsc_play_by_plays()}} for reference; the original columns must exist}
-
-\item{neutral_threshold}{integer; absolute yCoordNorm at or below which goalieSide is set to 'neutral'}
 }
 \value{
-data.frame with one row per event (play) and added columns: \code{goalieHeight}, \code{goalieWeight}, \code{goalieAge}, \code{goalieSide}
+data.frame with one row per event (play) and added columns: \code{goalieHeight}, \code{goalieWeight}, \code{goalieHandCode}, and \code{goalieAge}
 }
 \description{
-\code{add_goalie_biometrics()} adds goalie biometrics (height, weight, age at game date, and glove/blocker/neutral side) to (a) play-by-play(s) for Fenwick events.
+\code{add_goalie_biometrics()} adds goalie biometrics (height, weight, hand, and age at game date) to (a) play-by-play(s) for shot attempts. If \code{goalieInNetId} is missing on a row, the added goalie biometrics are left as \code{NA}.
 }
