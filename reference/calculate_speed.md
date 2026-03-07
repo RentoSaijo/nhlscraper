@@ -5,10 +5,11 @@ normalized x/y, distance, and angle for a play-by-play. Sequences are
 bounded by faceoffs: each sequence begins at a faceoff, faceoff rows do
 not look backward across the boundary, and subsequent events are
 compared to the most recent prior valid-spatial event in the same
-faceoff-bounded sequence. When multiple events in a sequence share the
-same recorded second, zero-time denominators are replaced by `1 / n`,
-where `n` is the number of events in that same second within the
-sequence.
+faceoff-bounded sequence. Shootout and penalty-shot rows (`0101`/`1010`)
+are left as `NA` and do not serve as anchors for later rows. When
+multiple events in a sequence share the same recorded second, zero-time
+denominators are replaced by `1 / n`, where `n` is the number of events
+in that same second within the sequence.
 
 ## Usage
 
@@ -31,4 +32,4 @@ calculate_speed(play_by_play)
 ## Value
 
 data.frame with one row per event (play) and added columns: `dXN`,
-`dYN`, `dD`, `dA`, `dT`, `dXNdT`, `dYNdT`, `dDdT`, `dAdT`
+`dYN`, `dD`, `dA`, `dT`, `dXNdT`, `dYNdT`, `dDdT`, `dAdT`, `eventIdPrev`
