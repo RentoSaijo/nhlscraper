@@ -1,11 +1,11 @@
 # nhlscraper 0.5.0.9000
 - `replays()` is now added to retrieve season-aggregate replays.
 - `contracts()` now returns more contracts, dating back to the 90's (and then some).
-- `shift_chart()` (and consequentially, `shift_charts()`) now returns completed shift charts for all games where at least either one of API or HTML report is available (which, to my knowledge, is all games).
-- `calculate_speed()` now properly handles same-second events and shootouts/penalty shots.
+- `shift_chart()` (and consequentially, `shift_charts()`) now returns completed shift charts for all games where at least either one of API or HTML report is available.
+- `calculate_speed()` now properly handles same-second events and shootouts/penalty shots; it also returns the `eventId` of the anchoring event (the previous it is referring to for the delta calculations).
 - `add_on_ice_players()` now returns 8 new columns pertaining to the length of the current shift and time elapsed since the end of the previous shift for each player on the ice; it also adds `goalieInNetId` for blocked shot events.
-- `add_shooter_biometrics()` and `add_goalie_biometrics()` now returns biometrics for all Corsi events in play-by-plays, if `goalieInNetId` is present for blocked shots; it also returns `shooterHandCode` and `goalieHandCode` columns instead of the previous `shooterSide` and `goalieSide` columns.
-- The expected goal (xG) models are currently being reworked; some functions that rely on these models (e.g., `calculate_expected_goals()`, `ig_game_shot_locations()`) may not work as expected.
+- `add_shooter_biometrics()` and `add_goalie_biometrics()` now returns biometrics for all Corsi events in play-by-plays given `goalieInNetId` is present for blocked shots (you can achieve this by running `add_on_ice_players()` first); it also returns `shooterHandCode` and `goalieHandCode` columns instead of the previous `shooterSide` and `goalieSide` columns.
+- The expected goal (xG) models are currently being reworked; some functions that rely on these models (e.g., `calculate_expected_goals()`) may not work as expected.
 
 # nhlscraper 0.5.0
 - All return IDs, codes, and names are now standardized (i.e., no more arbitrary `id` columns and inconsistent column names across functions).

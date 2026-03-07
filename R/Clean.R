@@ -421,16 +421,17 @@ count_goals_shots <- function(play_by_play) {
 
 #' Calculate event-to-event deltas and speeds in normalized x/y, distance, and angle for a play-by-play
 #'
-#' `calculate_speed()` calculates event-to-event deltas and speeds in normalized x/y, distance, and angle for a play-by-play. Sequences are bounded by faceoffs: each sequence begins at a faceoff, faceoff rows do not look backward across the boundary, and subsequent events are compared to the most recent prior valid-spatial event in the same faceoff-bounded sequence. When multiple events in a sequence share the same recorded second, zero-time denominators are replaced by `1 / n`, where `n` is the number of events in that same second within the sequence.
+#' `calculate_speed()` calculates event-to-event deltas and speeds in normalized x/y, distance, and angle for a play-by-play. Sequences are bounded by faceoffs: each sequence begins at a faceoff, faceoff rows do not look backward across the boundary, and subsequent events are compared to the most recent prior valid-spatial event in the same faceoff-bounded sequence. Shootout and penalty-shot rows (`0101`/`1010`) are left as `NA` and do not serve as anchors for later rows. When multiple events in a sequence share the same recorded second, zero-time denominators are replaced by `1 / n`, where `n` is the number of events in that same second within the sequence.
 #'
 #' @inheritParams add_on_ice_players
-#' @returns data.frame with one row per event (play) and added columns: `dXN`, `dYN`, `dD`, `dA`, `dT`, `dXNdT`, `dYNdT`, `dDdT`, `dAdT`
+#' @returns data.frame with one row per event (play) and added columns: `dXN`, `dYN`, `dD`, `dA`, `dT`, `dXNdT`, `dYNdT`, `dDdT`, `dAdT`, `eventIdPrev`
 #' @export
 
 calculate_speed <- function(play_by_play) {
   t <- play_by_play$secondsElapsedInGame
   x <- play_by_play$xCoordNorm
   y <- play_by_play$yCoordNorm
+  situationCode <- if ('situationCode' %in% names(play_by_play)) as.character(play_by_play$situationCode) else rep(NA_character_, nrow(play_by_play))
   n <- nrow(play_by_play)
   dXN <- rep(NA_real_, n)
   dYN <- rep(NA_real_, n)
@@ -441,7 +442,9 @@ calculate_speed <- function(play_by_play) {
   dYNdT <- rep(NA_real_, n)
   dDdT  <- rep(NA_real_, n)
   dAdT  <- rep(NA_real_, n)
+  eventIdPrev <- if ('eventId' %in% names(play_by_play)) play_by_play$eventId[rep(NA_integer_, n)] else rep(NA_integer_, n)
   is_faceoff <- play_by_play$typeDescKey == 'faceoff'
+  is_ps_so <- !is.na(situationCode) & situationCode %in% c('0101', '1010')
   for (g in unique(play_by_play$gameId)) {
     idx <- which(play_by_play$gameId == g)
     idx <- idx[order(t[idx], play_by_play$sortOrder[idx], na.last = TRUE)]
@@ -449,7 +452,8 @@ calculate_speed <- function(play_by_play) {
     m <- length(idx)
     t_ord <- t[idx]
     valid_spatial <- !is.na(x[idx]) & !is.na(y[idx]) &
-      !is.na(play_by_play$distance[idx]) & !is.na(play_by_play$angle[idx])
+      !is.na(play_by_play$distance[idx]) & !is.na(play_by_play$angle[idx]) &
+      !is_ps_so[idx]
     prev_pos <- rep(NA_integer_, m)
     seq_id <- rep(NA_integer_, m)
     last_valid_since_faceoff <- NA_integer_
@@ -462,7 +466,7 @@ calculate_speed <- function(play_by_play) {
         prev_pos[k] <- NA_integer_
       } else if (current_seq > 0L) {
         seq_id[k] <- current_seq
-        prev_pos[k] <- last_valid_since_faceoff
+        if (!is_ps_so[i]) prev_pos[k] <- last_valid_since_faceoff
       }
       if (is_faceoff[i]) {
         last_valid_since_faceoff <- if (valid_spatial[k]) k else NA_integer_
@@ -484,6 +488,7 @@ calculate_speed <- function(play_by_play) {
     dYN[curr] <- dy
     dD[curr]  <- dd
     dA[curr]  <- da
+    if ('eventId' %in% names(play_by_play)) eventIdPrev[curr] <- play_by_play$eventId[prev]
     ok <- !is.na(dt) & dt >= 0
     j  <- which(ok)
     if (length(j)) {
@@ -516,8 +521,9 @@ calculate_speed <- function(play_by_play) {
   play_by_play$dYNdT <- dYNdT
   play_by_play$dDdT  <- dDdT
   play_by_play$dAdT  <- dAdT
+  play_by_play$eventIdPrev <- eventIdPrev
   after  <- match('angle', names(play_by_play))
-  insert <- c('dXN', 'dYN', 'dD', 'dA', 'dT', 'dXNdT', 'dYNdT', 'dDdT', 'dAdT')
+  insert <- c('dXN', 'dYN', 'dD', 'dA', 'dT', 'dXNdT', 'dYNdT', 'dDdT', 'dAdT', 'eventIdPrev')
   nms    <- names(play_by_play)
   play_by_play[, c(nms[seq_len(after)], insert, setdiff(nms[-seq_len(after)], insert))]
 }
