@@ -13,9 +13,6 @@ normalize_coordinates(play_by_play)
 data.frame with one row per event (play) and added columns \code{xCoordNorm} and \code{yCoordNorm}
 }
 \description{
-\code{normalize_coordinates()} normalizes the x and y coordinates for all the events (plays)
-in a play-by-play such that they all attack towards +x. If \code{homeTeamDefendingSide}
-is not available, the home defending side in period 1 is inferred using \code{zoneCode},
-\code{isHome}, and \code{xCoord}.
+\code{normalize_coordinates()} normalizes the x and y coordinates for all the events (plays) in a play-by-play such that they all attack towards +x. If \code{homeTeamDefendingSide} is not available, the home defending side in period 1 is inferred using \code{zoneCode}, \code{isHome}, and \code{xCoord}.
 }
 \keyword{internal}

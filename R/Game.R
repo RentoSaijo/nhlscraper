@@ -369,15 +369,15 @@ shift_chart <- function(game = 2023030417) {
       shifts <- shifts[is.na(shifts$eventDescription), ]
       shifts <- shifts[, c('id', 'gameId', 'teamId', 'playerId', 'shiftNumber', 'period', 'startTime', 'endTime')]
       is_playoffs <- game %/% 1e4 %% 1e2 == 3
-      base        <- ifelse(
-        shifts$period <= 3L,
-        (shifts$period - 1L) * 1200L,
-        ifelse(
-          is_playoffs,
-          3600L + (shifts$period - 4L) * 1200L,
-          3600L + (shifts$period - 4L) * 300L
-        )
-      )
+      base <- integer(nrow(shifts))
+      reg_idx <- shifts$period <= 3L
+      ot_idx <- !reg_idx
+      base[reg_idx] <- (shifts$period[reg_idx] - 1L) * 1200L
+      if (is_playoffs) {
+        base[ot_idx] <- 3600L + (shifts$period[ot_idx] - 4L) * 1200L
+      } else {
+        base[ot_idx] <- 3600L + (shifts$period[ot_idx] - 4L) * 300L
+      }
       tp_s  <- strsplit(shifts$startTime, ':', fixed = TRUE)
       s_min <- as.integer(vapply(tp_s, `[`, '', 1L))
       s_sec <- as.integer(vapply(tp_s, `[`, '', 2L))
@@ -493,6 +493,15 @@ shift_chart <- function(game = 2023030417) {
             }
             NA_integer_
           }
+          parse_period_label <- function(x) {
+            x <- trimws(toupper(x))
+            if (grepl('^[0-9]+$', x)) return(as.integer(x))
+            if (x == 'OT') return(4L)
+            if (grepl('^[0-9]+OT$', x)) {
+              return(3L + as.integer(sub('OT$', '', x)))
+            }
+            NA_integer_
+          }
           parse_shift_report <- function(team_tag, team_id) {
             report <- xml2::read_html(sprintf(
               'https://www.nhl.com/scores/htmlreports/%s/%s%s.HTM',
@@ -532,7 +541,7 @@ shift_chart <- function(game = 2023030417) {
               is_shift_row <- length(cells) == 6L &&
                 length(txt) >= 4L &&
                 grepl('^[0-9]+$', txt[1]) &&
-                grepl('^[0-9]+$', txt[2]) &&
+                !is.na(parse_period_label(txt[2])) &&
                 grepl('/', txt[3], fixed = TRUE) &&
                 grepl('/', txt[4], fixed = TRUE) &&
                 grepl('[0-9]{1,2}:[0-9]{2}', txt[3]) &&
@@ -547,7 +556,7 @@ shift_chart <- function(game = 2023030417) {
                 teamId      = as.integer(team_id),
                 playerId    = as.integer(current_player_id),
                 shiftNumber = as.integer(txt[1]),
-                period      = as.integer(txt[2]),
+                period      = parse_period_label(txt[2]),
                 startTime   = start_time,
                 endTime     = end_time,
                 stringsAsFactors = FALSE
@@ -565,17 +574,30 @@ shift_chart <- function(game = 2023030417) {
           shifts$startSecondsElapsedInPeriod <- clocks_to_seconds(shifts$startTime)
           shifts$endSecondsElapsedInPeriod   <- clocks_to_seconds(shifts$endTime)
           is_playoffs <- game %/% 1e4 %% 1e2 == 3
-          base        <- ifelse(
-            shifts$period <= 3L,
-            (shifts$period - 1L) * 1200L,
-            ifelse(
-              is_playoffs,
-              3600L + (shifts$period - 4L) * 1200L,
-              3600L + (shifts$period - 4L) * 300L
-            )
-          )
+          base <- integer(nrow(shifts))
+          reg_idx <- shifts$period <= 3L
+          ot_idx <- !reg_idx
+          base[reg_idx] <- (shifts$period[reg_idx] - 1L) * 1200L
+          if (is_playoffs) {
+            base[ot_idx] <- 3600L + (shifts$period[ot_idx] - 4L) * 1200L
+          } else {
+            base[ot_idx] <- 3600L + (shifts$period[ot_idx] - 4L) * 300L
+          }
           shifts$startSecondsElapsedInGame <- base + shifts$startSecondsElapsedInPeriod
           shifts$endSecondsElapsedInGame   <- base + shifts$endSecondsElapsedInPeriod
+          if (!is_playoffs) {
+            ot_idx <- shifts$period >= 4L
+            if (any(ot_idx)) {
+              # HTML fallback OT rows can arrive 900 seconds early; re-anchor them
+              # to the regular-season OT period start implied by the period label.
+              expected_base <- 3600L + (shifts$period[ot_idx] - 4L) * 300L
+              actual_base <- shifts$startSecondsElapsedInGame[ot_idx] -
+                shifts$startSecondsElapsedInPeriod[ot_idx]
+              adjust <- expected_base - actual_base
+              shifts$startSecondsElapsedInGame[ot_idx] <- shifts$startSecondsElapsedInGame[ot_idx] + adjust
+              shifts$endSecondsElapsedInGame[ot_idx]   <- shifts$endSecondsElapsedInGame[ot_idx] + adjust
+            }
+          }
           shifts$duration                  <- shifts$endSecondsElapsedInGame - shifts$startSecondsElapsedInGame
           shifts <- shifts[
             !is.na(shifts$startSecondsElapsedInPeriod) &

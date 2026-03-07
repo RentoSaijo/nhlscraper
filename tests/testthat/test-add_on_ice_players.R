@@ -4,6 +4,26 @@ test_that("add_on_ice_players(gc_pbp(), shift_chart()) returns non-empty data.fr
   expect_true(is.data.frame(test) && nrow(test) > 0)
 })
 
+test_that("add_on_ice_players() does not produce 0 vs 0 shot rows in OT game", {
+  skip_if_offline()
+  pbp <- gc_pbp(2024021291)
+  sc <- shift_chart(2024021291)
+  out <- add_on_ice_players(pbp, sc)
+  shot <- out$typeDescKey %in% c("goal", "shot-on-goal", "missed-shot", "blocked-shot")
+  zero_zero <- shot & lengths(out$homePlayerIds) == 0L & lengths(out$awayPlayerIds) == 0L
+  expect_false(any(zero_zero, na.rm = TRUE))
+})
+
+test_that("add_on_ice_players() does not produce 0 vs 0 shot rows in playoff OT game", {
+  skip_if_offline()
+  pbp <- gc_pbp(2024030114)
+  sc <- shift_chart(2024030114)
+  out <- add_on_ice_players(pbp, sc)
+  shot <- out$typeDescKey %in% c("goal", "shot-on-goal", "missed-shot", "blocked-shot")
+  zero_zero <- shot & lengths(out$homePlayerIds) == 0L & lengths(out$awayPlayerIds) == 0L
+  expect_false(any(zero_zero, na.rm = TRUE))
+})
+
 test_that("add_on_ice_players() returns aligned elapsed-seconds list columns", {
   play_by_play <- data.frame(
     gameId = c(1L, 1L, 1L, 1L),
