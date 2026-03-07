@@ -129,7 +129,96 @@ test_that("add_on_ice_players() keeps shootout scorer rows and sets elapsed colu
   expect_equal(out$secondsElapsedInPeriodSinceLastShiftAgainst[[1]], NA_integer_)
 })
 
-test_that("add_on_ice_players() infers goalieInNetId for blocked shots from on-ice goalies", {
+test_that("add_on_ice_players() infers missing goalieInNetId for non-empty-net shot events", {
+  local_mocked_bindings(
+    players = function() {
+      data.frame(
+        playerId = c(11L, 21L, 31L, 41L),
+        positionCode = c("D", "F", "G", "D"),
+        stringsAsFactors = FALSE
+      )
+    },
+    .package = "nhlscraper"
+  )
+
+  play_by_play <- data.frame(
+    gameId = c(1L, 1L),
+    eventId = c(1L, 2L),
+    period = c(1L, 1L),
+    secondsElapsedInPeriod = c(20L, 21L),
+    secondsElapsedInGame = c(20L, 21L),
+    sortOrder = c(1L, 2L),
+    strengthState = c("ev", "ev"),
+    typeDescKey = c("blocked-shot", "shot-on-goal"),
+    isHome = c(TRUE, TRUE),
+    isEmptyNetFor = c(FALSE, FALSE),
+    isEmptyNetAgainst = c(FALSE, FALSE),
+    goalieInNetId = c(NA_integer_, NA_integer_),
+    situationCode = c("1551", "1551"),
+    stringsAsFactors = FALSE
+  )
+  shift_chart <- data.frame(
+    gameId = c(1L, 1L, 1L, 1L),
+    teamId = c(10L, 10L, 20L, 20L),
+    playerId = c(11L, 21L, 31L, 41L),
+    period = c(1L, 1L, 1L, 1L),
+    startSecondsElapsedInGame = c(0L, 0L, 0L, 0L),
+    endSecondsElapsedInGame = c(30L, 30L, 30L, 30L),
+    isHome = c(TRUE, TRUE, FALSE, FALSE)
+  )
+
+  out <- add_on_ice_players(play_by_play, shift_chart)
+
+  expect_equal(out$playerIdsFor[[1]], c(11L, 21L))
+  expect_equal(out$playerIdsAgainst[[1]], c(31L, 41L))
+  expect_equal(out$goalieInNetId[1], 31L)
+  expect_equal(out$goalieInNetId[2], 31L)
+})
+
+test_that("add_on_ice_players() infers missing blocked-shot goalies from surrounding shot context", {
+  local_mocked_bindings(
+    players = function() {
+      data.frame(
+        playerId = c(11L, 12L, 21L, 22L, 31L, 41L),
+        positionCode = c("F", "D", "F", "D", "G", "G"),
+        stringsAsFactors = FALSE
+      )
+    },
+    .package = "nhlscraper"
+  )
+
+  play_by_play <- data.frame(
+    gameId = c(1L, 1L, 1L),
+    eventId = c(1L, 2L, 3L),
+    period = c(1L, 1L, 1L),
+    secondsElapsedInPeriod = c(10L, 20L, 30L),
+    secondsElapsedInGame = c(10L, 20L, 30L),
+    sortOrder = c(1L, 2L, 3L),
+    strengthState = c("ev", "ev", "ev"),
+    typeDescKey = c("shot-on-goal", "blocked-shot", "missed-shot"),
+    isHome = c(TRUE, TRUE, TRUE),
+    isEmptyNetFor = c(FALSE, FALSE, FALSE),
+    isEmptyNetAgainst = c(FALSE, FALSE, FALSE),
+    goalieInNetId = c(31L, NA_integer_, 31L),
+    situationCode = c("1551", "1551", "1551"),
+    stringsAsFactors = FALSE
+  )
+  shift_chart <- data.frame(
+    gameId = c(1L, 1L, 1L, 1L, 1L, 1L),
+    teamId = c(10L, 10L, 20L, 20L, 20L, 20L),
+    playerId = c(11L, 12L, 21L, 22L, 31L, 41L),
+    period = c(1L, 1L, 1L, 1L, 1L, 1L),
+    startSecondsElapsedInGame = c(0L, 0L, 0L, 0L, 0L, 0L),
+    endSecondsElapsedInGame = c(40L, 40L, 40L, 40L, 40L, 40L),
+    isHome = c(TRUE, TRUE, FALSE, FALSE, FALSE, FALSE)
+  )
+
+  out <- add_on_ice_players(play_by_play, shift_chart)
+
+  expect_equal(out$goalieInNetId[2], 31L)
+})
+
+test_that("add_on_ice_players() leaves empty-net and ambiguous shot goalie rows as NA", {
   local_mocked_bindings(
     players = function() {
       data.frame(
@@ -142,34 +231,76 @@ test_that("add_on_ice_players() infers goalieInNetId for blocked shots from on-i
   )
 
   play_by_play <- data.frame(
+    gameId = c(1L, 1L),
+    eventId = c(1L, 2L),
+    period = c(1L, 1L),
+    secondsElapsedInPeriod = c(20L, 25L),
+    secondsElapsedInGame = c(20L, 25L),
+    sortOrder = c(1L, 2L),
+    strengthState = c("ev", "ev"),
+    typeDescKey = c("blocked-shot", "blocked-shot"),
+    isHome = c(TRUE, TRUE),
+    isEmptyNetFor = c(FALSE, FALSE),
+    isEmptyNetAgainst = c(TRUE, FALSE),
+    goalieInNetId = c(NA_integer_, NA_integer_),
+    situationCode = c("1560", "1551"),
+    stringsAsFactors = FALSE
+  )
+  shift_chart <- data.frame(
+    gameId = c(1L, 1L, 1L, 1L),
+    teamId = c(10L, 20L, 20L, 20L),
+    playerId = c(11L, 31L, 41L, 41L),
+    period = c(1L, 1L, 1L, 1L),
+    startSecondsElapsedInGame = c(0L, 0L, 0L, 0L),
+    endSecondsElapsedInGame = c(40L, 40L, 40L, 10L),
+    isHome = c(TRUE, FALSE, FALSE, FALSE)
+  )
+
+  out <- add_on_ice_players(play_by_play, shift_chart)
+
+  expect_true(is.na(out$goalieInNetId[1]))
+  expect_true(is.na(out$goalieInNetId[2]))
+})
+
+test_that("add_on_ice_players() does not overwrite existing goalieInNetId values", {
+  local_mocked_bindings(
+    players = function() {
+      data.frame(
+        playerId = c(11L, 21L, 31L),
+        positionCode = c("F", "D", "G"),
+        stringsAsFactors = FALSE
+      )
+    },
+    .package = "nhlscraper"
+  )
+
+  play_by_play <- data.frame(
     gameId = 1L,
     eventId = 1L,
     period = 1L,
-    secondsElapsedInPeriod = 20L,
-    secondsElapsedInGame = 20L,
+    secondsElapsedInPeriod = 10L,
+    secondsElapsedInGame = 10L,
     sortOrder = 1L,
     strengthState = "ev",
     typeDescKey = "blocked-shot",
     isHome = TRUE,
     isEmptyNetFor = FALSE,
     isEmptyNetAgainst = FALSE,
-    goalieInNetId = NA_integer_,
+    goalieInNetId = 99L,
     situationCode = "1551",
     stringsAsFactors = FALSE
   )
   shift_chart <- data.frame(
     gameId = c(1L, 1L, 1L),
-    teamId = c(10L, 10L, 20L),
-    playerId = c(11L, 31L, 41L),
+    teamId = c(10L, 20L, 20L),
+    playerId = c(11L, 21L, 31L),
     period = c(1L, 1L, 1L),
     startSecondsElapsedInGame = c(0L, 0L, 0L),
-    endSecondsElapsedInGame = c(30L, 30L, 30L),
-    isHome = c(TRUE, TRUE, FALSE)
+    endSecondsElapsedInGame = c(20L, 20L, 20L),
+    isHome = c(TRUE, FALSE, FALSE)
   )
 
   out <- add_on_ice_players(play_by_play, shift_chart)
 
-  expect_equal(out$playerIdsFor[[1]], c(11L, 31L))
-  expect_equal(out$playerIdsAgainst[[1]], 41L)
-  expect_equal(out$goalieInNetId[1], 41L)
+  expect_equal(out$goalieInNetId, 99L)
 })

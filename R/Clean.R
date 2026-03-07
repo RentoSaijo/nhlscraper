@@ -596,7 +596,7 @@ add_goalie_biometrics <- function(play_by_play) {
 
 #' Add on-ice player IDs to a play-by-play by merging with shift charts
 #' 
-#' `add_on_ice_players()` merges a play-by-play with a shift chart to determine which players are on the ice at each event. It adds home- and away-team on-ice player ID lists, event-perspective for/against player ID lists when `isHome` is available, elapsed time in the current shift for each listed player, and elapsed time since the end of the player's prior shift within the same period. For the first shift of a period, the "since last shift" value is set to `300 + secondsElapsedInPeriod`. For shootout and penalty-shot rows (`0101`/`1010`), the elapsed-time list-columns are returned as `NA`. When `goalieInNetId` is missing on blocked-shot rows, it is inferred from the defending/on-ice goalie in `playerIdsAgainst` when the net is not empty.
+#' `add_on_ice_players()` merges a play-by-play with a shift chart to determine which players are on the ice at each event. It adds home- and away-team on-ice player ID lists, event-perspective for/against player ID lists when `isHome` is available, elapsed time in the current shift for each listed player, and elapsed time since the end of the player's prior shift within the same period. For the first shift of a period, the "since last shift" value is set to `300 + secondsElapsedInPeriod`. For shootout and penalty-shot rows (`0101`/`1010`), the elapsed-time list-columns are returned as `NA`. When `goalieInNetId` is missing on a non-empty-net shot-attempt row, it is inferred first from the defending/on-ice goalie in `playerIdsAgainst`, then conservatively from surrounding same-period shot attempts when they identify a single defending goalie.
 #' 
 #' @param play_by_play data.frame of play-by-play(s); see [gc_play_by_play()], [gc_play_by_plays()], [wsc_play_by_play()], or [wsc_play_by_plays()] for reference; the original columns must exist
 #' @param shift_chart data.frame of shift chart(s); see [shift_chart()] or [shift_charts()] for reference; the original columns must exist
@@ -628,6 +628,7 @@ add_on_ice_players <- function(play_by_play, shift_chart) {
   for_rest      <- rep(list(integer(0)), n)
   against_rest  <- rep(list(integer(0)), n)
   post_types <- c('period-start', 'faceoff')
+  shot_attempt_types <- c('goal', 'shot-on-goal', 'missed-shot', 'blocked-shot')
   typeDescKey <- if ('typeDescKey' %in% names(play_by_play)) as.character(play_by_play$typeDescKey) else rep(NA_character_, n)
   use_post   <- !is.na(typeDescKey) & typeDescKey %in% post_types
   # Helpers for robust ordering
@@ -662,6 +663,46 @@ add_on_ice_players <- function(play_by_play, shift_chart) {
     if (!length(ids)) return(NA_integer_)
     gids <- unique(ids[ids %in% goalie_pool])
     if (length(gids) == 1L) gids else NA_integer_
+  }
+  .fill_goalie_from_context <- function(goalie_ids, shot_mask, not_empty_mask, periods, is_home, event_time, event_order) {
+    valid_group <- shot_mask & not_empty_mask & !is.na(periods) & !is.na(is_home)
+    if (!any(valid_group)) return(goalie_ids)
+    split_idx <- split(
+      which(valid_group),
+      interaction(periods[valid_group], is_home[valid_group], drop = TRUE, lex.order = TRUE)
+    )
+    for (idx in split_idx) {
+      if (!length(idx)) next
+      idx <- idx[order(event_time[idx], event_order[idx], na.last = TRUE)]
+      vals <- as.integer(goalie_ids[idx])
+      miss <- is.na(vals)
+      if (!any(miss)) next
+      prev_known <- rep(NA_integer_, length(idx))
+      next_known <- rep(NA_integer_, length(idx))
+      last_known <- NA_integer_
+      for (k in seq_along(idx)) {
+        prev_known[k] <- last_known
+        if (!is.na(vals[k])) last_known <- vals[k]
+      }
+      last_known <- NA_integer_
+      for (k in length(idx):1L) {
+        next_known[k] <- last_known
+        if (!is.na(vals[k])) last_known <- vals[k]
+      }
+      agree <- miss & !is.na(prev_known) & !is.na(next_known) & prev_known == next_known
+      if (any(agree)) {
+        vals[agree] <- prev_known[agree]
+      }
+      miss <- is.na(vals)
+      if (any(miss)) {
+        uniq <- unique(vals[!is.na(vals)])
+        if (length(uniq) == 1L) {
+          vals[miss] <- uniq
+        }
+      }
+      goalie_ids[idx] <- vals
+    }
+    goalie_ids
   }
   .na_aligned <- function(x) rep(NA_integer_, length(as.integer(x)))
   scoring_ids <- if ('scoringPlayerId' %in% names(play_by_play)) play_by_play$scoringPlayerId else rep(NA_integer_, n)
@@ -851,21 +892,42 @@ add_on_ice_players <- function(play_by_play, shift_chart) {
       against_rest[i] <- list(NULL)
     }
   }
-  is_block <- !is.na(typeDescKey) & typeDescKey == 'blocked-shot'
+  is_shot_attempt <- !is.na(typeDescKey) & typeDescKey %in% shot_attempt_types
   is_not_empty_net_against <- if ('isEmptyNetAgainst' %in% names(play_by_play)) {
     !(play_by_play$isEmptyNetAgainst %in% TRUE)
   } else {
     rep(TRUE, n)
   }
-  missing_block_goalie <- is_block & is.na(goalie_ids) & is_not_empty_net_against
-  if (any(missing_block_goalie)) {
+  missing_shot_goalie <- is_shot_attempt & is.na(goalie_ids) & is_not_empty_net_against
+  if (any(missing_shot_goalie)) {
     bios <- players()
-    goalie_pool <- bios$playerId[as.character(bios$positionCode) == 'G']
-    goalie_ids[missing_block_goalie] <- vapply(
-      which(missing_block_goalie),
+    goalie_pool <- if (all(c('playerId', 'positionCode') %in% names(bios))) {
+      bios$playerId[as.character(bios$positionCode) == 'G']
+    } else {
+      integer(0)
+    }
+    goalie_ids[missing_shot_goalie] <- vapply(
+      which(missing_shot_goalie),
       FUN.VALUE = integer(1),
       function(i) .infer_goalie_id(against_ids[[i]], goalie_pool)
     )
+    remaining_missing_goalie <- is_shot_attempt & is.na(goalie_ids) & is_not_empty_net_against
+    if (any(remaining_missing_goalie)) {
+      event_time <- .ord_col(play_by_play, 'secondsElapsedInGame', seq_len(n))
+      event_order <- .ord_col(play_by_play, 'sortOrder', .ord_col(play_by_play, 'eventId', seq_len(n)))
+      for (g in unique(play_by_play$gameId[remaining_missing_goalie])) {
+        idx <- which(play_by_play$gameId == g)
+        goalie_ids[idx] <- .fill_goalie_from_context(
+          goalie_ids = goalie_ids[idx],
+          shot_mask = is_shot_attempt[idx],
+          not_empty_mask = is_not_empty_net_against[idx],
+          periods = play_by_play$period[idx],
+          is_home = play_by_play$isHome[idx],
+          event_time = event_time[idx],
+          event_order = event_order[idx]
+        )
+      }
+    }
     play_by_play$goalieInNetId <- goalie_ids
   }
   # Shootout override (player + goalie only).
