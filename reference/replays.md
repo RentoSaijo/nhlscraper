@@ -24,5 +24,5 @@ data.frame with one row per decisecond
 
 ``` r
 # May take >5s, so skip.
-replays_20232024 <- replays(season = 20232024)
+replays_20252026 <- replays(season = 20252026)
 ```

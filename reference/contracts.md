@@ -19,5 +19,5 @@ data.frame with one row per contract
 
 ``` r
 all_contracts <- contracts()
-#> Dropped 627 row(s) with unresolved/ambiguous playerId matches.
+#> Dropped 633 row(s) with unresolved/ambiguous playerId matches.
 ```

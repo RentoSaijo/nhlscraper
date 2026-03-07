@@ -2,16 +2,35 @@
 
 ## nhlscraper 0.5.0.9000
 
+- [`replays()`](https://rentosaijo.github.io/nhlscraper/reference/replays.md)
+  is now added to retrieve season-aggregate replays.
 - [`contracts()`](https://rentosaijo.github.io/nhlscraper/reference/contracts.md)
   now returns more contracts, dating back to the 90’s (and then some).
 - [`shift_chart()`](https://rentosaijo.github.io/nhlscraper/reference/shift_chart.md)
-  now returns for all games where at least either one of API or HTML
-  report is available.
-- [`replays()`](https://rentosaijo.github.io/nhlscraper/reference/replays.md)
-  is now added to retrieve season-aggregate replays.
-- Model 4 on
-  [`calculate_expected_goals()`](https://rentosaijo.github.io/nhlscraper/reference/calculate_expected_goals.md)
-  is already flagged as problematic; a patch is coming soon.
+  (and consequentially,
+  [`shift_charts()`](https://rentosaijo.github.io/nhlscraper/reference/shift_charts.md))
+  now returns completed shift charts for all games where at least either
+  one of API or HTML report is available (which, to my knowledge, is all
+  games).
+- [`calculate_speed()`](https://rentosaijo.github.io/nhlscraper/reference/calculate_speed.md)
+  now properly handles same-second events and shootouts/penalty shots.
+- [`add_on_ice_players()`](https://rentosaijo.github.io/nhlscraper/reference/add_on_ice_players.md)
+  now returns 8 new columns pertaining to the length of the current
+  shift and time elapsed since the end of the previous shift for each
+  player on the ice; it also adds `goalieInNetId` for blocked shot
+  events.
+- [`add_shooter_biometrics()`](https://rentosaijo.github.io/nhlscraper/reference/add_shooter_biometrics.md)
+  and
+  [`add_goalie_biometrics()`](https://rentosaijo.github.io/nhlscraper/reference/add_goalie_biometrics.md)
+  now returns biometrics for all Corsi events in play-by-plays, if
+  `goalieInNetId` is present for blocked shots; it also returns
+  `shooterHandCode` and `goalieHandCode` columns instead of the previous
+  `shooterSide` and `goalieSide` columns.
+- The expected goal (xG) models are currently being reworked; some
+  functions that rely on these models (e.g.,
+  [`calculate_expected_goals()`](https://rentosaijo.github.io/nhlscraper/reference/calculate_expected_goals.md),
+  [`ig_game_shot_locations()`](https://rentosaijo.github.io/nhlscraper/reference/ig_game_shot_locations.md))
+  may not work as expected.
 
 ## nhlscraper 0.5.0
 
