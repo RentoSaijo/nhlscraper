@@ -8,9 +8,11 @@ for each listed player, and elapsed time since the end of the player's
 prior shift within the same period. For the first shift of a period, the
 "since last shift" value is set to `300 + secondsElapsedInPeriod`. For
 shootout and penalty-shot rows (`0101`/`1010`), the elapsed-time
-list-columns are returned as `NA`. When `goalieInNetId` is missing on
-blocked-shot rows, it is inferred from the defending/on-ice goalie in
-`playerIdsAgainst` when the net is not empty.
+list-columns are returned as `NA`. When `goalieInNetId` is missing on a
+non-empty-net shot-attempt row, it is inferred first from the
+defending/on-ice goalie in `playerIdsAgainst`, then conservatively from
+surrounding same-period shot attempts when they identify a single
+defending goalie.
 
 ## Usage
 
