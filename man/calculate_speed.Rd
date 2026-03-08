@@ -10,7 +10,7 @@ calculate_speed(play_by_play)
 \item{play_by_play}{data.frame of play-by-play(s); see \code{\link[=gc_play_by_play]{gc_play_by_play()}}, \code{\link[=gc_play_by_plays]{gc_play_by_plays()}}, \code{\link[=wsc_play_by_play]{wsc_play_by_play()}}, or \code{\link[=wsc_play_by_plays]{wsc_play_by_plays()}} for reference; the original columns must exist}
 }
 \value{
-data.frame with one row per event (play) and added columns: \code{dXN}, \code{dYN}, \code{dD}, \code{dA}, \code{dT}, \code{dXNdT}, \code{dYNdT}, \code{dDdT}, \code{dAdT}, \code{eventIdPrev}
+data.frame with one row per event (play) and added columns: \code{dXN}, \code{dYN}, \code{dD}, \code{dA}, \code{dT}, \code{dXNdT}, \code{dYNdT}, \code{dDdT}, \code{dAdT}, \code{eventIdPrev}, \code{secondsElapsedInSequence}
 }
 \description{
 \code{calculate_speed()} calculates event-to-event deltas and speeds in normalized x/y, distance, and angle for a play-by-play. Sequences are bounded by faceoffs: each sequence begins at a faceoff, faceoff rows do not look backward across the boundary, and subsequent events are compared to the most recent prior valid-spatial event in the same faceoff-bounded sequence. Shootout and penalty-shot rows (\code{0101}/\code{1010}) are left as \code{NA} and do not serve as anchors for later rows. When multiple events in a sequence share the same recorded second, zero-time denominators are replaced by \code{1 / n}, where \code{n} is the number of events in that same second within the sequence.

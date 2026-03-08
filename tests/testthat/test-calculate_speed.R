@@ -26,6 +26,10 @@ test_that("calculate_speed() starts new sequences at faceoffs", {
   expect_true(is.na(out$dXN[2]))
   expect_true(is.na(out$dT[7]))
   expect_true(is.na(out$dXN[7]))
+  expect_true(is.na(out$secondsElapsedInSequence[1]))
+  expect_equal(out$secondsElapsedInSequence[2], 0)
+  expect_equal(out$secondsElapsedInSequence[5], 1)
+  expect_equal(out$secondsElapsedInSequence[8], 0)
   expect_true(is.na(out$eventIdPrev[2]))
   expect_true(is.na(out$eventIdPrev[7]))
   expect_equal(out$dXN[8], 10)
@@ -78,9 +82,35 @@ test_that("calculate_speed() leaves shootout and penalty-shot rows as NA", {
 
   expect_true(all(is.na(out[3, c("dXN", "dYN", "dD", "dA", "dT", "dXNdT", "dYNdT", "dDdT", "dAdT")])))
   expect_true(all(is.na(out[4, c("dXN", "dYN", "dD", "dA", "dT", "dXNdT", "dYNdT", "dDdT", "dAdT")])))
+  expect_true(is.na(out$secondsElapsedInSequence[3]))
+  expect_true(is.na(out$secondsElapsedInSequence[4]))
   expect_true(is.na(out$eventIdPrev[3]))
   expect_true(is.na(out$eventIdPrev[4]))
   expect_equal(out$dXN[5], 30)
   expect_equal(out$dT[5], 2)
   expect_equal(out$eventIdPrev[5], 2)
+  expect_equal(out$secondsElapsedInSequence[5], 3)
+})
+
+test_that("calculate_speed() places secondsElapsedInSequence after shift-rest-against", {
+  pbp <- data.frame(
+    gameId = rep(1L, 3),
+    eventId = seq_len(3),
+    secondsElapsedInGame = c(10, 11, 12),
+    xCoordNorm = c(0, 10, 20),
+    yCoordNorm = c(0, 0, 0),
+    distance = c(0, 10, 20),
+    angle = c(0, 10, 20),
+    secondsElapsedInPeriodSinceLastShiftAgainst = I(list(1L, 2L, 3L)),
+    typeDescKey = c("faceoff", "shot", "shot"),
+    sortOrder = seq_len(3)
+  )
+
+  out <- calculate_speed(pbp)
+  cols <- names(out)
+
+  expect_equal(
+    match("secondsElapsedInSequence", cols),
+    match("secondsElapsedInPeriodSinceLastShiftAgainst", cols) + 1L
+  )
 })

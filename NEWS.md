@@ -2,7 +2,7 @@
 - `replays()` is now added to retrieve season-aggregate replays.
 - `contracts()` now returns more contracts, dating back to the 90's (and then some).
 - `shift_chart()` (and consequentially, `shift_charts()`) now returns completed shift charts for all games where at least either one of API or HTML report is available.
-- `calculate_speed()` now properly handles same-second events and shootouts/penalty shots; it also returns the `eventId` of the anchoring event (the previous it is referring to for the delta calculations).
+- `calculate_speed()` now properly handles same-second events and shootouts/penalty shots; it also returns the `eventId` of the anchoring event (the previous it is referring to for the delta calculations) and `secondsElapsedInSequence`, where each sequence begins with a faceoff.
 - `add_on_ice_players()` now returns 8 new columns pertaining to the length of the current shift and time elapsed since the end of the previous shift for each player on the ice; it also adds `goalieInNetId` for blocked shot events.
 - `add_shooter_biometrics()` and `add_goalie_biometrics()` now returns biometrics for all Corsi events in play-by-plays given `goalieInNetId` is present for blocked shots (you can achieve this by running `add_on_ice_players()` first); it also returns `shooterHandCode` and `goalieHandCode` columns instead of the previous `shooterSide` and `goalieSide` columns.
 - The expected goal (xG) models are currently being reworked; some functions that rely on these models (e.g., `calculate_expected_goals()`) may not work as expected.

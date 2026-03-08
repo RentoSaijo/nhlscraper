@@ -424,7 +424,7 @@ count_goals_shots <- function(play_by_play) {
 #' `calculate_speed()` calculates event-to-event deltas and speeds in normalized x/y, distance, and angle for a play-by-play. Sequences are bounded by faceoffs: each sequence begins at a faceoff, faceoff rows do not look backward across the boundary, and subsequent events are compared to the most recent prior valid-spatial event in the same faceoff-bounded sequence. Shootout and penalty-shot rows (`0101`/`1010`) are left as `NA` and do not serve as anchors for later rows. When multiple events in a sequence share the same recorded second, zero-time denominators are replaced by `1 / n`, where `n` is the number of events in that same second within the sequence.
 #'
 #' @inheritParams add_on_ice_players
-#' @returns data.frame with one row per event (play) and added columns: `dXN`, `dYN`, `dD`, `dA`, `dT`, `dXNdT`, `dYNdT`, `dDdT`, `dAdT`, `eventIdPrev`
+#' @returns data.frame with one row per event (play) and added columns: `dXN`, `dYN`, `dD`, `dA`, `dT`, `dXNdT`, `dYNdT`, `dDdT`, `dAdT`, `eventIdPrev`, `secondsElapsedInSequence`
 #' @export
 
 calculate_speed <- function(play_by_play) {
@@ -443,6 +443,7 @@ calculate_speed <- function(play_by_play) {
   dDdT  <- rep(NA_real_, n)
   dAdT  <- rep(NA_real_, n)
   eventIdPrev <- if ('eventId' %in% names(play_by_play)) play_by_play$eventId[rep(NA_integer_, n)] else rep(NA_integer_, n)
+  secondsElapsedInSequence <- rep(NA_real_, n)
   is_faceoff <- play_by_play$typeDescKey == 'faceoff'
   is_ps_so <- !is.na(situationCode) & situationCode %in% c('0101', '1010')
   for (g in unique(play_by_play$gameId)) {
@@ -458,15 +459,19 @@ calculate_speed <- function(play_by_play) {
     seq_id <- rep(NA_integer_, m)
     last_valid_since_faceoff <- NA_integer_
     current_seq <- 0L
+    seq_start_time <- NA_real_
     for (k in seq_len(m)) {
       i <- idx[k]
       if (is_faceoff[i]) {
         current_seq <- current_seq + 1L
+        seq_start_time <- t[i]
         seq_id[k] <- current_seq
         prev_pos[k] <- NA_integer_
+        if (!is_ps_so[i] && !is.na(seq_start_time) && !is.na(t[i])) secondsElapsedInSequence[i] <- t[i] - seq_start_time
       } else if (current_seq > 0L) {
         seq_id[k] <- current_seq
         if (!is_ps_so[i]) prev_pos[k] <- last_valid_since_faceoff
+        if (!is_ps_so[i] && !is.na(seq_start_time) && !is.na(t[i])) secondsElapsedInSequence[i] <- t[i] - seq_start_time
       }
       if (is_faceoff[i]) {
         last_valid_since_faceoff <- if (valid_spatial[k]) k else NA_integer_
@@ -522,10 +527,19 @@ calculate_speed <- function(play_by_play) {
   play_by_play$dDdT  <- dDdT
   play_by_play$dAdT  <- dAdT
   play_by_play$eventIdPrev <- eventIdPrev
+  play_by_play$secondsElapsedInSequence <- secondsElapsedInSequence
   after  <- match('angle', names(play_by_play))
   insert <- c('dXN', 'dYN', 'dD', 'dA', 'dT', 'dXNdT', 'dYNdT', 'dDdT', 'dAdT', 'eventIdPrev')
   nms    <- names(play_by_play)
-  play_by_play[, c(nms[seq_len(after)], insert, setdiff(nms[-seq_len(after)], insert))]
+  play_by_play <- play_by_play[, c(nms[seq_len(after)], insert, setdiff(nms[-seq_len(after)], insert))]
+  nms <- names(play_by_play)
+  if ('secondsElapsedInPeriodSinceLastShiftAgainst' %in% nms) {
+    keep <- nms[nms != 'secondsElapsedInSequence']
+    after <- match('secondsElapsedInPeriodSinceLastShiftAgainst', keep)
+    play_by_play[, c(keep[seq_len(after)], 'secondsElapsedInSequence', keep[(after + 1L):length(keep)])]
+  } else {
+    play_by_play
+  }
 }
 
 #' Add shooter biometrics to (a) play-by-play(s)
