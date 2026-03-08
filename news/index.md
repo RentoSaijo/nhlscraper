@@ -14,7 +14,8 @@
 - [`calculate_speed()`](https://rentosaijo.github.io/nhlscraper/reference/calculate_speed.md)
   now properly handles same-second events and shootouts/penalty shots;
   it also returns the `eventId` of the anchoring event (the previous it
-  is referring to for the delta calculations).
+  is referring to for the delta calculations) and
+  `secondsElapsedInSequence`, where each sequence begins with a faceoff.
 - [`add_on_ice_players()`](https://rentosaijo.github.io/nhlscraper/reference/add_on_ice_players.md)
   now returns 8 new columns pertaining to the length of the current
   shift and time elapsed since the end of the previous shift for each

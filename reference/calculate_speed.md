@@ -32,4 +32,5 @@ calculate_speed(play_by_play)
 ## Value
 
 data.frame with one row per event (play) and added columns: `dXN`,
-`dYN`, `dD`, `dA`, `dT`, `dXNdT`, `dYNdT`, `dDdT`, `dAdT`, `eventIdPrev`
+`dYN`, `dD`, `dA`, `dT`, `dXNdT`, `dYNdT`, `dDdT`, `dAdT`,
+`eventIdPrev`, `secondsElapsedInSequence`
