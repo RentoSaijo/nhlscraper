@@ -20,8 +20,8 @@ data.frame with one row per event (play)
 a \code{data.frame} where each row represents an event. The returned schema is the
 cleaned, public-facing play-by-play schema, including canonical names such as
 \code{periodNumber}, \code{eventTypeCode}, \code{eventTypeDescKey}, \code{homeShots},
-\code{shotsFor}, \code{penaltyTypeDescKey}, \code{penaltyDuration}, and HTML-report-derived
-on-ice player ID columns such as \code{homeGoaliePlayerId},
+\code{shotsFor}, \code{penaltyTypeDescKey}, \code{penaltyDuration}, \code{servedByPlayerId},
+and HTML-report-derived on-ice player ID columns such as \code{homeGoaliePlayerId},
 \code{awayGoaliePlayerId}, \code{homeSkater1PlayerId}, and \code{homeSkater6PlayerId},
 plus shift-chart-derived timing columns such as
 \code{homeSkater1SecondsElapsedInShift} and

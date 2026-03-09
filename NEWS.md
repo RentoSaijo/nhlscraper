@@ -2,12 +2,13 @@
 - `replays()` is now added to retrieve season-aggregate replays.
 - `contracts()` now returns more contracts, dating back to the 90's (and then some).
 - `shift_chart()` (and consequentially, `shift_charts()`) now returns completed shift charts for all games where at least either one of API or HTML report is available.
-- `gc_play_by_play()` and `wsc_play_by_play()` now return only the cleaned public play-by-play schema, with canonical column names such as `periodNumber`, `eventTypeCode`, `eventTypeDescKey`, `homeShots`, `shotsFor`, `penaltyTypeDescKey`, `penaltyDuration`, and `pptReplayUrl`.
+- `gc_play_by_play()` and `wsc_play_by_play()` now return only the cleaned public play-by-play schema, with canonical column names such as `periodNumber`, `eventTypeCode`, `eventTypeDescKey`, `homeShots`, `shotsFor`, `penaltyTypeDescKey`, `penaltyDuration`, `servedByPlayerId`, and `pptReplayUrl`.
   - The public play-by-play outputs now include HTML-report-derived on-ice goalie/skater ID columns for supported strength events, including sixth-skater pulled-goalie states, plus shift-chart-derived scalar timing columns for each on-ice goalie and skater.
   - Strength context in public play-by-play outputs is now reconciled to the matched HTML on-ice rows for supported events, and illogically ordered boundary rows between `period-end` and the following `period-start` are removed before downstream cleaning.
   - HTML play-by-play matching is now more robust to older dotted team abbreviations and duplicate same-second shot clusters, and broader cross-season consistency audits now keep `situationCode` aligned with implied goalie/skater counts from the on-ice columns.
 - `add_deltas()` now handles event-to-event deltas in C, returns raw and normalized x/y deltas alongside distance and angle deltas, and still properly handles same-second events and shootouts/penalty shots; it also returns the `eventId` of the anchoring event and `secondsElapsedInSequence`, where each sequence begins with a faceoff.
 - `add_shooter_biometrics()`, `add_goalie_biometrics()`, and `calculate_expected_goals()` now require the current public play-by-play schema only; legacy helper column names are no longer accepted, and goalie biometrics now use `goaliePlayerIdAgainst`.
+- Public play-by-play outputs now keep optional source-dependent fields in-schema even when a given game feed omits them, padding those columns with `NA` instead of dropping them.
 - The expected goal (xG) models are currently being reworked; some functions that rely on these models (e.g., `calculate_expected_goals()`) may not work as expected.
 
 # nhlscraper 0.5.0

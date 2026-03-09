@@ -124,6 +124,14 @@ test_that("gc_play_by_play() returns the public schema and fills goal shooters",
     out$shootingPlayerId[out$eventTypeDescKey == "goal"],
     out$scoringPlayerId[out$eventTypeDescKey == "goal"]
   )
+  expect_true(all(c("playerId", "blockingPlayerId", "servedByPlayerId") %in% names(out)))
+  expect_true(all(is.na(out$playerId)))
+  expect_true(all(is.na(out$blockingPlayerId)))
+  expect_true(all(is.na(out$servedByPlayerId)))
+  expect_equal(
+    names(out)[match("drawnByPlayerId", names(out)) + 1L],
+    "servedByPlayerId"
+  )
 })
 
 test_that("wsc_play_by_play() returns the public schema with utc and no clip fields", {
@@ -250,6 +258,14 @@ test_that("wsc_play_by_play() returns the public schema with utc and no clip fie
   expect_equal(
     out$shootingPlayerId[out$eventTypeDescKey == "goal"],
     out$scoringPlayerId[out$eventTypeDescKey == "goal"]
+  )
+  expect_true(all(c("playerId", "blockingPlayerId", "servedByPlayerId") %in% names(out)))
+  expect_true(all(is.na(out$playerId)))
+  expect_true(all(is.na(out$blockingPlayerId)))
+  expect_true(all(is.na(out$servedByPlayerId)))
+  expect_equal(
+    names(out)[match("drawnByPlayerId", names(out)) + 1L],
+    "servedByPlayerId"
   )
 })
 

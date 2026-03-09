@@ -1055,16 +1055,32 @@ game_rosters <- function(game = 2023030417) {
   exact_type <- api$typeDescKey[cand] == html$typeDescKey[h_idx]
   scores <- scores + ifelse(exact_type, 250, 180)
   if (!is.na(html$ownerTeamId[h_idx])) {
-    scores <- scores + ifelse(api$ownerTeamId[cand] == html$ownerTeamId[h_idx], 140, -40)
+    scores <- scores + ifelse(
+      !is.na(api$ownerTeamId[cand]) & api$ownerTeamId[cand] == html$ownerTeamId[h_idx],
+      140,
+      -40
+    )
   }
   if (!is.na(html$primaryPlayerId[h_idx])) {
-    scores <- scores + ifelse(api$primaryPlayerId[cand] == html$primaryPlayerId[h_idx], 160, 0)
+    scores <- scores + ifelse(
+      !is.na(api$primaryPlayerId[cand]) & api$primaryPlayerId[cand] == html$primaryPlayerId[h_idx],
+      160,
+      0
+    )
   }
   if (!is.na(html$secondaryPlayerId[h_idx])) {
-    scores <- scores + ifelse(api$secondaryPlayerId[cand] == html$secondaryPlayerId[h_idx], 100, 0)
+    scores <- scores + ifelse(
+      !is.na(api$secondaryPlayerId[cand]) & api$secondaryPlayerId[cand] == html$secondaryPlayerId[h_idx],
+      100,
+      0
+    )
   }
   if (!is.na(html$tertiaryPlayerId[h_idx])) {
-    scores <- scores + ifelse(api$tertiaryPlayerId[cand] == html$tertiaryPlayerId[h_idx], 50, 0)
+    scores <- scores + ifelse(
+      !is.na(api$tertiaryPlayerId[cand]) & api$tertiaryPlayerId[cand] == html$tertiaryPlayerId[h_idx],
+      50,
+      0
+    )
   }
   scores <- scores - 8 * abs(api$apiSeq[cand] - html$htmlSeq[h_idx])
   if (!is.null(last_api_seq) && !is.na(last_api_seq)) {
@@ -1335,6 +1351,43 @@ game_rosters <- function(game = 2023030417) {
   .mask_strength_context_block(play_by_play)
 }
 
+#' Allocate a missing public play-by-play column
+#'
+#' `.empty_public_pbp_column()` returns a typed `NA` vector for a public
+#' play-by-play column that is absent in the upstream source data.
+#'
+#' @param name public play-by-play column name
+#' @param n output row count
+#' @returns typed vector of missing values
+#' @keywords internal
+.empty_public_pbp_column <- function(name, n) {
+  character_cols <- c(
+    'periodType', 'eventTypeDescKey', 'situationCode', 'strengthState',
+    'homeTeamDefendingSide', 'zoneCode', 'shotType', 'penaltyTypeCode',
+    'penaltyTypeDescKey', 'reason', 'secondaryReason', 'discreteClip',
+    'highlightClip', 'highlightClipSharingUrl', 'pptReplayUrl', 'utc'
+  )
+  logical_cols <- c(
+    'isHome', 'homeIsEmptyNet', 'awayIsEmptyNet', 'isEmptyNetFor',
+    'isEmptyNetAgainst', 'isRush', 'isRebound', 'createdRebound'
+  )
+  numeric_cols <- c(
+    'xCoord', 'yCoord', 'xCoordNorm', 'yCoordNorm', 'distance', 'angle',
+    .on_ice_timing_scalar_column_names('SecondsElapsedInShift'),
+    .on_ice_timing_scalar_column_names('SecondsElapsedInPeriodSinceLastShift')
+  )
+  if (name %in% character_cols) {
+    return(rep(NA_character_, n))
+  }
+  if (name %in% logical_cols) {
+    return(rep(NA, n))
+  }
+  if (name %in% numeric_cols) {
+    return(rep(NA_real_, n))
+  }
+  rep(NA_integer_, n)
+}
+
 #' Finalize public play-by-play output
 #'
 #' `.finalize_pbp_output()` renames internal columns to the public schema and
@@ -1398,7 +1451,7 @@ game_rosters <- function(game = 2023030417) {
     'goalDifferential', 'shotDifferential', 'fenwickDifferential',
     'corsiDifferential', 'playerId', 'winningPlayerId', 'losingPlayerId',
     'hittingPlayerId', 'hitteePlayerId', 'committedByPlayerId',
-    'drawnByPlayerId', 'blockingPlayerId', 'shootingPlayerId',
+    'drawnByPlayerId', 'servedByPlayerId', 'blockingPlayerId', 'shootingPlayerId',
     'scoringPlayerId', 'assist1PlayerId', 'assist2PlayerId',
     'scoringPlayerTotal', 'assist1PlayerTotal', 'assist2PlayerTotal',
     'penaltyTypeCode', 'penaltyTypeDescKey', 'penaltyDuration', 'reason',
@@ -1421,14 +1474,20 @@ game_rosters <- function(game = 2023030417) {
     'goalDifferential', 'shotDifferential', 'fenwickDifferential',
     'corsiDifferential', 'playerId', 'winningPlayerId', 'losingPlayerId',
     'hittingPlayerId', 'hitteePlayerId', 'committedByPlayerId',
-    'drawnByPlayerId', 'blockingPlayerId', 'shootingPlayerId',
+    'drawnByPlayerId', 'servedByPlayerId', 'blockingPlayerId', 'shootingPlayerId',
     'scoringPlayerId', 'assist1PlayerId', 'assist2PlayerId',
     'scoringPlayerTotal', 'assist1PlayerTotal', 'assist2PlayerTotal',
     'penaltyTypeCode', 'penaltyTypeDescKey', 'penaltyDuration', 'reason'
   )
 
   keep <- switch(source, gc = gc_cols, wsc = wsc_cols)
-  play_by_play[, intersect(keep, names(play_by_play)), drop = FALSE]
+  missing_cols <- setdiff(keep, names(play_by_play))
+  if (length(missing_cols)) {
+    for (nm in missing_cols) {
+      play_by_play[[nm]] <- .empty_public_pbp_column(nm, nrow(play_by_play))
+    }
+  }
+  play_by_play[, keep, drop = FALSE]
 }
 
 #' Access the GameCenter (GC) play-by-play for a game
@@ -1437,8 +1496,8 @@ game_rosters <- function(game = 2023030417) {
 #' a `data.frame` where each row represents an event. The returned schema is the
 #' cleaned, public-facing play-by-play schema, including canonical names such as
 #' `periodNumber`, `eventTypeCode`, `eventTypeDescKey`, `homeShots`,
-#' `shotsFor`, `penaltyTypeDescKey`, `penaltyDuration`, and HTML-report-derived
-#' on-ice player ID columns such as `homeGoaliePlayerId`,
+#' `shotsFor`, `penaltyTypeDescKey`, `penaltyDuration`, `servedByPlayerId`,
+#' and HTML-report-derived on-ice player ID columns such as `homeGoaliePlayerId`,
 #' `awayGoaliePlayerId`, `homeSkater1PlayerId`, and `homeSkater6PlayerId`,
 #' plus shift-chart-derived timing columns such as
 #' `homeSkater1SecondsElapsedInShift` and
@@ -1531,10 +1590,11 @@ gc_pbp <- function(game = 2023030417) {
 #' `wsc_play_by_play()` retrieves the World Showcase (WSC) play-by-play for a
 #' game as a `data.frame` where each row represents an event. The returned
 #' schema follows the same cleaned public-facing naming as `gc_play_by_play()`,
-#' and includes `utc` immediately after `secondsElapsedInGame` while omitting
-#' GC-only clip fields. It also includes the same HTML-report-derived on-ice
-#' player ID columns added to the GC output, including sixth-skater slots when
-#' a goalie is pulled, plus the same shift-chart-derived scalar timing columns.
+#' including `servedByPlayerId`, and includes `utc` immediately after
+#' `secondsElapsedInGame` while omitting GC-only clip fields. It also includes
+#' the same HTML-report-derived on-ice player ID columns added to the GC output,
+#' including sixth-skater slots when a goalie is pulled, plus the same
+#' shift-chart-derived scalar timing columns.
 #'
 #' @inheritParams gc_summary
 #'

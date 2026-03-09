@@ -207,6 +207,49 @@ test_that("HTML PBP matcher rescues duplicate shot clusters after greedy backtra
   expect_equal(sort(shot_api_idx), c(1L, 28L, 29L, 30L))
 })
 
+test_that("HTML PBP matcher does not discard candidates when API actors are NA", {
+  play_by_play <- data.frame(
+    gameId = c(1L, 1L),
+    eventId = c(10L, 11L),
+    period = c(2L, 2L),
+    secondsElapsedInPeriod = c(1167L, 1167L),
+    sortOrder = c(10L, 11L),
+    typeDescKey = c("penalty", "penalty"),
+    eventOwnerTeamId = c(9L, 9L),
+    isHome = c(FALSE, FALSE),
+    situationCode = c("1551", "1551"),
+    committedByPlayerId = c(8476999L, 8482092L),
+    drawnByPlayerId = c(NA_integer_, 8480796L),
+    playerId = c(NA_integer_, NA_integer_),
+    stringsAsFactors = FALSE
+  )
+  html_rows <- data.frame(
+    htmlEventNumber = c(218L, 222L),
+    period = c(2L, 2L),
+    strengthCodeHtml = c("EV", "EV"),
+    secondsElapsedInPeriod = c(1167L, 1167L),
+    htmlEventCode = c("PENL", "PENL"),
+    typeDescKey = c("penalty", "penalty"),
+    description = c(
+      "OTT #35 ULLMARK Goalie leave crease(2 min) Served By: #21 COUSINS, Off. Zone",
+      "OTT #71 GREIG Roughing(2 min), Off. Zone Drawn By: WSH #42 FEHERVARY"
+    ),
+    ownerTeamId = c(9L, 9L),
+    primaryPlayerId = c(8476999L, 8482092L),
+    secondaryPlayerId = c(8481656L, 8480796L),
+    tertiaryPlayerId = c(NA_integer_, NA_integer_),
+    homeGoaliePlayerId = c(1L, 1L),
+    awayGoaliePlayerId = c(2L, 2L),
+    stringsAsFactors = FALSE
+  )
+  html_rows$homeSkaterPlayerIds <- list(c(101L, 102L, 103L, 104L, 105L), c(101L, 102L, 103L, 104L, 105L))
+  html_rows$awaySkaterPlayerIds <- list(c(201L, 202L, 203L, 204L, 205L), c(201L, 202L, 203L, 204L, 205L))
+
+  matched <- .match_html_pbp_to_api(play_by_play, html_rows)
+
+  expect_equal(matched$apiIndex[match(c(218L, 222L), matched$htmlEventNumber)], c(1L, 2L))
+})
+
 test_that("shift timing context populates scalar goalie and skater timing columns", {
   play_by_play <- data.frame(
     gameId = c(1L, 1L),
