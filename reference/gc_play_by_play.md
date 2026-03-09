@@ -5,10 +5,11 @@ game as a `data.frame` where each row represents an event. The returned
 schema is the cleaned, public-facing play-by-play schema, including
 canonical names such as `periodNumber`, `eventTypeCode`,
 `eventTypeDescKey`, `homeShots`, `shotsFor`, `penaltyTypeDescKey`,
-`penaltyDuration`, and HTML-report-derived on-ice player ID columns such
-as `homeGoaliePlayerId`, `awayGoaliePlayerId`, `homeSkater1PlayerId`,
-and `homeSkater6PlayerId`, plus shift-chart-derived timing columns such
-as `homeSkater1SecondsElapsedInShift` and
+`penaltyDuration`, `servedByPlayerId`, and HTML-report-derived on-ice
+player ID columns such as `homeGoaliePlayerId`, `awayGoaliePlayerId`,
+`homeSkater1PlayerId`, and `homeSkater6PlayerId`, plus
+shift-chart-derived timing columns such as
+`homeSkater1SecondsElapsedInShift` and
 `homeSkater1SecondsElapsedInPeriodSinceLastShift`.
 
 ## Usage

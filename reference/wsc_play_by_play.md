@@ -4,11 +4,11 @@
 a game as a `data.frame` where each row represents an event. The
 returned schema follows the same cleaned public-facing naming as
 [`gc_play_by_play()`](https://rentosaijo.github.io/nhlscraper/reference/gc_play_by_play.md),
-and includes `utc` immediately after `secondsElapsedInGame` while
-omitting GC-only clip fields. It also includes the same
-HTML-report-derived on-ice player ID columns added to the GC output,
-including sixth-skater slots when a goalie is pulled, plus the same
-shift-chart-derived scalar timing columns.
+including `servedByPlayerId`, and includes `utc` immediately after
+`secondsElapsedInGame` while omitting GC-only clip fields. It also
+includes the same HTML-report-derived on-ice player ID columns added to
+the GC output, including sixth-skater slots when a goalie is pulled,
+plus the same shift-chart-derived scalar timing columns.
 
 ## Usage
 

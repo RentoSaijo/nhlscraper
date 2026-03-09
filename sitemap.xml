@@ -40,6 +40,7 @@
 <url><loc>https://rentosaijo.github.io/nhlscraper/reference/dot-count_goals_shots.html</loc></url>
 <url><loc>https://rentosaijo.github.io/nhlscraper/reference/dot-drop_illogical_ordered_events.html</loc></url>
 <url><loc>https://rentosaijo.github.io/nhlscraper/reference/dot-empty_pbp_delta_context.html</loc></url>
+<url><loc>https://rentosaijo.github.io/nhlscraper/reference/dot-empty_public_pbp_column.html</loc></url>
 <url><loc>https://rentosaijo.github.io/nhlscraper/reference/dot-ensure_local_native_symbol.html</loc></url>
 <url><loc>https://rentosaijo.github.io/nhlscraper/reference/dot-fetch_html_pbp_on_ice.html</loc></url>
 <url><loc>https://rentosaijo.github.io/nhlscraper/reference/dot-finalize_pbp_output.html</loc></url>

@@ -17,7 +17,7 @@
   now return only the cleaned public play-by-play schema, with canonical
   column names such as `periodNumber`, `eventTypeCode`,
   `eventTypeDescKey`, `homeShots`, `shotsFor`, `penaltyTypeDescKey`,
-  `penaltyDuration`, and `pptReplayUrl`.
+  `penaltyDuration`, `servedByPlayerId`, and `pptReplayUrl`.
   - The public play-by-play outputs now include HTML-report-derived
     on-ice goalie/skater ID columns for supported strength events,
     including sixth-skater pulled-goalie states, plus
@@ -44,6 +44,9 @@
   now require the current public play-by-play schema only; legacy helper
   column names are no longer accepted, and goalie biometrics now use
   `goaliePlayerIdAgainst`.
+- Public play-by-play outputs now keep optional source-dependent fields
+  in-schema even when a given game feed omits them, padding those
+  columns with `NA` instead of dropping them.
 - The expected goal (xG) models are currently being reworked; some
   functions that rely on these models (e.g.,
   [`calculate_expected_goals()`](https://rentosaijo.github.io/nhlscraper/reference/calculate_expected_goals.md))
