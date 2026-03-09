@@ -3,21 +3,17 @@
 `add_on_ice_players()` merges a play-by-play with a shift chart to
 determine which players are on the ice at each event. It adds home- and
 away-team on-ice player ID lists, event-perspective for/against player
-ID lists when `isHome` is available, elapsed time in the current shift
-for each listed player, and elapsed time since the end of the player's
-prior shift within the same period. For the first shift of a period, the
-"since last shift" value is set to `300 + secondsElapsedInPeriod`. For
-shootout and penalty-shot rows (`0101`/`1010`), the elapsed-time
-list-columns are returned as `NA`. When `goalieInNetId` is missing on a
-non-empty-net shot-attempt row, it is inferred first from the
-defending/on-ice goalie in `playerIdsAgainst`, then conservatively from
-surrounding same-period shot attempts when they identify a single
-defending goalie.
+ID lists, elapsed time in the current shift for each listed player, and
+elapsed time since the end of the player's prior shift within the same
+period. For the first shift of a period, the "since last shift" value is
+set to `300 + secondsElapsedInPeriod`. For shootout and penalty-shot
+rows (where `situationCode` is either `0101` or `1010`), the
+elapsed-time list-columns are returned as `NA`.
 
 ## Usage
 
 ``` r
-add_on_ice_players(play_by_play, shift_chart)
+add_on_ice_players(play_by_play = NULL, shift_chart = NULL)
 ```
 
 ## Arguments
@@ -44,6 +40,9 @@ add_on_ice_players(play_by_play, shift_chart)
 
 data.frame with one row per event (play) and added list-columns:
 `homePlayerIds`, `awayPlayerIds`, `playerIdsFor`, `playerIdsAgainst`,
+`homeSkaterPlayerIds`, `awaySkaterPlayerIds`, `skaterPlayerIdsFor`,
+`skaterPlayerIdsAgainst`, `homeGoaliePlayerId`, `awayGoaliePlayerId`,
+`goaliePlayerIdFor`, `goaliePlayerIdAgainst`,
 `homeSecondsElapsedInShift`, `awaySecondsElapsedInShift`,
 `secondsElapsedInShiftFor`, `secondsElapsedInShiftAgainst`,
 `homeSecondsElapsedInPeriodSinceLastShift`,
