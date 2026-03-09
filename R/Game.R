@@ -1137,6 +1137,9 @@ game_rosters <- function(game = 2023030417) {
       next
     }
     scores <- .score_html_api_candidates(api, html, cand, h_idx, last_api_seq = last_api_seq)
+    if (!length(scores) || !any(is.finite(scores))) {
+      next
+    }
     cand <- as.integer(names(scores))
     best_pos <- which.max(scores)
     if (length(best_pos) && is.finite(scores[best_pos]) && scores[best_pos] >= 180) {
@@ -1164,7 +1167,7 @@ game_rosters <- function(game = 2023030417) {
           )
       ]
       scores <- .score_html_api_candidates(api, html, cand, h_idx)
-      if (!length(scores)) {
+      if (!length(scores) || !any(is.finite(scores))) {
         next
       }
       best_pos <- which.max(scores)
@@ -1200,6 +1203,9 @@ game_rosters <- function(game = 2023030417) {
         },
         numeric(1)
       )
+      if (!any(is.finite(scores))) {
+        next
+      }
       best_pos <- which.max(scores)
       api_best[i] <- cand[best_pos]
       api_best_score[i] <- scores[best_pos]
