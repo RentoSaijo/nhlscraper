@@ -138,15 +138,15 @@ information into continuous seconds elapsed in the game.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Flag home/away.</span></span>
 <span><span class="va">gc_pbps_20222025_is_home_flagged</span>         <span class="op">&lt;-</span> </span>
-<span>  <span class="fu">nhlscraper</span><span class="fu">::</span><span class="fu"><a href="../reference/flag_is_home.html">flag_is_home</a></span><span class="op">(</span><span class="va">gc_pbps_20222025</span><span class="op">)</span></span>
+<span>  <span class="fu"><a href="../reference/dot-flag_is_home.html">.flag_is_home</a></span><span class="op">(</span><span class="va">gc_pbps_20222025</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Strip game ID.</span></span>
 <span><span class="va">gc_pbps_20222025_game_id_stripped</span>        <span class="op">&lt;-</span> </span>
-<span>  <span class="fu">nhlscraper</span><span class="fu">::</span><span class="fu"><a href="../reference/strip_game_id.html">strip_game_id</a></span><span class="op">(</span><span class="va">gc_pbps_20222025_is_home_flagged</span><span class="op">)</span></span>
+<span>  <span class="fu"><a href="../reference/dot-strip_game_id.html">.strip_game_id</a></span><span class="op">(</span><span class="va">gc_pbps_20222025_is_home_flagged</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Strip time and period.</span></span>
 <span><span class="va">gc_pbps_20222025_time_period_stripped</span>    <span class="op">&lt;-</span> </span>
-<span>  <span class="fu">nhlscraper</span><span class="fu">::</span><span class="fu"><a href="../reference/strip_time_period.html">strip_time_period</a></span><span class="op">(</span><span class="va">gc_pbps_20222025_game_id_stripped</span><span class="op">)</span></span></code></pre></div>
+<span>  <span class="fu"><a href="../reference/dot-strip_time_period.html">.strip_time_period</a></span><span class="op">(</span><span class="va">gc_pbps_20222025_game_id_stripped</span><span class="op">)</span></span></code></pre></div>
 <p>We then derive the key hockey and game-state features that drive xG:
 strength situation (empty net status, skater counts, man-advantage
 differential, and strength state labels), rebound and rush indicators,
@@ -155,19 +155,19 @@ and Corsi (SAT).</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Strip situation code.</span></span>
 <span><span class="va">gc_pbps_20222025_situation_code_stripped</span> <span class="op">&lt;-</span> </span>
-<span>  <span class="fu">nhlscraper</span><span class="fu">::</span><span class="fu"><a href="../reference/strip_situation_code.html">strip_situation_code</a></span><span class="op">(</span><span class="va">gc_pbps_20222025_time_period_stripped</span><span class="op">)</span></span>
+<span>  <span class="fu"><a href="../reference/dot-strip_situation_code.html">.strip_situation_code</a></span><span class="op">(</span><span class="va">gc_pbps_20222025_time_period_stripped</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Flag rebound shot attempts.</span></span>
 <span><span class="va">gc_pbps_20222025_is_rebound_flagged</span>      <span class="op">&lt;-</span> </span>
-<span>  <span class="fu">nhlscraper</span><span class="fu">::</span><span class="fu"><a href="../reference/flag_is_rebound.html">flag_is_rebound</a></span><span class="op">(</span><span class="va">gc_pbps_20222025_situation_code_stripped</span><span class="op">)</span></span>
+<span>  <span class="fu"><a href="../reference/dot-flag_is_rebound.html">.flag_is_rebound</a></span><span class="op">(</span><span class="va">gc_pbps_20222025_situation_code_stripped</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Flag rush shot attempts.</span></span>
 <span><span class="va">gc_pbps_20222025_is_rush_flagged</span>         <span class="op">&lt;-</span> </span>
-<span>  <span class="fu">nhlscraper</span><span class="fu">::</span><span class="fu"><a href="../reference/flag_is_rush.html">flag_is_rush</a></span><span class="op">(</span><span class="va">gc_pbps_20222025_is_rebound_flagged</span><span class="op">)</span></span>
+<span>  <span class="fu"><a href="../reference/dot-flag_is_rush.html">.flag_is_rush</a></span><span class="op">(</span><span class="va">gc_pbps_20222025_is_rebound_flagged</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Count goals, SOG, Fenwick, and Corsi.</span></span>
 <span><span class="va">gc_pbps_20222025_goals_shots_counted</span>     <span class="op">&lt;-</span> </span>
-<span>  <span class="fu">nhlscraper</span><span class="fu">::</span><span class="fu"><a href="../reference/count_goals_shots.html">count_goals_shots</a></span><span class="op">(</span><span class="va">gc_pbps_20222025_is_rush_flagged</span><span class="op">)</span></span></code></pre></div>
+<span>  <span class="fu"><a href="../reference/dot-count_goals_shots.html">.count_goals_shots</a></span><span class="op">(</span><span class="va">gc_pbps_20222025_is_rush_flagged</span><span class="op">)</span></span></code></pre></div>
 <p>Finally, we normalize coordinates so that all shots are taken toward
 the +x direction and compute the Euclidean distance and angle to the
 net, restricting the dataset to non-shootout, non-penalty-shot
@@ -175,19 +175,19 @@ attempts.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Normalize coordinates to +x.</span></span>
 <span><span class="va">gc_pbps_20222025_coordinates_normalized</span>  <span class="op">&lt;-</span> </span>
-<span>  <span class="fu">nhlscraper</span><span class="fu">::</span><span class="fu"><a href="../reference/normalize_coordinates.html">normalize_coordinates</a></span><span class="op">(</span><span class="va">gc_pbps_20222025_goals_shots_counted</span><span class="op">)</span></span>
+<span>  <span class="fu"><a href="../reference/dot-normalize_coordinates.html">.normalize_coordinates</a></span><span class="op">(</span><span class="va">gc_pbps_20222025_goals_shots_counted</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Calculate distance.</span></span>
 <span><span class="va">gc_pbps_20222025_distance_calculated</span>     <span class="op">&lt;-</span> </span>
-<span>  <span class="fu">nhlscraper</span><span class="fu">::</span><span class="fu"><a href="../reference/calculate_distance.html">calculate_distance</a></span><span class="op">(</span><span class="va">gc_pbps_20222025_coordinates_normalized</span><span class="op">)</span></span>
+<span>  <span class="fu"><a href="../reference/dot-calculate_distance.html">.calculate_distance</a></span><span class="op">(</span><span class="va">gc_pbps_20222025_coordinates_normalized</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Calculate angle.</span></span>
 <span><span class="va">gc_pbps_20222025_angle_calculated</span>        <span class="op">&lt;-</span> </span>
-<span>  <span class="fu">nhlscraper</span><span class="fu">::</span><span class="fu"><a href="../reference/calculate_angle.html">calculate_angle</a></span><span class="op">(</span><span class="va">gc_pbps_20222025_distance_calculated</span><span class="op">)</span></span>
+<span>  <span class="fu"><a href="../reference/dot-calculate_angle.html">.calculate_angle</a></span><span class="op">(</span><span class="va">gc_pbps_20222025_distance_calculated</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Keep only shots.</span></span>
 <span><span class="va">gc_shots_20222025</span> <span class="op">&lt;-</span> <span class="va">gc_pbps_20222025_angle_calculated</span><span class="op">[</span></span>
-<span>  <span class="va">gc_pbps_20222025_angle_calculated</span><span class="op">$</span><span class="va">typeDescKey</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> </span>
+<span>  <span class="va">gc_pbps_20222025_angle_calculated</span><span class="op">$</span><span class="va">eventTypeDescKey</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> </span>
 <span>    <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'goal'</span>, <span class="st">'shot-on-goal'</span>, <span class="st">'missed-shot'</span>, <span class="st">'blocked-shot'</span><span class="op">)</span>,</span>
 <span><span class="op">]</span></span>
 <span></span>

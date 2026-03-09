@@ -65,15 +65,15 @@ information into continuous seconds elapsed in the game.
 ``` r
 # Flag home/away.
 gc_pbps_20222025_is_home_flagged         <- 
-  nhlscraper::flag_is_home(gc_pbps_20222025)
+  .flag_is_home(gc_pbps_20222025)
 
 # Strip game ID.
 gc_pbps_20222025_game_id_stripped        <- 
-  nhlscraper::strip_game_id(gc_pbps_20222025_is_home_flagged)
+  .strip_game_id(gc_pbps_20222025_is_home_flagged)
 
 # Strip time and period.
 gc_pbps_20222025_time_period_stripped    <- 
-  nhlscraper::strip_time_period(gc_pbps_20222025_game_id_stripped)
+  .strip_time_period(gc_pbps_20222025_game_id_stripped)
 ```
 
 We then derive the key hockey and game-state features that drive xG:
@@ -85,19 +85,19 @@ and Corsi (SAT).
 ``` r
 # Strip situation code.
 gc_pbps_20222025_situation_code_stripped <- 
-  nhlscraper::strip_situation_code(gc_pbps_20222025_time_period_stripped)
+  .strip_situation_code(gc_pbps_20222025_time_period_stripped)
 
 # Flag rebound shot attempts.
 gc_pbps_20222025_is_rebound_flagged      <- 
-  nhlscraper::flag_is_rebound(gc_pbps_20222025_situation_code_stripped)
+  .flag_is_rebound(gc_pbps_20222025_situation_code_stripped)
 
 # Flag rush shot attempts.
 gc_pbps_20222025_is_rush_flagged         <- 
-  nhlscraper::flag_is_rush(gc_pbps_20222025_is_rebound_flagged)
+  .flag_is_rush(gc_pbps_20222025_is_rebound_flagged)
 
 # Count goals, SOG, Fenwick, and Corsi.
 gc_pbps_20222025_goals_shots_counted     <- 
-  nhlscraper::count_goals_shots(gc_pbps_20222025_is_rush_flagged)
+  .count_goals_shots(gc_pbps_20222025_is_rush_flagged)
 ```
 
 Finally, we normalize coordinates so that all shots are taken toward the
@@ -107,19 +107,19 @@ restricting the dataset to non-shootout, non-penalty-shot attempts.
 ``` r
 # Normalize coordinates to +x.
 gc_pbps_20222025_coordinates_normalized  <- 
-  nhlscraper::normalize_coordinates(gc_pbps_20222025_goals_shots_counted)
+  .normalize_coordinates(gc_pbps_20222025_goals_shots_counted)
 
 # Calculate distance.
 gc_pbps_20222025_distance_calculated     <- 
-  nhlscraper::calculate_distance(gc_pbps_20222025_coordinates_normalized)
+  .calculate_distance(gc_pbps_20222025_coordinates_normalized)
 
 # Calculate angle.
 gc_pbps_20222025_angle_calculated        <- 
-  nhlscraper::calculate_angle(gc_pbps_20222025_distance_calculated)
+  .calculate_angle(gc_pbps_20222025_distance_calculated)
 
 # Keep only shots.
 gc_shots_20222025 <- gc_pbps_20222025_angle_calculated[
-  gc_pbps_20222025_angle_calculated$typeDescKey %in% 
+  gc_pbps_20222025_angle_calculated$eventTypeDescKey %in% 
     c('goal', 'shot-on-goal', 'missed-shot', 'blocked-shot'),
 ]
 
