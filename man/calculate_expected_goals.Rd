@@ -10,7 +10,7 @@ calculate_expected_goals(play_by_play, model = 1)
 calculate_xG(play_by_play, model = 1)
 }
 \arguments{
-\item{play_by_play}{data.frame of play-by-play(s); see \code{\link[=gc_play_by_play]{gc_play_by_play()}}, \code{\link[=gc_play_by_plays]{gc_play_by_plays()}}, \code{\link[=wsc_play_by_play]{wsc_play_by_play()}}, or \code{\link[=wsc_play_by_plays]{wsc_play_by_plays()}} for reference; the original columns must exist}
+\item{play_by_play}{data.frame of play-by-play(s) using the current public schema returned by \code{\link[=gc_play_by_play]{gc_play_by_play()}}, \code{\link[=gc_play_by_plays]{gc_play_by_plays()}}, \code{\link[=wsc_play_by_play]{wsc_play_by_play()}}, or \code{\link[=wsc_play_by_plays]{wsc_play_by_plays()}}}
 
 \item{model}{integer in 1:4 indicating which expected goals model to use; see web documentation for what variables each model considers}
 }

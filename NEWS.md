@@ -2,9 +2,12 @@
 - `replays()` is now added to retrieve season-aggregate replays.
 - `contracts()` now returns more contracts, dating back to the 90's (and then some).
 - `shift_chart()` (and consequentially, `shift_charts()`) now returns completed shift charts for all games where at least either one of API or HTML report is available.
-- `calculate_speed()` now properly handles same-second events and shootouts/penalty shots; it also returns the `eventId` of the anchoring event (the previous it is referring to for the delta calculations) and `secondsElapsedInSequence`, where each sequence begins with a faceoff.
-- `add_on_ice_players()` now returns 8 new columns pertaining to the length of the current shift and time elapsed since the end of the previous shift for each player on the ice; it also adds `goalieInNetId` for blocked shot events.
-- `add_shooter_biometrics()` and `add_goalie_biometrics()` now returns biometrics for all Corsi events in play-by-plays given `goalieInNetId` is present for blocked shots (you can achieve this by running `add_on_ice_players()` first); it also returns `shooterHandCode` and `goalieHandCode` columns instead of the previous `shooterSide` and `goalieSide` columns.
+- `gc_play_by_play()` and `wsc_play_by_play()` now return only the cleaned public play-by-play schema, with canonical column names such as `periodNumber`, `eventTypeCode`, `eventTypeDescKey`, `homeShots`, `shotsFor`, `penaltyTypeDescKey`, `penaltyDuration`, and `pptReplayUrl`.
+  - The public play-by-play outputs now include HTML-report-derived on-ice goalie/skater ID columns for supported strength events, including sixth-skater pulled-goalie states, plus shift-chart-derived scalar timing columns for each on-ice goalie and skater.
+  - Strength context in public play-by-play outputs is now reconciled to the matched HTML on-ice rows for supported events, and illogically ordered boundary rows between `period-end` and the following `period-start` are removed before downstream cleaning.
+  - HTML play-by-play matching is now more robust to older dotted team abbreviations and duplicate same-second shot clusters, and broader cross-season consistency audits now keep `situationCode` aligned with implied goalie/skater counts from the on-ice columns.
+- `add_deltas()` now handles event-to-event deltas in C, returns raw and normalized x/y deltas alongside distance and angle deltas, and still properly handles same-second events and shootouts/penalty shots; it also returns the `eventId` of the anchoring event and `secondsElapsedInSequence`, where each sequence begins with a faceoff.
+- `add_shooter_biometrics()`, `add_goalie_biometrics()`, and `calculate_expected_goals()` now require the current public play-by-play schema only; legacy helper column names are no longer accepted, and goalie biometrics now use `goaliePlayerIdAgainst`.
 - The expected goal (xG) models are currently being reworked; some functions that rely on these models (e.g., `calculate_expected_goals()`) may not work as expected.
 
 # nhlscraper 0.5.0
@@ -12,7 +15,7 @@
 - `contracts()` is now added to get all NHL contracts since the 2011-2012 season.
 - `ig_game_shot_locations()` and `x_game_shot_locations()` now use continuous xG scale instead of bins.
 - `calculate_expected_goals()` now combines the previous xG calculation functions; as a result, `calculate_expected_goals_v1()`, `calculate_expected_goals_v2()`, and `calculate_expected_goals_v3()` are now defunct.
-- `calculate_speed()` is now added to calculate event-to-event deltas in play-by-plays.
+- `add_deltas()` is now added to calculate event-to-event deltas in play-by-plays.
 - `add_shooter_biometrics()` is now added to add shooter biometrics to Fenewick events in play-by-plays.
 - `add_goalie_biometrics()` is now added to add goalie biometrics to Fenewick events in play-by-plays.
 - `ps()` is now deprecated; use `pss()` instead.

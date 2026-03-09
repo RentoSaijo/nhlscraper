@@ -7,11 +7,11 @@
 add_goalie_biometrics(play_by_play)
 }
 \arguments{
-\item{play_by_play}{data.frame of play-by-play(s); see \code{\link[=gc_play_by_play]{gc_play_by_play()}}, \code{\link[=gc_play_by_plays]{gc_play_by_plays()}}, \code{\link[=wsc_play_by_play]{wsc_play_by_play()}}, or \code{\link[=wsc_play_by_plays]{wsc_play_by_plays()}} for reference; the original columns must exist}
+\item{play_by_play}{data.frame of play-by-play(s) using the current public schema returned by \code{\link[=gc_play_by_play]{gc_play_by_play()}}, \code{\link[=gc_play_by_plays]{gc_play_by_plays()}}, \code{\link[=wsc_play_by_play]{wsc_play_by_play()}}, or \code{\link[=wsc_play_by_plays]{wsc_play_by_plays()}}}
 }
 \value{
 data.frame with one row per event (play) and added columns: \code{goalieHeight}, \code{goalieWeight}, \code{goalieHandCode}, and \code{goalieAge}
 }
 \description{
-\code{add_goalie_biometrics()} adds goalie biometrics (height, weight, hand, and age at game date) to (a) play-by-play(s) for shot attempts. If \code{goalieInNetId} is missing on a row, the added goalie biometrics are left as \code{NA}.
+\code{add_goalie_biometrics()} adds goalie biometrics (height, weight, hand, and age at game date) to (a) play-by-play(s) for shot attempts. If \code{goaliePlayerIdAgainst} is missing on a row, the added goalie biometrics are left as \code{NA}.
 }

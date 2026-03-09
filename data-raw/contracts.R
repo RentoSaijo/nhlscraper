@@ -61,7 +61,7 @@ if ('teamTriCodeRaw' %in% names(teams)) {
 }
 team_keys <- unlist(team_key_blocks, use.names = FALSE)
 team_vals <- rep(as.character(teams$teamId), times = length(team_key_blocks))
-.team_id_lookup <- setNames(team_vals, team_keys)
+.team_id_lookup <- stats::setNames(team_vals, team_keys)
 to_team_id_local <- function(team) {
   unname(.team_id_lookup[normalize_key(team)])
 }

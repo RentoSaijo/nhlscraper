@@ -2,7 +2,7 @@
 #' 
 #' `calculate_expected_goals()` calculates the expected goals for all the shots in (a) play-by-play(s) using the provided `model`.
 #'
-#' @inheritParams add_on_ice_players
+#' @param play_by_play data.frame of play-by-play(s) using the current public schema returned by [gc_play_by_play()], [gc_play_by_plays()], [wsc_play_by_play()], or [wsc_play_by_plays()]
 #' @param model integer in 1:4 indicating which expected goals model to use; see web documentation for what variables each model considers
 #' @returns data.frame with one row per event (play) and added `xG` column
 #' @examples
@@ -18,8 +18,27 @@ calculate_expected_goals <- function(play_by_play, model = 1) {
     expr = {
       # Clean data.
       model <- as.integer(model[1])
-      pbp <- play_by_play |>
-        calculate_speed() |>
+      pbp <- add_deltas(play_by_play)
+      delta_ctx <- attr(pbp, 'delta_context', exact = TRUE)
+      attr(pbp, 'delta_context') <- NULL
+      if (
+        is.null(delta_ctx) &&
+          all(c(
+            'gameId', 'eventId', 'sortOrder', 'secondsElapsedInGame',
+            'eventTypeDescKey', 'situationCode', 'xCoord', 'yCoord',
+            'xCoordNorm', 'yCoordNorm', 'distance', 'angle'
+          ) %in% names(play_by_play))
+      ) {
+        delta_ctx <- tryCatch(
+          .compute_pbp_deltas(play_by_play),
+          error = function(e) NULL
+        )
+      }
+      if (!is.null(delta_ctx)) {
+        pbp$dDdT <- delta_ctx$dDistancePerSecond
+        pbp$dAdT <- delta_ctx$dAnglePerSecond
+      }
+      pbp <- pbp |>
         add_shooter_biometrics() |>
         add_goalie_biometrics()
       pbp$shotType[is.na(pbp$shotType)] <- 'backhand'

@@ -16,7 +16,13 @@ wsc_pbp(game = 2023030417)
 data.frame with one row per event (play)
 }
 \description{
-\code{wsc_play_by_play()} retrieves the World Showcase (WSC) play-by-play for a game as a \code{data.frame} where each row represents event and includes detail on game timeline state, period/clock progression, and matchup flow, date/season filtering windows and chronological context, and player identity, role, handedness, and biographical profile.
+\code{wsc_play_by_play()} retrieves the World Showcase (WSC) play-by-play for a
+game as a \code{data.frame} where each row represents an event. The returned
+schema follows the same cleaned public-facing naming as \code{gc_play_by_play()},
+and includes \code{utc} immediately after \code{secondsElapsedInGame} while omitting
+GC-only clip fields. It also includes the same HTML-report-derived on-ice
+player ID columns added to the GC output, including sixth-skater slots when
+a goalie is pulled, plus the same shift-chart-derived scalar timing columns.
 }
 \examples{
 wsc_pbp_Martin_Necas_legacy_game <- wsc_play_by_play(game = 2025020275)

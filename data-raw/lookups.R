@@ -39,7 +39,7 @@ if ('teamTriCodeRaw' %in% names(NHL_Teams)) {
 }
 keys_tri <- unlist(key_blocks_tri, use.names = FALSE)
 values_tri <- rep(tri_codes, times = length(key_blocks_tri))
-.to_team_tri_code <- setNames(values_tri, keys_tri)
+.to_team_tri_code <- stats::setNames(values_tri, keys_tri)
 
 ## ------------------------------------------------------------------
 ## Lookup 2: any key -> id  (.to_team_id)
@@ -55,7 +55,7 @@ if ('teamTriCodeRaw' %in% names(NHL_Teams)) {
 }
 keys_id <- unlist(key_blocks_id, use.names = FALSE)
 values_id <- rep(ids, times = length(key_blocks_id))
-.to_team_id <- setNames(values_id, keys_id)
+.to_team_id <- stats::setNames(values_id, keys_id)
 
 # Save objects into sysdata.rda while preserving existing internal objects.
 save_env <- new.env(parent = emptyenv())

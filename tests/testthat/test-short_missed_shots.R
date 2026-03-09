@@ -1,4 +1,4 @@
-test_that("count_goals_shots() excludes short missed shots from Fenwick and Corsi", {
+test_that(".count_goals_shots() excludes short missed shots from Fenwick and Corsi", {
   play_by_play <- data.frame(
     gameId = rep(1L, 4L),
     eventId = 1:4,
@@ -11,7 +11,7 @@ test_that("count_goals_shots() excludes short missed shots from Fenwick and Cors
     stringsAsFactors = FALSE
   )
 
-  out <- count_goals_shots(play_by_play)
+  out <- .count_goals_shots(play_by_play)
 
   expect_equal(out$reason[1], "short")
   expect_equal(out$homeFenwick, c(0L, 0L, 1L, 2L))
@@ -19,7 +19,7 @@ test_that("count_goals_shots() excludes short missed shots from Fenwick and Cors
   expect_equal(out$awayCorsi, c(0L, 0L, 0L, 0L))
 })
 
-test_that("flag_is_rebound() ignores short missed shots as rebound sources", {
+test_that(".flag_is_rebound() ignores short missed shots as rebound sources", {
   play_by_play <- data.frame(
     gameId = rep(1L, 2L),
     eventId = 1:2,
@@ -34,7 +34,7 @@ test_that("flag_is_rebound() ignores short missed shots as rebound sources", {
     stringsAsFactors = FALSE
   )
 
-  out <- flag_is_rebound(play_by_play)
+  out <- .flag_is_rebound(play_by_play)
 
   expect_true(is.na(out$isRebound[1]))
   expect_true(is.na(out$createdRebound[1]))
@@ -44,7 +44,7 @@ test_that("flag_is_rebound() ignores short missed shots as rebound sources", {
 
 test_that("calculate_expected_goals() leaves short missed shots without xG", {
   local_mocked_bindings(
-    calculate_speed = function(play_by_play) play_by_play,
+    add_deltas = function(play_by_play) play_by_play,
     add_shooter_biometrics = function(play_by_play) {
       play_by_play$shooterPositionCode <- rep(NA_character_, nrow(play_by_play))
       play_by_play

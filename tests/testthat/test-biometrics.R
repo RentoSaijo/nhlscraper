@@ -63,8 +63,8 @@ test_that("add_goalie_biometrics() leaves missing blocked-shot goalies as NA", {
 
   play_by_play <- data.frame(
     gameId = c(1L, 1L),
-    typeDescKey = c("blocked-shot", "blocked-shot"),
-    goalieInNetId = c(NA_integer_, 30L),
+    eventTypeDescKey = c("blocked-shot", "blocked-shot"),
+    goaliePlayerIdAgainst = c(NA_integer_, 30L),
     stringsAsFactors = FALSE
   )
 
