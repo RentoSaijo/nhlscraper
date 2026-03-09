@@ -476,8 +476,7 @@ calculate_expected_goals <- function(play_by_play, model = 1) {
       # Predict xG.
       n <- nrow(pbp)
       xG <- rep(NA_real_, n)
-      typeDescKey <- if ('typeDescKey' %in% names(pbp)) as.character(pbp$typeDescKey) else rep(NA_character_, n)
-      is_shot <- !is.na(typeDescKey) & typeDescKey %in% c('goal', 'shot-on-goal', 'missed-shot')
+      is_shot <- .shot_event_mask(pbp, c('goal', 'shot-on-goal', 'missed-shot'))
       situationCode <- if ('situationCode' %in% names(pbp)) as.character(pbp$situationCode) else rep(NA_character_, n)
       is_so <- is_shot & !is.na(situationCode) & situationCode %in% c('1010', '0101')
       isEmptyNetAgainst <- if ('isEmptyNetAgainst' %in% names(pbp)) pbp$isEmptyNetAgainst else rep(FALSE, n)

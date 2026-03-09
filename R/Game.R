@@ -357,275 +357,275 @@ wsc_pbp <- function(game = 2023030417) {
 #' @export
 
 shift_chart <- function(game = 2023030417) {
+  game <- as.integer(game)
+
+  fetch_from_api <- function(game) {
+    shifts <- nhl_api(
+      path  = 'en/shiftcharts',
+      query = list(cayenneExp = sprintf('gameId = %s', game)),
+      type  = 's'
+    )$data
+    shifts <- shifts[order(shifts$teamId), ]
+    shifts <- shifts[is.na(shifts$eventDescription), ]
+    shifts <- shifts[, c('id', 'gameId', 'teamId', 'playerId', 'shiftNumber', 'period', 'startTime', 'endTime')]
+    is_playoffs <- game %/% 1e4 %% 1e2 == 3
+    base <- integer(nrow(shifts))
+    reg_idx <- shifts$period <= 3L
+    ot_idx <- !reg_idx
+    base[reg_idx] <- (shifts$period[reg_idx] - 1L) * 1200L
+    if (is_playoffs) {
+      base[ot_idx] <- 3600L + (shifts$period[ot_idx] - 4L) * 1200L
+    } else {
+      base[ot_idx] <- 3600L + (shifts$period[ot_idx] - 4L) * 300L
+    }
+    tp_s  <- strsplit(shifts$startTime, ':', fixed = TRUE)
+    s_min <- as.integer(vapply(tp_s, `[`, '', 1L))
+    s_sec <- as.integer(vapply(tp_s, `[`, '', 2L))
+    s_elp <- 60L * s_min + s_sec
+    tp_e  <- strsplit(shifts$endTime, ':', fixed = TRUE)
+    e_min <- as.integer(vapply(tp_e, `[`, '', 1L))
+    e_sec <- as.integer(vapply(tp_e, `[`, '', 2L))
+    e_elp <- 60L * e_min + e_sec
+    shifts$startSecondsElapsedInPeriod <- s_elp
+    shifts$endSecondsElapsedInPeriod   <- e_elp
+    shifts$startSecondsElapsedInGame   <- base + s_elp
+    shifts$endSecondsElapsedInGame     <- base + e_elp
+    shifts$duration                    <- shifts$endSecondsElapsedInGame - shifts$startSecondsElapsedInGame
+    shifts$id <- NULL
+    shifts
+  }
+
+  fetch_from_html <- function(game) {
+    season    <- paste0(game %/% 1e6, game %/% 1e6 + 1)
+    game_code <- sprintf('%06d', game %% 10^6)
+    normalize_person <- function(x) {
+      x <- gsub('\\s+', ' ', x)
+      x <- trimws(x)
+      x <- toupper(x)
+      x <- iconv(x, from = '', to = 'ASCII//TRANSLIT')
+      x[is.na(x)] <- ''
+      x
+    }
+    extract_clock <- function(x) {
+      if (is.na(x)) return(NA_character_)
+      match <- regexpr('[0-9]{1,2}:[0-9]{2}', x)
+      if (match[1] < 0L) return(NA_character_)
+      substr(
+        x,
+        match[1],
+        match[1] + attr(match, 'match.length')[1] - 1L
+      )
+    }
+    format_clock <- function(x) {
+      if (is.na(x)) return(NA_character_)
+      parts <- strsplit(x, ':', fixed = TRUE)[[1]]
+      if (length(parts) != 2L) return(NA_character_)
+      mins <- suppressWarnings(as.integer(parts[1]))
+      secs <- suppressWarnings(as.integer(parts[2]))
+      if (is.na(mins) || is.na(secs)) return(NA_character_)
+      sprintf('%02d:%02d', mins, secs)
+    }
+    clocks_to_seconds <- function(x) {
+      vapply(
+        x,
+        function(clock) {
+          if (
+            is.na(clock) ||
+            !grepl('^[0-9]{1,2}:[0-9]{2}$', clock)
+          ) {
+            return(NA_integer_)
+          }
+          parts <- strsplit(clock, ':', fixed = TRUE)[[1]]
+          as.integer(parts[1]) * 60L + as.integer(parts[2])
+        },
+        integer(1)
+      )
+    }
+    pbp_meta <- nhl_api(
+      path = sprintf('v1/gamecenter/%s/play-by-play', game),
+      type = 'w'
+    )
+    rosters <- pbp_meta$rosterSpots
+    rosters$sweaterNumber <- suppressWarnings(
+      as.integer(rosters$sweaterNumber)
+    )
+    rosters$playerLabel <- normalize_person(
+      paste(rosters$lastName.default, rosters$firstName.default, sep = ', ')
+    )
+    lookup_player_id <- function(team_id, sweater_number, player_name) {
+      idx <- which(rosters$teamId == team_id)
+      if (!length(idx)) return(NA_integer_)
+      if (!is.na(sweater_number)) {
+        idx_num <- idx[rosters$sweaterNumber[idx] == sweater_number]
+        if (length(idx_num) == 1L) {
+          return(as.integer(rosters$playerId[idx_num]))
+        }
+        if (length(idx_num) > 1L && nzchar(player_name)) {
+          target   <- normalize_person(player_name)
+          idx_name <- idx_num[rosters$playerLabel[idx_num] == target]
+          if (length(idx_name)) {
+            return(as.integer(rosters$playerId[idx_name[1L]]))
+          }
+        }
+        if (length(idx_num)) {
+          return(as.integer(rosters$playerId[idx_num[1L]]))
+        }
+      }
+      if (!is.na(player_name) && nzchar(player_name)) {
+        target   <- normalize_person(player_name)
+        idx_name <- idx[rosters$playerLabel[idx] == target]
+        if (length(idx_name)) {
+          return(as.integer(rosters$playerId[idx_name[1L]]))
+        }
+      }
+      NA_integer_
+    }
+    parse_period_label <- function(x) {
+      x <- trimws(toupper(x))
+      if (grepl('^[0-9]+$', x)) return(as.integer(x))
+      if (x == 'OT') return(4L)
+      if (grepl('^[0-9]+OT$', x)) {
+        return(3L + as.integer(sub('OT$', '', x)))
+      }
+      NA_integer_
+    }
+    parse_shift_report <- function(team_tag, team_id) {
+      report <- xml2::read_html(sprintf(
+        'https://www.nhl.com/scores/htmlreports/%s/%s%s.HTM',
+        season,
+        team_tag,
+        game_code
+      ))
+      rows <- xml2::xml_find_all(report, './/tr')
+      out  <- vector('list', length(rows))
+      n_out <- 0L
+      current_player_id <- NA_integer_
+      current_player_nm <- NA_character_
+      for (row in rows) {
+        cells <- xml2::xml_find_all(row, './th|./td')
+        if (!length(cells)) next
+        txt <- xml2::xml_text(cells, trim = TRUE)
+        txt <- gsub('\u00A0', ' ', txt, fixed = TRUE)
+        txt <- trimws(txt)
+        if (
+          length(txt) == 1L &&
+          grepl('^[0-9]+\\s+.+', txt[1]) &&
+          !grepl('^Shift\\s*#', txt[1], ignore.case = TRUE)
+        ) {
+          m <- regexec('^([0-9]+)\\s+(.+)$', txt[1])
+          p <- regmatches(txt[1], m)[[1]]
+          if (length(p) >= 3L) {
+            sweater_number    <- suppressWarnings(as.integer(p[2]))
+            current_player_nm <- p[3]
+            current_player_id <- lookup_player_id(
+              team_id,
+              sweater_number,
+              current_player_nm
+            )
+          }
+          next
+        }
+        is_shift_row <- length(cells) == 6L &&
+          length(txt) >= 4L &&
+          grepl('^[0-9]+$', txt[1]) &&
+          !is.na(parse_period_label(txt[2])) &&
+          grepl('/', txt[3], fixed = TRUE) &&
+          grepl('/', txt[4], fixed = TRUE) &&
+          grepl('[0-9]{1,2}:[0-9]{2}', txt[3]) &&
+          grepl('[0-9]{1,2}:[0-9]{2}', txt[4])
+        if (!is_shift_row) next
+        start_time <- format_clock(extract_clock(txt[3]))
+        end_time   <- format_clock(extract_clock(txt[4]))
+        if (is.na(start_time) || is.na(end_time)) next
+        n_out <- n_out + 1L
+        out[[n_out]] <- data.frame(
+          gameId      = as.integer(game),
+          teamId      = as.integer(team_id),
+          playerId    = as.integer(current_player_id),
+          shiftNumber = as.integer(txt[1]),
+          period      = parse_period_label(txt[2]),
+          startTime   = start_time,
+          endTime     = end_time,
+          stringsAsFactors = FALSE
+        )
+      }
+      if (!n_out) return(data.frame())
+      do.call(rbind, out[seq_len(n_out)])
+    }
+    home_team_id <- as.integer(pbp_meta$homeTeam$id)
+    away_team_id <- as.integer(pbp_meta$awayTeam$id)
+    shifts_home  <- parse_shift_report('TH', home_team_id)
+    shifts_away  <- parse_shift_report('TV', away_team_id)
+    shifts       <- rbind(shifts_home, shifts_away)
+    if (!nrow(shifts)) stop('No shift rows parsed from HTML reports.')
+    shifts$startSecondsElapsedInPeriod <- clocks_to_seconds(shifts$startTime)
+    shifts$endSecondsElapsedInPeriod   <- clocks_to_seconds(shifts$endTime)
+    is_playoffs <- game %/% 1e4 %% 1e2 == 3
+    base <- integer(nrow(shifts))
+    reg_idx <- shifts$period <= 3L
+    ot_idx <- !reg_idx
+    base[reg_idx] <- (shifts$period[reg_idx] - 1L) * 1200L
+    if (is_playoffs) {
+      base[ot_idx] <- 3600L + (shifts$period[ot_idx] - 4L) * 1200L
+    } else {
+      base[ot_idx] <- 3600L + (shifts$period[ot_idx] - 4L) * 300L
+    }
+    shifts$startSecondsElapsedInGame <- base + shifts$startSecondsElapsedInPeriod
+    shifts$endSecondsElapsedInGame   <- base + shifts$endSecondsElapsedInPeriod
+    if (!is_playoffs) {
+      ot_idx <- shifts$period >= 4L
+      if (any(ot_idx)) {
+        # HTML OT rows can arrive 900 seconds early; re-anchor them to the
+        # regular-season OT period start implied by the period label.
+        expected_base <- 3600L + (shifts$period[ot_idx] - 4L) * 300L
+        actual_base <- shifts$startSecondsElapsedInGame[ot_idx] -
+          shifts$startSecondsElapsedInPeriod[ot_idx]
+        adjust <- expected_base - actual_base
+        shifts$startSecondsElapsedInGame[ot_idx] <- shifts$startSecondsElapsedInGame[ot_idx] + adjust
+        shifts$endSecondsElapsedInGame[ot_idx]   <- shifts$endSecondsElapsedInGame[ot_idx] + adjust
+      }
+    }
+    shifts$duration <- shifts$endSecondsElapsedInGame - shifts$startSecondsElapsedInGame
+    shifts <- shifts[
+      !is.na(shifts$startSecondsElapsedInPeriod) &
+        !is.na(shifts$endSecondsElapsedInPeriod),
+    ]
+    if (!is_playoffs) {
+      shifts <- shifts[shifts$period <= 5L, ]
+    }
+    shifts <- shifts[shifts$duration > 0L, ]
+    shifts <- shifts[order(shifts$teamId, shifts$playerId, shifts$shiftNumber), ]
+    shifts <- shifts[, c(
+      'gameId',
+      'teamId',
+      'playerId',
+      'shiftNumber',
+      'period',
+      'startTime',
+      'endTime',
+      'startSecondsElapsedInPeriod',
+      'endSecondsElapsedInPeriod',
+      'startSecondsElapsedInGame',
+      'endSecondsElapsedInGame',
+      'duration'
+    )]
+    shifts
+  }
+
   tryCatch(
     expr = {
-      game   <- as.integer(game)
-      shifts <- nhl_api(
-        path  = 'en/shiftcharts',
-        query = list(cayenneExp = sprintf('gameId = %s', game)),
-        type  = 's'
-      )$data
-      shifts <- shifts[order(shifts$teamId), ]
-      shifts <- shifts[is.na(shifts$eventDescription), ]
-      shifts <- shifts[, c('id', 'gameId', 'teamId', 'playerId', 'shiftNumber', 'period', 'startTime', 'endTime')]
-      is_playoffs <- game %/% 1e4 %% 1e2 == 3
-      base <- integer(nrow(shifts))
-      reg_idx <- shifts$period <= 3L
-      ot_idx <- !reg_idx
-      base[reg_idx] <- (shifts$period[reg_idx] - 1L) * 1200L
-      if (is_playoffs) {
-        base[ot_idx] <- 3600L + (shifts$period[ot_idx] - 4L) * 1200L
-      } else {
-        base[ot_idx] <- 3600L + (shifts$period[ot_idx] - 4L) * 300L
-      }
-      tp_s  <- strsplit(shifts$startTime, ':', fixed = TRUE)
-      s_min <- as.integer(vapply(tp_s, `[`, '', 1L))
-      s_sec <- as.integer(vapply(tp_s, `[`, '', 2L))
-      s_elp <- 60L * s_min + s_sec
-      tp_e  <- strsplit(shifts$endTime, ':', fixed = TRUE)
-      e_min <- as.integer(vapply(tp_e, `[`, '', 1L))
-      e_sec <- as.integer(vapply(tp_e, `[`, '', 2L))
-      e_elp <- 60L * e_min + e_sec
-      shifts$startSecondsElapsedInPeriod <- s_elp
-      shifts$endSecondsElapsedInPeriod   <- e_elp
-      shifts$startSecondsElapsedInGame   <- base + s_elp
-      shifts$endSecondsElapsedInGame     <- base + e_elp
-      shifts$duration                    <- shifts$endSecondsElapsedInGame - shifts$startSecondsElapsedInGame
-      shifts$id <- NULL
+      shifts <- fetch_from_html(game)
+      if (!nrow(shifts)) stop('No shift rows parsed from HTML reports.')
       shifts
     },
     error = function(e) {
       tryCatch(
         expr = {
-          game      <- as.numeric(game)
-          season    <- paste0(game %/% 1e6, game %/% 1e6 + 1)
-          game_code <- sprintf('%06d', game %% 10^6)
-          normalize_person <- function(x) {
-            x <- gsub('\\s+', ' ', x)
-            x <- trimws(x)
-            x <- toupper(x)
-            x <- iconv(x, from = '', to = 'ASCII//TRANSLIT')
-            x[is.na(x)] <- ''
-            x
-          }
-          extract_clock <- function(x) {
-            if (is.na(x)) return(NA_character_)
-            match <- regexpr('[0-9]{1,2}:[0-9]{2}', x)
-            if (match[1] < 0L) return(NA_character_)
-            substr(
-              x,
-              match[1],
-              match[1] + attr(match, 'match.length')[1] - 1L
-            )
-          }
-          format_clock <- function(x) {
-            if (is.na(x)) return(NA_character_)
-            parts <- strsplit(x, ':', fixed = TRUE)[[1]]
-            if (length(parts) != 2L) return(NA_character_)
-            mins <- suppressWarnings(as.integer(parts[1]))
-            secs <- suppressWarnings(as.integer(parts[2]))
-            if (is.na(mins) || is.na(secs)) return(NA_character_)
-            sprintf('%02d:%02d', mins, secs)
-          }
-          clocks_to_seconds <- function(x) {
-            vapply(
-              x,
-              function(clock) {
-                if (
-                  is.na(clock) ||
-                  !grepl('^[0-9]{1,2}:[0-9]{2}$', clock)
-                ) {
-                  return(NA_integer_)
-                }
-                parts <- strsplit(clock, ':', fixed = TRUE)[[1]]
-                as.integer(parts[1]) * 60L + as.integer(parts[2])
-              },
-              integer(1)
-            )
-          }
-          pbp_meta <- try(
-            nhl_api(
-              path = sprintf('v1/gamecenter/%s/play-by-play', game),
-              type = 'w'
-            ),
-            silent = TRUE
-          )
-          if (inherits(pbp_meta, 'try-error')) {
-            message(paste(
-              'Invalid argument(s); refer to help file.',
-              '\nProvided game:',
-              game
-            ))
-            return(data.frame())
-          }
-          rosters <- pbp_meta$rosterSpots
-          rosters$sweaterNumber <- suppressWarnings(
-            as.integer(rosters$sweaterNumber)
-          )
-          rosters$playerLabel <- normalize_person(
-            paste(rosters$lastName.default, rosters$firstName.default, sep = ', ')
-          )
-          lookup_player_id <- function(team_id, sweater_number, player_name) {
-            idx <- which(rosters$teamId == team_id)
-            if (!length(idx)) return(NA_integer_)
-            if (!is.na(sweater_number)) {
-              idx_num <- idx[rosters$sweaterNumber[idx] == sweater_number]
-              if (length(idx_num) == 1L) {
-                return(as.integer(rosters$playerId[idx_num]))
-              }
-              if (length(idx_num) > 1L && nzchar(player_name)) {
-                target   <- normalize_person(player_name)
-                idx_name <- idx_num[rosters$playerLabel[idx_num] == target]
-                if (length(idx_name)) {
-                  return(as.integer(rosters$playerId[idx_name[1L]]))
-                }
-              }
-              if (length(idx_num)) {
-                return(as.integer(rosters$playerId[idx_num[1L]]))
-              }
-            }
-            if (!is.na(player_name) && nzchar(player_name)) {
-              target   <- normalize_person(player_name)
-              idx_name <- idx[rosters$playerLabel[idx] == target]
-              if (length(idx_name)) {
-                return(as.integer(rosters$playerId[idx_name[1L]]))
-              }
-            }
-            NA_integer_
-          }
-          parse_period_label <- function(x) {
-            x <- trimws(toupper(x))
-            if (grepl('^[0-9]+$', x)) return(as.integer(x))
-            if (x == 'OT') return(4L)
-            if (grepl('^[0-9]+OT$', x)) {
-              return(3L + as.integer(sub('OT$', '', x)))
-            }
-            NA_integer_
-          }
-          parse_shift_report <- function(team_tag, team_id) {
-            report <- xml2::read_html(sprintf(
-              'https://www.nhl.com/scores/htmlreports/%s/%s%s.HTM',
-              season,
-              team_tag,
-              game_code
-            ))
-            rows <- xml2::xml_find_all(report, './/tr')
-            out  <- vector('list', length(rows))
-            n_out <- 0L
-            current_player_id <- NA_integer_
-            current_player_nm <- NA_character_
-            for (row in rows) {
-              cells <- xml2::xml_find_all(row, './th|./td')
-              if (!length(cells)) next
-              txt <- xml2::xml_text(cells, trim = TRUE)
-              txt <- gsub('\u00A0', ' ', txt, fixed = TRUE)
-              txt <- trimws(txt)
-              if (
-                length(txt) == 1L &&
-                grepl('^[0-9]+\\s+.+', txt[1]) &&
-                !grepl('^Shift\\s*#', txt[1], ignore.case = TRUE)
-              ) {
-                m <- regexec('^([0-9]+)\\s+(.+)$', txt[1])
-                p <- regmatches(txt[1], m)[[1]]
-                if (length(p) >= 3L) {
-                  sweater_number    <- suppressWarnings(as.integer(p[2]))
-                  current_player_nm <- p[3]
-                  current_player_id <- lookup_player_id(
-                    team_id,
-                    sweater_number,
-                    current_player_nm
-                  )
-                }
-                next
-              }
-              is_shift_row <- length(cells) == 6L &&
-                length(txt) >= 4L &&
-                grepl('^[0-9]+$', txt[1]) &&
-                !is.na(parse_period_label(txt[2])) &&
-                grepl('/', txt[3], fixed = TRUE) &&
-                grepl('/', txt[4], fixed = TRUE) &&
-                grepl('[0-9]{1,2}:[0-9]{2}', txt[3]) &&
-                grepl('[0-9]{1,2}:[0-9]{2}', txt[4])
-              if (!is_shift_row) next
-              start_time <- format_clock(extract_clock(txt[3]))
-              end_time   <- format_clock(extract_clock(txt[4]))
-              if (is.na(start_time) || is.na(end_time)) next
-              n_out <- n_out + 1L
-              out[[n_out]] <- data.frame(
-                gameId      = as.integer(game),
-                teamId      = as.integer(team_id),
-                playerId    = as.integer(current_player_id),
-                shiftNumber = as.integer(txt[1]),
-                period      = parse_period_label(txt[2]),
-                startTime   = start_time,
-                endTime     = end_time,
-                stringsAsFactors = FALSE
-              )
-            }
-            if (!n_out) return(data.frame())
-            do.call(rbind, out[seq_len(n_out)])
-          }
-          home_team_id <- as.integer(pbp_meta$homeTeam$id)
-          away_team_id <- as.integer(pbp_meta$awayTeam$id)
-          shifts_home  <- parse_shift_report('TH', home_team_id)
-          shifts_away  <- parse_shift_report('TV', away_team_id)
-          shifts       <- rbind(shifts_home, shifts_away)
-          if (!nrow(shifts)) stop('No shift rows parsed from HTML reports.')
-          shifts$startSecondsElapsedInPeriod <- clocks_to_seconds(shifts$startTime)
-          shifts$endSecondsElapsedInPeriod   <- clocks_to_seconds(shifts$endTime)
-          is_playoffs <- game %/% 1e4 %% 1e2 == 3
-          base <- integer(nrow(shifts))
-          reg_idx <- shifts$period <= 3L
-          ot_idx <- !reg_idx
-          base[reg_idx] <- (shifts$period[reg_idx] - 1L) * 1200L
-          if (is_playoffs) {
-            base[ot_idx] <- 3600L + (shifts$period[ot_idx] - 4L) * 1200L
-          } else {
-            base[ot_idx] <- 3600L + (shifts$period[ot_idx] - 4L) * 300L
-          }
-          shifts$startSecondsElapsedInGame <- base + shifts$startSecondsElapsedInPeriod
-          shifts$endSecondsElapsedInGame   <- base + shifts$endSecondsElapsedInPeriod
-          if (!is_playoffs) {
-            ot_idx <- shifts$period >= 4L
-            if (any(ot_idx)) {
-              # HTML fallback OT rows can arrive 900 seconds early; re-anchor them
-              # to the regular-season OT period start implied by the period label.
-              expected_base <- 3600L + (shifts$period[ot_idx] - 4L) * 300L
-              actual_base <- shifts$startSecondsElapsedInGame[ot_idx] -
-                shifts$startSecondsElapsedInPeriod[ot_idx]
-              adjust <- expected_base - actual_base
-              shifts$startSecondsElapsedInGame[ot_idx] <- shifts$startSecondsElapsedInGame[ot_idx] + adjust
-              shifts$endSecondsElapsedInGame[ot_idx]   <- shifts$endSecondsElapsedInGame[ot_idx] + adjust
-            }
-          }
-          shifts$duration                  <- shifts$endSecondsElapsedInGame - shifts$startSecondsElapsedInGame
-          shifts <- shifts[
-            !is.na(shifts$startSecondsElapsedInPeriod) &
-              !is.na(shifts$endSecondsElapsedInPeriod),
-          ]
-          if (!is_playoffs) {
-            shifts <- shifts[shifts$period <= 5L, ]
-          }
-          shifts <- shifts[shifts$duration > 0L, ]
-          shifts <- shifts[order(shifts$teamId, shifts$playerId, shifts$shiftNumber), ]
-          shifts <- shifts[, c(
-            'gameId',
-            'teamId',
-            'playerId',
-            'shiftNumber',
-            'period',
-            'startTime',
-            'endTime',
-            'startSecondsElapsedInPeriod',
-            'endSecondsElapsedInPeriod',
-            'startSecondsElapsedInGame',
-            'endSecondsElapsedInGame',
-            'duration'
-          )]
-          shifts
+          fetch_from_api(game)
         },
-        error = function(e) {
+        error = function(api_error) {
           message(e)
+          message(api_error)
           message(paste(
             'Invalid argument(s); refer to help file.',
             '\nProvided game:',

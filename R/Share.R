@@ -88,7 +88,7 @@ ig_game_shot_locations <- function(
       xg_col <- 'xG'
       type <- as.character(pbp[['typeDescKey']])
       shot_types <- c('goal', 'shot-on-goal', 'missed-shot', 'blocked-shot')
-      idx_shot <- !is.na(type) & type %in% shot_types
+      idx_shot <- .shot_event_mask(pbp, shot_types)
       if (!any(idx_shot)) {
         message('No shot attempts found for this game.')
         return(invisible(NULL))
@@ -327,7 +327,7 @@ x_game_shot_locations <- function(
       xg_col <- 'xG'
       type <- as.character(pbp[['typeDescKey']])
       shot_types <- c('goal', 'shot-on-goal', 'missed-shot', 'blocked-shot')
-      idx_shot <- !is.na(type) & type %in% shot_types
+      idx_shot <- .shot_event_mask(pbp, shot_types)
       if (!any(idx_shot)) {
         return(invisible(NULL))
       }
@@ -549,7 +549,7 @@ ig_game_cumulative_expected_goals <- function(
       xg_col <- 'xG'
       type <- as.character(pbp[['typeDescKey']])
       shot_types <- c('goal', 'shot-on-goal', 'missed-shot', 'blocked-shot')
-      idx_shot <- !is.na(type) & type %in% shot_types
+      idx_shot <- .shot_event_mask(pbp, shot_types)
       if (!any(idx_shot)) {
         return(invisible(NULL))
       }
@@ -738,7 +738,7 @@ x_game_cumulative_expected_goals <- function(
       xg_col <- 'xG'
       type <- as.character(pbp[['typeDescKey']])
       shot_types <- c('goal', 'shot-on-goal', 'missed-shot', 'blocked-shot')
-      idx_shot <- !is.na(type) & type %in% shot_types
+      idx_shot <- .shot_event_mask(pbp, shot_types)
       if (!any(idx_shot)) {
         return(invisible(NULL))
       }
