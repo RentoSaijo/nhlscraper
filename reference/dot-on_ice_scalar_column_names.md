@@ -6,8 +6,18 @@ shift-timing columns used by the public play-by-play schema.
 ## Usage
 
 ``` r
-.on_ice_scalar_column_names()
+.on_ice_scalar_column_names(play_by_play = NULL, slot_count = NULL)
 ```
+
+## Arguments
+
+- play_by_play:
+
+  optional data.frame whose existing on-ice columns should be inspected
+
+- slot_count:
+
+  optional integer scalar minimum slot count requested by the caller
 
 ## Value
 

@@ -1,5 +1,13 @@
 # Package index
 
+## Package
+
+Package overview and help
+
+- [`nhlscraper`](https://rentosaijo.github.io/nhlscraper/reference/nhlscraper.md)
+  [`nhlscraper-package`](https://rentosaijo.github.io/nhlscraper/reference/nhlscraper.md)
+  : nhlscraper: Scrape, clean, and visualize NHL data
+
 ## High-level
 
 Functions to call the NHL APIs for high-level data
@@ -374,6 +382,8 @@ Functions to help clean the data
 - [`add_deltas()`](https://rentosaijo.github.io/nhlscraper/reference/add_deltas.md)
   [`calculate_speed()`](https://rentosaijo.github.io/nhlscraper/reference/add_deltas.md)
   : Add event-to-event deltas to a play-by-play
+- [`add_shift_times()`](https://rentosaijo.github.io/nhlscraper/reference/add_shift_times.md)
+  : Add on-ice shift times to a play-by-play
 - [`add_shooter_biometrics()`](https://rentosaijo.github.io/nhlscraper/reference/add_shooter_biometrics.md)
   : Add shooter biometrics to (a) play-by-play(s)
 - [`add_goalie_biometrics()`](https://rentosaijo.github.io/nhlscraper/reference/add_goalie_biometrics.md)

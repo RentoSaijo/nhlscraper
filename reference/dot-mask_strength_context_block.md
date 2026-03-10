@@ -1,7 +1,8 @@
-# Mask strength-only columns on unsupported events
+# Mask HTML on-ice columns on unsupported events
 
-`.mask_strength_context_block()` sets strength and on-ice columns to
-`NA` on event types that are not supported by the HTML on-ice pipeline.
+`.mask_strength_context_block()` sets HTML-derived on-ice player-ID and
+timing columns to `NA` on event types that are not supported by the HTML
+on-ice player pipeline.
 
 ## Usage
 

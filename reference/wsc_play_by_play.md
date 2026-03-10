@@ -7,8 +7,14 @@ returned schema follows the same cleaned public-facing naming as
 including `servedByPlayerId`, and includes `utc` immediately after
 `secondsElapsedInGame` while omitting GC-only clip fields. It also
 includes the same HTML-report-derived on-ice player ID columns added to
-the GC output, including sixth-skater slots when a goalie is pulled,
-plus the same shift-chart-derived scalar timing columns.
+the GC output, including dynamically expanded overflow skater slots when
+needed. Use
+[`add_shift_times()`](https://rentosaijo.github.io/nhlscraper/reference/add_shift_times.md)
+with
+[`shift_chart()`](https://rentosaijo.github.io/nhlscraper/reference/shift_chart.md)
+(or
+[`shift_charts()`](https://rentosaijo.github.io/nhlscraper/reference/shift_charts.md))
+to add on-ice shift timing columns.
 
 ## Usage
 

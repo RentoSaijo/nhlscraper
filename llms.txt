@@ -80,6 +80,14 @@ already [compiled](https://github.com/pseudo-r/Public-ESPN-API).
 
 # Package index
 
+## Package
+
+Package overview and help
+
+- [`nhlscraper`](https://rentosaijo.github.io/nhlscraper/reference/nhlscraper.md)
+  [`nhlscraper-package`](https://rentosaijo.github.io/nhlscraper/reference/nhlscraper.md)
+  : nhlscraper: Scrape, clean, and visualize NHL data
+
 ## High-level
 
 Functions to call the NHL APIs for high-level data
@@ -454,6 +462,8 @@ Functions to help clean the data
 - [`add_deltas()`](https://rentosaijo.github.io/nhlscraper/reference/add_deltas.md)
   [`calculate_speed()`](https://rentosaijo.github.io/nhlscraper/reference/add_deltas.md)
   : Add event-to-event deltas to a play-by-play
+- [`add_shift_times()`](https://rentosaijo.github.io/nhlscraper/reference/add_shift_times.md)
+  : Add on-ice shift times to a play-by-play
 - [`add_shooter_biometrics()`](https://rentosaijo.github.io/nhlscraper/reference/add_shooter_biometrics.md)
   : Add shooter biometrics to (a) play-by-play(s)
 - [`add_goalie_biometrics()`](https://rentosaijo.github.io/nhlscraper/reference/add_goalie_biometrics.md)
@@ -694,8 +704,20 @@ Functions that are defunct
 
 # Articles
 
-### All vignettes
+### Articles
 
-- [Building and Understanding our Expected Goals (xG)
-  Models](https://rentosaijo.github.io/nhlscraper/articles/example.md):
-- [nhlscraper](https://rentosaijo.github.io/nhlscraper/articles/nhlscraper.md):
+- [How gc_play_by_play() and wsc_play_by_play()
+  Work](https://rentosaijo.github.io/nhlscraper/articles/play-by-play-pipeline.md):
+
+### Examples
+
+- [Do Bigger Skaters Hold Their Scoring in the
+  Playoffs?](https://rentosaijo.github.io/nhlscraper/articles/playoff-size.md):
+- [Did the NHL Draft's Size Obsession Peak in the
+  1990s?](https://rentosaijo.github.io/nhlscraper/articles/draft-size-bias.md):
+- [What Separated Florida and Edmonton in Game
+  7?](https://rentosaijo.github.io/nhlscraper/articles/game-7-shot-quality.md):
+- [How Costly Are Back-to-Backs in the Salary-Cap
+  Era?](https://rentosaijo.github.io/nhlscraper/articles/back-to-back-tax.md):
+- [Do Elite Teams Really All Play the Same
+  Way?](https://rentosaijo.github.io/nhlscraper/articles/team-edge-archetypes.md):

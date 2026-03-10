@@ -1,0 +1,289 @@
+# How gc_play_by_play() and wsc_play_by_play() Work
+
+## Overview
+
+[`gc_play_by_play()`](https://rentosaijo.github.io/nhlscraper/reference/gc_play_by_play.md)
+and
+[`wsc_play_by_play()`](https://rentosaijo.github.io/nhlscraper/reference/wsc_play_by_play.md)
+return the same cleaned public play-by-play schema, but they do not
+start from the same raw feed.
+[`gc_play_by_play()`](https://rentosaijo.github.io/nhlscraper/reference/gc_play_by_play.md)
+starts from the GameCenter play-by-play feed.
+[`wsc_play_by_play()`](https://rentosaijo.github.io/nhlscraper/reference/wsc_play_by_play.md)
+starts from the World Showcase feed and uses GameCenter metadata to keep
+the output aligned with the same roster, team, and HTML report context.
+
+The pipeline is intentionally source-aware:
+
+- The API play-by-play is the source of truth for event order, event
+  identity, and raw `situationCode`.
+- The HTML play-by-play report is the primary source for on-ice player
+  identities.
+- [`shift_chart()`](https://rentosaijo.github.io/nhlscraper/reference/shift_chart.md)
+  is not used to populate on-ice player IDs inside these functions. It
+  is a separate downstream source for shift timing via
+  [`add_shift_times()`](https://rentosaijo.github.io/nhlscraper/reference/add_shift_times.md).
+
+This article walks through the process step by step.
+
+## Step 1: Fetch the raw sources
+
+For a single game, the functions fetch the raw API play-by-play plus the
+HTML play-by-play report.
+[`wsc_play_by_play()`](https://rentosaijo.github.io/nhlscraper/reference/wsc_play_by_play.md)
+also fetches the WSC play-by-play feed itself.
+
+Those requests are now issued in parallel, because network latency
+dominates total runtime much more than the in-memory cleaning steps do.
+
+``` r
+gc <- nhlscraper::gc_play_by_play(2023030417)
+wsc <- nhlscraper::wsc_play_by_play(2023030417)
+```
+
+The HTML report is fetched for every game because it is the only source
+that consistently exposes the full on-ice player sets.
+
+## Step 2: Standardize the raw play-by-play feed
+
+Once the raw feed is downloaded, the package standardizes the columns
+before doing any enrichment.
+
+That includes:
+
+- moving the `gameId` into the table
+- flattening nested API fields into a consistent tabular shape
+- renaming public-facing columns such as `periodNumber`,
+  `eventTypeCode`, and `eventTypeDescKey`
+- filling obvious source omissions such as missing `shootingPlayerId`
+  values on goal rows when the scorer is known
+
+The aim here is to make the downstream logic operate on one internal
+structure, even when the upstream feed formats differ.
+
+## Step 3: Repair obviously impossible event ordering
+
+The API play-by-play remains authoritative, but not every upstream
+`sortOrder` is logically consistent.
+
+Before any HTML matching happens, the pipeline repairs clear boundary
+mistakes. The guiding principle is conservative: only fix sequences that
+are plainly impossible from the game clock and event context.
+
+Examples:
+
+- no event can happen between `period-start` and the opening `faceoff`
+- illogically ordered boundary faceoffs are dropped
+- blocked shots keep the API event identity, but their directional
+  perspective is normalized to the shooting team so they behave like the
+  other shot events
+
+This matters because HTML matching becomes much more reliable once the
+API timeline itself is internally coherent.
+
+## Step 4: Derive the game-state columns from `situationCode`
+
+The raw `situationCode` is parsed into the public state columns:
+
+- `homeIsEmptyNet`
+- `awayIsEmptyNet`
+- `homeSkaterCount`
+- `awaySkaterCount`
+- `manDifferential`
+- `strengthState`
+
+These are the public summary columns that describe the state context of
+the play.
+
+The raw `situationCode` itself is kept in the output as-is. That
+preserves the upstream source record even when the package later
+concludes that the HTML report indicates a more realistic on-ice
+identity set.
+
+## Step 5: Add coordinate and shot-context enrichment
+
+After the structural cleanup, the play-by-play gets the geometric and
+shot-context features used elsewhere in the package.
+
+That includes:
+
+- normalized rink coordinates
+- shot distance
+- shot angle
+- rush flags
+- rebound flags
+- rebound-creation flags
+- cumulative goal, shot, Fenwick, and Corsi counts from the event stream
+
+These features are derived from the cleaned API event log, not from the
+HTML report.
+
+## Step 6: Parse the HTML play-by-play report
+
+The HTML report is parsed into a second event table that contains:
+
+- the event type
+- the period and clock
+- team ownership context
+- key player signatures used for matching
+- the home and away on-ice player sets
+
+The parser also handles the known HTML-side quirks, including the fact
+that the HTML report records blocked shots from the defending
+perspective while the package standardizes blocked shots from the
+shooting perspective.
+
+## Step 7: Match HTML rows back to API rows
+
+The package does not join HTML to API rows only on time. It builds a
+richer event signature on both sides and uses that to align the reports.
+
+The matching logic uses combinations of:
+
+- period
+- elapsed seconds
+- event type
+- event-owning team
+- primary event actors
+- supporting player signatures
+
+This step is where the earlier ordering repair pays off. The cleaner the
+API event sequence is, the safer the HTML match becomes.
+
+## Step 8: Decide whether an HTML on-ice row is safe to use
+
+A matched HTML row is not accepted blindly. The package checks whether
+the HTML on-ice set is compatible with the API-side understanding of the
+play.
+
+There are three main acceptance paths:
+
+1.  The HTML player counts match the raw `situationCode`.
+2.  The HTML player counts match a rules-based strength reconstruction
+    from the API penalty sequence.
+3.  The HTML counts disagree, but the event actors clearly sit inside
+    the HTML on-ice sets, which makes the row useful for player identity
+    even if the upstream count context is off.
+
+That third path is the deliberate compromise between strict consistency
+and recording what most likely happened on the ice.
+
+## Step 9: Reconstruct known strength-state mistakes conservatively
+
+Some API stretches clearly carry stale or implausible manpower state
+even though the event stream itself gives enough information to
+reconstruct the expected skater counts.
+
+The reconstruction logic handles narrow cases such as:
+
+- active penalties
+- double minors
+- goal-based minor releases
+- coincidental major suppression
+- delayed-penalty and late empty-net situations
+
+When the package has enough evidence to trust the rules-based
+reconstruction, it updates the derived strength context columns. The raw
+`situationCode` still remains untouched.
+
+## Step 10: Populate on-ice player IDs
+
+Once a matched HTML row is accepted, the package writes the scalar
+on-ice player ID columns into the play-by-play row.
+
+That includes:
+
+- `homeGoaliePlayerId` and `awayGoaliePlayerId`
+- `homeSkater1PlayerId` through `homeSkater5PlayerId` by default, with
+  extra skater slots added only when the game needs them
+- `awaySkater1PlayerId` through `awaySkater5PlayerId` by default, with
+  extra skater slots added only when the game needs them
+- the corresponding `...For` and `...Against` columns
+
+The base schema tracks the standard five skaters. If the HTML report
+shows an extra attacker or any other overflow row, the package expands
+dynamically to `skater6`, `skater7`, `skater8`, and so on instead of
+truncating the row.
+
+## Step 11: Handle one-on-one and delayed-penalty edge cases
+
+Two edge-case families need their own rules.
+
+### Shootouts and penalty shots
+
+Rows with one-on-one states such as `0101` and `1010` are allowed to
+populate only the shooter and the defending goalie. The HTML report
+typically shows only those players, which is correct for the event.
+
+### Unmatched delayed-penalty rows
+
+Some supported delayed-penalty rows do not appear in the HTML report at
+all. In those cases, the package can backfill the on-ice player IDs from
+the nearest prior populated row in the same period when:
+
+- the state signature is unchanged
+- the time gap is very small
+- the prior row already has a compatible populated on-ice set
+
+This fixes cases where the HTML report skips the delayed-penalty marker
+but clearly preserves the same live-play skaters immediately before the
+whistle.
+
+## Step 12: Finalize the public schema
+
+The last step is to expose the cleaned public-facing schema and hide the
+internal staging details.
+
+Both
+[`gc_play_by_play()`](https://rentosaijo.github.io/nhlscraper/reference/gc_play_by_play.md)
+and
+[`wsc_play_by_play()`](https://rentosaijo.github.io/nhlscraper/reference/wsc_play_by_play.md)
+return one row per event with:
+
+- the same core event columns
+- the same strength and on-ice player ID columns
+- the same cumulative game-state columns
+
+The only intentional difference is source-specific metadata such as
+`utc` in the WSC output and GameCenter clip fields in the GC output.
+
+## How `shift_chart()` fits in
+
+[`shift_chart()`](https://rentosaijo.github.io/nhlscraper/reference/shift_chart.md)
+is related, but it solves a different problem.
+
+It provides shift windows, not event identities. In practical use:
+
+``` r
+pbp <- nhlscraper::gc_play_by_play(2023030417)
+shifts <- nhlscraper::shift_chart(2023030417)
+pbp_with_shift_times <- nhlscraper::add_shift_times(pbp, shifts)
+```
+
+This is why the package keeps the HTML play-by-play report as the
+primary on-ice identity source inside
+[`gc_play_by_play()`](https://rentosaijo.github.io/nhlscraper/reference/gc_play_by_play.md)
+and
+[`wsc_play_by_play()`](https://rentosaijo.github.io/nhlscraper/reference/wsc_play_by_play.md),
+while
+[`shift_chart()`](https://rentosaijo.github.io/nhlscraper/reference/shift_chart.md)
+remains the right tool for shift-timing context after the play-by-play
+is already built.
+
+## Practical summary
+
+If you want the shortest mental model, it is this:
+
+- start from the API play-by-play
+- repair only the event-order and strength mistakes that are logically
+  supportable
+- use the HTML report to recover the actual players on the ice
+- preserve the raw `situationCode`, but do not let it block clearly
+  useful player identity rows
+- use
+  [`shift_chart()`](https://rentosaijo.github.io/nhlscraper/reference/shift_chart.md)
+  later when you need shift timing rather than event-level player
+  identity
+
+That balance is what lets the final play-by-play stay both practical and
+auditable.

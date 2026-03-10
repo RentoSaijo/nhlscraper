@@ -7,10 +7,14 @@ canonical names such as `periodNumber`, `eventTypeCode`,
 `eventTypeDescKey`, `homeShots`, `shotsFor`, `penaltyTypeDescKey`,
 `penaltyDuration`, `servedByPlayerId`, and HTML-report-derived on-ice
 player ID columns such as `homeGoaliePlayerId`, `awayGoaliePlayerId`,
-`homeSkater1PlayerId`, and `homeSkater6PlayerId`, plus
-shift-chart-derived timing columns such as
-`homeSkater1SecondsElapsedInShift` and
-`homeSkater1SecondsElapsedInPeriodSinceLastShift`.
+`homeSkater1PlayerId`, and any additional overflow skater slots required
+by the game. Use
+[`add_shift_times()`](https://rentosaijo.github.io/nhlscraper/reference/add_shift_times.md)
+with
+[`shift_chart()`](https://rentosaijo.github.io/nhlscraper/reference/shift_chart.md)
+(or
+[`shift_charts()`](https://rentosaijo.github.io/nhlscraper/reference/shift_charts.md))
+to add on-ice shift timing columns.
 
 ## Usage
 

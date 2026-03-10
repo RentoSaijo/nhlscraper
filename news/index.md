@@ -18,19 +18,30 @@
   column names such as `periodNumber`, `eventTypeCode`,
   `eventTypeDescKey`, `homeShots`, `shotsFor`, `penaltyTypeDescKey`,
   `penaltyDuration`, `servedByPlayerId`, and `pptReplayUrl`.
-  - The public play-by-play outputs now include HTML-report-derived
-    on-ice goalie/skater ID columns for supported strength events,
-    including sixth-skater pulled-goalie states, plus
-    shift-chart-derived scalar timing columns for each on-ice goalie and
-    skater.
-  - Strength context in public play-by-play outputs is now reconciled to
-    the matched HTML on-ice rows for supported events, and illogically
-    ordered boundary rows between `period-end` and the following
-    `period-start` are removed before downstream cleaning.
+  - The original API `situationCode` is now kept intact as the source of
+    truth, with goalie/skater counts derived from a parsed copy rather
+    than by rewriting or backfilling the source column.
+  - HTML-report-derived on-ice goalie/skater ID columns are now limited
+    to `faceoff`, `hit`, `shot-on-goal`, `giveaway`, `missed-shot`,
+    `blocked-shot`, `goal`, `delayed-penalty`, `takeaway`, and
+    `failed-shot-attempt`, while `situationCode`-derived strength/count
+    columns remain available wherever `situationCode` itself is
+    available.
+  - [`add_shift_times()`](https://rentosaijo.github.io/nhlscraper/reference/add_shift_times.md)
+    is now added to populate scalar on-ice shift timing columns from a
+    public play-by-play plus
+    [`shift_chart()`](https://rentosaijo.github.io/nhlscraper/reference/shift_chart.md)/[`shift_charts()`](https://rentosaijo.github.io/nhlscraper/reference/shift_charts.md)
+    using the native timing resolver;
+    [`gc_play_by_play()`](https://rentosaijo.github.io/nhlscraper/reference/gc_play_by_play.md)
+    and
+    [`wsc_play_by_play()`](https://rentosaijo.github.io/nhlscraper/reference/wsc_play_by_play.md)
+    keep those timing columns in-schema but no longer call
+    [`shift_chart()`](https://rentosaijo.github.io/nhlscraper/reference/shift_chart.md)
+    internally.
   - HTML play-by-play matching is now more robust to older dotted team
-    abbreviations and duplicate same-second shot clusters, and broader
-    cross-season consistency audits now keep `situationCode` aligned
-    with implied goalie/skater counts from the on-ice columns.
+    abbreviations, reversed faceoff player-order descriptions, duplicate
+    same-second shot clusters, and rows whose parsed HTML on-ice counts
+    disagree with the source `situationCode`.
 - [`add_deltas()`](https://rentosaijo.github.io/nhlscraper/reference/add_deltas.md)
   now handles event-to-event deltas in C, returns raw and normalized x/y
   deltas alongside distance and angle deltas, and still properly handles

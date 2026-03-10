@@ -13,6 +13,8 @@ lookup.
   owner_team_id,
   home_team_id,
   away_team_id,
+  home_abbrev,
+  away_abbrev,
   roster_lookup
 )
 ```
@@ -38,6 +40,14 @@ lookup.
 - away_team_id:
 
   away-team ID
+
+- home_abbrev:
+
+  home-team abbreviation
+
+- away_abbrev:
+
+  away-team abbreviation
 
 - roster_lookup:
 

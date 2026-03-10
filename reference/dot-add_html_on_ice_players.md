@@ -12,7 +12,8 @@ columns into play-by-play output.
   game,
   rosters = NULL,
   home_team = NULL,
-  away_team = NULL
+  away_team = NULL,
+  html_rows = NULL
 )
 ```
 
@@ -37,6 +38,10 @@ columns into play-by-play output.
 - away_team:
 
   optional away-team metadata
+
+- html_rows:
+
+  optional parsed HTML on-ice rows
 
 ## Value
 

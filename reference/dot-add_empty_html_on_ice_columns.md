@@ -6,7 +6,7 @@ ID and timing columns before HTML and shift-chart enrichment.
 ## Usage
 
 ``` r
-.add_empty_html_on_ice_columns(play_by_play)
+.add_empty_html_on_ice_columns(play_by_play, slot_count = NULL)
 ```
 
 ## Arguments
@@ -14,6 +14,10 @@ ID and timing columns before HTML and shift-chart enrichment.
 - play_by_play:
 
   data.frame play-by-play object
+
+- slot_count:
+
+  optional integer scalar minimum slot count requested by the caller
 
 ## Value
 

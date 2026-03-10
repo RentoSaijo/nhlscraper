@@ -3,7 +3,7 @@
 `.strip_situation_code()` strips the situation code into goalie and
 skater counts for home and away teams, then (from the event owner's
 perspective) computes man differential and a strength state
-classification.
+classification without rewriting the source `situationCode` column.
 
 ## Usage
 
