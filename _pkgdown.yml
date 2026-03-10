@@ -13,7 +13,7 @@ template:
 navbar:
   title: "nhlscraper"
   structure:
-    left: [intro, reference, examples, news]
+    left: [intro, reference, articles, examples, news]
     right: [search, github, x, lightswitch]
   components:
     intro:
@@ -23,6 +23,11 @@ navbar:
     reference:
       text: "Functions"
       href: reference/index.html
+    articles:
+      text: "Articles"
+      menu:
+        - text: "How gc_play_by_play() and wsc_play_by_play() Work"
+          href: articles/play-by-play-pipeline.html
     examples:
       text: "Examples"
       menu:
@@ -61,6 +66,9 @@ authors:
     roles: [aut, ctb]
 
 articles:
+  - title: "Articles"
+    contents:
+      - play-by-play-pipeline
   - title: "Examples"
     contents:
       - playoff-size
@@ -270,6 +278,7 @@ reference:
       Functions to help clean the data
     contents:
       - add_deltas
+      - add_shift_times
       - add_shooter_biometrics
       - add_goalie_biometrics
   

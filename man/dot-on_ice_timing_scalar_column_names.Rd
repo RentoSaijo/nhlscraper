@@ -4,10 +4,20 @@
 \alias{.on_ice_timing_scalar_column_names}
 \title{Build scalar on-ice timing column names}
 \usage{
-.on_ice_timing_scalar_column_names(metric_suffix)
+.on_ice_timing_scalar_column_names(
+  metric_suffix,
+  play_by_play = NULL,
+  slot_count = NULL
+)
 }
 \arguments{
 \item{metric_suffix}{scalar timing suffix}
+
+\item{play_by_play}{optional data.frame whose existing on-ice columns should
+be inspected}
+
+\item{slot_count}{optional integer scalar minimum slot count requested by the
+caller}
 }
 \value{
 character vector of column names

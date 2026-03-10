@@ -237,15 +237,63 @@ game_rosters <- function(game = 2023030417) {
   setdiff(.supported_strength_event_types(), 'penalty')
 }
 
-#' Return the number of on-ice skater slots
+#' Return the tracked number of on-ice skater slots
 #'
-#' `.on_ice_skater_slots()` returns the maximum number of skater slots tracked
-#' per team in play-by-play outputs.
+#' `.on_ice_skater_slots()` returns the current number of skater slots tracked
+#' per team in play-by-play outputs. It guarantees the standard five skater
+#' columns and expands further when the input already contains overflow skater
+#' slots or when a caller requests a larger slot count.
 #'
+#' @param play_by_play optional data.frame whose existing on-ice columns should
+#'   be inspected
+#' @param slot_count optional integer scalar minimum slot count requested by the
+#'   caller
+#' @param min_slots integer scalar default floor for standard outputs
 #' @returns integer scalar
 #' @keywords internal
-.on_ice_skater_slots <- function() {
-  6L
+.on_ice_skater_slots <- function(
+  play_by_play = NULL,
+  slot_count = NULL,
+  min_slots = 5L
+) {
+  extract_slots <- function(nms, pattern) {
+    matches <- regexec(pattern, nms, perl = TRUE)
+    parts <- regmatches(nms, matches)
+    vals <- suppressWarnings(as.integer(vapply(
+      parts,
+      function(x) {
+        if (length(x) >= 2L) x[2L] else NA_character_
+      },
+      character(1)
+    )))
+    vals[!is.na(vals) & vals > 0L]
+  }
+
+  detected <- integer()
+  if (!is.null(play_by_play)) {
+    nms <- if (is.data.frame(play_by_play)) {
+      names(play_by_play)
+    } else {
+      as.character(play_by_play)
+    }
+    detected <- unique(c(
+      extract_slots(
+        nms,
+        '^(?:home|away)Skater([0-9]+)(?:PlayerId|SecondsElapsedInShift|SecondsElapsedInPeriodSinceLastShift)$'
+      ),
+      extract_slots(
+        nms,
+        '^skater([0-9]+)(?:PlayerId(?:For|Against)|SecondsElapsedInShift(?:For|Against)|SecondsElapsedInPeriodSinceLastShift(?:For|Against))$'
+      )
+    ))
+  }
+
+  candidates <- c(as.integer(min_slots), as.integer(slot_count), detected)
+  candidates <- candidates[!is.na(candidates) & candidates >= 0L]
+  if (!length(candidates)) {
+    return(0L)
+  }
+  max(candidates)
 }
 
 #' List on-ice player ID columns
@@ -253,10 +301,20 @@ game_rosters <- function(game = 2023030417) {
 #' `.on_ice_id_scalar_column_names()` returns the public scalar goalie and
 #' skater ID column names used in enriched play-by-play outputs.
 #'
+#' @param play_by_play optional data.frame whose existing on-ice columns should
+#'   be inspected
+#' @param slot_count optional integer scalar minimum slot count requested by the
+#'   caller
 #' @returns character vector of on-ice player ID columns
 #' @keywords internal
-.on_ice_id_scalar_column_names <- function() {
-  skater_slots <- seq_len(.on_ice_skater_slots())
+.on_ice_id_scalar_column_names <- function(
+  play_by_play = NULL,
+  slot_count = NULL
+) {
+  skater_slots <- seq_len(.on_ice_skater_slots(
+    play_by_play = play_by_play,
+    slot_count = slot_count
+  ))
   c(
     'homeGoaliePlayerId',
     'awayGoaliePlayerId',
@@ -276,13 +334,31 @@ game_rosters <- function(game = 2023030417) {
 #' `.on_ice_scalar_column_names()` returns the scalar on-ice player ID and
 #' shift-timing columns used by the public play-by-play schema.
 #'
+#' @param play_by_play optional data.frame whose existing on-ice columns should
+#'   be inspected
+#' @param slot_count optional integer scalar minimum slot count requested by the
+#'   caller
 #' @returns character vector of scalar on-ice columns
 #' @keywords internal
-.on_ice_scalar_column_names <- function() {
+.on_ice_scalar_column_names <- function(
+  play_by_play = NULL,
+  slot_count = NULL
+) {
   c(
-    .on_ice_id_scalar_column_names(),
-    .on_ice_timing_scalar_column_names('SecondsElapsedInShift'),
-    .on_ice_timing_scalar_column_names('SecondsElapsedInPeriodSinceLastShift')
+    .on_ice_id_scalar_column_names(
+      play_by_play = play_by_play,
+      slot_count = slot_count
+    ),
+    .on_ice_timing_scalar_column_names(
+      'SecondsElapsedInShift',
+      play_by_play = play_by_play,
+      slot_count = slot_count
+    ),
+    .on_ice_timing_scalar_column_names(
+      'SecondsElapsedInPeriodSinceLastShift',
+      play_by_play = play_by_play,
+      slot_count = slot_count
+    )
   )
 }
 
@@ -292,16 +368,29 @@ game_rosters <- function(game = 2023030417) {
 #' and timing columns before HTML and shift-chart enrichment.
 #'
 #' @param play_by_play data.frame play-by-play object
+#' @param slot_count optional integer scalar minimum slot count requested by the
+#'   caller
 #' @returns data.frame with empty on-ice columns added
 #' @keywords internal
-.add_empty_html_on_ice_columns <- function(play_by_play) {
-  id_cols <- .on_ice_id_scalar_column_names()
-  time_cols <- setdiff(.on_ice_scalar_column_names(), id_cols)
+.add_empty_html_on_ice_columns <- function(play_by_play, slot_count = NULL) {
+  slot_count <- .on_ice_skater_slots(
+    play_by_play = play_by_play,
+    slot_count = slot_count
+  )
+  id_cols <- .on_ice_id_scalar_column_names(slot_count = slot_count)
+  time_cols <- setdiff(
+    .on_ice_scalar_column_names(slot_count = slot_count),
+    id_cols
+  )
   for (nm in id_cols) {
-    play_by_play[[nm]] <- rep(NA_integer_, nrow(play_by_play))
+    if (!(nm %in% names(play_by_play))) {
+      play_by_play[[nm]] <- rep(NA_integer_, nrow(play_by_play))
+    }
   }
   for (nm in time_cols) {
-    play_by_play[[nm]] <- rep(NA_real_, nrow(play_by_play))
+    if (!(nm %in% names(play_by_play))) {
+      play_by_play[[nm]] <- rep(NA_real_, nrow(play_by_play))
+    }
   }
   play_by_play
 }
@@ -325,7 +414,10 @@ game_rosters <- function(game = 2023030417) {
   }
   supported <- !is.na(type_desc_key) &
     type_desc_key %in% .supported_html_on_ice_id_event_types()
-  cols <- intersect(.on_ice_scalar_column_names(), names(play_by_play))
+  cols <- intersect(
+    .on_ice_scalar_column_names(play_by_play = play_by_play),
+    names(play_by_play)
+  )
   for (nm in cols) {
     x <- play_by_play[[nm]]
     if (is.integer(x)) {
@@ -976,6 +1068,54 @@ game_rosters <- function(game = 2023030417) {
   identical(as.integer(html_sig), api_sig)
 }
 
+#' Build the HTML play-by-play report URL
+#'
+#' `.html_pbp_report_url()` returns the NHL HTML play-by-play report URL for a
+#' game.
+#'
+#' @param game game ID
+#' @returns character scalar URL
+#' @keywords internal
+.html_pbp_report_url <- function(game) {
+  season <- paste0(game %/% 1e6, game %/% 1e6 + 1L)
+  game_code <- sprintf('%06d', game %% 10^6)
+  sprintf(
+    'https://www.nhl.com/scores/htmlreports/%s/PL%s.HTM',
+    season,
+    game_code
+  )
+}
+
+#' Parse an HTML on-ice play-by-play response
+#'
+#' `.parse_html_pbp_response()` converts an already-fetched HTML play-by-play
+#' response into parsed on-ice rows.
+#'
+#' @param resp httr2 response object for the HTML report
+#' @inheritParams .fetch_html_pbp_on_ice
+#' @returns data.frame of parsed HTML play-by-play rows
+#' @keywords internal
+.parse_html_pbp_response <- function(
+  resp,
+  game,
+  rosters,
+  home_team_id,
+  away_team_id,
+  home_abbrev,
+  away_abbrev
+) {
+  doc <- xml2::read_html(httr2::resp_body_raw(resp))
+  .parse_html_pbp_doc(
+    doc = doc,
+    roster_lookup = .build_game_roster_lookup(rosters),
+    home_team_id = as.integer(home_team_id),
+    away_team_id = as.integer(away_team_id),
+    home_abbrev = home_abbrev,
+    away_abbrev = away_abbrev,
+    is_playoffs = game %/% 1e4 %% 1e2 == 3L
+  )
+}
+
 #' Fetch HTML on-ice play-by-play rows
 #'
 #' `.fetch_html_pbp_on_ice()` downloads an NHL HTML play-by-play report and
@@ -997,22 +1137,17 @@ game_rosters <- function(game = 2023030417) {
   home_abbrev,
   away_abbrev
 ) {
-  season <- paste0(game %/% 1e6, game %/% 1e6 + 1L)
-  game_code <- sprintf('%06d', game %% 10^6)
-  url <- sprintf(
-    'https://www.nhl.com/scores/htmlreports/%s/PL%s.HTM',
-    season,
-    game_code
+  resp <- httr2::req_perform(
+    .html_report_request(.html_pbp_report_url(as.integer(game)))
   )
-  doc <- xml2::read_html(url)
-  .parse_html_pbp_doc(
-    doc = doc,
-    roster_lookup = .build_game_roster_lookup(rosters),
+  .parse_html_pbp_response(
+    resp = resp,
+    game = as.integer(game),
     home_team_id = as.integer(home_team_id),
     away_team_id = as.integer(away_team_id),
+    rosters = rosters,
     home_abbrev = home_abbrev,
-    away_abbrev = away_abbrev,
-    is_playoffs = game %/% 1e4 %% 1e2 == 3L
+    away_abbrev = away_abbrev
   )
 }
 
@@ -1690,6 +1825,134 @@ game_rosters <- function(game = 2023030417) {
   )
 }
 
+#' Check required event actors against resolved HTML on-ice IDs
+#'
+#' `.html_on_ice_matches_event_actors()` validates that the key API event actors
+#' for a matched row are present on the corresponding HTML on-ice team sets. It
+#' is intentionally narrow and only returns `TRUE` when at least one informative
+#' actor field is available for the event type.
+#'
+#' @param play_by_play data.frame cleaned internal play-by-play object
+#' @param idx row index in the play-by-play
+#' @param home_goalie_player_id parsed home goalie player ID
+#' @param away_goalie_player_id parsed away goalie player ID
+#' @param home_skater_player_ids parsed home skater IDs
+#' @param away_skater_player_ids parsed away skater IDs
+#' @returns logical scalar
+#' @keywords internal
+.html_on_ice_matches_event_actors <- function(
+  play_by_play,
+  idx,
+  home_goalie_player_id,
+  away_goalie_player_id,
+  home_skater_player_ids,
+  away_skater_player_ids
+) {
+  play_by_play <- .pbp_legacy_aliases(play_by_play)
+  if (
+    is.null(play_by_play) ||
+      !nrow(play_by_play) ||
+      is.na(idx) ||
+      idx < 1L ||
+      idx > nrow(play_by_play)
+  ) {
+    return(FALSE)
+  }
+
+  type_desc_key <- as.character(play_by_play$typeDescKey[idx])
+  if (
+    is.na(type_desc_key) ||
+      !(type_desc_key %in% .supported_html_on_ice_id_event_types())
+  ) {
+    return(FALSE)
+  }
+
+  home_ids <- c(
+    if (!is.na(home_goalie_player_id)) as.integer(home_goalie_player_id),
+    as.integer(home_skater_player_ids)
+  )
+  away_ids <- c(
+    if (!is.na(away_goalie_player_id)) as.integer(away_goalie_player_id),
+    as.integer(away_skater_player_ids)
+  )
+  team_for <- if (play_by_play$isHome[idx] %in% TRUE) {
+    home_ids
+  } else if (play_by_play$isHome[idx] %in% FALSE) {
+    away_ids
+  } else {
+    integer()
+  }
+  team_against <- if (play_by_play$isHome[idx] %in% TRUE) {
+    away_ids
+  } else if (play_by_play$isHome[idx] %in% FALSE) {
+    home_ids
+  } else {
+    integer()
+  }
+  if (!length(team_for) || !length(team_against)) {
+    return(FALSE)
+  }
+
+  players <- list(primary = NA_integer_, secondary = NA_integer_, tertiary = NA_integer_)
+  if (type_desc_key == 'faceoff') {
+    players$primary <- .on_ice_int_col(play_by_play, 'winningPlayerId')[idx]
+    players$secondary <- .on_ice_int_col(play_by_play, 'losingPlayerId')[idx]
+  } else if (type_desc_key == 'hit') {
+    players$primary <- .on_ice_int_col(play_by_play, 'hittingPlayerId')[idx]
+    players$secondary <- .on_ice_int_col(play_by_play, 'hitteePlayerId')[idx]
+  } else if (type_desc_key %in% c('shot-on-goal', 'missed-shot', 'failed-shot-attempt')) {
+    players$primary <- .on_ice_int_col(play_by_play, 'shootingPlayerId')[idx]
+    if (is.na(players$primary)) {
+      players$primary <- .on_ice_int_col(play_by_play, 'scoringPlayerId')[idx]
+    }
+    if (is.na(players$primary)) {
+      players$primary <- .on_ice_int_col(play_by_play, 'playerId')[idx]
+    }
+  } else if (type_desc_key == 'blocked-shot') {
+    players$primary <- .on_ice_int_col(play_by_play, 'shootingPlayerId')[idx]
+    players$secondary <- .on_ice_int_col(play_by_play, 'blockingPlayerId')[idx]
+  } else if (type_desc_key == 'goal') {
+    players$primary <- .on_ice_int_col(play_by_play, 'scoringPlayerId')[idx]
+    if (is.na(players$primary)) {
+      players$primary <- .on_ice_int_col(play_by_play, 'shootingPlayerId')[idx]
+    }
+    players$secondary <- .on_ice_int_col(play_by_play, 'assist1PlayerId')[idx]
+    players$tertiary <- .on_ice_int_col(play_by_play, 'assist2PlayerId')[idx]
+  } else if (type_desc_key == 'delayed-penalty') {
+    players$primary <- .on_ice_int_col(play_by_play, 'committedByPlayerId')[idx]
+    if (is.na(players$primary)) {
+      players$primary <- .on_ice_int_col(play_by_play, 'playerId')[idx]
+    }
+    players$secondary <- .on_ice_int_col(play_by_play, 'drawnByPlayerId')[idx]
+  } else if (type_desc_key %in% c('giveaway', 'takeaway')) {
+    players$primary <- .on_ice_int_col(play_by_play, 'playerId')[idx]
+  }
+
+  required <- unlist(players, use.names = FALSE)
+  if (!any(!is.na(required))) {
+    return(FALSE)
+  }
+
+  in_for <- function(player_id) is.na(player_id) || player_id %in% team_for
+  in_against <- function(player_id) is.na(player_id) || player_id %in% team_against
+
+  if (type_desc_key == 'goal') {
+    return(
+      in_for(players$primary) &&
+        in_for(players$secondary) &&
+        in_for(players$tertiary)
+    )
+  }
+  if (type_desc_key %in% c('faceoff', 'hit', 'blocked-shot', 'delayed-penalty')) {
+    return(
+      in_for(players$primary) &&
+        in_against(players$secondary)
+    )
+  }
+
+  in_for(players$primary)
+}
+
 #' Check HTML on-ice state against a late empty-net heuristic
 #'
 #' `.html_on_ice_matches_late_empty_net()` accepts late-game 6-on-5 HTML rows
@@ -1798,7 +2061,7 @@ game_rosters <- function(game = 2023030417) {
     matched_lookup[matched$apiIndex[ok_idx]] <- seq_len(nrow(matched))[ok_idx]
   }
 
-  slot_count <- .on_ice_skater_slots()
+  slot_count <- .on_ice_skater_slots(play_by_play = play_by_play)
   type_desc_key <- as.character(play_by_play$typeDescKey)
   situation_code <- as.character(play_by_play$situationCode)
   shooter_id <- .on_ice_int_col(play_by_play, 'scoringPlayerId')
@@ -1860,6 +2123,189 @@ game_rosters <- function(game = 2023030417) {
   play_by_play
 }
 
+#' Assign resolved HTML on-ice IDs to scalar columns
+#'
+#' `.assign_html_on_ice_player_ids()` copies resolved HTML goalie and skater IDs
+#' into the public scalar on-ice player-ID columns for one play-by-play row.
+#'
+#' @param play_by_play data.frame play-by-play object
+#' @param idx row index to update
+#' @param home_goalie resolved home goalie player ID
+#' @param away_goalie resolved away goalie player ID
+#' @param home_skaters integer vector of resolved home skater IDs
+#' @param away_skaters integer vector of resolved away skater IDs
+#' @returns data.frame with scalar on-ice player-ID columns assigned for `idx`
+#' @keywords internal
+.assign_html_on_ice_player_ids <- function(
+  play_by_play,
+  idx,
+  home_goalie,
+  away_goalie,
+  home_skaters,
+  away_skaters
+) {
+  slot_count <- .on_ice_skater_slots(
+    play_by_play = play_by_play,
+    slot_count = max(length(home_skaters), length(away_skaters))
+  )
+  play_by_play <- .add_empty_html_on_ice_columns(
+    play_by_play,
+    slot_count = slot_count
+  )
+  home_slots <- rep(NA_integer_, slot_count)
+  away_slots <- rep(NA_integer_, slot_count)
+  if (length(home_skaters)) {
+    take <- seq_len(min(slot_count, length(home_skaters)))
+    home_slots[take] <- home_skaters[take]
+  }
+  if (length(away_skaters)) {
+    take <- seq_len(min(slot_count, length(away_skaters)))
+    away_slots[take] <- away_skaters[take]
+  }
+
+  play_by_play$homeGoaliePlayerId[idx] <- home_goalie
+  play_by_play$awayGoaliePlayerId[idx] <- away_goalie
+  for (k in seq_len(slot_count)) {
+    play_by_play[[paste0('homeSkater', k, 'PlayerId')]][idx] <- home_slots[k]
+    play_by_play[[paste0('awaySkater', k, 'PlayerId')]][idx] <- away_slots[k]
+  }
+  if (play_by_play$isHome[idx] %in% TRUE) {
+    play_by_play$goaliePlayerIdFor[idx] <- home_goalie
+    play_by_play$goaliePlayerIdAgainst[idx] <- away_goalie
+    for (k in seq_len(slot_count)) {
+      play_by_play[[paste0('skater', k, 'PlayerIdFor')]][idx] <- home_slots[k]
+      play_by_play[[paste0('skater', k, 'PlayerIdAgainst')]][idx] <- away_slots[k]
+    }
+  } else if (play_by_play$isHome[idx] %in% FALSE) {
+    play_by_play$goaliePlayerIdFor[idx] <- away_goalie
+    play_by_play$goaliePlayerIdAgainst[idx] <- home_goalie
+    for (k in seq_len(slot_count)) {
+      play_by_play[[paste0('skater', k, 'PlayerIdFor')]][idx] <- away_slots[k]
+      play_by_play[[paste0('skater', k, 'PlayerIdAgainst')]][idx] <- home_slots[k]
+    }
+  }
+
+  play_by_play
+}
+
+#' Identify populated on-ice player rows
+#'
+#' `.has_any_on_ice_player_ids()` returns a logical vector indicating whether a
+#' play-by-play row already has any scalar on-ice player IDs assigned.
+#'
+#' @param play_by_play data.frame play-by-play object
+#' @returns logical vector
+#' @keywords internal
+.has_any_on_ice_player_ids <- function(play_by_play) {
+  id_cols <- intersect(
+    .on_ice_id_scalar_column_names(play_by_play = play_by_play),
+    names(play_by_play)
+  )
+  if (!length(id_cols)) {
+    return(rep(FALSE, nrow(play_by_play)))
+  }
+  rowSums(!is.na(play_by_play[, id_cols, drop = FALSE])) > 0L
+}
+
+#' Backfill unmatched delayed-penalty rows from nearby populated rows
+#'
+#' `.backfill_delayed_penalty_on_ice_players()` fills unmatched delayed-penalty
+#' rows from the nearest previous populated supported row in the same game and
+#' period when the raw `situationCode` and goalie/skater counts are unchanged.
+#'
+#' @param play_by_play data.frame play-by-play object
+#' @param max_gap_seconds integer scalar time window
+#' @returns data.frame with delayed-penalty rows backfilled where possible
+#' @keywords internal
+.backfill_delayed_penalty_on_ice_players <- function(
+  play_by_play,
+  max_gap_seconds = 15L
+) {
+  play_by_play <- .pbp_legacy_aliases(play_by_play)
+  n <- nrow(play_by_play)
+  if (
+      !n ||
+      !all(c(
+        'gameId', 'period', 'secondsElapsedInPeriod', 'sortOrder', 'typeDescKey',
+        'situationCode', 'homeIsEmptyNet', 'awayIsEmptyNet',
+        'homeSkaterCount', 'awaySkaterCount'
+      ) %in% names(play_by_play))
+  ) {
+    return(play_by_play)
+  }
+
+  populated <- .has_any_on_ice_player_ids(play_by_play)
+  id_cols <- .on_ice_id_scalar_column_names(play_by_play = play_by_play)
+  candidate_idx <- which(
+    !populated &
+      !is.na(play_by_play$typeDescKey) &
+      play_by_play$typeDescKey == 'delayed-penalty'
+  )
+  if (!length(candidate_idx)) {
+    return(play_by_play)
+  }
+
+  slot_count <- .on_ice_skater_slots(play_by_play = play_by_play)
+  row_signature_matches <- function(src_idx, dst_idx) {
+    home_goalie_present <- !is.na(play_by_play$homeGoaliePlayerId[src_idx])
+    away_goalie_present <- !is.na(play_by_play$awayGoaliePlayerId[src_idx])
+    home_skater_count <- sum(!is.na(play_by_play[src_idx, paste0(
+      'homeSkater',
+      seq_len(slot_count),
+      'PlayerId'
+    )]))
+    away_skater_count <- sum(!is.na(play_by_play[src_idx, paste0(
+      'awaySkater',
+      seq_len(slot_count),
+      'PlayerId'
+    )]))
+    identical(
+      c(
+        if (home_goalie_present) 1L else 0L,
+        home_skater_count,
+        away_skater_count,
+        if (away_goalie_present) 1L else 0L
+      ),
+      c(
+        if (play_by_play$homeIsEmptyNet[dst_idx] %in% TRUE) 0L else 1L,
+        as.integer(play_by_play$homeSkaterCount[dst_idx]),
+        as.integer(play_by_play$awaySkaterCount[dst_idx]),
+        if (play_by_play$awayIsEmptyNet[dst_idx] %in% TRUE) 0L else 1L
+      )
+    )
+  }
+
+  for (idx in candidate_idx) {
+    prev_idx <- which(
+      populated &
+        play_by_play$gameId == play_by_play$gameId[idx] &
+        play_by_play$period == play_by_play$period[idx] &
+        play_by_play$secondsElapsedInPeriod <= play_by_play$secondsElapsedInPeriod[idx] &
+        play_by_play$secondsElapsedInPeriod >= (play_by_play$secondsElapsedInPeriod[idx] - max_gap_seconds) &
+        !is.na(play_by_play$situationCode) &
+        play_by_play$situationCode == play_by_play$situationCode[idx]
+    )
+    if (!length(prev_idx)) {
+      next
+    }
+    prev_idx <- prev_idx[order(
+      play_by_play$secondsElapsedInPeriod[prev_idx],
+      play_by_play$sortOrder[prev_idx],
+      decreasing = TRUE
+    )]
+    prev_idx <- prev_idx[vapply(prev_idx, row_signature_matches, logical(1), dst_idx = idx)]
+    if (!length(prev_idx)) {
+      next
+    }
+    src_idx <- prev_idx[1L]
+    for (nm in id_cols) {
+      play_by_play[[nm]][idx] <- play_by_play[[nm]][src_idx]
+    }
+  }
+
+  play_by_play
+}
+
 #' Add HTML-derived on-ice players to play-by-play
 #'
 #' `.add_html_on_ice_players()` resolves HTML on-ice goalie and skater IDs,
@@ -1871,6 +2317,7 @@ game_rosters <- function(game = 2023030417) {
 #' @param rosters optional roster data.frame
 #' @param home_team optional home-team metadata
 #' @param away_team optional away-team metadata
+#' @param html_rows optional parsed HTML on-ice rows
 #' @returns data.frame enriched with HTML-derived on-ice columns
 #' @keywords internal
 .add_html_on_ice_players <- function(
@@ -1878,7 +2325,8 @@ game_rosters <- function(game = 2023030417) {
   game,
   rosters = NULL,
   home_team = NULL,
-  away_team = NULL
+  away_team = NULL,
+  html_rows = NULL
 ) {
   play_by_play <- .pbp_legacy_aliases(play_by_play)
   play_by_play <- .add_empty_html_on_ice_columns(play_by_play)
@@ -1900,21 +2348,24 @@ game_rosters <- function(game = 2023030417) {
       away_team <- meta$awayTeam
     }
   }
-  html_rows <- tryCatch(
-    .fetch_html_pbp_on_ice(
-      game = as.integer(game),
-      rosters = rosters,
-      home_team_id = home_team$id,
-      away_team_id = away_team$id,
-      home_abbrev = home_team$abbrev,
-      away_abbrev = away_team$abbrev
-    ),
-    error = function(e) data.frame()
-  )
+  if (is.null(html_rows)) {
+    html_rows <- tryCatch(
+      .fetch_html_pbp_on_ice(
+        game = as.integer(game),
+        rosters = rosters,
+        home_team_id = home_team$id,
+        away_team_id = away_team$id,
+        home_abbrev = home_team$abbrev,
+        away_abbrev = away_team$abbrev
+      ),
+      error = function(e) data.frame()
+    )
+  }
   matched <- .match_html_pbp_to_api(play_by_play, html_rows)
   reconstruction <- .reconstruct_skater_counts_from_penalties(play_by_play)
   if (!nrow(matched)) {
     play_by_play <- .add_one_on_one_on_ice_players(play_by_play)
+    play_by_play <- .backfill_delayed_penalty_on_ice_players(play_by_play)
     return(.mask_strength_context_block(play_by_play))
   }
   for (i in seq_len(nrow(matched))) {
@@ -1952,7 +2403,20 @@ game_rosters <- function(game = 2023030417) {
       home_skater_player_ids = home_skaters,
       away_skater_player_ids = away_skaters
     )
-    if (!html_matches_source && !html_matches_reconstruction && !html_matches_empty_net) {
+    html_matches_actors <- .html_on_ice_matches_event_actors(
+      play_by_play = play_by_play,
+      idx = idx,
+      home_goalie_player_id = home_goalie,
+      away_goalie_player_id = away_goalie,
+      home_skater_player_ids = home_skaters,
+      away_skater_player_ids = away_skaters
+    )
+    if (
+      !html_matches_source &&
+        !html_matches_reconstruction &&
+        !html_matches_empty_net &&
+        !html_matches_actors
+    ) {
       next
     }
     if (!html_matches_source && (html_matches_reconstruction || html_matches_empty_net)) {
@@ -1965,38 +2429,17 @@ game_rosters <- function(game = 2023030417) {
         away_skaters = away_skaters
       )
     }
-    slot_count <- .on_ice_skater_slots()
-    home_slots <- rep(NA_integer_, slot_count)
-    away_slots <- rep(NA_integer_, slot_count)
-    if (length(home_skaters)) {
-      home_slots[seq_len(min(slot_count, length(home_skaters)))] <- home_skaters[seq_len(min(slot_count, length(home_skaters)))]
-    }
-    if (length(away_skaters)) {
-      away_slots[seq_len(min(slot_count, length(away_skaters)))] <- away_skaters[seq_len(min(slot_count, length(away_skaters)))]
-    }
-    play_by_play$homeGoaliePlayerId[idx] <- home_goalie
-    play_by_play$awayGoaliePlayerId[idx] <- away_goalie
-    for (k in seq_len(slot_count)) {
-      play_by_play[[paste0('homeSkater', k, 'PlayerId')]][idx] <- home_slots[k]
-      play_by_play[[paste0('awaySkater', k, 'PlayerId')]][idx] <- away_slots[k]
-    }
-    if (play_by_play$isHome[idx] %in% TRUE) {
-      play_by_play$goaliePlayerIdFor[idx] <- home_goalie
-      play_by_play$goaliePlayerIdAgainst[idx] <- away_goalie
-      for (k in seq_len(slot_count)) {
-        play_by_play[[paste0('skater', k, 'PlayerIdFor')]][idx] <- home_slots[k]
-        play_by_play[[paste0('skater', k, 'PlayerIdAgainst')]][idx] <- away_slots[k]
-      }
-    } else if (play_by_play$isHome[idx] %in% FALSE) {
-      play_by_play$goaliePlayerIdFor[idx] <- away_goalie
-      play_by_play$goaliePlayerIdAgainst[idx] <- home_goalie
-      for (k in seq_len(slot_count)) {
-        play_by_play[[paste0('skater', k, 'PlayerIdFor')]][idx] <- away_slots[k]
-        play_by_play[[paste0('skater', k, 'PlayerIdAgainst')]][idx] <- home_slots[k]
-      }
-    }
+    play_by_play <- .assign_html_on_ice_player_ids(
+      play_by_play = play_by_play,
+      idx = idx,
+      home_goalie = home_goalie,
+      away_goalie = away_goalie,
+      home_skaters = home_skaters,
+      away_skaters = away_skaters
+    )
   }
   play_by_play <- .add_one_on_one_on_ice_players(play_by_play, matched = matched)
+  play_by_play <- .backfill_delayed_penalty_on_ice_players(play_by_play)
   .mask_strength_context_block(play_by_play)
 }
 
@@ -2010,6 +2453,18 @@ game_rosters <- function(game = 2023030417) {
 #' @returns typed vector of missing values
 #' @keywords internal
 .empty_public_pbp_column <- function(name, n) {
+  if (grepl(
+    '^(?:home|away)GoaliePlayerId$|^goaliePlayerId(?:For|Against)$|^(?:home|away)Skater[0-9]+PlayerId$|^skater[0-9]+PlayerId(?:For|Against)$',
+    name
+  )) {
+    return(rep(NA_integer_, n))
+  }
+  if (grepl(
+    '^(?:home|away)GoalieSecondsElapsedIn(?:Shift|PeriodSinceLastShift)$|^goalieSecondsElapsedIn(?:Shift|PeriodSinceLastShift)(?:For|Against)$|^(?:home|away)Skater[0-9]+SecondsElapsedIn(?:Shift|PeriodSinceLastShift)$|^skater[0-9]+SecondsElapsedIn(?:Shift|PeriodSinceLastShift)(?:For|Against)$',
+    name
+  )) {
+    return(rep(NA_real_, n))
+  }
   character_cols <- c(
     'periodType', 'eventTypeDescKey', 'situationCode', 'strengthState',
     'homeTeamDefendingSide', 'zoneCode', 'shotType', 'penaltyTypeCode',
@@ -2049,7 +2504,7 @@ game_rosters <- function(game = 2023030417) {
 .finalize_pbp_output <- function(play_by_play, source = c('gc', 'wsc')) {
   source <- match.arg(source)
   play_by_play <- .pbp_legacy_aliases(play_by_play)
-  on_ice_cols <- .on_ice_id_scalar_column_names()
+  on_ice_cols <- .on_ice_id_scalar_column_names(play_by_play = play_by_play)
 
   if (all(c('typeDescKey', 'shootingPlayerId', 'scoringPlayerId') %in% names(play_by_play))) {
     goal_idx <- play_by_play$typeDescKey == 'goal' &
@@ -2139,6 +2594,53 @@ game_rosters <- function(game = 2023030417) {
   play_by_play[, keep, drop = FALSE]
 }
 
+#' Check whether a parallel request failed
+#'
+#' `.parallel_request_failed()` returns `TRUE` when a response object from
+#' `.perform_parallel_requests()` is an httr2 failure.
+#'
+#' @param resp response or failure object
+#' @returns logical scalar
+#' @keywords internal
+.parallel_request_failed <- function(resp) {
+  inherits(resp, 'httr2_failure')
+}
+
+#' Parse optional HTML on-ice rows from a parallel response
+#'
+#' `.optional_html_pbp_rows_from_response()` parses a fetched HTML play-by-play
+#' response when it succeeded and otherwise returns an empty data frame.
+#'
+#' @param resp response or failure object
+#' @inheritParams .fetch_html_pbp_on_ice
+#' @returns data.frame of parsed HTML rows or an empty data.frame
+#' @keywords internal
+.optional_html_pbp_rows_from_response <- function(
+  resp,
+  game,
+  rosters,
+  home_team_id,
+  away_team_id,
+  home_abbrev,
+  away_abbrev
+) {
+  if (.parallel_request_failed(resp)) {
+    return(data.frame())
+  }
+  tryCatch(
+    .parse_html_pbp_response(
+      resp = resp,
+      game = game,
+      rosters = rosters,
+      home_team_id = home_team_id,
+      away_team_id = away_team_id,
+      home_abbrev = home_abbrev,
+      away_abbrev = away_abbrev
+    ),
+    error = function(e) data.frame()
+  )
+}
+
 #' Access the GameCenter (GC) play-by-play for a game
 #'
 #' `gc_play_by_play()` retrieves the GameCenter (GC) play-by-play for a game as
@@ -2146,9 +2648,9 @@ game_rosters <- function(game = 2023030417) {
 #' cleaned, public-facing play-by-play schema, including canonical names such as
 #' `periodNumber`, `eventTypeCode`, `eventTypeDescKey`, `homeShots`,
 #' `shotsFor`, `penaltyTypeDescKey`, `penaltyDuration`, `servedByPlayerId`,
-#' and HTML-report-derived on-ice player ID columns such as `homeGoaliePlayerId`,
-#' `awayGoaliePlayerId`, `homeSkater1PlayerId`, and `homeSkater6PlayerId`,
-#' and HTML-report-derived on-ice player IDs. Use [add_shift_times()] with
+#' and HTML-report-derived on-ice player ID columns such as
+#' `homeGoaliePlayerId`, `awayGoaliePlayerId`, `homeSkater1PlayerId`, and any
+#' additional overflow skater slots required by the game. Use [add_shift_times()] with
 #' [shift_chart()] (or [shift_charts()]) to add on-ice shift timing columns.
 #'
 #' @inheritParams gc_summary
@@ -2162,9 +2664,28 @@ gc_play_by_play <- function(game = 2023030417) {
   tryCatch(
     expr  = {
       game <- as.integer(game)
-      pbp_meta <- nhl_api(
-        path = sprintf('v1/gamecenter/%s/play-by-play', game),
-        type = 'w'
+      responses <- .perform_parallel_requests(
+        list(
+          pbp_meta = .nhl_request(
+            path = sprintf('v1/gamecenter/%s/play-by-play', game),
+            type = 'w'
+          ),
+          html_pbp = .html_report_request(.html_pbp_report_url(game))
+        ),
+        on_error = 'return'
+      )
+      if (.parallel_request_failed(responses$pbp_meta)) {
+        stop(conditionMessage(responses$pbp_meta))
+      }
+      pbp_meta <- .nhl_json_from_response(responses$pbp_meta)
+      html_rows <- .optional_html_pbp_rows_from_response(
+        resp = responses$html_pbp,
+        game = game,
+        rosters = pbp_meta$rosterSpots,
+        home_team_id = pbp_meta$homeTeam$id,
+        away_team_id = pbp_meta$awayTeam$id,
+        home_abbrev = pbp_meta$homeTeam$abbrev,
+        away_abbrev = pbp_meta$awayTeam$abbrev
       )
       plays <- pbp_meta$plays
       # Rename columns.
@@ -2208,7 +2729,8 @@ gc_play_by_play <- function(game = 2023030417) {
           game = game,
           rosters = pbp_meta$rosterSpots,
           home_team = pbp_meta$homeTeam,
-          away_team = pbp_meta$awayTeam
+          away_team = pbp_meta$awayTeam,
+          html_rows = html_rows
         )
       .finalize_pbp_output(plays, source = 'gc')
     },
@@ -2238,7 +2760,7 @@ gc_pbp <- function(game = 2023030417) {
 #' including `servedByPlayerId`, and includes `utc` immediately after
 #' `secondsElapsedInGame` while omitting GC-only clip fields. It also includes
 #' the same HTML-report-derived on-ice player ID columns added to the GC output,
-#' including sixth-skater slots when a goalie is pulled. Use [add_shift_times()]
+#' including dynamically expanded overflow skater slots when needed. Use [add_shift_times()]
 #' with [shift_chart()] (or [shift_charts()]) to add on-ice shift timing columns.
 #'
 #' @inheritParams gc_summary
@@ -2252,13 +2774,36 @@ wsc_play_by_play <- function(game = 2023030417) {
   tryCatch(
     expr = {
       game <- as.integer(game)
-      pbp_meta <- nhl_api(
-        path = sprintf('v1/gamecenter/%s/play-by-play', game),
-        type = 'w'
+      responses <- .perform_parallel_requests(
+        list(
+          pbp_meta = .nhl_request(
+            path = sprintf('v1/gamecenter/%s/play-by-play', game),
+            type = 'w'
+          ),
+          wsc = .nhl_request(
+            path = sprintf('v1/wsc/play-by-play/%s', game),
+            type = 'w'
+          ),
+          html_pbp = .html_report_request(.html_pbp_report_url(game))
+        ),
+        on_error = 'return'
       )
-      plays        <- nhl_api(
-        path = sprintf('v1/wsc/play-by-play/%s', game),
-        type = 'w'
+      if (.parallel_request_failed(responses$pbp_meta)) {
+        stop(conditionMessage(responses$pbp_meta))
+      }
+      if (.parallel_request_failed(responses$wsc)) {
+        stop(conditionMessage(responses$wsc))
+      }
+      pbp_meta <- .nhl_json_from_response(responses$pbp_meta)
+      plays <- .nhl_json_from_response(responses$wsc)
+      html_rows <- .optional_html_pbp_rows_from_response(
+        resp = responses$html_pbp,
+        game = game,
+        rosters = pbp_meta$rosterSpots,
+        home_team_id = pbp_meta$homeTeam$id,
+        away_team_id = pbp_meta$awayTeam$id,
+        home_abbrev = pbp_meta$homeTeam$abbrev,
+        away_abbrev = pbp_meta$awayTeam$abbrev
       )
       # Rename column.
       plays$id     <- NULL
@@ -2300,7 +2845,8 @@ wsc_play_by_play <- function(game = 2023030417) {
           game = game,
           rosters = pbp_meta$rosterSpots,
           home_team = pbp_meta$homeTeam,
-          away_team = pbp_meta$awayTeam
+          away_team = pbp_meta$awayTeam,
+          html_rows = html_rows
         )
       .finalize_pbp_output(plays, source = 'wsc')
     },
@@ -2343,6 +2889,42 @@ shift_chart <- function(game = 2023030417) {
     ))
     return(data.frame())
   }
+  shift_output_cols <- c(
+    'gameId',
+    'teamId',
+    'playerId',
+    'shiftNumber',
+    'period',
+    'startTime',
+    'endTime',
+    'startSecondsElapsedInPeriod',
+    'endSecondsElapsedInPeriod',
+    'startSecondsElapsedInGame',
+    'endSecondsElapsedInGame',
+    'duration'
+  )
+  empty_shift_output <- function() {
+    data.frame(
+      gameId = integer(),
+      teamId = integer(),
+      playerId = integer(),
+      shiftNumber = integer(),
+      period = integer(),
+      startTime = character(),
+      endTime = character(),
+      startSecondsElapsedInPeriod = integer(),
+      endSecondsElapsedInPeriod = integer(),
+      startSecondsElapsedInGame = integer(),
+      endSecondsElapsedInGame = integer(),
+      duration = integer(),
+      stringsAsFactors = FALSE
+    )
+  }
+  has_valid_shift_rows <- function(shifts) {
+    is.data.frame(shifts) &&
+      nrow(shifts) > 0L &&
+      all(shift_output_cols %in% names(shifts))
+  }
 
   fetch_from_api <- function(game) {
     shifts <- nhl_api(
@@ -2350,8 +2932,25 @@ shift_chart <- function(game = 2023030417) {
       query = list(cayenneExp = sprintf('gameId = %s', game)),
       type  = 's'
     )$data
+    raw_shift_cols <- c(
+      'id',
+      'gameId',
+      'teamId',
+      'playerId',
+      'shiftNumber',
+      'period',
+      'startTime',
+      'endTime',
+      'eventDescription'
+    )
+    if (!is.data.frame(shifts) || !all(raw_shift_cols %in% names(shifts))) {
+      return(empty_shift_output())
+    }
     shifts <- shifts[order(shifts$teamId), ]
     shifts <- shifts[is.na(shifts$eventDescription), ]
+    if (!nrow(shifts)) {
+      return(empty_shift_output())
+    }
     shifts <- shifts[, c('id', 'gameId', 'teamId', 'playerId', 'shiftNumber', 'period', 'startTime', 'endTime')]
     is_playoffs <- game %/% 1e4 %% 1e2 == 3
     base <- integer(nrow(shifts))
@@ -2377,12 +2976,20 @@ shift_chart <- function(game = 2023030417) {
     shifts$endSecondsElapsedInGame     <- base + e_elp
     shifts$duration                    <- shifts$endSecondsElapsedInGame - shifts$startSecondsElapsedInGame
     shifts$id <- NULL
-    shifts
+    shifts[, shift_output_cols, drop = FALSE]
   }
 
   fetch_from_html <- function(game) {
     season    <- paste0(game %/% 1e6, game %/% 1e6 + 1)
     game_code <- sprintf('%06d', game %% 10^6)
+    shift_report_url <- function(team_tag) {
+      sprintf(
+        'https://www.nhl.com/scores/htmlreports/%s/%s%s.HTM',
+        season,
+        team_tag,
+        game_code
+      )
+    }
     normalize_person <- function(x) {
       x <- gsub('\\s+', ' ', x)
       x <- trimws(x)
@@ -2426,10 +3033,27 @@ shift_chart <- function(game = 2023030417) {
         integer(1)
       )
     }
-    pbp_meta <- nhl_api(
-      path = sprintf('v1/gamecenter/%s/play-by-play', game),
-      type = 'w'
+    responses <- .perform_parallel_requests(
+      list(
+        pbp_meta = .nhl_request(
+          path = sprintf('v1/gamecenter/%s/play-by-play', game),
+          type = 'w'
+        ),
+        home_report = .html_report_request(shift_report_url('TH')),
+        away_report = .html_report_request(shift_report_url('TV'))
+      ),
+      on_error = 'return'
     )
+    if (.parallel_request_failed(responses$pbp_meta)) {
+      stop(conditionMessage(responses$pbp_meta))
+    }
+    if (.parallel_request_failed(responses$home_report)) {
+      stop(conditionMessage(responses$home_report))
+    }
+    if (.parallel_request_failed(responses$away_report)) {
+      stop(conditionMessage(responses$away_report))
+    }
+    pbp_meta <- .nhl_json_from_response(responses$pbp_meta)
     rosters <- pbp_meta$rosterSpots
     rosters$sweaterNumber <- suppressWarnings(
       as.integer(rosters$sweaterNumber)
@@ -2474,13 +3098,8 @@ shift_chart <- function(game = 2023030417) {
       }
       NA_integer_
     }
-    parse_shift_report <- function(team_tag, team_id) {
-      report <- xml2::read_html(sprintf(
-        'https://www.nhl.com/scores/htmlreports/%s/%s%s.HTM',
-        season,
-        team_tag,
-        game_code
-      ))
+    parse_shift_report <- function(report_doc, team_id) {
+      report <- report_doc
       rows <- xml2::xml_find_all(report, './/tr')
       out  <- vector('list', length(rows))
       n_out <- 0L
@@ -2539,8 +3158,14 @@ shift_chart <- function(game = 2023030417) {
     }
     home_team_id <- as.integer(pbp_meta$homeTeam$id)
     away_team_id <- as.integer(pbp_meta$awayTeam$id)
-    shifts_home  <- parse_shift_report('TH', home_team_id)
-    shifts_away  <- parse_shift_report('TV', away_team_id)
+    shifts_home  <- parse_shift_report(
+      xml2::read_html(httr2::resp_body_raw(responses$home_report)),
+      home_team_id
+    )
+    shifts_away  <- parse_shift_report(
+      xml2::read_html(httr2::resp_body_raw(responses$away_report)),
+      away_team_id
+    )
     shifts       <- rbind(shifts_home, shifts_away)
     if (!nrow(shifts)) stop('No shift rows parsed from HTML reports.')
     shifts$startSecondsElapsedInPeriod <- clocks_to_seconds(shifts$startTime)
@@ -2580,47 +3205,46 @@ shift_chart <- function(game = 2023030417) {
     }
     shifts <- shifts[shifts$duration > 0L, ]
     shifts <- shifts[order(shifts$teamId, shifts$playerId, shifts$shiftNumber), ]
-    shifts <- shifts[, c(
-      'gameId',
-      'teamId',
-      'playerId',
-      'shiftNumber',
-      'period',
-      'startTime',
-      'endTime',
-      'startSecondsElapsedInPeriod',
-      'endSecondsElapsedInPeriod',
-      'startSecondsElapsedInGame',
-      'endSecondsElapsedInGame',
-      'duration'
-    )]
-    shifts
+    shifts[, shift_output_cols, drop = FALSE]
   }
 
-  tryCatch(
-    expr = {
-      shifts <- fetch_from_html(game)
-      if (!nrow(shifts)) stop('No shift rows parsed from HTML reports.')
-      shifts
-    },
+  api_error <- NULL
+  html_error <- NULL
+
+  api_shifts <- tryCatch(
+    fetch_from_api(game),
     error = function(e) {
-      tryCatch(
-        expr = {
-          fetch_from_api(game)
-        },
-        error = function(api_error) {
-          message(e)
-          message(api_error)
-          message(paste(
-            'Invalid argument(s); refer to help file.',
-            '\nProvided game:',
-            game
-          ))
-          data.frame()
-        }
-      )
+      api_error <<- e
+      empty_shift_output()
     }
   )
+  if (has_valid_shift_rows(api_shifts)) {
+    return(api_shifts)
+  }
+
+  html_shifts <- tryCatch(
+    fetch_from_html(game),
+    error = function(e) {
+      html_error <<- e
+      empty_shift_output()
+    }
+  )
+  if (has_valid_shift_rows(html_shifts)) {
+    return(html_shifts)
+  }
+
+  if (!is.null(api_error)) {
+    message(api_error)
+  }
+  if (!is.null(html_error)) {
+    message(html_error)
+  }
+  message(paste(
+    'Invalid argument(s); refer to help file.',
+    '\nProvided game:',
+    game
+  ))
+  data.frame()
 }
 
 #' Access the real-time game odds for a country by partnered bookmaker

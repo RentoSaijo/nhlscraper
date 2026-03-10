@@ -272,13 +272,23 @@ add_deltas <- function(play_by_play) {
     setdiff(nms[-seq_len(after)], insert)
   ), drop = FALSE]
   nms <- names(play_by_play)
-  if ('secondsElapsedInPeriodSinceLastShiftAgainst' %in% nms) {
+  anchor_cols <- grep(
+    '(^secondsElapsedInPeriodSinceLastShiftAgainst$|SecondsElapsedInPeriodSinceLastShiftAgainst$)',
+    nms,
+    value = TRUE
+  )
+  if (length(anchor_cols)) {
     keep <- nms[nms != 'secondsElapsedInSequence']
-    after <- match('secondsElapsedInPeriodSinceLastShiftAgainst', keep)
+    after <- max(match(anchor_cols, keep, nomatch = 0L))
+    tail_cols <- if (after < length(keep)) {
+      keep[(after + 1L):length(keep)]
+    } else {
+      character()
+    }
     play_by_play <- play_by_play[, c(
       keep[seq_len(after)],
       'secondsElapsedInSequence',
-      keep[(after + 1L):length(keep)]
+      tail_cols
     ), drop = FALSE]
   }
   play_by_play
@@ -391,6 +401,12 @@ add_goalie_biometrics <- function(play_by_play) {
 #' }
 #' @export
 add_shift_times <- function(play_by_play, shift_chart) {
+  slot_count <- .on_ice_skater_slots(play_by_play = play_by_play)
+  required_skater_cols <- unique(c(
+    grep('^(?:home|away)Skater[0-9]+PlayerId$', names(play_by_play), value = TRUE),
+    paste0('homeSkater', seq_len(slot_count), 'PlayerId'),
+    paste0('awaySkater', seq_len(slot_count), 'PlayerId')
+  ))
   .require_public_pbp_columns(
     play_by_play,
     c(
@@ -400,8 +416,7 @@ add_shift_times <- function(play_by_play, shift_chart) {
       'isHome',
       'homeGoaliePlayerId',
       'awayGoaliePlayerId',
-      paste0('homeSkater', seq_len(.on_ice_skater_slots()), 'PlayerId'),
-      paste0('awaySkater', seq_len(.on_ice_skater_slots()), 'PlayerId')
+      required_skater_cols
     ),
     'add_shift_times'
   )
@@ -417,14 +432,46 @@ add_shift_times <- function(play_by_play, shift_chart) {
     'add_shift_times'
   )
   timing_cols <- c(
-    .on_ice_timing_scalar_column_names('SecondsElapsedInShift'),
-    .on_ice_timing_scalar_column_names('SecondsElapsedInPeriodSinceLastShift')
+    .on_ice_timing_scalar_column_names(
+      'SecondsElapsedInShift',
+      play_by_play = play_by_play
+    ),
+    .on_ice_timing_scalar_column_names(
+      'SecondsElapsedInPeriodSinceLastShift',
+      play_by_play = play_by_play
+    )
   )
+  relocate_timing_cols <- function(play_by_play) {
+    timing_present <- intersect(timing_cols, names(play_by_play))
+    id_present <- intersect(
+      .on_ice_id_scalar_column_names(play_by_play = play_by_play),
+      names(play_by_play)
+    )
+    if (!length(timing_present) || !length(id_present)) {
+      return(play_by_play)
+    }
+    non_timing <- setdiff(names(play_by_play), timing_present)
+    insert_after <- max(match(id_present, non_timing, nomatch = 0L))
+    if (insert_after <= 0L) {
+      return(play_by_play)
+    }
+    tail_cols <- if (insert_after < length(non_timing)) {
+      non_timing[(insert_after + 1L):length(non_timing)]
+    } else {
+      character()
+    }
+    play_by_play[, c(
+      non_timing[seq_len(insert_after)],
+      timing_present,
+      tail_cols
+    ), drop = FALSE]
+  }
   for (nm in timing_cols) {
     if (!(nm %in% names(play_by_play))) {
       play_by_play[[nm]] <- rep(NA_real_, nrow(play_by_play))
     }
   }
+  play_by_play <- relocate_timing_cols(play_by_play)
   if (!nrow(play_by_play) || !nrow(shift_chart)) {
     return(play_by_play)
   }
@@ -441,12 +488,13 @@ add_shift_times <- function(play_by_play, shift_chart) {
     away_matrix = timing$awayElapsed,
     metric_suffix = 'SecondsElapsedInShift'
   )
-  .assign_on_ice_shift_metric(
+  play_by_play <- .assign_on_ice_shift_metric(
     play_by_play,
     home_matrix = timing$homeSinceLast,
     away_matrix = timing$awaySinceLast,
     metric_suffix = 'SecondsElapsedInPeriodSinceLastShift'
   )
+  relocate_timing_cols(play_by_play)
 }
 
 # Internal helpers --------------------------------------------------------
@@ -1399,10 +1447,21 @@ add_shift_times <- function(play_by_play, shift_chart) {
 #' timing column names for a timing metric suffix.
 #'
 #' @param metric_suffix scalar timing suffix
+#' @param play_by_play optional data.frame whose existing on-ice columns should
+#'   be inspected
+#' @param slot_count optional integer scalar minimum slot count requested by the
+#'   caller
 #' @returns character vector of column names
 #' @keywords internal
-.on_ice_timing_scalar_column_names <- function(metric_suffix) {
-  skater_slots <- seq_len(.on_ice_skater_slots())
+.on_ice_timing_scalar_column_names <- function(
+  metric_suffix,
+  play_by_play = NULL,
+  slot_count = NULL
+) {
+  skater_slots <- seq_len(.on_ice_skater_slots(
+    play_by_play = play_by_play,
+    slot_count = slot_count
+  ))
   c(
     paste0('homeGoalie', metric_suffix),
     paste0('awayGoalie', metric_suffix),
@@ -1459,7 +1518,7 @@ add_shift_times <- function(play_by_play, shift_chart) {
 #' @keywords internal
 .compute_on_ice_shift_timing_in_r <- function(play_by_play, shift_data) {
   n <- nrow(play_by_play)
-  slot_count <- .on_ice_skater_slots()
+  slot_count <- .on_ice_skater_slots(play_by_play = play_by_play)
   period_col <- if ('periodNumber' %in% names(play_by_play)) {
     'periodNumber'
   } else {
@@ -1579,7 +1638,7 @@ add_shift_times <- function(play_by_play, shift_chart) {
     return(.compute_on_ice_shift_timing_in_r(play_by_play, shift_data))
   }
 
-  slot_count <- .on_ice_skater_slots()
+  slot_count <- .on_ice_skater_slots(play_by_play = play_by_play)
   period_col <- if ('periodNumber' %in% names(play_by_play)) {
     'periodNumber'
   } else {
@@ -1630,7 +1689,7 @@ add_shift_times <- function(play_by_play, shift_chart) {
   away_matrix,
   metric_suffix
 ) {
-  slot_count <- .on_ice_skater_slots()
+  slot_count <- max(0L, ncol(home_matrix) - 1L)
   home_cols <- c(
     paste0('homeGoalie', metric_suffix),
     paste0('homeSkater', seq_len(slot_count), metric_suffix)

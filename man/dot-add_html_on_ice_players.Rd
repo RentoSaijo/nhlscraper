@@ -9,7 +9,8 @@
   game,
   rosters = NULL,
   home_team = NULL,
-  away_team = NULL
+  away_team = NULL,
+  html_rows = NULL
 )
 }
 \arguments{
@@ -22,6 +23,8 @@
 \item{home_team}{optional home-team metadata}
 
 \item{away_team}{optional away-team metadata}
+
+\item{html_rows}{optional parsed HTML on-ice rows}
 }
 \value{
 data.frame enriched with HTML-derived on-ice columns

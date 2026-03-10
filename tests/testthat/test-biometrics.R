@@ -80,3 +80,47 @@ test_that("add_goalie_biometrics() leaves missing blocked-shot goalies as NA", {
   expect_equal(out$goalieAge[2], 27L)
   expect_false("goalieSide" %in% names(out))
 })
+
+test_that("biometrics helpers respect game dates on aggregated inputs", {
+  local_mocked_bindings(
+    players = function() {
+      data.frame(
+        playerId = c(10L, 30L),
+        height = c(72L, 74L),
+        weight = c(190L, 185L),
+        handCode = c("L", "R"),
+        positionCode = c("C", NA_character_),
+        birthDate = c("2000-01-01", "1998-01-01"),
+        stringsAsFactors = FALSE
+      )
+    },
+    games = function() {
+      data.frame(
+        gameId = c(1L, 2L),
+        gameDate = c("2025-01-10", "2026-01-10"),
+        stringsAsFactors = FALSE
+      )
+    },
+    .package = "nhlscraper"
+  )
+
+  shooter_pbp <- data.frame(
+    gameId = c(1L, 2L),
+    scoringPlayerId = c(NA_integer_, NA_integer_),
+    shootingPlayerId = c(10L, 10L),
+    stringsAsFactors = FALSE
+  )
+  goalie_pbp <- data.frame(
+    gameId = c(1L, 2L),
+    goaliePlayerIdAgainst = c(30L, 30L),
+    stringsAsFactors = FALSE
+  )
+
+  shooter_out <- add_shooter_biometrics(shooter_pbp)
+  goalie_out <- add_goalie_biometrics(goalie_pbp)
+
+  expect_equal(shooter_out$shooterAge, c(25L, 26L))
+  expect_equal(goalie_out$goalieAge, c(27L, 28L))
+  expect_equal(shooter_out$shooterHeight, c(72L, 72L))
+  expect_equal(goalie_out$goalieHeight, c(74L, 74L))
+})

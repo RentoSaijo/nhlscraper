@@ -10,5 +10,7 @@
 ^Demo\.R$
 ^Test\.R$
 ^data-raw$
+^figure$
+^figure/
 ^index\.md$
 ^other/

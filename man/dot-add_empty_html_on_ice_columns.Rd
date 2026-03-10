@@ -4,10 +4,13 @@
 \alias{.add_empty_html_on_ice_columns}
 \title{Initialize empty on-ice columns}
 \usage{
-.add_empty_html_on_ice_columns(play_by_play)
+.add_empty_html_on_ice_columns(play_by_play, slot_count = NULL)
 }
 \arguments{
 \item{play_by_play}{data.frame play-by-play object}
+
+\item{slot_count}{optional integer scalar minimum slot count requested by the
+caller}
 }
 \value{
 data.frame with empty on-ice columns added

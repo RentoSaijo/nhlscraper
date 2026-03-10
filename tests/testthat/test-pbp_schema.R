@@ -47,7 +47,26 @@ test_that("gc_play_by_play() returns the public schema and fills goal shooters",
   )
 
   local_mocked_bindings(
-    nhl_api = function(path, query = list(), type) list(plays = gc_raw),
+    .perform_parallel_requests = function(reqs, on_error = "return") {
+      expect_named(reqs, c("pbp_meta", "html_pbp"))
+      list(
+        pbp_meta = structure(list(kind = "pbp_meta"), class = "mock_resp"),
+        html_pbp = structure(list(kind = "html_pbp"), class = "mock_resp")
+      )
+    },
+    .parallel_request_failed = function(resp) FALSE,
+    .nhl_json_from_response = function(resp) {
+      if (identical(resp$kind, "pbp_meta")) {
+        return(list(
+          plays = gc_raw,
+          rosterSpots = data.frame(),
+          homeTeam = list(id = 10L, abbrev = "HOM"),
+          awayTeam = list(id = 20L, abbrev = "AWY")
+        ))
+      }
+      stop("Unexpected response kind")
+    },
+    .optional_html_pbp_rows_from_response = function(...) data.frame(),
     .add_html_on_ice_players = function(play_by_play, ...) {
       play_by_play <- .add_empty_html_on_ice_columns(play_by_play)
       play_by_play$homeGoaliePlayerId <- c(NA_integer_, 30L, 40L)
@@ -62,6 +81,14 @@ test_that("gc_play_by_play() returns the public schema and fills goal shooters",
       play_by_play$awaySkater6PlayerId <- c(NA_integer_, NA_integer_, 206L)
       play_by_play$skater6PlayerIdFor <- c(NA_integer_, 106L, 206L)
       play_by_play$skater6PlayerIdAgainst <- c(NA_integer_, NA_integer_, NA_integer_)
+      play_by_play$homeSkater7PlayerId <- c(NA_integer_, NA_integer_, NA_integer_)
+      play_by_play$awaySkater7PlayerId <- c(NA_integer_, NA_integer_, NA_integer_)
+      play_by_play$skater7PlayerIdFor <- c(NA_integer_, NA_integer_, NA_integer_)
+      play_by_play$skater7PlayerIdAgainst <- c(NA_integer_, NA_integer_, NA_integer_)
+      play_by_play$homeSkater8PlayerId <- c(NA_integer_, 108L, NA_integer_)
+      play_by_play$awaySkater8PlayerId <- c(NA_integer_, NA_integer_, 208L)
+      play_by_play$skater8PlayerIdFor <- c(NA_integer_, 108L, 208L)
+      play_by_play$skater8PlayerIdAgainst <- c(NA_integer_, NA_integer_, NA_integer_)
       play_by_play
     },
     .add_on_ice_shift_timing_context = function(...) stop(".add_on_ice_shift_timing_context() should not be called"),
@@ -82,7 +109,10 @@ test_that("gc_play_by_play() returns the public schema and fills goal shooters",
     "homeGoaliePlayerId", "awayGoaliePlayerId", "goaliePlayerIdFor",
     "goaliePlayerIdAgainst", "homeSkater1PlayerId", "awaySkater1PlayerId",
     "skater1PlayerIdFor", "skater1PlayerIdAgainst", "homeSkater6PlayerId",
-    "awaySkater6PlayerId", "skater6PlayerIdFor", "skater6PlayerIdAgainst"
+    "awaySkater6PlayerId", "skater6PlayerIdFor", "skater6PlayerIdAgainst",
+    "homeSkater7PlayerId", "awaySkater7PlayerId", "skater7PlayerIdFor",
+    "skater7PlayerIdAgainst", "homeSkater8PlayerId", "awaySkater8PlayerId",
+    "skater8PlayerIdFor", "skater8PlayerIdAgainst"
   ) %in% names(out)))
   strength_idx <- match("strengthState", names(out))
   expect_equal(
@@ -159,7 +189,29 @@ test_that("wsc_play_by_play() returns the public schema with utc and no clip fie
   )
 
   local_mocked_bindings(
-    nhl_api = function(path, query = list(), type) wsc_raw,
+    .perform_parallel_requests = function(reqs, on_error = "return") {
+      expect_named(reqs, c("pbp_meta", "wsc", "html_pbp"))
+      list(
+        pbp_meta = structure(list(kind = "pbp_meta"), class = "mock_resp"),
+        wsc = structure(list(kind = "wsc"), class = "mock_resp"),
+        html_pbp = structure(list(kind = "html_pbp"), class = "mock_resp")
+      )
+    },
+    .parallel_request_failed = function(resp) FALSE,
+    .nhl_json_from_response = function(resp) {
+      if (identical(resp$kind, "pbp_meta")) {
+        return(list(
+          rosterSpots = data.frame(),
+          homeTeam = list(id = 10L, abbrev = "HOM"),
+          awayTeam = list(id = 20L, abbrev = "AWY")
+        ))
+      }
+      if (identical(resp$kind, "wsc")) {
+        return(wsc_raw)
+      }
+      stop("Unexpected response kind")
+    },
+    .optional_html_pbp_rows_from_response = function(...) data.frame(),
     .add_html_on_ice_players = function(play_by_play, ...) {
       play_by_play <- .add_empty_html_on_ice_columns(play_by_play)
       play_by_play$homeGoaliePlayerId <- c(NA_integer_, 30L, 40L)
@@ -174,6 +226,14 @@ test_that("wsc_play_by_play() returns the public schema with utc and no clip fie
       play_by_play$awaySkater6PlayerId <- c(NA_integer_, NA_integer_, 206L)
       play_by_play$skater6PlayerIdFor <- c(NA_integer_, 106L, 206L)
       play_by_play$skater6PlayerIdAgainst <- c(NA_integer_, NA_integer_, NA_integer_)
+      play_by_play$homeSkater7PlayerId <- c(NA_integer_, NA_integer_, NA_integer_)
+      play_by_play$awaySkater7PlayerId <- c(NA_integer_, NA_integer_, NA_integer_)
+      play_by_play$skater7PlayerIdFor <- c(NA_integer_, NA_integer_, NA_integer_)
+      play_by_play$skater7PlayerIdAgainst <- c(NA_integer_, NA_integer_, NA_integer_)
+      play_by_play$homeSkater8PlayerId <- c(NA_integer_, 108L, NA_integer_)
+      play_by_play$awaySkater8PlayerId <- c(NA_integer_, NA_integer_, 208L)
+      play_by_play$skater8PlayerIdFor <- c(NA_integer_, 108L, 208L)
+      play_by_play$skater8PlayerIdAgainst <- c(NA_integer_, NA_integer_, NA_integer_)
       play_by_play
     },
     .add_on_ice_shift_timing_context = function(...) stop(".add_on_ice_shift_timing_context() should not be called"),
@@ -196,7 +256,10 @@ test_that("wsc_play_by_play() returns the public schema with utc and no clip fie
     "awayGoaliePlayerId", "goaliePlayerIdFor", "goaliePlayerIdAgainst",
     "homeSkater1PlayerId", "awaySkater1PlayerId", "skater1PlayerIdFor",
     "skater1PlayerIdAgainst", "homeSkater6PlayerId", "awaySkater6PlayerId",
-    "skater6PlayerIdFor", "skater6PlayerIdAgainst"
+    "skater6PlayerIdFor", "skater6PlayerIdAgainst", "homeSkater7PlayerId",
+    "awaySkater7PlayerId", "skater7PlayerIdFor", "skater7PlayerIdAgainst",
+    "homeSkater8PlayerId", "awaySkater8PlayerId", "skater8PlayerIdFor",
+    "skater8PlayerIdAgainst"
   ) %in% names(out)))
   expect_match(names(out)[10], "^utc$")
   strength_idx <- match("strengthState", names(out))

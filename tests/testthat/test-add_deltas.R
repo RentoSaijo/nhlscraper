@@ -71,6 +71,30 @@ test_that("add_deltas() preserves same-second internal rate scaling", {
   expect_equal(out$dXCoordNormPerSecond[11], 10)
 })
 
+test_that("add_deltas() respects game boundaries on aggregated inputs", {
+  pbp <- data.frame(
+    gameId = c(1L, 1L, 2L, 2L),
+    eventId = c(101L, 102L, 201L, 202L),
+    secondsElapsedInGame = c(10, 11, 10, 11),
+    xCoord = c(0, 10, 5, 15),
+    yCoord = c(0, 0, 1, 1),
+    xCoordNorm = c(0, 10, 5, 15),
+    yCoordNorm = c(0, 0, 1, 1),
+    distance = c(0, 10, 5, 15),
+    angle = c(0, 10, 5, 15),
+    eventTypeDescKey = c("faceoff", "shot", "faceoff", "shot"),
+    situationCode = rep("1551", 4),
+    sortOrder = c(1L, 2L, 1L, 2L)
+  )
+
+  out <- add_deltas(pbp)
+
+  expect_true(all(is.na(out$eventIdPrev[c(1L, 3L)])))
+  expect_equal(out$eventIdPrev[c(2L, 4L)], c(101L, 201L))
+  expect_equal(out$secondsElapsedInSequence[c(2L, 4L)], c(1, 1))
+  expect_equal(out$dXCoord[c(2L, 4L)], c(10, 10))
+})
+
 test_that("add_deltas() leaves shootout and penalty-shot rows as NA", {
   pbp <- data.frame(
     gameId = rep(1L, 5),

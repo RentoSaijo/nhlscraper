@@ -7,26 +7,92 @@
 #' @keywords internal
 
 nhl_api <- function(path, query = list(), type) {
+  .nhl_json_from_response(
+    httr2::req_perform(.nhl_request(path = path, query = query, type = type))
+  )
+}
+
+#' Build an NHL API request
+#'
+#' `.nhl_request()` constructs an NHL API request with the standard retry policy
+#' used throughout the package.
+#'
+#' @param path character
+#' @param query list
+#' @param type character of 'w' for web, 's' for stats, and 'r' for records
+#' @returns httr2 request object
+#' @keywords internal
+.nhl_request <- function(path, query = list(), type) {
   base <- switch(
-    type, 
+    type,
     w = 'https://api-web.nhle.com/',
     s = 'https://api.nhle.com/stats/rest/',
     r = 'https://records.nhl.com/site/api/'
   )
   req <- httr2::request(paste0(base, path))
   req <- do.call(httr2::req_url_query, c(list(req), query))
-  req <- httr2::req_retry(
+  httr2::req_retry(
     req,
-    max_tries    = 3,
-    backoff      = function(attempt) 2 ^ (attempt - 1),
+    max_tries = 3,
+    backoff = function(attempt) 2 ^ (attempt - 1),
     is_transient = function(resp) httr2::resp_status(resp) == 429
   )
-  resp <- httr2::req_perform(req)
+}
+
+#' Parse an NHL API response as JSON
+#'
+#' `.nhl_json_from_response()` converts an `httr2` response object into a parsed
+#' JSON object using the package's standard flattening settings.
+#'
+#' @param resp httr2 response object
+#' @returns parsed JSON (i.e., data.frame or list)
+#' @keywords internal
+.nhl_json_from_response <- function(resp) {
   jsonlite::fromJSON(
     httr2::resp_body_string(resp, encoding = 'UTF-8'),
     simplifyVector = TRUE,
-    flatten        = TRUE
+    flatten = TRUE
   )
+}
+
+#' Build an HTML report request
+#'
+#' `.html_report_request()` constructs an HTML report request with the same retry
+#' policy used for API calls.
+#'
+#' @param url character scalar
+#' @returns httr2 request object
+#' @keywords internal
+.html_report_request <- function(url) {
+  httr2::req_retry(
+    httr2::request(url),
+    max_tries = 3,
+    backoff = function(attempt) 2 ^ (attempt - 1),
+    is_transient = function(resp) httr2::resp_status(resp) == 429
+  )
+}
+
+#' Perform multiple requests concurrently
+#'
+#' `.perform_parallel_requests()` executes a list of `httr2` requests with
+#' libcurl multi support and preserves the input names on the output.
+#'
+#' @param reqs list of httr2 request objects
+#' @param on_error forwarded to [httr2::req_perform_parallel()]
+#' @returns list of responses or httr2 failure objects
+#' @keywords internal
+.perform_parallel_requests <- function(reqs, on_error = c('stop', 'return', 'continue')) {
+  on_error <- match.arg(on_error)
+  req_names <- names(reqs)
+  out <- httr2::req_perform_parallel(
+    unname(reqs),
+    on_error = on_error,
+    progress = FALSE
+  )
+  if (!is.null(req_names)) {
+    names(out) <- req_names
+  }
+  out
 }
 
 #' Call the ESPN API with 429 (rate limit) error-handling

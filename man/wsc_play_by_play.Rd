@@ -22,7 +22,7 @@ schema follows the same cleaned public-facing naming as \code{gc_play_by_play()}
 including \code{servedByPlayerId}, and includes \code{utc} immediately after
 \code{secondsElapsedInGame} while omitting GC-only clip fields. It also includes
 the same HTML-report-derived on-ice player ID columns added to the GC output,
-including sixth-skater slots when a goalie is pulled. Use \code{\link[=add_shift_times]{add_shift_times()}}
+including dynamically expanded overflow skater slots when needed. Use \code{\link[=add_shift_times]{add_shift_times()}}
 with \code{\link[=shift_chart]{shift_chart()}} (or \code{\link[=shift_charts]{shift_charts()}}) to add on-ice shift timing columns.
 }
 \examples{
