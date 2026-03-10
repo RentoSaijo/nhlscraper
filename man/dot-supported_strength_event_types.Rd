@@ -11,6 +11,6 @@ character vector of supported event type keys
 }
 \description{
 \code{.supported_strength_event_types()} returns the event types that support the
-HTML-derived strength and on-ice enrichment pipeline.
+HTML row-matching pipeline.
 }
 \keyword{internal}

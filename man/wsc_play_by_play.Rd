@@ -22,8 +22,8 @@ schema follows the same cleaned public-facing naming as \code{gc_play_by_play()}
 including \code{servedByPlayerId}, and includes \code{utc} immediately after
 \code{secondsElapsedInGame} while omitting GC-only clip fields. It also includes
 the same HTML-report-derived on-ice player ID columns added to the GC output,
-including sixth-skater slots when a goalie is pulled, plus the same
-shift-chart-derived scalar timing columns.
+including sixth-skater slots when a goalie is pulled. Use \code{\link[=add_shift_times]{add_shift_times()}}
+with \code{\link[=shift_chart]{shift_chart()}} (or \code{\link[=shift_charts]{shift_charts()}}) to add on-ice shift timing columns.
 }
 \examples{
 wsc_pbp_Martin_Necas_legacy_game <- wsc_play_by_play(game = 2025020275)

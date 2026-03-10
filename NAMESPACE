@@ -2,6 +2,7 @@
 
 export(add_deltas)
 export(add_goalie_biometrics)
+export(add_shift_times)
 export(add_shooter_biometrics)
 export(attendance)
 export(award_winners)

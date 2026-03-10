@@ -372,6 +372,83 @@ add_goalie_biometrics <- function(play_by_play) {
   play_by_play
 }
 
+#' Add on-ice shift times to a play-by-play
+#'
+#' `add_shift_times()` adds `SecondsElapsedInShift` and
+#' `SecondsElapsedInPeriodSinceLastShift` columns for the on-ice goalies and
+#' skaters already present in a public play-by-play. It accepts either a single
+#' game play-by-play plus [shift_chart()] data or a season aggregate plus
+#' [shift_charts()] data.
+#'
+#' @param play_by_play data.frame of play-by-play(s) using the current public schema returned by [gc_play_by_play()], [gc_play_by_plays()], [wsc_play_by_play()], or [wsc_play_by_plays()]
+#' @param shift_chart data.frame returned by [shift_chart()] or [shift_charts()]
+#' @returns data.frame with one row per event (play) and added or updated scalar on-ice shift timing columns
+#' @examples
+#' \donttest{
+#'   pbp <- gc_play_by_play(game = 2023030417)
+#'   sc  <- shift_chart(game = 2023030417)
+#'   pbp <- add_shift_times(pbp, sc)
+#' }
+#' @export
+add_shift_times <- function(play_by_play, shift_chart) {
+  .require_public_pbp_columns(
+    play_by_play,
+    c(
+      'gameId',
+      'periodNumber',
+      'secondsElapsedInPeriod',
+      'isHome',
+      'homeGoaliePlayerId',
+      'awayGoaliePlayerId',
+      paste0('homeSkater', seq_len(.on_ice_skater_slots()), 'PlayerId'),
+      paste0('awaySkater', seq_len(.on_ice_skater_slots()), 'PlayerId')
+    ),
+    'add_shift_times'
+  )
+  .require_shift_chart_columns(
+    shift_chart,
+    c(
+      'gameId',
+      'period',
+      'playerId',
+      'startSecondsElapsedInPeriod',
+      'endSecondsElapsedInPeriod'
+    ),
+    'add_shift_times'
+  )
+  timing_cols <- c(
+    .on_ice_timing_scalar_column_names('SecondsElapsedInShift'),
+    .on_ice_timing_scalar_column_names('SecondsElapsedInPeriodSinceLastShift')
+  )
+  for (nm in timing_cols) {
+    if (!(nm %in% names(play_by_play))) {
+      play_by_play[[nm]] <- rep(NA_real_, nrow(play_by_play))
+    }
+  }
+  if (!nrow(play_by_play) || !nrow(shift_chart)) {
+    return(play_by_play)
+  }
+  timing <- tryCatch(
+    .compute_on_ice_shift_timing_matrices(play_by_play, shift_chart),
+    error = function(e) NULL
+  )
+  if (is.null(timing)) {
+    return(play_by_play)
+  }
+  play_by_play <- .assign_on_ice_shift_metric(
+    play_by_play,
+    home_matrix = timing$homeElapsed,
+    away_matrix = timing$awayElapsed,
+    metric_suffix = 'SecondsElapsedInShift'
+  )
+  .assign_on_ice_shift_metric(
+    play_by_play,
+    home_matrix = timing$homeSinceLast,
+    away_matrix = timing$awaySinceLast,
+    metric_suffix = 'SecondsElapsedInPeriodSinceLastShift'
+  )
+}
+
 # Internal helpers --------------------------------------------------------
 
 #' Strip the game ID into the season ID, game type ID, and game number for all the events (plays) in a play-by-play
@@ -471,7 +548,73 @@ add_goalie_biometrics <- function(play_by_play) {
       }
     }
   }
-  play_by_play[keep, , drop = FALSE]
+  play_by_play <- play_by_play[keep, , drop = FALSE]
+  n <- nrow(play_by_play)
+  if (
+    n < 3L ||
+      !all(c('gameId', 'period', 'sortOrder', 'typeDescKey') %in% names(play_by_play))
+  ) {
+    return(play_by_play)
+  }
+
+  row_id <- seq_len(n)
+  game_id <- as.integer(play_by_play$gameId)
+  period <- as.integer(play_by_play$period)
+  type_desc_key <- as.character(play_by_play$typeDescKey)
+  sort_order <- as.integer(play_by_play$sortOrder)
+
+  for (g in unique(game_id)) {
+    idx_game <- which(game_id == g)
+    idx_sorted <- idx_game[order(sort_order[idx_game], row_id[idx_game], na.last = TRUE)]
+    if (length(idx_sorted) < 3L) {
+      next
+    }
+
+    periods <- unique(period[idx_sorted])
+    periods <- periods[!is.na(periods)]
+    for (p in periods) {
+      idx_period <- idx_sorted[period[idx_sorted] == p]
+      if (length(idx_period) < 3L) {
+        next
+      }
+      period_types <- type_desc_key[idx_period]
+      period_start_pos <- which(period_types == 'period-start')
+      faceoff_pos <- which(period_types == 'faceoff')
+      if (!length(period_start_pos) || !length(faceoff_pos)) {
+        next
+      }
+      period_start_pos <- period_start_pos[1L]
+      faceoff_pos <- faceoff_pos[faceoff_pos > period_start_pos]
+      if (!length(faceoff_pos)) {
+        next
+      }
+      faceoff_pos <- faceoff_pos[1L]
+      if (faceoff_pos == period_start_pos + 1L) {
+        next
+      }
+      intervening_pos <- seq.int(period_start_pos + 1L, faceoff_pos - 1L)
+      intervening_types <- period_types[intervening_pos]
+      if (!any(!is.na(intervening_types))) {
+        next
+      }
+      idx_period <- c(
+        idx_period[seq_len(period_start_pos)],
+        idx_period[faceoff_pos],
+        idx_period[intervening_pos],
+        if (faceoff_pos < length(idx_period)) {
+          idx_period[(faceoff_pos + 1L):length(idx_period)]
+        } else {
+          integer(0)
+        }
+      )
+      idx_sorted[period[idx_sorted] == p] <- idx_period
+    }
+
+    sort_order[idx_sorted] <- sort(sort_order[idx_game], na.last = TRUE)
+  }
+
+  play_by_play$sortOrder <- sort_order
+  play_by_play[order(sort_order, row_id, na.last = TRUE), , drop = FALSE]
 }
 
 #' Normalize legacy internal play-by-play aliases
@@ -553,6 +696,30 @@ add_goalie_biometrics <- function(play_by_play) {
     stop(
       sprintf(
         "%s() requires public play-by-play column(s): %s",
+        fn_name,
+        paste(missing_cols, collapse = ", ")
+      ),
+      call. = FALSE
+    )
+  }
+}
+
+#' Validate required shift-chart columns
+#'
+#' `.require_shift_chart_columns()` errors when a helper is called with a shift
+#' chart missing required public schema columns.
+#'
+#' @param shift_chart data.frame shift chart object
+#' @param cols character vector of required columns
+#' @param fn_name calling function name used in the error message
+#' @returns `NULL`, invisibly, or an error if required columns are missing
+#' @keywords internal
+.require_shift_chart_columns <- function(shift_chart, cols, fn_name) {
+  missing_cols <- setdiff(cols, names(shift_chart))
+  if (length(missing_cols)) {
+    stop(
+      sprintf(
+        "%s() requires shift chart column(s): %s",
         fn_name,
         paste(missing_cols, collapse = ", ")
       ),
@@ -917,42 +1084,62 @@ add_goalie_biometrics <- function(play_by_play) {
   play_by_play
 }
 
+#' Normalize situation codes for parsing
+#'
+#' `.normalize_situation_code_for_parse()` pads 1-4 digit situation codes to
+#' four characters for internal parsing without rewriting the source column.
+#'
+#' @param situation_code vector of raw situation codes
+#' @returns character vector of parse-ready situation codes
+#' @keywords internal
+.normalize_situation_code_for_parse <- function(situation_code) {
+  sc_chr <- as.character(situation_code)
+  ok <- !is.na(sc_chr) & grepl('^[0-9]{1,4}$', sc_chr)
+  out <- rep(NA_character_, length(sc_chr))
+  if (any(ok)) {
+    out[ok] <- sprintf('%04s', sc_chr[ok])
+    out[ok] <- chartr(' ', '0', out[ok])
+  }
+  out
+}
+
+#' Parse situation-code components
+#'
+#' `.parse_situation_code_components()` converts situation codes into away/home
+#' goalie and skater counts without mutating the original source vector.
+#'
+#' @param situation_code vector of raw situation codes
+#' @returns integer matrix with away/home goalie and skater counts
+#' @keywords internal
+.parse_situation_code_components <- function(situation_code) {
+  sc_chr <- .normalize_situation_code_for_parse(situation_code)
+  cbind(
+    awayGoalieCount = suppressWarnings(as.integer(substr(sc_chr, 1L, 1L))),
+    awaySkaterCount = suppressWarnings(as.integer(substr(sc_chr, 2L, 2L))),
+    homeSkaterCount = suppressWarnings(as.integer(substr(sc_chr, 3L, 3L))),
+    homeGoalieCount = suppressWarnings(as.integer(substr(sc_chr, 4L, 4L)))
+  )
+}
+
 #' Strip the situation code into goalie and skater counts, man differential, and strength state for all the events (plays) in a play-by-play by perspective
 #' 
-#' `.strip_situation_code()` strips the situation code into goalie and skater counts for home and away teams, then (from the event owner's perspective) computes man differential and a strength state classification.
+#' `.strip_situation_code()` strips the situation code into goalie and skater counts for home and away teams, then (from the event owner's perspective) computes man differential and a strength state classification without rewriting the source `situationCode` column.
 #' 
 #' @inheritParams .strip_game_id
 #' @returns data.frame with one row per event (play) and added columns: `homeIsEmptyNet`, `awayIsEmptyNet`, `homeSkaterCount`, `awaySkaterCount`, `isEmptyNetFor`, `isEmptyNetAgainst`, `skaterCountFor`, `skaterCountAgainst`, `manDifferential`, and `strengthState`
 #' @keywords internal
-
 .strip_situation_code <- function(play_by_play) {
   play_by_play <- .pbp_legacy_aliases(play_by_play)
-  sc_raw       <- as.character(play_by_play$situationCode)
-  ok           <- !is.na(sc_raw) & grepl('^[0-9]{1,4}$', sc_raw)
-  sc_chr       <- rep(NA_character_, length(sc_raw))
-  sc_chr[ok]   <- sprintf('%04s', sc_raw[ok])
-  sc_chr[ok]   <- gsub(' ', '0', sc_chr[ok])
-  for (g in unique(play_by_play$gameId)) {
-    idx <- which(play_by_play$gameId == g)
-    idx <- idx[order(play_by_play$sortOrder[idx], na.last = TRUE)]
-    ps  <- which(play_by_play$typeDescKey[idx] == 'period-start' & is.na(sc_chr[idx]))
-    pe  <- which(play_by_play$typeDescKey[idx] == 'period-end'   & is.na(sc_chr[idx]))
-    if (length(ps)) sc_chr[idx[ps]] <- sc_chr[idx[ps + 1L]]
-    if (length(pe)) sc_chr[idx[pe]] <- sc_chr[idx[pe - 1L]]
-    for (k in seq_along(idx)) {
-      i <- idx[k]
-      if (is.na(sc_chr[i]) && k > 1L) sc_chr[i] <- sc_chr[idx[k - 1L]]
-    }
-    for (k in length(idx):1L) {
-      i <- idx[k]
-      if (is.na(sc_chr[i]) && k < length(idx)) sc_chr[i] <- sc_chr[idx[k + 1L]]
-    }
+  sc_raw <- if ('situationCode' %in% names(play_by_play)) {
+    play_by_play$situationCode
+  } else {
+    rep(NA_character_, nrow(play_by_play))
   }
-  play_by_play$situationCode <- sc_chr
-  aG <- as.integer(substr(sc_chr, 1L, 1L))
-  aS <- as.integer(substr(sc_chr, 2L, 2L))
-  hS <- as.integer(substr(sc_chr, 3L, 3L))
-  hG <- as.integer(substr(sc_chr, 4L, 4L))
+  sc_parts <- .parse_situation_code_components(sc_raw)
+  aG <- sc_parts[, 'awayGoalieCount']
+  aS <- sc_parts[, 'awaySkaterCount']
+  hS <- sc_parts[, 'homeSkaterCount']
+  hG <- sc_parts[, 'homeGoalieCount']
   play_by_play$homeIsEmptyNet  <- hG == 0L
   play_by_play$awayIsEmptyNet  <- aG == 0L
   play_by_play$homeSkaterCount <- hS
@@ -1493,32 +1680,11 @@ add_goalie_biometrics <- function(play_by_play) {
   game,
   shift_data = NULL
 ) {
-  if (!nrow(play_by_play)) {
-    return(play_by_play)
-  }
   if (is.null(shift_data)) {
-    shift_data <- tryCatch(
-      shift_chart(as.integer(game)),
-      error = function(e) data.frame()
-    )
-  }
-  timing <- tryCatch(
-    .compute_on_ice_shift_timing_matrices(play_by_play, shift_data),
-    error = function(e) NULL
-  )
-  if (is.null(timing)) {
     return(play_by_play)
   }
-  play_by_play <- .assign_on_ice_shift_metric(
-    play_by_play,
-    home_matrix = timing$homeElapsed,
-    away_matrix = timing$awayElapsed,
-    metric_suffix = 'SecondsElapsedInShift'
-  )
-  .assign_on_ice_shift_metric(
-    play_by_play,
-    home_matrix = timing$homeSinceLast,
-    away_matrix = timing$awaySinceLast,
-    metric_suffix = 'SecondsElapsedInPeriodSinceLastShift'
-  )
+  if (!'periodNumber' %in% names(play_by_play) && 'period' %in% names(play_by_play)) {
+    play_by_play$periodNumber <- play_by_play$period
+  }
+  add_shift_times(play_by_play, shift_data)
 }

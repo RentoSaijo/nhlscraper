@@ -2,7 +2,7 @@
 % Please edit documentation in R/Game.R
 \name{.mask_strength_context_block}
 \alias{.mask_strength_context_block}
-\title{Mask strength-only columns on unsupported events}
+\title{Mask HTML on-ice columns on unsupported events}
 \usage{
 .mask_strength_context_block(play_by_play)
 }
@@ -13,7 +13,8 @@
 data.frame with unsupported rows masked
 }
 \description{
-\code{.mask_strength_context_block()} sets strength and on-ice columns to \code{NA} on
-event types that are not supported by the HTML on-ice pipeline.
+\code{.mask_strength_context_block()} sets HTML-derived on-ice player-ID and
+timing columns to \code{NA} on event types that are not supported by the HTML
+on-ice player pipeline.
 }
 \keyword{internal}

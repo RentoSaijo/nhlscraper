@@ -64,25 +64,7 @@ test_that("gc_play_by_play() returns the public schema and fills goal shooters",
       play_by_play$skater6PlayerIdAgainst <- c(NA_integer_, NA_integer_, NA_integer_)
       play_by_play
     },
-    .add_on_ice_shift_timing_context = function(play_by_play, ...) {
-      play_by_play$homeGoalieSecondsElapsedInShift <- c(NA_real_, 21, 31)
-      play_by_play$awayGoalieSecondsElapsedInShift <- c(NA_real_, 22, 32)
-      play_by_play$goalieSecondsElapsedInShiftFor <- c(NA_real_, 21, 32)
-      play_by_play$goalieSecondsElapsedInShiftAgainst <- c(NA_real_, 22, 31)
-      play_by_play$homeSkater1SecondsElapsedInShift <- c(NA_real_, 11, 12)
-      play_by_play$awaySkater1SecondsElapsedInShift <- c(NA_real_, 13, 14)
-      play_by_play$skater1SecondsElapsedInShiftFor <- c(NA_real_, 11, 14)
-      play_by_play$skater1SecondsElapsedInShiftAgainst <- c(NA_real_, 13, 12)
-      play_by_play$homeGoalieSecondsElapsedInPeriodSinceLastShift <- c(NA_real_, 221, 231)
-      play_by_play$awayGoalieSecondsElapsedInPeriodSinceLastShift <- c(NA_real_, 222, 232)
-      play_by_play$goalieSecondsElapsedInPeriodSinceLastShiftFor <- c(NA_real_, 221, 232)
-      play_by_play$goalieSecondsElapsedInPeriodSinceLastShiftAgainst <- c(NA_real_, 222, 231)
-      play_by_play$homeSkater1SecondsElapsedInPeriodSinceLastShift <- c(NA_real_, 111, 112)
-      play_by_play$awaySkater1SecondsElapsedInPeriodSinceLastShift <- c(NA_real_, 113, 114)
-      play_by_play$skater1SecondsElapsedInPeriodSinceLastShiftFor <- c(NA_real_, 111, 114)
-      play_by_play$skater1SecondsElapsedInPeriodSinceLastShiftAgainst <- c(NA_real_, 113, 112)
-      play_by_play
-    },
+    .add_on_ice_shift_timing_context = function(...) stop(".add_on_ice_shift_timing_context() should not be called"),
     .package = "nhlscraper"
   )
 
@@ -100,15 +82,7 @@ test_that("gc_play_by_play() returns the public schema and fills goal shooters",
     "homeGoaliePlayerId", "awayGoaliePlayerId", "goaliePlayerIdFor",
     "goaliePlayerIdAgainst", "homeSkater1PlayerId", "awaySkater1PlayerId",
     "skater1PlayerIdFor", "skater1PlayerIdAgainst", "homeSkater6PlayerId",
-    "awaySkater6PlayerId", "skater6PlayerIdFor", "skater6PlayerIdAgainst",
-    "homeGoalieSecondsElapsedInShift", "awayGoalieSecondsElapsedInShift",
-    "goalieSecondsElapsedInShiftFor", "goalieSecondsElapsedInShiftAgainst",
-    "homeSkater1SecondsElapsedInShift", "awaySkater1SecondsElapsedInShift",
-    "skater1SecondsElapsedInShiftFor", "skater1SecondsElapsedInShiftAgainst",
-    "homeGoalieSecondsElapsedInPeriodSinceLastShift",
-    "awayGoalieSecondsElapsedInPeriodSinceLastShift",
-    "goalieSecondsElapsedInPeriodSinceLastShiftFor",
-    "goalieSecondsElapsedInPeriodSinceLastShiftAgainst"
+    "awaySkater6PlayerId", "skater6PlayerIdFor", "skater6PlayerIdAgainst"
   ) %in% names(out)))
   strength_idx <- match("strengthState", names(out))
   expect_equal(
@@ -128,6 +102,8 @@ test_that("gc_play_by_play() returns the public schema and fills goal shooters",
   expect_true(all(is.na(out$playerId)))
   expect_true(all(is.na(out$blockingPlayerId)))
   expect_true(all(is.na(out$servedByPlayerId)))
+  expect_false("homeGoalieSecondsElapsedInShift" %in% names(out))
+  expect_false("homeGoalieSecondsElapsedInPeriodSinceLastShift" %in% names(out))
   expect_equal(
     names(out)[match("drawnByPlayerId", names(out)) + 1L],
     "servedByPlayerId"
@@ -200,25 +176,7 @@ test_that("wsc_play_by_play() returns the public schema with utc and no clip fie
       play_by_play$skater6PlayerIdAgainst <- c(NA_integer_, NA_integer_, NA_integer_)
       play_by_play
     },
-    .add_on_ice_shift_timing_context = function(play_by_play, ...) {
-      play_by_play$homeGoalieSecondsElapsedInShift <- c(NA_real_, 21, 31)
-      play_by_play$awayGoalieSecondsElapsedInShift <- c(NA_real_, 22, 32)
-      play_by_play$goalieSecondsElapsedInShiftFor <- c(NA_real_, 21, 32)
-      play_by_play$goalieSecondsElapsedInShiftAgainst <- c(NA_real_, 22, 31)
-      play_by_play$homeSkater1SecondsElapsedInShift <- c(NA_real_, 11, 12)
-      play_by_play$awaySkater1SecondsElapsedInShift <- c(NA_real_, 13, 14)
-      play_by_play$skater1SecondsElapsedInShiftFor <- c(NA_real_, 11, 14)
-      play_by_play$skater1SecondsElapsedInShiftAgainst <- c(NA_real_, 13, 12)
-      play_by_play$homeGoalieSecondsElapsedInPeriodSinceLastShift <- c(NA_real_, 221, 231)
-      play_by_play$awayGoalieSecondsElapsedInPeriodSinceLastShift <- c(NA_real_, 222, 232)
-      play_by_play$goalieSecondsElapsedInPeriodSinceLastShiftFor <- c(NA_real_, 221, 232)
-      play_by_play$goalieSecondsElapsedInPeriodSinceLastShiftAgainst <- c(NA_real_, 222, 231)
-      play_by_play$homeSkater1SecondsElapsedInPeriodSinceLastShift <- c(NA_real_, 111, 112)
-      play_by_play$awaySkater1SecondsElapsedInPeriodSinceLastShift <- c(NA_real_, 113, 114)
-      play_by_play$skater1SecondsElapsedInPeriodSinceLastShiftFor <- c(NA_real_, 111, 114)
-      play_by_play$skater1SecondsElapsedInPeriodSinceLastShiftAgainst <- c(NA_real_, 113, 112)
-      play_by_play
-    },
+    .add_on_ice_shift_timing_context = function(...) stop(".add_on_ice_shift_timing_context() should not be called"),
     .package = "nhlscraper"
   )
 
@@ -238,11 +196,7 @@ test_that("wsc_play_by_play() returns the public schema with utc and no clip fie
     "awayGoaliePlayerId", "goaliePlayerIdFor", "goaliePlayerIdAgainst",
     "homeSkater1PlayerId", "awaySkater1PlayerId", "skater1PlayerIdFor",
     "skater1PlayerIdAgainst", "homeSkater6PlayerId", "awaySkater6PlayerId",
-    "skater6PlayerIdFor", "skater6PlayerIdAgainst",
-    "homeGoalieSecondsElapsedInShift", "awayGoalieSecondsElapsedInShift",
-    "goalieSecondsElapsedInShiftFor", "goalieSecondsElapsedInShiftAgainst",
-    "homeGoalieSecondsElapsedInPeriodSinceLastShift",
-    "awayGoalieSecondsElapsedInPeriodSinceLastShift"
+    "skater6PlayerIdFor", "skater6PlayerIdAgainst"
   ) %in% names(out)))
   expect_match(names(out)[10], "^utc$")
   strength_idx <- match("strengthState", names(out))
@@ -263,6 +217,8 @@ test_that("wsc_play_by_play() returns the public schema with utc and no clip fie
   expect_true(all(is.na(out$playerId)))
   expect_true(all(is.na(out$blockingPlayerId)))
   expect_true(all(is.na(out$servedByPlayerId)))
+  expect_false("homeGoalieSecondsElapsedInShift" %in% names(out))
+  expect_false("homeGoalieSecondsElapsedInPeriodSinceLastShift" %in% names(out))
   expect_equal(
     names(out)[match("drawnByPlayerId", names(out)) + 1L],
     "servedByPlayerId"

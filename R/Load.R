@@ -49,8 +49,6 @@ contracts <- function() {
           aav = numeric(),
           value = numeric(),
           bonus = numeric(),
-          twoYearCash = numeric(),
-          threeYearCash = numeric(),
           stringsAsFactors = FALSE
         )
         attr(out, 'droppedDuplicateRows') <- dropped_duplicate_rows
@@ -94,6 +92,7 @@ contracts <- function() {
         c_age <- out$ageAtSigning
         matched_player_id <- rep(NA_integer_, nrow(out))
         matched_player_full_name <- rep(NA_character_, nrow(out))
+        matched_position_code <- rep(NA_character_, nrow(out))
         for (i in seq_len(nrow(out))) {
           idx <- key_map[[c_key[[i]]]]
           if (is.null(idx) || !length(idx)) next
@@ -131,6 +130,9 @@ contracts <- function() {
           if (length(idx) == 1L) {
             matched_player_id[[i]] <- suppressWarnings(as.integer(p$playerId[idx]))
             matched_player_full_name[[i]] <- as.character(p$playerFullName[idx])
+            if ('positionCode' %in% names(p)) {
+              matched_position_code[[i]] <- as.character(p$positionCode[idx])
+            }
           }
         }
         out$playerId <- matched_player_id
@@ -138,6 +140,11 @@ contracts <- function() {
           is.na(matched_player_full_name) | matched_player_full_name == '',
           out$playerFullName,
           matched_player_full_name
+        )
+        out$positionCode <- ifelse(
+          is.na(matched_position_code) | matched_position_code == '',
+          out$positionCode,
+          matched_position_code
         )
         unresolved <- is.na(out$playerId)
         dropped_unresolved <- sum(unresolved)
@@ -166,9 +173,7 @@ contracts <- function() {
         'contractYears',
         'contractAAV',
         'contractValue',
-        'signingBonus',
-        'twoYearCash',
-        'threeYearCash'
+        'signingBonus'
       )]
       names(out)[names(out) == 'signedWithTriCode'] <- 'signedWithTeamTriCode'
       names(out)[names(out) == 'contractYears'] <- 'term'

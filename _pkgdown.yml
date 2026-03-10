@@ -1,4 +1,10 @@
 url: https://rentosaijo.github.io/nhlscraper/
+
+# Do not run Rd examples or \dontrun{} when building the reference (faster, no API calls).
+# Override at build time with build_site(examples = TRUE) if needed.
+examples: false
+run_dont_run: false
+
 template:
   bootstrap: 5
   bootswatch: cosmo
@@ -7,27 +13,40 @@ template:
 navbar:
   title: "nhlscraper"
   structure:
-    left: [intro, reference, example, news]
+    left: [intro, reference, examples, news]
     right: [search, github, x, lightswitch]
   components:
     intro:
       icon: fa-home fa-lg
       href: index.html
+      aria-label: Home
     reference:
       text: "Functions"
       href: reference/index.html
-    example:
-      text: "Example"
-      href: articles/example.html
+    examples:
+      text: "Examples"
+      menu:
+        - text: "Do Bigger Skaters Hold Their Scoring in the Playoffs?"
+          href: articles/playoff-size.html
+        - text: "Did the NHL Draft's Size Obsession Peak in the 1990s?"
+          href: articles/draft-size-bias.html
+        - text: "What Separated Florida and Edmonton in Game 7?"
+          href: articles/game-7-shot-quality.html
+        - text: "How Costly Are Back-to-Backs in the Salary-Cap Era?"
+          href: articles/back-to-back-tax.html
+        - text: "Do Elite Teams Really All Play the Same Way?"
+          href: articles/team-edge-archetypes.html
     news:
       text: "News"
       href: news/index.html
     github:
       icon: fa-github
       href: https://github.com/RentoSaijo/nhlscraper
+      aria-label: GitHub
     x:
       icon: fa-x-twitter
       href: https://x.com/nhlscraper
+      aria-label: X
 
 authors:
   Rento Saijo:
@@ -41,7 +60,22 @@ authors:
   sidebar:
     roles: [aut, ctb]
 
+articles:
+  - title: "Examples"
+    contents:
+      - playoff-size
+      - draft-size-bias
+      - game-7-shot-quality
+      - back-to-back-tax
+      - team-edge-archetypes
+
 reference:
+  - title: "Package"
+    desc: >
+      Package overview and help
+    contents:
+      - nhlscraper
+
   - title: "High-level"
     desc: >
       Functions to call the NHL APIs for high-level data

@@ -114,8 +114,6 @@ raw$contractYears <- contract_years
 raw$contractValue <- parse_money(raw$Value)
 raw$contractAAV <- parse_money(raw$AAV)
 raw$signingBonus <- parse_money(raw[['Signing Bonus']])
-raw$twoYearCash <- parse_money(raw[['2-Year Cash']])
-raw$threeYearCash <- parse_money(raw[['3-Year Cash']])
 out <- raw[, c(
   'playerFullName',
   'positionCode',
@@ -130,8 +128,6 @@ out <- raw[, c(
   'contractValue',
   'contractAAV',
   'signingBonus',
-  'twoYearCash',
-  'threeYearCash',
   'sourceFile'
 )]
 duplicate_key <- paste(
@@ -146,8 +142,6 @@ duplicate_key <- paste(
   out$contractValue,
   out$contractAAV,
   out$signingBonus,
-  out$twoYearCash,
-  out$threeYearCash,
   sep = '|'
 )
 duplicate_idx <- duplicated(duplicate_key)

@@ -13,6 +13,6 @@
 data.frame with one row per event (play) and added columns: \code{homeIsEmptyNet}, \code{awayIsEmptyNet}, \code{homeSkaterCount}, \code{awaySkaterCount}, \code{isEmptyNetFor}, \code{isEmptyNetAgainst}, \code{skaterCountFor}, \code{skaterCountAgainst}, \code{manDifferential}, and \code{strengthState}
 }
 \description{
-\code{.strip_situation_code()} strips the situation code into goalie and skater counts for home and away teams, then (from the event owner's perspective) computes man differential and a strength state classification.
+\code{.strip_situation_code()} strips the situation code into goalie and skater counts for home and away teams, then (from the event owner's perspective) computes man differential and a strength state classification without rewriting the source \code{situationCode} column.
 }
 \keyword{internal}

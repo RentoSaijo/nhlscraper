@@ -23,9 +23,8 @@ cleaned, public-facing play-by-play schema, including canonical names such as
 \code{shotsFor}, \code{penaltyTypeDescKey}, \code{penaltyDuration}, \code{servedByPlayerId},
 and HTML-report-derived on-ice player ID columns such as \code{homeGoaliePlayerId},
 \code{awayGoaliePlayerId}, \code{homeSkater1PlayerId}, and \code{homeSkater6PlayerId},
-plus shift-chart-derived timing columns such as
-\code{homeSkater1SecondsElapsedInShift} and
-\code{homeSkater1SecondsElapsedInPeriodSinceLastShift}.
+and HTML-report-derived on-ice player IDs. Use \code{\link[=add_shift_times]{add_shift_times()}} with
+\code{\link[=shift_chart]{shift_chart()}} (or \code{\link[=shift_charts]{shift_charts()}}) to add on-ice shift timing columns.
 }
 \examples{
 gc_pbp_Martin_Necas_legacy_game <- gc_play_by_play(game = 2025020275)
