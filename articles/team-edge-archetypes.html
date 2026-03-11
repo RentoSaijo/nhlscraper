@@ -40,6 +40,7 @@
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles">
 <li><a class="dropdown-item" href="../articles/play-by-play-pipeline.html">How gc_play_by_play() and wsc_play_by_play() Work</a></li>
+    <li><a class="dropdown-item" href="../articles/expected-goals-model.html">How the Expected Goals Model Works</a></li>
   </ul>
 </li>
 <li class="active nav-item dropdown">
@@ -163,7 +164,6 @@ season.</p>
 <span>  <span class="op">)</span>,</span>
 <span>  stringsAsFactors <span class="op">=</span> <span class="cn">FALSE</span></span>
 <span><span class="op">)</span></span>
-<span></span>
 <span><span class="fu">make_table</span><span class="op">(</span></span>
 <span>  <span class="va">leader_table</span>,</span>
 <span>  caption <span class="op">=</span> <span class="st">'League-leading 2024-25 team EDGE categories.'</span></span>
@@ -227,7 +227,6 @@ incomplete.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Define selected teams and robust fetch helpers.</span></span>
 <span><span class="va">team_ids</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>CAR <span class="op">=</span> <span class="fl">12</span>, COL <span class="op">=</span> <span class="fl">21</span>, EDM <span class="op">=</span> <span class="fl">22</span>, FLA <span class="op">=</span> <span class="fl">13</span>, WSH <span class="op">=</span> <span class="fl">15</span><span class="op">)</span></span>
-<span></span>
 <span><span class="va">fetch_with_retry</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">fetch_fun</span>, <span class="va">validator</span>, <span class="va">tries</span> <span class="op">=</span> <span class="fl">3</span><span class="op">)</span> <span class="op">{</span></span>
 <span>  <span class="kw">for</span> <span class="op">(</span><span class="va">i</span> <span class="kw">in</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq_len</a></span><span class="op">(</span><span class="va">tries</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
 <span>    <span class="va">value</span> <span class="op">&lt;-</span> <span class="kw"><a href="https://rdrr.io/r/base/try.html" class="external-link">try</a></span><span class="op">(</span><span class="fu">fetch_fun</span><span class="op">(</span><span class="op">)</span>, silent <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
@@ -238,18 +237,15 @@ incomplete.</p>
 <span>  <span class="op">}</span></span>
 <span>  <span class="cn">NULL</span></span>
 <span><span class="op">}</span></span>
-<span></span>
 <span><span class="va">valid_df</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span>, <span class="va">required_cols</span><span class="op">)</span> <span class="op">{</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html" class="external-link">is.data.frame</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">&amp;&amp;</span> <span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">&gt;</span> <span class="fl">0</span> <span class="op">&amp;&amp;</span> <span class="fu"><a href="https://rdrr.io/r/base/all.html" class="external-link">all</a></span><span class="op">(</span><span class="va">required_cols</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="op">}</span></span>
-<span></span>
 <span><span class="va">extract_name</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">first_name</span>, <span class="va">last_name</span><span class="op">)</span> <span class="op">{</span></span>
 <span>  <span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">first_name</span><span class="op">)</span> <span class="op">||</span> <span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">last_name</span><span class="op">)</span> <span class="op">||</span> <span class="va">first_name</span> <span class="op">==</span> <span class="st">''</span> <span class="op">||</span> <span class="va">last_name</span> <span class="op">==</span> <span class="st">''</span><span class="op">)</span> <span class="op">{</span></span>
 <span>    <span class="kw"><a href="https://rdrr.io/r/base/function.html" class="external-link">return</a></span><span class="op">(</span><span class="cn">NA_character_</span><span class="op">)</span></span>
 <span>  <span class="op">}</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste</a></span><span class="op">(</span><span class="va">first_name</span>, <span class="va">last_name</span><span class="op">)</span></span>
 <span><span class="op">}</span></span>
-<span></span>
 <span><span class="va">build_team_profile</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">team_code</span>, <span class="va">team_id</span><span class="op">)</span> <span class="op">{</span></span>
 <span>  <span class="va">team_summary</span> <span class="op">&lt;-</span> <span class="fu">fetch_with_retry</span><span class="op">(</span></span>
 <span>    <span class="kw">function</span><span class="op">(</span><span class="op">)</span> <span class="fu">nhlscraper</span><span class="fu">::</span><span class="fu"><a href="../reference/team_edge_summary.html">team_edge_summary</a></span><span class="op">(</span></span>
@@ -307,7 +303,6 @@ incomplete.</p>
 <span>    <span class="op">)</span>,</span>
 <span>    <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="fu">valid_df</span><span class="op">(</span><span class="va">x</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'area'</span>, <span class="st">'sog'</span><span class="op">)</span><span class="op">)</span></span>
 <span>  <span class="op">)</span></span>
-<span></span>
 <span>  <span class="kw">if</span> <span class="op">(</span></span>
 <span>    <span class="fu"><a href="https://rdrr.io/r/base/NULL.html" class="external-link">is.null</a></span><span class="op">(</span><span class="va">zone_rows</span><span class="op">)</span> <span class="op">||</span></span>
 <span>      <span class="fu"><a href="https://rdrr.io/r/base/NULL.html" class="external-link">is.null</a></span><span class="op">(</span><span class="va">skating_rows</span><span class="op">)</span> <span class="op">||</span></span>
@@ -332,15 +327,12 @@ incomplete.</p>
 <span>      stringsAsFactors <span class="op">=</span> <span class="cn">FALSE</span></span>
 <span>    <span class="op">)</span><span class="op">)</span></span>
 <span>  <span class="op">}</span></span>
-<span></span>
 <span>  <span class="va">zone_row</span> <span class="op">&lt;-</span> <span class="va">zone_rows</span><span class="op">[</span><span class="va">zone_rows</span><span class="op">[[</span><span class="st">'strengthCode'</span><span class="op">]</span><span class="op">]</span> <span class="op">==</span> <span class="st">'all'</span>, , drop <span class="op">=</span> <span class="cn">FALSE</span><span class="op">]</span></span>
 <span>  <span class="va">skating_row</span> <span class="op">&lt;-</span> <span class="va">skating_rows</span><span class="op">[</span><span class="va">skating_rows</span><span class="op">[[</span><span class="st">'positionCode'</span><span class="op">]</span><span class="op">]</span> <span class="op">==</span> <span class="st">'all'</span>, , drop <span class="op">=</span> <span class="cn">FALSE</span><span class="op">]</span></span>
 <span>  <span class="va">shot_speed_row</span> <span class="op">&lt;-</span> <span class="va">shot_speed_rows</span><span class="op">[</span><span class="va">shot_speed_rows</span><span class="op">[[</span><span class="st">'position'</span><span class="op">]</span><span class="op">]</span> <span class="op">==</span> <span class="st">'all'</span>, , drop <span class="op">=</span> <span class="cn">FALSE</span><span class="op">]</span></span>
-<span></span>
 <span>  <span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">zone_row</span><span class="op">)</span><span class="op">)</span> <span class="va">zone_row</span> <span class="op">&lt;-</span> <span class="va">zone_rows</span><span class="op">[</span><span class="fl">1</span>, , drop <span class="op">=</span> <span class="cn">FALSE</span><span class="op">]</span></span>
 <span>  <span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">skating_row</span><span class="op">)</span><span class="op">)</span> <span class="va">skating_row</span> <span class="op">&lt;-</span> <span class="va">skating_rows</span><span class="op">[</span><span class="fl">1</span>, , drop <span class="op">=</span> <span class="cn">FALSE</span><span class="op">]</span></span>
 <span>  <span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">shot_speed_row</span><span class="op">)</span><span class="op">)</span> <span class="va">shot_speed_row</span> <span class="op">&lt;-</span> <span class="va">shot_speed_rows</span><span class="op">[</span><span class="fl">1</span>, , drop <span class="op">=</span> <span class="cn">FALSE</span><span class="op">]</span></span>
-<span></span>
 <span>  <span class="va">interior_mask</span> <span class="op">&lt;-</span> <span class="va">shot_location_rows</span><span class="op">[[</span><span class="st">'area'</span><span class="op">]</span><span class="op">]</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
 <span>    <span class="st">'Crease'</span>,</span>
 <span>    <span class="st">'Low Slot'</span>,</span>
@@ -361,7 +353,6 @@ incomplete.</p>
 <span>    <span class="st">'Beyond Red Line'</span></span>
 <span>  <span class="op">)</span></span>
 <span>  <span class="va">total_shots</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">shot_location_rows</span><span class="op">[[</span><span class="st">'sog'</span><span class="op">]</span><span class="op">]</span><span class="op">)</span></span>
-<span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span>
 <span>    team <span class="op">=</span> <span class="va">team_code</span>,</span>
 <span>    points <span class="op">=</span> <span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/NULL.html" class="external-link">is.null</a></span><span class="op">(</span><span class="va">team_summary</span><span class="op">)</span><span class="op">)</span> <span class="cn">NA_real_</span> <span class="kw">else</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="va">team_summary</span><span class="op">[[</span><span class="st">'team'</span><span class="op">]</span><span class="op">]</span><span class="op">[[</span><span class="st">'points'</span><span class="op">]</span><span class="op">]</span><span class="op">)</span>,</span>
@@ -389,7 +380,6 @@ incomplete.</p>
 <span>    stringsAsFactors <span class="op">=</span> <span class="cn">FALSE</span></span>
 <span>  <span class="op">)</span></span>
 <span><span class="op">}</span></span>
-<span></span>
 <span><span class="va">team_profiles</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/funprog.html" class="external-link">Map</a></span><span class="op">(</span></span>
 <span>  <span class="va">build_team_profile</span>,</span>
 <span>  team_code <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">team_ids</span><span class="op">)</span>,</span>
@@ -397,7 +387,6 @@ incomplete.</p>
 <span><span class="op">)</span></span>
 <span><span class="va">team_profiles</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/do.call.html" class="external-link">do.call</a></span><span class="op">(</span><span class="va">rbind</span>, <span class="va">team_profiles</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">rownames</a></span><span class="op">(</span><span class="va">team_profiles</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="cn">NULL</span></span>
-<span></span>
 <span><span class="va">profile_table</span> <span class="op">&lt;-</span> <span class="va">team_profiles</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
 <span>  <span class="st">'team'</span>,</span>
 <span>  <span class="st">'points'</span>,</span>
@@ -409,7 +398,6 @@ incomplete.</p>
 <span>  <span class="st">'hardestShot'</span>,</span>
 <span>  <span class="st">'interiorShare'</span></span>
 <span><span class="op">)</span><span class="op">]</span></span>
-<span></span>
 <span><span class="fu">make_table</span><span class="op">(</span></span>
 <span>  <span class="va">profile_table</span>,</span>
 <span>  caption <span class="op">=</span> <span class="st">'Five-team 2024-25 EDGE profile comparison.'</span></span>
@@ -513,7 +501,6 @@ beside pure pace.</p>
 <code class="sourceCode R"><span><span class="co"># Plot territorial control and burst volume.</span></span>
 <span><span class="va">old_par</span> <span class="op">&lt;-</span> <span class="fu">graphics</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span>no.readonly <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="fu">graphics</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span>mfrow <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span>, mar <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">5</span>, <span class="fl">7</span>, <span class="fl">3</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span></span>
-<span></span>
 <span><span class="va">ordered_zone</span> <span class="op">&lt;-</span> <span class="va">team_profiles</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/order.html" class="external-link">order</a></span><span class="op">(</span><span class="va">team_profiles</span><span class="op">[[</span><span class="st">'offensiveZonePctg'</span><span class="op">]</span><span class="op">]</span><span class="op">)</span>, <span class="op">]</span></span>
 <span><span class="fu">graphics</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/graphics/barplot.html" class="external-link">barplot</a></span><span class="op">(</span></span>
 <span>  <span class="va">ordered_zone</span><span class="op">[[</span><span class="st">'offensiveZonePctg'</span><span class="op">]</span><span class="op">]</span>,</span>
@@ -524,7 +511,6 @@ beside pure pace.</p>
 <span>  border <span class="op">=</span> <span class="cn">NA</span>,</span>
 <span>  xlab <span class="op">=</span> <span class="st">'Offensive-Zone Share'</span></span>
 <span><span class="op">)</span></span>
-<span></span>
 <span><span class="va">ordered_bursts</span> <span class="op">&lt;-</span> <span class="va">team_profiles</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/order.html" class="external-link">order</a></span><span class="op">(</span><span class="va">team_profiles</span><span class="op">[[</span><span class="st">'burstsOver22'</span><span class="op">]</span><span class="op">]</span><span class="op">)</span>, <span class="op">]</span></span>
 <span><span class="fu">graphics</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/graphics/barplot.html" class="external-link">barplot</a></span><span class="op">(</span></span>
 <span>  <span class="va">ordered_bursts</span><span class="op">[[</span><span class="st">'burstsOver22'</span><span class="op">]</span><span class="op">]</span>,</span>
@@ -541,8 +527,7 @@ Territorial control and pace look different across elite 2024-25 teams.
 </p>
 </div>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span></span>
-<span><span class="fu">graphics</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span><span class="va">old_par</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu">graphics</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span><span class="va">old_par</span><span class="op">)</span></span></code></pre></div>
 <p>Carolina and Colorado are both excellent teams, but they do not get
 there in the same way. Carolina’s profile screams territorial pressure.
 Colorado’s profile screams pace. Edmonton leans closer to Colorado on
@@ -570,7 +555,6 @@ inside.</p>
 <span>  <span class="st">'Points and perimeter'</span>,</span>
 <span>  <span class="st">'Other'</span></span>
 <span><span class="op">)</span></span>
-<span></span>
 <span><span class="fu">graphics</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/graphics/barplot.html" class="external-link">barplot</a></span><span class="op">(</span></span>
 <span>  <span class="va">shot_mix</span>,</span>
 <span>  beside <span class="op">=</span> <span class="cn">FALSE</span>,</span>
@@ -610,7 +594,6 @@ extreme team traits connected to the players who generated them.</p>
 <span>  <span class="st">'hardestShooter'</span>,</span>
 <span>  <span class="st">'hardestShot'</span></span>
 <span><span class="op">)</span><span class="op">]</span></span>
-<span></span>
 <span><span class="fu">make_table</span><span class="op">(</span></span>
 <span>  <span class="va">player_table</span>,</span>
 <span>  caption <span class="op">=</span> <span class="st">"Players behind each team's fastest burst and hardest shot."</span></span>

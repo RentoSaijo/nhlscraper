@@ -9,11 +9,11 @@ a given `game`.
 ig_game_shot_locations(
   game = 2023030417,
   team = "home",
-  model = 1,
+  model = NULL,
   save = TRUE
 )
 
-ig_game_shot_locs(game = 2023030417, team = "home", model = 1)
+ig_game_shot_locs(game = 2023030417, team = "home", model = NULL)
 ```
 
 ## Arguments
@@ -30,8 +30,7 @@ ig_game_shot_locs(game = 2023030417, team = "home", model = 1)
 
 - model:
 
-  integer in 1:4 indicating which expected goals model to use; see web
-  documentation for what variables each version considers
+  deprecated legacy model selector; ignored
 
 - save:
 
@@ -47,7 +46,6 @@ ig_game_shot_locs(game = 2023030417, team = "home", model = 1)
 # May take >5s, so skip.
 ig_game_shot_locations(
   game  = 2023030417, 
-  model = 1, 
   team  = 'H', 
   save  = FALSE
 )

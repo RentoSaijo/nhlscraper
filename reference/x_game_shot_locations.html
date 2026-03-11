@@ -22,6 +22,7 @@ given game."><meta property="og:image" content="https://rentosaijo.github.io/nhl
 <li class="nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles"><li><a class="dropdown-item" href="../articles/play-by-play-pipeline.html">How gc_play_by_play() and wsc_play_by_play() Work</a></li>
+    <li><a class="dropdown-item" href="../articles/expected-goals-model.html">How the Expected Goals Model Works</a></li>
   </ul></li>
 <li class="nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-examples" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Examples</button>
@@ -61,9 +62,14 @@ given <code>game</code>.</p>
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">x_game_shot_locations</span><span class="op">(</span>game <span class="op">=</span> <span class="fl">2023030417</span>, team <span class="op">=</span> <span class="st">"home"</span>, model <span class="op">=</span> <span class="fl">1</span>, save <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">x_game_shot_locations</span><span class="op">(</span></span>
+<span>  game <span class="op">=</span> <span class="fl">2023030417</span>,</span>
+<span>  team <span class="op">=</span> <span class="st">"home"</span>,</span>
+<span>  model <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  save <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu">x_game_shot_locs</span><span class="op">(</span>game <span class="op">=</span> <span class="fl">2023030417</span>, team <span class="op">=</span> <span class="st">"home"</span>, model <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu">x_game_shot_locs</span><span class="op">(</span>game <span class="op">=</span> <span class="fl">2023030417</span>, team <span class="op">=</span> <span class="st">"home"</span>, model <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -79,7 +85,7 @@ given <code>game</code>.</p>
 
 
 <dt id="arg-model">model<a class="anchor" aria-label="anchor" href="#arg-model"></a></dt>
-<dd><p>integer in 1:4 indicating which expected goals model to use; see web documentation for what variables each version considers</p></dd>
+<dd><p>deprecated legacy model selector; ignored</p></dd>
 
 
 <dt id="arg-save">save<a class="anchor" aria-label="anchor" href="#arg-save"></a></dt>
@@ -96,7 +102,6 @@ given <code>game</code>.</p>
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="co"># May take &gt;5s, so skip.</span></span>
 <span><span class="fu">x_game_shot_locations</span><span class="op">(</span></span>
 <span>  game  <span class="op">=</span> <span class="fl">2023030417</span>, </span>
-<span>  model <span class="op">=</span> <span class="fl">1</span>, </span>
 <span>  team  <span class="op">=</span> <span class="st">'H'</span>,</span>
 <span>  save  <span class="op">=</span> <span class="cn">FALSE</span></span>
 <span><span class="op">)</span></span></code></pre></div>

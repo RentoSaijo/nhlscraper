@@ -6,9 +6,9 @@ xG time-series plot for a given `game` as a PNG.
 ## Usage
 
 ``` r
-ig_game_cumulative_expected_goals(game = 2023030417, model = 1, save = TRUE)
+ig_game_cumulative_expected_goals(game = 2023030417, model = NULL, save = TRUE)
 
-ig_game_cum_xG(game = 2023030417, model = 1)
+ig_game_cum_xG(game = 2023030417, model = NULL)
 ```
 
 ## Arguments
@@ -21,8 +21,7 @@ ig_game_cum_xG(game = 2023030417, model = 1)
 
 - model:
 
-  integer in 1:4 indicating which expected goals model to use; see web
-  documentation for what variables each version considers
+  deprecated legacy model selector; ignored
 
 - save:
 
@@ -38,7 +37,6 @@ ig_game_cum_xG(game = 2023030417, model = 1)
 # May take >5s, so skip.
 ig_game_cumulative_expected_goals(
   game  = 2023030417, 
-  model = 1, 
   save  = FALSE
 )
 ```

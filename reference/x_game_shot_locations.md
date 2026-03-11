@@ -6,9 +6,14 @@ given `game`.
 ## Usage
 
 ``` r
-x_game_shot_locations(game = 2023030417, team = "home", model = 1, save = TRUE)
+x_game_shot_locations(
+  game = 2023030417,
+  team = "home",
+  model = NULL,
+  save = TRUE
+)
 
-x_game_shot_locs(game = 2023030417, team = "home", model = 1)
+x_game_shot_locs(game = 2023030417, team = "home", model = NULL)
 ```
 
 ## Arguments
@@ -25,8 +30,7 @@ x_game_shot_locs(game = 2023030417, team = "home", model = 1)
 
 - model:
 
-  integer in 1:4 indicating which expected goals model to use; see web
-  documentation for what variables each version considers
+  deprecated legacy model selector; ignored
 
 - save:
 
@@ -42,7 +46,6 @@ x_game_shot_locs(game = 2023030417, team = "home", model = 1)
 # May take >5s, so skip.
 x_game_shot_locations(
   game  = 2023030417, 
-  model = 1, 
   team  = 'H',
   save  = FALSE
 )

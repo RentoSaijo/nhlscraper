@@ -55,7 +55,6 @@ draft_tbl[['positionBucket']] <- ifelse(
   'Forward'
 )
 draft_tbl[['tallSkater']] <- draft_tbl[['height']] >= 74
-
 nrow(draft_tbl)
 #> [1] 9998
 ```
@@ -76,7 +75,6 @@ era_summary <- aggregate(
   data = draft_tbl,
   FUN = mean
 )
-
 make_table(
   era_summary,
   caption = 'Average drafted skater size by era and draft bucket.'
@@ -268,7 +266,6 @@ position_summary <- aggregate(
   data = draft_tbl,
   FUN = mean
 )
-
 make_table(
   position_summary,
   caption = 'Average drafted skater size by era and position family.'
@@ -323,7 +320,6 @@ draft_fit_tbl <- draft_fit_tbl[, c(
   't value',
   'Pr(>|t|)'
 )]
-
 make_table(
   draft_fit_tbl,
   caption = 'Linear model of drafted skater height.',
@@ -343,12 +339,10 @@ Linear model of drafted skater height.
 This model says the first-round premium is still real even after
 accounting for time and position. First-round skaters come in roughly
 0.52 inches taller on average, while defensemen add about 1.05 inches on
-top of that.
-
-The draft-year slope itself is small because the historical pattern is
-not a straight line. That is the core takeaway of the whole article:
-draft size preference looks less like a steady march and more like a
-boom that peaked in the 1990s and early 2000s.
+top of that. The draft-year slope itself is small because the historical
+pattern is not a straight line. That is the core takeaway of the whole
+article: draft size preference looks less like a steady march and more
+like a boom that peaked in the 1990s and early 2000s.
 
 ## What We Learned
 

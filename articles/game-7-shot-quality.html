@@ -40,6 +40,7 @@
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles">
 <li><a class="dropdown-item" href="../articles/play-by-play-pipeline.html">How gc_play_by_play() and wsc_play_by_play() Work</a></li>
+    <li><a class="dropdown-item" href="../articles/expected-goals-model.html">How the Expected Goals Model Works</a></li>
   </ul>
 </li>
 <li class="active nav-item dropdown">
@@ -118,8 +119,7 @@ that show how the game breathed.</p>
 <code class="sourceCode R"><span><span class="co"># Pull summary, play-by-play, and roster context.</span></span>
 <span><span class="va">game_summary</span> <span class="op">&lt;-</span> <span class="fu">nhlscraper</span><span class="fu">::</span><span class="fu"><a href="../reference/gc_summary.html">gc_summary</a></span><span class="op">(</span><span class="fl">2023030417</span><span class="op">)</span></span>
 <span><span class="va">pbp_xg</span> <span class="op">&lt;-</span> <span class="fu">nhlscraper</span><span class="fu">::</span><span class="fu"><a href="../reference/calculate_expected_goals.html">calculate_expected_goals</a></span><span class="op">(</span></span>
-<span>  <span class="fu">nhlscraper</span><span class="fu">::</span><span class="fu"><a href="../reference/gc_play_by_play.html">gc_pbp</a></span><span class="op">(</span><span class="fl">2023030417</span><span class="op">)</span>,</span>
-<span>  model <span class="op">=</span> <span class="fl">1</span></span>
+<span>  <span class="fu">nhlscraper</span><span class="fu">::</span><span class="fu"><a href="../reference/gc_play_by_play.html">gc_pbp</a></span><span class="op">(</span><span class="fl">2023030417</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
 <span><span class="va">rosters</span> <span class="op">&lt;-</span> <span class="fu">nhlscraper</span><span class="fu">::</span><span class="fu"><a href="../reference/game_rosters.html">game_rosters</a></span><span class="op">(</span><span class="fl">2023030417</span><span class="op">)</span></span>
 <span></span>
@@ -181,7 +181,6 @@ estimate side by side.</p>
 <span><span class="op">)</span></span>
 <span><span class="va">team_table</span><span class="op">[[</span><span class="st">'xGPerShot'</span><span class="op">]</span><span class="op">]</span> <span class="op">&lt;-</span></span>
 <span>  <span class="va">team_table</span><span class="op">[[</span><span class="st">'xG'</span><span class="op">]</span><span class="op">]</span> <span class="op">/</span> <span class="va">team_table</span><span class="op">[[</span><span class="st">'shotsOnGoal'</span><span class="op">]</span><span class="op">]</span></span>
-<span></span>
 <span><span class="fu">make_table</span><span class="op">(</span></span>
 <span>  <span class="va">team_table</span>,</span>
 <span>  caption <span class="op">=</span> <span class="st">'Game 7 team context: score, shots on goal, and expected goals.'</span></span>
@@ -201,15 +200,15 @@ goals.</caption>
 <td align="left">FLA</td>
 <td align="right">2</td>
 <td align="right">21</td>
-<td align="right">1.785</td>
-<td align="right">0.085</td>
+<td align="right">2.279</td>
+<td align="right">0.109</td>
 </tr>
 <tr class="even">
 <td align="left">EDM</td>
 <td align="right">1</td>
 <td align="right">24</td>
-<td align="right">1.655</td>
-<td align="right">0.069</td>
+<td align="right">2.533</td>
+<td align="right">0.106</td>
 </tr>
 </tbody>
 </table>
@@ -251,7 +250,6 @@ pressure actually accumulated.</p>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="va">away_abbrev</span>, <span class="st">'_xG'</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
 <span><span class="va">period_table</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">period_table</span><span class="op">)</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fl">0</span></span>
-<span></span>
 <span><span class="fu">make_table</span><span class="op">(</span></span>
 <span>  <span class="va">period_table</span>,</span>
 <span>  caption <span class="op">=</span> <span class="st">'Expected goals by period in Game 7.'</span></span>
@@ -266,18 +264,18 @@ pressure actually accumulated.</p>
 <tbody>
 <tr class="odd">
 <td align="right">1</td>
-<td align="right">0.470</td>
-<td align="right">0.432</td>
+<td align="right">0.618</td>
+<td align="right">0.547</td>
 </tr>
 <tr class="even">
 <td align="right">2</td>
-<td align="right">0.288</td>
-<td align="right">0.432</td>
+<td align="right">0.415</td>
+<td align="right">0.833</td>
 </tr>
 <tr class="odd">
 <td align="right">3</td>
-<td align="right">1.026</td>
-<td align="right">0.791</td>
+<td align="right">1.247</td>
+<td align="right">1.153</td>
 </tr>
 </tbody>
 </table>
@@ -313,23 +311,22 @@ ask which specific looks drove the game.</p>
 <span>  <span class="st">'yCoordNorm'</span>,</span>
 <span>  <span class="st">'xG'</span></span>
 <span><span class="op">)</span></span>
-<span></span>
 <span><span class="fu">make_table</span><span class="op">(</span></span>
 <span>  <span class="va">chance_table</span>,</span>
 <span>  caption <span class="op">=</span> <span class="st">'Highest-xG individual chances in Game 7.'</span>,</span>
 <span>  digits <span class="op">=</span> <span class="fl">3</span></span>
 <span><span class="op">)</span></span></code></pre></div>
-<table style="width:100%;" class="table">
+<table class="table">
 <caption>Highest-xG individual chances in Game 7.</caption>
 <colgroup>
-<col width="3%">
-<col width="25%">
+<col width="4%">
+<col width="22%">
 <col width="6%">
 <col width="9%">
-<col width="17%">
-<col width="14%">
-<col width="14%">
-<col width="7%">
+<col width="18%">
+<col width="15%">
+<col width="15%">
+<col width="8%">
 </colgroup>
 <thead><tr class="header">
 <th align="left"></th>
@@ -350,19 +347,9 @@ ask which specific looks drove the game.</p>
 <td align="left">19:33</td>
 <td align="right">16</td>
 <td align="right">17</td>
-<td align="right">0.537</td>
+<td align="right">0.444</td>
 </tr>
 <tr class="even">
-<td align="left">17</td>
-<td align="left">Zach Hyman</td>
-<td align="left">EDM</td>
-<td align="right">3</td>
-<td align="left">12:57</td>
-<td align="right">85</td>
-<td align="right">1</td>
-<td align="right">0.185</td>
-</tr>
-<tr class="odd">
 <td align="left">16</td>
 <td align="left">Zach Hyman</td>
 <td align="left">EDM</td>
@@ -370,57 +357,7 @@ ask which specific looks drove the game.</p>
 <td align="left">12:56</td>
 <td align="right">79</td>
 <td align="right">2</td>
-<td align="right">0.141</td>
-</tr>
-<tr class="even">
-<td align="left">1</td>
-<td align="left">Adam Henrique</td>
-<td align="left">EDM</td>
-<td align="right">1</td>
-<td align="left">00:21</td>
-<td align="right">82</td>
-<td align="right">-3</td>
-<td align="right">0.136</td>
-</tr>
-<tr class="odd">
-<td align="left">59</td>
-<td align="left">Connor McDavid</td>
-<td align="left">EDM</td>
-<td align="right">3</td>
-<td align="left">17:17</td>
-<td align="right">82</td>
-<td align="right">3</td>
-<td align="right">0.136</td>
-</tr>
-<tr class="even">
-<td align="left">11</td>
-<td align="left">Mattias Ekholm</td>
-<td align="left">EDM</td>
-<td align="right">3</td>
-<td align="left">17:42</td>
-<td align="right">84</td>
-<td align="right">3</td>
-<td align="right">0.133</td>
-</tr>
-<tr class="odd">
-<td align="left">70</td>
-<td align="left">Eetu Luostarinen</td>
-<td align="left">FLA</td>
-<td align="right">3</td>
-<td align="left">00:17</td>
-<td align="right">80</td>
-<td align="right">-3</td>
-<td align="right">0.132</td>
-</tr>
-<tr class="even">
-<td align="left">25</td>
-<td align="left">Mattias Janmark</td>
-<td align="left">EDM</td>
-<td align="right">1</td>
-<td align="left">06:44</td>
-<td align="right">77</td>
-<td align="right">-2</td>
-<td align="right">0.131</td>
+<td align="right">0.235</td>
 </tr>
 <tr class="odd">
 <td align="left">41</td>
@@ -430,17 +367,77 @@ ask which specific looks drove the game.</p>
 <td align="left">05:17</td>
 <td align="right">81</td>
 <td align="right">5</td>
-<td align="right">0.128</td>
+<td align="right">0.211</td>
 </tr>
 <tr class="even">
-<td align="left">13</td>
-<td align="left">Vladimir Tarasenko</td>
+<td align="left">17</td>
+<td align="left">Zach Hyman</td>
+<td align="left">EDM</td>
+<td align="right">3</td>
+<td align="left">12:57</td>
+<td align="right">85</td>
+<td align="right">1</td>
+<td align="right">0.207</td>
+</tr>
+<tr class="odd">
+<td align="left">25</td>
+<td align="left">Mattias Janmark</td>
+<td align="left">EDM</td>
+<td align="right">1</td>
+<td align="left">06:44</td>
+<td align="right">77</td>
+<td align="right">-2</td>
+<td align="right">0.200</td>
+</tr>
+<tr class="even">
+<td align="left">8</td>
+<td align="left">Mattias Ekholm</td>
+<td align="left">EDM</td>
+<td align="right">3</td>
+<td align="left">17:45</td>
+<td align="right">74</td>
+<td align="right">9</td>
+<td align="right">0.163</td>
+</tr>
+<tr class="odd">
+<td align="left">11</td>
+<td align="left">Mattias Ekholm</td>
+<td align="left">EDM</td>
+<td align="right">3</td>
+<td align="left">17:42</td>
+<td align="right">84</td>
+<td align="right">3</td>
+<td align="right">0.132</td>
+</tr>
+<tr class="even">
+<td align="left">39</td>
+<td align="left">Leon Draisaitl</td>
+<td align="left">EDM</td>
+<td align="right">2</td>
+<td align="left">04:27</td>
+<td align="right">75</td>
+<td align="right">-26</td>
+<td align="right">0.117</td>
+</tr>
+<tr class="odd">
+<td align="left">59</td>
+<td align="left">Connor McDavid</td>
+<td align="left">EDM</td>
+<td align="right">3</td>
+<td align="left">17:17</td>
+<td align="right">82</td>
+<td align="right">3</td>
+<td align="right">0.117</td>
+</tr>
+<tr class="even">
+<td align="left">69</td>
+<td align="left">Matthew Tkachuk</td>
 <td align="left">FLA</td>
 <td align="right">1</td>
-<td align="left">07:56</td>
-<td align="right">78</td>
-<td align="right">-4</td>
-<td align="right">0.114</td>
+<td align="left">18:41</td>
+<td align="right">84</td>
+<td align="right">-8</td>
+<td align="right">0.111</td>
 </tr>
 </tbody>
 </table>
@@ -471,7 +468,6 @@ territorial edge that never quite broke the score open.</p>
 <span>    cumXG <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fu"><a href="https://rdrr.io/r/base/cumsum.html" class="external-link">cumsum</a></span><span class="op">(</span><span class="va">team_shots</span><span class="op">[[</span><span class="st">'xG'</span><span class="op">]</span><span class="op">]</span><span class="op">)</span><span class="op">)</span></span>
 <span>  <span class="op">)</span></span>
 <span><span class="op">}</span></span>
-<span></span>
 <span><span class="va">home_path</span> <span class="op">&lt;-</span> <span class="fu">build_cum_path</span><span class="op">(</span><span class="va">home_id</span><span class="op">)</span></span>
 <span><span class="va">away_path</span> <span class="op">&lt;-</span> <span class="fu">build_cum_path</span><span class="op">(</span><span class="va">away_id</span><span class="op">)</span></span></code></pre></div>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
@@ -522,7 +518,6 @@ looks came from.</p>
 <code class="sourceCode R"><span><span class="co"># Split shot map inputs by team.</span></span>
 <span><span class="va">home_shots</span> <span class="op">&lt;-</span> <span class="va">shots</span><span class="op">[</span><span class="va">shots</span><span class="op">[[</span><span class="st">'eventOwnerTeamId'</span><span class="op">]</span><span class="op">]</span> <span class="op">==</span> <span class="va">home_id</span>, <span class="op">]</span></span>
 <span><span class="va">away_shots</span> <span class="op">&lt;-</span> <span class="va">shots</span><span class="op">[</span><span class="va">shots</span><span class="op">[[</span><span class="st">'eventOwnerTeamId'</span><span class="op">]</span><span class="op">]</span> <span class="op">==</span> <span class="va">away_id</span>, <span class="op">]</span></span>
-<span></span>
 <span><span class="fu">nhlscraper</span><span class="fu">::</span><span class="fu"><a href="../reference/draw_NHL_rink.html">draw_NHL_rink</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="fu">graphics</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/graphics/points.html" class="external-link">points</a></span><span class="op">(</span></span>
 <span>  <span class="va">home_shots</span><span class="op">[[</span><span class="st">'xCoordNorm'</span><span class="op">]</span><span class="op">]</span>,</span>

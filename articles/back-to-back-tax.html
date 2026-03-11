@@ -40,6 +40,7 @@
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles">
 <li><a class="dropdown-item" href="../articles/play-by-play-pipeline.html">How gc_play_by_play() and wsc_play_by_play() Work</a></li>
+    <li><a class="dropdown-item" href="../articles/expected-goals-model.html">How the Expected Goals Model Works</a></li>
   </ul>
 </li>
 <li class="active nav-item dropdown">
@@ -306,7 +307,6 @@ in their own building.</p>
 <span><span class="va">home_road_table</span> <span class="op">&lt;-</span> <span class="va">home_road_table</span><span class="op">[</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/match.html" class="external-link">match</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/levels.html" class="external-link">levels</a></span><span class="op">(</span><span class="va">team_games</span><span class="op">[[</span><span class="st">'restBucket'</span><span class="op">]</span><span class="op">]</span><span class="op">)</span>, <span class="va">home_road_table</span><span class="op">[[</span><span class="st">'restBucket'</span><span class="op">]</span><span class="op">]</span><span class="op">)</span>,</span>
 <span><span class="op">]</span></span>
-<span></span>
 <span><span class="fu">make_table</span><span class="op">(</span></span>
 <span>  <span class="va">home_road_table</span>,</span>
 <span>  caption <span class="op">=</span> <span class="st">'Home and road win rate by rest bucket.'</span></span>
@@ -416,7 +416,6 @@ effects together.</p>
 <span>  <span class="st">'z value'</span>,</span>
 <span>  <span class="st">'Pr(&gt;|z|)'</span></span>
 <span><span class="op">)</span><span class="op">]</span></span>
-<span></span>
 <span><span class="fu">make_table</span><span class="op">(</span></span>
 <span>  <span class="va">rest_fit_tbl</span>,</span>
 <span>  caption <span class="op">=</span> <span class="st">'Logistic model of wins on rest and venue.'</span>,</span>
@@ -510,7 +509,6 @@ question: which clubs have managed them best over a large sample?</p>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'teamTriCode'</span>, <span class="st">'games'</span>, <span class="st">'winRate'</span><span class="op">)</span></span>
 <span><span class="op">]</span></span>
 <span><span class="va">zero_rest_tbl</span> <span class="op">&lt;-</span> <span class="fu">utils</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">zero_rest_tbl</span>, <span class="fl">10</span><span class="op">)</span></span>
-<span></span>
 <span><span class="fu">make_table</span><span class="op">(</span></span>
 <span>  <span class="va">zero_rest_tbl</span>,</span>
 <span>  caption <span class="op">=</span> <span class="st">'Best back-to-back win rates among teams with at least 50 zero-rest games.'</span></span>

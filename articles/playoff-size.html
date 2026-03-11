@@ -40,6 +40,7 @@
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles">
 <li><a class="dropdown-item" href="../articles/play-by-play-pipeline.html">How gc_play_by_play() and wsc_play_by_play() Work</a></li>
+    <li><a class="dropdown-item" href="../articles/expected-goals-model.html">How the Expected Goals Model Works</a></li>
   </ul>
 </li>
 <li class="active nav-item dropdown">
@@ -186,14 +187,13 @@ playoff scoring, and basic biometrics.</p>
 <span>  include.lowest <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'Lightest'</span>, <span class="st">'Second'</span>, <span class="st">'Third'</span>, <span class="st">'Heaviest'</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
-<span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">analysis_tbl</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] 1680</span></span></code></pre></div>
 <p>That leaves 1680 modern skaters. The sample is large enough to smooth
 away one-hot playoff runs, but still focused enough to keep the
-comparison about contemporary hockey.</p>
-<p>To make the shape of the data concrete, it helps to peek at a few of
-the strongest playoff scorers in the sample.</p>
+comparison about contemporary hockey. To make the shape of the data
+concrete, it helps to peek at a few of the strongest playoff scorers in
+the sample.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Show sample of strongest playoff scorers.</span></span>
 <span><span class="va">sample_tbl</span> <span class="op">&lt;-</span> <span class="va">analysis_tbl</span><span class="op">[</span></span>
@@ -210,7 +210,6 @@ the strongest playoff scorers in the sample.</p>
 <span>  <span class="op">)</span></span>
 <span><span class="op">]</span></span>
 <span><span class="va">sample_tbl</span> <span class="op">&lt;-</span> <span class="fu">utils</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">sample_tbl</span>, <span class="fl">8</span><span class="op">)</span></span>
-<span></span>
 <span><span class="fu">make_table</span><span class="op">(</span></span>
 <span>  <span class="va">sample_tbl</span>,</span>
 <span>  caption <span class="op">=</span> <span class="st">'Top playoff scoring rates among skaters in the working sample.'</span></span>
@@ -358,7 +357,6 @@ drop from regular-season scoring.</p>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/match.html" class="external-link">match</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/levels.html" class="external-link">levels</a></span><span class="op">(</span><span class="va">analysis_tbl</span><span class="op">[[</span><span class="st">'weightQuartile'</span><span class="op">]</span><span class="op">]</span><span class="op">)</span>, <span class="va">quartile_summary</span><span class="op">[[</span><span class="st">'weightQuartile'</span><span class="op">]</span><span class="op">]</span><span class="op">)</span>,</span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'weightQuartile'</span>, <span class="st">'n'</span>, <span class="st">'regularPPG'</span>, <span class="st">'playoffPPG'</span>, <span class="st">'playoffLift'</span><span class="op">)</span></span>
 <span><span class="op">]</span></span>
-<span></span>
 <span><span class="fu">make_table</span><span class="op">(</span></span>
 <span>  <span class="va">quartile_summary</span>,</span>
 <span>  caption <span class="op">=</span> <span class="st">'Regular-season scoring, playoff scoring, and playoff lift by weight quartile.'</span></span>
@@ -430,7 +428,6 @@ broad tendencies or just a few stars.</p>
 <code class="sourceCode R"><span><span class="co"># Plot playoff scoring distribution and average lift.</span></span>
 <span><span class="va">old_par</span> <span class="op">&lt;-</span> <span class="fu">graphics</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span>no.readonly <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="fu">graphics</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span>mfrow <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span>, mar <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">8</span>, <span class="fl">4</span>, <span class="fl">3</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span></span>
-<span></span>
 <span><span class="fu">graphics</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/graphics/boxplot.html" class="external-link">boxplot</a></span><span class="op">(</span></span>
 <span>  <span class="va">playoffPPG</span> <span class="op">~</span> <span class="va">weightQuartile</span>,</span>
 <span>  data <span class="op">=</span> <span class="va">analysis_tbl</span>,</span>
@@ -440,7 +437,6 @@ broad tendencies or just a few stars.</p>
 <span>  ylab <span class="op">=</span> <span class="st">'Playoff Points Per Game'</span>,</span>
 <span>  xlab <span class="op">=</span> <span class="st">''</span></span>
 <span><span class="op">)</span></span>
-<span></span>
 <span><span class="fu">graphics</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/graphics/barplot.html" class="external-link">barplot</a></span><span class="op">(</span></span>
 <span>  <span class="va">quartile_summary</span><span class="op">[[</span><span class="st">'playoffLift'</span><span class="op">]</span><span class="op">]</span>,</span>
 <span>  names.arg <span class="op">=</span> <span class="va">quartile_summary</span><span class="op">[[</span><span class="st">'weightQuartile'</span><span class="op">]</span><span class="op">]</span>,</span>
@@ -457,8 +453,7 @@ Playoff scoring level and playoff lift by weight quartile.
 </p>
 </div>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span></span>
-<span><span class="fu">graphics</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span><span class="va">old_par</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu">graphics</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span><span class="va">old_par</span><span class="op">)</span></span></code></pre></div>
 <p>The left panel reinforces the first point: heavier groups do not
 shift upward as playoff scorers. The right panel reinforces the second:
 every group scores less in the playoffs than in the regular season on
@@ -488,7 +483,6 @@ players with the biggest positive playoff bump.</p>
 <span><span class="op">]</span></span>
 <span><span class="va">risers_tbl</span> <span class="op">&lt;-</span> <span class="va">risers_tbl</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/order.html" class="external-link">order</a></span><span class="op">(</span><span class="op">-</span><span class="va">risers_tbl</span><span class="op">[[</span><span class="st">'playoffLift'</span><span class="op">]</span><span class="op">]</span><span class="op">)</span>, <span class="op">]</span></span>
 <span><span class="va">risers_tbl</span> <span class="op">&lt;-</span> <span class="fu">utils</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">risers_tbl</span>, <span class="fl">10</span><span class="op">)</span></span>
-<span></span>
 <span><span class="fu">make_table</span><span class="op">(</span></span>
 <span>  <span class="va">risers_tbl</span>,</span>
 <span>  caption <span class="op">=</span> <span class="st">'Largest playoff scoring lifts among skaters with at least 40 playoff games.'</span></span>
@@ -640,7 +634,6 @@ defense indicator as predictors.</p>
 <span>  <span class="st">'t value'</span>,</span>
 <span>  <span class="st">'Pr(&gt;|t|)'</span></span>
 <span><span class="op">)</span><span class="op">]</span></span>
-<span></span>
 <span><span class="fu">make_table</span><span class="op">(</span></span>
 <span>  <span class="va">lift_fit_tbl</span>,</span>
 <span>  caption <span class="op">=</span> <span class="st">'Linear model of playoff scoring lift on height, weight, and position.'</span>,</span>
@@ -690,11 +683,10 @@ position.</caption>
 <p>In this specification, neither height nor weight carries a strong
 standalone slope once position is accounted for. The cleanest signal is
 positional: defensemen, on average, lose less scoring in the playoffs
-than forwards do.</p>
-<p>That does not mean size is irrelevant. It means the popular claim
-that bigger skaters <em>as such</em> become better playoff scorers is
-too blunt. Role and position explain more than a simple bigger-is-better
-story.</p>
+than forwards do. That does not mean size is irrelevant. It means the
+popular claim that bigger skaters <em>as such</em> become better playoff
+scorers is too blunt. Role and position explain more than a simple
+bigger-is-better story.</p>
 </div>
 <div class="section level2">
 <h2 id="what-we-learned">What We Learned<a class="anchor" aria-label="anchor" href="#what-we-learned"></a>

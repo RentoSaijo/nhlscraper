@@ -20,6 +20,7 @@
 <li class="nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles"><li><a class="dropdown-item" href="../articles/play-by-play-pipeline.html">How gc_play_by_play() and wsc_play_by_play() Work</a></li>
+    <li><a class="dropdown-item" href="../articles/expected-goals-model.html">How the Expected Goals Model Works</a></li>
   </ul></li>
 <li class="nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-examples" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Examples</button>
@@ -53,7 +54,7 @@
 
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.5.0.9000" id="nhlscraper-0509000">nhlscraper 0.5.0.9000<a class="anchor" aria-label="anchor" href="#nhlscraper-0509000"></a></h2>
-<ul><li>Website now features more guided examples and explanation articles on certain implementations.</li>
+<ul><li>Documentation website now features more guided examples and explanation articles.</li>
 <li>
 <code><a href="../reference/replays.html">replays()</a></code> is now added to retrieve season-aggregate replays.</li>
 <li>
@@ -61,20 +62,22 @@
 <li>
 <code><a href="../reference/shift_chart.html">shift_chart()</a></code> (and consequentially, <code><a href="../reference/shift_charts.html">shift_charts()</a></code>) now returns completed shift charts for all games where at least either one of API or HTML report is available.</li>
 <li>
-<code><a href="../reference/gc_play_by_play.html">gc_play_by_play()</a></code> and <code><a href="../reference/wsc_play_by_play.html">wsc_play_by_play()</a></code> now return only the cleaned public play-by-play schema, with canonical column names such as <code>periodNumber</code>, <code>eventTypeCode</code>, <code>eventTypeDescKey</code>, <code>homeShots</code>, <code>shotsFor</code>, <code>penaltyTypeDescKey</code>, <code>penaltyDuration</code>, <code>servedByPlayerId</code>, and <code>pptReplayUrl</code>.
-<ul><li>The original API <code>situationCode</code> is now kept intact as the source of truth, with goalie/skater counts derived from a parsed copy rather than by rewriting or backfilling the source column.</li>
-<li>HTML-report-derived on-ice goalie/skater ID columns are now limited to <code>faceoff</code>, <code>hit</code>, <code>shot-on-goal</code>, <code>giveaway</code>, <code>missed-shot</code>, <code>blocked-shot</code>, <code>goal</code>, <code>delayed-penalty</code>, <code>takeaway</code>, and <code>failed-shot-attempt</code>, while <code>situationCode</code>-derived strength/count columns remain available wherever <code>situationCode</code> itself is available.</li>
+<code><a href="../reference/gc_play_by_play.html">gc_play_by_play()</a></code> and <code><a href="../reference/wsc_play_by_play.html">wsc_play_by_play()</a></code> now return new schema.
+<ul><li>HTML-report-derived on-ice goalie/skater ID columns are now added, limited to <code>faceoff</code>, <code>hit</code>, <code>shot-on-goal</code>, <code>giveaway</code>, <code>missed-shot</code>, <code>blocked-shot</code>, <code>goal</code>, <code>delayed-penalty</code>, <code>takeaway</code>, and <code>failed-shot-attempt</code>, while <code>situationCode</code>-derived strength/count columns remain available wherever <code>situationCode</code> itself is available. Check out our “Article” section on the documentation website to learn more.</li>
 <li>
-<code><a href="../reference/add_shift_times.html">add_shift_times()</a></code> is now added to populate scalar on-ice shift timing columns from a public play-by-play plus <code><a href="../reference/shift_chart.html">shift_chart()</a></code>/<code><a href="../reference/shift_charts.html">shift_charts()</a></code> using the native timing resolver; <code><a href="../reference/gc_play_by_play.html">gc_play_by_play()</a></code> and <code><a href="../reference/wsc_play_by_play.html">wsc_play_by_play()</a></code> keep those timing columns in-schema but no longer call <code><a href="../reference/shift_chart.html">shift_chart()</a></code> internally.</li>
-<li>HTML play-by-play matching is now more robust to older dotted team abbreviations, reversed faceoff player-order descriptions, duplicate same-second shot clusters, and rows whose parsed HTML on-ice counts disagree with the source <code>situationCode</code>.</li>
-</ul></li>
+<code><a href="../reference/add_shift_times.html">add_shift_times()</a></code> is now added to populate scalar on-ice shift time elapsed columns via C.</li>
 <li>
-<code><a href="../reference/add_deltas.html">add_deltas()</a></code> now handles event-to-event deltas in C, returns raw and normalized x/y deltas alongside distance and angle deltas, and properly handles same-second events and shootouts/penalty shots.
-<ul><li>It also now returns the <code>eventId</code> of the anchoring event, <code>secondsElapsedInSequence</code>, and per-second raw/normalized x/y, distance, and angle deltas, where each sequence begins with a faceoff and zero-time denominators within a same-second sequence use the <code>1 / n</code> rule.</li>
+<code><a href="../reference/add_deltas.html">add_deltas()</a></code> now handles event-to-event deltas in C, returns raw and normalized X/Y deltas alongside distance and angle deltas, and properly handles same-second events and shootouts/penalty shots with <code>1/n</code> estimation.</li>
 <li>
 <code>calculate_speed()</code> is now defunct; use <code><a href="../reference/add_deltas.html">add_deltas()</a></code> instead.</li>
 </ul></li>
-<li>The expected goal (xG) models are currently being reworked; some functions that rely on these models (e.g., <code><a href="../reference/calculate_expected_goals.html">calculate_expected_goals()</a></code>) may not work as expected.</li>
+<li>
+<code><a href="../reference/calculate_expected_goals.html">calculate_expected_goals()</a></code> now uses a fixed six-partition ridge xG model (<code>sd</code>, <code>ev</code>, <code>pp</code>, <code>sh</code>, <code>en</code>, <code>so</code>) instead of legacy versioned models.
+<ul><li>The scorer now mirrors the training-time preprocessing with delta, biometric, previous-event, and shift-timing context where available, while keeping runtime dependencies minimal.</li>
+<li>
+<code><a href="../reference/ig_game_shot_locations.html">ig_game_shot_locations()</a></code>, <code><a href="../reference/x_game_shot_locations.html">x_game_shot_locations()</a></code>, <code><a href="../reference/ig_game_cumulative_expected_goals.html">ig_game_cumulative_expected_goals()</a></code>, and <code><a href="../reference/x_game_cumulative_expected_goals.html">x_game_cumulative_expected_goals()</a></code> still accept <code>model</code> for backward compatibility, but it is now ignored.</li>
+<li>Check out our “Article” section on the documentation website to learn more.</li>
+</ul></li>
 </ul></div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.5.0" id="nhlscraper-050">nhlscraper 0.5.0<a class="anchor" aria-label="anchor" href="#nhlscraper-050"></a></h2><p class="text-muted">CRAN release: 2026-02-24</p>
@@ -86,7 +89,7 @@
 <li>
 <code><a href="../reference/calculate_expected_goals.html">calculate_expected_goals()</a></code> now combines the previous xG calculation functions; as a result, <code>calculate_expected_goals_v1()</code>, <code>calculate_expected_goals_v2()</code>, and <code>calculate_expected_goals_v3()</code> are now defunct.</li>
 <li>
-<code><a href="../reference/add_deltas.html">add_deltas()</a></code> is now added to calculate event-to-event deltas in play-by-plays.</li>
+<code>calculate_speed()</code> is now added to calculate event-to-event deltas in play-by-plays.</li>
 <li>
 <code><a href="../reference/add_shooter_biometrics.html">add_shooter_biometrics()</a></code> is now added to add shooter biometrics to Fenewick events in play-by-plays.</li>
 <li>
@@ -117,7 +120,7 @@
 </ul></div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.4.0" id="nhlscraper-040">nhlscraper 0.4.0<a class="anchor" aria-label="anchor" href="#nhlscraper-040"></a></h2><p class="text-muted">CRAN release: 2025-11-30</p>
-<ul><li>Website now features proper example.</li>
+<ul><li>Documentation website now features proper example.</li>
 <li>New functions to help clean the data are now available:
 <ul><li><code>strip_game_id()</code></li>
 <li><code>strip_time_period()</code></li>
@@ -147,7 +150,7 @@
 </ul></div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.3.0" id="nhlscraper-030">nhlscraper 0.3.0<a class="anchor" aria-label="anchor" href="#nhlscraper-030"></a></h2>
-<ul><li>Website now features disclosure and history.</li>
+<ul><li>Documentation website now features disclosure and history.</li>
 <li>Documentation is now standardized.</li>
 <li>All API calls now handle rate-limits with exponential backoff.</li>
 <li>Parameters are now standardized and can handle robust arguments.</li>
@@ -399,7 +402,7 @@
 </ul></div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.2.0" id="nhlscraper-020">nhlscraper 0.2.0<a class="anchor" aria-label="anchor" href="#nhlscraper-020"></a></h2><p class="text-muted">CRAN release: 2025-07-17</p>
-<ul><li>Website now features dark theme and example.</li>
+<ul><li>Documentation website now features dark theme and example.</li>
 <li>New functions to access data about the franchises are now available:
 <ul><li><code><a href="../reference/get_franchise_season_by_season.html">get_franchise_season_by_season()</a></code></li>
 <li><code><a href="../reference/get_franchise_team_totals.html">get_franchise_team_totals()</a></code></li>

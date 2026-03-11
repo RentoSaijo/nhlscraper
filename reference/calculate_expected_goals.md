@@ -1,14 +1,18 @@
 # Calculate the expected goals for all the shots in (a) play-by-plays
 
-`calculate_expected_goals()` calculates the expected goals for all the
-shots in (a) play-by-play(s) using the provided `model`.
+`calculate_expected_goals()` scores shot events with `nhlscraper`'s
+built-in ridge expected-goals model. The runtime model is a fixed
+six-partition system: `sd` (5v5), `ev` (other even strength), `pp`
+(power play), `sh` (short-handed), `en` (empty net against), and `so`
+(shootout / penalty shot). The legacy `model` argument is accepted for
+backward compatibility but ignored.
 
 ## Usage
 
 ``` r
-calculate_expected_goals(play_by_play, model = 1)
+calculate_expected_goals(play_by_play, model = NULL)
 
-calculate_xG(play_by_play, model = 1)
+calculate_xG(play_by_play, model = NULL)
 ```
 
 ## Arguments
@@ -25,8 +29,7 @@ calculate_xG(play_by_play, model = 1)
 
 - model:
 
-  integer in 1:4 indicating which expected goals model to use; see web
-  documentation for what variables each model considers
+  deprecated legacy model selector; ignored
 
 ## Value
 
@@ -38,6 +41,6 @@ data.frame with one row per event (play) and added `xG` column
 # May take >5s, so skip.
 # \donttest{
   pbp <- gc_play_by_play()
-  pbp_with_xG_v3 <- calculate_expected_goals(play_by_play = pbp, model = 3)
+  pbp_with_xg <- calculate_expected_goals(play_by_play = pbp)
 # }
 ```

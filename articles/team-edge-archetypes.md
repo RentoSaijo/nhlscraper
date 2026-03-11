@@ -67,7 +67,6 @@ leader_table <- data.frame(
   ),
   stringsAsFactors = FALSE
 )
-
 make_table(
   leader_table,
   caption = 'League-leading 2024-25 team EDGE categories.'
@@ -100,7 +99,6 @@ incomplete.
 ``` r
 # Define selected teams and robust fetch helpers.
 team_ids <- c(CAR = 12, COL = 21, EDM = 22, FLA = 13, WSH = 15)
-
 fetch_with_retry <- function(fetch_fun, validator, tries = 3) {
   for (i in seq_len(tries)) {
     value <- try(fetch_fun(), silent = TRUE)
@@ -111,18 +109,15 @@ fetch_with_retry <- function(fetch_fun, validator, tries = 3) {
   }
   NULL
 }
-
 valid_df <- function(x, required_cols) {
   is.data.frame(x) && nrow(x) > 0 && all(required_cols %in% names(x))
 }
-
 extract_name <- function(first_name, last_name) {
   if (is.na(first_name) || is.na(last_name) || first_name == '' || last_name == '') {
     return(NA_character_)
   }
   paste(first_name, last_name)
 }
-
 build_team_profile <- function(team_code, team_id) {
   team_summary <- fetch_with_retry(
     function() nhlscraper::team_edge_summary(
@@ -180,7 +175,6 @@ build_team_profile <- function(team_code, team_id) {
     ),
     function(x) valid_df(x, c('area', 'sog'))
   )
-
   if (
     is.null(zone_rows) ||
       is.null(skating_rows) ||
@@ -205,15 +199,12 @@ build_team_profile <- function(team_code, team_id) {
       stringsAsFactors = FALSE
     ))
   }
-
   zone_row <- zone_rows[zone_rows[['strengthCode']] == 'all', , drop = FALSE]
   skating_row <- skating_rows[skating_rows[['positionCode']] == 'all', , drop = FALSE]
   shot_speed_row <- shot_speed_rows[shot_speed_rows[['position']] == 'all', , drop = FALSE]
-
   if (!nrow(zone_row)) zone_row <- zone_rows[1, , drop = FALSE]
   if (!nrow(skating_row)) skating_row <- skating_rows[1, , drop = FALSE]
   if (!nrow(shot_speed_row)) shot_speed_row <- shot_speed_rows[1, , drop = FALSE]
-
   interior_mask <- shot_location_rows[['area']] %in% c(
     'Crease',
     'Low Slot',
@@ -234,7 +225,6 @@ build_team_profile <- function(team_code, team_id) {
     'Beyond Red Line'
   )
   total_shots <- sum(shot_location_rows[['sog']])
-
   data.frame(
     team = team_code,
     points = if (is.null(team_summary)) NA_real_ else as.numeric(team_summary[['team']][['points']]),
@@ -262,7 +252,6 @@ build_team_profile <- function(team_code, team_id) {
     stringsAsFactors = FALSE
   )
 }
-
 team_profiles <- Map(
   build_team_profile,
   team_code = names(team_ids),
@@ -270,7 +259,6 @@ team_profiles <- Map(
 )
 team_profiles <- do.call(rbind, team_profiles)
 rownames(team_profiles) <- NULL
-
 profile_table <- team_profiles[, c(
   'team',
   'points',
@@ -282,7 +270,6 @@ profile_table <- team_profiles[, c(
   'hardestShot',
   'interiorShare'
 )]
-
 make_table(
   profile_table,
   caption = 'Five-team 2024-25 EDGE profile comparison.'
@@ -316,7 +303,6 @@ beside pure pace.
 # Plot territorial control and burst volume.
 old_par <- graphics::par(no.readonly = TRUE)
 graphics::par(mfrow = c(1, 2), mar = c(5, 7, 3, 1))
-
 ordered_zone <- team_profiles[order(team_profiles[['offensiveZonePctg']]), ]
 graphics::barplot(
   ordered_zone[['offensiveZonePctg']],
@@ -327,7 +313,6 @@ graphics::barplot(
   border = NA,
   xlab = 'Offensive-Zone Share'
 )
-
 ordered_bursts <- team_profiles[order(team_profiles[['burstsOver22']]), ]
 graphics::barplot(
   ordered_bursts[['burstsOver22']],
@@ -346,7 +331,6 @@ teams.](team-edge-archetypes_files/figure-html/pace-plot-1.png)
 Territorial control and pace look different across elite 2024-25 teams.
 
 ``` r
-
 graphics::par(old_par)
 ```
 
@@ -376,7 +360,6 @@ rownames(shot_mix) <- c(
   'Points and perimeter',
   'Other'
 )
-
 graphics::barplot(
   shot_mix,
   beside = FALSE,
@@ -418,7 +401,6 @@ player_table <- team_profiles[, c(
   'hardestShooter',
   'hardestShot'
 )]
-
 make_table(
   player_table,
   caption = "Players behind each team's fastest burst and hardest shot."

@@ -40,6 +40,7 @@
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles">
 <li><a class="dropdown-item" href="../articles/play-by-play-pipeline.html">How gc_play_by_play() and wsc_play_by_play() Work</a></li>
+    <li><a class="dropdown-item" href="../articles/expected-goals-model.html">How the Expected Goals Model Works</a></li>
   </ul>
 </li>
 <li class="active nav-item dropdown">
@@ -145,7 +146,6 @@ through 7.</p>
 <span>  <span class="st">'Forward'</span></span>
 <span><span class="op">)</span></span>
 <span><span class="va">draft_tbl</span><span class="op">[[</span><span class="st">'tallSkater'</span><span class="op">]</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="va">draft_tbl</span><span class="op">[[</span><span class="st">'height'</span><span class="op">]</span><span class="op">]</span> <span class="op">&gt;=</span> <span class="fl">74</span></span>
-<span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">draft_tbl</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] 9998</span></span></code></pre></div>
 <p>That gives us 9998 drafted skaters with usable height and weight
@@ -164,7 +164,6 @@ bucket.</p>
 <span>  data <span class="op">=</span> <span class="va">draft_tbl</span>,</span>
 <span>  FUN <span class="op">=</span> <span class="va">mean</span></span>
 <span><span class="op">)</span></span>
-<span></span>
 <span><span class="fu">make_table</span><span class="op">(</span></span>
 <span>  <span class="va">era_summary</span>,</span>
 <span>  caption <span class="op">=</span> <span class="st">'Average drafted skater size by era and draft bucket.'</span></span>
@@ -458,7 +457,6 @@ family.</p>
 <span>  data <span class="op">=</span> <span class="va">draft_tbl</span>,</span>
 <span>  FUN <span class="op">=</span> <span class="va">mean</span></span>
 <span><span class="op">)</span></span>
-<span></span>
 <span><span class="fu">make_table</span><span class="op">(</span></span>
 <span>  <span class="va">position_summary</span>,</span>
 <span>  caption <span class="op">=</span> <span class="st">'Average drafted skater size by era and position family.'</span></span>
@@ -569,7 +567,6 @@ predictors.</p>
 <span>  <span class="st">'t value'</span>,</span>
 <span>  <span class="st">'Pr(&gt;|t|)'</span></span>
 <span><span class="op">)</span><span class="op">]</span></span>
-<span></span>
 <span><span class="fu">make_table</span><span class="op">(</span></span>
 <span>  <span class="va">draft_fit_tbl</span>,</span>
 <span>  caption <span class="op">=</span> <span class="st">'Linear model of drafted skater height.'</span>,</span>
@@ -625,11 +622,10 @@ predictors.</p>
 <p>This model says the first-round premium is still real even after
 accounting for time and position. First-round skaters come in roughly
 0.52 inches taller on average, while defensemen add about 1.05 inches on
-top of that.</p>
-<p>The draft-year slope itself is small because the historical pattern
-is not a straight line. That is the core takeaway of the whole article:
-draft size preference looks less like a steady march and more like a
-boom that peaked in the 1990s and early 2000s.</p>
+top of that. The draft-year slope itself is small because the historical
+pattern is not a straight line. That is the core takeaway of the whole
+article: draft size preference looks less like a steady march and more
+like a boom that peaked in the 1990s and early 2000s.</p>
 </div>
 <div class="section level2">
 <h2 id="what-we-learned">What We Learned<a class="anchor" aria-label="anchor" href="#what-we-learned"></a>

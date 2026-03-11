@@ -707,6 +707,8 @@ Functions that are defunct
 
 - [How gc_play_by_play() and wsc_play_by_play()
   Work](https://rentosaijo.github.io/nhlscraper/articles/play-by-play-pipeline.md):
+- [How nhlscraper's Expected Goals Model
+  Works](https://rentosaijo.github.io/nhlscraper/articles/expected-goals-model.md):
 
 ### Examples
 

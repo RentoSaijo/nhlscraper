@@ -196,7 +196,6 @@ home_road_table <- merge(home_wins, away_wins, by = 'restBucket')
 home_road_table <- home_road_table[
   match(levels(team_games[['restBucket']]), home_road_table[['restBucket']]),
 ]
-
 make_table(
   home_road_table,
   caption = 'Home and road win rate by rest bucket.'
@@ -290,7 +289,6 @@ rest_fit_tbl <- rest_fit_tbl[, c(
   'z value',
   'Pr(>|z|)'
 )]
-
 make_table(
   rest_fit_tbl,
   caption = 'Logistic model of wins on rest and venue.',
@@ -342,7 +340,6 @@ zero_rest_tbl <- zero_rest_tbl[
   c('teamTriCode', 'games', 'winRate')
 ]
 zero_rest_tbl <- utils::head(zero_rest_tbl, 10)
-
 make_table(
   zero_rest_tbl,
   caption = 'Best back-to-back win rates among teams with at least 50 zero-rest games.'
