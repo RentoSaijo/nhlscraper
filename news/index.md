@@ -2,6 +2,8 @@
 
 ## nhlscraper 0.5.0.9000
 
+- Website now features more guided examples and explanation articles on
+  certain implementations.
 - [`replays()`](https://rentosaijo.github.io/nhlscraper/reference/replays.md)
   is now added to retrieve season-aggregate replays.
 - [`contracts()`](https://rentosaijo.github.io/nhlscraper/reference/contracts.md)
@@ -44,20 +46,16 @@
     disagree with the source `situationCode`.
 - [`add_deltas()`](https://rentosaijo.github.io/nhlscraper/reference/add_deltas.md)
   now handles event-to-event deltas in C, returns raw and normalized x/y
-  deltas alongside distance and angle deltas, and still properly handles
-  same-second events and shootouts/penalty shots; it also returns the
-  `eventId` of the anchoring event and `secondsElapsedInSequence`, where
-  each sequence begins with a faceoff.
-- [`add_shooter_biometrics()`](https://rentosaijo.github.io/nhlscraper/reference/add_shooter_biometrics.md),
-  [`add_goalie_biometrics()`](https://rentosaijo.github.io/nhlscraper/reference/add_goalie_biometrics.md),
-  and
-  [`calculate_expected_goals()`](https://rentosaijo.github.io/nhlscraper/reference/calculate_expected_goals.md)
-  now require the current public play-by-play schema only; legacy helper
-  column names are no longer accepted, and goalie biometrics now use
-  `goaliePlayerIdAgainst`.
-- Public play-by-play outputs now keep optional source-dependent fields
-  in-schema even when a given game feed omits them, padding those
-  columns with `NA` instead of dropping them.
+  deltas alongside distance and angle deltas, and properly handles
+  same-second events and shootouts/penalty shots.
+  - It also now returns the `eventId` of the anchoring event,
+    `secondsElapsedInSequence`, and per-second raw/normalized x/y,
+    distance, and angle deltas, where each sequence begins with a
+    faceoff and zero-time denominators within a same-second sequence use
+    the `1 / n` rule.
+  - `calculate_speed()` is now defunct; use
+    [`add_deltas()`](https://rentosaijo.github.io/nhlscraper/reference/add_deltas.md)
+    instead.
 - The expected goal (xG) models are currently being reworked; some
   functions that rely on these models (e.g.,
   [`calculate_expected_goals()`](https://rentosaijo.github.io/nhlscraper/reference/calculate_expected_goals.md))

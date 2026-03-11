@@ -380,7 +380,6 @@ shift charts
 Functions to help clean the data
 
 - [`add_deltas()`](https://rentosaijo.github.io/nhlscraper/reference/add_deltas.md)
-  [`calculate_speed()`](https://rentosaijo.github.io/nhlscraper/reference/add_deltas.md)
   : Add event-to-event deltas to a play-by-play
 - [`add_shift_times()`](https://rentosaijo.github.io/nhlscraper/reference/add_shift_times.md)
   : Add on-ice shift times to a play-by-play

@@ -15,8 +15,6 @@ that same second within the sequence.
 
 ``` r
 add_deltas(play_by_play)
-
-calculate_speed(play_by_play)
 ```
 
 ## Arguments
@@ -36,4 +34,6 @@ calculate_speed(play_by_play)
 data.frame with one row per event (play) and added columns:
 `eventIdPrev`, `secondsElapsedInSequence`, `dSecondsElapsedInSequence`,
 `dXCoord`, `dYCoord`, `dXCoordNorm`, `dYCoordNorm`, `dDistance`,
-`dAngle`
+`dAngle`, `dXCoordPerSecond`, `dYCoordPerSecond`,
+`dXCoordNormPerSecond`, `dYCoordNormPerSecond`, `dDistancePerSecond`,
+`dAnglePerSecond`

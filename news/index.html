@@ -53,7 +53,8 @@
 
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.5.0.9000" id="nhlscraper-0509000">nhlscraper 0.5.0.9000<a class="anchor" aria-label="anchor" href="#nhlscraper-0509000"></a></h2>
-<ul><li>
+<ul><li>Website now features more guided examples and explanation articles on certain implementations.</li>
+<li>
 <code><a href="../reference/replays.html">replays()</a></code> is now added to retrieve season-aggregate replays.</li>
 <li>
 <code><a href="../reference/contracts.html">contracts()</a></code> now returns more contracts, dating back to the 90’s (and then some).</li>
@@ -68,10 +69,11 @@
 <li>HTML play-by-play matching is now more robust to older dotted team abbreviations, reversed faceoff player-order descriptions, duplicate same-second shot clusters, and rows whose parsed HTML on-ice counts disagree with the source <code>situationCode</code>.</li>
 </ul></li>
 <li>
-<code><a href="../reference/add_deltas.html">add_deltas()</a></code> now handles event-to-event deltas in C, returns raw and normalized x/y deltas alongside distance and angle deltas, and still properly handles same-second events and shootouts/penalty shots; it also returns the <code>eventId</code> of the anchoring event and <code>secondsElapsedInSequence</code>, where each sequence begins with a faceoff.</li>
+<code><a href="../reference/add_deltas.html">add_deltas()</a></code> now handles event-to-event deltas in C, returns raw and normalized x/y deltas alongside distance and angle deltas, and properly handles same-second events and shootouts/penalty shots.
+<ul><li>It also now returns the <code>eventId</code> of the anchoring event, <code>secondsElapsedInSequence</code>, and per-second raw/normalized x/y, distance, and angle deltas, where each sequence begins with a faceoff and zero-time denominators within a same-second sequence use the <code>1 / n</code> rule.</li>
 <li>
-<code><a href="../reference/add_shooter_biometrics.html">add_shooter_biometrics()</a></code>, <code><a href="../reference/add_goalie_biometrics.html">add_goalie_biometrics()</a></code>, and <code><a href="../reference/calculate_expected_goals.html">calculate_expected_goals()</a></code> now require the current public play-by-play schema only; legacy helper column names are no longer accepted, and goalie biometrics now use <code>goaliePlayerIdAgainst</code>.</li>
-<li>Public play-by-play outputs now keep optional source-dependent fields in-schema even when a given game feed omits them, padding those columns with <code>NA</code> instead of dropping them.</li>
+<code>calculate_speed()</code> is now defunct; use <code><a href="../reference/add_deltas.html">add_deltas()</a></code> instead.</li>
+</ul></li>
 <li>The expected goal (xG) models are currently being reworked; some functions that rely on these models (e.g., <code><a href="../reference/calculate_expected_goals.html">calculate_expected_goals()</a></code>) may not work as expected.</li>
 </ul></div>
     <div class="section level2">
