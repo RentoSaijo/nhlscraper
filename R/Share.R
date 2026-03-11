@@ -4,14 +4,13 @@
 #' given `game`.
 #' 
 #' @inheritParams boxscore
-#' @param model integer in 1:4 indicating which expected goals model to use; see web documentation for what variables each version considers
+#' @param model deprecated legacy model selector; ignored
 #' @param save logical only FALSE for tests
 #' @returns `NULL`
 #' @examples
 #' # May take >5s, so skip.
 #' \donttest{ig_game_shot_locations(
 #'   game  = 2023030417, 
-#'   model = 1, 
 #'   team  = 'H', 
 #'   save  = FALSE
 #' )}
@@ -20,23 +19,21 @@
 ig_game_shot_locations <- function(
   game  = 2023030417,
   team  = 'home',
-  model = 1,
+  model = NULL,
   save  = TRUE
 ) {
   tryCatch(
     expr = {
-      model <- as.integer(model)
+      .xg_warn_ignored_model(model, 'ig_game_shot_locations')
       team <- switch(
         substring(tolower(team), 1, 1),
         h = 'home',
         a = 'away'
       )
-      model_label <- paste0('xG_v', model)
       file_name <- sprintf(
-        'ig_shot_locs_%s_%s_%s.png',
+        'ig_shot_locs_%s_%s.png',
         as.character(game),
-        team,
-        model_label
+        team
       )
       game_sum <- gc_summary(game)
       home_abbrev <- tryCatch(
@@ -82,7 +79,7 @@ ig_game_shot_locations <- function(
         on.exit(grDevices::dev.off(), add = TRUE)
       }
       pbp <- gc_play_by_play(game)
-      pbp <- calculate_expected_goals(pbp, model = model)
+      pbp <- calculate_expected_goals(pbp)
       x_col <- 'xCoordNorm'
       y_col <- 'yCoordNorm'
       xg_col <- 'xG'
@@ -235,7 +232,7 @@ ig_game_shot_locations <- function(
 #' @rdname ig_game_shot_locations
 #' @export
 
-ig_game_shot_locs <- function(game = 2023030417, team = 'home', model = 1) {
+ig_game_shot_locs <- function(game = 2023030417, team = 'home', model = NULL) {
   ig_game_shot_locations(game, team, model)
 }
 
@@ -250,7 +247,6 @@ ig_game_shot_locs <- function(game = 2023030417, team = 'home', model = 1) {
 #' # May take >5s, so skip.
 #' \donttest{x_game_shot_locations(
 #'   game  = 2023030417, 
-#'   model = 1, 
 #'   team  = 'H',
 #'   save  = FALSE
 #' )}
@@ -259,23 +255,21 @@ ig_game_shot_locs <- function(game = 2023030417, team = 'home', model = 1) {
 x_game_shot_locations <- function(
   game  = 2023030417,
   team  = 'home',
-  model = 1,
+  model = NULL,
   save  = TRUE
 ) {
   tryCatch(
     expr = {
-      model <- as.integer(model)
+      .xg_warn_ignored_model(model, 'x_game_shot_locations')
       team <- switch(
         substring(tolower(team), 1, 1),
         h = 'home',
         a = 'away'
       )
-      model_label <- paste0('xG_v', model)
       file_name <- sprintf(
-        'x_shot_locs_%s_%s_%s.png',
+        'x_shot_locs_%s_%s.png',
         as.character(game),
-        team,
-        model_label
+        team
       )
       game_sum <- gc_summary(game)
       home_abbrev <- tryCatch(
@@ -321,7 +315,7 @@ x_game_shot_locations <- function(
         on.exit(grDevices::dev.off(), add = TRUE)
       }
       pbp <- gc_play_by_play(game)
-      pbp <- calculate_expected_goals(pbp, model = model)
+      pbp <- calculate_expected_goals(pbp)
       x_col <- 'xCoordNorm'
       y_col <- 'yCoordNorm'
       xg_col <- 'xG'
@@ -473,7 +467,7 @@ x_game_shot_locations <- function(
 #' @rdname x_game_shot_locations
 #' @export
 
-x_game_shot_locs <- function(game = 2023030417, team = 'home', model = 1) {
+x_game_shot_locs <- function(game = 2023030417, team = 'home', model = NULL) {
   x_game_shot_locations(game, team, model)
 }
 
@@ -489,24 +483,21 @@ x_game_shot_locs <- function(game = 2023030417, team = 'home', model = 1) {
 #' # May take >5s, so skip.
 #' \donttest{ig_game_cumulative_expected_goals(
 #'   game  = 2023030417, 
-#'   model = 1, 
 #'   save  = FALSE
 #' )}
 #' @export
 
 ig_game_cumulative_expected_goals <- function(
   game  = 2023030417,
-  model = 1,
+  model = NULL,
   save  = TRUE
 ) {
   tryCatch(
     expr = {
-      model <- as.integer(model)
-      model_label <- paste0('xG_v', model)
+      .xg_warn_ignored_model(model, 'ig_game_cumulative_expected_goals')
       file_name <- sprintf(
-        'ig_cum_xG_%s_%s.png',
-        as.character(game),
-        model_label
+        'ig_cum_xG_%s.png',
+        as.character(game)
       )
       game_sum <- gc_summary(game)
       home_abbrev <- tryCatch(
@@ -545,7 +536,7 @@ ig_game_cumulative_expected_goals <- function(
         on.exit(grDevices::dev.off(), add = TRUE)
       }
       pbp <- gc_play_by_play(game)
-      pbp <- calculate_expected_goals(pbp, model = model)
+      pbp <- calculate_expected_goals(pbp)
       xg_col <- 'xG'
       type <- as.character(pbp[['typeDescKey']])
       shot_types <- c('goal', 'shot-on-goal', 'missed-shot', 'blocked-shot')
@@ -662,7 +653,7 @@ ig_game_cumulative_expected_goals <- function(
 #' @rdname ig_game_cumulative_expected_goals
 #' @export
 
-ig_game_cum_xG <- function(game = 2023030417, model = 1) {
+ig_game_cum_xG <- function(game = 2023030417, model = NULL) {
   ig_game_cumulative_expected_goals(game, model)
 }
 
@@ -678,24 +669,21 @@ ig_game_cum_xG <- function(game = 2023030417, model = 1) {
 #' # May take >5s, so skip.
 #' \donttest{x_game_cumulative_expected_goals(
 #'   game  = 2023030417, 
-#'   model = 1,
 #'   save  = FALSE
 #' )}
 #' @export
 
 x_game_cumulative_expected_goals <- function(
   game  = 2023030417,
-  model = 1,
+  model = NULL,
   save  = TRUE
 ) {
   tryCatch(
     expr = {
-      model <- as.integer(model)
-      model_label <- paste0('xG_v', model)
+      .xg_warn_ignored_model(model, 'x_game_cumulative_expected_goals')
       file_name <- sprintf(
-        'x_cum_xG_%s_%s.png',
-        as.character(game),
-        model_label
+        'x_cum_xG_%s.png',
+        as.character(game)
       )
       game_sum <- gc_summary(game)
       home_abbrev <- tryCatch(
@@ -734,7 +722,7 @@ x_game_cumulative_expected_goals <- function(
         on.exit(grDevices::dev.off(), add = TRUE)
       }
       pbp <- gc_play_by_play(game)
-      pbp <- calculate_expected_goals(pbp, model = model)
+      pbp <- calculate_expected_goals(pbp)
       xg_col <- 'xG'
       type <- as.character(pbp[['typeDescKey']])
       shot_types <- c('goal', 'shot-on-goal', 'missed-shot', 'blocked-shot')
@@ -851,6 +839,6 @@ x_game_cumulative_expected_goals <- function(
 #' @rdname x_game_cumulative_expected_goals
 #' @export
 
-x_game_cum_xG <- function(game = 2023030417, model = 1) {
+x_game_cum_xG <- function(game = 2023030417, model = NULL) {
   x_game_cumulative_expected_goals(game, model)
 }

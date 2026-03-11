@@ -5,25 +5,32 @@
 \alias{calculate_xG}
 \title{Calculate the expected goals for all the shots in (a) play-by-plays}
 \usage{
-calculate_expected_goals(play_by_play, model = 1)
+calculate_expected_goals(play_by_play, model = NULL)
 
-calculate_xG(play_by_play, model = 1)
+calculate_xG(play_by_play, model = NULL)
 }
 \arguments{
-\item{play_by_play}{data.frame of play-by-play(s) using the current public schema returned by \code{\link[=gc_play_by_play]{gc_play_by_play()}}, \code{\link[=gc_play_by_plays]{gc_play_by_plays()}}, \code{\link[=wsc_play_by_play]{wsc_play_by_play()}}, or \code{\link[=wsc_play_by_plays]{wsc_play_by_plays()}}}
+\item{play_by_play}{data.frame of play-by-play(s) using the current public
+schema returned by \code{\link[=gc_play_by_play]{gc_play_by_play()}}, \code{\link[=gc_play_by_plays]{gc_play_by_plays()}},
+\code{\link[=wsc_play_by_play]{wsc_play_by_play()}}, or \code{\link[=wsc_play_by_plays]{wsc_play_by_plays()}}}
 
-\item{model}{integer in 1:4 indicating which expected goals model to use; see web documentation for what variables each model considers}
+\item{model}{deprecated legacy model selector; ignored}
 }
 \value{
 data.frame with one row per event (play) and added \code{xG} column
 }
 \description{
-\code{calculate_expected_goals()} calculates the expected goals for all the shots in (a) play-by-play(s) using the provided \code{model}.
+\code{calculate_expected_goals()} scores shot events with \code{nhlscraper}'s built-in
+ridge expected-goals model. The runtime model is a fixed six-partition system:
+\code{sd} (5v5), \code{ev} (other even strength), \code{pp} (power play), \code{sh}
+(short-handed), \code{en} (empty net against), and \code{so} (shootout / penalty
+shot). The legacy \code{model} argument is accepted for backward compatibility but
+ignored.
 }
 \examples{
 # May take >5s, so skip.
 \donttest{
   pbp <- gc_play_by_play()
-  pbp_with_xG_v3 <- calculate_expected_goals(play_by_play = pbp, model = 3)
+  pbp_with_xg <- calculate_expected_goals(play_by_play = pbp)
 }
 }

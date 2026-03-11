@@ -5,16 +5,21 @@
 \alias{x_game_shot_locs}
 \title{Save an X (Twitter) share-able shot-location plot for a game}
 \usage{
-x_game_shot_locations(game = 2023030417, team = "home", model = 1, save = TRUE)
+x_game_shot_locations(
+  game = 2023030417,
+  team = "home",
+  model = NULL,
+  save = TRUE
+)
 
-x_game_shot_locs(game = 2023030417, team = "home", model = 1)
+x_game_shot_locs(game = 2023030417, team = "home", model = NULL)
 }
 \arguments{
 \item{game}{integer ID (e.g., 2025020275); see \code{\link[=games]{games()}} for reference}
 
 \item{team}{character of 'h'/'home' or 'a'/'away'}
 
-\item{model}{integer in 1:4 indicating which expected goals model to use; see web documentation for what variables each version considers}
+\item{model}{deprecated legacy model selector; ignored}
 
 \item{save}{logical only FALSE for tests}
 }
@@ -29,7 +34,6 @@ given \code{game}.
 # May take >5s, so skip.
 \donttest{x_game_shot_locations(
   game  = 2023030417, 
-  model = 1, 
   team  = 'H',
   save  = FALSE
 )}

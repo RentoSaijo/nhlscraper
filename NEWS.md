@@ -1,24 +1,24 @@
 # nhlscraper 0.5.0.9000
-- Website now features more guided examples and explanation articles on certain implementations.
+- Documentation website now features more guided examples and explanation articles.
 - `replays()` is now added to retrieve season-aggregate replays.
 - `contracts()` now returns more contracts, dating back to the 90's (and then some).
 - `shift_chart()` (and consequentially, `shift_charts()`) now returns completed shift charts for all games where at least either one of API or HTML report is available.
-- `gc_play_by_play()` and `wsc_play_by_play()` now return only the cleaned public play-by-play schema, with canonical column names such as `periodNumber`, `eventTypeCode`, `eventTypeDescKey`, `homeShots`, `shotsFor`, `penaltyTypeDescKey`, `penaltyDuration`, `servedByPlayerId`, and `pptReplayUrl`.
-  - The original API `situationCode` is now kept intact as the source of truth, with goalie/skater counts derived from a parsed copy rather than by rewriting or backfilling the source column.
-  - HTML-report-derived on-ice goalie/skater ID columns are now limited to `faceoff`, `hit`, `shot-on-goal`, `giveaway`, `missed-shot`, `blocked-shot`, `goal`, `delayed-penalty`, `takeaway`, and `failed-shot-attempt`, while `situationCode`-derived strength/count columns remain available wherever `situationCode` itself is available.
-  - `add_shift_times()` is now added to populate scalar on-ice shift timing columns from a public play-by-play plus `shift_chart()`/`shift_charts()` using the native timing resolver; `gc_play_by_play()` and `wsc_play_by_play()` keep those timing columns in-schema but no longer call `shift_chart()` internally.
-  - HTML play-by-play matching is now more robust to older dotted team abbreviations, reversed faceoff player-order descriptions, duplicate same-second shot clusters, and rows whose parsed HTML on-ice counts disagree with the source `situationCode`.
-- `add_deltas()` now handles event-to-event deltas in C, returns raw and normalized x/y deltas alongside distance and angle deltas, and properly handles same-second events and shootouts/penalty shots.
-  - It also now returns the `eventId` of the anchoring event, `secondsElapsedInSequence`, and per-second raw/normalized x/y, distance, and angle deltas, where each sequence begins with a faceoff and zero-time denominators within a same-second sequence use the `1 / n` rule.
+- `gc_play_by_play()` and `wsc_play_by_play()` now return new schema.
+  - HTML-report-derived on-ice goalie/skater ID columns are now added, limited to `faceoff`, `hit`, `shot-on-goal`, `giveaway`, `missed-shot`, `blocked-shot`, `goal`, `delayed-penalty`, `takeaway`, and `failed-shot-attempt`, while `situationCode`-derived strength/count columns remain available wherever `situationCode` itself is available. Check out our "Article" section on the documentation website to learn more. 
+  - `add_shift_times()` is now added to populate scalar on-ice shift time elapsed columns via C.
+  - `add_deltas()` now handles event-to-event deltas in C, returns raw and normalized X/Y deltas alongside distance and angle deltas, and properly handles same-second events and shootouts/penalty shots with `1/n` estimation.
   - `calculate_speed()` is now defunct; use `add_deltas()` instead.
-- The expected goal (xG) models are currently being reworked; some functions that rely on these models (e.g., `calculate_expected_goals()`) may not work as expected.
+- `calculate_expected_goals()` now uses a fixed six-partition ridge xG model (`sd`, `ev`, `pp`, `sh`, `en`, `so`) instead of legacy versioned models.
+  - The scorer now mirrors the training-time preprocessing with delta, biometric, previous-event, and shift-timing context where available, while keeping runtime dependencies minimal.
+  - `ig_game_shot_locations()`, `x_game_shot_locations()`, `ig_game_cumulative_expected_goals()`, and `x_game_cumulative_expected_goals()` still accept `model` for backward compatibility, but it is now ignored.
+  - Check out our "Article" section on the documentation website to learn more. 
 
 # nhlscraper 0.5.0
 - All return IDs, codes, and names are now standardized (i.e., no more arbitrary `id` columns and inconsistent column names across functions).
 - `contracts()` is now added to get all NHL contracts since the 2011-2012 season.
 - `ig_game_shot_locations()` and `x_game_shot_locations()` now use continuous xG scale instead of bins.
 - `calculate_expected_goals()` now combines the previous xG calculation functions; as a result, `calculate_expected_goals_v1()`, `calculate_expected_goals_v2()`, and `calculate_expected_goals_v3()` are now defunct.
-- `add_deltas()` is now added to calculate event-to-event deltas in play-by-plays.
+- `calculate_speed()` is now added to calculate event-to-event deltas in play-by-plays.
 - `add_shooter_biometrics()` is now added to add shooter biometrics to Fenewick events in play-by-plays.
 - `add_goalie_biometrics()` is now added to add goalie biometrics to Fenewick events in play-by-plays.
 - `ps()` is now deprecated; use `pss()` instead.
@@ -39,7 +39,7 @@
 - All API call functions are now wrapped with try-catch.
 
 # nhlscraper 0.4.0
-- Website now features proper example.
+- Documentation website now features proper example.
 - New functions to help clean the data are now available:
   - `strip_game_id()`
   - `strip_time_period()`
@@ -64,7 +64,7 @@
   - `x_game_cumulative_expected_goals()`
 
 # nhlscraper 0.3.0
-- Website now features disclosure and history.
+- Documentation website now features disclosure and history.
 - Documentation is now standardized.
 - All API calls now handle rate-limits with exponential backoff.
 - Parameters are now standardized and can handle robust arguments.
@@ -292,7 +292,7 @@
   - `get_espn_futures()`
 
 # nhlscraper 0.2.0
-- Website now features dark theme and example.
+- Documentation website now features dark theme and example.
 - New functions to access data about the franchises are now available:
   - `get_franchise_season_by_season()`
   - `get_franchise_team_totals()`

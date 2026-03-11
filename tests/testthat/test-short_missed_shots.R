@@ -11,7 +11,7 @@ test_that(".count_goals_shots() excludes short missed shots from Fenwick and Cor
     stringsAsFactors = FALSE
   )
 
-  out <- .count_goals_shots(play_by_play)
+  out <- nhlscraper:::.count_goals_shots(play_by_play)
 
   expect_equal(out$reason[1], "short")
   expect_equal(out$homeFenwick, c(0L, 0L, 1L, 2L))
@@ -34,7 +34,7 @@ test_that(".flag_is_rebound() ignores short missed shots as rebound sources", {
     stringsAsFactors = FALSE
   )
 
-  out <- .flag_is_rebound(play_by_play)
+  out <- nhlscraper:::.flag_is_rebound(play_by_play)
 
   expect_true(is.na(out$isRebound[1]))
   expect_true(is.na(out$createdRebound[1]))
@@ -44,12 +44,14 @@ test_that(".flag_is_rebound() ignores short missed shots as rebound sources", {
 
 test_that("calculate_expected_goals() leaves short missed shots without xG", {
   local_mocked_bindings(
-    add_deltas = function(play_by_play) play_by_play,
-    add_shooter_biometrics = function(play_by_play) {
-      play_by_play$shooterPositionCode <- rep(NA_character_, nrow(play_by_play))
-      play_by_play
+    .xg_warn_ignored_model = function(model, fn_name) invisible(NULL),
+    .xg_prepare_play_by_play = function(play_by_play) play_by_play,
+    .xg_build_model_frame = function(shots, play_by_play) {
+      shots$shootingPlayerId <- rep(NA_integer_, nrow(shots))
+      shots
     },
-    add_goalie_biometrics = function(play_by_play) play_by_play,
+    .xg_partition_shots = function(shots) rep("sd", nrow(shots)),
+    .xg_score_partition = function(df, spec) rep(0.2, nrow(df)),
     .package = "nhlscraper"
   )
 
@@ -58,16 +60,12 @@ test_that("calculate_expected_goals() leaves short missed shots without xG", {
     eventId = 1:3,
     sortOrder = 1:3,
     typeDescKey = c("missed-shot", "missed-shot", "shot-on-goal"),
+    goaliePlayerIdAgainst = c(NA_integer_, NA_integer_, NA_integer_),
     reason = c("short", "wide", NA),
-    situationCode = c("1551", "1551", "1551"),
-    isEmptyNetAgainst = c(FALSE, FALSE, FALSE),
-    distance = c(20, 20, 20),
-    angle = c(10, 10, 10),
-    shotType = c("wrist", "wrist", "wrist"),
     stringsAsFactors = FALSE
   )
 
-  out <- calculate_expected_goals(play_by_play, model = 1)
+  out <- calculate_expected_goals(play_by_play)
 
   expect_true(is.na(out$xG[1]))
   expect_true(is.finite(out$xG[2]) && out$xG[2] > 0)

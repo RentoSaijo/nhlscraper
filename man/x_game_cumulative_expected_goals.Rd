@@ -6,14 +6,14 @@
 \title{Save an X (Twitter) share-able cumulative expected goals (xG) time-series
 plot for a game}
 \usage{
-x_game_cumulative_expected_goals(game = 2023030417, model = 1, save = TRUE)
+x_game_cumulative_expected_goals(game = 2023030417, model = NULL, save = TRUE)
 
-x_game_cum_xG(game = 2023030417, model = 1)
+x_game_cum_xG(game = 2023030417, model = NULL)
 }
 \arguments{
 \item{game}{integer ID (e.g., 2025020275); see \code{\link[=games]{games()}} for reference}
 
-\item{model}{integer in 1:4 indicating which expected goals model to use; see web documentation for what variables each version considers}
+\item{model}{deprecated legacy model selector; ignored}
 
 \item{save}{logical only FALSE for tests}
 }
@@ -28,7 +28,6 @@ time-series plot for a given \code{game} as a PNG.
 # May take >5s, so skip.
 \donttest{x_game_cumulative_expected_goals(
   game  = 2023030417, 
-  model = 1,
   save  = FALSE
 )}
 }

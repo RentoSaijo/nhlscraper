@@ -34,8 +34,7 @@ We work from the final itself, Game 7 of the 2024 Final (`2023030417`).
 # Pull summary, play-by-play, and roster context.
 game_summary <- nhlscraper::gc_summary(2023030417)
 pbp_xg <- nhlscraper::calculate_expected_goals(
-  nhlscraper::gc_pbp(2023030417),
-  model = 1
+  nhlscraper::gc_pbp(2023030417)
 )
 rosters <- nhlscraper::game_rosters(2023030417)
 

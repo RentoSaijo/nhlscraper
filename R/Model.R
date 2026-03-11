@@ -1,522 +1,74 @@
 #' Calculate the expected goals for all the shots in (a) play-by-plays
-#' 
-#' `calculate_expected_goals()` calculates the expected goals for all the shots in (a) play-by-play(s) using the provided `model`.
 #'
-#' @param play_by_play data.frame of play-by-play(s) using the current public schema returned by [gc_play_by_play()], [gc_play_by_plays()], [wsc_play_by_play()], or [wsc_play_by_plays()]
-#' @param model integer in 1:4 indicating which expected goals model to use; see web documentation for what variables each model considers
+#' `calculate_expected_goals()` scores shot events with `nhlscraper`'s built-in
+#' ridge expected-goals model. The runtime model is a fixed six-partition system:
+#' `sd` (5v5), `ev` (other even strength), `pp` (power play), `sh`
+#' (short-handed), `en` (empty net against), and `so` (shootout / penalty
+#' shot). The legacy `model` argument is accepted for backward compatibility but
+#' ignored.
+#'
+#' @param play_by_play data.frame of play-by-play(s) using the current public
+#'   schema returned by [gc_play_by_play()], [gc_play_by_plays()],
+#'   [wsc_play_by_play()], or [wsc_play_by_plays()]
+#' @param model deprecated legacy model selector; ignored
 #' @returns data.frame with one row per event (play) and added `xG` column
 #' @examples
 #' # May take >5s, so skip.
 #' \donttest{
 #'   pbp <- gc_play_by_play()
-#'   pbp_with_xG_v3 <- calculate_expected_goals(play_by_play = pbp, model = 3)
+#'   pbp_with_xg <- calculate_expected_goals(play_by_play = pbp)
 #' }
 #' @export
-
-calculate_expected_goals <- function(play_by_play, model = 1) {
+calculate_expected_goals <- function(play_by_play, model = NULL) {
   tryCatch(
     expr = {
-      # Clean data.
-      model <- as.integer(model[1])
-      pbp <- add_deltas(play_by_play)
-      delta_ctx <- attr(pbp, 'delta_context', exact = TRUE)
-      attr(pbp, 'delta_context') <- NULL
-      if (
-        is.null(delta_ctx) &&
-          all(c(
-            'gameId', 'eventId', 'sortOrder', 'secondsElapsedInGame',
-            'eventTypeDescKey', 'situationCode', 'xCoord', 'yCoord',
-            'xCoordNorm', 'yCoordNorm', 'distance', 'angle'
-          ) %in% names(play_by_play))
-      ) {
-        delta_ctx <- tryCatch(
-          .compute_pbp_deltas(play_by_play),
-          error = function(e) NULL
-        )
-      }
-      if (!is.null(delta_ctx)) {
-        pbp$dDdT <- delta_ctx$dDistancePerSecond
-        pbp$dAdT <- delta_ctx$dAnglePerSecond
-      }
-      pbp <- pbp |>
-        add_shooter_biometrics() |>
-        add_goalie_biometrics()
-      pbp$shotType[is.na(pbp$shotType)] <- 'backhand'
-      pbp$shooterPositionCode[is.na(pbp$shooterPositionCode)] <- 'C'
+      .xg_warn_ignored_model(model, "calculate_expected_goals")
 
-      # Store coefficients.
-      COEFS <- list(
-        sd = list(
-          v1 = c(
-            '(Intercept)' = -0.98490308,
-            'distance' = -0.06117233,
-            'angle' = -0.01729914,
-            'shotTypebat' = 0.34448407,
-            'shotTypebetween-legs' = -0.56383023,
-            'shotTypecradle' = 1.16205222,
-            'shotTypedeflected' = -0.17143865,
-            'shotTypepoke' = 0.10484560,
-            'shotTypeslap' = 0.99107913,
-            'shotTypesnap' = 0.87211406,
-            'shotTypetip-in' = -0.32018820,
-            'shotTypewrap-around' = -0.33413555,
-            'shotTypewrist' = 0.50196909
-          ),
-          v2 = c(
-            '(Intercept)' = -0.851759846,
-            'distance' = -0.062748566,
-            'angle' = -0.019147181,
-            'shotTypebat' = 0.363774969,
-            'shotTypebetween-legs' = -0.553760807,
-            'shotTypecradle' = 1.146786095,
-            'shotTypedeflected' = -0.170002916,
-            'shotTypepoke' = 0.138769743,
-            'shotTypeslap' = 0.996510214,
-            'shotTypesnap' = 0.875946758,
-            'shotTypetip-in' = -0.335587108,
-            'shotTypewrap-around' = -0.319782711,
-            'shotTypewrist' = 0.504137302,
-            'dDdT' = 0.005895507,
-            'dAdT' = 0.007144895,
-            'isRushTRUE' = 0.269619958,
-            'isReboundTRUE' = -0.062443827
-          ),
-          v3 = c(
-            '(Intercept)' = -8.591879e-01,
-            'distance' = -6.265781e-02,
-            'angle' = -1.909957e-02,
-            'shotTypebat' = 3.625138e-01,
-            'shotTypebetween-legs' = -5.580147e-01,
-            'shotTypecradle' = 1.138743e+00,
-            'shotTypedeflected' = -1.655748e-01,
-            'shotTypepoke' = 1.372451e-01,
-            'shotTypeslap' = 9.954958e-01,
-            'shotTypesnap' = 8.762127e-01,
-            'shotTypetip-in' = -3.322160e-01,
-            'shotTypewrap-around' = -3.181418e-01,
-            'shotTypewrist' = 5.031961e-01,
-            'dDdT' = 5.881723e-03,
-            'dAdT' = 7.099477e-03,
-            'isRushTRUE' = 2.684510e-01,
-            'isReboundTRUE' = -5.805528e-02,
-            'isHomeTRUE' = -1.028862e-02,
-            'isPlayoffTRUE' = -5.131636e-02,
-            'secondsElapsedInGame' = 3.934651e-06,
-            'goalsFor' = 2.647579e-02,
-            'goalsAgainst' = -2.251840e-02
-          ),
-          v4 = c(
-            '(Intercept)' = 1.358799e+01,
-            'distance' = -6.468632e-02,
-            'angle' = -2.036697e-02,
-            'shotTypebat' = 3.585686e-01,
-            'shotTypebetween-legs' = -5.682836e-01,
-            'shotTypecradle' = 1.191735e+00,
-            'shotTypedeflected' = -1.669111e-01,
-            'shotTypepoke' = 1.358653e-01,
-            'shotTypeslap' = 9.758869e-01,
-            'shotTypesnap' = 8.654233e-01,
-            'shotTypetip-in' = -3.342726e-01,
-            'shotTypewrap-around' = -3.032518e-01,
-            'shotTypewrist' = 4.930872e-01,
-            'dDdT' = 5.863702e-03,
-            'dAdT' = 7.155146e-03,
-            'isRushTRUE' = 2.717119e-01,
-            'isReboundTRUE' = -5.023591e-02,
-            'isHomeTRUE' = -1.103323e-02,
-            'isPlayoffTRUE' = -4.732375e-02,
-            'secondsElapsedInGame' = 4.211979e-06,
-            'goalsFor' = 2.667161e-02,
-            'goalsAgainst' = -2.302126e-02,
-            'shooterHeight' = 3.454738e-03,
-            'shooterWeight' = -3.524754e-04,
-            'shooterSideoffwing' = -1.474600e+01,
-            'shooterSideonwing' = -1.484256e+01,
-            'shooterPositionCodeD' = 1.085171e-01,
-            'shooterPositionCodeG' = 1.068593e-01,
-            'shooterPositionCodeL' = 1.133494e-02,
-            'shooterPositionCodeR' = 6.167487e-02,
-            'goalieHeight' = 5.355993e-03,
-            'goalieWeight' = -7.149274e-04,
-            'goalieSideglove' = 2.152146e-02,
-            'goalieSideneutral' = -1.488056e+01
-          )
-        ),
-        sp = list(
-          v1 = c(
-            '(Intercept)' = -0.231681304,
-            'isEmptyNetForTRUE' = 0.010997208,
-            'skaterCountFor' = -0.079911759,
-            'skaterCountAgainst' = -0.130329305,
-            'distance' = -0.050555300,
-            'angle' = -0.009144413,
-            'shotTypebat' = 0.286790983,
-            'shotTypebetween-legs' = -0.071029117,
-            'shotTypecradle' = -8.379670235,
-            'shotTypedeflected' = 0.049069014,
-            'shotTypepoke' = -0.003736220,
-            'shotTypeslap' = 0.944120508,
-            'shotTypesnap' = 0.850906556,
-            'shotTypetip-in' = -0.013811760,
-            'shotTypewrap-around' = 0.006765519,
-            'shotTypewrist' = 0.406541000
-          ),
-          v2 = c(
-            '(Intercept)' = -0.179126629,
-            'isEmptyNetForTRUE' = 0.011441415,
-            'skaterCountFor' = -0.075789473,
-            'skaterCountAgainst' = -0.130189129,
-            'distance' = -0.051356634,
-            'angle' = -0.010407777,
-            'shotTypebat' = 0.304715861,
-            'shotTypebetween-legs' = -0.073641979,
-            'shotTypecradle' = -8.408172791,
-            'shotTypedeflected' = 0.039711706,
-            'shotTypepoke' = 0.002284196,
-            'shotTypeslap' = 0.945995831,
-            'shotTypesnap' = 0.850367624,
-            'shotTypetip-in' = -0.028192496,
-            'shotTypewrap-around' = 0.016365962,
-            'shotTypewrist' = 0.405475291,
-            'dDdT' = 0.004630362,
-            'dAdT' = 0.005238069,
-            'isRushTRUE' = 0.253084801,
-            'isReboundTRUE' = -0.011364569
-          ),
-          v3 = c(
-            '(Intercept)' = -1.518275e-01,
-            'isEmptyNetForTRUE' = 5.117703e-02,
-            'skaterCountFor' = -7.795264e-02,
-            'skaterCountAgainst' = -1.347474e-01,
-            'distance' = -5.128837e-02,
-            'angle' = -1.040606e-02,
-            'shotTypebat' = 3.036384e-01,
-            'shotTypebetween-legs' = -7.778691e-02,
-            'shotTypecradle' = -8.392727e+00,
-            'shotTypedeflected' = 3.891587e-02,
-            'shotTypepoke' = 3.908659e-04,
-            'shotTypeslap' = 9.454977e-01,
-            'shotTypesnap' = 8.493494e-01,
-            'shotTypetip-in' = -2.722527e-02,
-            'shotTypewrap-around' = 1.949897e-02,
-            'shotTypewrist' = 4.058403e-01,
-            'dDdT' = 4.634296e-03,
-            'dAdT' = 5.229569e-03,
-            'isRushTRUE' = 2.508792e-01,
-            'isReboundTRUE' = -8.565525e-03,
-            'isHomeTRUE' = 3.274853e-03,
-            'isPlayoffTRUE' = 6.925105e-02,
-            'secondsElapsedInGame' = -1.574121e-05,
-            'goalsFor' = 2.997044e-02,
-            'goalsAgainst' = -1.303492e-02
-          ),
-          v4 = c(
-            '(Intercept)' = 1.625248e+01,
-            'isEmptyNetForTRUE' = 4.902405e-02,
-            'skaterCountFor' = -9.006717e-02,
-            'skaterCountAgainst' = -1.213031e-01,
-            'distance' = -5.096500e-02,
-            'angle' = -1.096294e-02,
-            'shotTypebat' = 2.808649e-01,
-            'shotTypebetween-legs' = -1.167339e-01,
-            'shotTypecradle' = -1.032894e+01,
-            'shotTypedeflected' = 1.715449e-02,
-            'shotTypepoke' = -2.886184e-02,
-            'shotTypeslap' = 8.731276e-01,
-            'shotTypesnap' = 8.242781e-01,
-            'shotTypetip-in' = -4.734299e-02,
-            'shotTypewrap-around' = -9.690236e-03,
-            'shotTypewrist' = 3.788254e-01,
-            'dDdT' = 4.578223e-03,
-            'dAdT' = 5.432974e-03,
-            'isRushTRUE' = 2.458077e-01,
-            'isReboundTRUE' = -2.676404e-03,
-            'isHomeTRUE' = 3.333150e-03,
-            'isPlayoffTRUE' = 7.971748e-02,
-            'secondsElapsedInGame' = -1.554238e-05,
-            'goalsFor' = 3.014479e-02,
-            'goalsAgainst' = -1.219582e-02,
-            'shooterHeight' = -7.934626e-03,
-            'shooterWeight' = 9.449099e-04,
-            'shooterSideoffwing' = -1.548852e+01,
-            'shooterSideonwing' = -1.572523e+01,
-            'shooterPositionCodeD' = -9.456997e-03,
-            'shooterPositionCodeG' = -3.205893e+00,
-            'shooterPositionCodeL' = -6.091360e-02,
-            'shooterPositionCodeR' = 2.934768e-02,
-            'goalieHeight' = -6.767774e-05,
-            'goalieWeight' = -2.012066e-03,
-            'goalieSideglove' = 8.633985e-02,
-            'goalieSideneutral' = -1.556393e+01
-          )
-        ),
-        en = list(
-          v1 = c(
-            '(Intercept)' = 0.56617905,
-            'skaterCountFor' = -0.10099230,
-            'skaterCountAgainst' = 0.31510574,
-            'distance' = -0.01926386,
-            'angle' = -0.02735554,
-            'shotTypebat' = 0.33808842,
-            'shotTypedeflected' = 13.58501688,
-            'shotTypepoke' = 1.47199740,
-            'shotTypeslap' = 0.48728926,
-            'shotTypesnap' = 0.84619740,
-            'shotTypetip-in' = 0.13400586,
-            'shotTypewrap-around' = 1.35667713,
-            'shotTypewrist' = 0.71661735
-          ),
-          v2 = c(
-            '(Intercept)' = 0.619137784,
-            'skaterCountFor' = -0.098333748,
-            'skaterCountAgainst' = 0.317859331,
-            'distance' = -0.019195197,
-            'angle' = -0.028756798,
-            'shotTypebat' = 0.578877103,
-            'shotTypedeflected' = 13.525530973,
-            'shotTypepoke' = 1.426099635,
-            'shotTypeslap' = 0.526498857,
-            'shotTypesnap' = 0.828427490,
-            'shotTypetip-in' = 0.084621786,
-            'shotTypewrap-around' = 1.338129273,
-            'shotTypewrist' = 0.712539681,
-            'dDdT' = -0.001502894,
-            'dAdT' = 0.008804639,
-            'isRushTRUE' = -0.241240648,
-            'isReboundTRUE' = -0.641233998
-          ),
-          v3 = c(
-            '(Intercept)' = -0.611008803,
-            'skaterCountFor' = -0.114999412,
-            'skaterCountAgainst' = 0.336639102,
-            'distance' = -0.019144660,
-            'angle' = -0.028635430,
-            'shotTypebat' = 0.670125310,
-            'shotTypedeflected' = 13.475354525,
-            'shotTypepoke' = 1.408704963,
-            'shotTypeslap' = 0.520973953,
-            'shotTypesnap' = 0.824006348,
-            'shotTypetip-in' = 0.106795157,
-            'shotTypewrap-around' = 1.309763501,
-            'shotTypewrist' = 0.709009118,
-            'dDdT' = -0.001515512,
-            'dAdT' = 0.008845728,
-            'isRushTRUE' = -0.244698912,
-            'isReboundTRUE' = -0.657496487,
-            'isHomeTRUE' = -0.087014921,
-            'isPlayoffTRUE' = 0.123455041,
-            'secondsElapsedInGame' = 0.000348662,
-            'goalsFor' = -0.008033584,
-            'goalsAgainst' = 0.022890598
-          ),
-          v4 = c(
-            '(Intercept)' = 1.6096771896,
-            'skaterCountFor' = -0.1112421455,
-            'skaterCountAgainst' = 0.3593383566,
-            'distance' = -0.0202733684,
-            'angle' = -0.0277593189,
-            'shotTypebat' = 0.6055694218,
-            'shotTypedeflected' = 13.6628737240,
-            'shotTypepoke' = 1.3866301713,
-            'shotTypeslap' = 0.4853466203,
-            'shotTypesnap' = 0.8193740874,
-            'shotTypetip-in' = 0.0639432597,
-            'shotTypewrap-around' = 1.2021841108,
-            'shotTypewrist' = 0.7166745313,
-            'dDdT' = -0.0014028913,
-            'dAdT' = 0.0085313306,
-            'isRushTRUE' = -0.2363022067,
-            'isReboundTRUE' = -0.7209171660,
-            'isHomeTRUE' = -0.0816509141,
-            'isPlayoffTRUE' = 0.1354034627,
-            'secondsElapsedInGame' = 0.0003364762,
-            'goalsFor' = -0.0065399543,
-            'goalsAgainst' = 0.0182525747,
-            'shooterHeight' = -0.0514558963,
-            'shooterWeight' = 0.0078914553,
-            'shooterSideoffwing' = -0.0775475227,
-            'shooterSideonwing' = -0.1174964023,
-            'shooterPositionCodeD' = 0.3775920448,
-            'shooterPositionCodeG' = 0.2709200607,
-            'shooterPositionCodeL' = -0.1240870481,
-            'shooterPositionCodeR' = -0.0004897620
-          )
-        ),
-        so = list(
-          v1 = c(
-            '(Intercept)' = -0.222554605,
-            'distance' = -0.034294858,
-            'angle' = -0.009587828,
-            'shotTypedeflected' = -12.884874136,
-            'shotTypepoke' = 1.825144824,
-            'shotTypeslap' = 0.297880577,
-            'shotTypesnap' = 0.328662371,
-            'shotTypetip-in' = -12.885333899,
-            'shotTypewrist' = 0.111021978
-          ),
-          v3 = c(
-            '(Intercept)' = -2.585842e-01,
-            'distance' = -3.579157e-02,
-            'angle' = -9.718267e-03,
-            'shotTypedeflected' = -1.297206e+01,
-            'shotTypepoke' = 1.802787e+00,
-            'shotTypeslap' = 3.131032e-01,
-            'shotTypesnap' = 3.326833e-01,
-            'shotTypetip-in' = -1.294245e+01,
-            'shotTypewrist' = 1.121971e-01,
-            'isHomeTRUE' = -3.197610e-02,
-            'isPlayoffTRUE' = 1.903331e+00,
-            'secondsElapsedInGame' = 6.479725e-05,
-            'goalsFor' = -1.251570e-02,
-            'goalsAgainst' = -4.291056e-02
-          ),
-          v4 = c(
-            '(Intercept)' = -4.966866e-01,
-            'distance' = -3.478439e-02,
-            'angle' = -9.810028e-03,
-            'shotTypedeflected' = -1.308337e+01,
-            'shotTypepoke' = 1.882952e+00,
-            'shotTypeslap' = 3.789456e-01,
-            'shotTypesnap' = 3.271954e-01,
-            'shotTypetip-in' = -1.283398e+01,
-            'shotTypewrist' = 1.139254e-01,
-            'isHomeTRUE' = -4.643436e-02,
-            'isPlayoffTRUE' = 1.828644e+00,
-            'secondsElapsedInGame' = 6.960136e-05,
-            'goalsFor' = -1.269702e-02,
-            'goalsAgainst' = -3.866093e-02,
-            'shooterHeight' = 1.246849e-02,
-            'shooterWeight' = -6.799232e-04,
-            'shooterSideoffwing' = 1.471420e-04,
-            'shooterSideonwing' = 1.925120e-02,
-            'shooterPositionCodeD' = -6.684898e-01,
-            'shooterPositionCodeL' = 1.344272e-01,
-            'shooterPositionCodeR' = -5.787621e-02,
-            'goalieHeight' = -2.916080e-02,
-            'goalieWeight' = 8.075507e-03
-          )
-        )
-      )
-
-      # Match training factor levels.
-      .LEVELS <- list(
-        shotType = c("backhand","bat","between-legs","cradle","deflected","poke","slap","snap","tip-in","wrap-around","wrist"),
-        shooterSide = c("neutral","offwing","onwing"),
-        shooterPositionCode = c("C","D","G","L","R"),
-        goalieSide = c("blocker","glove","neutral")
-      )
-      .REF <- list(
-        shotType = "backhand",
-        shooterSide = "neutral",
-        shooterPositionCode = "C",
-        goalieSide = "blocker"
-      )
-
-      # ----- Helpers ----- #
-
-      .get_num <- function(df, nm) {
-        n <- nrow(df)
-        if (!nm %in% names(df)) return(rep(0, n))
-        v <- df[[nm]]
-        if (is.logical(v)) return(as.numeric(!is.na(v) & v))
-        if (is.factor(v)) v <- as.character(v)
-        v <- suppressWarnings(as.numeric(v))
-        v[is.na(v)] <- 0
-        v
-      }
-
-      .to01 <- function(v) {
-        if (is.logical(v)) return(as.numeric(!is.na(v) & v))
-        if (is.numeric(v) || is.integer(v)) return(as.numeric(!is.na(v) & v != 0))
-        vv <- as.character(v)
-        as.numeric(!is.na(vv) & (vv == 'TRUE' | vv == 'T' | vv == '1'))
-      }
-
-      .coerce_factor <- function(x, levels, ref) {
-        xx <- as.character(x)
-        xx[!(xx %in% levels)] <- NA_character_
-        xx[is.na(xx)] <- ref
-        factor(xx, levels = levels)
-      }
-
-      .prob <- function(df, beta) {
-        beta <- beta
-        beta[is.na(beta)] <- 0
-        m <- nrow(df)
-        if (m == 0L) return(numeric(0))
-        # Coerce to training levels (prevents baseline drift).
-        st <- if ('shotType' %in% names(df)) df$shotType else rep(.REF$shotType, m)
-        ss <- if ('shooterSide' %in% names(df)) df$shooterSide else rep(.REF$shooterSide, m)
-        spc <- if ('shooterPositionCode' %in% names(df)) df$shooterPositionCode else rep(.REF$shooterPositionCode, m)
-        gs <- if ('goalieSide' %in% names(df)) df$goalieSide else rep(.REF$goalieSide, m)
-        st <- .coerce_factor(st, .LEVELS$shotType, .REF$shotType)
-        ss <- .coerce_factor(ss, .LEVELS$shooterSide, .REF$shooterSide)
-        spc <- .coerce_factor(spc, .LEVELS$shooterPositionCode, .REF$shooterPositionCode)
-        gs <- .coerce_factor(gs, .LEVELS$goalieSide, .REF$goalieSide)
-        eta <- rep(0, m)
-        for (nm in names(beta)) {
-          b <- beta[[nm]]
-          if (b == 0) next
-          if (nm == '(Intercept)') {
-            eta <- eta + b
-            next
-          }
-          if (substr(nm, 1L, 7L) == 'shotType') {
-            lvl <- substr(nm, 8L, nchar(nm))
-            eta <- eta + b * (as.character(st) == lvl)
-            next
-          }
-          if (substr(nm, 1L, 10L) == 'shooterSide') {
-            lvl <- substr(nm, 11L, nchar(nm))
-            eta <- eta + b * (as.character(ss) == lvl)
-            next
-          }
-          if (substr(nm, 1L, 19L) == 'shooterPositionCode') {
-            lvl <- substr(nm, 20L, nchar(nm))
-            eta <- eta + b * (as.character(spc) == lvl)
-            next
-          }
-          if (substr(nm, 1L, 9L) == 'goalieSide') {
-            lvl <- substr(nm, 10L, nchar(nm))
-            eta <- eta + b * (as.character(gs) == lvl)
-            next
-          }
-          if (nchar(nm) >= 4L && substr(nm, nchar(nm) - 3L, nchar(nm)) == 'TRUE') {
-            var <- substr(nm, 1L, nchar(nm) - 4L)
-            v01 <- if (var %in% names(df)) .to01(df[[var]]) else rep(0, m)
-            eta <- eta + b * v01
-            next
-          }
-          eta <- eta + b * .get_num(df, nm)
-        }
-        1 / (1 + exp(-eta))
-      }
-
-      # Predict xG.
+      pbp <- .xg_prepare_play_by_play(play_by_play)
       n <- nrow(pbp)
-      xG <- rep(NA_real_, n)
-      is_shot <- .shot_event_mask(pbp, c('goal', 'shot-on-goal', 'missed-shot'))
-      situationCode <- if ('situationCode' %in% names(pbp)) as.character(pbp$situationCode) else rep(NA_character_, n)
-      is_so <- is_shot & !is.na(situationCode) & situationCode %in% c('1010', '0101')
-      isEmptyNetAgainst <- if ('isEmptyNetAgainst' %in% names(pbp)) pbp$isEmptyNetAgainst else rep(FALSE, n)
-      is_en <- is_shot & !is_so & (.to01(isEmptyNetAgainst) == 1)
-      is_sd <- is_shot & !is_so & !is_en & (!is.na(situationCode) & situationCode == '1551')
-      is_sp <- is_shot & !is_so & !is_en & !is_sd
-      vkey <- paste0('v', model)
-      beta_sd <- COEFS$sd[[vkey]]
-      beta_sp <- COEFS$sp[[vkey]]
-      beta_en <- COEFS$en[[vkey]]
-      beta_so <- if (model == 2) COEFS$so$v1 else COEFS$so[[vkey]]
-      if (any(is_sd)) xG[is_sd] <- .prob(pbp[is_sd, , drop = FALSE], beta_sd)
-      if (any(is_sp)) xG[is_sp] <- .prob(pbp[is_sp, , drop = FALSE], beta_sp)
-      if (any(is_en)) xG[is_en] <- .prob(pbp[is_en, , drop = FALSE], beta_en)
-      if (any(is_so)) xG[is_so] <- .prob(pbp[is_so, , drop = FALSE], beta_so)
-      play_by_play$xG <- xG
+      xg <- rep(NA_real_, n)
+
+      is_shot <- .shot_event_mask(
+        pbp,
+        c("goal", "shot-on-goal", "missed-shot")
+      )
+      if (!any(is_shot)) {
+        play_by_play$xG <- xg
+        return(play_by_play)
+      }
+
+      shot_idx <- which(is_shot)
+      shots <- .xg_build_model_frame(
+        shots = pbp[shot_idx, , drop = FALSE],
+        play_by_play = pbp
+      )
+
+      partition <- .xg_partition_shots(shots)
+      goalie_ids <- unique(
+        as.integer(
+          pbp$goaliePlayerIdAgainst[!is.na(pbp$goaliePlayerIdAgainst)]
+        )
+      )
+      shooter_ids <- as.integer(shots$shootingPlayerId)
+      score_ok <- is.na(shooter_ids) | !(shooter_ids %in% goalie_ids)
+
+      for (key in names(XG_RIDGE_MODEL_SPECS)) {
+        idx <- which(score_ok & !is.na(partition) & partition == key)
+        if (!length(idx)) {
+          next
+        }
+        xg[shot_idx[idx]] <- .xg_score_partition(
+          shots[idx, , drop = FALSE],
+          XG_RIDGE_MODEL_SPECS[[key]]
+        )
+      }
+
+      play_by_play$xG <- xg
       play_by_play
     },
     error = function(e) {
       message(conditionMessage(e))
-      message('Invalid argument(s); refer to help file.')
+      message("Invalid argument(s); refer to help file.")
       play_by_play
     }
   )
@@ -524,7 +76,693 @@ calculate_expected_goals <- function(play_by_play, model = 1) {
 
 #' @rdname calculate_expected_goals
 #' @export
-
-calculate_xG <- function(play_by_play, model = 1) {
+calculate_xG <- function(play_by_play, model = NULL) {
   calculate_expected_goals(play_by_play, model)
+}
+
+.xg_warn_ignored_model <- function(model, fn_name) {
+  if (missing(model) || is.null(model)) {
+    return(invisible(NULL))
+  }
+  model_value <- suppressWarnings(as.integer(model[[1L]]))
+  if (!is.na(model_value) && identical(model_value, 1L)) {
+    return(invisible(NULL))
+  }
+  warning(
+    sprintf(
+      "`%s()` now uses one built-in six-partition ridge xG model; `model` is ignored.",
+      fn_name
+    ),
+    call. = FALSE
+  )
+  invisible(NULL)
+}
+
+.xg_fill_public_aliases <- function(play_by_play) {
+  aliases <- c(
+    eventTypeDescKey = "typeDescKey",
+    periodNumber = "period",
+    shotsFor = "SOGFor",
+    shotsAgainst = "SOGAgainst",
+    shotDifferential = "SOGDifferential"
+  )
+  for (nm in names(aliases)) {
+    alt <- aliases[[nm]]
+    if (!(nm %in% names(play_by_play)) && alt %in% names(play_by_play)) {
+      play_by_play[[nm]] <- play_by_play[[alt]]
+    }
+  }
+  play_by_play
+}
+
+.xg_required_shift_cols <- function(play_by_play) {
+  id_cols <- grep(
+    "^(?:home|away)Skater[0-9]+PlayerId$|^skater[0-9]+PlayerId(?:For|Against)$",
+    names(play_by_play),
+    value = TRUE
+  )
+  if (!length(id_cols)) {
+    return(character())
+  }
+  slot_count <- .on_ice_skater_slots(play_by_play = play_by_play)
+  if (!slot_count) {
+    return(character())
+  }
+  c(
+    paste0("skater", seq_len(slot_count), "SecondsElapsedInShiftFor"),
+    paste0("skater", seq_len(slot_count), "SecondsElapsedInShiftAgainst"),
+    paste0("skater", seq_len(slot_count), "SecondsElapsedInPeriodSinceLastShiftFor"),
+    paste0("skater", seq_len(slot_count), "SecondsElapsedInPeriodSinceLastShiftAgainst")
+  )
+}
+
+.xg_fetch_shift_data <- function(game_ids) {
+  game_ids <- sort(unique(as.integer(game_ids[!is.na(game_ids)])))
+  if (!length(game_ids)) {
+    return(data.frame())
+  }
+
+  if (length(game_ids) <= 4L) {
+    out <- vector("list", length(game_ids))
+    for (i in seq_along(game_ids)) {
+      out[[i]] <- tryCatch(
+        shift_chart(game_ids[[i]]),
+        error = function(e) data.frame()
+      )
+    }
+    out <- Filter(
+      function(x) is.data.frame(x) && nrow(x) > 0L,
+      out
+    )
+    if (!length(out)) {
+      return(data.frame())
+    }
+    return(do.call(rbind, out))
+  }
+
+  season_ids <- sort(unique(game_ids %/% 1e6 * 1e4 + game_ids %/% 1e6 + 1L))
+  out <- vector("list", length(season_ids))
+  for (i in seq_along(season_ids)) {
+    sc <- tryCatch(
+      shift_charts(season_ids[[i]]),
+      error = function(e) data.frame()
+    )
+    if (is.data.frame(sc) && nrow(sc) > 0L && "gameId" %in% names(sc)) {
+      sc <- sc[sc$gameId %in% game_ids, , drop = FALSE]
+    }
+    out[[i]] <- sc
+  }
+  out <- Filter(
+    function(x) is.data.frame(x) && nrow(x) > 0L,
+    out
+  )
+  if (!length(out)) {
+    data.frame()
+  } else {
+    do.call(rbind, out)
+  }
+}
+
+.xg_prepare_play_by_play <- function(play_by_play) {
+  pbp <- .pbp_legacy_aliases(play_by_play)
+  pbp <- .xg_fill_public_aliases(pbp)
+
+  if (!("isHome" %in% names(pbp))) {
+    pbp <- .flag_is_home(pbp)
+    pbp <- .xg_fill_public_aliases(pbp)
+  }
+
+  state_cols <- c(
+    "isEmptyNetFor",
+    "isEmptyNetAgainst",
+    "skaterCountFor",
+    "skaterCountAgainst",
+    "manDifferential",
+    "strengthState"
+  )
+  if (!all(state_cols %in% names(pbp))) {
+    pbp <- .strip_situation_code(pbp)
+    pbp <- .xg_fill_public_aliases(pbp)
+  }
+
+  need_context <- !all(c(
+    "isRush",
+    "isRebound",
+    "goalsFor",
+    "goalsAgainst",
+    "shotsFor",
+    "shotsAgainst",
+    "shotDifferential",
+    "fenwickFor",
+    "fenwickAgainst",
+    "fenwickDifferential",
+    "corsiFor",
+    "corsiAgainst",
+    "corsiDifferential"
+  ) %in% names(pbp))
+  if (need_context) {
+    pbp <- .apply_shot_context(pbp)
+    pbp <- .xg_fill_public_aliases(pbp)
+  }
+
+  shift_cols <- .xg_required_shift_cols(pbp)
+  if (length(shift_cols) && !all(shift_cols %in% names(pbp))) {
+    shifts <- .xg_fetch_shift_data(pbp$gameId)
+    if (nrow(shifts) > 0L) {
+      pbp <- tryCatch(
+        add_shift_times(pbp, shifts),
+        error = function(e) pbp
+      )
+    }
+  }
+
+  if (!all(.pbp_delta_public_cols() %in% names(pbp))) {
+    pbp <- add_deltas(pbp)
+    pbp <- .xg_fill_public_aliases(pbp)
+  }
+
+  if (!all(c(
+    "shooterHeight",
+    "shooterWeight",
+    "shooterHandCode",
+    "shooterPositionCode",
+    "shooterAge"
+  ) %in% names(pbp))) {
+    pbp <- add_shooter_biometrics(pbp)
+  }
+
+  if (!all(c(
+    "goalieHeight",
+    "goalieWeight",
+    "goalieHandCode",
+    "goalieAge"
+  ) %in% names(pbp))) {
+    pbp <- add_goalie_biometrics(pbp)
+  }
+
+  pbp
+}
+
+.xg_normalize_shot_type <- function(x) {
+  x <- tolower(trimws(as.character(x)))
+  keep <- c("backhand", "deflected", "slap", "snap", "tip-in", "wrist")
+  ifelse(!is.na(x) & x %in% keep, x, "other")
+}
+
+.xg_normalize_missed_reason <- function(x) {
+  x <- tolower(trimws(as.character(x)))
+  out <- rep("other", length(x))
+  out[!is.na(x) & x %in% c(
+    "goalpost", "hit-left-post", "hit-right-post", "hit-crossbar"
+  )] <- "post"
+  out[!is.na(x) & x %in% c("over-net", "above-crossbar")] <- "high"
+  out[!is.na(x) & x %in% c(
+    "wide-of-net",
+    "high-and-wide-left",
+    "high-and-wide-right",
+    "wide-left",
+    "wide-right"
+  )] <- "wide"
+  out
+}
+
+.xg_make_type_desc_key_prev <- function(
+  type_desc_key_prev,
+  reason_prev,
+  shot_type_prev,
+  event_owner_team_id_prev,
+  event_owner_team_id
+) {
+  n <- length(type_desc_key_prev)
+  out <- rep(NA_character_, n)
+  prev_type <- tolower(as.character(type_desc_key_prev))
+  reason_prev <- .xg_normalize_missed_reason(reason_prev)
+  shot_type_prev <- .xg_normalize_shot_type(shot_type_prev)
+  is_for <- !is.na(event_owner_team_id_prev) &
+    !is.na(event_owner_team_id) &
+    event_owner_team_id_prev == event_owner_team_id
+
+  idx <- !is.na(prev_type) & prev_type == "faceoff" & is_for
+  out[idx] <- "won-faceoff"
+  idx <- !is.na(prev_type) & prev_type == "faceoff" & !is_for
+  out[idx] <- "lost-faceoff"
+
+  idx <- !is.na(prev_type) & prev_type == "shot-on-goal" & is_for
+  out[idx] <- paste0(shot_type_prev[idx], "-shot-on-goal-for")
+  idx <- !is.na(prev_type) & prev_type == "shot-on-goal" & !is_for
+  out[idx] <- paste0(shot_type_prev[idx], "-shot-on-goal-against")
+
+  idx <- !is.na(prev_type) & prev_type == "hit" & is_for
+  out[idx] <- "given-hit"
+  idx <- !is.na(prev_type) & prev_type == "hit" & !is_for
+  out[idx] <- "taken-hit"
+
+  idx <- !is.na(prev_type) & prev_type == "blocked-shot" & is_for
+  out[idx] <- "blocked-shot-for"
+  idx <- !is.na(prev_type) & prev_type == "blocked-shot" & !is_for
+  out[idx] <- "blocked-shot-against"
+
+  idx <- !is.na(prev_type) & prev_type == "giveaway" & is_for
+  out[idx] <- "giveaway-for"
+  idx <- !is.na(prev_type) & prev_type == "giveaway" & !is_for
+  out[idx] <- "giveaway-against"
+
+  idx <- !is.na(prev_type) & prev_type == "takeaway" & is_for
+  out[idx] <- "takeaway-for"
+  idx <- !is.na(prev_type) & prev_type == "takeaway" & !is_for
+  out[idx] <- "takeaway-against"
+
+  idx <- !is.na(prev_type) & prev_type == "missed-shot" & is_for
+  out[idx] <- paste0(reason_prev[idx], "-missed-shot-for")
+  idx <- !is.na(prev_type) & prev_type == "missed-shot" & !is_for
+  out[idx] <- paste0(reason_prev[idx], "-missed-shot-against")
+
+  other <- is.na(out) & !is.na(prev_type)
+  out[other] <- prev_type[other]
+  out
+}
+
+.xg_extract_slot_indices <- function(data, suffix) {
+  matches <- regexec(
+    paste0("^skater([0-9]+)", suffix, "$"),
+    names(data)
+  )
+  vals <- regmatches(names(data), matches)
+  idx <- vapply(
+    vals,
+    function(x) {
+      if (length(x) < 2L) {
+        return(NA_integer_)
+      }
+      as.integer(x[[2L]])
+    },
+    integer(1L)
+  )
+  sort(unique(idx[!is.na(idx)]))
+}
+
+.xg_build_skater_matrix <- function(data, suffix, mode = "numeric") {
+  idx <- .xg_extract_slot_indices(data, suffix)
+  if (!length(idx)) {
+    out <- matrix(numeric(0), nrow = nrow(data), ncol = 0L)
+    storage.mode(out) <- mode
+    return(out)
+  }
+  cols <- paste0("skater", idx, suffix)
+  out <- matrix(NA_real_, nrow = nrow(data), ncol = length(cols))
+  for (j in seq_along(cols)) {
+    if (cols[[j]] %in% names(data)) {
+      out[, j] <- suppressWarnings(as.numeric(data[[cols[[j]]]]))
+    }
+  }
+  if (identical(mode, "integer")) {
+    storage.mode(out) <- "integer"
+  }
+  out
+}
+
+.xg_row_min <- function(mat) {
+  n <- nrow(mat)
+  if (!ncol(mat)) {
+    return(rep(NA_real_, n))
+  }
+  out <- rep(Inf, n)
+  any_ok <- rep(FALSE, n)
+  for (j in seq_len(ncol(mat))) {
+    col <- mat[, j]
+    ok <- !is.na(col)
+    any_ok[ok] <- TRUE
+    out[ok] <- pmin(out[ok], col[ok])
+  }
+  out[!any_ok] <- NA_real_
+  out
+}
+
+.xg_row_max <- function(mat) {
+  n <- nrow(mat)
+  if (!ncol(mat)) {
+    return(rep(NA_real_, n))
+  }
+  out <- rep(-Inf, n)
+  any_ok <- rep(FALSE, n)
+  for (j in seq_len(ncol(mat))) {
+    col <- mat[, j]
+    ok <- !is.na(col)
+    any_ok[ok] <- TRUE
+    out[ok] <- pmax(out[ok], col[ok])
+  }
+  out[!any_ok] <- NA_real_
+  out
+}
+
+.xg_row_mean <- function(mat) {
+  if (!ncol(mat)) {
+    return(rep(NA_real_, nrow(mat)))
+  }
+  counts <- rowSums(!is.na(mat))
+  sums <- rowSums(mat, na.rm = TRUE)
+  out <- sums / counts
+  out[counts == 0L] <- NA_real_
+  out
+}
+
+.xg_extract_matched_value <- function(id_mat, value_mat, player_id) {
+  n <- nrow(id_mat)
+  out <- rep(NA_real_, n)
+  if (!ncol(id_mat) || !ncol(value_mat)) {
+    return(out)
+  }
+  player_id <- suppressWarnings(as.integer(player_id))
+  for (j in seq_len(ncol(id_mat))) {
+    hit <- is.na(out) &
+      !is.na(player_id) &
+      !is.na(id_mat[, j]) &
+      id_mat[, j] == player_id
+    if (any(hit)) {
+      out[hit] <- value_mat[hit, j]
+    }
+  }
+  out
+}
+
+.xg_to_logical <- function(x) {
+  if (is.logical(x)) {
+    return(x)
+  }
+  if (is.numeric(x) || is.integer(x)) {
+    out <- rep(NA, length(x))
+    out[!is.na(x)] <- x[!is.na(x)] != 0
+    return(out)
+  }
+  x <- as.character(x)
+  out <- rep(NA, length(x))
+  out[!is.na(x) & x %in% c("TRUE", "T", "true", "1", "yes", "YES")] <- TRUE
+  out[!is.na(x) & x %in% c("FALSE", "F", "false", "0", "no", "NO")] <- FALSE
+  out
+}
+
+.xg_build_model_frame <- function(shots, play_by_play) {
+  shots <- .xg_fill_public_aliases(shots)
+  play_by_play <- .xg_fill_public_aliases(play_by_play)
+  n <- nrow(shots)
+
+  prev_keys <- if ("eventIdPrev" %in% names(shots)) {
+    paste(shots$gameId, shots$eventIdPrev, sep = ":")
+  } else {
+    rep(NA_character_, n)
+  }
+  cur_keys <- paste(play_by_play$gameId, play_by_play$eventId, sep = ":")
+  prev_idx <- match(prev_keys, cur_keys)
+
+  shot_type_prev <- if ("shotType" %in% names(play_by_play)) {
+    .xg_normalize_shot_type(play_by_play$shotType[prev_idx])
+  } else {
+    rep("other", n)
+  }
+
+  shooting_player_id <- if ("shootingPlayerId" %in% names(shots)) {
+    suppressWarnings(as.integer(shots$shootingPlayerId))
+  } else {
+    rep(NA_integer_, n)
+  }
+  if ("scoringPlayerId" %in% names(shots)) {
+    use_scoring <- is.na(shooting_player_id)
+    shooting_player_id[use_scoring] <- suppressWarnings(
+      as.integer(shots$scoringPlayerId[use_scoring])
+    )
+  }
+
+  if (!("gameTypeId" %in% names(shots)) && "gameId" %in% names(shots)) {
+    shots$gameTypeId <- shots$gameId %/% 1e4 %% 1e2
+  }
+
+  shot_type <- if ("shotType" %in% names(shots)) {
+    shots$shotType
+  } else {
+    rep(NA_character_, n)
+  }
+  period_type <- if ("periodType" %in% names(shots)) {
+    shots$periodType
+  } else {
+    rep(NA_character_, n)
+  }
+  x_coord_norm <- if ("xCoordNorm" %in% names(shots)) {
+    suppressWarnings(as.numeric(shots$xCoordNorm))
+  } else {
+    rep(NA_real_, n)
+  }
+  y_coord_norm <- if ("yCoordNorm" %in% names(shots)) {
+    suppressWarnings(as.numeric(shots$yCoordNorm))
+  } else {
+    rep(NA_real_, n)
+  }
+  d_y_coord_norm <- if ("dYCoordNorm" %in% names(shots)) {
+    suppressWarnings(as.numeric(shots$dYCoordNorm))
+  } else {
+    rep(NA_real_, n)
+  }
+
+  shots$shotType <- .xg_normalize_shot_type(shot_type)
+  shots$typeDescKeyPrev <- .xg_make_type_desc_key_prev(
+    type_desc_key_prev = play_by_play$eventTypeDescKey[prev_idx],
+    reason_prev = play_by_play$reason[prev_idx],
+    shot_type_prev = shot_type_prev,
+    event_owner_team_id_prev = play_by_play$eventOwnerTeamId[prev_idx],
+    event_owner_team_id = shots$eventOwnerTeamId
+  )
+  shots$shootingPlayerId <- shooting_player_id
+
+  is_empty_for <- .xg_to_logical(
+    if ("isEmptyNetFor" %in% names(shots)) shots$isEmptyNetFor else rep(NA, n)
+  )
+  is_empty_against <- .xg_to_logical(
+    if ("isEmptyNetAgainst" %in% names(shots)) shots$isEmptyNetAgainst else rep(NA, n)
+  )
+  is_empty_for[is.na(is_empty_for)] <- FALSE
+  is_empty_against[is.na(is_empty_against)] <- FALSE
+  shots$isEmptyNetFor <- is_empty_for
+  shots$isEmptyNetAgainst <- is_empty_against
+  shots$isPlayoff <- !is.na(shots$gameTypeId) & shots$gameTypeId == 3L
+  shots$isOvertime <- !is.na(period_type) &
+    as.character(period_type) == "OT"
+  shots$xCoordNorm <- x_coord_norm
+  shots$yCoordNorm <- y_coord_norm
+  shots$dYCoordNorm <- d_y_coord_norm
+  shots$isBehindNet <- !is.na(x_coord_norm) & x_coord_norm >= 89
+  y_prev <- y_coord_norm - d_y_coord_norm
+  shots$crossedRoyalRoad <- !is.na(y_coord_norm) &
+    !is.na(y_prev) &
+    y_coord_norm * y_prev < 0
+
+  shots$zoneCode <- if ("zoneCode" %in% names(shots)) {
+    toupper(as.character(shots$zoneCode))
+  } else {
+    rep(NA_character_, n)
+  }
+  shots$strengthState <- if ("strengthState" %in% names(shots)) {
+    tolower(as.character(shots$strengthState))
+  } else {
+    rep(NA_character_, n)
+  }
+  shots$shooterHandCode <- if ("shooterHandCode" %in% names(shots)) {
+    toupper(as.character(shots$shooterHandCode))
+  } else {
+    rep(NA_character_, n)
+  }
+  shots$goalieHandCode <- if ("goalieHandCode" %in% names(shots)) {
+    toupper(as.character(shots$goalieHandCode))
+  } else {
+    rep(NA_character_, n)
+  }
+  shots$shooterPositionCode <- if ("shooterPositionCode" %in% names(shots)) {
+    toupper(as.character(shots$shooterPositionCode))
+  } else {
+    rep(NA_character_, n)
+  }
+
+  player_ids_for <- .xg_build_skater_matrix(shots, "PlayerIdFor", "integer")
+  shift_for <- .xg_build_skater_matrix(shots, "SecondsElapsedInShiftFor")
+  shift_against <- .xg_build_skater_matrix(shots, "SecondsElapsedInShiftAgainst")
+  rest_for <- .xg_build_skater_matrix(shots, "SecondsElapsedInPeriodSinceLastShiftFor")
+  rest_against <- .xg_build_skater_matrix(shots, "SecondsElapsedInPeriodSinceLastShiftAgainst")
+
+  shots$minSecondsElapsedInShiftFor <- .xg_row_min(shift_for)
+  shots$maxSecondsElapsedInShiftFor <- .xg_row_max(shift_for)
+  shots$avgSecondsElapsedInShiftFor <- .xg_row_mean(shift_for)
+  shots$minSecondsElapsedInShiftAgainst <- .xg_row_min(shift_against)
+  shots$maxSecondsElapsedInShiftAgainst <- .xg_row_max(shift_against)
+  shots$avgSecondsElapsedInShiftAgainst <- .xg_row_mean(shift_against)
+  shots$minSecondsElapsedSinceLastShiftFor <- .xg_row_min(rest_for)
+  shots$maxSecondsElapsedSinceLastShiftFor <- .xg_row_max(rest_for)
+  shots$avgSecondsElapsedSinceLastShiftFor <- .xg_row_mean(rest_for)
+  shots$minSecondsElapsedSinceLastShiftAgainst <- .xg_row_min(rest_against)
+  shots$maxSecondsElapsedSinceLastShiftAgainst <- .xg_row_max(rest_against)
+  shots$avgSecondsElapsedSinceLastShiftAgainst <- .xg_row_mean(rest_against)
+  shots$shooterSecondsElapsedInShift <- .xg_extract_matched_value(
+    player_ids_for,
+    shift_for,
+    shots$shootingPlayerId
+  )
+  shots$shooterSecondsElapsedSinceLastShift <- .xg_extract_matched_value(
+    player_ids_for,
+    rest_for,
+    shots$shootingPlayerId
+  )
+
+  shots
+}
+
+.xg_partition_shots <- function(shots) {
+  sc <- .normalize_situation_code_for_parse(shots$situationCode)
+  is_empty_for <- .xg_to_logical(shots$isEmptyNetFor)
+  is_empty_against <- .xg_to_logical(shots$isEmptyNetAgainst)
+  is_empty_for[is.na(is_empty_for)] <- FALSE
+  is_empty_against[is.na(is_empty_against)] <- FALSE
+
+  skater_for <- suppressWarnings(as.integer(shots$skaterCountFor))
+  skater_against <- suppressWarnings(as.integer(shots$skaterCountAgainst))
+
+  is_ps <- !is.na(sc) & sc %in% c("1010", "0101")
+  is_en <- !is_ps & is_empty_against
+  is_sd <- !is_ps &
+    !is_en &
+    !is.na(skater_for) &
+    !is.na(skater_against) &
+    skater_for == 5L &
+    skater_against == 5L &
+    !is_empty_for &
+    !is_empty_against
+  is_ev <- !is_ps &
+    !is_en &
+    !is.na(skater_for) &
+    !is.na(skater_against) &
+    skater_for == skater_against &
+    !is_sd
+  is_pp <- !is_ps &
+    !is_en &
+    !is.na(skater_for) &
+    !is.na(skater_against) &
+    skater_for > skater_against
+  is_sh <- !is_ps &
+    !is_en &
+    !is.na(skater_for) &
+    !is.na(skater_against) &
+    skater_for < skater_against
+
+  out <- rep(NA_character_, nrow(shots))
+  out[is_ps] <- "so"
+  out[is_en] <- "en"
+  out[is_sd] <- "sd"
+  out[is_ev] <- "ev"
+  out[is_pp] <- "pp"
+  out[is_sh] <- "sh"
+  out
+}
+
+.xg_encode_categorical <- function(values, var, spec, n) {
+  if (is.null(values)) {
+    values <- rep(NA, n)
+  }
+
+  logical_var <- var %in% spec$logical_vars
+  if (logical_var) {
+    values <- .xg_to_logical(values)
+    out <- rep(NA_character_, length(values))
+    out[!is.na(values) & values] <- "yes"
+    out[!is.na(values) & !values] <- "no"
+  } else {
+    out <- as.character(values)
+  }
+
+  known <- spec$known_levels[[var]]
+  known <- if (is.null(known)) character() else known
+  allowed <- c(
+    known,
+    if (isTRUE(spec$has_unknown[[var]])) "unknown",
+    if (isTRUE(spec$has_new[[var]])) "new"
+  )
+
+  out[is.na(out) & isTRUE(spec$has_unknown[[var]])] <- "unknown"
+  novel <- !is.na(out) & !(out %in% allowed)
+  if (isTRUE(spec$has_new[[var]])) {
+    out[novel] <- "new"
+  }
+
+  out
+}
+
+.xg_standardize_term <- function(x, term, spec, n) {
+  if (is.null(x)) {
+    x <- rep(NA_real_, n)
+  }
+  if (is.factor(x)) {
+    x <- as.character(x)
+  }
+  if (is.logical(x)) {
+    x <- ifelse(is.na(x), NA_real_, as.numeric(x))
+  } else {
+    x <- suppressWarnings(as.numeric(x))
+  }
+
+  med <- spec$medians[[term]]
+  if (is.null(med) || !length(med) || is.na(med)) {
+    med <- 0
+  }
+  x[is.na(x)] <- med
+
+  center <- spec$normalize_means[[term]]
+  scale <- spec$normalize_sds[[term]]
+  if (is.null(center) || !length(center) || is.na(center)) {
+    center <- 0
+  }
+  if (is.null(scale) || !length(scale) || !is.finite(scale) || scale == 0) {
+    return(rep(0, n))
+  }
+  (x - center) / scale
+}
+
+.xg_score_partition <- function(df, spec) {
+  n <- nrow(df)
+  if (!n) {
+    return(numeric(0))
+  }
+
+  coeffs <- spec$coefficients
+  eta <- rep(unname(coeffs[["(Intercept)"]]), n)
+
+  if (length(spec$raw_terms)) {
+    for (term in spec$raw_terms) {
+      eta <- eta + coeffs[[term]] * .xg_standardize_term(
+        if (term %in% names(df)) df[[term]] else NULL,
+        term,
+        spec,
+        n
+      )
+    }
+  }
+
+  if (length(spec$active_dummy_by_var)) {
+    for (var in names(spec$active_dummy_by_var)) {
+      values <- .xg_encode_categorical(
+        if (var %in% names(df)) df[[var]] else NULL,
+        var,
+        spec,
+        n
+      )
+      terms <- spec$active_dummy_by_var[[var]]
+      for (term in terms) {
+        level <- spec$dummy_term_to_level[[term]]
+        dummy <- as.numeric(values == level)
+        dummy[is.na(dummy)] <- NA_real_
+        eta <- eta + coeffs[[term]] * .xg_standardize_term(
+          dummy,
+          term,
+          spec,
+          n
+        )
+      }
+    }
+  }
+
+  stats::plogis(eta)
 }
