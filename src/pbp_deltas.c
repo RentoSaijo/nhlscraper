@@ -57,6 +57,8 @@ SEXP nhlscraper_pbp_deltas(SEXP data_list) {
   SEXP d_y_coord_norm;
   SEXP d_distance;
   SEXP d_angle;
+  SEXP d_x_coord_per_second;
+  SEXP d_y_coord_per_second;
   SEXP d_x_coord_norm_per_second;
   SEXP d_y_coord_norm_per_second;
   SEXP d_distance_per_second;
@@ -75,6 +77,8 @@ SEXP nhlscraper_pbp_deltas(SEXP data_list) {
   d_y_coord_norm = PROTECT(allocVector(REALSXP, n)); protect_n++;
   d_distance = PROTECT(allocVector(REALSXP, n)); protect_n++;
   d_angle = PROTECT(allocVector(REALSXP, n)); protect_n++;
+  d_x_coord_per_second = PROTECT(allocVector(REALSXP, n)); protect_n++;
+  d_y_coord_per_second = PROTECT(allocVector(REALSXP, n)); protect_n++;
   d_x_coord_norm_per_second = PROTECT(allocVector(REALSXP, n)); protect_n++;
   d_y_coord_norm_per_second = PROTECT(allocVector(REALSXP, n)); protect_n++;
   d_distance_per_second = PROTECT(allocVector(REALSXP, n)); protect_n++;
@@ -90,6 +94,8 @@ SEXP nhlscraper_pbp_deltas(SEXP data_list) {
     REAL(d_y_coord_norm)[i] = NA_REAL;
     REAL(d_distance)[i] = NA_REAL;
     REAL(d_angle)[i] = NA_REAL;
+    REAL(d_x_coord_per_second)[i] = NA_REAL;
+    REAL(d_y_coord_per_second)[i] = NA_REAL;
     REAL(d_x_coord_norm_per_second)[i] = NA_REAL;
     REAL(d_y_coord_norm_per_second)[i] = NA_REAL;
     REAL(d_distance_per_second)[i] = NA_REAL;
@@ -213,6 +219,12 @@ SEXP nhlscraper_pbp_deltas(SEXP data_list) {
         continue;
       }
 
+      if (!is_na_or_nan(REAL(d_x_coord)[idx])) {
+        REAL(d_x_coord_per_second)[idx] = REAL(d_x_coord)[idx] / denom;
+      }
+      if (!is_na_or_nan(REAL(d_y_coord)[idx])) {
+        REAL(d_y_coord_per_second)[idx] = REAL(d_y_coord)[idx] / denom;
+      }
       if (!is_na_or_nan(dx_norm)) {
         REAL(d_x_coord_norm_per_second)[idx] = dx_norm / denom;
       }
@@ -228,8 +240,8 @@ SEXP nhlscraper_pbp_deltas(SEXP data_list) {
     }
   }
 
-  out = PROTECT(allocVector(VECSXP, 13)); protect_n++;
-  out_names = PROTECT(allocVector(STRSXP, 13)); protect_n++;
+  out = PROTECT(allocVector(VECSXP, 15)); protect_n++;
+  out_names = PROTECT(allocVector(STRSXP, 15)); protect_n++;
 
   SET_VECTOR_ELT(out, 0, event_id_prev);
   SET_VECTOR_ELT(out, 1, seconds_elapsed_in_sequence);
@@ -240,10 +252,12 @@ SEXP nhlscraper_pbp_deltas(SEXP data_list) {
   SET_VECTOR_ELT(out, 6, d_y_coord_norm);
   SET_VECTOR_ELT(out, 7, d_distance);
   SET_VECTOR_ELT(out, 8, d_angle);
-  SET_VECTOR_ELT(out, 9, d_x_coord_norm_per_second);
-  SET_VECTOR_ELT(out, 10, d_y_coord_norm_per_second);
-  SET_VECTOR_ELT(out, 11, d_distance_per_second);
-  SET_VECTOR_ELT(out, 12, d_angle_per_second);
+  SET_VECTOR_ELT(out, 9, d_x_coord_per_second);
+  SET_VECTOR_ELT(out, 10, d_y_coord_per_second);
+  SET_VECTOR_ELT(out, 11, d_x_coord_norm_per_second);
+  SET_VECTOR_ELT(out, 12, d_y_coord_norm_per_second);
+  SET_VECTOR_ELT(out, 13, d_distance_per_second);
+  SET_VECTOR_ELT(out, 14, d_angle_per_second);
 
   SET_STRING_ELT(out_names, 0, mkChar("eventIdPrev"));
   SET_STRING_ELT(out_names, 1, mkChar("secondsElapsedInSequence"));
@@ -254,10 +268,12 @@ SEXP nhlscraper_pbp_deltas(SEXP data_list) {
   SET_STRING_ELT(out_names, 6, mkChar("dYCoordNorm"));
   SET_STRING_ELT(out_names, 7, mkChar("dDistance"));
   SET_STRING_ELT(out_names, 8, mkChar("dAngle"));
-  SET_STRING_ELT(out_names, 9, mkChar("dXCoordNormPerSecond"));
-  SET_STRING_ELT(out_names, 10, mkChar("dYCoordNormPerSecond"));
-  SET_STRING_ELT(out_names, 11, mkChar("dDistancePerSecond"));
-  SET_STRING_ELT(out_names, 12, mkChar("dAnglePerSecond"));
+  SET_STRING_ELT(out_names, 9, mkChar("dXCoordPerSecond"));
+  SET_STRING_ELT(out_names, 10, mkChar("dYCoordPerSecond"));
+  SET_STRING_ELT(out_names, 11, mkChar("dXCoordNormPerSecond"));
+  SET_STRING_ELT(out_names, 12, mkChar("dYCoordNormPerSecond"));
+  SET_STRING_ELT(out_names, 13, mkChar("dDistancePerSecond"));
+  SET_STRING_ELT(out_names, 14, mkChar("dAnglePerSecond"));
   setAttrib(out, R_NamesSymbol, out_names);
 
   UNPROTECT(protect_n);

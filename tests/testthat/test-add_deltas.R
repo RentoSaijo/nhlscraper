@@ -63,12 +63,19 @@ test_that("add_deltas() preserves same-second internal rate scaling", {
   out <- .compute_pbp_deltas(pbp)
 
   expect_equal(out$dSecondsElapsedInSequence[3], 0)
+  expect_equal(out$dXCoordPerSecond[3], 9)
+  expect_equal(out$dXCoordPerSecond[4], 9)
   expect_equal(out$dXCoordNormPerSecond[3], 9)
   expect_equal(out$dXCoordNormPerSecond[4], 9)
+  expect_equal(out$dXCoordPerSecond[8], 40)
+  expect_equal(out$dXCoordPerSecond[9], 40)
+  expect_equal(out$dXCoordPerSecond[10], 40)
+  expect_equal(out$dXCoordPerSecond[11], 10)
   expect_equal(out$dXCoordNormPerSecond[8], 40)
   expect_equal(out$dXCoordNormPerSecond[9], 40)
   expect_equal(out$dXCoordNormPerSecond[10], 40)
   expect_equal(out$dXCoordNormPerSecond[11], 10)
+  expect_equal(out$dYCoordPerSecond[c(3, 4, 8, 9, 10, 11)], rep(0, 6))
 })
 
 test_that("add_deltas() respects game boundaries on aggregated inputs", {
@@ -160,6 +167,15 @@ test_that("add_deltas() places secondsElapsedInSequence after shift-rest-against
   ) %in% cols))
   expect_true(all(c(
     "eventIdPrev", "dSecondsElapsedInSequence", "dXCoord", "dYCoord",
-    "dXCoordNorm", "dYCoordNorm", "dDistance", "dAngle"
+    "dXCoordNorm", "dYCoordNorm", "dDistance", "dAngle",
+    "dXCoordPerSecond", "dYCoordPerSecond", "dXCoordNormPerSecond",
+    "dYCoordNormPerSecond", "dDistancePerSecond", "dAnglePerSecond"
   ) %in% cols))
+  expect_equal(
+    cols[(match("dAngle", cols) + 1L):(match("dAngle", cols) + 6L)],
+    c(
+      "dXCoordPerSecond", "dYCoordPerSecond", "dXCoordNormPerSecond",
+      "dYCoordNormPerSecond", "dDistancePerSecond", "dAnglePerSecond"
+    )
+  )
 })

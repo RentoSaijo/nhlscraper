@@ -14,7 +14,7 @@
 #' sequence.
 #'
 #' @param play_by_play data.frame of play-by-play(s) using the current public schema returned by [gc_play_by_play()], [gc_play_by_plays()], [wsc_play_by_play()], or [wsc_play_by_plays()]
-#' @returns data.frame with one row per event (play) and added columns: `eventIdPrev`, `secondsElapsedInSequence`, `dSecondsElapsedInSequence`, `dXCoord`, `dYCoord`, `dXCoordNorm`, `dYCoordNorm`, `dDistance`, `dAngle`
+#' @returns data.frame with one row per event (play) and added columns: `eventIdPrev`, `secondsElapsedInSequence`, `dSecondsElapsedInSequence`, `dXCoord`, `dYCoord`, `dXCoordNorm`, `dYCoordNorm`, `dDistance`, `dAngle`, `dXCoordPerSecond`, `dYCoordPerSecond`, `dXCoordNormPerSecond`, `dYCoordNormPerSecond`, `dDistancePerSecond`, `dAnglePerSecond`
 #' @export
 add_deltas <- function(play_by_play) {
   delta_ctx <- .compute_pbp_deltas(play_by_play)
@@ -42,6 +42,8 @@ add_deltas <- function(play_by_play) {
     dYCoordNorm = rep(NA_real_, n),
     dDistance = rep(NA_real_, n),
     dAngle = rep(NA_real_, n),
+    dXCoordPerSecond = rep(NA_real_, n),
+    dYCoordPerSecond = rep(NA_real_, n),
     dXCoordNormPerSecond = rep(NA_real_, n),
     dYCoordNormPerSecond = rep(NA_real_, n),
     dDistancePerSecond = rep(NA_real_, n),
@@ -66,7 +68,13 @@ add_deltas <- function(play_by_play) {
     'dXCoordNorm',
     'dYCoordNorm',
     'dDistance',
-    'dAngle'
+    'dAngle',
+    'dXCoordPerSecond',
+    'dYCoordPerSecond',
+    'dXCoordNormPerSecond',
+    'dYCoordNormPerSecond',
+    'dDistancePerSecond',
+    'dAnglePerSecond'
   )
 }
 
@@ -182,6 +190,8 @@ add_deltas <- function(play_by_play) {
       if (length(zero_dt)) {
         denom[zero_dt] <- 1 / same_second_count[curr_k[j[zero_dt]]]
       }
+      out$dXCoordPerSecond[cc] <- dx_raw[j] / denom
+      out$dYCoordPerSecond[cc] <- dy_raw[j] / denom
       out$dXCoordNormPerSecond[cc] <- dx_norm[j] / denom
       out$dYCoordNormPerSecond[cc] <- dy_norm[j] / denom
       out$dDistancePerSecond[cc] <- dd[j] / denom
@@ -292,12 +302,6 @@ add_deltas <- function(play_by_play) {
     ), drop = FALSE]
   }
   play_by_play
-}
-
-#' @rdname add_deltas
-#' @export
-calculate_speed <- function(play_by_play) {
-  add_deltas(play_by_play)
 }
 
 #' Add shooter biometrics to (a) play-by-play(s)

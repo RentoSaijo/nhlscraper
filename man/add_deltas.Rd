@@ -2,18 +2,15 @@
 % Please edit documentation in R/Clean.R
 \name{add_deltas}
 \alias{add_deltas}
-\alias{calculate_speed}
 \title{Add event-to-event deltas to a play-by-play}
 \usage{
 add_deltas(play_by_play)
-
-calculate_speed(play_by_play)
 }
 \arguments{
 \item{play_by_play}{data.frame of play-by-play(s) using the current public schema returned by \code{\link[=gc_play_by_play]{gc_play_by_play()}}, \code{\link[=gc_play_by_plays]{gc_play_by_plays()}}, \code{\link[=wsc_play_by_play]{wsc_play_by_play()}}, or \code{\link[=wsc_play_by_plays]{wsc_play_by_plays()}}}
 }
 \value{
-data.frame with one row per event (play) and added columns: \code{eventIdPrev}, \code{secondsElapsedInSequence}, \code{dSecondsElapsedInSequence}, \code{dXCoord}, \code{dYCoord}, \code{dXCoordNorm}, \code{dYCoordNorm}, \code{dDistance}, \code{dAngle}
+data.frame with one row per event (play) and added columns: \code{eventIdPrev}, \code{secondsElapsedInSequence}, \code{dSecondsElapsedInSequence}, \code{dXCoord}, \code{dYCoord}, \code{dXCoordNorm}, \code{dYCoordNorm}, \code{dDistance}, \code{dAngle}, \code{dXCoordPerSecond}, \code{dYCoordPerSecond}, \code{dXCoordNormPerSecond}, \code{dYCoordNormPerSecond}, \code{dDistancePerSecond}, \code{dAnglePerSecond}
 }
 \description{
 \code{add_deltas()} adds event-to-event deltas in raw and normalized x/y,

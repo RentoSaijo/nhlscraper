@@ -1,4 +1,5 @@
 # nhlscraper 0.5.0.9000
+- Website now features more guided examples and explanation articles on certain implementations.
 - `replays()` is now added to retrieve season-aggregate replays.
 - `contracts()` now returns more contracts, dating back to the 90's (and then some).
 - `shift_chart()` (and consequentially, `shift_charts()`) now returns completed shift charts for all games where at least either one of API or HTML report is available.
@@ -7,9 +8,9 @@
   - HTML-report-derived on-ice goalie/skater ID columns are now limited to `faceoff`, `hit`, `shot-on-goal`, `giveaway`, `missed-shot`, `blocked-shot`, `goal`, `delayed-penalty`, `takeaway`, and `failed-shot-attempt`, while `situationCode`-derived strength/count columns remain available wherever `situationCode` itself is available.
   - `add_shift_times()` is now added to populate scalar on-ice shift timing columns from a public play-by-play plus `shift_chart()`/`shift_charts()` using the native timing resolver; `gc_play_by_play()` and `wsc_play_by_play()` keep those timing columns in-schema but no longer call `shift_chart()` internally.
   - HTML play-by-play matching is now more robust to older dotted team abbreviations, reversed faceoff player-order descriptions, duplicate same-second shot clusters, and rows whose parsed HTML on-ice counts disagree with the source `situationCode`.
-- `add_deltas()` now handles event-to-event deltas in C, returns raw and normalized x/y deltas alongside distance and angle deltas, and still properly handles same-second events and shootouts/penalty shots; it also returns the `eventId` of the anchoring event and `secondsElapsedInSequence`, where each sequence begins with a faceoff.
-- `add_shooter_biometrics()`, `add_goalie_biometrics()`, and `calculate_expected_goals()` now require the current public play-by-play schema only; legacy helper column names are no longer accepted, and goalie biometrics now use `goaliePlayerIdAgainst`.
-- Public play-by-play outputs now keep optional source-dependent fields in-schema even when a given game feed omits them, padding those columns with `NA` instead of dropping them.
+- `add_deltas()` now handles event-to-event deltas in C, returns raw and normalized x/y deltas alongside distance and angle deltas, and properly handles same-second events and shootouts/penalty shots.
+  - It also now returns the `eventId` of the anchoring event, `secondsElapsedInSequence`, and per-second raw/normalized x/y, distance, and angle deltas, where each sequence begins with a faceoff and zero-time denominators within a same-second sequence use the `1 / n` rule.
+  - `calculate_speed()` is now defunct; use `add_deltas()` instead.
 - The expected goal (xG) models are currently being reworked; some functions that rely on these models (e.g., `calculate_expected_goals()`) may not work as expected.
 
 # nhlscraper 0.5.0
