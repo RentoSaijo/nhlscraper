@@ -28,6 +28,8 @@ navbar:
       menu:
         - text: "How gc_play_by_play() and wsc_play_by_play() Work"
           href: articles/play-by-play-pipeline.html
+        - text: "How the Expected Goals Model Works"
+          href: articles/expected-goals-model.html
     examples:
       text: "Examples"
       menu:
@@ -69,6 +71,7 @@ articles:
   - title: "Articles"
     contents:
       - play-by-play-pipeline
+      - expected-goals-model
   - title: "Examples"
     contents:
       - playoff-size

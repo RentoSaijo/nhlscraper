@@ -102,13 +102,10 @@ analysis_tbl[['weightQuartile']] <- cut(
   include.lowest = TRUE,
   labels = c('Lightest', 'Second', 'Third', 'Heaviest')
 )
-
 nrow(analysis_tbl)
 ```
 
-That leaves `r nrow(analysis_tbl)` modern skaters. The sample is large enough to smooth away one-hot playoff runs, but still focused enough to keep the comparison about contemporary hockey.
-
-To make the shape of the data concrete, it helps to peek at a few of the strongest playoff scorers in the sample.
+That leaves `r nrow(analysis_tbl)` modern skaters. The sample is large enough to smooth away one-hot playoff runs, but still focused enough to keep the comparison about contemporary hockey. To make the shape of the data concrete, it helps to peek at a few of the strongest playoff scorers in the sample.
 
 ```{r sample-table}
 # Show sample of strongest playoff scorers.
@@ -126,7 +123,6 @@ sample_tbl <- analysis_tbl[
   )
 ]
 sample_tbl <- utils::head(sample_tbl, 8)
-
 make_table(
   sample_tbl,
   caption = 'Top playoff scoring rates among skaters in the working sample.'
@@ -155,7 +151,6 @@ quartile_summary <- quartile_summary[
   match(levels(analysis_tbl[['weightQuartile']]), quartile_summary[['weightQuartile']]),
   c('weightQuartile', 'n', 'regularPPG', 'playoffPPG', 'playoffLift')
 ]
-
 make_table(
   quartile_summary,
   caption = 'Regular-season scoring, playoff scoring, and playoff lift by weight quartile.'
@@ -172,7 +167,6 @@ A table gives the means. A plot shows whether those means reflect broad tendenci
 # Plot playoff scoring distribution and average lift.
 old_par <- graphics::par(no.readonly = TRUE)
 graphics::par(mfrow = c(1, 2), mar = c(8, 4, 3, 1))
-
 graphics::boxplot(
   playoffPPG ~ weightQuartile,
   data = analysis_tbl,
@@ -182,7 +176,6 @@ graphics::boxplot(
   ylab = 'Playoff Points Per Game',
   xlab = ''
 )
-
 graphics::barplot(
   quartile_summary[['playoffLift']],
   names.arg = quartile_summary[['weightQuartile']],
@@ -193,7 +186,6 @@ graphics::barplot(
   xlab = ''
 )
 graphics::abline(h = 0, lty = 2, col = '#4d4d4d')
-
 graphics::par(old_par)
 ```
 
@@ -218,7 +210,6 @@ risers_tbl <- analysis_tbl[
 ]
 risers_tbl <- risers_tbl[order(-risers_tbl[['playoffLift']]), ]
 risers_tbl <- utils::head(risers_tbl, 10)
-
 make_table(
   risers_tbl,
   caption = 'Largest playoff scoring lifts among skaters with at least 40 playoff games.'
@@ -253,7 +244,6 @@ lift_fit_tbl <- lift_fit_tbl[, c(
   't value',
   'Pr(>|t|)'
 )]
-
 make_table(
   lift_fit_tbl,
   caption = 'Linear model of playoff scoring lift on height, weight, and position.',
@@ -261,9 +251,7 @@ make_table(
 )
 ```
 
-In this specification, neither height nor weight carries a strong standalone slope once position is accounted for. The cleanest signal is positional: defensemen, on average, lose less scoring in the playoffs than forwards do.
-
-That does not mean size is irrelevant. It means the popular claim that bigger skaters *as such* become better playoff scorers is too blunt. Role and position explain more than a simple bigger-is-better story.
+In this specification, neither height nor weight carries a strong standalone slope once position is accounted for. The cleanest signal is positional: defensemen, on average, lose less scoring in the playoffs than forwards do. That does not mean size is irrelevant. It means the popular claim that bigger skaters *as such* become better playoff scorers is too blunt. Role and position explain more than a simple bigger-is-better story.
 
 ## What We Learned
 
