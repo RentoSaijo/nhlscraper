@@ -328,10 +328,10 @@ make_table(
 
 | term              | Estimate | Std. Error | t value | Pr(\>\|t\|) |
 |:------------------|---------:|-----------:|--------:|------------:|
-| Intercept         |  -0.0107 |     0.1218 | -0.0881 |      0.9298 |
-| Height            |  -0.0013 |     0.0021 | -0.6231 |      0.5333 |
-| Weight            |   0.0002 |     0.0003 |  0.7829 |      0.4338 |
-| Defense indicator |   0.0303 |     0.0068 |  4.4473 |      0.0000 |
+| Intercept         |  -0.0110 |     0.1218 | -0.0900 |      0.9283 |
+| Height            |  -0.0013 |     0.0021 | -0.6209 |      0.5347 |
+| Weight            |   0.0002 |     0.0003 |  0.7811 |      0.4349 |
+| Defense indicator |   0.0303 |     0.0068 |  4.4469 |      0.0000 |
 
 Linear model of playoff scoring lift on height, weight, and position.
 

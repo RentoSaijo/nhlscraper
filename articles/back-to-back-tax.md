@@ -126,7 +126,7 @@ make_table(
 
 | restBucket | games |   win | goalDiff |
 |:-----------|------:|------:|---------:|
-| 0          |  8648 | 0.444 |   -0.274 |
+| 0          |  8648 | 0.444 |   -0.273 |
 | 1          | 27756 | 0.501 |    0.039 |
 | 2          |  9441 | 0.518 |    0.119 |
 | 3+         |  4723 | 0.498 |    0.037 |
@@ -298,11 +298,11 @@ make_table(
 
 | term                        | Estimate | Std. Error |  z value | Pr(\>\|z\|) |
 |:----------------------------|---------:|-----------:|---------:|------------:|
-| Intercept                   |  -0.3320 |     0.0225 | -14.7637 |       0e+00 |
-| One day versus zero         |   0.1585 |     0.0251 |   6.3125 |       0e+00 |
-| Two days versus zero        |   0.2226 |     0.0302 |   7.3692 |       0e+00 |
-| Three-plus days versus zero |   0.1325 |     0.0367 |   3.6142 |       3e-04 |
-| Home indicator              |   0.3361 |     0.0181 |  18.5636 |       0e+00 |
+| Intercept                   |  -0.3315 |     0.0225 | -14.7438 |       0e+00 |
+| One day versus zero         |   0.1582 |     0.0251 |   6.2993 |       0e+00 |
+| Two days versus zero        |   0.2222 |     0.0302 |   7.3534 |       0e+00 |
+| Three-plus days versus zero |   0.1320 |     0.0367 |   3.6010 |       3e-04 |
+| Home indicator              |   0.3362 |     0.0181 |  18.5662 |       0e+00 |
 
 Logistic model of wins on rest and venue.
 

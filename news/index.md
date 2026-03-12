@@ -36,8 +36,7 @@
     [`add_deltas()`](https://rentosaijo.github.io/nhlscraper/reference/add_deltas.md)
     instead.
 - [`calculate_expected_goals()`](https://rentosaijo.github.io/nhlscraper/reference/calculate_expected_goals.md)
-  now uses a fixed six-partition ridge xG model (`sd`, `ev`, `pp`, `sh`,
-  `en`, `so`) instead of legacy versioned models.
+  now uses a fixed six-partition ridge xG model.
   - The scorer now mirrors the training-time preprocessing with delta,
     biometric, previous-event, and shift-timing context where available,
     while keeping runtime dependencies minimal.

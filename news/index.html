@@ -72,7 +72,7 @@
 <code>calculate_speed()</code> is now defunct; use <code><a href="../reference/add_deltas.html">add_deltas()</a></code> instead.</li>
 </ul></li>
 <li>
-<code><a href="../reference/calculate_expected_goals.html">calculate_expected_goals()</a></code> now uses a fixed six-partition ridge xG model (<code>sd</code>, <code>ev</code>, <code>pp</code>, <code>sh</code>, <code>en</code>, <code>so</code>) instead of legacy versioned models.
+<code><a href="../reference/calculate_expected_goals.html">calculate_expected_goals()</a></code> now uses a fixed six-partition ridge xG model.
 <ul><li>The scorer now mirrors the training-time preprocessing with delta, biometric, previous-event, and shift-timing context where available, while keeping runtime dependencies minimal.</li>
 <li>
 <code><a href="../reference/ig_game_shot_locations.html">ig_game_shot_locations()</a></code>, <code><a href="../reference/x_game_shot_locations.html">x_game_shot_locations()</a></code>, <code><a href="../reference/ig_game_cumulative_expected_goals.html">ig_game_cumulative_expected_goals()</a></code>, and <code><a href="../reference/x_game_cumulative_expected_goals.html">x_game_cumulative_expected_goals()</a></code> still accept <code>model</code> for backward compatibility, but it is now ignored.</li>
