@@ -8,7 +8,7 @@
   - `add_shift_times()` is now added to populate scalar on-ice shift time elapsed columns via C.
   - `add_deltas()` now handles event-to-event deltas in C, returns raw and normalized X/Y deltas alongside distance and angle deltas, and properly handles same-second events and shootouts/penalty shots with `1/n` estimation.
   - `calculate_speed()` is now defunct; use `add_deltas()` instead.
-- `calculate_expected_goals()` now uses a fixed six-partition ridge xG model (`sd`, `ev`, `pp`, `sh`, `en`, `so`) instead of legacy versioned models.
+- `calculate_expected_goals()` now uses a fixed six-partition ridge xG model.
   - The scorer now mirrors the training-time preprocessing with delta, biometric, previous-event, and shift-timing context where available, while keeping runtime dependencies minimal.
   - `ig_game_shot_locations()`, `x_game_shot_locations()`, `ig_game_cumulative_expected_goals()`, and `x_game_cumulative_expected_goals()` still accept `model` for backward compatibility, but it is now ignored.
   - Check out our "Article" section on the documentation website to learn more. 

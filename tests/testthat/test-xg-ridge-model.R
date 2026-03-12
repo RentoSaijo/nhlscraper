@@ -14,6 +14,22 @@ test_that("xG ridge partitioning covers the six shot situations", {
   )
 })
 
+test_that("xG ridge partitioning routes missing strength-state rows to sd", {
+  shots <- data.frame(
+    situationCode = c(NA_character_, "1551", NA_character_),
+    isEmptyNetFor = c(FALSE, FALSE, FALSE),
+    isEmptyNetAgainst = c(FALSE, FALSE, FALSE),
+    skaterCountFor = c(NA_integer_, 5L, 4L),
+    skaterCountAgainst = c(NA_integer_, 5L, NA_integer_),
+    stringsAsFactors = FALSE
+  )
+
+  expect_equal(
+    nhlscraper:::.xg_partition_shots(shots),
+    c("sd", "sd", "sd")
+  )
+})
+
 test_that("xG categorical encoding keeps known baseline levels out of new bucket", {
   spec <- nhlscraper:::XG_RIDGE_MODEL_SPECS$sd
 

@@ -624,14 +624,17 @@ calculate_xG <- function(play_by_play, model = NULL) {
 
   is_ps <- !is.na(sc) & sc %in% c("1010", "0101")
   is_en <- !is_ps & is_empty_against
-  is_sd <- !is_ps &
+  is_unclassifiable_strength <- !is_ps &
+    !is_en &
+    (is.na(sc) | is.na(skater_for) | is.na(skater_against))
+  is_sd <- (!is_ps &
     !is_en &
     !is.na(skater_for) &
     !is.na(skater_against) &
     skater_for == 5L &
     skater_against == 5L &
     !is_empty_for &
-    !is_empty_against
+    !is_empty_against) | is_unclassifiable_strength
   is_ev <- !is_ps &
     !is_en &
     !is.na(skater_for) &
@@ -648,6 +651,12 @@ calculate_xG <- function(play_by_play, model = NULL) {
     !is.na(skater_for) &
     !is.na(skater_against) &
     skater_for < skater_against
+  is_ps[is.na(is_ps)] <- FALSE
+  is_en[is.na(is_en)] <- FALSE
+  is_sd[is.na(is_sd)] <- FALSE
+  is_ev[is.na(is_ev)] <- FALSE
+  is_pp[is.na(is_pp)] <- FALSE
+  is_sh[is.na(is_sh)] <- FALSE
 
   out <- rep(NA_character_, nrow(shots))
   out[is_ps] <- "so"
