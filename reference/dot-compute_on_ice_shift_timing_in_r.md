@@ -1,7 +1,8 @@
 # Compute on-ice shift timings in R
 
 `.compute_on_ice_shift_timing_in_r()` is the pure-R fallback for
-resolving on-ice elapsed-shift and time-since-last-shift matrices.
+resolving on-ice remaining-shift, elapsed-shift, and
+time-since-last-shift matrices.
 
 ## Usage
 

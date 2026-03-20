@@ -1,9 +1,9 @@
 # Add on-ice shift times to a play-by-play
 
-`add_shift_times()` adds `SecondsElapsedInShift` and
-`SecondsElapsedInPeriodSinceLastShift` columns for the on-ice goalies
-and skaters already present in a public play-by-play. It accepts either
-a single game play-by-play plus
+`add_shift_times()` adds `SecondsRemainingInShift`,
+`SecondsElapsedInShift`, and `SecondsElapsedInPeriodSinceLastShift`
+columns for the on-ice goalies and skaters already present in a public
+play-by-play. It accepts either a single game play-by-play plus
 [`shift_chart()`](https://rentosaijo.github.io/nhlscraper/reference/shift_chart.md)
 data or a season aggregate plus
 [`shift_charts()`](https://rentosaijo.github.io/nhlscraper/reference/shift_charts.md)
