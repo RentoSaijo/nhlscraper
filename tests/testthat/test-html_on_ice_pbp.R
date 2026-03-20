@@ -928,14 +928,40 @@ test_that("add_shift_times() populates scalar goalie and skater timing columns",
     names(out)
   ), 1L)
   timing_start <- match(last_id_col, names(out)) + 1L
+  remaining_cols <- .on_ice_timing_scalar_column_names(
+    "SecondsRemainingInShift",
+    play_by_play = out
+  )
+  elapsed_cols <- .on_ice_timing_scalar_column_names(
+    "SecondsElapsedInShift",
+    play_by_play = out
+  )
   expect_equal(
-    names(out)[timing_start:(timing_start + 3L)],
-    c(
-      "homeGoalieSecondsElapsedInShift",
-      "awayGoalieSecondsElapsedInShift",
-      "goalieSecondsElapsedInShiftFor",
-      "goalieSecondsElapsedInShiftAgainst"
-    )
+    names(out)[timing_start:(timing_start + length(remaining_cols) - 1L)],
+    remaining_cols
+  )
+  expect_equal(out$homeGoalieSecondsRemainingInShift, c(80, 40))
+  expect_equal(out$awayGoalieSecondsRemainingInShift, c(80, 40))
+  expect_equal(out$homeSkater1SecondsRemainingInShift, c(10, 40))
+  expect_equal(out$awaySkater1SecondsRemainingInShift, c(20, 40))
+  expect_equal(out$homeSkater7SecondsRemainingInShift, c(80, 40))
+  expect_equal(out$awaySkater7SecondsRemainingInShift, c(80, 40))
+  expect_equal(out$homeSkater8SecondsRemainingInShift, c(80, 40))
+  expect_equal(out$awaySkater8SecondsRemainingInShift, c(80, 40))
+  expect_equal(out$goalieSecondsRemainingInShiftFor, c(80, 40))
+  expect_equal(out$goalieSecondsRemainingInShiftAgainst, c(80, 40))
+  expect_equal(out$skater1SecondsRemainingInShiftFor, c(10, 40))
+  expect_equal(out$skater1SecondsRemainingInShiftAgainst, c(20, 40))
+  expect_equal(out$skater7SecondsRemainingInShiftFor, c(80, 40))
+  expect_equal(out$skater7SecondsRemainingInShiftAgainst, c(80, 40))
+  expect_equal(out$skater8SecondsRemainingInShiftFor, c(80, 40))
+  expect_equal(out$skater8SecondsRemainingInShiftAgainst, c(80, 40))
+  expect_equal(
+    names(out)[
+      (timing_start + length(remaining_cols)):
+        (timing_start + length(remaining_cols) + length(elapsed_cols) - 1L)
+    ],
+    elapsed_cols
   )
   expect_equal(out$homeGoalieSecondsElapsedInShift, c(40, 80))
   expect_equal(out$awayGoalieSecondsElapsedInShift, c(40, 80))
@@ -994,6 +1020,10 @@ test_that("add_shift_times() handles multi-game aggregates", {
 
   out <- add_shift_times(play_by_play, shift_data)
 
+  expect_equal(out$homeGoalieSecondsRemainingInShift, c(80, 70))
+  expect_equal(out$awayGoalieSecondsRemainingInShift, c(80, 70))
+  expect_equal(out$goalieSecondsRemainingInShiftFor, c(80, 70))
+  expect_equal(out$goalieSecondsRemainingInShiftAgainst, c(80, 70))
   expect_equal(out$homeGoalieSecondsElapsedInShift, c(40, 50))
   expect_equal(out$awayGoalieSecondsElapsedInShift, c(40, 50))
   expect_equal(out$goalieSecondsElapsedInShiftFor, c(40, 50))

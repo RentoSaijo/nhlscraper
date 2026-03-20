@@ -388,11 +388,11 @@ add_goalie_biometrics <- function(play_by_play) {
 
 #' Add on-ice shift times to a play-by-play
 #'
-#' `add_shift_times()` adds `SecondsElapsedInShift` and
-#' `SecondsElapsedInPeriodSinceLastShift` columns for the on-ice goalies and
-#' skaters already present in a public play-by-play. It accepts either a single
-#' game play-by-play plus [shift_chart()] data or a season aggregate plus
-#' [shift_charts()] data.
+#' `add_shift_times()` adds `SecondsRemainingInShift`,
+#' `SecondsElapsedInShift`, and `SecondsElapsedInPeriodSinceLastShift` columns
+#' for the on-ice goalies and skaters already present in a public play-by-play.
+#' It accepts either a single game play-by-play plus [shift_chart()] data or a
+#' season aggregate plus [shift_charts()] data.
 #'
 #' @param play_by_play data.frame of play-by-play(s) using the current public schema returned by [gc_play_by_play()], [gc_play_by_plays()], [wsc_play_by_play()], or [wsc_play_by_plays()]
 #' @param shift_chart data.frame returned by [shift_chart()] or [shift_charts()]
@@ -436,6 +436,10 @@ add_shift_times <- function(play_by_play, shift_chart) {
     'add_shift_times'
   )
   timing_cols <- c(
+    .on_ice_timing_scalar_column_names(
+      'SecondsRemainingInShift',
+      play_by_play = play_by_play
+    ),
     .on_ice_timing_scalar_column_names(
       'SecondsElapsedInShift',
       play_by_play = play_by_play
@@ -486,6 +490,12 @@ add_shift_times <- function(play_by_play, shift_chart) {
   if (is.null(timing)) {
     return(play_by_play)
   }
+  play_by_play <- .assign_on_ice_shift_metric(
+    play_by_play,
+    home_matrix = timing$homeRemaining,
+    away_matrix = timing$awayRemaining,
+    metric_suffix = 'SecondsRemainingInShift'
+  )
   play_by_play <- .assign_on_ice_shift_metric(
     play_by_play,
     home_matrix = timing$homeElapsed,
@@ -1514,7 +1524,7 @@ add_shift_times <- function(play_by_play, shift_chart) {
 #' Compute on-ice shift timings in R
 #'
 #' `.compute_on_ice_shift_timing_in_r()` is the pure-R fallback for resolving
-#' on-ice elapsed-shift and time-since-last-shift matrices.
+#' on-ice remaining-shift, elapsed-shift, and time-since-last-shift matrices.
 #'
 #' @param play_by_play data.frame play-by-play object with on-ice player IDs
 #' @param shift_data data.frame shift chart data
@@ -1541,10 +1551,14 @@ add_shift_times <- function(play_by_play, shift_chart) {
 
   home_elapsed <- matrix(NA_real_, nrow = n, ncol = slot_count + 1L)
   away_elapsed <- matrix(NA_real_, nrow = n, ncol = slot_count + 1L)
+  home_remaining <- matrix(NA_real_, nrow = n, ncol = slot_count + 1L)
+  away_remaining <- matrix(NA_real_, nrow = n, ncol = slot_count + 1L)
   home_since <- matrix(NA_real_, nrow = n, ncol = slot_count + 1L)
   away_since <- matrix(NA_real_, nrow = n, ncol = slot_count + 1L)
   if (!nrow(shift_data) || !n) {
     return(list(
+      homeRemaining = home_remaining,
+      awayRemaining = away_remaining,
       homeElapsed = home_elapsed,
       awayElapsed = away_elapsed,
       homeSinceLast = home_since,
@@ -1570,29 +1584,30 @@ add_shift_times <- function(play_by_play, shift_chart) {
       is.na(seconds_elapsed) ||
       is.na(player_id)
     ) {
-      return(c(NA_real_, NA_real_))
+      return(c(NA_real_, NA_real_, NA_real_))
     }
     idx <- split_idx[[paste(game_id, period, player_id, sep = ':')]]
     if (is.null(idx) || !length(idx)) {
-      return(c(NA_real_, NA_real_))
+      return(c(NA_real_, NA_real_, NA_real_))
     }
     starts <- as.integer(shift_data$startSecondsElapsedInPeriod[idx])
     ends <- as.integer(shift_data$endSecondsElapsedInPeriod[idx])
     pos <- findInterval(as.integer(seconds_elapsed), starts)
     if (pos < 1L || pos > length(idx)) {
-      return(c(NA_real_, NA_real_))
+      return(c(NA_real_, NA_real_, NA_real_))
     }
     row_idx <- idx[pos]
     if (seconds_elapsed > ends[pos]) {
-      return(c(NA_real_, NA_real_))
+      return(c(NA_real_, NA_real_, NA_real_))
     }
+    remaining <- as.numeric(ends[pos] - seconds_elapsed)
     elapsed <- as.numeric(seconds_elapsed - starts[pos])
     since <- if (is.na(prev_end[row_idx])) {
       as.numeric(300L + seconds_elapsed)
     } else {
       as.numeric(seconds_elapsed - prev_end[row_idx])
     }
-    c(elapsed, since)
+    c(remaining, elapsed, since)
   }
 
   for (i in seq_len(n)) {
@@ -1609,14 +1624,18 @@ add_shift_times <- function(play_by_play, shift_chart) {
         play_by_play$secondsElapsedInPeriod[i],
         away_request[i, j]
       )
-      home_elapsed[i, j] <- home_vals[1L]
-      home_since[i, j] <- home_vals[2L]
-      away_elapsed[i, j] <- away_vals[1L]
-      away_since[i, j] <- away_vals[2L]
+      home_remaining[i, j] <- home_vals[1L]
+      home_elapsed[i, j] <- home_vals[2L]
+      home_since[i, j] <- home_vals[3L]
+      away_remaining[i, j] <- away_vals[1L]
+      away_elapsed[i, j] <- away_vals[2L]
+      away_since[i, j] <- away_vals[3L]
     }
   }
 
   list(
+    homeRemaining = home_remaining,
+    awayRemaining = away_remaining,
     homeElapsed = home_elapsed,
     awayElapsed = away_elapsed,
     homeSinceLast = home_since,

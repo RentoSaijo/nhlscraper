@@ -279,11 +279,11 @@ game_rosters <- function(game = 2023030417) {
     detected <- unique(c(
       extract_slots(
         nms,
-        '^(?:home|away)Skater([0-9]+)(?:PlayerId|SecondsElapsedInShift|SecondsElapsedInPeriodSinceLastShift)$'
+        '^(?:home|away)Skater([0-9]+)(?:PlayerId|SecondsRemainingInShift|SecondsElapsedInShift|SecondsElapsedInPeriodSinceLastShift)$'
       ),
       extract_slots(
         nms,
-        '^skater([0-9]+)(?:PlayerId(?:For|Against)|SecondsElapsedInShift(?:For|Against)|SecondsElapsedInPeriodSinceLastShift(?:For|Against))$'
+        '^skater([0-9]+)(?:PlayerId(?:For|Against)|SecondsRemainingInShift(?:For|Against)|SecondsElapsedInShift(?:For|Against)|SecondsElapsedInPeriodSinceLastShift(?:For|Against))$'
       )
     ))
   }
@@ -346,6 +346,11 @@ game_rosters <- function(game = 2023030417) {
 ) {
   c(
     .on_ice_id_scalar_column_names(
+      play_by_play = play_by_play,
+      slot_count = slot_count
+    ),
+    .on_ice_timing_scalar_column_names(
+      'SecondsRemainingInShift',
       play_by_play = play_by_play,
       slot_count = slot_count
     ),
@@ -2460,7 +2465,7 @@ game_rosters <- function(game = 2023030417) {
     return(rep(NA_integer_, n))
   }
   if (grepl(
-    '^(?:home|away)GoalieSecondsElapsedIn(?:Shift|PeriodSinceLastShift)$|^goalieSecondsElapsedIn(?:Shift|PeriodSinceLastShift)(?:For|Against)$|^(?:home|away)Skater[0-9]+SecondsElapsedIn(?:Shift|PeriodSinceLastShift)$|^skater[0-9]+SecondsElapsedIn(?:Shift|PeriodSinceLastShift)(?:For|Against)$',
+    '^(?:home|away)GoalieSeconds(?:RemainingInShift|ElapsedIn(?:Shift|PeriodSinceLastShift))$|^goalieSeconds(?:RemainingInShift|ElapsedIn(?:Shift|PeriodSinceLastShift))(?:For|Against)$|^(?:home|away)Skater[0-9]+Seconds(?:RemainingInShift|ElapsedIn(?:Shift|PeriodSinceLastShift))$|^skater[0-9]+Seconds(?:RemainingInShift|ElapsedIn(?:Shift|PeriodSinceLastShift))(?:For|Against)$',
     name
   )) {
     return(rep(NA_real_, n))
@@ -2477,6 +2482,7 @@ game_rosters <- function(game = 2023030417) {
   )
   numeric_cols <- c(
     'xCoord', 'yCoord', 'xCoordNorm', 'yCoordNorm', 'distance', 'angle',
+    .on_ice_timing_scalar_column_names('SecondsRemainingInShift'),
     .on_ice_timing_scalar_column_names('SecondsElapsedInShift'),
     .on_ice_timing_scalar_column_names('SecondsElapsedInPeriodSinceLastShift')
   )

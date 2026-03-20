@@ -48,6 +48,7 @@ static int lookup_range(
 }
 
 static void fill_slot_matrix(
+  SEXP out_remaining,
   SEXP out_elapsed,
   SEXP out_since,
   int slot_col,
@@ -62,6 +63,7 @@ static void fill_slot_matrix(
   const PlayerRange *ranges,
   int n_ranges
 ) {
+  double *remaining_ptr = REAL(out_remaining);
   double *elapsed_ptr = REAL(out_elapsed);
   double *since_ptr = REAL(out_since);
   int i;
@@ -69,6 +71,7 @@ static void fill_slot_matrix(
     int player_id = request_mat[i + n_events * slot_col];
     int range_idx;
     int k;
+    remaining_ptr[i + n_events * slot_col] = NA_REAL;
     elapsed_ptr[i + n_events * slot_col] = NA_REAL;
     since_ptr[i + n_events * slot_col] = NA_REAL;
     if (
@@ -94,6 +97,8 @@ static void fill_slot_matrix(
         shift_start[k] <= event_seconds[i] &&
         event_seconds[i] <= shift_end[k]
       ) {
+        remaining_ptr[i + n_events * slot_col] =
+          (double) (shift_end[k] - event_seconds[i]);
         elapsed_ptr[i + n_events * slot_col] =
           (double) (event_seconds[i] - shift_start[k]);
         since_ptr[i + n_events * slot_col] = is_na_int(shift_prev_end[k]) ?
@@ -141,8 +146,10 @@ SEXP nhlscraper_on_ice_shift_timings(SEXP data_list) {
   int n_ranges = 0;
   int i;
 
-  SEXP out = PROTECT(allocVector(VECSXP, 4));
-  SEXP out_names = PROTECT(allocVector(STRSXP, 4));
+  SEXP out = PROTECT(allocVector(VECSXP, 6));
+  SEXP out_names = PROTECT(allocVector(STRSXP, 6));
+  SEXP home_remaining = PROTECT(allocMatrix(REALSXP, n_events, n_slots));
+  SEXP away_remaining = PROTECT(allocMatrix(REALSXP, n_events, n_slots));
   SEXP home_elapsed = PROTECT(allocMatrix(REALSXP, n_events, n_slots));
   SEXP away_elapsed = PROTECT(allocMatrix(REALSXP, n_events, n_slots));
   SEXP home_since = PROTECT(allocMatrix(REALSXP, n_events, n_slots));
@@ -153,7 +160,7 @@ SEXP nhlscraper_on_ice_shift_timings(SEXP data_list) {
     INTEGER(getAttrib(away_request_sexp, R_DimSymbol))[0] != n_events ||
     INTEGER(getAttrib(away_request_sexp, R_DimSymbol))[1] != n_slots
   ) {
-    UNPROTECT(6);
+    UNPROTECT(8);
     error("Requested player matrices have incompatible dimensions.");
   }
 
@@ -190,6 +197,7 @@ SEXP nhlscraper_on_ice_shift_timings(SEXP data_list) {
 
   for (i = 0; i < n_slots; ++i) {
     fill_slot_matrix(
+      home_remaining,
       home_elapsed,
       home_since,
       i,
@@ -205,6 +213,7 @@ SEXP nhlscraper_on_ice_shift_timings(SEXP data_list) {
       n_ranges
     );
     fill_slot_matrix(
+      away_remaining,
       away_elapsed,
       away_since,
       i,
@@ -221,16 +230,20 @@ SEXP nhlscraper_on_ice_shift_timings(SEXP data_list) {
     );
   }
 
-  SET_VECTOR_ELT(out, 0, home_elapsed);
-  SET_VECTOR_ELT(out, 1, away_elapsed);
-  SET_VECTOR_ELT(out, 2, home_since);
-  SET_VECTOR_ELT(out, 3, away_since);
-  SET_STRING_ELT(out_names, 0, mkChar("homeElapsed"));
-  SET_STRING_ELT(out_names, 1, mkChar("awayElapsed"));
-  SET_STRING_ELT(out_names, 2, mkChar("homeSinceLast"));
-  SET_STRING_ELT(out_names, 3, mkChar("awaySinceLast"));
+  SET_VECTOR_ELT(out, 0, home_remaining);
+  SET_VECTOR_ELT(out, 1, away_remaining);
+  SET_VECTOR_ELT(out, 2, home_elapsed);
+  SET_VECTOR_ELT(out, 3, away_elapsed);
+  SET_VECTOR_ELT(out, 4, home_since);
+  SET_VECTOR_ELT(out, 5, away_since);
+  SET_STRING_ELT(out_names, 0, mkChar("homeRemaining"));
+  SET_STRING_ELT(out_names, 1, mkChar("awayRemaining"));
+  SET_STRING_ELT(out_names, 2, mkChar("homeElapsed"));
+  SET_STRING_ELT(out_names, 3, mkChar("awayElapsed"));
+  SET_STRING_ELT(out_names, 4, mkChar("homeSinceLast"));
+  SET_STRING_ELT(out_names, 5, mkChar("awaySinceLast"));
   setAttrib(out, R_NamesSymbol, out_names);
 
-  UNPROTECT(6);
+  UNPROTECT(8);
   return out;
 }

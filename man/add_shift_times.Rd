@@ -15,11 +15,11 @@ add_shift_times(play_by_play, shift_chart)
 data.frame with one row per event (play) and added or updated scalar on-ice shift timing columns
 }
 \description{
-\code{add_shift_times()} adds \code{SecondsElapsedInShift} and
-\code{SecondsElapsedInPeriodSinceLastShift} columns for the on-ice goalies and
-skaters already present in a public play-by-play. It accepts either a single
-game play-by-play plus \code{\link[=shift_chart]{shift_chart()}} data or a season aggregate plus
-\code{\link[=shift_charts]{shift_charts()}} data.
+\code{add_shift_times()} adds \code{SecondsRemainingInShift},
+\code{SecondsElapsedInShift}, and \code{SecondsElapsedInPeriodSinceLastShift} columns
+for the on-ice goalies and skaters already present in a public play-by-play.
+It accepts either a single game play-by-play plus \code{\link[=shift_chart]{shift_chart()}} data or a
+season aggregate plus \code{\link[=shift_charts]{shift_charts()}} data.
 }
 \examples{
 \donttest{

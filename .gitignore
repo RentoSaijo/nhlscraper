@@ -6,7 +6,13 @@ inst/doc
 docs
 .DS_Store
 **/.DS_Store
-other/
 figure/
 *.csv
 *.Rproj
+other/*
+!other/audits/
+!other/audits/**/
+!other/audits/**/*.R
+!other/audits/**/README.md
+!other/audits/**/*_audit.csv
+other/audits/**/*_pbps_*.csv
