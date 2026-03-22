@@ -276,7 +276,7 @@ test_that("HTML PBP matcher does not discard candidates when API actors are NA",
   expect_equal(matched$apiIndex[match(c(218L, 222L), matched$htmlEventNumber)], c(1L, 2L))
 })
 
-test_that("HTML on-ice enrichment skips penalties but rescues actor-matched count mismatches", {
+test_that("HTML on-ice enrichment keeps penalty on-ice rows and rescues matched count mismatches", {
   play_by_play <- data.frame(
     gameId = rep(1L, 3L),
     eventId = c(10L, 11L, 12L),
@@ -338,10 +338,10 @@ test_that("HTML on-ice enrichment skips penalties but rescues actor-matched coun
     away_team = list(id = 8L, abbrev = "MTL")
   )
 
-  expect_true(all(is.na(out[1L, c(
-    "homeGoaliePlayerId", "awayGoaliePlayerId",
-    "homeSkater1PlayerId", "awaySkater1PlayerId"
-  )])))
+  expect_equal(out$homeGoaliePlayerId[1], 1002L)
+  expect_equal(out$awayGoaliePlayerId[1], 802L)
+  expect_equal(out$homeSkater1PlayerId[1], 1001L)
+  expect_equal(out$awaySkater1PlayerId[1], 801L)
   expect_equal(out$homeGoaliePlayerId[2], 1002L)
   expect_equal(out$awayGoaliePlayerId[2], 802L)
   expect_equal(out$awaySkater2PlayerId[2], 803L)
@@ -726,7 +726,7 @@ test_that("HTML on-ice enrichment backfills unmatched delayed-penalty rows from 
   expect_equal(out$awaySkaterCount[2], 5L)
 })
 
-test_that("actor-based HTML on-ice rescues preserve unreconstructed strength context", {
+test_that("actor-based HTML on-ice rescues update derived strength context when HTML is plausible", {
   play_by_play <- data.frame(
     gameId = 1L,
     gameTypeId = 2L,
@@ -789,9 +789,9 @@ test_that("actor-based HTML on-ice rescues preserve unreconstructed strength con
   expect_equal(out$awayGoaliePlayerId, 2001L)
   expect_equal(out$awaySkater5PlayerId, 2006L)
   expect_equal(out$homeSkaterCount, 5L)
-  expect_equal(out$awaySkaterCount, 4L)
-  expect_equal(out$manDifferential, 1L)
-  expect_equal(out$strengthState, "power-play")
+  expect_equal(out$awaySkaterCount, 5L)
+  expect_equal(out$manDifferential, 0L)
+  expect_equal(out$strengthState, "even-strength")
 })
 
 test_that("HTML on-ice enrichment preserves seven-skater overflow rows", {

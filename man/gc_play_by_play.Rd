@@ -21,9 +21,11 @@ a \code{data.frame} where each row represents an event. The returned schema is t
 cleaned, public-facing play-by-play schema, including canonical names such as
 \code{periodNumber}, \code{eventTypeCode}, \code{eventTypeDescKey}, \code{homeShots},
 \code{shotsFor}, \code{penaltyTypeDescKey}, \code{penaltyDuration}, \code{servedByPlayerId},
-and HTML-report-derived on-ice player ID columns such as
+\code{goalieInNetId}, and HTML-report-derived on-ice player ID columns such as
 \code{homeGoaliePlayerId}, \code{awayGoaliePlayerId}, \code{homeSkater1PlayerId}, and any
-additional overflow skater slots required by the game. Use \code{\link[=add_shift_times]{add_shift_times()}} with
+additional overflow skater slots required by the game. HTML report skater and
+goalie IDs are returned whenever they can be matched back to a supported row,
+even when the raw \code{situationCode} is stale. Use \code{\link[=add_shift_times]{add_shift_times()}} with
 \code{\link[=shift_chart]{shift_chart()}} (or \code{\link[=shift_charts]{shift_charts()}}) to add on-ice shift timing columns.
 }
 \examples{

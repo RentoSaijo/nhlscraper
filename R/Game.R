@@ -234,7 +234,7 @@ game_rosters <- function(game = 2023030417) {
 #' @returns character vector of supported on-ice player-ID event type keys
 #' @keywords internal
 .supported_html_on_ice_id_event_types <- function() {
-  setdiff(.supported_strength_event_types(), 'penalty')
+  .supported_strength_event_types()
 }
 
 #' Return the tracked number of on-ice skater slots
@@ -2039,6 +2039,43 @@ game_rosters <- function(game = 2023030417) {
   )
 }
 
+#' Check whether an HTML on-ice signature can override derived strength context
+#'
+#' `.html_on_ice_can_override_strength_context()` allows the HTML on-ice skater
+#' and goalie counts to replace derived strength context when the resolved
+#' signature still looks like a plausible hockey state. Overflow rows with more
+#' than six skaters are preserved in the scalar player-ID output but do not
+#' rewrite the derived count columns.
+#'
+#' @param situation_code raw API situation code
+#' @param home_goalie_player_id parsed home goalie player ID
+#' @param away_goalie_player_id parsed away goalie player ID
+#' @param home_skater_player_ids parsed home skater IDs
+#' @param away_skater_player_ids parsed away skater IDs
+#' @returns logical scalar
+#' @keywords internal
+.html_on_ice_can_override_strength_context <- function(
+  situation_code,
+  home_goalie_player_id,
+  away_goalie_player_id,
+  home_skater_player_ids,
+  away_skater_player_ids
+) {
+  if (!is.na(situation_code) && situation_code %in% c('0101', '1010')) {
+    return(FALSE)
+  }
+  home_goalie_count <- if (is.na(home_goalie_player_id)) 0L else 1L
+  away_goalie_count <- if (is.na(away_goalie_player_id)) 0L else 1L
+  home_skater_count <- length(home_skater_player_ids)
+  away_skater_count <- length(away_skater_player_ids)
+  home_goalie_count %in% 0:1 &&
+    away_goalie_count %in% 0:1 &&
+    home_skater_count >= 0L &&
+    home_skater_count <= 6L &&
+    away_skater_count >= 0L &&
+    away_skater_count <= 6L
+}
+
 #' Add one-on-one shooter/goalie assignments
 #'
 #' `.add_one_on_one_on_ice_players()` populates on-ice player-ID columns for
@@ -2386,45 +2423,16 @@ game_rosters <- function(game = 2023030417) {
     ) {
       next
     }
-    html_matches_source <- .html_on_ice_matches_situation_code(
+    if (!is.na(play_by_play$situationCode[idx]) && play_by_play$situationCode[idx] %in% c('0101', '1010')) {
+      next
+    }
+    if (.html_on_ice_can_override_strength_context(
       situation_code = play_by_play$situationCode[idx],
       home_goalie_player_id = home_goalie,
       away_goalie_player_id = away_goalie,
       home_skater_player_ids = home_skaters,
       away_skater_player_ids = away_skaters
-    )
-    html_matches_reconstruction <- .html_on_ice_matches_reconstructed_strength(
-      reconstruction = reconstruction,
-      idx = idx,
-      home_skater_player_ids = home_skaters,
-      away_skater_player_ids = away_skaters
-    )
-    html_matches_empty_net <- .html_on_ice_matches_late_empty_net(
-      play_by_play = play_by_play,
-      reconstruction = reconstruction,
-      idx = idx,
-      home_goalie_player_id = home_goalie,
-      away_goalie_player_id = away_goalie,
-      home_skater_player_ids = home_skaters,
-      away_skater_player_ids = away_skaters
-    )
-    html_matches_actors <- .html_on_ice_matches_event_actors(
-      play_by_play = play_by_play,
-      idx = idx,
-      home_goalie_player_id = home_goalie,
-      away_goalie_player_id = away_goalie,
-      home_skater_player_ids = home_skaters,
-      away_skater_player_ids = away_skaters
-    )
-    if (
-      !html_matches_source &&
-        !html_matches_reconstruction &&
-        !html_matches_empty_net &&
-        !html_matches_actors
-    ) {
-      next
-    }
-    if (!html_matches_source && (html_matches_reconstruction || html_matches_empty_net)) {
+    )) {
       play_by_play <- .override_strength_context_from_html(
         play_by_play = play_by_play,
         idx = idx,
@@ -2561,7 +2569,8 @@ game_rosters <- function(game = 2023030417) {
     'goalDifferential', 'shotDifferential', 'fenwickDifferential',
     'corsiDifferential', 'playerId', 'winningPlayerId', 'losingPlayerId',
     'hittingPlayerId', 'hitteePlayerId', 'committedByPlayerId',
-    'drawnByPlayerId', 'servedByPlayerId', 'blockingPlayerId', 'shootingPlayerId',
+    'drawnByPlayerId', 'servedByPlayerId', 'blockingPlayerId', 'goalieInNetId',
+    'shootingPlayerId',
     'scoringPlayerId', 'assist1PlayerId', 'assist2PlayerId',
     'scoringPlayerTotal', 'assist1PlayerTotal', 'assist2PlayerTotal',
     'penaltyTypeCode', 'penaltyTypeDescKey', 'penaltyDuration', 'reason',
@@ -2584,7 +2593,8 @@ game_rosters <- function(game = 2023030417) {
     'goalDifferential', 'shotDifferential', 'fenwickDifferential',
     'corsiDifferential', 'playerId', 'winningPlayerId', 'losingPlayerId',
     'hittingPlayerId', 'hitteePlayerId', 'committedByPlayerId',
-    'drawnByPlayerId', 'servedByPlayerId', 'blockingPlayerId', 'shootingPlayerId',
+    'drawnByPlayerId', 'servedByPlayerId', 'blockingPlayerId', 'goalieInNetId',
+    'shootingPlayerId',
     'scoringPlayerId', 'assist1PlayerId', 'assist2PlayerId',
     'scoringPlayerTotal', 'assist1PlayerTotal', 'assist2PlayerTotal',
     'penaltyTypeCode', 'penaltyTypeDescKey', 'penaltyDuration', 'reason'
@@ -2647,6 +2657,60 @@ game_rosters <- function(game = 2023030417) {
   )
 }
 
+#' Access the raw GameCenter (GC) play-by-play for a game
+#'
+#' `gc_play_by_play_raw()` returns the raw flattened GameCenter play-by-play as
+#' served by the NHL API for one game. Use [gc_play_by_play()] for the cleaned
+#' public schema that repairs common clock/order defects and appends the derived
+#' public columns.
+#'
+#' @inheritParams gc_summary
+#'
+#' @returns data.frame with one row per event (play)
+#' @examples
+#' gc_raw_Martin_Necas_legacy_game <- gc_play_by_play_raw(game = 2025020275)
+#' @export
+
+gc_play_by_play_raw <- function(game = 2023030417) {
+  tryCatch(
+    expr = {
+      game <- as.integer(game)
+      if (length(game) != 1L || is.na(game) || game <= 0L) {
+        stop('invalid game')
+      }
+      pbp_meta <- nhl_api(
+        path = sprintf('v1/gamecenter/%s/play-by-play', game),
+        type = 'w'
+      )
+      plays <- if (is.null(pbp_meta$plays)) {
+        data.frame()
+      } else {
+        as.data.frame(pbp_meta$plays, stringsAsFactors = FALSE)
+      }
+      if (!nrow(plays)) {
+        return(plays)
+      }
+      plays$gameId <- game
+      plays[, c('gameId', setdiff(names(plays), 'gameId')), drop = FALSE]
+    },
+    error = function(e) {
+      message(paste(
+        'Invalid argument(s); refer to help file.',
+        '\nProvided game:',
+        game
+      ))
+      data.frame()
+    }
+  )
+}
+
+#' @rdname gc_play_by_play_raw
+#' @export
+
+gc_pbp_raw <- function(game = 2023030417) {
+  gc_play_by_play_raw(game)
+}
+
 #' Access the GameCenter (GC) play-by-play for a game
 #'
 #' `gc_play_by_play()` retrieves the GameCenter (GC) play-by-play for a game as
@@ -2654,9 +2718,11 @@ game_rosters <- function(game = 2023030417) {
 #' cleaned, public-facing play-by-play schema, including canonical names such as
 #' `periodNumber`, `eventTypeCode`, `eventTypeDescKey`, `homeShots`,
 #' `shotsFor`, `penaltyTypeDescKey`, `penaltyDuration`, `servedByPlayerId`,
-#' and HTML-report-derived on-ice player ID columns such as
+#' `goalieInNetId`, and HTML-report-derived on-ice player ID columns such as
 #' `homeGoaliePlayerId`, `awayGoaliePlayerId`, `homeSkater1PlayerId`, and any
-#' additional overflow skater slots required by the game. Use [add_shift_times()] with
+#' additional overflow skater slots required by the game. HTML report skater and
+#' goalie IDs are returned whenever they can be matched back to a supported row,
+#' even when the raw `situationCode` is stale. Use [add_shift_times()] with
 #' [shift_chart()] (or [shift_charts()]) to add on-ice shift timing columns.
 #'
 #' @inheritParams gc_summary
@@ -2725,6 +2791,7 @@ gc_play_by_play <- function(game = 2023030417) {
       plays <- .strip_game_id(plays) |>
         .strip_time_period() |>
         .drop_illogical_ordered_events() |>
+        .repair_public_pbp_sequence() |>
         .flag_is_home() |>
         .strip_situation_code() |>
         .normalize_coordinates() |>
@@ -2758,15 +2825,70 @@ gc_pbp <- function(game = 2023030417) {
   gc_play_by_play(game)
 }
 
+#' Access the raw World Showcase (WSC) play-by-play for a game
+#'
+#' `wsc_play_by_play_raw()` returns the raw flattened World Showcase play-by-play
+#' as served by the NHL API for one game. Use [wsc_play_by_play()] for the
+#' cleaned public schema that repairs common clock/order defects and appends the
+#' derived public columns.
+#'
+#' @inheritParams gc_summary
+#'
+#' @returns data.frame with one row per event (play)
+#' @examples
+#' wsc_raw_Martin_Necas_legacy_game <- wsc_play_by_play_raw(game = 2025020275)
+#' @export
+
+wsc_play_by_play_raw <- function(game = 2023030417) {
+  tryCatch(
+    expr = {
+      game <- as.integer(game)
+      if (length(game) != 1L || is.na(game) || game <= 0L) {
+        stop('invalid game')
+      }
+      plays <- nhl_api(
+        path = sprintf('v1/wsc/play-by-play/%s', game),
+        type = 'w'
+      )
+      plays <- as.data.frame(plays, stringsAsFactors = FALSE)
+      if (!nrow(plays)) {
+        return(plays)
+      }
+      if ('id' %in% names(plays)) {
+        plays$id <- NULL
+      }
+      plays$gameId <- game
+      plays[, c('gameId', setdiff(names(plays), 'gameId')), drop = FALSE]
+    },
+    error = function(e) {
+      message(paste(
+        'Invalid argument(s); refer to help file.',
+        '\nProvided game:',
+        game
+      ))
+      data.frame()
+    }
+  )
+}
+
+#' @rdname wsc_play_by_play_raw
+#' @export
+
+wsc_pbp_raw <- function(game = 2023030417) {
+  wsc_play_by_play_raw(game)
+}
+
 #' Access the World Showcase (WSC) play-by-play for a game
 #'
 #' `wsc_play_by_play()` retrieves the World Showcase (WSC) play-by-play for a
 #' game as a `data.frame` where each row represents an event. The returned
 #' schema follows the same cleaned public-facing naming as `gc_play_by_play()`,
-#' including `servedByPlayerId`, and includes `utc` immediately after
+#' including `servedByPlayerId`, `goalieInNetId`, and `utc` immediately after
 #' `secondsElapsedInGame` while omitting GC-only clip fields. It also includes
 #' the same HTML-report-derived on-ice player ID columns added to the GC output,
-#' including dynamically expanded overflow skater slots when needed. Use [add_shift_times()]
+#' including dynamically expanded overflow skater slots when needed. HTML report
+#' skater and goalie IDs are returned whenever they can be matched back to a
+#' supported row, even when the raw `situationCode` is stale. Use [add_shift_times()]
 #' with [shift_chart()] (or [shift_charts()]) to add on-ice shift timing columns.
 #'
 #' @inheritParams gc_summary
@@ -2841,6 +2963,7 @@ wsc_play_by_play <- function(game = 2023030417) {
       plays <- .strip_game_id(plays) |>
         .strip_time_period() |>
         .drop_illogical_ordered_events() |>
+        .repair_public_pbp_sequence() |>
         .flag_is_home() |>
         .strip_situation_code() |>
         .normalize_coordinates() |>

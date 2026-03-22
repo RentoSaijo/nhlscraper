@@ -100,12 +100,12 @@ test_that("gc_play_by_play() returns the public schema and fills goal shooters",
   expect_false(any(c(
     "period", "typeCode", "typeDescKey", "homeSOG", "awaySOG", "SOGFor",
     "SOGAgainst", "SOGDifferential", "descKey", "duration", "timeInPeriod",
-    "timeRemaining", "awayScore", "homeScore", "goalieInNetId"
+    "timeRemaining", "awayScore", "homeScore"
   ) %in% names(out)))
   expect_true(all(c(
     "periodNumber", "periodType", "eventTypeCode", "eventTypeDescKey",
     "homeShots", "awayShots", "shotsFor", "shotsAgainst", "shotDifferential",
-    "penaltyTypeDescKey", "penaltyDuration", "pptReplayUrl",
+    "penaltyTypeDescKey", "penaltyDuration", "pptReplayUrl", "goalieInNetId",
     "homeGoaliePlayerId", "awayGoaliePlayerId", "goaliePlayerIdFor",
     "goaliePlayerIdAgainst", "homeSkater1PlayerId", "awaySkater1PlayerId",
     "skater1PlayerIdFor", "skater1PlayerIdAgainst", "homeSkater6PlayerId",
@@ -132,11 +132,20 @@ test_that("gc_play_by_play() returns the public schema and fills goal shooters",
   expect_true(all(is.na(out$playerId)))
   expect_true(all(is.na(out$blockingPlayerId)))
   expect_true(all(is.na(out$servedByPlayerId)))
+  expect_equal(out$goalieInNetId, c(NA_integer_, 30L, 40L))
   expect_false("homeGoalieSecondsElapsedInShift" %in% names(out))
   expect_false("homeGoalieSecondsElapsedInPeriodSinceLastShift" %in% names(out))
   expect_equal(
     names(out)[match("drawnByPlayerId", names(out)) + 1L],
     "servedByPlayerId"
+  )
+  expect_equal(
+    names(out)[match("blockingPlayerId", names(out)) + 1L],
+    "goalieInNetId"
+  )
+  expect_equal(
+    names(out)[match("goalieInNetId", names(out)) + 1L],
+    "shootingPlayerId"
   )
 })
 
@@ -246,13 +255,12 @@ test_that("wsc_play_by_play() returns the public schema with utc and no clip fie
     "period", "typeCode", "typeDescKey", "homeSOG", "awaySOG", "SOGFor",
     "SOGAgainst", "SOGDifferential", "descKey", "duration", "timeInPeriod",
     "secondsRemaining", "awayScore", "homeScore", "periodType",
-    "discreteClip", "highlightClip", "highlightClipSharingUrl", "pptReplayUrl",
-    "goalieInNetId"
+    "discreteClip", "highlightClip", "highlightClipSharingUrl", "pptReplayUrl"
   ) %in% names(out)))
   expect_true(all(c(
     "periodNumber", "utc", "eventTypeCode", "eventTypeDescKey", "homeShots",
     "awayShots", "shotsFor", "shotsAgainst", "shotDifferential",
-    "penaltyTypeDescKey", "penaltyDuration", "homeGoaliePlayerId",
+    "penaltyTypeDescKey", "penaltyDuration", "goalieInNetId", "homeGoaliePlayerId",
     "awayGoaliePlayerId", "goaliePlayerIdFor", "goaliePlayerIdAgainst",
     "homeSkater1PlayerId", "awaySkater1PlayerId", "skater1PlayerIdFor",
     "skater1PlayerIdAgainst", "homeSkater6PlayerId", "awaySkater6PlayerId",
@@ -280,12 +288,84 @@ test_that("wsc_play_by_play() returns the public schema with utc and no clip fie
   expect_true(all(is.na(out$playerId)))
   expect_true(all(is.na(out$blockingPlayerId)))
   expect_true(all(is.na(out$servedByPlayerId)))
+  expect_equal(out$goalieInNetId, c(NA_integer_, 30L, 40L))
   expect_false("homeGoalieSecondsElapsedInShift" %in% names(out))
   expect_false("homeGoalieSecondsElapsedInPeriodSinceLastShift" %in% names(out))
   expect_equal(
     names(out)[match("drawnByPlayerId", names(out)) + 1L],
     "servedByPlayerId"
   )
+  expect_equal(
+    names(out)[match("blockingPlayerId", names(out)) + 1L],
+    "goalieInNetId"
+  )
+  expect_equal(
+    names(out)[match("goalieInNetId", names(out)) + 1L],
+    "shootingPlayerId"
+  )
+})
+
+test_that("raw play-by-play helpers return flattened raw source rows", {
+  gc_raw <- data.frame(
+    eventId = 1:2,
+    sortOrder = 1:2,
+    periodDescriptor.number = c(1L, 1L),
+    stringsAsFactors = FALSE
+  )
+  wsc_raw <- data.frame(
+    id = c(10L, 11L),
+    eventId = 1:2,
+    sortOrder = 1:2,
+    stringsAsFactors = FALSE
+  )
+
+  local_mocked_bindings(
+    nhl_api = function(path, type, ...) {
+      expect_identical(type, "w")
+      if (identical(path, "v1/gamecenter/2010020001/play-by-play")) {
+        return(list(plays = gc_raw))
+      }
+      if (identical(path, "v1/wsc/play-by-play/2010020001")) {
+        return(wsc_raw)
+      }
+      stop("Unexpected path")
+    },
+    .package = "nhlscraper"
+  )
+
+  gc_out <- gc_play_by_play_raw(2010020001)
+  wsc_out <- wsc_play_by_play_raw(2010020001)
+
+  expect_equal(names(gc_out)[1], "gameId")
+  expect_equal(gc_out$gameId, rep(2010020001L, 2L))
+  expect_true("periodDescriptor.number" %in% names(gc_out))
+
+  expect_equal(names(wsc_out)[1], "gameId")
+  expect_equal(wsc_out$gameId, rep(2010020001L, 2L))
+  expect_false("id" %in% names(wsc_out))
+})
+
+test_that("repair_public_pbp_sequence drops invalid clocks and repairs boundary order", {
+  pbp <- data.frame(
+    gameId = rep(2019030016L, 6L),
+    seasonId = rep(20192020L, 6L),
+    gameTypeId = rep(3L, 6L),
+    eventId = c(6L, 9L, 10L, 11L, 12L, 13L),
+    sortOrder = c(6L, 9L, 10L, 11L, 12L, 13L),
+    period = rep(1L, 6L),
+    timeInPeriod = c("00:00", "00:00", "00:00", "00:09", "00:08", "08:70"),
+    typeDescKey = c("period-start", "faceoff", "period-end", "shot-on-goal", "hit", "penalty"),
+    stringsAsFactors = FALSE
+  )
+
+  out <- pbp |>
+    .strip_time_period() |>
+    .repair_public_pbp_sequence()
+
+  expect_false(13L %in% out$eventId)
+  expect_equal(out$typeDescKey, c("period-start", "faceoff", "hit", "shot-on-goal", "period-end"))
+  expect_equal(out$timeInPeriod[out$typeDescKey == "period-end"], "20:00")
+  expect_true(all(diff(out$secondsElapsedInPeriod) >= 0))
 })
 
 test_that("illogically ordered boundary faceoffs are removed", {

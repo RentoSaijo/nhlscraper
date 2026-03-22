@@ -530,6 +530,80 @@ add_shift_times <- function(play_by_play, shift_chart) {
   play_by_play[, c(front, setdiff(names(play_by_play), front))]
 }
 
+#' Identify Return-to-Play round-robin shootout games
+#'
+#' `.covid_round_robin_shootout_game_ids()` returns the 2019-20 round-robin
+#' seeding games that used regular-season overtime/shootout rules despite
+#' carrying playoff game IDs.
+#'
+#' @returns integer vector of game IDs
+#' @keywords internal
+.covid_round_robin_shootout_game_ids <- function() {
+  c(2019030002L, 2019030016L)
+}
+
+#' Identify shootout-eligible games for public play-by-play cleanup
+#'
+#' `.public_pbp_is_shootout_eligible()` returns `TRUE` for games whose overtime
+#' rules follow the regular-season shootout path.
+#'
+#' @param game_id integer game IDs
+#' @param game_type_id integer game type IDs
+#' @returns logical vector
+#' @keywords internal
+.public_pbp_is_shootout_eligible <- function(game_id, game_type_id) {
+  (!is.na(game_type_id) & game_type_id == 2L) |
+    (!is.na(game_id) & game_id %in% .covid_round_robin_shootout_game_ids())
+}
+
+#' Derive the legal period length in seconds
+#'
+#' `.public_pbp_legal_period_seconds()` returns the nominal legal length for each
+#' play-by-play row's period under the relevant game context.
+#'
+#' @param game_id integer game IDs
+#' @param game_type_id integer game type IDs
+#' @param period integer period numbers
+#' @returns integer vector of legal period lengths in seconds
+#' @keywords internal
+.public_pbp_legal_period_seconds <- function(game_id, game_type_id, period) {
+  shootout_eligible <- .public_pbp_is_shootout_eligible(game_id, game_type_id)
+  out <- ifelse(
+    is.na(period),
+    NA_integer_,
+    ifelse(
+      period <= 3L,
+      1200L,
+      ifelse(
+        shootout_eligible & period == 4L,
+        300L,
+        ifelse(shootout_eligible & period >= 5L, 0L, 1200L)
+      )
+    )
+  )
+  as.integer(out)
+}
+
+#' Format elapsed seconds as an `MM:SS` clock
+#'
+#' `.format_elapsed_clock()` converts elapsed-in-period seconds back into
+#' zero-padded `MM:SS` strings.
+#'
+#' @param seconds integer/numeric vector of elapsed seconds
+#' @returns character vector
+#' @keywords internal
+.format_elapsed_clock <- function(seconds) {
+  seconds <- suppressWarnings(as.integer(seconds))
+  out <- rep(NA_character_, length(seconds))
+  ok <- !is.na(seconds) & seconds >= 0L
+  if (any(ok)) {
+    mins <- seconds[ok] %/% 60L
+    secs <- seconds[ok] %% 60L
+    out[ok] <- sprintf('%02d:%02d', mins, secs)
+  }
+  out
+}
+
 #' Strip the timestamp and period number into the time elapsed in the period and game for all the events (plays) in a play-by-play
 #' 
 #' `.strip_time_period()` strips the timestamp and period number into the time elapsed in the period and game for all the events (plays) in a play-by-play.
@@ -540,10 +614,25 @@ add_shift_times <- function(play_by_play, shift_chart) {
 
 .strip_time_period <- function(play_by_play) {
   isPlayoffs <- play_by_play$gameTypeId == 3
-  tp   <- strsplit(play_by_play$timeInPeriod, ':', fixed = TRUE)
-  mins <- as.integer(vapply(tp, `[`, '', 1L))
-  secs <- as.integer(vapply(tp, `[`, '', 2L))
-  elp  <- 60L * mins + secs
+  time_in_period <- as.character(play_by_play$timeInPeriod)
+  valid_format <- !is.na(time_in_period) &
+    grepl('^[0-9]{1,2}:[0-9]{2}$', time_in_period)
+  elp <- rep(NA_integer_, length(time_in_period))
+  if (any(valid_format)) {
+    tp <- strsplit(time_in_period[valid_format], ':', fixed = TRUE)
+    mins <- suppressWarnings(as.integer(vapply(tp, `[`, '', 1L)))
+    secs <- suppressWarnings(as.integer(vapply(tp, `[`, '', 2L)))
+    valid_clock <- !is.na(mins) & !is.na(secs) & secs >= 0L & secs <= 59L
+    parsed <- rep(NA_integer_, length(tp))
+    parsed[valid_clock] <- 60L * mins[valid_clock] + secs[valid_clock]
+    legal_max <- .public_pbp_legal_period_seconds(
+      game_id = play_by_play$gameId[valid_format],
+      game_type_id = play_by_play$gameTypeId[valid_format],
+      period = play_by_play$period[valid_format]
+    )
+    parsed[!is.na(parsed) & !is.na(legal_max) & parsed > legal_max] <- NA_integer_
+    elp[valid_format] <- parsed
+  }
   play_by_play$secondsElapsedInPeriod <- elp
   base <- ifelse(
     play_by_play$period <= 3L,
@@ -559,6 +648,180 @@ add_shift_times <- function(play_by_play, shift_chart) {
   keep   <- setdiff(names(play_by_play), insert)
   after  <- match('sortOrder', keep)
   play_by_play[, c(keep[seq_len(after)], insert, keep[(after + 1L):length(keep)])]
+}
+
+#' Repair public play-by-play clock/order defects in boundary-row feeds
+#'
+#' `.repair_public_pbp_sequence()` removes rows with impossible clocks and
+#' reorders explicit-boundary feeds into a more coherent public sequence. The
+#' repair is intentionally scoped to the modern boundary-row era, where the
+#' audited issues are dominated by stale sort-order markers, early `period-end`
+#' rows, and opening faceoffs that arrive after live-play rows.
+#'
+#' @inheritParams .strip_game_id
+#' @returns data.frame with repaired clocks and ordering where feasible
+#' @keywords internal
+.repair_public_pbp_sequence <- function(play_by_play) {
+  play_by_play <- .pbp_legacy_aliases(play_by_play)
+  n <- nrow(play_by_play)
+  if (
+    !n ||
+      !all(c(
+        'gameId', 'seasonId', 'gameTypeId', 'period', 'sortOrder',
+        'timeInPeriod', 'secondsElapsedInPeriod', 'typeDescKey'
+      ) %in% names(play_by_play))
+  ) {
+    return(play_by_play)
+  }
+
+  type_desc_key <- as.character(play_by_play$typeDescKey)
+  has_boundary_rows <- any(
+    !is.na(type_desc_key) &
+      type_desc_key %in% c('period-start', 'period-end', 'game-end', 'shootout-complete')
+  )
+  if (!has_boundary_rows || all(play_by_play$seasonId < 20092010L, na.rm = TRUE)) {
+    return(play_by_play)
+  }
+
+  has_clock_string <- !is.na(play_by_play$timeInPeriod) & nzchar(play_by_play$timeInPeriod)
+  valid_clock <- !is.na(play_by_play$secondsElapsedInPeriod)
+  drop_idx <- has_clock_string & !valid_clock
+  if (any(drop_idx)) {
+    play_by_play <- play_by_play[!drop_idx, , drop = FALSE]
+  }
+  if (!nrow(play_by_play)) {
+    return(play_by_play)
+  }
+
+  row_id <- seq_len(nrow(play_by_play))
+  original_sort <- suppressWarnings(as.integer(play_by_play$sortOrder))
+  original_sort[is.na(original_sort)] <- seq_len(nrow(play_by_play))[is.na(original_sort)]
+  new_sort <- original_sort
+  new_seconds <- suppressWarnings(as.integer(play_by_play$secondsElapsedInPeriod))
+
+  for (g in unique(play_by_play$gameId)) {
+    idx_game <- which(play_by_play$gameId == g)
+    idx_game <- idx_game[order(original_sort[idx_game], row_id[idx_game], na.last = TRUE)]
+    if (!length(idx_game)) {
+      next
+    }
+
+    periods <- sort(unique(play_by_play$period[idx_game]))
+    periods <- periods[!is.na(periods)]
+    idx_game_new <- integer()
+
+    for (p in periods) {
+      idx_period <- idx_game[play_by_play$period[idx_game] == p]
+      if (!length(idx_period)) {
+        next
+      }
+
+      period_types <- as.character(play_by_play$typeDescKey[idx_period])
+      period_secs <- new_seconds[idx_period]
+      period_sort <- original_sort[idx_period]
+      period_game_type <- suppressWarnings(as.integer(play_by_play$gameTypeId[idx_period][1L]))
+      legal_max <- .public_pbp_legal_period_seconds(g, period_game_type, p)[1L]
+
+      is_period_start <- !is.na(period_types) & period_types == 'period-start'
+      is_period_end <- !is.na(period_types) & period_types == 'period-end'
+      is_game_end <- !is.na(period_types) & period_types == 'game-end'
+      is_shootout_complete <- !is.na(period_types) & period_types == 'shootout-complete'
+      faceoff_pos <- which(!is.na(period_types) & period_types == 'faceoff')
+      opening_faceoff_pos <- if (length(faceoff_pos)) faceoff_pos[1L] else integer()
+
+      if (length(opening_faceoff_pos)) {
+        pre_faceoff_pos <- seq_len(opening_faceoff_pos - 1L)
+        pre_faceoff_pos <- pre_faceoff_pos[!is_period_start[pre_faceoff_pos]]
+        if (length(pre_faceoff_pos)) {
+          earliest_pre_sec <- suppressWarnings(min(period_secs[pre_faceoff_pos], na.rm = TRUE))
+          if (is.finite(earliest_pre_sec)) {
+            target_sec <- if (is.na(period_secs[opening_faceoff_pos])) {
+              as.integer(earliest_pre_sec)
+            } else {
+              min(as.integer(period_secs[opening_faceoff_pos]), as.integer(earliest_pre_sec))
+            }
+            period_secs[opening_faceoff_pos] <- as.integer(target_sec)
+          }
+        }
+      }
+
+      non_terminal_pos <- which(!(is_period_end | is_game_end | is_shootout_complete))
+      observed_period_max <- suppressWarnings(max(period_secs[non_terminal_pos], na.rm = TRUE))
+      if (!is.finite(observed_period_max)) {
+        observed_period_max <- NA_integer_
+      } else {
+        observed_period_max <- as.integer(observed_period_max)
+      }
+      has_goal <- any(!is.na(period_types) & period_types == 'goal')
+      has_later_period <- any(play_by_play$period[idx_game] > p, na.rm = TRUE)
+      use_legal_terminal <- !is.na(legal_max) && (
+        p <= 3L ||
+          (.public_pbp_is_shootout_eligible(g, period_game_type) &&
+             p == 4L &&
+             !has_goal &&
+             has_later_period)
+      )
+      terminal_sec <- suppressWarnings(max(
+        c(
+          period_secs[is_period_end],
+          observed_period_max,
+          if (use_legal_terminal) legal_max else NA_integer_
+        ),
+        na.rm = TRUE
+      ))
+      if (!is.finite(terminal_sec)) {
+        terminal_sec <- if (!is.na(legal_max)) legal_max else 0L
+      }
+      terminal_sec <- as.integer(max(0L, terminal_sec))
+      if (any(is_period_start)) {
+        period_secs[is_period_start] <- 0L
+      }
+      if (any(is_period_end)) {
+        period_secs[is_period_end] <- terminal_sec
+      }
+      if (any(is_game_end)) {
+        period_secs[is_game_end] <- terminal_sec
+      }
+      if (any(is_shootout_complete) && is.na(legal_max)) {
+        period_secs[is_shootout_complete] <- terminal_sec
+      }
+
+      regular_pos <- which(!(is_period_start | is_period_end | is_game_end | is_shootout_complete))
+      if (length(opening_faceoff_pos)) {
+        regular_pos <- setdiff(regular_pos, opening_faceoff_pos)
+      }
+      regular_pos <- regular_pos[order(
+        period_secs[regular_pos],
+        period_sort[regular_pos],
+        row_id[idx_period[regular_pos]],
+        na.last = TRUE
+      )]
+
+      idx_period_new <- c(
+        idx_period[which(is_period_start)],
+        if (length(opening_faceoff_pos)) idx_period[opening_faceoff_pos] else integer(),
+        idx_period[regular_pos],
+        idx_period[which(is_shootout_complete)],
+        idx_period[which(is_period_end)],
+        idx_period[which(is_game_end)]
+      )
+      idx_game_new <- c(idx_game_new, idx_period_new)
+      new_seconds[idx_period] <- period_secs
+    }
+
+    if (length(idx_game_new) != length(idx_game)) {
+      missing_idx <- setdiff(idx_game, idx_game_new)
+      idx_game_new <- c(idx_game_new, missing_idx)
+    }
+    idx_game_new <- idx_game_new[!duplicated(idx_game_new)]
+    new_sort[idx_game_new] <- sort(original_sort[idx_game], na.last = TRUE)
+  }
+
+  play_by_play$sortOrder <- new_sort
+  play_by_play$secondsElapsedInPeriod <- new_seconds
+  play_by_play$timeInPeriod <- .format_elapsed_clock(play_by_play$secondsElapsedInPeriod)
+  play_by_play <- .strip_time_period(play_by_play)
+  play_by_play[order(play_by_play$sortOrder, row_id, na.last = TRUE), , drop = FALSE]
 }
 
 #' Remove illogically ordered boundary events from a play-by-play

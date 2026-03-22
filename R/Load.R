@@ -194,6 +194,45 @@ contracts <- function() {
   )
 }
 
+#' Access the raw GameCenter (GC) play-by-plays for a season
+#' 
+#' `gc_play_by_plays_raw()` loads the raw GC play-by-plays for a given
+#' `season`.
+#' 
+#' @inheritParams roster
+#' @returns data.frame with one row per raw event (play) per game
+#' @examples
+#' # May take >5s, so skip.
+#' \donttest{gc_pbps_raw_20212022 <- gc_play_by_plays_raw(season = 20212022)}
+#' @export
+
+gc_play_by_plays_raw <- function(season = 20242025) {
+  tryCatch(
+    expr = {
+      u <- paste0(
+        'https://huggingface.co/datasets/RentoSaijo/NHL_DB/resolve/main/',
+        'data/game/pbps/gc/NHL_PBPS_GC_Raw_',
+        season,
+        '.parquet'
+      )
+      tmp <- tempfile(fileext = '.parquet')
+      utils::download.file(u, tmp, mode = 'wb', quiet = TRUE)
+      as.data.frame(arrow::read_parquet(tmp), stringsAsFactors = FALSE)
+    },
+    error = function(e) {
+      message('Invalid argument(s); refer to help file.')
+      data.frame()
+    }
+  )
+}
+
+#' @rdname gc_play_by_plays_raw
+#' @export
+
+gc_pbps_raw <- function(season = 20242025) {
+  gc_play_by_plays_raw(season)
+}
+
 #' Access the GameCenter (GC) play-by-plays for a season
 #' 
 #' `gc_play_by_plays()` loads the GC play-by-plays for a given `season`.
@@ -239,6 +278,45 @@ gc_play_by_plays <- function(season = 20242025) {
 
 gc_pbps <- function(season = 20242025) {
   gc_play_by_plays(season)
+}
+
+#' Access the raw World Showcase (WSC) play-by-plays for a season
+#' 
+#' `wsc_play_by_plays_raw()` loads the raw WSC play-by-plays for a given
+#' `season`.
+#' 
+#' @inheritParams roster
+#' @returns data.frame with one row per raw event (play) per game
+#' @examples
+#' # May take >5s, so skip.
+#' \donttest{wsc_pbps_raw_20212022 <- wsc_play_by_plays_raw(season = 20212022)}
+#' @export
+
+wsc_play_by_plays_raw <- function(season = 20242025) {
+  tryCatch(
+    expr = {
+      u <- paste0(
+        'https://huggingface.co/datasets/RentoSaijo/NHL_DB/resolve/main/',
+        'data/game/pbps/wsc/NHL_PBPS_WSC_Raw_',
+        season,
+        '.parquet'
+      )
+      tmp <- tempfile(fileext = '.parquet')
+      utils::download.file(u, tmp, mode = 'wb', quiet = TRUE)
+      as.data.frame(arrow::read_parquet(tmp), stringsAsFactors = FALSE)
+    },
+    error = function(e) {
+      message('Invalid argument(s); refer to help file.')
+      data.frame()
+    }
+  )
+}
+
+#' @rdname wsc_play_by_plays_raw
+#' @export
+
+wsc_pbps_raw <- function(season = 20242025) {
+  wsc_play_by_plays_raw(season)
 }
 
 #' Access the World Showcase (WSC) play-by-plays for a season

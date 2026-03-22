@@ -19,10 +19,12 @@ data.frame with one row per event (play)
 \code{wsc_play_by_play()} retrieves the World Showcase (WSC) play-by-play for a
 game as a \code{data.frame} where each row represents an event. The returned
 schema follows the same cleaned public-facing naming as \code{gc_play_by_play()},
-including \code{servedByPlayerId}, and includes \code{utc} immediately after
+including \code{servedByPlayerId}, \code{goalieInNetId}, and \code{utc} immediately after
 \code{secondsElapsedInGame} while omitting GC-only clip fields. It also includes
 the same HTML-report-derived on-ice player ID columns added to the GC output,
-including dynamically expanded overflow skater slots when needed. Use \code{\link[=add_shift_times]{add_shift_times()}}
+including dynamically expanded overflow skater slots when needed. HTML report
+skater and goalie IDs are returned whenever they can be matched back to a
+supported row, even when the raw \code{situationCode} is stale. Use \code{\link[=add_shift_times]{add_shift_times()}}
 with \code{\link[=shift_chart]{shift_chart()}} (or \code{\link[=shift_charts]{shift_charts()}}) to add on-ice shift timing columns.
 }
 \examples{
