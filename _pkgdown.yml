@@ -251,7 +251,9 @@ reference:
       - boxscore
       - game_rosters
       - gc_play_by_play
+      - gc_play_by_play_raw
       - wsc_play_by_play
+      - wsc_play_by_play_raw
       - shift_chart
       - game_odds
   
@@ -272,7 +274,9 @@ reference:
     contents:
       - contracts
       - gc_play_by_plays
+      - gc_play_by_plays_raw
       - wsc_play_by_plays
+      - wsc_play_by_plays_raw
       - shift_charts
       - replays
   

@@ -4,10 +4,11 @@
 - `contracts()` now returns more contracts, dating back to the 90's (and then some).
 - `shift_chart()` (and consequentially, `shift_charts()`) now returns completed shift charts for all games where at least either one of API or HTML report is available.
 - `gc_play_by_play()` and `wsc_play_by_play()` now return new schema.
-  - HTML-report-derived on-ice goalie/skater ID columns are now added, limited to `faceoff`, `hit`, `shot-on-goal`, `giveaway`, `missed-shot`, `blocked-shot`, `goal`, `delayed-penalty`, `takeaway`, and `failed-shot-attempt`, while `situationCode`-derived strength/count columns remain available wherever `situationCode` itself is available. Check out our "Article" section on the documentation website to learn more. 
+  - HTML-report-derived on-ice goalie/skater ID columns are now added, limited to `faceoff`, `hit`, `shot-on-goal`, `giveaway`, `missed-shot`, `blocked-shot`, `goal`, `delayed-penalty`, `takeaway`, and `failed-shot-attempt`, while `situationCode`-derived strength/count columns remain available wherever `situationCode` itself is available. Check out our "Article" section on the documentation website to learn more.
   - `add_shift_times()` is now added to populate scalar on-ice shift time elapsed columns via C.
   - `add_deltas()` now handles event-to-event deltas in C, returns raw and normalized X/Y deltas alongside distance and angle deltas, and properly handles same-second events and shootouts/penalty shots with `1/n` estimation.
   - `calculate_speed()` is now defunct; use `add_deltas()` instead.
+- `gc_play_by_play_raw()` and `wsc_play_by_play_raw()` now returns raw play-by-play data; note that there are heavy inconsistencies in this uncleaned data as [audited](https://github.com/RentoSaijo/nhlscraper/tree/main/other/audits/pbps).
 - `calculate_expected_goals()` now uses a fixed six-partition ridge xG model.
   - The scorer now mirrors the training-time preprocessing with delta, biometric, previous-event, and shift-timing context where available, while keeping runtime dependencies minimal.
   - `ig_game_shot_locations()`, `x_game_shot_locations()`, `ig_game_cumulative_expected_goals()`, and `x_game_cumulative_expected_goals()` still accept `model` for backward compatibility, but it is now ignored.
