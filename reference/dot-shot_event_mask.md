@@ -1,7 +1,7 @@
 # Build a shot-event mask
 
 `.shot_event_mask()` flags play-by-play rows matching selected event
-types while excluding short missed shots.
+types.
 
 ## Usage
 

@@ -100,8 +100,8 @@ make_table(
 
 | team | goals | shotsOnGoal |    xG | xGPerShot |
 |:-----|------:|------------:|------:|----------:|
-| FLA  |     2 |          21 | 2.279 |     0.109 |
-| EDM  |     1 |          24 | 2.533 |     0.106 |
+| FLA  |     2 |          21 | 2.294 |     0.109 |
+| EDM  |     1 |          24 | 2.536 |     0.106 |
 
 Game 7 team context: score, shots on goal, and expected goals.
 
@@ -151,9 +151,9 @@ make_table(
 
 | period | FLA_xG | EDM_xG |
 |-------:|-------:|-------:|
-|      1 |  0.618 |  0.547 |
-|      2 |  0.415 |  0.833 |
-|      3 |  1.247 |  1.153 |
+|      1 |  0.636 |  0.547 |
+|      2 |  0.413 |  0.835 |
+|      3 |  1.245 |  1.153 |
 
 Expected goals by period in Game 7.
 
@@ -198,16 +198,16 @@ make_table(
 
 |     | player          | team | period | timeInPeriod | xCoordNorm | yCoordNorm |    xG |
 |:----|:----------------|:-----|-------:|:-------------|-----------:|-----------:|------:|
-| 61  | Evan Rodrigues  | FLA  |      3 | 19:33        |         16 |         17 | 0.444 |
+| 62  | Evan Rodrigues  | FLA  |      3 | 19:33        |         16 |         17 | 0.445 |
 | 16  | Zach Hyman      | EDM  |      3 | 12:56        |         79 |          2 | 0.235 |
-| 41  | Sam Bennett     | FLA  |      3 | 05:17        |         81 |          5 | 0.211 |
-| 17  | Zach Hyman      | EDM  |      3 | 12:57        |         85 |          1 | 0.207 |
+| 41  | Sam Bennett     | FLA  |      3 | 05:17        |         81 |          5 | 0.210 |
+| 17  | Zach Hyman      | EDM  |      3 | 12:57        |         85 |          1 | 0.208 |
 | 25  | Mattias Janmark | EDM  |      1 | 06:44        |         77 |         -2 | 0.200 |
 | 8   | Mattias Ekholm  | EDM  |      3 | 17:45        |         74 |          9 | 0.163 |
 | 11  | Mattias Ekholm  | EDM  |      3 | 17:42        |         84 |          3 | 0.132 |
-| 39  | Leon Draisaitl  | EDM  |      2 | 04:27        |         75 |        -26 | 0.117 |
-| 59  | Connor McDavid  | EDM  |      3 | 17:17        |         82 |          3 | 0.117 |
-| 69  | Matthew Tkachuk | FLA  |      1 | 18:41        |         84 |         -8 | 0.111 |
+| 39  | Leon Draisaitl  | EDM  |      2 | 04:27        |         75 |        -26 | 0.118 |
+| 60  | Connor McDavid  | EDM  |      3 | 17:17        |         82 |          3 | 0.117 |
+| 70  | Matthew Tkachuk | FLA  |      1 | 18:41        |         84 |         -8 | 0.111 |
 
 Highest-xG individual chances in Game 7.
 
