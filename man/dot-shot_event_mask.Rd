@@ -15,7 +15,6 @@
 logical vector
 }
 \description{
-\code{.shot_event_mask()} flags play-by-play rows matching selected event types
-while excluding short missed shots.
+\code{.shot_event_mask()} flags play-by-play rows matching selected event types.
 }
 \keyword{internal}

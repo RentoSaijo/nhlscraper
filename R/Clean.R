@@ -1053,35 +1053,9 @@ add_shift_times <- function(play_by_play, shift_chart) {
   }
 }
 
-#' Identify short missed shots
-#'
-#' `.is_short_missed_shot()` flags missed shots with reason `short`, which are
-#' excluded from Fenwick and Corsi calculations.
-#'
-#' @param play_by_play data.frame play-by-play object
-#' @returns logical vector
-#' @keywords internal
-.is_short_missed_shot <- function(play_by_play) {
-  play_by_play <- .pbp_legacy_aliases(play_by_play)
-  n <- nrow(play_by_play)
-  if (!n) return(logical(0))
-  typeDescKey <- if ('typeDescKey' %in% names(play_by_play)) {
-    as.character(play_by_play$typeDescKey)
-  } else {
-    rep(NA_character_, n)
-  }
-  reason <- if ('reason' %in% names(play_by_play)) {
-    trimws(tolower(as.character(play_by_play$reason)))
-  } else {
-    rep(NA_character_, n)
-  }
-  !is.na(typeDescKey) & typeDescKey == 'missed-shot' & !is.na(reason) & reason == 'short'
-}
-
 #' Build a shot-event mask
 #'
-#' `.shot_event_mask()` flags play-by-play rows matching selected event types
-#' while excluding short missed shots.
+#' `.shot_event_mask()` flags play-by-play rows matching selected event types.
 #'
 #' @param play_by_play data.frame play-by-play object
 #' @param types character vector of event type keys to keep
@@ -1096,7 +1070,7 @@ add_shift_times <- function(play_by_play, shift_chart) {
   } else {
     rep(NA_character_, n)
   }
-  !.is_short_missed_shot(play_by_play) & !is.na(typeDescKey) & typeDescKey %in% types
+  !is.na(typeDescKey) & typeDescKey %in% types
 }
 
 #' Compute shot context summaries
@@ -1160,20 +1134,19 @@ add_shift_times <- function(play_by_play, shift_chart) {
   } else {
     rep(NA_integer_, n)
   }
-  is_short <- .is_short_missed_shot(play_by_play)
   valid_type <- !is.na(type_desc_key)
-  is_attempt <- !is_short & valid_type & type_desc_key %in% c(
+  is_attempt <- valid_type & type_desc_key %in% c(
     'goal', 'shot-on-goal', 'missed-shot', 'blocked-shot'
   )
-  is_source <- !is_short & valid_type & type_desc_key %in% c(
+  is_source <- valid_type & type_desc_key %in% c(
     'shot-on-goal', 'missed-shot', 'blocked-shot'
   )
-  is_goal <- !is_short & valid_type & type_desc_key == 'goal'
-  is_sog <- !is_short & valid_type & type_desc_key %in% c('goal', 'shot-on-goal')
-  is_fenwick <- !is_short & valid_type & type_desc_key %in% c(
+  is_goal <- valid_type & type_desc_key == 'goal'
+  is_sog <- valid_type & type_desc_key %in% c('goal', 'shot-on-goal')
+  is_fenwick <- valid_type & type_desc_key %in% c(
     'goal', 'shot-on-goal', 'missed-shot'
   )
-  is_corsi <- !is_short & valid_type & type_desc_key %in% c(
+  is_corsi <- valid_type & type_desc_key %in% c(
     'goal', 'shot-on-goal', 'missed-shot', 'blocked-shot'
   )
   is_stop <- valid_type & type_desc_key %in% c(
