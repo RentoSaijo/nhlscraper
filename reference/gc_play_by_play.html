@@ -4,17 +4,21 @@ a data.frame where each row represents an event. The returned schema is the
 cleaned, public-facing play-by-play schema, including canonical names such as
 periodNumber, eventTypeCode, eventTypeDescKey, homeShots,
 shotsFor, penaltyTypeDescKey, penaltyDuration, servedByPlayerId,
-and HTML-report-derived on-ice player ID columns such as
+goalieInNetId, and HTML-report-derived on-ice player ID columns such as
 homeGoaliePlayerId, awayGoaliePlayerId, homeSkater1PlayerId, and any
-additional overflow skater slots required by the game. Use add_shift_times() with
+additional overflow skater slots required by the game. HTML report skater and
+goalie IDs are returned whenever they can be matched back to a supported row,
+even when the raw situationCode is stale. Use add_shift_times() with
 shift_chart() (or shift_charts()) to add on-ice shift timing columns."><meta property="og:description" content="gc_play_by_play() retrieves the GameCenter (GC) play-by-play for a game as
 a data.frame where each row represents an event. The returned schema is the
 cleaned, public-facing play-by-play schema, including canonical names such as
 periodNumber, eventTypeCode, eventTypeDescKey, homeShots,
 shotsFor, penaltyTypeDescKey, penaltyDuration, servedByPlayerId,
-and HTML-report-derived on-ice player ID columns such as
+goalieInNetId, and HTML-report-derived on-ice player ID columns such as
 homeGoaliePlayerId, awayGoaliePlayerId, homeSkater1PlayerId, and any
-additional overflow skater slots required by the game. Use add_shift_times() with
+additional overflow skater slots required by the game. HTML report skater and
+goalie IDs are returned whenever they can be matched back to a supported row,
+even when the raw situationCode is stale. Use add_shift_times() with
 shift_chart() (or shift_charts()) to add on-ice shift timing columns."><meta property="og:image" content="https://rentosaijo.github.io/nhlscraper/logo.png"></head><body>
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
 
@@ -75,9 +79,11 @@ a <code>data.frame</code> where each row represents an event. The returned schem
 cleaned, public-facing play-by-play schema, including canonical names such as
 <code>periodNumber</code>, <code>eventTypeCode</code>, <code>eventTypeDescKey</code>, <code>homeShots</code>,
 <code>shotsFor</code>, <code>penaltyTypeDescKey</code>, <code>penaltyDuration</code>, <code>servedByPlayerId</code>,
-and HTML-report-derived on-ice player ID columns such as
+<code>goalieInNetId</code>, and HTML-report-derived on-ice player ID columns such as
 <code>homeGoaliePlayerId</code>, <code>awayGoaliePlayerId</code>, <code>homeSkater1PlayerId</code>, and any
-additional overflow skater slots required by the game. Use <code><a href="add_shift_times.html">add_shift_times()</a></code> with
+additional overflow skater slots required by the game. HTML report skater and
+goalie IDs are returned whenever they can be matched back to a supported row,
+even when the raw <code>situationCode</code> is stale. Use <code><a href="add_shift_times.html">add_shift_times()</a></code> with
 <code><a href="shift_chart.html">shift_chart()</a></code> (or <code><a href="shift_charts.html">shift_charts()</a></code>) to add on-ice shift timing columns.</p>
     </div>
 

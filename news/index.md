@@ -35,6 +35,12 @@
   - `calculate_speed()` is now defunct; use
     [`add_deltas()`](https://rentosaijo.github.io/nhlscraper/reference/add_deltas.md)
     instead.
+- [`gc_play_by_play_raw()`](https://rentosaijo.github.io/nhlscraper/reference/gc_play_by_play_raw.md)
+  and
+  [`wsc_play_by_play_raw()`](https://rentosaijo.github.io/nhlscraper/reference/wsc_play_by_play_raw.md)
+  now returns raw play-by-play data; note that there are heavy
+  inconsistencies in this uncleaned data as
+  [audited](https://github.com/RentoSaijo/nhlscraper/tree/main/other/audits/pbps).
 - [`calculate_expected_goals()`](https://rentosaijo.github.io/nhlscraper/reference/calculate_expected_goals.md)
   now uses a fixed six-partition ridge xG model.
   - The scorer now mirrors the training-time preprocessing with delta,

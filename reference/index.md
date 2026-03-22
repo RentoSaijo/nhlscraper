@@ -335,9 +335,15 @@ Functions to access data about the games
 - [`gc_play_by_play()`](https://rentosaijo.github.io/nhlscraper/reference/gc_play_by_play.md)
   [`gc_pbp()`](https://rentosaijo.github.io/nhlscraper/reference/gc_play_by_play.md)
   : Access the GameCenter (GC) play-by-play for a game
+- [`gc_play_by_play_raw()`](https://rentosaijo.github.io/nhlscraper/reference/gc_play_by_play_raw.md)
+  [`gc_pbp_raw()`](https://rentosaijo.github.io/nhlscraper/reference/gc_play_by_play_raw.md)
+  : Access the raw GameCenter (GC) play-by-play for a game
 - [`wsc_play_by_play()`](https://rentosaijo.github.io/nhlscraper/reference/wsc_play_by_play.md)
   [`wsc_pbp()`](https://rentosaijo.github.io/nhlscraper/reference/wsc_play_by_play.md)
   : Access the World Showcase (WSC) play-by-play for a game
+- [`wsc_play_by_play_raw()`](https://rentosaijo.github.io/nhlscraper/reference/wsc_play_by_play_raw.md)
+  [`wsc_pbp_raw()`](https://rentosaijo.github.io/nhlscraper/reference/wsc_play_by_play_raw.md)
+  : Access the raw World Showcase (WSC) play-by-play for a game
 - [`shift_chart()`](https://rentosaijo.github.io/nhlscraper/reference/shift_chart.md)
   : Access the shift chart for a game
 - [`game_odds()`](https://rentosaijo.github.io/nhlscraper/reference/game_odds.md)
@@ -367,9 +373,15 @@ shift charts
 - [`gc_play_by_plays()`](https://rentosaijo.github.io/nhlscraper/reference/gc_play_by_plays.md)
   [`gc_pbps()`](https://rentosaijo.github.io/nhlscraper/reference/gc_play_by_plays.md)
   : Access the GameCenter (GC) play-by-plays for a season
+- [`gc_play_by_plays_raw()`](https://rentosaijo.github.io/nhlscraper/reference/gc_play_by_plays_raw.md)
+  [`gc_pbps_raw()`](https://rentosaijo.github.io/nhlscraper/reference/gc_play_by_plays_raw.md)
+  : Access the raw GameCenter (GC) play-by-plays for a season
 - [`wsc_play_by_plays()`](https://rentosaijo.github.io/nhlscraper/reference/wsc_play_by_plays.md)
   [`wsc_pbps()`](https://rentosaijo.github.io/nhlscraper/reference/wsc_play_by_plays.md)
   : Access the World Showcase (WSC) play-by-plays for a season
+- [`wsc_play_by_plays_raw()`](https://rentosaijo.github.io/nhlscraper/reference/wsc_play_by_plays_raw.md)
+  [`wsc_pbps_raw()`](https://rentosaijo.github.io/nhlscraper/reference/wsc_play_by_plays_raw.md)
+  : Access the raw World Showcase (WSC) play-by-plays for a season
 - [`shift_charts()`](https://rentosaijo.github.io/nhlscraper/reference/shift_charts.md)
   : Access the shift charts for a season
 - [`replays()`](https://rentosaijo.github.io/nhlscraper/reference/replays.md)

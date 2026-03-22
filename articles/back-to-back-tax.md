@@ -126,8 +126,8 @@ make_table(
 
 | restBucket | games |   win | goalDiff |
 |:-----------|------:|------:|---------:|
-| 0          |  8648 | 0.446 |   -0.273 |
-| 1          | 27756 | 0.503 |    0.038 |
+| 0          |  8648 | 0.446 |   -0.274 |
+| 1          | 27756 | 0.503 |    0.039 |
 | 2          |  9441 | 0.519 |    0.119 |
 | 3+         |  4723 | 0.498 |    0.038 |
 
@@ -205,8 +205,8 @@ make_table(
 | restBucket | homeWinRate | awayWinRate |
 |:-----------|------------:|------------:|
 | 0          |       0.503 |       0.419 |
-| 1          |       0.545 |       0.455 |
-| 2          |       0.554 |       0.477 |
+| 1          |       0.545 |       0.456 |
+| 2          |       0.555 |       0.478 |
 | 3+         |       0.525 |       0.464 |
 
 Home and road win rate by rest bucket.
@@ -298,11 +298,11 @@ make_table(
 
 | term                        | Estimate | Std. Error |  z value | Pr(\>\|z\|) |
 |:----------------------------|---------:|-----------:|---------:|------------:|
-| Intercept                   |  -0.3258 |     0.0225 | -14.4914 |       0e+00 |
-| One day versus zero         |   0.1587 |     0.0251 |   6.3219 |       0e+00 |
-| Two days versus zero        |   0.2213 |     0.0302 |   7.3257 |       0e+00 |
-| Three-plus days versus zero |   0.1282 |     0.0367 |   3.4965 |       5e-04 |
-| Home indicator              |   0.3358 |     0.0181 |  18.5438 |       0e+00 |
+| Intercept                   |  -0.3257 |     0.0225 | -14.4890 |       0e+00 |
+| One day versus zero         |   0.1608 |     0.0251 |   6.4043 |       0e+00 |
+| Two days versus zero        |   0.2222 |     0.0302 |   7.3551 |       0e+00 |
+| Three-plus days versus zero |   0.1282 |     0.0367 |   3.4977 |       5e-04 |
+| Home indicator              |   0.3356 |     0.0181 |  18.5345 |       0e+00 |
 
 Logistic model of wins on rest and venue.
 

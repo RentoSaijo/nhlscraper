@@ -4,11 +4,13 @@
 a game as a `data.frame` where each row represents an event. The
 returned schema follows the same cleaned public-facing naming as
 [`gc_play_by_play()`](https://rentosaijo.github.io/nhlscraper/reference/gc_play_by_play.md),
-including `servedByPlayerId`, and includes `utc` immediately after
-`secondsElapsedInGame` while omitting GC-only clip fields. It also
+including `servedByPlayerId`, `goalieInNetId`, and `utc` immediately
+after `secondsElapsedInGame` while omitting GC-only clip fields. It also
 includes the same HTML-report-derived on-ice player ID columns added to
 the GC output, including dynamically expanded overflow skater slots when
-needed. Use
+needed. HTML report skater and goalie IDs are returned whenever they can
+be matched back to a supported row, even when the raw `situationCode` is
+stale. Use
 [`add_shift_times()`](https://rentosaijo.github.io/nhlscraper/reference/add_shift_times.md)
 with
 [`shift_chart()`](https://rentosaijo.github.io/nhlscraper/reference/shift_chart.md)

@@ -72,6 +72,8 @@
 <code>calculate_speed()</code> is now defunct; use <code><a href="../reference/add_deltas.html">add_deltas()</a></code> instead.</li>
 </ul></li>
 <li>
+<code><a href="../reference/gc_play_by_play_raw.html">gc_play_by_play_raw()</a></code> and <code><a href="../reference/wsc_play_by_play_raw.html">wsc_play_by_play_raw()</a></code> now returns raw play-by-play data; note that there are heavy inconsistencies in this uncleaned data as <a href="https://github.com/RentoSaijo/nhlscraper/tree/main/other/audits/pbps" class="external-link">audited</a>.</li>
+<li>
 <code><a href="../reference/calculate_expected_goals.html">calculate_expected_goals()</a></code> now uses a fixed six-partition ridge xG model.
 <ul><li>The scorer now mirrors the training-time preprocessing with delta, biometric, previous-event, and shift-timing context where available, while keeping runtime dependencies minimal.</li>
 <li>

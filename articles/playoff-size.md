@@ -132,12 +132,12 @@ make_table(
 
 |       | playerFullName   | positionCode | weight | rsGamesPlayed | gamesPlayed | regularPPG | playoffPPG | playoffLift |
 |:------|:-----------------|:-------------|-------:|--------------:|------------:|-----------:|-----------:|------------:|
-| 12088 | Connor McDavid   | C            |    194 |           782 |          96 |      1.531 |      1.562 |       0.032 |
-| 12089 | Connor McDavid   | C            |    194 |           782 |          96 |      1.531 |      1.562 |       0.032 |
+| 12088 | Connor McDavid   | C            |    194 |           783 |          96 |      1.530 |      1.562 |       0.032 |
+| 12089 | Connor McDavid   | C            |    194 |           783 |          96 |      1.530 |      1.562 |       0.032 |
 | 11907 | Leon Draisaitl   | C            |    209 |           855 |          96 |      1.232 |      1.469 |       0.237 |
 | 11908 | Leon Draisaitl   | C            |    209 |           855 |          96 |      1.232 |      1.469 |       0.237 |
-| 11792 | Nathan MacKinnon | C            |    200 |           936 |          95 |      1.203 |      1.316 |       0.113 |
-| 11793 | Nathan MacKinnon | C            |    200 |           936 |          95 |      1.203 |      1.316 |       0.113 |
+| 11792 | Nathan MacKinnon | C            |    200 |           937 |          95 |      1.205 |      1.316 |       0.111 |
+| 11793 | Nathan MacKinnon | C            |    200 |           937 |          95 |      1.205 |      1.316 |       0.111 |
 | 8431  | Marian Hossa     | R            |    207 |          1309 |          20 |      0.866 |      1.300 |       0.434 |
 | 12106 | Mikko Rantanen   | R            |    228 |           706 |          81 |      1.096 |      1.247 |       0.151 |
 
@@ -180,7 +180,7 @@ make_table(
 | 2   | Lightest       | 420 |      0.511 |      0.461 |      -0.050 |
 | 3   | Second         | 420 |      0.475 |      0.416 |      -0.059 |
 | 4   | Third          | 420 |      0.437 |      0.380 |      -0.057 |
-| 1   | Heaviest       | 420 |      0.418 |      0.378 |      -0.040 |
+| 1   | Heaviest       | 420 |      0.417 |      0.378 |      -0.040 |
 
 Regular-season scoring, playoff scoring, and playoff lift by weight
 quartile.
@@ -277,11 +277,11 @@ make_table(
 | 12589 | Evan Bouchard     | Defense        |    192 |      0.758 |      1.080 |       0.322 |
 | 11780 | Artturi Lehkonen  | Forward        |    179 |      0.508 |      0.778 |       0.269 |
 | 10817 | Jakob Silfverberg | Forward        |    207 |      0.455 |      0.719 |       0.264 |
-| 11910 | Sam Bennett       | Forward        |    193 |      0.513 |      0.766 |       0.253 |
+| 11910 | Sam Bennett       | Forward        |    193 |      0.513 |      0.766 |       0.254 |
 | 11907 | Leon Draisaitl    | Forward        |    209 |      1.232 |      1.469 |       0.237 |
 | 11908 | Leon Draisaitl    | Forward        |    209 |      1.232 |      1.469 |       0.237 |
-| 10805 | Ryan O’Reilly     | Forward        |    207 |      0.727 |      0.961 |       0.234 |
-| 12202 | Evan Rodrigues    | Forward        |    182 |      0.439 |      0.672 |       0.233 |
+| 12202 | Evan Rodrigues    | Forward        |    182 |      0.438 |      0.672 |       0.234 |
+| 10805 | Ryan O’Reilly     | Forward        |    207 |      0.728 |      0.961 |       0.233 |
 
 Largest playoff scoring lifts among skaters with at least 40 playoff
 games.
@@ -328,10 +328,10 @@ make_table(
 
 | term              | Estimate | Std. Error | t value | Pr(\>\|t\|) |
 |:------------------|---------:|-----------:|--------:|------------:|
-| Intercept         |  -0.0099 |     0.1219 | -0.0813 |      0.9352 |
-| Height            |  -0.0013 |     0.0021 | -0.6268 |      0.5309 |
-| Weight            |   0.0002 |     0.0003 |  0.7789 |      0.4361 |
-| Defense indicator |   0.0305 |     0.0068 |  4.4760 |      0.0000 |
+| Intercept         |  -0.0125 |     0.1219 | -0.1028 |      0.9182 |
+| Height            |  -0.0013 |     0.0021 | -0.6089 |      0.5427 |
+| Weight            |   0.0002 |     0.0003 |  0.7775 |      0.4369 |
+| Defense indicator |   0.0305 |     0.0068 |  4.4705 |      0.0000 |
 
 Linear model of playoff scoring lift on height, weight, and position.
 

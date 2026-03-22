@@ -5,10 +5,12 @@ game as a `data.frame` where each row represents an event. The returned
 schema is the cleaned, public-facing play-by-play schema, including
 canonical names such as `periodNumber`, `eventTypeCode`,
 `eventTypeDescKey`, `homeShots`, `shotsFor`, `penaltyTypeDescKey`,
-`penaltyDuration`, `servedByPlayerId`, and HTML-report-derived on-ice
-player ID columns such as `homeGoaliePlayerId`, `awayGoaliePlayerId`,
-`homeSkater1PlayerId`, and any additional overflow skater slots required
-by the game. Use
+`penaltyDuration`, `servedByPlayerId`, `goalieInNetId`, and
+HTML-report-derived on-ice player ID columns such as
+`homeGoaliePlayerId`, `awayGoaliePlayerId`, `homeSkater1PlayerId`, and
+any additional overflow skater slots required by the game. HTML report
+skater and goalie IDs are returned whenever they can be matched back to
+a supported row, even when the raw `situationCode` is stale. Use
 [`add_shift_times()`](https://rentosaijo.github.io/nhlscraper/reference/add_shift_times.md)
 with
 [`shift_chart()`](https://rentosaijo.github.io/nhlscraper/reference/shift_chart.md)
