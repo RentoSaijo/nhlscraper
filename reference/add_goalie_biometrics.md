@@ -1,9 +1,10 @@
 # Add goalie biometrics to (a) play-by-play(s)
 
 `add_goalie_biometrics()` adds goalie biometrics (height, weight, hand,
-and age at game date) to (a) play-by-play(s) for shot attempts. If
-`goaliePlayerIdAgainst` is missing on a row, the added goalie biometrics
-are left as `NA`.
+and age at game date) to (a) play-by-play(s) for shot attempts. Goalie
+identity is resolved from `goalieInNetId` first and
+`goaliePlayerIdAgainst` second. If neither is available on a row, the
+added goalie biometrics are left as `NA`.
 
 ## Usage
 

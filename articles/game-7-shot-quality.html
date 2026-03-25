@@ -121,6 +121,15 @@ that show how the game breathed.</p>
 <span><span class="va">pbp_xg</span> <span class="op">&lt;-</span> <span class="fu">nhlscraper</span><span class="fu">::</span><span class="fu"><a href="../reference/calculate_expected_goals.html">calculate_expected_goals</a></span><span class="op">(</span></span>
 <span>  <span class="fu">nhlscraper</span><span class="fu">::</span><span class="fu"><a href="../reference/gc_play_by_play.html">gc_pbp</a></span><span class="op">(</span><span class="fl">2023030417</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
+<span><span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="op">(</span><span class="st">'xG'</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">pbp_xg</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="kw"><a href="https://rdrr.io/r/base/stop.html" class="external-link">stop</a></span><span class="op">(</span></span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste</a></span><span class="op">(</span></span>
+<span>      <span class="st">"calculate_expected_goals() did not return an xG column during article build."</span>,</span>
+<span>      <span class="st">"This usually means the loaded nhlscraper namespace is stale or the scorer hit"</span>,</span>
+<span>      <span class="st">"a runtime error and returned the input unchanged."</span></span>
+<span>    <span class="op">)</span></span>
+<span>  <span class="op">)</span></span>
+<span><span class="op">}</span></span>
 <span><span class="va">rosters</span> <span class="op">&lt;-</span> <span class="fu">nhlscraper</span><span class="fu">::</span><span class="fu"><a href="../reference/game_rosters.html">game_rosters</a></span><span class="op">(</span><span class="fl">2023030417</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Build team and player labels.</span></span>
@@ -141,13 +150,9 @@ that show how the game breathed.</p>
 <span></span>
 <span><span class="co"># Keep shot events with positive xG.</span></span>
 <span><span class="va">shots</span> <span class="op">&lt;-</span> <span class="va">pbp_xg</span><span class="op">[</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">pbp_xg</span><span class="op">[[</span><span class="st">'xG'</span><span class="op">]</span><span class="op">]</span><span class="op">)</span> <span class="op">&amp;</span> <span class="va">pbp_xg</span><span class="op">[[</span><span class="st">'xG'</span><span class="op">]</span><span class="op">]</span> <span class="op">&gt;</span> <span class="fl">0</span>, , drop <span class="op">=</span> <span class="cn">FALSE</span><span class="op">]</span></span>
-<span><span class="va">shots</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/merge.html" class="external-link">merge</a></span><span class="op">(</span></span>
-<span>  <span class="va">shots</span>,</span>
-<span>  <span class="va">rosters</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'playerId'</span>, <span class="st">'playerFullName'</span>, <span class="st">'teamTriCode'</span><span class="op">)</span><span class="op">]</span>,</span>
-<span>  by.x <span class="op">=</span> <span class="st">'shootingPlayerId'</span>,</span>
-<span>  by.y <span class="op">=</span> <span class="st">'playerId'</span>,</span>
-<span>  all.x <span class="op">=</span> <span class="cn">TRUE</span></span>
-<span><span class="op">)</span></span>
+<span><span class="va">roster_match</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/match.html" class="external-link">match</a></span><span class="op">(</span><span class="va">shots</span><span class="op">[[</span><span class="st">'shootingPlayerId'</span><span class="op">]</span><span class="op">]</span>, <span class="va">rosters</span><span class="op">[[</span><span class="st">'playerId'</span><span class="op">]</span><span class="op">]</span><span class="op">)</span></span>
+<span><span class="va">shots</span><span class="op">[[</span><span class="st">'playerFullName'</span><span class="op">]</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="va">rosters</span><span class="op">[[</span><span class="st">'playerFullName'</span><span class="op">]</span><span class="op">]</span><span class="op">[</span><span class="va">roster_match</span><span class="op">]</span></span>
+<span><span class="va">shots</span><span class="op">[[</span><span class="st">'teamTriCode'</span><span class="op">]</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="va">rosters</span><span class="op">[[</span><span class="st">'teamTriCode'</span><span class="op">]</span><span class="op">]</span><span class="op">[</span><span class="va">roster_match</span><span class="op">]</span></span>
 <span><span class="va">shots</span><span class="op">[[</span><span class="st">'timeInPeriod'</span><span class="op">]</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sprintf.html" class="external-link">sprintf</a></span><span class="op">(</span></span>
 <span>  <span class="st">'%02d:%02d'</span>,</span>
 <span>  <span class="va">shots</span><span class="op">[[</span><span class="st">'secondsElapsedInPeriod'</span><span class="op">]</span><span class="op">]</span> <span class="op"><a href="https://rdrr.io/r/base/Arithmetic.html" class="external-link">%/%</a></span> <span class="fl">60</span>,</span>
@@ -200,15 +205,15 @@ goals.</caption>
 <td align="left">FLA</td>
 <td align="right">2</td>
 <td align="right">21</td>
-<td align="right">2.294</td>
-<td align="right">0.109</td>
+<td align="right">2.260</td>
+<td align="right">0.108</td>
 </tr>
 <tr class="even">
 <td align="left">EDM</td>
 <td align="right">1</td>
 <td align="right">24</td>
-<td align="right">2.536</td>
-<td align="right">0.106</td>
+<td align="right">2.499</td>
+<td align="right">0.104</td>
 </tr>
 </tbody>
 </table>
@@ -227,28 +232,30 @@ still end within one chance. Period-level xG helps show where the
 pressure actually accumulated.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Summarize xG by period and team.</span></span>
-<span><span class="va">home_periods</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/aggregate.html" class="external-link">aggregate</a></span><span class="op">(</span></span>
-<span>  <span class="va">xG</span> <span class="op">~</span> <span class="va">periodNumber</span>,</span>
-<span>  data <span class="op">=</span> <span class="va">shots</span><span class="op">[</span><span class="va">shots</span><span class="op">[[</span><span class="st">'eventOwnerTeamId'</span><span class="op">]</span><span class="op">]</span> <span class="op">==</span> <span class="va">home_id</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'periodNumber'</span>, <span class="st">'xG'</span><span class="op">)</span><span class="op">]</span>,</span>
+<span><span class="va">period_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span>
+<span>  periodNumber <span class="op">=</span> <span class="va">shots</span><span class="op">[[</span><span class="st">'periodNumber'</span><span class="op">]</span><span class="op">]</span>,</span>
+<span>  eventOwnerTeamId <span class="op">=</span> <span class="va">shots</span><span class="op">[[</span><span class="st">'eventOwnerTeamId'</span><span class="op">]</span><span class="op">]</span>,</span>
+<span>  xG <span class="op">=</span> <span class="va">shots</span><span class="op">[[</span><span class="st">'xG'</span><span class="op">]</span><span class="op">]</span></span>
+<span><span class="op">)</span></span>
+<span><span class="va">period_summary</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/aggregate.html" class="external-link">aggregate</a></span><span class="op">(</span></span>
+<span>  <span class="va">xG</span> <span class="op">~</span> <span class="va">periodNumber</span> <span class="op">+</span> <span class="va">eventOwnerTeamId</span>,</span>
+<span>  data <span class="op">=</span> <span class="va">period_data</span>,</span>
 <span>  FUN <span class="op">=</span> <span class="va">sum</span></span>
 <span><span class="op">)</span></span>
-<span><span class="va">away_periods</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/aggregate.html" class="external-link">aggregate</a></span><span class="op">(</span></span>
-<span>  <span class="va">xG</span> <span class="op">~</span> <span class="va">periodNumber</span>,</span>
-<span>  data <span class="op">=</span> <span class="va">shots</span><span class="op">[</span><span class="va">shots</span><span class="op">[[</span><span class="st">'eventOwnerTeamId'</span><span class="op">]</span><span class="op">]</span> <span class="op">==</span> <span class="va">away_id</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'periodNumber'</span>, <span class="st">'xG'</span><span class="op">)</span><span class="op">]</span>,</span>
-<span>  FUN <span class="op">=</span> <span class="va">sum</span></span>
+<span><span class="va">period_ids</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sort.html" class="external-link">sort</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/unique.html" class="external-link">unique</a></span><span class="op">(</span><span class="va">shots</span><span class="op">[[</span><span class="st">'periodNumber'</span><span class="op">]</span><span class="op">]</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">period_table</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>period <span class="op">=</span> <span class="va">period_ids</span><span class="op">)</span></span>
+<span><span class="va">home_match</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/match.html" class="external-link">match</a></span><span class="op">(</span></span>
+<span>  <span class="va">period_ids</span>,</span>
+<span>  <span class="va">period_summary</span><span class="op">[[</span><span class="st">'periodNumber'</span><span class="op">]</span><span class="op">]</span><span class="op">[</span><span class="va">period_summary</span><span class="op">[[</span><span class="st">'eventOwnerTeamId'</span><span class="op">]</span><span class="op">]</span> <span class="op">==</span> <span class="va">home_id</span><span class="op">]</span></span>
 <span><span class="op">)</span></span>
-<span><span class="va">period_table</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/merge.html" class="external-link">merge</a></span><span class="op">(</span></span>
-<span>  <span class="va">home_periods</span>,</span>
-<span>  <span class="va">away_periods</span>,</span>
-<span>  by <span class="op">=</span> <span class="st">'periodNumber'</span>,</span>
-<span>  all <span class="op">=</span> <span class="cn">TRUE</span>,</span>
-<span>  suffixes <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'_home'</span>, <span class="st">'_away'</span><span class="op">)</span></span>
+<span><span class="va">away_match</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/match.html" class="external-link">match</a></span><span class="op">(</span></span>
+<span>  <span class="va">period_ids</span>,</span>
+<span>  <span class="va">period_summary</span><span class="op">[[</span><span class="st">'periodNumber'</span><span class="op">]</span><span class="op">]</span><span class="op">[</span><span class="va">period_summary</span><span class="op">[[</span><span class="st">'eventOwnerTeamId'</span><span class="op">]</span><span class="op">]</span> <span class="op">==</span> <span class="va">away_id</span><span class="op">]</span></span>
 <span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">period_table</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
-<span>  <span class="st">'period'</span>,</span>
-<span>  <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="va">home_abbrev</span>, <span class="st">'_xG'</span><span class="op">)</span>,</span>
-<span>  <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="va">away_abbrev</span>, <span class="st">'_xG'</span><span class="op">)</span></span>
-<span><span class="op">)</span></span>
+<span><span class="va">period_table</span><span class="op">[[</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="va">home_abbrev</span>, <span class="st">'_xG'</span><span class="op">)</span><span class="op">]</span><span class="op">]</span> <span class="op">&lt;-</span></span>
+<span>  <span class="va">period_summary</span><span class="op">[[</span><span class="st">'xG'</span><span class="op">]</span><span class="op">]</span><span class="op">[</span><span class="va">period_summary</span><span class="op">[[</span><span class="st">'eventOwnerTeamId'</span><span class="op">]</span><span class="op">]</span> <span class="op">==</span> <span class="va">home_id</span><span class="op">]</span><span class="op">[</span><span class="va">home_match</span><span class="op">]</span></span>
+<span><span class="va">period_table</span><span class="op">[[</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="va">away_abbrev</span>, <span class="st">'_xG'</span><span class="op">)</span><span class="op">]</span><span class="op">]</span> <span class="op">&lt;-</span></span>
+<span>  <span class="va">period_summary</span><span class="op">[[</span><span class="st">'xG'</span><span class="op">]</span><span class="op">]</span><span class="op">[</span><span class="va">period_summary</span><span class="op">[[</span><span class="st">'eventOwnerTeamId'</span><span class="op">]</span><span class="op">]</span> <span class="op">==</span> <span class="va">away_id</span><span class="op">]</span><span class="op">[</span><span class="va">away_match</span><span class="op">]</span></span>
 <span><span class="va">period_table</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">period_table</span><span class="op">)</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fl">0</span></span>
 <span><span class="fu">make_table</span><span class="op">(</span></span>
 <span>  <span class="va">period_table</span>,</span>
@@ -264,18 +271,18 @@ pressure actually accumulated.</p>
 <tbody>
 <tr class="odd">
 <td align="right">1</td>
-<td align="right">0.636</td>
-<td align="right">0.547</td>
+<td align="right">0.628</td>
+<td align="right">0.539</td>
 </tr>
 <tr class="even">
 <td align="right">2</td>
-<td align="right">0.413</td>
-<td align="right">0.835</td>
+<td align="right">0.408</td>
+<td align="right">0.822</td>
 </tr>
 <tr class="odd">
 <td align="right">3</td>
-<td align="right">1.245</td>
-<td align="right">1.153</td>
+<td align="right">1.224</td>
+<td align="right">1.138</td>
 </tr>
 </tbody>
 </table>
@@ -292,25 +299,17 @@ nicest things about working directly from the event log is that you can
 ask which specific looks drove the game.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Show largest individual shot-quality events.</span></span>
-<span><span class="va">chance_table</span> <span class="op">&lt;-</span> <span class="va">shots</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/order.html" class="external-link">order</a></span><span class="op">(</span><span class="op">-</span><span class="va">shots</span><span class="op">[[</span><span class="st">'xG'</span><span class="op">]</span><span class="op">]</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
-<span>  <span class="st">'playerFullName'</span>,</span>
-<span>  <span class="st">'teamTriCode'</span>,</span>
-<span>  <span class="st">'periodNumber'</span>,</span>
-<span>  <span class="st">'timeInPeriod'</span>,</span>
-<span>  <span class="st">'xCoordNorm'</span>,</span>
-<span>  <span class="st">'yCoordNorm'</span>,</span>
-<span>  <span class="st">'xG'</span></span>
-<span><span class="op">)</span><span class="op">]</span></span>
-<span><span class="va">chance_table</span> <span class="op">&lt;-</span> <span class="fu">utils</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">chance_table</span>, <span class="fl">10</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">chance_table</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
-<span>  <span class="st">'player'</span>,</span>
-<span>  <span class="st">'team'</span>,</span>
-<span>  <span class="st">'period'</span>,</span>
-<span>  <span class="st">'timeInPeriod'</span>,</span>
-<span>  <span class="st">'xCoordNorm'</span>,</span>
-<span>  <span class="st">'yCoordNorm'</span>,</span>
-<span>  <span class="st">'xG'</span></span>
+<span><span class="va">chance_idx</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/order.html" class="external-link">order</a></span><span class="op">(</span><span class="op">-</span><span class="va">shots</span><span class="op">[[</span><span class="st">'xG'</span><span class="op">]</span><span class="op">]</span><span class="op">)</span></span>
+<span><span class="va">chance_table</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span>
+<span>  player <span class="op">=</span> <span class="va">shots</span><span class="op">[[</span><span class="st">'playerFullName'</span><span class="op">]</span><span class="op">]</span><span class="op">[</span><span class="va">chance_idx</span><span class="op">]</span>,</span>
+<span>  team <span class="op">=</span> <span class="va">shots</span><span class="op">[[</span><span class="st">'teamTriCode'</span><span class="op">]</span><span class="op">]</span><span class="op">[</span><span class="va">chance_idx</span><span class="op">]</span>,</span>
+<span>  period <span class="op">=</span> <span class="va">shots</span><span class="op">[[</span><span class="st">'periodNumber'</span><span class="op">]</span><span class="op">]</span><span class="op">[</span><span class="va">chance_idx</span><span class="op">]</span>,</span>
+<span>  timeInPeriod <span class="op">=</span> <span class="va">shots</span><span class="op">[[</span><span class="st">'timeInPeriod'</span><span class="op">]</span><span class="op">]</span><span class="op">[</span><span class="va">chance_idx</span><span class="op">]</span>,</span>
+<span>  xCoordNorm <span class="op">=</span> <span class="va">shots</span><span class="op">[[</span><span class="st">'xCoordNorm'</span><span class="op">]</span><span class="op">]</span><span class="op">[</span><span class="va">chance_idx</span><span class="op">]</span>,</span>
+<span>  yCoordNorm <span class="op">=</span> <span class="va">shots</span><span class="op">[[</span><span class="st">'yCoordNorm'</span><span class="op">]</span><span class="op">]</span><span class="op">[</span><span class="va">chance_idx</span><span class="op">]</span>,</span>
+<span>  xG <span class="op">=</span> <span class="va">shots</span><span class="op">[[</span><span class="st">'xG'</span><span class="op">]</span><span class="op">]</span><span class="op">[</span><span class="va">chance_idx</span><span class="op">]</span></span>
 <span><span class="op">)</span></span>
+<span><span class="va">chance_table</span> <span class="op">&lt;-</span> <span class="fu">utils</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">chance_table</span>, <span class="fl">10</span><span class="op">)</span></span>
 <span><span class="fu">make_table</span><span class="op">(</span></span>
 <span>  <span class="va">chance_table</span>,</span>
 <span>  caption <span class="op">=</span> <span class="st">'Highest-xG individual chances in Game 7.'</span>,</span>
@@ -319,17 +318,15 @@ ask which specific looks drove the game.</p>
 <table class="table">
 <caption>Highest-xG individual chances in Game 7.</caption>
 <colgroup>
-<col width="4%">
-<col width="22%">
-<col width="6%">
-<col width="9%">
+<col width="23%">
+<col width="7%">
+<col width="10%">
 <col width="18%">
 <col width="15%">
 <col width="15%">
 <col width="8%">
 </colgroup>
 <thead><tr class="header">
-<th align="left"></th>
 <th align="left">player</th>
 <th align="left">team</th>
 <th align="right">period</th>
@@ -340,104 +337,94 @@ ask which specific looks drove the game.</p>
 </tr></thead>
 <tbody>
 <tr class="odd">
-<td align="left">62</td>
 <td align="left">Evan Rodrigues</td>
 <td align="left">FLA</td>
 <td align="right">3</td>
 <td align="left">19:33</td>
 <td align="right">16</td>
 <td align="right">17</td>
-<td align="right">0.445</td>
+<td align="right">0.434</td>
 </tr>
 <tr class="even">
-<td align="left">16</td>
 <td align="left">Zach Hyman</td>
 <td align="left">EDM</td>
 <td align="right">3</td>
 <td align="left">12:56</td>
 <td align="right">79</td>
 <td align="right">2</td>
-<td align="right">0.235</td>
+<td align="right">0.232</td>
 </tr>
 <tr class="odd">
-<td align="left">41</td>
 <td align="left">Sam Bennett</td>
 <td align="left">FLA</td>
 <td align="right">3</td>
 <td align="left">05:17</td>
 <td align="right">81</td>
 <td align="right">5</td>
-<td align="right">0.210</td>
+<td align="right">0.208</td>
 </tr>
 <tr class="even">
-<td align="left">17</td>
 <td align="left">Zach Hyman</td>
 <td align="left">EDM</td>
 <td align="right">3</td>
 <td align="left">12:57</td>
 <td align="right">85</td>
 <td align="right">1</td>
-<td align="right">0.208</td>
+<td align="right">0.205</td>
 </tr>
 <tr class="odd">
-<td align="left">25</td>
 <td align="left">Mattias Janmark</td>
 <td align="left">EDM</td>
 <td align="right">1</td>
 <td align="left">06:44</td>
 <td align="right">77</td>
 <td align="right">-2</td>
-<td align="right">0.200</td>
+<td align="right">0.197</td>
 </tr>
 <tr class="even">
-<td align="left">8</td>
 <td align="left">Mattias Ekholm</td>
 <td align="left">EDM</td>
 <td align="right">3</td>
 <td align="left">17:45</td>
 <td align="right">74</td>
 <td align="right">9</td>
-<td align="right">0.163</td>
+<td align="right">0.162</td>
 </tr>
 <tr class="odd">
-<td align="left">11</td>
 <td align="left">Mattias Ekholm</td>
 <td align="left">EDM</td>
 <td align="right">3</td>
 <td align="left">17:42</td>
 <td align="right">84</td>
 <td align="right">3</td>
-<td align="right">0.132</td>
+<td align="right">0.130</td>
 </tr>
 <tr class="even">
-<td align="left">39</td>
 <td align="left">Leon Draisaitl</td>
 <td align="left">EDM</td>
 <td align="right">2</td>
 <td align="left">04:27</td>
 <td align="right">75</td>
 <td align="right">-26</td>
-<td align="right">0.118</td>
+<td align="right">0.116</td>
 </tr>
 <tr class="odd">
-<td align="left">60</td>
 <td align="left">Connor McDavid</td>
 <td align="left">EDM</td>
 <td align="right">3</td>
 <td align="left">17:17</td>
 <td align="right">82</td>
 <td align="right">3</td>
-<td align="right">0.117</td>
+<td align="right">0.116</td>
 </tr>
 <tr class="even">
-<td align="left">70</td>
 <td align="left">Matthew Tkachuk</td>
 <td align="left">FLA</td>
 <td align="right">1</td>
 <td align="left">18:41</td>
 <td align="right">84</td>
 <td align="right">-8</td>
-<td align="right">0.111</td>
+<td align="right">0.109</td>
 </tr>
 </tbody>
 </table>
@@ -455,10 +442,12 @@ territorial edge that never quite broke the score open.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Build cumulative xG paths for both teams.</span></span>
 <span><span class="va">build_cum_path</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">team_id</span><span class="op">)</span> <span class="op">{</span></span>
-<span>  <span class="va">team_shots</span> <span class="op">&lt;-</span> <span class="va">shots</span><span class="op">[</span></span>
-<span>    <span class="va">shots</span><span class="op">[[</span><span class="st">'eventOwnerTeamId'</span><span class="op">]</span><span class="op">]</span> <span class="op">==</span> <span class="va">team_id</span>,</span>
-<span>    <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'eventId'</span>, <span class="st">'secondsElapsedInGame'</span>, <span class="st">'xG'</span><span class="op">)</span></span>
-<span>  <span class="op">]</span></span>
+<span>  <span class="va">team_idx</span> <span class="op">&lt;-</span> <span class="va">shots</span><span class="op">[[</span><span class="st">'eventOwnerTeamId'</span><span class="op">]</span><span class="op">]</span> <span class="op">==</span> <span class="va">team_id</span></span>
+<span>  <span class="va">team_shots</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span>
+<span>    eventId <span class="op">=</span> <span class="va">shots</span><span class="op">[[</span><span class="st">'eventId'</span><span class="op">]</span><span class="op">]</span><span class="op">[</span><span class="va">team_idx</span><span class="op">]</span>,</span>
+<span>    secondsElapsedInGame <span class="op">=</span> <span class="va">shots</span><span class="op">[[</span><span class="st">'secondsElapsedInGame'</span><span class="op">]</span><span class="op">]</span><span class="op">[</span><span class="va">team_idx</span><span class="op">]</span>,</span>
+<span>    xG <span class="op">=</span> <span class="va">shots</span><span class="op">[[</span><span class="st">'xG'</span><span class="op">]</span><span class="op">]</span><span class="op">[</span><span class="va">team_idx</span><span class="op">]</span></span>
+<span>  <span class="op">)</span></span>
 <span>  <span class="va">team_shots</span> <span class="op">&lt;-</span> <span class="va">team_shots</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/order.html" class="external-link">order</a></span><span class="op">(</span></span>
 <span>    <span class="va">team_shots</span><span class="op">[[</span><span class="st">'secondsElapsedInGame'</span><span class="op">]</span><span class="op">]</span>,</span>
 <span>    <span class="va">team_shots</span><span class="op">[[</span><span class="st">'eventId'</span><span class="op">]</span><span class="op">]</span></span>

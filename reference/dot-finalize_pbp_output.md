@@ -1,7 +1,7 @@
 # Finalize public play-by-play output
 
-`.finalize_pbp_output()` renames internal columns to the public schema
-and selects the final GC or WSC play-by-play column set.
+`.finalize_pbp_output()` selects and orders the final GC or WSC public
+play-by-play column set.
 
 ## Usage
 

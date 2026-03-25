@@ -30,6 +30,15 @@ game_summary <- nhlscraper::gc_summary(2023030417)
 pbp_xg <- nhlscraper::calculate_expected_goals(
   nhlscraper::gc_pbp(2023030417)
 )
+if (!('xG' %in% names(pbp_xg))) {
+  stop(
+    paste(
+      "calculate_expected_goals() did not return an xG column during article build.",
+      "This usually means the loaded nhlscraper namespace is stale or the scorer hit",
+      "a runtime error and returned the input unchanged."
+    )
+  )
+}
 rosters <- nhlscraper::game_rosters(2023030417)
 
 # Build team and player labels.
@@ -50,13 +59,9 @@ rosters[['teamTriCode']] <- ifelse(
 
 # Keep shot events with positive xG.
 shots <- pbp_xg[!is.na(pbp_xg[['xG']]) & pbp_xg[['xG']] > 0, , drop = FALSE]
-shots <- merge(
-  shots,
-  rosters[, c('playerId', 'playerFullName', 'teamTriCode')],
-  by.x = 'shootingPlayerId',
-  by.y = 'playerId',
-  all.x = TRUE
-)
+roster_match <- match(shots[['shootingPlayerId']], rosters[['playerId']])
+shots[['playerFullName']] <- rosters[['playerFullName']][roster_match]
+shots[['teamTriCode']] <- rosters[['teamTriCode']][roster_match]
 shots[['timeInPeriod']] <- sprintf(
   '%02d:%02d',
   shots[['secondsElapsedInPeriod']] %/% 60,
@@ -100,8 +105,8 @@ make_table(
 
 | team | goals | shotsOnGoal |    xG | xGPerShot |
 |:-----|------:|------------:|------:|----------:|
-| FLA  |     2 |          21 | 2.294 |     0.109 |
-| EDM  |     1 |          24 | 2.536 |     0.106 |
+| FLA  |     2 |          21 | 2.260 |     0.108 |
+| EDM  |     1 |          24 | 2.499 |     0.104 |
 
 Game 7 team context: score, shots on goal, and expected goals.
 
@@ -120,28 +125,30 @@ actually accumulated.
 
 ``` r
 # Summarize xG by period and team.
-home_periods <- aggregate(
-  xG ~ periodNumber,
-  data = shots[shots[['eventOwnerTeamId']] == home_id, c('periodNumber', 'xG')],
+period_data <- data.frame(
+  periodNumber = shots[['periodNumber']],
+  eventOwnerTeamId = shots[['eventOwnerTeamId']],
+  xG = shots[['xG']]
+)
+period_summary <- aggregate(
+  xG ~ periodNumber + eventOwnerTeamId,
+  data = period_data,
   FUN = sum
 )
-away_periods <- aggregate(
-  xG ~ periodNumber,
-  data = shots[shots[['eventOwnerTeamId']] == away_id, c('periodNumber', 'xG')],
-  FUN = sum
+period_ids <- sort(unique(shots[['periodNumber']]))
+period_table <- data.frame(period = period_ids)
+home_match <- match(
+  period_ids,
+  period_summary[['periodNumber']][period_summary[['eventOwnerTeamId']] == home_id]
 )
-period_table <- merge(
-  home_periods,
-  away_periods,
-  by = 'periodNumber',
-  all = TRUE,
-  suffixes = c('_home', '_away')
+away_match <- match(
+  period_ids,
+  period_summary[['periodNumber']][period_summary[['eventOwnerTeamId']] == away_id]
 )
-names(period_table) <- c(
-  'period',
-  paste0(home_abbrev, '_xG'),
-  paste0(away_abbrev, '_xG')
-)
+period_table[[paste0(home_abbrev, '_xG')]] <-
+  period_summary[['xG']][period_summary[['eventOwnerTeamId']] == home_id][home_match]
+period_table[[paste0(away_abbrev, '_xG')]] <-
+  period_summary[['xG']][period_summary[['eventOwnerTeamId']] == away_id][away_match]
 period_table[is.na(period_table)] <- 0
 make_table(
   period_table,
@@ -151,9 +158,9 @@ make_table(
 
 | period | FLA_xG | EDM_xG |
 |-------:|-------:|-------:|
-|      1 |  0.636 |  0.547 |
-|      2 |  0.413 |  0.835 |
-|      3 |  1.245 |  1.153 |
+|      1 |  0.628 |  0.539 |
+|      2 |  0.408 |  0.822 |
+|      3 |  1.224 |  1.138 |
 
 Expected goals by period in Game 7.
 
@@ -170,25 +177,17 @@ which specific looks drove the game.
 
 ``` r
 # Show largest individual shot-quality events.
-chance_table <- shots[order(-shots[['xG']]), c(
-  'playerFullName',
-  'teamTriCode',
-  'periodNumber',
-  'timeInPeriod',
-  'xCoordNorm',
-  'yCoordNorm',
-  'xG'
-)]
-chance_table <- utils::head(chance_table, 10)
-names(chance_table) <- c(
-  'player',
-  'team',
-  'period',
-  'timeInPeriod',
-  'xCoordNorm',
-  'yCoordNorm',
-  'xG'
+chance_idx <- order(-shots[['xG']])
+chance_table <- data.frame(
+  player = shots[['playerFullName']][chance_idx],
+  team = shots[['teamTriCode']][chance_idx],
+  period = shots[['periodNumber']][chance_idx],
+  timeInPeriod = shots[['timeInPeriod']][chance_idx],
+  xCoordNorm = shots[['xCoordNorm']][chance_idx],
+  yCoordNorm = shots[['yCoordNorm']][chance_idx],
+  xG = shots[['xG']][chance_idx]
 )
+chance_table <- utils::head(chance_table, 10)
 make_table(
   chance_table,
   caption = 'Highest-xG individual chances in Game 7.',
@@ -196,18 +195,18 @@ make_table(
 )
 ```
 
-|     | player          | team | period | timeInPeriod | xCoordNorm | yCoordNorm |    xG |
-|:----|:----------------|:-----|-------:|:-------------|-----------:|-----------:|------:|
-| 62  | Evan Rodrigues  | FLA  |      3 | 19:33        |         16 |         17 | 0.445 |
-| 16  | Zach Hyman      | EDM  |      3 | 12:56        |         79 |          2 | 0.235 |
-| 41  | Sam Bennett     | FLA  |      3 | 05:17        |         81 |          5 | 0.210 |
-| 17  | Zach Hyman      | EDM  |      3 | 12:57        |         85 |          1 | 0.208 |
-| 25  | Mattias Janmark | EDM  |      1 | 06:44        |         77 |         -2 | 0.200 |
-| 8   | Mattias Ekholm  | EDM  |      3 | 17:45        |         74 |          9 | 0.163 |
-| 11  | Mattias Ekholm  | EDM  |      3 | 17:42        |         84 |          3 | 0.132 |
-| 39  | Leon Draisaitl  | EDM  |      2 | 04:27        |         75 |        -26 | 0.118 |
-| 60  | Connor McDavid  | EDM  |      3 | 17:17        |         82 |          3 | 0.117 |
-| 70  | Matthew Tkachuk | FLA  |      1 | 18:41        |         84 |         -8 | 0.111 |
+| player          | team | period | timeInPeriod | xCoordNorm | yCoordNorm |    xG |
+|:----------------|:-----|-------:|:-------------|-----------:|-----------:|------:|
+| Evan Rodrigues  | FLA  |      3 | 19:33        |         16 |         17 | 0.434 |
+| Zach Hyman      | EDM  |      3 | 12:56        |         79 |          2 | 0.232 |
+| Sam Bennett     | FLA  |      3 | 05:17        |         81 |          5 | 0.208 |
+| Zach Hyman      | EDM  |      3 | 12:57        |         85 |          1 | 0.205 |
+| Mattias Janmark | EDM  |      1 | 06:44        |         77 |         -2 | 0.197 |
+| Mattias Ekholm  | EDM  |      3 | 17:45        |         74 |          9 | 0.162 |
+| Mattias Ekholm  | EDM  |      3 | 17:42        |         84 |          3 | 0.130 |
+| Leon Draisaitl  | EDM  |      2 | 04:27        |         75 |        -26 | 0.116 |
+| Connor McDavid  | EDM  |      3 | 17:17        |         82 |          3 | 0.116 |
+| Matthew Tkachuk | FLA  |      1 | 18:41        |         84 |         -8 | 0.109 |
 
 Highest-xG individual chances in Game 7.
 
@@ -225,10 +224,12 @@ that never quite broke the score open.
 ``` r
 # Build cumulative xG paths for both teams.
 build_cum_path <- function(team_id) {
-  team_shots <- shots[
-    shots[['eventOwnerTeamId']] == team_id,
-    c('eventId', 'secondsElapsedInGame', 'xG')
-  ]
+  team_idx <- shots[['eventOwnerTeamId']] == team_id
+  team_shots <- data.frame(
+    eventId = shots[['eventId']][team_idx],
+    secondsElapsedInGame = shots[['secondsElapsedInGame']][team_idx],
+    xG = shots[['xG']][team_idx]
+  )
   team_shots <- team_shots[order(
     team_shots[['secondsElapsedInGame']],
     team_shots[['eventId']]

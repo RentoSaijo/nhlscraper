@@ -121,14 +121,14 @@ system, but that system is really six separate ridge models applied to
 six mutually exclusive game states. Those partitions are:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">partition_table</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span>
-<span>  partition <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"sd"</span>, <span class="st">"ev"</span>, <span class="st">"pp"</span>, <span class="st">"sh"</span>, <span class="st">"en"</span>, <span class="st">"so"</span><span class="op">)</span>,</span>
+<span>  partition <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"sd"</span>, <span class="st">"ev"</span>, <span class="st">"pp"</span>, <span class="st">"sh"</span>, <span class="st">"en"</span>, <span class="st">"ps"</span><span class="op">)</span>,</span>
 <span>  meaning <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
 <span>    <span class="st">"Regulation 5v5 without empty nets"</span>,</span>
 <span>    <span class="st">"Other even-strength states outside standard 5v5"</span>,</span>
 <span>    <span class="st">"Shooting team has a skater advantage"</span>,</span>
 <span>    <span class="st">"Shooting team is short-handed"</span>,</span>
 <span>    <span class="st">"Opponent net is empty"</span>,</span>
-<span>    <span class="st">"Shootout and penalty-shot situations"</span></span>
+<span>    <span class="st">"Penalty-shot and shootout-style situations"</span></span>
 <span>  <span class="op">)</span>,</span>
 <span>  stringsAsFactors <span class="op">=</span> <span class="cn">FALSE</span></span>
 <span><span class="op">)</span></span>
@@ -165,8 +165,8 @@ model.</caption>
 <td align="left">Opponent net is empty</td>
 </tr>
 <tr class="even">
-<td align="left">so</td>
-<td align="left">Shootout and penalty-shot situations</td>
+<td align="left">ps</td>
+<td align="left">Penalty-shot and shootout-style situations</td>
 </tr>
 </tbody>
 </table>
@@ -176,8 +176,8 @@ not live in the same statistical environment. The package therefore
 partitions the shot first and only then applies the relevant ridge
 model. In package terms, the decision rules are explicit:</p>
 <ol style="list-style-type: decimal">
-<li>Shootout and penalty-shot states (<code>1010</code> and
-<code>0101</code>) go to <code>so</code>.</li>
+<li>Penalty-shot and shootout-style states (<code>1010</code> and
+<code>0101</code>) go to <code>ps</code>.</li>
 <li>Empty-net-against shots go to <code>en</code>.</li>
 <li>Standard 5v5 non-empty-net shots go to <code>sd</code>.</li>
 <li>Remaining even-strength shots go to <code>ev</code>.</li>
@@ -216,7 +216,7 @@ dominates the sample, while empty-net and shootout situations are much
 smaller.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">train_summary</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span>
-<span>  partition <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"sd"</span>, <span class="st">"ev"</span>, <span class="st">"pp"</span>, <span class="st">"sh"</span>, <span class="st">"en"</span>, <span class="st">"so"</span><span class="op">)</span>,</span>
+<span>  partition <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"sd"</span>, <span class="st">"ev"</span>, <span class="st">"pp"</span>, <span class="st">"sh"</span>, <span class="st">"en"</span>, <span class="st">"ps"</span><span class="op">)</span>,</span>
 <span>  games <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2798</span>, <span class="fl">1280</span>, <span class="fl">2793</span>, <span class="fl">2241</span>, <span class="fl">1245</span>, <span class="fl">230</span><span class="op">)</span>,</span>
 <span>  rows <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">188930</span>, <span class="fl">4907</span>, <span class="fl">38903</span>, <span class="fl">5539</span>, <span class="fl">1828</span>, <span class="fl">1188</span><span class="op">)</span>,</span>
 <span>  goal_rate <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.0593</span>, <span class="fl">0.1113</span>, <span class="fl">0.0973</span>, <span class="fl">0.0738</span>, <span class="fl">0.5739</span>, <span class="fl">0.3157</span><span class="op">)</span></span>
@@ -266,7 +266,7 @@ smaller.</p>
 <td align="right">0.5739</td>
 </tr>
 <tr class="even">
-<td align="left">so</td>
+<td align="left">ps</td>
 <td align="right">230</td>
 <td align="right">1188</td>
 <td align="right">0.3157</td>
@@ -275,7 +275,7 @@ smaller.</p>
 </table>
 <p>That table explains why the package should not promise identical
 stability across every state. The <code>sd</code> model gets to learn
-from a very large 5v5 sample. The <code>so</code> model does not.</p>
+from a very large 5v5 sample. The <code>ps</code> model does not.</p>
 </div>
 <div class="section level2">
 <h2 id="what-the-model-uses">What the Model Uses<a class="anchor" aria-label="anchor" href="#what-the-model-uses"></a>
@@ -357,9 +357,12 @@ a play-by-play.</li>
 <p>The price is that preprocessing matters. The package cannot stop at
 “here are the coefficients.” It also has to preserve the training-time
 dummy maps, median imputations, normalization constants, and
-zero-variance removals. That frozen preprocessing contract is exactly
-what the current package implementation now carries internally. In other
-words, the runtime path is:</p>
+zero-variance removals. Those frozen artifacts are trained upstream in
+<code>rentosrink/models/xG/nhlscraper/</code> and then copied into the
+package; <code>nhlscraper</code> itself is only packaging and scoring
+them at runtime, not retraining them locally. That frozen preprocessing
+contract is exactly what the current package implementation now carries
+internally. In other words, the runtime path is:</p>
 <ol style="list-style-type: decimal">
 <li>Engineer the same public-schema features used at training time.</li>
 <li>Partition the shot into one of six states.</li>
@@ -386,7 +389,7 @@ reference, the grouped-CV summary at the selected penalty looks like
 this:</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">cv_summary</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span>
-<span>  partition <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"sd"</span>, <span class="st">"ev"</span>, <span class="st">"pp"</span>, <span class="st">"sh"</span>, <span class="st">"en"</span>, <span class="st">"so"</span><span class="op">)</span>,</span>
+<span>  partition <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"sd"</span>, <span class="st">"ev"</span>, <span class="st">"pp"</span>, <span class="st">"sh"</span>, <span class="st">"en"</span>, <span class="st">"ps"</span><span class="op">)</span>,</span>
 <span>  cv_log_loss <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.1986</span>, <span class="fl">0.3314</span>, <span class="fl">0.3036</span>, <span class="fl">0.2211</span>, <span class="fl">0.6191</span>, <span class="fl">0.6241</span><span class="op">)</span>,</span>
 <span>  cv_roc_auc <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.7718</span>, <span class="fl">0.6728</span>, <span class="fl">0.6693</span>, <span class="fl">0.7960</span>, <span class="fl">0.7002</span>, <span class="fl">0.5264</span><span class="op">)</span>,</span>
 <span>  cv_brier <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.0525</span>, <span class="fl">0.0953</span>, <span class="fl">0.0852</span>, <span class="fl">0.0628</span>, <span class="fl">0.2161</span>, <span class="fl">0.2163</span><span class="op">)</span></span>
@@ -438,7 +441,7 @@ penalty.</caption>
 <td align="right">0.2161</td>
 </tr>
 <tr class="even">
-<td align="left">so</td>
+<td align="left">ps</td>
 <td align="right">0.6241</td>
 <td align="right">0.5264</td>
 <td align="right">0.2163</td>
@@ -447,7 +450,7 @@ penalty.</caption>
 </table>
 <p>The broad reading is sensible. <code>sd</code> dominates the sample
 and has the steadiest large-sample behavior. <code>sh</code>
-discriminates well but from a much smaller base. <code>so</code> is the
+discriminates well but from a much smaller base. <code>ps</code> is the
 least stable partition because it is both structurally different and
 much smaller.</p>
 </div>
@@ -532,7 +535,7 @@ xG model. The <code>2025-26</code> partition results tell the same story
 in more detail:</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">future_partition_results</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span>
-<span>  partition <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"sd"</span>, <span class="st">"ev"</span>, <span class="st">"pp"</span>, <span class="st">"sh"</span>, <span class="st">"en"</span>, <span class="st">"so"</span><span class="op">)</span>,</span>
+<span>  partition <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"sd"</span>, <span class="st">"ev"</span>, <span class="st">"pp"</span>, <span class="st">"sh"</span>, <span class="st">"en"</span>, <span class="st">"ps"</span><span class="op">)</span>,</span>
 <span>  rows <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">57157</span>, <span class="fl">1750</span>, <span class="fl">12489</span>, <span class="fl">1610</span>, <span class="fl">604</span>, <span class="fl">559</span><span class="op">)</span>,</span>
 <span>  log_loss <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.2056</span>, <span class="fl">0.3109</span>, <span class="fl">0.3045</span>, <span class="fl">0.2198</span>, <span class="fl">0.5959</span>, <span class="fl">0.6336</span><span class="op">)</span>,</span>
 <span>  roc_auc <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.7615</span>, <span class="fl">0.7021</span>, <span class="fl">0.6517</span>, <span class="fl">0.7844</span>, <span class="fl">0.7400</span>, <span class="fl">0.5131</span><span class="op">)</span>,</span>
@@ -590,7 +593,7 @@ partition.</caption>
 <td align="right">1.0115</td>
 </tr>
 <tr class="even">
-<td align="left">so</td>
+<td align="left">ps</td>
 <td align="right">559</td>
 <td align="right">0.6336</td>
 <td align="right">0.5131</td>

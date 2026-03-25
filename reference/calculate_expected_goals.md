@@ -3,9 +3,10 @@
 `calculate_expected_goals()` scores shot events with `nhlscraper`'s
 built-in ridge expected-goals model. The runtime model is a fixed
 six-partition system: `sd` (5v5), `ev` (other even strength), `pp`
-(power play), `sh` (short-handed), `en` (empty net against), and `so`
-(shootout / penalty shot). The legacy `model` argument is accepted for
-backward compatibility but ignored.
+(power play), `sh` (short-handed), `en` (empty net against), and `ps`
+(penalty shot; trained on penalty-shot and shootout-style rows). The
+legacy `model` argument is accepted for backward compatibility but
+ignored.
 
 ## Usage
 
@@ -25,7 +26,10 @@ calculate_xG(play_by_play, model = NULL)
   [`gc_play_by_plays()`](https://rentosaijo.github.io/nhlscraper/reference/gc_play_by_plays.md),
   [`wsc_play_by_play()`](https://rentosaijo.github.io/nhlscraper/reference/wsc_play_by_play.md),
   or
-  [`wsc_play_by_plays()`](https://rentosaijo.github.io/nhlscraper/reference/wsc_play_by_plays.md)
+  [`wsc_play_by_plays()`](https://rentosaijo.github.io/nhlscraper/reference/wsc_play_by_plays.md).
+  Legacy alias-only columns such as `typeDescKey`, `period`, `SOGFor`,
+  `SOGAgainst`, and `SOGDifferential` are no longer backfilled by the xG
+  scorer.
 
 - model:
 

@@ -30,14 +30,14 @@ exclusive game states. Those partitions are:
 
 ``` r
 partition_table <- data.frame(
-  partition = c("sd", "ev", "pp", "sh", "en", "so"),
+  partition = c("sd", "ev", "pp", "sh", "en", "ps"),
   meaning = c(
     "Regulation 5v5 without empty nets",
     "Other even-strength states outside standard 5v5",
     "Shooting team has a skater advantage",
     "Shooting team is short-handed",
     "Opponent net is empty",
-    "Shootout and penalty-shot situations"
+    "Penalty-shot and shootout-style situations"
   ),
   stringsAsFactors = FALSE
 )
@@ -54,7 +54,7 @@ make_table(
 | pp        | Shooting team has a skater advantage            |
 | sh        | Shooting team is short-handed                   |
 | en        | Opponent net is empty                           |
-| so        | Shootout and penalty-shot situations            |
+| ps        | Penalty-shot and shootout-style situations      |
 
 The six shot partitions used by nhlscraper’s xG model.
 
@@ -64,7 +64,8 @@ live in the same statistical environment. The package therefore
 partitions the shot first and only then applies the relevant ridge
 model. In package terms, the decision rules are explicit:
 
-1.  Shootout and penalty-shot states (`1010` and `0101`) go to `so`.
+1.  Penalty-shot and shootout-style states (`1010` and `0101`) go to
+    `ps`.
 2.  Empty-net-against shots go to `en`.
 3.  Standard 5v5 non-empty-net shots go to `sd`.
 4.  Remaining even-strength shots go to `ev`.
@@ -105,7 +106,7 @@ smaller.
 
 ``` r
 train_summary <- data.frame(
-  partition = c("sd", "ev", "pp", "sh", "en", "so"),
+  partition = c("sd", "ev", "pp", "sh", "en", "ps"),
   games = c(2798, 1280, 2793, 2241, 1245, 230),
   rows = c(188930, 4907, 38903, 5539, 1828, 1188),
   goal_rate = c(0.0593, 0.1113, 0.0973, 0.0738, 0.5739, 0.3157)
@@ -124,13 +125,13 @@ make_table(
 | pp        |  2793 |  38903 |    0.0973 |
 | sh        |  2241 |   5539 |    0.0738 |
 | en        |  1245 |   1828 |    0.5739 |
-| so        |   230 |   1188 |    0.3157 |
+| ps        |   230 |   1188 |    0.3157 |
 
 Training sample size and goal rate by partition.
 
 That table explains why the package should not promise identical
 stability across every state. The `sd` model gets to learn from a very
-large 5v5 sample. The `so` model does not.
+large 5v5 sample. The `ps` model does not.
 
 ## What the Model Uses
 
@@ -202,7 +203,10 @@ practical advantages:
 The price is that preprocessing matters. The package cannot stop at
 “here are the coefficients.” It also has to preserve the training-time
 dummy maps, median imputations, normalization constants, and
-zero-variance removals. That frozen preprocessing contract is exactly
+zero-variance removals. Those frozen artifacts are trained upstream in
+`rentosrink/models/xG/nhlscraper/` and then copied into the package;
+`nhlscraper` itself is only packaging and scoring them at runtime, not
+retraining them locally. That frozen preprocessing contract is exactly
 what the current package implementation now carries internally. In other
 words, the runtime path is:
 
@@ -228,7 +232,7 @@ selected penalty looks like this:
 
 ``` r
 cv_summary <- data.frame(
-  partition = c("sd", "ev", "pp", "sh", "en", "so"),
+  partition = c("sd", "ev", "pp", "sh", "en", "ps"),
   cv_log_loss = c(0.1986, 0.3314, 0.3036, 0.2211, 0.6191, 0.6241),
   cv_roc_auc = c(0.7718, 0.6728, 0.6693, 0.7960, 0.7002, 0.5264),
   cv_brier = c(0.0525, 0.0953, 0.0852, 0.0628, 0.2161, 0.2163)
@@ -248,13 +252,13 @@ make_table(
 | pp        |      0.3036 |     0.6693 |   0.0852 |
 | sh        |      0.2211 |     0.7960 |   0.0628 |
 | en        |      0.6191 |     0.7002 |   0.2161 |
-| so        |      0.6241 |     0.5264 |   0.2163 |
+| ps        |      0.6241 |     0.5264 |   0.2163 |
 
 Grouped cross-validation diagnostics at the selected ridge penalty.
 
 The broad reading is sensible. `sd` dominates the sample and has the
 steadiest large-sample behavior. `sh` discriminates well but from a much
-smaller base. `so` is the least stable partition because it is both
+smaller base. `ps` is the least stable partition because it is both
 structurally different and much smaller.
 
 ## External Results
@@ -297,7 +301,7 @@ ROC AUC still in a respectable range for a public-data xG model. The
 
 ``` r
 future_partition_results <- data.frame(
-  partition = c("sd", "ev", "pp", "sh", "en", "so"),
+  partition = c("sd", "ev", "pp", "sh", "en", "ps"),
   rows = c(57157, 1750, 12489, 1610, 604, 559),
   log_loss = c(0.2056, 0.3109, 0.3045, 0.2198, 0.5959, 0.6336),
   roc_auc = c(0.7615, 0.7021, 0.6517, 0.7844, 0.7400, 0.5131),
@@ -317,7 +321,7 @@ make_table(
 | pp        | 12489 |   0.3045 |  0.6517 |            1.0818 |
 | sh        |  1610 |   0.2198 |  0.7844 |            1.1837 |
 | en        |   604 |   0.5959 |  0.7400 |            1.0115 |
-| so        |   559 |   0.6336 |  0.5131 |            0.9623 |
+| ps        |   559 |   0.6336 |  0.5131 |            0.9623 |
 
 Future-season (`2025-26`) external results by partition.
 

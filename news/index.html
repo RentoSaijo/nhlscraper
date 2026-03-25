@@ -64,6 +64,7 @@
 <li>
 <code><a href="../reference/gc_play_by_play.html">gc_play_by_play()</a></code> and <code><a href="../reference/wsc_play_by_play.html">wsc_play_by_play()</a></code> now return new schema.
 <ul><li>HTML-report-derived on-ice goalie/skater ID columns are now added, limited to <code>faceoff</code>, <code>hit</code>, <code>shot-on-goal</code>, <code>giveaway</code>, <code>missed-shot</code>, <code>blocked-shot</code>, <code>goal</code>, <code>delayed-penalty</code>, <code>takeaway</code>, and <code>failed-shot-attempt</code>, while <code>situationCode</code>-derived strength/count columns remain available wherever <code>situationCode</code> itself is available. Check out our “Article” section on the documentation website to learn more.</li>
+<li>Helpers now consistently expect the current public schema instead of silently backfilling the package’s older alias names.</li>
 <li>
 <code><a href="../reference/add_shift_times.html">add_shift_times()</a></code> is now added to populate scalar on-ice shift time elapsed columns via C.</li>
 <li>
@@ -76,6 +77,7 @@
 <li>
 <code><a href="../reference/calculate_expected_goals.html">calculate_expected_goals()</a></code> now uses a fixed six-partition ridge xG model.
 <ul><li>The scorer now mirrors the training-time preprocessing with delta, biometric, previous-event, and shift-timing context where available, while keeping runtime dependencies minimal.</li>
+<li>The scorer now expects the current public play-by-play schema directly and no longer backfills legacy xG alias columns such as <code>typeDescKey</code>, <code>period</code>, <code>SOGFor</code>, <code>SOGAgainst</code>, and <code>SOGDifferential</code>.</li>
 <li>
 <code><a href="../reference/ig_game_shot_locations.html">ig_game_shot_locations()</a></code>, <code><a href="../reference/x_game_shot_locations.html">x_game_shot_locations()</a></code>, <code><a href="../reference/ig_game_cumulative_expected_goals.html">ig_game_cumulative_expected_goals()</a></code>, and <code><a href="../reference/x_game_cumulative_expected_goals.html">x_game_cumulative_expected_goals()</a></code> still accept <code>model</code> for backward compatibility, but it is now ignored.</li>
 <li>Check out our “Article” section on the documentation website to learn more.</li>

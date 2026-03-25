@@ -23,8 +23,8 @@ in a play-by-play by perspective.
 ## Value
 
 data.frame with one row per event (play) and added columns: `homeGoals`,
-`awayGoals`, `homeSOG`, `awaySOG`, `homeFenwick`, `awayFenwick`,
-`homeCorsi`, `awayCorsi`, `goalsFor`, `goalsAgainst`, `SOGFor`,
-`SOGAgainst`, `fenwickFor`, `fenwickAgainst`, `corsiFor`,
-`corsiAgainst`, `goalDifferential`, `SOGDifferential`,
+`awayGoals`, `homeShots`, `awayShots`, `homeFenwick`, `awayFenwick`,
+`homeCorsi`, `awayCorsi`, `goalsFor`, `goalsAgainst`, `shotsFor`,
+`shotsAgainst`, `fenwickFor`, `fenwickAgainst`, `corsiFor`,
+`corsiAgainst`, `goalDifferential`, `shotDifferential`,
 `fenwickDifferential`, and `corsiDifferential`

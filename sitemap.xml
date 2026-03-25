@@ -77,6 +77,7 @@
 <url><loc>https://rentosaijo.github.io/nhlscraper/reference/dot-nhl_request.html</loc></url>
 <url><loc>https://rentosaijo.github.io/nhlscraper/reference/dot-normalize_coordinates.html</loc></url>
 <url><loc>https://rentosaijo.github.io/nhlscraper/reference/dot-normalize_html_team_abbrev.html</loc></url>
+<url><loc>https://rentosaijo.github.io/nhlscraper/reference/dot-normalize_public_pbp_names.html</loc></url>
 <url><loc>https://rentosaijo.github.io/nhlscraper/reference/dot-normalize_roster_person.html</loc></url>
 <url><loc>https://rentosaijo.github.io/nhlscraper/reference/dot-normalize_situation_code_for_parse.html</loc></url>
 <url><loc>https://rentosaijo.github.io/nhlscraper/reference/dot-on_ice_id_scalar_column_names.html</loc></url>
@@ -94,7 +95,6 @@
 <url><loc>https://rentosaijo.github.io/nhlscraper/reference/dot-parse_html_period_label.html</loc></url>
 <url><loc>https://rentosaijo.github.io/nhlscraper/reference/dot-parse_situation_code_components.html</loc></url>
 <url><loc>https://rentosaijo.github.io/nhlscraper/reference/dot-pbp_delta_public_cols.html</loc></url>
-<url><loc>https://rentosaijo.github.io/nhlscraper/reference/dot-pbp_legacy_aliases.html</loc></url>
 <url><loc>https://rentosaijo.github.io/nhlscraper/reference/dot-perform_parallel_requests.html</loc></url>
 <url><loc>https://rentosaijo.github.io/nhlscraper/reference/dot-public_pbp_is_shootout_eligible.html</loc></url>
 <url><loc>https://rentosaijo.github.io/nhlscraper/reference/dot-public_pbp_legal_period_seconds.html</loc></url>

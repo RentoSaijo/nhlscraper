@@ -24,6 +24,8 @@
     strength/count columns remain available wherever `situationCode`
     itself is available. Check out our “Article” section on the
     documentation website to learn more.
+  - Helpers now consistently expect the current public schema instead of
+    silently backfilling the package’s older alias names.
   - [`add_shift_times()`](https://rentosaijo.github.io/nhlscraper/reference/add_shift_times.md)
     is now added to populate scalar on-ice shift time elapsed columns
     via C.
@@ -46,6 +48,10 @@
   - The scorer now mirrors the training-time preprocessing with delta,
     biometric, previous-event, and shift-timing context where available,
     while keeping runtime dependencies minimal.
+  - The scorer now expects the current public play-by-play schema
+    directly and no longer backfills legacy xG alias columns such as
+    `typeDescKey`, `period`, `SOGFor`, `SOGAgainst`, and
+    `SOGDifferential`.
   - [`ig_game_shot_locations()`](https://rentosaijo.github.io/nhlscraper/reference/ig_game_shot_locations.md),
     [`x_game_shot_locations()`](https://rentosaijo.github.io/nhlscraper/reference/x_game_shot_locations.md),
     [`ig_game_cumulative_expected_goals()`](https://rentosaijo.github.io/nhlscraper/reference/ig_game_cumulative_expected_goals.md),
