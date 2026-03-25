@@ -56,13 +56,9 @@ rosters[['teamTriCode']] <- ifelse(
 
 # Keep shot events with positive xG.
 shots <- pbp_xg[!is.na(pbp_xg[['xG']]) & pbp_xg[['xG']] > 0, , drop = FALSE]
-shots <- merge(
-  shots,
-  rosters[, c('playerId', 'playerFullName', 'teamTriCode')],
-  by.x = 'shootingPlayerId',
-  by.y = 'playerId',
-  all.x = TRUE
-)
+roster_match <- match(shots[['shootingPlayerId']], rosters[['playerId']])
+shots[['playerFullName']] <- rosters[['playerFullName']][roster_match]
+shots[['teamTriCode']] <- rosters[['teamTriCode']][roster_match]
 shots[['timeInPeriod']] <- sprintf(
   '%02d:%02d',
   shots[['secondsElapsedInPeriod']] %/% 60,
