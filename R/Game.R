@@ -2105,10 +2105,9 @@ game_rosters <- function(game = 2023030417) {
   shooter_id[missing_shooter] <- .on_ice_int_col(play_by_play, 'shootingPlayerId')[missing_shooter]
   missing_shooter <- is.na(shooter_id)
   shooter_id[missing_shooter] <- .on_ice_int_col(play_by_play, 'playerId')[missing_shooter]
-  goalie_id <- dplyr::coalesce(
-    .on_ice_int_col(play_by_play, 'goalieInNetId'),
-    .on_ice_int_col(play_by_play, 'goaliePlayerIdAgainst')
-  )
+  goalie_id <- .on_ice_int_col(play_by_play, 'goalieInNetId')
+  goalie_id_against <- .on_ice_int_col(play_by_play, 'goaliePlayerIdAgainst')
+  goalie_id[is.na(goalie_id)] <- goalie_id_against[is.na(goalie_id)]
 
   is_one_on_one <- !is.na(situation_code) &
     situation_code %in% c('0101', '1010') &

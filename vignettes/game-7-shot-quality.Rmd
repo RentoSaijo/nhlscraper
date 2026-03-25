@@ -36,6 +36,15 @@ game_summary <- nhlscraper::gc_summary(2023030417)
 pbp_xg <- nhlscraper::calculate_expected_goals(
   nhlscraper::gc_pbp(2023030417)
 )
+if (!('xG' %in% names(pbp_xg))) {
+  stop(
+    paste(
+      "calculate_expected_goals() did not return an xG column during article build.",
+      "This usually means the loaded nhlscraper namespace is stale or the scorer hit",
+      "a runtime error and returned the input unchanged."
+    )
+  )
+}
 rosters <- nhlscraper::game_rosters(2023030417)
 
 # Build team and player labels.

@@ -369,7 +369,8 @@ add_goalie_biometrics <- function(play_by_play) {
     goalie_in_net <- suppressWarnings(as.integer(play_by_play$goalieInNetId))
     if ('goaliePlayerIdAgainst' %in% names(play_by_play)) {
       goalie_against <- suppressWarnings(as.integer(play_by_play$goaliePlayerIdAgainst))
-      dplyr::coalesce(goalie_in_net, goalie_against)
+      goalie_in_net[is.na(goalie_in_net)] <- goalie_against[is.na(goalie_in_net)]
+      goalie_in_net
     } else {
       goalie_in_net
     }

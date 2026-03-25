@@ -159,7 +159,8 @@ calculate_xG <- function(play_by_play, model = NULL) {
     goalie_in_net <- suppressWarnings(as.integer(play_by_play$goalieInNetId))
     if ("goaliePlayerIdAgainst" %in% names(play_by_play)) {
       goalie_against <- suppressWarnings(as.integer(play_by_play$goaliePlayerIdAgainst))
-      play_by_play$goaliePlayerIdAgainst <- dplyr::coalesce(goalie_in_net, goalie_against)
+      goalie_in_net[is.na(goalie_in_net)] <- goalie_against[is.na(goalie_in_net)]
+      play_by_play$goaliePlayerIdAgainst <- goalie_in_net
     } else {
       play_by_play$goaliePlayerIdAgainst <- goalie_in_net
     }
