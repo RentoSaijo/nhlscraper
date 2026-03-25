@@ -410,9 +410,7 @@ game_rosters <- function(game = 2023030417) {
 #' @returns data.frame with unsupported rows masked
 #' @keywords internal
 .mask_strength_context_block <- function(play_by_play) {
-  type_desc_key <- if ('typeDescKey' %in% names(play_by_play)) {
-    as.character(play_by_play$typeDescKey)
-  } else if ('eventTypeDescKey' %in% names(play_by_play)) {
+  type_desc_key <- if ('eventTypeDescKey' %in% names(play_by_play)) {
     as.character(play_by_play$eventTypeDescKey)
   } else {
     rep(NA_character_, nrow(play_by_play))
@@ -1165,23 +1163,22 @@ game_rosters <- function(game = 2023030417) {
 #' @returns data.frame of API-side matching features
 #' @keywords internal
 .build_api_html_match_table <- function(play_by_play) {
-  play_by_play <- .pbp_legacy_aliases(play_by_play)
   n <- nrow(play_by_play)
   out <- data.frame(
     apiIndex = seq_len(n),
     apiSeq = seq_len(n),
-    period = as.integer(play_by_play$period),
-    secondsElapsedInPeriod = as.integer(play_by_play$secondsElapsedInPeriod),
-    typeDescKey = as.character(play_by_play$typeDescKey),
-    ownerTeamId = as.integer(play_by_play$eventOwnerTeamId),
-    situationCode = as.character(play_by_play$situationCode),
+    periodNumber = if ('periodNumber' %in% names(play_by_play)) as.integer(play_by_play$periodNumber) else rep(NA_integer_, n),
+    secondsElapsedInPeriod = if ('secondsElapsedInPeriod' %in% names(play_by_play)) as.integer(play_by_play$secondsElapsedInPeriod) else rep(NA_integer_, n),
+    eventTypeDescKey = if ('eventTypeDescKey' %in% names(play_by_play)) as.character(play_by_play$eventTypeDescKey) else rep(NA_character_, n),
+    ownerTeamId = if ('eventOwnerTeamId' %in% names(play_by_play)) as.integer(play_by_play$eventOwnerTeamId) else rep(NA_integer_, n),
+    situationCode = if ('situationCode' %in% names(play_by_play)) as.character(play_by_play$situationCode) else rep(NA_character_, n),
     primaryPlayerId = rep(NA_integer_, n),
     secondaryPlayerId = rep(NA_integer_, n),
     tertiaryPlayerId = rep(NA_integer_, n),
     stringsAsFactors = FALSE
   )
   for (i in seq_len(n)) {
-    type_desc_key <- out$typeDescKey[i]
+    type_desc_key <- out$eventTypeDescKey[i]
     if (is.na(type_desc_key)) {
       next
     }
@@ -1215,7 +1212,7 @@ game_rosters <- function(game = 2023030417) {
       out$primaryPlayerId[i] <- .on_ice_int_col(play_by_play, 'playerId')[i]
     }
   }
-  out <- out[out$typeDescKey %in% .supported_strength_event_types(), , drop = FALSE]
+  out <- out[out$eventTypeDescKey %in% .supported_strength_event_types(), , drop = FALSE]
   out$apiSeq <- seq_len(nrow(out))
   out
 }
@@ -1251,7 +1248,7 @@ game_rosters <- function(game = 2023030417) {
   }
   scores <- rep(0, length(cand))
   scores <- scores + ifelse(sec_diff == 0L, 500, ifelse(sec_diff <= 1L, 300, 150))
-  exact_type <- api$typeDescKey[cand] == html$typeDescKey[h_idx]
+  exact_type <- api$eventTypeDescKey[cand] == html$typeDescKey[h_idx]
   scores <- scores + ifelse(exact_type, 250, 180)
   if (!is.na(html$ownerTeamId[h_idx])) {
     scores <- scores + ifelse(
@@ -1352,9 +1349,9 @@ game_rosters <- function(game = 2023030417) {
     sep = '|'
   )
   api_key <- paste(
-    api$period,
+    api$periodNumber,
     api$secondsElapsedInPeriod,
-    api$typeDescKey,
+    api$eventTypeDescKey,
     ifelse(is.na(api$ownerTeamId), 'NA', api$ownerTeamId),
     sep = '|'
   )
@@ -1371,11 +1368,11 @@ game_rosters <- function(game = 2023030417) {
   for (h_idx in which(is.na(html$apiIndex))) {
     cand <- which(
       !api_taken &
-        api$period == html$period[h_idx] &
+        api$periodNumber == html$period[h_idx] &
         (
-          api$typeDescKey == html$typeDescKey[h_idx] |
+          api$eventTypeDescKey == html$typeDescKey[h_idx] |
             (
-              api$typeDescKey == 'failed-shot-attempt' &
+              api$eventTypeDescKey == 'failed-shot-attempt' &
                 html$typeDescKey[h_idx] %in% c('shot-on-goal', 'missed-shot', 'goal')
             )
         )
@@ -1404,11 +1401,11 @@ game_rosters <- function(game = 2023030417) {
     for (i in seq_along(unmatched_html)) {
       h_idx <- unmatched_html[i]
       cand <- unmatched_api[
-        api$period[unmatched_api] == html$period[h_idx] &
+        api$periodNumber[unmatched_api] == html$period[h_idx] &
           (
-            api$typeDescKey[unmatched_api] == html$typeDescKey[h_idx] |
+            api$eventTypeDescKey[unmatched_api] == html$typeDescKey[h_idx] |
               (
-                api$typeDescKey[unmatched_api] == 'failed-shot-attempt' &
+                api$eventTypeDescKey[unmatched_api] == 'failed-shot-attempt' &
                   html$typeDescKey[h_idx] %in% c('shot-on-goal', 'missed-shot', 'goal')
               )
           )
@@ -1427,11 +1424,11 @@ game_rosters <- function(game = 2023030417) {
     for (i in seq_along(unmatched_api)) {
       a_idx <- unmatched_api[i]
       cand <- unmatched_html[
-        html$period[unmatched_html] == api$period[a_idx] &
+        html$period[unmatched_html] == api$periodNumber[a_idx] &
           (
-            api$typeDescKey[a_idx] == html$typeDescKey[unmatched_html] |
+            api$eventTypeDescKey[a_idx] == html$typeDescKey[unmatched_html] |
               (
-                api$typeDescKey[a_idx] == 'failed-shot-attempt' &
+                api$eventTypeDescKey[a_idx] == 'failed-shot-attempt' &
                   html$typeDescKey[unmatched_html] %in% c('shot-on-goal', 'missed-shot', 'goal')
               )
           )
@@ -1570,7 +1567,6 @@ game_rosters <- function(game = 2023030417) {
 #' @returns data.frame with reconstructed home/away skater counts and metadata
 #' @keywords internal
 .reconstruct_skater_counts_from_penalties <- function(play_by_play) {
-  play_by_play <- .pbp_legacy_aliases(play_by_play)
   n <- nrow(play_by_play)
   out <- data.frame(
     homeSkaterCountRecon = rep(NA_integer_, n),
@@ -1581,10 +1577,10 @@ game_rosters <- function(game = 2023030417) {
     stringsAsFactors = FALSE
   )
   if (
-    !n ||
+      !n ||
       !all(c(
-        'gameId', 'gameTypeId', 'period', 'sortOrder', 'secondsElapsedInGame',
-        'typeDescKey', 'isHome'
+        'gameId', 'gameTypeId', 'periodNumber', 'sortOrder', 'secondsElapsedInGame',
+        'eventTypeDescKey', 'isHome'
       ) %in% names(play_by_play))
   ) {
     return(out)
@@ -1599,10 +1595,10 @@ game_rosters <- function(game = 2023030417) {
     if ('penaltyTypeCode' %in% names(play_by_play)) play_by_play$penaltyTypeCode else NA_character_
   ))
   penalty_duration <- suppressWarnings(as.integer(
-    if ('duration' %in% names(play_by_play)) play_by_play$duration else NA_integer_
+    if ('penaltyDuration' %in% names(play_by_play)) play_by_play$penaltyDuration else NA_integer_
   ))
-  type_desc_key <- as.character(play_by_play$typeDescKey)
-  period <- suppressWarnings(as.integer(play_by_play$period))
+  type_desc_key <- as.character(play_by_play$eventTypeDescKey)
+  period <- suppressWarnings(as.integer(play_by_play$periodNumber))
   seconds_elapsed_in_game <- suppressWarnings(as.integer(play_by_play$secondsElapsedInGame))
   sort_order <- suppressWarnings(as.integer(play_by_play$sortOrder))
   game_type_id <- suppressWarnings(as.integer(play_by_play$gameTypeId))
@@ -1853,7 +1849,6 @@ game_rosters <- function(game = 2023030417) {
   home_skater_player_ids,
   away_skater_player_ids
 ) {
-  play_by_play <- .pbp_legacy_aliases(play_by_play)
   if (
     is.null(play_by_play) ||
       !nrow(play_by_play) ||
@@ -1864,7 +1859,7 @@ game_rosters <- function(game = 2023030417) {
     return(FALSE)
   }
 
-  type_desc_key <- as.character(play_by_play$typeDescKey[idx])
+  type_desc_key <- as.character(play_by_play$eventTypeDescKey[idx])
   if (
     is.na(type_desc_key) ||
       !(type_desc_key %in% .supported_html_on_ice_id_event_types())
@@ -1992,9 +1987,9 @@ game_rosters <- function(game = 2023030417) {
     return(FALSE)
   }
   if (
-    is.na(play_by_play$period[idx]) ||
-      play_by_play$period[idx] < 3L ||
-      play_by_play$period[idx] >= 5L ||
+    is.na(play_by_play$periodNumber[idx]) ||
+      play_by_play$periodNumber[idx] < 3L ||
+      play_by_play$periodNumber[idx] >= 5L ||
       is.na(reconstruction$activePenaltyCountHome[idx]) ||
       is.na(reconstruction$activePenaltyCountAway[idx]) ||
       reconstruction$activePenaltyCountHome[idx] > 0L ||
@@ -2089,7 +2084,6 @@ game_rosters <- function(game = 2023030417) {
 #' @returns data.frame enriched with one-on-one shooter/goalie assignments
 #' @keywords internal
 .add_one_on_one_on_ice_players <- function(play_by_play, matched = data.frame()) {
-  play_by_play <- .pbp_legacy_aliases(play_by_play)
   n <- nrow(play_by_play)
   if (!n) {
     return(play_by_play)
@@ -2104,14 +2098,17 @@ game_rosters <- function(game = 2023030417) {
   }
 
   slot_count <- .on_ice_skater_slots(play_by_play = play_by_play)
-  type_desc_key <- as.character(play_by_play$typeDescKey)
+  type_desc_key <- as.character(play_by_play$eventTypeDescKey)
   situation_code <- as.character(play_by_play$situationCode)
   shooter_id <- .on_ice_int_col(play_by_play, 'scoringPlayerId')
   missing_shooter <- is.na(shooter_id)
   shooter_id[missing_shooter] <- .on_ice_int_col(play_by_play, 'shootingPlayerId')[missing_shooter]
   missing_shooter <- is.na(shooter_id)
   shooter_id[missing_shooter] <- .on_ice_int_col(play_by_play, 'playerId')[missing_shooter]
-  goalie_id <- .on_ice_int_col(play_by_play, 'goalieInNetId')
+  goalie_id <- dplyr::coalesce(
+    .on_ice_int_col(play_by_play, 'goalieInNetId'),
+    .on_ice_int_col(play_by_play, 'goaliePlayerIdAgainst')
+  )
 
   is_one_on_one <- !is.na(situation_code) &
     situation_code %in% c('0101', '1010') &
@@ -2263,12 +2260,11 @@ game_rosters <- function(game = 2023030417) {
   play_by_play,
   max_gap_seconds = 15L
 ) {
-  play_by_play <- .pbp_legacy_aliases(play_by_play)
   n <- nrow(play_by_play)
   if (
       !n ||
       !all(c(
-        'gameId', 'period', 'secondsElapsedInPeriod', 'sortOrder', 'typeDescKey',
+        'gameId', 'periodNumber', 'secondsElapsedInPeriod', 'sortOrder', 'eventTypeDescKey',
         'situationCode', 'homeIsEmptyNet', 'awayIsEmptyNet',
         'homeSkaterCount', 'awaySkaterCount'
       ) %in% names(play_by_play))
@@ -2280,8 +2276,8 @@ game_rosters <- function(game = 2023030417) {
   id_cols <- .on_ice_id_scalar_column_names(play_by_play = play_by_play)
   candidate_idx <- which(
     !populated &
-      !is.na(play_by_play$typeDescKey) &
-      play_by_play$typeDescKey == 'delayed-penalty'
+      !is.na(play_by_play$eventTypeDescKey) &
+      play_by_play$eventTypeDescKey == 'delayed-penalty'
   )
   if (!length(candidate_idx)) {
     return(play_by_play)
@@ -2319,9 +2315,9 @@ game_rosters <- function(game = 2023030417) {
 
   for (idx in candidate_idx) {
     prev_idx <- which(
-      populated &
+        populated &
         play_by_play$gameId == play_by_play$gameId[idx] &
-        play_by_play$period == play_by_play$period[idx] &
+        play_by_play$periodNumber == play_by_play$periodNumber[idx] &
         play_by_play$secondsElapsedInPeriod <= play_by_play$secondsElapsedInPeriod[idx] &
         play_by_play$secondsElapsedInPeriod >= (play_by_play$secondsElapsedInPeriod[idx] - max_gap_seconds) &
         !is.na(play_by_play$situationCode) &
@@ -2370,7 +2366,6 @@ game_rosters <- function(game = 2023030417) {
   away_team = NULL,
   html_rows = NULL
 ) {
-  play_by_play <- .pbp_legacy_aliases(play_by_play)
   play_by_play <- .add_empty_html_on_ice_columns(play_by_play)
   if (!nrow(play_by_play)) {
     return(play_by_play)
@@ -2416,7 +2411,7 @@ game_rosters <- function(game = 2023030417) {
     away_goalie <- as.integer(matched$awayGoaliePlayerId[i])
     home_skaters <- unlist(matched$homeSkaterPlayerIds[i], use.names = FALSE)
     away_skaters <- unlist(matched$awaySkaterPlayerIds[i], use.names = FALSE)
-    type_desc_key <- as.character(play_by_play$typeDescKey[idx])
+    type_desc_key <- as.character(play_by_play$eventTypeDescKey[idx])
     if (
       is.na(type_desc_key) ||
         !(type_desc_key %in% .supported_html_on_ice_id_event_types())
@@ -2508,8 +2503,8 @@ game_rosters <- function(game = 2023030417) {
 
 #' Finalize public play-by-play output
 #'
-#' `.finalize_pbp_output()` renames internal columns to the public schema and
-#' selects the final GC or WSC play-by-play column set.
+#' `.finalize_pbp_output()` selects and orders the final GC or WSC public
+#' play-by-play column set.
 #'
 #' @param play_by_play data.frame play-by-play object
 #' @param source output source, either `"gc"` or `"wsc"`
@@ -2517,40 +2512,13 @@ game_rosters <- function(game = 2023030417) {
 #' @keywords internal
 .finalize_pbp_output <- function(play_by_play, source = c('gc', 'wsc')) {
   source <- match.arg(source)
-  play_by_play <- .pbp_legacy_aliases(play_by_play)
   on_ice_cols <- .on_ice_id_scalar_column_names(play_by_play = play_by_play)
 
-  if (all(c('typeDescKey', 'shootingPlayerId', 'scoringPlayerId') %in% names(play_by_play))) {
-    goal_idx <- play_by_play$typeDescKey == 'goal' &
+  if (all(c('eventTypeDescKey', 'shootingPlayerId', 'scoringPlayerId') %in% names(play_by_play))) {
+    goal_idx <- play_by_play$eventTypeDescKey == 'goal' &
       is.na(play_by_play$shootingPlayerId) &
       !is.na(play_by_play$scoringPlayerId)
     play_by_play$shootingPlayerId[goal_idx] <- play_by_play$scoringPlayerId[goal_idx]
-  }
-
-  rename_to_public <- c(
-    period = 'periodNumber',
-    typeCode = 'eventTypeCode',
-    typeDescKey = 'eventTypeDescKey',
-    homeSOG = 'homeShots',
-    awaySOG = 'awayShots',
-    SOGFor = 'shotsFor',
-    SOGAgainst = 'shotsAgainst',
-    SOGDifferential = 'shotDifferential',
-    descKey = 'penaltyTypeDescKey',
-    duration = 'penaltyDuration'
-  )
-
-  for (old in names(rename_to_public)) {
-    new <- rename_to_public[[old]]
-    if (old %in% names(play_by_play)) {
-      if (new %in% names(play_by_play)) {
-        fill <- is.na(play_by_play[[new]])
-        play_by_play[[new]][fill] <- play_by_play[[old]][fill]
-        play_by_play[[old]] <- NULL
-      } else {
-        names(play_by_play)[names(play_by_play) == old] <- new
-      }
-    }
   }
 
   gc_cols <- c(
@@ -2789,6 +2757,7 @@ gc_play_by_play <- function(game = 2023030417) {
       plays$timeRemaining <- NULL
       # Clean.
       plays <- .strip_game_id(plays) |>
+        .normalize_public_pbp_names() |>
         .strip_time_period() |>
         .drop_illogical_ordered_events() |>
         .repair_public_pbp_sequence() |>
@@ -2961,6 +2930,7 @@ wsc_play_by_play <- function(game = 2023030417) {
       plays$secondsRemaining <- NULL
       # Clean.
       plays <- .strip_game_id(plays) |>
+        .normalize_public_pbp_names() |>
         .strip_time_period() |>
         .drop_illogical_ordered_events() |>
         .repair_public_pbp_sequence() |>

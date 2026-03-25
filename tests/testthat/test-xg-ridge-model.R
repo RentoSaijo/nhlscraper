@@ -10,23 +10,58 @@ test_that("xG ridge partitioning covers the six shot situations", {
 
   expect_equal(
     nhlscraper:::.xg_partition_shots(shots),
-    c("sd", "ev", "pp", "sh", "en", "so")
+    c("sd", "ev", "pp", "sh", "en", "ps")
   )
 })
 
-test_that("xG ridge partitioning routes missing strength-state rows to sd", {
+test_that("xG ridge partitioning routes uncategorizable rows to sd", {
   shots <- data.frame(
-    situationCode = c(NA_character_, "1551", NA_character_),
-    isEmptyNetFor = c(FALSE, FALSE, FALSE),
-    isEmptyNetAgainst = c(FALSE, FALSE, FALSE),
-    skaterCountFor = c(NA_integer_, 5L, 4L),
-    skaterCountAgainst = c(NA_integer_, 5L, NA_integer_),
+    situationCode = c(NA_character_, "1551", "1541", "1551"),
+    isEmptyNetFor = c(FALSE, FALSE, FALSE, FALSE),
+    isEmptyNetAgainst = c(FALSE, FALSE, FALSE, FALSE),
+    skaterCountFor = c(NA_integer_, 5L, 4L, "oops"),
+    skaterCountAgainst = c(NA_integer_, 5L, NA_integer_, 5L),
     stringsAsFactors = FALSE
   )
 
   expect_equal(
     nhlscraper:::.xg_partition_shots(shots),
-    c("sd", "sd", "sd")
+    c("sd", "sd", "sd", "sd")
+  )
+})
+
+test_that("xG ridge partitioning does not force sd on missing situationCode alone", {
+  shots <- data.frame(
+    situationCode = c(NA_character_, NA_character_),
+    isEmptyNetFor = c(FALSE, FALSE),
+    isEmptyNetAgainst = c(FALSE, FALSE),
+    skaterCountFor = c(5L, 4L),
+    skaterCountAgainst = c(4L, 4L),
+    stringsAsFactors = FALSE
+  )
+
+  expect_equal(
+    nhlscraper:::.xg_partition_shots(shots),
+    c("pp", "ev")
+  )
+})
+
+test_that("xG scorer rejects legacy alias-only public columns", {
+  play_by_play <- data.frame(
+    gameId = 1L,
+    eventId = 1L,
+    sortOrder = 1L,
+    gameTypeId = 2L,
+    period = 1L,
+    eventOwnerTeamId = 1L,
+    typeDescKey = "shot-on-goal",
+    situationCode = "1551",
+    stringsAsFactors = FALSE
+  )
+
+  expect_error(
+    nhlscraper:::.xg_require_current_public_schema(play_by_play),
+    "requires the current public play-by-play schema"
   )
 })
 
@@ -44,7 +79,7 @@ test_that("xG categorical encoding keeps known baseline levels out of new bucket
 })
 
 test_that("xG partition scoring returns finite probabilities with sparse inputs", {
-  spec <- nhlscraper:::XG_RIDGE_MODEL_SPECS$so
+  spec <- nhlscraper:::XG_RIDGE_MODEL_SPECS$ps
   df <- data.frame(
     shotType = c("backhand", "snap"),
     shooterHandCode = c("L", "R"),
@@ -82,4 +117,21 @@ test_that("xG partition scoring returns finite probabilities with sparse inputs"
   expect_length(probs, 2L)
   expect_true(all(is.finite(probs)))
   expect_true(all(probs > 0 & probs < 1))
+})
+
+test_that("xG scorer prefers goalieInNetId over goaliePlayerIdAgainst", {
+  play_by_play <- data.frame(
+    eventTypeDescKey = "shot-on-goal",
+    periodNumber = 1L,
+    shotsFor = 10L,
+    shotsAgainst = 8L,
+    shotDifferential = 2L,
+    goaliePlayerIdAgainst = c(66L, NA_integer_),
+    goalieInNetId = c(77L, 88L),
+    stringsAsFactors = FALSE
+  )
+
+  out <- nhlscraper:::.xg_fill_goalie_against_fallback(play_by_play)
+
+  expect_equal(out$goaliePlayerIdAgainst, c(77L, 88L))
 })

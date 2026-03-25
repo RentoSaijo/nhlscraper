@@ -352,9 +352,9 @@ test_that("repair_public_pbp_sequence drops invalid clocks and repairs boundary 
     gameTypeId = rep(3L, 6L),
     eventId = c(6L, 9L, 10L, 11L, 12L, 13L),
     sortOrder = c(6L, 9L, 10L, 11L, 12L, 13L),
-    period = rep(1L, 6L),
+    periodNumber = rep(1L, 6L),
     timeInPeriod = c("00:00", "00:00", "00:00", "00:09", "00:08", "08:70"),
-    typeDescKey = c("period-start", "faceoff", "period-end", "shot-on-goal", "hit", "penalty"),
+    eventTypeDescKey = c("period-start", "faceoff", "period-end", "shot-on-goal", "hit", "penalty"),
     stringsAsFactors = FALSE
   )
 
@@ -363,8 +363,8 @@ test_that("repair_public_pbp_sequence drops invalid clocks and repairs boundary 
     .repair_public_pbp_sequence()
 
   expect_false(13L %in% out$eventId)
-  expect_equal(out$typeDescKey, c("period-start", "faceoff", "hit", "shot-on-goal", "period-end"))
-  expect_equal(out$timeInPeriod[out$typeDescKey == "period-end"], "20:00")
+  expect_equal(out$eventTypeDescKey, c("period-start", "faceoff", "hit", "shot-on-goal", "period-end"))
+  expect_equal(out$timeInPeriod[out$eventTypeDescKey == "period-end"], "20:00")
   expect_true(all(diff(out$secondsElapsedInPeriod) >= 0))
 })
 
@@ -373,9 +373,9 @@ test_that("illogically ordered boundary faceoffs are removed", {
     gameId = rep(1L, 5L),
     eventId = c(10L, 11L, 12L, 13L, 14L),
     sortOrder = c(190L, 201L, 206L, 209L, 211L),
-    period = c(1L, 1L, 1L, 2L, 2L),
+    periodNumber = c(1L, 1L, 1L, 2L, 2L),
     timeInPeriod = c("18:24", "20:00", "00:00", "00:00", "00:00"),
-    typeDescKey = c("shot-on-goal", "period-end", "faceoff", "period-start", "faceoff"),
+    eventTypeDescKey = c("shot-on-goal", "period-end", "faceoff", "period-start", "faceoff"),
     stringsAsFactors = FALSE
   )
 

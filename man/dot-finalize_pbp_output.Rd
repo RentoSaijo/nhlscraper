@@ -15,7 +15,7 @@
 data.frame with the finalized public play-by-play schema
 }
 \description{
-\code{.finalize_pbp_output()} renames internal columns to the public schema and
-selects the final GC or WSC play-by-play column set.
+\code{.finalize_pbp_output()} selects and orders the final GC or WSC public
+play-by-play column set.
 }
 \keyword{internal}

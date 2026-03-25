@@ -3,13 +3,15 @@
 #' `calculate_expected_goals()` scores shot events with `nhlscraper`'s built-in
 #' ridge expected-goals model. The runtime model is a fixed six-partition system:
 #' `sd` (5v5), `ev` (other even strength), `pp` (power play), `sh`
-#' (short-handed), `en` (empty net against), and `so` (shootout / penalty
-#' shot). The legacy `model` argument is accepted for backward compatibility but
-#' ignored.
+#' (short-handed), `en` (empty net against), and `ps` (penalty shot; trained on
+#' penalty-shot and shootout-style rows). The legacy `model` argument is
+#' accepted for backward compatibility but ignored.
 #'
 #' @param play_by_play data.frame of play-by-play(s) using the current public
 #'   schema returned by [gc_play_by_play()], [gc_play_by_plays()],
-#'   [wsc_play_by_play()], or [wsc_play_by_plays()]
+#'   [wsc_play_by_play()], or [wsc_play_by_plays()]. Legacy alias-only columns
+#'   such as `typeDescKey`, `period`, `SOGFor`, `SOGAgainst`, and
+#'   `SOGDifferential` are no longer backfilled by the xG scorer.
 #' @param model deprecated legacy model selector; ignored
 #' @returns data.frame with one row per event (play) and added `xG` column
 #' @examples
@@ -98,18 +100,68 @@ calculate_xG <- function(play_by_play, model = NULL) {
   invisible(NULL)
 }
 
-.xg_fill_public_aliases <- function(play_by_play) {
-  aliases <- c(
+.xg_require_current_public_schema <- function(play_by_play) {
+  legacy_aliases <- c(
     eventTypeDescKey = "typeDescKey",
     periodNumber = "period",
     shotsFor = "SOGFor",
     shotsAgainst = "SOGAgainst",
     shotDifferential = "SOGDifferential"
   )
-  for (nm in names(aliases)) {
-    alt <- aliases[[nm]]
-    if (!(nm %in% names(play_by_play)) && alt %in% names(play_by_play)) {
-      play_by_play[[nm]] <- play_by_play[[alt]]
+  legacy_only <- names(legacy_aliases)[vapply(
+    names(legacy_aliases),
+    function(nm) {
+      alt <- legacy_aliases[[nm]]
+      !(nm %in% names(play_by_play)) && alt %in% names(play_by_play)
+    },
+    logical(1)
+  )]
+
+  if (length(legacy_only)) {
+    replacements <- paste(
+      sprintf(
+        "%s -> %s",
+        unname(legacy_aliases[legacy_only]),
+        legacy_only
+      ),
+      collapse = ", "
+    )
+    stop(
+      paste0(
+        "calculate_expected_goals() requires the current public play-by-play schema. ",
+        "Replace legacy xG alias columns with their public names: ",
+        replacements
+      ),
+      call. = FALSE
+    )
+  }
+
+  .require_public_pbp_columns(
+    play_by_play,
+    c(
+      "gameId",
+      "eventId",
+      "sortOrder",
+      "gameTypeId",
+      "periodNumber",
+      "eventOwnerTeamId",
+      "eventTypeDescKey",
+      "situationCode"
+    ),
+    "calculate_expected_goals"
+  )
+
+  invisible(NULL)
+}
+
+.xg_fill_goalie_against_fallback <- function(play_by_play) {
+  if ("goalieInNetId" %in% names(play_by_play)) {
+    goalie_in_net <- suppressWarnings(as.integer(play_by_play$goalieInNetId))
+    if ("goaliePlayerIdAgainst" %in% names(play_by_play)) {
+      goalie_against <- suppressWarnings(as.integer(play_by_play$goaliePlayerIdAgainst))
+      play_by_play$goaliePlayerIdAgainst <- dplyr::coalesce(goalie_in_net, goalie_against)
+    } else {
+      play_by_play$goaliePlayerIdAgainst <- goalie_in_net
     }
   }
   play_by_play
@@ -184,12 +236,11 @@ calculate_xG <- function(play_by_play, model = NULL) {
 }
 
 .xg_prepare_play_by_play <- function(play_by_play) {
-  pbp <- .pbp_legacy_aliases(play_by_play)
-  pbp <- .xg_fill_public_aliases(pbp)
+  .xg_require_current_public_schema(play_by_play)
+  pbp <- .xg_fill_goalie_against_fallback(play_by_play)
 
   if (!("isHome" %in% names(pbp))) {
     pbp <- .flag_is_home(pbp)
-    pbp <- .xg_fill_public_aliases(pbp)
   }
 
   state_cols <- c(
@@ -202,7 +253,6 @@ calculate_xG <- function(play_by_play, model = NULL) {
   )
   if (!all(state_cols %in% names(pbp))) {
     pbp <- .strip_situation_code(pbp)
-    pbp <- .xg_fill_public_aliases(pbp)
   }
 
   need_context <- !all(c(
@@ -222,7 +272,6 @@ calculate_xG <- function(play_by_play, model = NULL) {
   ) %in% names(pbp))
   if (need_context) {
     pbp <- .apply_shot_context(pbp)
-    pbp <- .xg_fill_public_aliases(pbp)
   }
 
   shift_cols <- .xg_required_shift_cols(pbp)
@@ -238,7 +287,6 @@ calculate_xG <- function(play_by_play, model = NULL) {
 
   if (!all(.pbp_delta_public_cols() %in% names(pbp))) {
     pbp <- add_deltas(pbp)
-    pbp <- .xg_fill_public_aliases(pbp)
   }
 
   if (!all(c(
@@ -260,7 +308,7 @@ calculate_xG <- function(play_by_play, model = NULL) {
     pbp <- add_goalie_biometrics(pbp)
   }
 
-  pbp
+  .xg_fill_goalie_against_fallback(pbp)
 }
 
 .xg_normalize_shot_type <- function(x) {
@@ -462,8 +510,8 @@ calculate_xG <- function(play_by_play, model = NULL) {
 }
 
 .xg_build_model_frame <- function(shots, play_by_play) {
-  shots <- .xg_fill_public_aliases(shots)
-  play_by_play <- .xg_fill_public_aliases(play_by_play)
+  shots <- .xg_fill_goalie_against_fallback(shots)
+  play_by_play <- .xg_fill_goalie_against_fallback(play_by_play)
   n <- nrow(shots)
 
   prev_keys <- if ("eventIdPrev" %in% names(shots)) {
@@ -624,23 +672,20 @@ calculate_xG <- function(play_by_play, model = NULL) {
 
   is_ps <- !is.na(sc) & sc %in% c("1010", "0101")
   is_en <- !is_ps & is_empty_against
-  is_unclassifiable_strength <- !is_ps &
-    !is_en &
-    (is.na(sc) | is.na(skater_for) | is.na(skater_against))
-  is_sd <- (!is_ps &
+  is_sd_standard <- (!is_ps &
     !is_en &
     !is.na(skater_for) &
     !is.na(skater_against) &
     skater_for == 5L &
     skater_against == 5L &
     !is_empty_for &
-    !is_empty_against) | is_unclassifiable_strength
+    !is_empty_against)
   is_ev <- !is_ps &
     !is_en &
     !is.na(skater_for) &
     !is.na(skater_against) &
     skater_for == skater_against &
-    !is_sd
+    !is_sd_standard
   is_pp <- !is_ps &
     !is_en &
     !is.na(skater_for) &
@@ -651,6 +696,15 @@ calculate_xG <- function(play_by_play, model = NULL) {
     !is.na(skater_for) &
     !is.na(skater_against) &
     skater_for < skater_against
+  is_uncategorizable_partition <- !(
+    is_ps |
+    is_en |
+    is_sd_standard |
+    is_ev |
+    is_pp |
+    is_sh
+  )
+  is_sd <- is_sd_standard | is_uncategorizable_partition
   is_ps[is.na(is_ps)] <- FALSE
   is_en[is.na(is_en)] <- FALSE
   is_sd[is.na(is_sd)] <- FALSE
@@ -659,7 +713,7 @@ calculate_xG <- function(play_by_play, model = NULL) {
   is_sh[is.na(is_sh)] <- FALSE
 
   out <- rep(NA_character_, nrow(shots))
-  out[is_ps] <- "so"
+  out[is_ps] <- "ps"
   out[is_en] <- "en"
   out[is_sd] <- "sd"
   out[is_ev] <- "ev"

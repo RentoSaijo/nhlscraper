@@ -10,7 +10,7 @@
 \item{play_by_play}{data.frame of play-by-play(s); see \code{\link[=gc_play_by_play]{gc_play_by_play()}} and/or \code{\link[=wsc_play_by_play]{wsc_play_by_play()}} for reference}
 }
 \value{
-data.frame with one row per event (play) and added columns: \code{homeGoals}, \code{awayGoals}, \code{homeSOG}, \code{awaySOG}, \code{homeFenwick}, \code{awayFenwick}, \code{homeCorsi}, \code{awayCorsi}, \code{goalsFor}, \code{goalsAgainst}, \code{SOGFor}, \code{SOGAgainst}, \code{fenwickFor}, \code{fenwickAgainst}, \code{corsiFor}, \code{corsiAgainst}, \code{goalDifferential}, \code{SOGDifferential}, \code{fenwickDifferential}, and \code{corsiDifferential}
+data.frame with one row per event (play) and added columns: \code{homeGoals}, \code{awayGoals}, \code{homeShots}, \code{awayShots}, \code{homeFenwick}, \code{awayFenwick}, \code{homeCorsi}, \code{awayCorsi}, \code{goalsFor}, \code{goalsAgainst}, \code{shotsFor}, \code{shotsAgainst}, \code{fenwickFor}, \code{fenwickAgainst}, \code{corsiFor}, \code{corsiAgainst}, \code{goalDifferential}, \code{shotDifferential}, \code{fenwickDifferential}, and \code{corsiDifferential}
 }
 \description{
 \code{.count_goals_shots()} counts the as-of-event goal, shots on goal, Fenwick, and Corsi attempts and differentials for all the events (plays) in a play-by-play by perspective.

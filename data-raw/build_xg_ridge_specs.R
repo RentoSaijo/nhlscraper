@@ -1,9 +1,12 @@
 # Build frozen ridge xG specs for package runtime.
+# This script does not train xG models. It packages coefficients and
+# preprocessing artifacts that were already trained upstream in
+# rentosrink/models/xG/nhlscraper/.
 #
 # Usage:
 #   Rscript data-raw/build_xg_ridge_specs.R \
-#     /path/to/models/xG/nhlscraper/results \
-#     /path/to/models/xG/data
+#     /path/to/copied/models/xG/nhlscraper/results \
+#     /path/to/copied/models/xG/data
 
 args <- commandArgs(trailingOnly = TRUE)
 
@@ -33,7 +36,7 @@ if (!nzchar(train_dir) || !dir.exists(train_dir)) {
   )
 }
 
-partitions <- c("sd", "ev", "pp", "sh", "en", "so")
+partitions <- c("sd", "ev", "pp", "sh", "en", "ps")
 out_file <- file.path("R", "xg_ridge_specs.R")
 
 read_named_numeric <- function(path, name_col, value_col) {

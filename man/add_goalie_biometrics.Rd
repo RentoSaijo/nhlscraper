@@ -13,5 +13,5 @@ add_goalie_biometrics(play_by_play)
 data.frame with one row per event (play) and added columns: \code{goalieHeight}, \code{goalieWeight}, \code{goalieHandCode}, and \code{goalieAge}
 }
 \description{
-\code{add_goalie_biometrics()} adds goalie biometrics (height, weight, hand, and age at game date) to (a) play-by-play(s) for shot attempts. If \code{goaliePlayerIdAgainst} is missing on a row, the added goalie biometrics are left as \code{NA}.
+\code{add_goalie_biometrics()} adds goalie biometrics (height, weight, hand, and age at game date) to (a) play-by-play(s) for shot attempts. Goalie identity is resolved from \code{goalieInNetId} first and \code{goaliePlayerIdAgainst} second. If neither is available on a row, the added goalie biometrics are left as \code{NA}.
 }

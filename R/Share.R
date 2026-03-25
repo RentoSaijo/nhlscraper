@@ -83,7 +83,7 @@ ig_game_shot_locations <- function(
       x_col <- 'xCoordNorm'
       y_col <- 'yCoordNorm'
       xg_col <- 'xG'
-      type <- as.character(pbp[['typeDescKey']])
+      type <- as.character(pbp[['eventTypeDescKey']])
       shot_types <- c('goal', 'shot-on-goal', 'missed-shot', 'blocked-shot')
       idx_shot <- .shot_event_mask(pbp, shot_types)
       if (!any(idx_shot)) {
@@ -101,7 +101,7 @@ ig_game_shot_locations <- function(
         return(invisible(NULL))
       }
       shots <- shots[keep, , drop = FALSE]
-      type_shot <- as.character(shots[['typeDescKey']])
+      type_shot <- as.character(shots[['eventTypeDescKey']])
       x <- as.numeric(shots[[x_col]])
       y <- as.numeric(shots[[y_col]])
       x_j <- x + stats::runif(length(x), -0.6, 0.6)
@@ -319,7 +319,7 @@ x_game_shot_locations <- function(
       x_col <- 'xCoordNorm'
       y_col <- 'yCoordNorm'
       xg_col <- 'xG'
-      type <- as.character(pbp[['typeDescKey']])
+      type <- as.character(pbp[['eventTypeDescKey']])
       shot_types <- c('goal', 'shot-on-goal', 'missed-shot', 'blocked-shot')
       idx_shot <- .shot_event_mask(pbp, shot_types)
       if (!any(idx_shot)) {
@@ -336,7 +336,7 @@ x_game_shot_locations <- function(
         return(invisible(NULL))
       }
       shots <- shots[keep, , drop = FALSE]
-      type_shot <- as.character(shots[['typeDescKey']])
+      type_shot <- as.character(shots[['eventTypeDescKey']])
       x <- as.numeric(shots[[x_col]])
       y <- as.numeric(shots[[y_col]])
       x_j <- x + stats::runif(length(x), -0.6, 0.6)
@@ -538,7 +538,7 @@ ig_game_cumulative_expected_goals <- function(
       pbp <- gc_play_by_play(game)
       pbp <- calculate_expected_goals(pbp)
       xg_col <- 'xG'
-      type <- as.character(pbp[['typeDescKey']])
+      type <- as.character(pbp[['eventTypeDescKey']])
       shot_types <- c('goal', 'shot-on-goal', 'missed-shot', 'blocked-shot')
       idx_shot <- .shot_event_mask(pbp, shot_types)
       if (!any(idx_shot)) {
@@ -724,7 +724,7 @@ x_game_cumulative_expected_goals <- function(
       pbp <- gc_play_by_play(game)
       pbp <- calculate_expected_goals(pbp)
       xg_col <- 'xG'
-      type <- as.character(pbp[['typeDescKey']])
+      type <- as.character(pbp[['eventTypeDescKey']])
       shot_types <- c('goal', 'shot-on-goal', 'missed-shot', 'blocked-shot')
       idx_shot <- .shot_event_mask(pbp, shot_types)
       if (!any(idx_shot)) {

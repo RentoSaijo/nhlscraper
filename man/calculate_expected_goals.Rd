@@ -12,7 +12,9 @@ calculate_xG(play_by_play, model = NULL)
 \arguments{
 \item{play_by_play}{data.frame of play-by-play(s) using the current public
 schema returned by \code{\link[=gc_play_by_play]{gc_play_by_play()}}, \code{\link[=gc_play_by_plays]{gc_play_by_plays()}},
-\code{\link[=wsc_play_by_play]{wsc_play_by_play()}}, or \code{\link[=wsc_play_by_plays]{wsc_play_by_plays()}}}
+\code{\link[=wsc_play_by_play]{wsc_play_by_play()}}, or \code{\link[=wsc_play_by_plays]{wsc_play_by_plays()}}. Legacy alias-only columns
+such as \code{typeDescKey}, \code{period}, \code{SOGFor}, \code{SOGAgainst}, and
+\code{SOGDifferential} are no longer backfilled by the xG scorer.}
 
 \item{model}{deprecated legacy model selector; ignored}
 }
@@ -23,9 +25,9 @@ data.frame with one row per event (play) and added \code{xG} column
 \code{calculate_expected_goals()} scores shot events with \code{nhlscraper}'s built-in
 ridge expected-goals model. The runtime model is a fixed six-partition system:
 \code{sd} (5v5), \code{ev} (other even strength), \code{pp} (power play), \code{sh}
-(short-handed), \code{en} (empty net against), and \code{so} (shootout / penalty
-shot). The legacy \code{model} argument is accepted for backward compatibility but
-ignored.
+(short-handed), \code{en} (empty net against), and \code{ps} (penalty shot; trained on
+penalty-shot and shootout-style rows). The legacy \code{model} argument is
+accepted for backward compatibility but ignored.
 }
 \examples{
 # May take >5s, so skip.

@@ -23,7 +23,6 @@ test_that("add_shooter_biometrics() keeps blocked shots and returns simplified c
 
   play_by_play <- data.frame(
     gameId = 1L,
-    typeDescKey = "blocked-shot",
     scoringPlayerId = NA_integer_,
     shootingPlayerId = 10L,
     stringsAsFactors = FALSE
@@ -112,7 +111,8 @@ test_that("biometrics helpers respect game dates on aggregated inputs", {
   )
   goalie_pbp <- data.frame(
     gameId = c(1L, 2L),
-    goaliePlayerIdAgainst = c(30L, 30L),
+    goalieInNetId = c(30L, 30L),
+    goaliePlayerIdAgainst = c(31L, 31L),
     stringsAsFactors = FALSE
   )
 

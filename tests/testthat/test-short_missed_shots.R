@@ -1,6 +1,6 @@
 test_that(".shot_event_mask() includes short missed shots", {
   play_by_play <- data.frame(
-    typeDescKey = c("missed-shot", "shot-on-goal", "blocked-shot"),
+    eventTypeDescKey = c("missed-shot", "shot-on-goal", "blocked-shot"),
     reason = c("short", NA, NA),
     stringsAsFactors = FALSE
   )
@@ -19,7 +19,7 @@ test_that(".count_goals_shots() includes short missed shots in Fenwick and Corsi
     eventId = 1:4,
     sortOrder = 1:4,
     isHome = c(TRUE, TRUE, TRUE, FALSE),
-    typeDescKey = c("missed-shot", "shot-on-goal", "missed-shot", "blocked-shot"),
+    eventTypeDescKey = c("missed-shot", "shot-on-goal", "missed-shot", "blocked-shot"),
     reason = c("short", NA, "wide", NA),
     createdRebound = c(FALSE, FALSE, FALSE, FALSE),
     marker = 1:4,
@@ -40,7 +40,7 @@ test_that(".flag_is_rebound() treats short missed shots as rebound sources", {
     eventId = 1:2,
     sortOrder = 1:2,
     secondsElapsedInGame = c(10L, 12L),
-    typeDescKey = c("missed-shot", "shot-on-goal"),
+    eventTypeDescKey = c("missed-shot", "shot-on-goal"),
     reason = c("short", NA),
     situationCode = c("1551", "1551"),
     eventOwnerTeamId = c(10L, 10L),
@@ -74,7 +74,7 @@ test_that("calculate_expected_goals() scores short missed shots with xG", {
     gameId = rep(1L, 3L),
     eventId = 1:3,
     sortOrder = 1:3,
-    typeDescKey = c("missed-shot", "missed-shot", "shot-on-goal"),
+    eventTypeDescKey = c("missed-shot", "missed-shot", "shot-on-goal"),
     goaliePlayerIdAgainst = c(NA_integer_, NA_integer_, NA_integer_),
     reason = c("short", "wide", NA),
     stringsAsFactors = FALSE
