@@ -105,28 +105,25 @@ Game 7s rarely play with a single rhythm from start to finish. One team can own 
 
 ```{r period-table}
 # Summarize xG by period and team.
-home_periods <- aggregate(
-  xG ~ periodNumber,
-  data = shots[shots[['eventOwnerTeamId']] == home_id, c('periodNumber', 'xG')],
+period_summary <- aggregate(
+  xG ~ periodNumber + eventOwnerTeamId,
+  data = shots[, c('periodNumber', 'eventOwnerTeamId', 'xG')],
   FUN = sum
 )
-away_periods <- aggregate(
-  xG ~ periodNumber,
-  data = shots[shots[['eventOwnerTeamId']] == away_id, c('periodNumber', 'xG')],
-  FUN = sum
+period_ids <- sort(unique(shots[['periodNumber']]))
+period_table <- data.frame(period = period_ids)
+home_match <- match(
+  period_ids,
+  period_summary[['periodNumber']][period_summary[['eventOwnerTeamId']] == home_id]
 )
-period_table <- merge(
-  home_periods,
-  away_periods,
-  by = 'periodNumber',
-  all = TRUE,
-  suffixes = c('_home', '_away')
+away_match <- match(
+  period_ids,
+  period_summary[['periodNumber']][period_summary[['eventOwnerTeamId']] == away_id]
 )
-names(period_table) <- c(
-  'period',
-  paste0(home_abbrev, '_xG'),
-  paste0(away_abbrev, '_xG')
-)
+period_table[[paste0(home_abbrev, '_xG')]] <-
+  period_summary[['xG']][period_summary[['eventOwnerTeamId']] == home_id][home_match]
+period_table[[paste0(away_abbrev, '_xG')]] <-
+  period_summary[['xG']][period_summary[['eventOwnerTeamId']] == away_id][away_match]
 period_table[is.na(period_table)] <- 0
 make_table(
   period_table,

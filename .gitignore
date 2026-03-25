@@ -16,3 +16,4 @@ other/*
 !other/audits/**/README.md
 !other/audits/**/*_audit.csv
 other/audits/**/*_pbps_*.csv
+Rplots.pdf
