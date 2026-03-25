@@ -105,9 +105,14 @@ Game 7s rarely play with a single rhythm from start to finish. One team can own 
 
 ```{r period-table}
 # Summarize xG by period and team.
+period_data <- data.frame(
+  periodNumber = shots[['periodNumber']],
+  eventOwnerTeamId = shots[['eventOwnerTeamId']],
+  xG = shots[['xG']]
+)
 period_summary <- aggregate(
   xG ~ periodNumber + eventOwnerTeamId,
-  data = shots[, c('periodNumber', 'eventOwnerTeamId', 'xG')],
+  data = period_data,
   FUN = sum
 )
 period_ids <- sort(unique(shots[['periodNumber']]))
@@ -139,25 +144,17 @@ Totals are useful, but they can still feel abstract. One of the nicest things ab
 
 ```{r chance-table}
 # Show largest individual shot-quality events.
-chance_table <- shots[order(-shots[['xG']]), c(
-  'playerFullName',
-  'teamTriCode',
-  'periodNumber',
-  'timeInPeriod',
-  'xCoordNorm',
-  'yCoordNorm',
-  'xG'
-)]
-chance_table <- utils::head(chance_table, 10)
-names(chance_table) <- c(
-  'player',
-  'team',
-  'period',
-  'timeInPeriod',
-  'xCoordNorm',
-  'yCoordNorm',
-  'xG'
+chance_idx <- order(-shots[['xG']])
+chance_table <- data.frame(
+  player = shots[['playerFullName']][chance_idx],
+  team = shots[['teamTriCode']][chance_idx],
+  period = shots[['periodNumber']][chance_idx],
+  timeInPeriod = shots[['timeInPeriod']][chance_idx],
+  xCoordNorm = shots[['xCoordNorm']][chance_idx],
+  yCoordNorm = shots[['yCoordNorm']][chance_idx],
+  xG = shots[['xG']][chance_idx]
 )
+chance_table <- utils::head(chance_table, 10)
 make_table(
   chance_table,
   caption = 'Highest-xG individual chances in Game 7.',
@@ -174,10 +171,12 @@ The cumulative view shows whether the game felt close because both teams traded 
 ```{r cum-data}
 # Build cumulative xG paths for both teams.
 build_cum_path <- function(team_id) {
-  team_shots <- shots[
-    shots[['eventOwnerTeamId']] == team_id,
-    c('eventId', 'secondsElapsedInGame', 'xG')
-  ]
+  team_idx <- shots[['eventOwnerTeamId']] == team_id
+  team_shots <- data.frame(
+    eventId = shots[['eventId']][team_idx],
+    secondsElapsedInGame = shots[['secondsElapsedInGame']][team_idx],
+    xG = shots[['xG']][team_idx]
+  )
   team_shots <- team_shots[order(
     team_shots[['secondsElapsedInGame']],
     team_shots[['eventId']]
