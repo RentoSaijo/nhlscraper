@@ -132,8 +132,8 @@ make_table(
 
 |       | playerFullName   | positionCode | weight | rsGamesPlayed | gamesPlayed | regularPPG | playoffPPG | playoffLift |
 |:------|:-----------------|:-------------|-------:|--------------:|------------:|-----------:|-----------:|------------:|
-| 12088 | Connor McDavid   | C            |    194 |           783 |          96 |      1.530 |      1.562 |       0.032 |
-| 12089 | Connor McDavid   | C            |    194 |           783 |          96 |      1.530 |      1.562 |       0.032 |
+| 12088 | Connor McDavid   | C            |    194 |           784 |          96 |      1.531 |      1.562 |       0.032 |
+| 12089 | Connor McDavid   | C            |    194 |           784 |          96 |      1.531 |      1.562 |       0.032 |
 | 11907 | Leon Draisaitl   | C            |    209 |           855 |          96 |      1.232 |      1.469 |       0.237 |
 | 11908 | Leon Draisaitl   | C            |    209 |           855 |          96 |      1.232 |      1.469 |       0.237 |
 | 11792 | Nathan MacKinnon | C            |    200 |           939 |          95 |      1.203 |      1.316 |       0.112 |
@@ -273,8 +273,8 @@ make_table(
 |       | playerFullName    | positionBucket | weight | regularPPG | playoffPPG | playoffLift |
 |:------|:------------------|:---------------|-------:|-----------:|-----------:|------------:|
 | 8218  | Daniel Brière     | Forward        |    174 |      0.715 |      1.059 |       0.344 |
-| 12588 | Evan Bouchard     | Defense        |    192 |      0.758 |      1.080 |       0.322 |
-| 12589 | Evan Bouchard     | Defense        |    192 |      0.758 |      1.080 |       0.322 |
+| 12588 | Evan Bouchard     | Defense        |    192 |      0.764 |      1.080 |       0.316 |
+| 12589 | Evan Bouchard     | Defense        |    192 |      0.764 |      1.080 |       0.316 |
 | 11780 | Artturi Lehkonen  | Forward        |    179 |      0.508 |      0.778 |       0.269 |
 | 10817 | Jakob Silfverberg | Forward        |    207 |      0.455 |      0.719 |       0.264 |
 | 11910 | Sam Bennett       | Forward        |    193 |      0.512 |      0.766 |       0.254 |
@@ -328,10 +328,10 @@ make_table(
 
 | term              | Estimate | Std. Error | t value | Pr(\>\|t\|) |
 |:------------------|---------:|-----------:|--------:|------------:|
-| Intercept         |  -0.0119 |     0.1220 | -0.0973 |      0.9225 |
-| Height            |  -0.0013 |     0.0021 | -0.6126 |      0.5402 |
-| Weight            |   0.0002 |     0.0003 |  0.7764 |      0.4376 |
-| Defense indicator |   0.0305 |     0.0068 |  4.4727 |      0.0000 |
+| Intercept         |  -0.0118 |     0.1219 | -0.0970 |      0.9227 |
+| Height            |  -0.0013 |     0.0021 | -0.6137 |      0.5395 |
+| Weight            |   0.0002 |     0.0003 |  0.7781 |      0.4366 |
+| Defense indicator |   0.0305 |     0.0068 |  4.4720 |      0.0000 |
 
 Linear model of playoff scoring lift on height, weight, and position.
 

@@ -105,8 +105,8 @@ make_table(
 
 | team | goals | shotsOnGoal |    xG | xGPerShot |
 |:-----|------:|------------:|------:|----------:|
-| FLA  |     2 |          21 | 2.260 |     0.108 |
-| EDM  |     1 |          24 | 2.499 |     0.104 |
+| FLA  |     2 |          21 | 2.220 |     0.106 |
+| EDM  |     1 |          24 | 2.465 |     0.103 |
 
 Game 7 team context: score, shots on goal, and expected goals.
 
@@ -158,9 +158,9 @@ make_table(
 
 | period | FLA_xG | EDM_xG |
 |-------:|-------:|-------:|
-|      1 |  0.628 |  0.539 |
-|      2 |  0.408 |  0.822 |
-|      3 |  1.224 |  1.138 |
+|      1 |  0.623 |  0.535 |
+|      2 |  0.407 |  0.816 |
+|      3 |  1.190 |  1.114 |
 
 Expected goals by period in Game 7.
 
@@ -197,14 +197,14 @@ make_table(
 
 | player          | team | period | timeInPeriod | xCoordNorm | yCoordNorm |    xG |
 |:----------------|:-----|-------:|:-------------|-----------:|-----------:|------:|
-| Evan Rodrigues  | FLA  |      3 | 19:33        |         16 |         17 | 0.434 |
-| Zach Hyman      | EDM  |      3 | 12:56        |         79 |          2 | 0.232 |
-| Sam Bennett     | FLA  |      3 | 05:17        |         81 |          5 | 0.208 |
-| Zach Hyman      | EDM  |      3 | 12:57        |         85 |          1 | 0.205 |
-| Mattias Janmark | EDM  |      1 | 06:44        |         77 |         -2 | 0.197 |
-| Mattias Ekholm  | EDM  |      3 | 17:45        |         74 |          9 | 0.162 |
-| Mattias Ekholm  | EDM  |      3 | 17:42        |         84 |          3 | 0.130 |
-| Leon Draisaitl  | EDM  |      2 | 04:27        |         75 |        -26 | 0.116 |
+| Evan Rodrigues  | FLA  |      3 | 19:33        |         16 |         17 | 0.421 |
+| Zach Hyman      | EDM  |      3 | 12:56        |         79 |          2 | 0.228 |
+| Sam Bennett     | FLA  |      3 | 05:17        |         81 |          5 | 0.204 |
+| Zach Hyman      | EDM  |      3 | 12:57        |         85 |          1 | 0.199 |
+| Mattias Janmark | EDM  |      1 | 06:44        |         77 |         -2 | 0.194 |
+| Mattias Ekholm  | EDM  |      3 | 17:45        |         74 |          9 | 0.156 |
+| Mattias Ekholm  | EDM  |      3 | 17:42        |         84 |          3 | 0.128 |
+| Leon Draisaitl  | EDM  |      2 | 04:27        |         75 |        -26 | 0.120 |
 | Connor McDavid  | EDM  |      3 | 17:17        |         82 |          3 | 0.116 |
 | Matthew Tkachuk | FLA  |      1 | 18:41        |         84 |         -8 | 0.109 |
 

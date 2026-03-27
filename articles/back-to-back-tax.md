@@ -126,14 +126,14 @@ make_table(
 
 | restBucket | games |   win | goalDiff |
 |:-----------|------:|------:|---------:|
-| 0          |  8648 | 0.446 |   -0.275 |
+| 0          |  8648 | 0.447 |   -0.275 |
 | 1          | 27756 | 0.504 |    0.039 |
 | 2          |  9441 | 0.519 |    0.119 |
 | 3+         |  4723 | 0.499 |    0.038 |
 
 Win rate and average goal differential by rest bucket.
 
-The back-to-back effect is real. Teams on zero rest win about 44.6
+The back-to-back effect is real. Teams on zero rest win about 44.7
 percent of the time, compared with about 51.9 percent on two days of
 rest. Goal differential moves the same way: teams on zero rest are
 underwater on average, while teams with one or two days off are slightly
@@ -205,7 +205,7 @@ make_table(
 | restBucket | homeWinRate | awayWinRate |
 |:-----------|------------:|------------:|
 | 0          |       0.503 |       0.420 |
-| 1          |       0.546 |       0.456 |
+| 1          |       0.546 |       0.457 |
 | 2          |       0.555 |       0.478 |
 | 3+         |       0.525 |       0.464 |
 
@@ -298,11 +298,11 @@ make_table(
 
 | term                        | Estimate | Std. Error |  z value | Pr(\>\|z\|) |
 |:----------------------------|---------:|-----------:|---------:|------------:|
-| Intercept                   |  -0.3232 |     0.0225 | -14.3799 |       0e+00 |
-| One day versus zero         |   0.1605 |     0.0251 |   6.3957 |       0e+00 |
-| Two days versus zero        |   0.2216 |     0.0302 |   7.3372 |       0e+00 |
-| Three-plus days versus zero |   0.1277 |     0.0367 |   3.4832 |       5e-04 |
-| Home indicator              |   0.3351 |     0.0181 |  18.5104 |       0e+00 |
+| Intercept                   |  -0.3222 |     0.0225 | -14.3343 |       0e+00 |
+| One day versus zero         |   0.1611 |     0.0251 |   6.4190 |       0e+00 |
+| Two days versus zero        |   0.2208 |     0.0302 |   7.3085 |       0e+00 |
+| Three-plus days versus zero |   0.1268 |     0.0367 |   3.4597 |       5e-04 |
+| Home indicator              |   0.3348 |     0.0181 |  18.4930 |       0e+00 |
 
 Logistic model of wins on rest and venue.
 
@@ -350,7 +350,7 @@ make_table(
 |:----|:------------|------:|--------:|
 | 33  | VGK         |    98 |   0.561 |
 | 3   | NYR         |   280 |   0.561 |
-| 6   | BOS         |   281 |   0.488 |
+| 6   | BOS         |   281 |   0.491 |
 | 16  | CHI         |   310 |   0.484 |
 | 28  | SJS         |   271 |   0.483 |
 | 5   | PIT         |   303 |   0.482 |
