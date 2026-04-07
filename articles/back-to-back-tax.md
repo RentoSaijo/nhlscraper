@@ -298,11 +298,11 @@ make_table(
 
 | term                        | Estimate | Std. Error |  z value | Pr(\>\|z\|) |
 |:----------------------------|---------:|-----------:|---------:|------------:|
-| Intercept                   |  -0.3162 |     0.0225 | -14.0718 |       0e+00 |
-| One day versus zero         |   0.1626 |     0.0251 |   6.4784 |       0e+00 |
-| Two days versus zero        |   0.2172 |     0.0302 |   7.1918 |       0e+00 |
-| Three-plus days versus zero |   0.1240 |     0.0366 |   3.3845 |       7e-04 |
-| Home indicator              |   0.3366 |     0.0181 |  18.5922 |       0e+00 |
+| Intercept                   |  -0.3162 |     0.0225 | -14.0740 |       0e+00 |
+| One day versus zero         |   0.1627 |     0.0251 |   6.4829 |       0e+00 |
+| Two days versus zero        |   0.2172 |     0.0302 |   7.1907 |       0e+00 |
+| Three-plus days versus zero |   0.1240 |     0.0366 |   3.3834 |       7e-04 |
+| Home indicator              |   0.3368 |     0.0181 |  18.6006 |       0e+00 |
 
 Logistic model of wins on rest and venue.
 

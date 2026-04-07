@@ -2,6 +2,8 @@
 
 ## nhlscraper 0.6.0
 
+CRAN release: 2026-04-07
+
 - Documentation website now features more guided examples and
   explanation articles.
 - [`replays()`](https://rentosaijo.github.io/nhlscraper/reference/replays.md)

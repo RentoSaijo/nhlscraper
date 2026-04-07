@@ -13,7 +13,7 @@
 ## Citation
 
 Source:
-[`DESCRIPTION`](https://github.com/RentoSaijo/nhlscraper/blob/main/DESCRIPTION)
+[`DESCRIPTION`](https://github.com/RentoSaijo/nhlscraper/blob/v0.6.0/DESCRIPTION)
 
 Saijo R (2026). *nhlscraper: Scraper for National Hockey League Data*. R
 package version 0.6.0, <https://rentosaijo.github.io/nhlscraper/>.
