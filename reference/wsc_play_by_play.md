@@ -41,5 +41,6 @@ data.frame with one row per event (play)
 ## Examples
 
 ``` r
+# May take >5s, so skip.
 wsc_pbp_Martin_Necas_legacy_game <- wsc_play_by_play(game = 2025020275)
 ```

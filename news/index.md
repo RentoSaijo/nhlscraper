@@ -1,6 +1,6 @@
 # Changelog
 
-## nhlscraper 0.5.0.9000
+## nhlscraper 0.6.0
 
 - Documentation website now features more guided examples and
   explanation articles.

@@ -25,7 +25,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">nhlscraper</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.5.0.9000</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.6.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -221,31 +221,31 @@ bucket.</caption>
 <tr class="odd">
 <td align="left">0</td>
 <td align="right">8648</td>
-<td align="right">0.447</td>
+<td align="right">0.448</td>
 <td align="right">-0.275</td>
 </tr>
 <tr class="even">
 <td align="left">1</td>
 <td align="right">27756</td>
-<td align="right">0.504</td>
+<td align="right">0.506</td>
 <td align="right">0.039</td>
 </tr>
 <tr class="odd">
 <td align="left">2</td>
 <td align="right">9441</td>
-<td align="right">0.519</td>
-<td align="right">0.119</td>
+<td align="right">0.520</td>
+<td align="right">0.118</td>
 </tr>
 <tr class="even">
 <td align="left">3+</td>
 <td align="right">4723</td>
-<td align="right">0.499</td>
-<td align="right">0.038</td>
+<td align="right">0.500</td>
+<td align="right">0.041</td>
 </tr>
 </tbody>
 </table>
-<p>The back-to-back effect is real. Teams on zero rest win about 44.7
-percent of the time, compared with about 51.9 percent on two days of
+<p>The back-to-back effect is real. Teams on zero rest win about 44.8
+percent of the time, compared with about 52.0 percent on two days of
 rest. Goal differential moves the same way: teams on zero rest are
 underwater on average, while teams with one or two days off are slightly
 positive. That is already enough to say the schedule complaint has
@@ -321,29 +321,29 @@ in their own building.</p>
 <tbody>
 <tr class="odd">
 <td align="left">0</td>
-<td align="right">0.503</td>
-<td align="right">0.420</td>
+<td align="right">0.507</td>
+<td align="right">0.421</td>
 </tr>
 <tr class="even">
 <td align="left">1</td>
-<td align="right">0.546</td>
-<td align="right">0.457</td>
+<td align="right">0.548</td>
+<td align="right">0.459</td>
 </tr>
 <tr class="odd">
 <td align="left">2</td>
-<td align="right">0.555</td>
-<td align="right">0.478</td>
+<td align="right">0.556</td>
+<td align="right">0.479</td>
 </tr>
 <tr class="even">
 <td align="left">3+</td>
-<td align="right">0.525</td>
-<td align="right">0.464</td>
+<td align="right">0.526</td>
+<td align="right">0.465</td>
 </tr>
 </tbody>
 </table>
 <p>Back-to-backs hurt everywhere, but they hurt more on the road. On
-zero rest, road teams win only about 42.0 percent of the time, while
-home teams on zero rest still manage about 50.3 percent.</p>
+zero rest, road teams win only about 42.1 percent of the time, while
+home teams on zero rest still manage about 50.7 percent.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">graphics</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq_len</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">home_road_table</span><span class="op">)</span><span class="op">)</span>,</span>
@@ -440,37 +440,37 @@ effects together.</p>
 <tbody>
 <tr class="odd">
 <td align="left">Intercept</td>
-<td align="right">-0.3222</td>
+<td align="right">-0.3162</td>
 <td align="right">0.0225</td>
-<td align="right">-14.3343</td>
+<td align="right">-14.0718</td>
 <td align="right">0e+00</td>
 </tr>
 <tr class="even">
 <td align="left">One day versus zero</td>
-<td align="right">0.1611</td>
+<td align="right">0.1626</td>
 <td align="right">0.0251</td>
-<td align="right">6.4190</td>
+<td align="right">6.4784</td>
 <td align="right">0e+00</td>
 </tr>
 <tr class="odd">
 <td align="left">Two days versus zero</td>
-<td align="right">0.2208</td>
+<td align="right">0.2172</td>
 <td align="right">0.0302</td>
-<td align="right">7.3085</td>
+<td align="right">7.1918</td>
 <td align="right">0e+00</td>
 </tr>
 <tr class="even">
 <td align="left">Three-plus days versus zero</td>
-<td align="right">0.1268</td>
-<td align="right">0.0367</td>
-<td align="right">3.4597</td>
-<td align="right">5e-04</td>
+<td align="right">0.1240</td>
+<td align="right">0.0366</td>
+<td align="right">3.3845</td>
+<td align="right">7e-04</td>
 </tr>
 <tr class="odd">
 <td align="left">Home indicator</td>
-<td align="right">0.3348</td>
+<td align="right">0.3366</td>
 <td align="right">0.0181</td>
-<td align="right">18.4930</td>
+<td align="right">18.5922</td>
 <td align="right">0e+00</td>
 </tr>
 </tbody>
@@ -524,40 +524,40 @@ zero-rest games.</caption>
 </tr></thead>
 <tbody>
 <tr class="odd">
-<td align="left">33</td>
-<td align="left">VGK</td>
-<td align="right">98</td>
-<td align="right">0.561</td>
-</tr>
-<tr class="even">
 <td align="left">3</td>
 <td align="left">NYR</td>
 <td align="right">280</td>
+<td align="right">0.564</td>
+</tr>
+<tr class="even">
+<td align="left">33</td>
+<td align="left">VGK</td>
+<td align="right">98</td>
 <td align="right">0.561</td>
 </tr>
 <tr class="odd">
 <td align="left">6</td>
 <td align="left">BOS</td>
 <td align="right">281</td>
-<td align="right">0.491</td>
+<td align="right">0.495</td>
+</tr>
+<tr class="even">
+<td align="left">5</td>
+<td align="left">PIT</td>
+<td align="right">303</td>
+<td align="right">0.488</td>
+</tr>
+<tr class="odd">
+<td align="left">28</td>
+<td align="left">SJS</td>
+<td align="right">271</td>
+<td align="right">0.487</td>
 </tr>
 <tr class="even">
 <td align="left">16</td>
 <td align="left">CHI</td>
 <td align="right">310</td>
 <td align="right">0.484</td>
-</tr>
-<tr class="odd">
-<td align="left">28</td>
-<td align="left">SJS</td>
-<td align="right">271</td>
-<td align="right">0.483</td>
-</tr>
-<tr class="even">
-<td align="left">5</td>
-<td align="left">PIT</td>
-<td align="right">303</td>
-<td align="right">0.482</td>
 </tr>
 <tr class="odd">
 <td align="left">19</td>

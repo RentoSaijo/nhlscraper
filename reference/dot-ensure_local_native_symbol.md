@@ -1,8 +1,8 @@
-# Ensure a local native symbol is loaded
+# Ensure a native symbol is available
 
-`.ensure_local_native_symbol()` tries to load the package shared object
-from the local `src/` directory when a native symbol is not yet
-registered.
+`.ensure_local_native_symbol()` checks whether a native symbol is
+already registered and, if needed, tries to load the installed package
+shared object. It does not trust the current working directory.
 
 ## Usage
 

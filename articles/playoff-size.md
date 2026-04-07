@@ -132,14 +132,14 @@ make_table(
 
 |       | playerFullName   | positionCode | weight | rsGamesPlayed | gamesPlayed | regularPPG | playoffPPG | playoffLift |
 |:------|:-----------------|:-------------|-------:|--------------:|------------:|-----------:|-----------:|------------:|
-| 12088 | Connor McDavid   | C            |    194 |           784 |          96 |      1.531 |      1.562 |       0.032 |
-| 12089 | Connor McDavid   | C            |    194 |           784 |          96 |      1.531 |      1.562 |       0.032 |
+| 12088 | Connor McDavid   | C            |    194 |           789 |          96 |      1.531 |      1.562 |       0.031 |
+| 12089 | Connor McDavid   | C            |    194 |           789 |          96 |      1.531 |      1.562 |       0.031 |
 | 11907 | Leon Draisaitl   | C            |    209 |           855 |          96 |      1.232 |      1.469 |       0.237 |
 | 11908 | Leon Draisaitl   | C            |    209 |           855 |          96 |      1.232 |      1.469 |       0.237 |
-| 11792 | Nathan MacKinnon | C            |    200 |           939 |          95 |      1.203 |      1.316 |       0.112 |
-| 11793 | Nathan MacKinnon | C            |    200 |           939 |          95 |      1.203 |      1.316 |       0.112 |
+| 11792 | Nathan MacKinnon | C            |    200 |           945 |          95 |      1.203 |      1.316 |       0.113 |
+| 11793 | Nathan MacKinnon | C            |    200 |           945 |          95 |      1.203 |      1.316 |       0.113 |
 | 8431  | Marian Hossa     | R            |    207 |          1309 |          20 |      0.866 |      1.300 |       0.434 |
-| 12106 | Mikko Rantanen   | R            |    228 |           706 |          81 |      1.096 |      1.247 |       0.151 |
+| 12106 | Mikko Rantanen   | R            |    228 |           711 |          81 |      1.094 |      1.247 |       0.153 |
 
 Top playoff scoring rates among skaters in the working sample.
 
@@ -179,8 +179,8 @@ make_table(
 |:----|:---------------|----:|-----------:|-----------:|------------:|
 | 2   | Lightest       | 420 |      0.511 |      0.461 |      -0.050 |
 | 3   | Second         | 420 |      0.475 |      0.416 |      -0.059 |
-| 4   | Third          | 420 |      0.437 |      0.380 |      -0.057 |
-| 1   | Heaviest       | 420 |      0.418 |      0.378 |      -0.040 |
+| 4   | Third          | 420 |      0.438 |      0.380 |      -0.058 |
+| 1   | Heaviest       | 420 |      0.417 |      0.378 |      -0.040 |
 
 Regular-season scoring, playoff scoring, and playoff lift by weight
 quartile.
@@ -273,15 +273,15 @@ make_table(
 |       | playerFullName    | positionBucket | weight | regularPPG | playoffPPG | playoffLift |
 |:------|:------------------|:---------------|-------:|-----------:|-----------:|------------:|
 | 8218  | Daniel Brière     | Forward        |    174 |      0.715 |      1.059 |       0.344 |
-| 12588 | Evan Bouchard     | Defense        |    192 |      0.764 |      1.080 |       0.316 |
-| 12589 | Evan Bouchard     | Defense        |    192 |      0.764 |      1.080 |       0.316 |
-| 11780 | Artturi Lehkonen  | Forward        |    179 |      0.508 |      0.778 |       0.269 |
+| 12588 | Evan Bouchard     | Defense        |    192 |      0.769 |      1.080 |       0.311 |
+| 12589 | Evan Bouchard     | Defense        |    192 |      0.769 |      1.080 |       0.311 |
+| 11780 | Artturi Lehkonen  | Forward        |    179 |      0.510 |      0.778 |       0.268 |
 | 10817 | Jakob Silfverberg | Forward        |    207 |      0.455 |      0.719 |       0.264 |
-| 11910 | Sam Bennett       | Forward        |    193 |      0.512 |      0.766 |       0.254 |
+| 11910 | Sam Bennett       | Forward        |    193 |      0.515 |      0.766 |       0.251 |
 | 11907 | Leon Draisaitl    | Forward        |    209 |      1.232 |      1.469 |       0.237 |
 | 11908 | Leon Draisaitl    | Forward        |    209 |      1.232 |      1.469 |       0.237 |
-| 12202 | Evan Rodrigues    | Forward        |    182 |      0.439 |      0.672 |       0.233 |
-| 10805 | Ryan O’Reilly     | Forward        |    207 |      0.728 |      0.961 |       0.232 |
+| 12202 | Evan Rodrigues    | Forward        |    182 |      0.438 |      0.672 |       0.234 |
+| 10805 | Ryan O’Reilly     | Forward        |    207 |      0.728 |      0.961 |       0.233 |
 
 Largest playoff scoring lifts among skaters with at least 40 playoff
 games.
@@ -328,10 +328,10 @@ make_table(
 
 | term              | Estimate | Std. Error | t value | Pr(\>\|t\|) |
 |:------------------|---------:|-----------:|--------:|------------:|
-| Intercept         |  -0.0118 |     0.1219 | -0.0970 |      0.9227 |
-| Height            |  -0.0013 |     0.0021 | -0.6137 |      0.5395 |
-| Weight            |   0.0002 |     0.0003 |  0.7781 |      0.4366 |
-| Defense indicator |   0.0305 |     0.0068 |  4.4720 |      0.0000 |
+| Intercept         |  -0.0167 |     0.1221 | -0.1369 |      0.8911 |
+| Height            |  -0.0012 |     0.0021 | -0.5796 |      0.5622 |
+| Weight            |   0.0002 |     0.0003 |  0.7694 |      0.4417 |
+| Defense indicator |   0.0305 |     0.0068 |  4.4632 |      0.0000 |
 
 Linear model of playoff scoring lift on height, weight, and position.
 

@@ -126,15 +126,15 @@ make_table(
 
 | restBucket | games |   win | goalDiff |
 |:-----------|------:|------:|---------:|
-| 0          |  8648 | 0.447 |   -0.275 |
-| 1          | 27756 | 0.504 |    0.039 |
-| 2          |  9441 | 0.519 |    0.119 |
-| 3+         |  4723 | 0.499 |    0.038 |
+| 0          |  8648 | 0.448 |   -0.275 |
+| 1          | 27756 | 0.506 |    0.039 |
+| 2          |  9441 | 0.520 |    0.118 |
+| 3+         |  4723 | 0.500 |    0.041 |
 
 Win rate and average goal differential by rest bucket.
 
-The back-to-back effect is real. Teams on zero rest win about 44.7
-percent of the time, compared with about 51.9 percent on two days of
+The back-to-back effect is real. Teams on zero rest win about 44.8
+percent of the time, compared with about 52.0 percent on two days of
 rest. Goal differential moves the same way: teams on zero rest are
 underwater on average, while teams with one or two days off are slightly
 positive. That is already enough to say the schedule complaint has
@@ -204,16 +204,16 @@ make_table(
 
 | restBucket | homeWinRate | awayWinRate |
 |:-----------|------------:|------------:|
-| 0          |       0.503 |       0.420 |
-| 1          |       0.546 |       0.457 |
-| 2          |       0.555 |       0.478 |
-| 3+         |       0.525 |       0.464 |
+| 0          |       0.507 |       0.421 |
+| 1          |       0.548 |       0.459 |
+| 2          |       0.556 |       0.479 |
+| 3+         |       0.526 |       0.465 |
 
 Home and road win rate by rest bucket.
 
 Back-to-backs hurt everywhere, but they hurt more on the road. On zero
-rest, road teams win only about 42.0 percent of the time, while home
-teams on zero rest still manage about 50.3 percent.
+rest, road teams win only about 42.1 percent of the time, while home
+teams on zero rest still manage about 50.7 percent.
 
 ``` r
 graphics::plot(
@@ -298,11 +298,11 @@ make_table(
 
 | term                        | Estimate | Std. Error |  z value | Pr(\>\|z\|) |
 |:----------------------------|---------:|-----------:|---------:|------------:|
-| Intercept                   |  -0.3222 |     0.0225 | -14.3343 |       0e+00 |
-| One day versus zero         |   0.1611 |     0.0251 |   6.4190 |       0e+00 |
-| Two days versus zero        |   0.2208 |     0.0302 |   7.3085 |       0e+00 |
-| Three-plus days versus zero |   0.1268 |     0.0367 |   3.4597 |       5e-04 |
-| Home indicator              |   0.3348 |     0.0181 |  18.4930 |       0e+00 |
+| Intercept                   |  -0.3162 |     0.0225 | -14.0718 |       0e+00 |
+| One day versus zero         |   0.1626 |     0.0251 |   6.4784 |       0e+00 |
+| Two days versus zero        |   0.2172 |     0.0302 |   7.1918 |       0e+00 |
+| Three-plus days versus zero |   0.1240 |     0.0366 |   3.3845 |       7e-04 |
+| Home indicator              |   0.3366 |     0.0181 |  18.5922 |       0e+00 |
 
 Logistic model of wins on rest and venue.
 
@@ -348,12 +348,12 @@ make_table(
 
 |     | teamTriCode | games | winRate |
 |:----|:------------|------:|--------:|
+| 3   | NYR         |   280 |   0.564 |
 | 33  | VGK         |    98 |   0.561 |
-| 3   | NYR         |   280 |   0.561 |
-| 6   | BOS         |   281 |   0.491 |
+| 6   | BOS         |   281 |   0.495 |
+| 5   | PIT         |   303 |   0.488 |
+| 28  | SJS         |   271 |   0.487 |
 | 16  | CHI         |   310 |   0.484 |
-| 28  | SJS         |   271 |   0.483 |
-| 5   | PIT         |   303 |   0.482 |
 | 19  | STL         |   295 |   0.478 |
 | 12  | CAR         |   321 |   0.477 |
 | 18  | NSH         |   260 |   0.473 |
