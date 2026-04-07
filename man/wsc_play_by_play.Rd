@@ -28,5 +28,6 @@ supported row, even when the raw \code{situationCode} is stale. Use \code{\link[
 with \code{\link[=shift_chart]{shift_chart()}} (or \code{\link[=shift_charts]{shift_charts()}}) to add on-ice shift timing columns.
 }
 \examples{
-wsc_pbp_Martin_Necas_legacy_game <- wsc_play_by_play(game = 2025020275)
+# May take >5s, so skip.
+\donttest{wsc_pbp_Martin_Necas_legacy_game <- wsc_play_by_play(game = 2025020275)}
 }

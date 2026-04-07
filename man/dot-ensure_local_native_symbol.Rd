@@ -2,7 +2,7 @@
 % Please edit documentation in R/Clean.R
 \name{.ensure_local_native_symbol}
 \alias{.ensure_local_native_symbol}
-\title{Ensure a local native symbol is loaded}
+\title{Ensure a native symbol is available}
 \usage{
 .ensure_local_native_symbol(symbol)
 }
@@ -13,7 +13,8 @@
 logical scalar indicating whether the symbol is available
 }
 \description{
-\code{.ensure_local_native_symbol()} tries to load the package shared object from
-the local \verb{src/} directory when a native symbol is not yet registered.
+\code{.ensure_local_native_symbol()} checks whether a native symbol is already
+registered and, if needed, tries to load the installed package shared object.
+It does not trust the current working directory.
 }
 \keyword{internal}

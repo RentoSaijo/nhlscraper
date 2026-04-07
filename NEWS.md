@@ -1,4 +1,4 @@
-# nhlscraper 0.5.0.9000
+# nhlscraper 0.6.0
 - Documentation website now features more guided examples and explanation articles.
 - `replays()` is now added to retrieve season-aggregate replays.
 - `contracts()` now returns more contracts, dating back to the 90's (and then some).

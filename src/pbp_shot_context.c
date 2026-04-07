@@ -1,5 +1,28 @@
 #include <R.h>
 #include <Rinternals.h>
+#include <limits.h>
+
+static int xlength_as_int(SEXP x, const char *name) {
+  R_xlen_t n = XLENGTH(x);
+  if (n > INT_MAX) {
+    error("%s is too long for native processing.", name);
+  }
+  return (int) n;
+}
+
+static void require_vector_type_and_length(
+  SEXP x,
+  SEXPTYPE type,
+  int expected_len,
+  const char *name
+) {
+  if ((SEXPTYPE) TYPEOF(x) != type) {
+    error("%s must have the expected storage mode.", name);
+  }
+  if (xlength_as_int(x, name) != expected_len) {
+    error("%s must have length %d.", name, expected_len);
+  }
+}
 
 static void reset_team_tracker(int *team_ids, int *team_last_time, int *team_last_idx) {
   int i;
@@ -110,7 +133,23 @@ SEXP nhlscraper_pbp_shot_context(SEXP data_list) {
   is_nz_dz_sexp = VECTOR_ELT(data_list, 13);
   is_ps_so_sexp = VECTOR_ELT(data_list, 14);
 
-  n_events = (int) XLENGTH(game_id_sexp);
+  n_events = xlength_as_int(game_id_sexp, "game_id");
+  require_vector_type_and_length(order_time_sexp, INTSXP, n_events, "order_time");
+  require_vector_type_and_length(order_sort_sexp, INTSXP, n_events, "order_sort");
+  require_vector_type_and_length(game_id_sexp, INTSXP, n_events, "game_id");
+  require_vector_type_and_length(seconds_sexp, INTSXP, n_events, "seconds");
+  require_vector_type_and_length(event_owner_team_id_sexp, INTSXP, n_events, "event_owner_team_id");
+  require_vector_type_and_length(is_home_sexp, INTSXP, n_events, "is_home");
+  require_vector_type_and_length(is_attempt_sexp, LGLSXP, n_events, "is_attempt");
+  require_vector_type_and_length(is_source_sexp, LGLSXP, n_events, "is_source");
+  require_vector_type_and_length(is_goal_sexp, LGLSXP, n_events, "is_goal");
+  require_vector_type_and_length(is_sog_sexp, LGLSXP, n_events, "is_sog");
+  require_vector_type_and_length(is_fenwick_sexp, LGLSXP, n_events, "is_fenwick");
+  require_vector_type_and_length(is_corsi_sexp, LGLSXP, n_events, "is_corsi");
+  require_vector_type_and_length(is_stop_sexp, LGLSXP, n_events, "is_stop");
+  require_vector_type_and_length(is_nz_dz_sexp, LGLSXP, n_events, "is_nz_dz");
+  require_vector_type_and_length(is_ps_so_sexp, LGLSXP, n_events, "is_ps_so");
+
   order_time = INTEGER(order_time_sexp);
   order_sort = INTEGER(order_sort_sexp);
   game_id = INTEGER(game_id_sexp);
@@ -140,6 +179,12 @@ SEXP nhlscraper_pbp_shot_context(SEXP data_list) {
   away_corsi_out = PROTECT(allocVector(INTSXP, n_events)); protect_n++;
 
   for (i = 0; i < n_events; ++i) {
+    if (order_time[i] == NA_INTEGER || order_time[i] < 1 || order_time[i] > n_events) {
+      error("order_time contains an out-of-range value at position %d.", i + 1);
+    }
+    if (order_sort[i] == NA_INTEGER || order_sort[i] < 1 || order_sort[i] > n_events) {
+      error("order_sort contains an out-of-range value at position %d.", i + 1);
+    }
     LOGICAL(is_rush)[i] = is_attempt[i] == 1 ? 0 : NA_LOGICAL;
     LOGICAL(is_rebound)[i] = is_attempt[i] == 1 ? 0 : NA_LOGICAL;
     LOGICAL(created_rebound)[i] = is_attempt[i] == 1 ? 0 : NA_LOGICAL;

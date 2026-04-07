@@ -2696,7 +2696,8 @@ gc_pbp_raw <- function(game = 2023030417) {
 #'
 #' @returns data.frame with one row per event (play)
 #' @examples
-#' gc_pbp_Martin_Necas_legacy_game <- gc_play_by_play(game = 2025020275)
+#' # May take >5s, so skip.
+#' \donttest{gc_pbp_Martin_Necas_legacy_game <- gc_play_by_play(game = 2025020275)}
 #' @export
 
 gc_play_by_play <- function(game = 2023030417) {
@@ -2863,7 +2864,8 @@ wsc_pbp_raw <- function(game = 2023030417) {
 #'
 #' @returns data.frame with one row per event (play)
 #' @examples
-#' wsc_pbp_Martin_Necas_legacy_game <- wsc_play_by_play(game = 2025020275)
+#' # May take >5s, so skip.
+#' \donttest{wsc_pbp_Martin_Necas_legacy_game <- wsc_play_by_play(game = 2025020275)}
 #' @export
 
 wsc_play_by_play <- function(game = 2023030417) {

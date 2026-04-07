@@ -29,5 +29,6 @@ even when the raw \code{situationCode} is stale. Use \code{\link[=add_shift_time
 \code{\link[=shift_chart]{shift_chart()}} (or \code{\link[=shift_charts]{shift_charts()}}) to add on-ice shift timing columns.
 }
 \examples{
-gc_pbp_Martin_Necas_legacy_game <- gc_play_by_play(game = 2025020275)
+# May take >5s, so skip.
+\donttest{gc_pbp_Martin_Necas_legacy_game <- gc_play_by_play(game = 2025020275)}
 }

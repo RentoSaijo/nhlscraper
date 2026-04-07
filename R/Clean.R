@@ -992,10 +992,11 @@ add_shift_times <- function(play_by_play, shift_chart) {
   play_by_play[order(sort_order, row_id, na.last = TRUE), , drop = FALSE]
 }
 
-#' Ensure a local native symbol is loaded
+#' Ensure a native symbol is available
 #'
-#' `.ensure_local_native_symbol()` tries to load the package shared object from
-#' the local `src/` directory when a native symbol is not yet registered.
+#' `.ensure_local_native_symbol()` checks whether a native symbol is already
+#' registered and, if needed, tries to load the installed package shared object.
+#' It does not trust the current working directory.
 #'
 #' @param symbol native symbol name
 #' @returns logical scalar indicating whether the symbol is available
@@ -1006,16 +1007,27 @@ add_shift_times <- function(play_by_play, shift_chart) {
   }
   dlls <- getLoadedDLLs()
   if ('nhlscraper' %in% names(dlls)) {
-    return(is.loaded(symbol))
+    return(is.loaded(symbol, PACKAGE = 'nhlscraper'))
   }
-  dll_path <- file.path(getwd(), 'src', 'nhlscraper.so')
+  pkg_path <- tryCatch(
+    getNamespaceInfo(asNamespace('nhlscraper'), 'path'),
+    error = function(e) ''
+  )
+  if (!nzchar(pkg_path)) {
+    return(FALSE)
+  }
+  dll_path <- file.path(
+    pkg_path,
+    'libs',
+    paste0('nhlscraper', .Platform$dynlib.ext)
+  )
   if (!file.exists(dll_path)) {
     return(FALSE)
   }
   tryCatch(
     {
       dyn.load(dll_path)
-      is.loaded(symbol)
+      is.loaded(symbol, PACKAGE = 'nhlscraper')
     },
     error = function(e) FALSE
   )

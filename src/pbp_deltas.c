@@ -1,8 +1,31 @@
 #include <R.h>
 #include <Rinternals.h>
+#include <limits.h>
 
 static int is_na_or_nan(double x) {
   return ISNA(x) || ISNAN(x);
+}
+
+static int xlength_as_int(SEXP x, const char *name) {
+  R_xlen_t n = XLENGTH(x);
+  if (n > INT_MAX) {
+    error("%s is too long for native processing.", name);
+  }
+  return (int) n;
+}
+
+static void require_vector_type_and_length(
+  SEXP x,
+  SEXPTYPE type,
+  int expected_len,
+  const char *name
+) {
+  if ((SEXPTYPE) TYPEOF(x) != type) {
+    error("%s must have the expected storage mode.", name);
+  }
+  if (xlength_as_int(x, name) != expected_len) {
+    error("%s must have length %d.", name, expected_len);
+  }
 }
 
 static double diff_or_na(double current, double previous) {
@@ -13,36 +36,36 @@ static double diff_or_na(double current, double previous) {
 }
 
 SEXP nhlscraper_pbp_deltas(SEXP data_list) {
-  SEXP order_idx_sexp = VECTOR_ELT(data_list, 0);
-  SEXP game_id_sexp = VECTOR_ELT(data_list, 1);
-  SEXP event_id_sexp = VECTOR_ELT(data_list, 2);
-  SEXP seconds_sexp = VECTOR_ELT(data_list, 3);
-  SEXP x_coord_sexp = VECTOR_ELT(data_list, 4);
-  SEXP y_coord_sexp = VECTOR_ELT(data_list, 5);
-  SEXP x_coord_norm_sexp = VECTOR_ELT(data_list, 6);
-  SEXP y_coord_norm_sexp = VECTOR_ELT(data_list, 7);
-  SEXP distance_sexp = VECTOR_ELT(data_list, 8);
-  SEXP angle_sexp = VECTOR_ELT(data_list, 9);
-  SEXP is_faceoff_sexp = VECTOR_ELT(data_list, 10);
-  SEXP is_ps_so_sexp = VECTOR_ELT(data_list, 11);
+  SEXP order_idx_sexp;
+  SEXP game_id_sexp;
+  SEXP event_id_sexp;
+  SEXP seconds_sexp;
+  SEXP x_coord_sexp;
+  SEXP y_coord_sexp;
+  SEXP x_coord_norm_sexp;
+  SEXP y_coord_norm_sexp;
+  SEXP distance_sexp;
+  SEXP angle_sexp;
+  SEXP is_faceoff_sexp;
+  SEXP is_ps_so_sexp;
 
-  int n = (int) XLENGTH(game_id_sexp);
-  int *order_idx = INTEGER(order_idx_sexp);
-  int *game_id = INTEGER(game_id_sexp);
-  int *event_id = INTEGER(event_id_sexp);
-  double *seconds = REAL(seconds_sexp);
-  double *x_coord = REAL(x_coord_sexp);
-  double *y_coord = REAL(y_coord_sexp);
-  double *x_coord_norm = REAL(x_coord_norm_sexp);
-  double *y_coord_norm = REAL(y_coord_norm_sexp);
-  double *distance = REAL(distance_sexp);
-  double *angle = REAL(angle_sexp);
-  int *is_faceoff = LOGICAL(is_faceoff_sexp);
-  int *is_ps_so = LOGICAL(is_ps_so_sexp);
+  int n;
+  int *order_idx;
+  int *game_id;
+  int *event_id;
+  double *seconds;
+  double *x_coord;
+  double *y_coord;
+  double *x_coord_norm;
+  double *y_coord_norm;
+  double *distance;
+  double *angle;
+  int *is_faceoff;
+  int *is_ps_so;
 
-  int *prev_idx = (int *) R_alloc((size_t) (n > 0 ? n : 1), sizeof(int));
-  int *seq_id = (int *) R_alloc((size_t) (n > 0 ? n : 1), sizeof(int));
-  int *same_second_count = (int *) R_alloc((size_t) (n > 0 ? n : 1), sizeof(int));
+  int *prev_idx;
+  int *seq_id;
+  int *same_second_count;
   int i;
   int protect_n = 0;
 
@@ -67,6 +90,49 @@ SEXP nhlscraper_pbp_deltas(SEXP data_list) {
   if (TYPEOF(data_list) != VECSXP || XLENGTH(data_list) < 12) {
     error("Expected a list of prepared play-by-play vectors.");
   }
+
+  order_idx_sexp = VECTOR_ELT(data_list, 0);
+  game_id_sexp = VECTOR_ELT(data_list, 1);
+  event_id_sexp = VECTOR_ELT(data_list, 2);
+  seconds_sexp = VECTOR_ELT(data_list, 3);
+  x_coord_sexp = VECTOR_ELT(data_list, 4);
+  y_coord_sexp = VECTOR_ELT(data_list, 5);
+  x_coord_norm_sexp = VECTOR_ELT(data_list, 6);
+  y_coord_norm_sexp = VECTOR_ELT(data_list, 7);
+  distance_sexp = VECTOR_ELT(data_list, 8);
+  angle_sexp = VECTOR_ELT(data_list, 9);
+  is_faceoff_sexp = VECTOR_ELT(data_list, 10);
+  is_ps_so_sexp = VECTOR_ELT(data_list, 11);
+
+  n = xlength_as_int(game_id_sexp, "game_id");
+  require_vector_type_and_length(order_idx_sexp, INTSXP, n, "order_idx");
+  require_vector_type_and_length(game_id_sexp, INTSXP, n, "game_id");
+  require_vector_type_and_length(event_id_sexp, INTSXP, n, "event_id");
+  require_vector_type_and_length(seconds_sexp, REALSXP, n, "seconds");
+  require_vector_type_and_length(x_coord_sexp, REALSXP, n, "x_coord");
+  require_vector_type_and_length(y_coord_sexp, REALSXP, n, "y_coord");
+  require_vector_type_and_length(x_coord_norm_sexp, REALSXP, n, "x_coord_norm");
+  require_vector_type_and_length(y_coord_norm_sexp, REALSXP, n, "y_coord_norm");
+  require_vector_type_and_length(distance_sexp, REALSXP, n, "distance");
+  require_vector_type_and_length(angle_sexp, REALSXP, n, "angle");
+  require_vector_type_and_length(is_faceoff_sexp, LGLSXP, n, "is_faceoff");
+  require_vector_type_and_length(is_ps_so_sexp, LGLSXP, n, "is_ps_so");
+
+  order_idx = INTEGER(order_idx_sexp);
+  game_id = INTEGER(game_id_sexp);
+  event_id = INTEGER(event_id_sexp);
+  seconds = REAL(seconds_sexp);
+  x_coord = REAL(x_coord_sexp);
+  y_coord = REAL(y_coord_sexp);
+  x_coord_norm = REAL(x_coord_norm_sexp);
+  y_coord_norm = REAL(y_coord_norm_sexp);
+  distance = REAL(distance_sexp);
+  angle = REAL(angle_sexp);
+  is_faceoff = LOGICAL(is_faceoff_sexp);
+  is_ps_so = LOGICAL(is_ps_so_sexp);
+  prev_idx = (int *) R_alloc((size_t) (n > 0 ? n : 1), sizeof(int));
+  seq_id = (int *) R_alloc((size_t) (n > 0 ? n : 1), sizeof(int));
+  same_second_count = (int *) R_alloc((size_t) (n > 0 ? n : 1), sizeof(int));
 
   event_id_prev = PROTECT(allocVector(INTSXP, n)); protect_n++;
   seconds_elapsed_in_sequence = PROTECT(allocVector(REALSXP, n)); protect_n++;
@@ -103,6 +169,9 @@ SEXP nhlscraper_pbp_deltas(SEXP data_list) {
     prev_idx[i] = -1;
     seq_id[i] = NA_INTEGER;
     same_second_count[i] = 0;
+    if (order_idx[i] == NA_INTEGER || order_idx[i] < 1 || order_idx[i] > n) {
+      error("order_idx contains an out-of-range value at position %d.", i + 1);
+    }
   }
 
   i = 0;

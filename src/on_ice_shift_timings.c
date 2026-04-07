@@ -1,5 +1,6 @@
 #include <R.h>
 #include <Rinternals.h>
+#include <limits.h>
 
 typedef struct {
   int game_id;
@@ -11,6 +12,28 @@ typedef struct {
 
 static int is_na_int(int x) {
   return x == NA_INTEGER;
+}
+
+static int xlength_as_int(SEXP x, const char *name) {
+  R_xlen_t n = XLENGTH(x);
+  if (n > INT_MAX) {
+    error("%s is too long for native processing.", name);
+  }
+  return (int) n;
+}
+
+static void require_vector_type_and_length(
+  SEXP x,
+  SEXPTYPE type,
+  int expected_len,
+  const char *name
+) {
+  if ((SEXPTYPE) TYPEOF(x) != type) {
+    error("%s must have the expected storage mode.", name);
+  }
+  if (xlength_as_int(x, name) != expected_len) {
+    error("%s must have length %d.", name, expected_len);
+  }
 }
 
 static int lookup_range(
@@ -114,55 +137,121 @@ static void fill_slot_matrix(
 }
 
 SEXP nhlscraper_on_ice_shift_timings(SEXP data_list) {
-  SEXP event_game_sexp = VECTOR_ELT(data_list, 0);
-  SEXP event_period_sexp = VECTOR_ELT(data_list, 1);
-  SEXP event_seconds_sexp = VECTOR_ELT(data_list, 2);
-  SEXP home_request_sexp = VECTOR_ELT(data_list, 3);
-  SEXP away_request_sexp = VECTOR_ELT(data_list, 4);
-  SEXP shift_game_sexp = VECTOR_ELT(data_list, 5);
-  SEXP shift_period_sexp = VECTOR_ELT(data_list, 6);
-  SEXP shift_player_sexp = VECTOR_ELT(data_list, 7);
-  SEXP shift_start_sexp = VECTOR_ELT(data_list, 8);
-  SEXP shift_end_sexp = VECTOR_ELT(data_list, 9);
+  SEXP event_game_sexp;
+  SEXP event_period_sexp;
+  SEXP event_seconds_sexp;
+  SEXP home_request_sexp;
+  SEXP away_request_sexp;
+  SEXP shift_game_sexp;
+  SEXP shift_period_sexp;
+  SEXP shift_player_sexp;
+  SEXP shift_start_sexp;
+  SEXP shift_end_sexp;
+  SEXP home_dim;
+  SEXP away_dim;
 
-  const int *event_game = INTEGER(event_game_sexp);
-  const int *event_period = INTEGER(event_period_sexp);
-  const int *event_seconds = INTEGER(event_seconds_sexp);
-  const int *home_request = INTEGER(home_request_sexp);
-  const int *away_request = INTEGER(away_request_sexp);
-  const int *shift_game = INTEGER(shift_game_sexp);
-  const int *shift_period = INTEGER(shift_period_sexp);
-  const int *shift_player = INTEGER(shift_player_sexp);
-  const int *shift_start = INTEGER(shift_start_sexp);
-  const int *shift_end = INTEGER(shift_end_sexp);
+  const int *event_game;
+  const int *event_period;
+  const int *event_seconds;
+  const int *home_request;
+  const int *away_request;
+  const int *shift_game;
+  const int *shift_period;
+  const int *shift_player;
+  const int *shift_start;
+  const int *shift_end;
 
-  int n_events = LENGTH(event_game_sexp);
-  int n_shifts = LENGTH(shift_game_sexp);
-  SEXP home_dim = getAttrib(home_request_sexp, R_DimSymbol);
-  int n_rows = INTEGER(home_dim)[0];
-  int n_slots = INTEGER(home_dim)[1];
+  int n_events;
+  int n_shifts;
+  int n_rows;
+  int n_slots;
   int *shift_prev_end;
   PlayerRange *ranges;
   int n_ranges = 0;
   int i;
 
-  SEXP out = PROTECT(allocVector(VECSXP, 6));
-  SEXP out_names = PROTECT(allocVector(STRSXP, 6));
-  SEXP home_remaining = PROTECT(allocMatrix(REALSXP, n_events, n_slots));
-  SEXP away_remaining = PROTECT(allocMatrix(REALSXP, n_events, n_slots));
-  SEXP home_elapsed = PROTECT(allocMatrix(REALSXP, n_events, n_slots));
-  SEXP away_elapsed = PROTECT(allocMatrix(REALSXP, n_events, n_slots));
-  SEXP home_since = PROTECT(allocMatrix(REALSXP, n_events, n_slots));
-  SEXP away_since = PROTECT(allocMatrix(REALSXP, n_events, n_slots));
+  SEXP out;
+  SEXP out_names;
+  SEXP home_remaining;
+  SEXP away_remaining;
+  SEXP home_elapsed;
+  SEXP away_elapsed;
+  SEXP home_since;
+  SEXP away_since;
 
+  if (TYPEOF(data_list) != VECSXP || XLENGTH(data_list) < 10) {
+    error("Expected a list of prepared shift timing vectors.");
+  }
+
+  event_game_sexp = VECTOR_ELT(data_list, 0);
+  event_period_sexp = VECTOR_ELT(data_list, 1);
+  event_seconds_sexp = VECTOR_ELT(data_list, 2);
+  home_request_sexp = VECTOR_ELT(data_list, 3);
+  away_request_sexp = VECTOR_ELT(data_list, 4);
+  shift_game_sexp = VECTOR_ELT(data_list, 5);
+  shift_period_sexp = VECTOR_ELT(data_list, 6);
+  shift_player_sexp = VECTOR_ELT(data_list, 7);
+  shift_start_sexp = VECTOR_ELT(data_list, 8);
+  shift_end_sexp = VECTOR_ELT(data_list, 9);
+
+  n_events = xlength_as_int(event_game_sexp, "event_game");
+  n_shifts = xlength_as_int(shift_game_sexp, "shift_game");
+
+  require_vector_type_and_length(event_game_sexp, INTSXP, n_events, "event_game");
+  require_vector_type_and_length(event_period_sexp, INTSXP, n_events, "event_period");
+  require_vector_type_and_length(event_seconds_sexp, INTSXP, n_events, "event_seconds");
+  require_vector_type_and_length(shift_game_sexp, INTSXP, n_shifts, "shift_game");
+  require_vector_type_and_length(shift_period_sexp, INTSXP, n_shifts, "shift_period");
+  require_vector_type_and_length(shift_player_sexp, INTSXP, n_shifts, "shift_player");
+  require_vector_type_and_length(shift_start_sexp, INTSXP, n_shifts, "shift_start");
+  require_vector_type_and_length(shift_end_sexp, INTSXP, n_shifts, "shift_end");
+
+  if (TYPEOF(home_request_sexp) != INTSXP || TYPEOF(away_request_sexp) != INTSXP) {
+    error("Requested player matrices must be integer matrices.");
+  }
+
+  home_dim = getAttrib(home_request_sexp, R_DimSymbol);
+  away_dim = getAttrib(away_request_sexp, R_DimSymbol);
   if (
-    n_rows != n_events ||
-    INTEGER(getAttrib(away_request_sexp, R_DimSymbol))[0] != n_events ||
-    INTEGER(getAttrib(away_request_sexp, R_DimSymbol))[1] != n_slots
+    TYPEOF(home_dim) != INTSXP ||
+    TYPEOF(away_dim) != INTSXP ||
+    XLENGTH(home_dim) != 2 ||
+    XLENGTH(away_dim) != 2
   ) {
-    UNPROTECT(8);
+    error("Requested player matrices must have two dimensions.");
+  }
+
+  n_rows = INTEGER(home_dim)[0];
+  n_slots = INTEGER(home_dim)[1];
+  if (
+    n_rows < 0 ||
+    n_slots < 0 ||
+    n_rows != n_events ||
+    INTEGER(away_dim)[0] != n_events ||
+    INTEGER(away_dim)[1] != n_slots
+  ) {
     error("Requested player matrices have incompatible dimensions.");
   }
+
+  event_game = INTEGER(event_game_sexp);
+  event_period = INTEGER(event_period_sexp);
+  event_seconds = INTEGER(event_seconds_sexp);
+  home_request = INTEGER(home_request_sexp);
+  away_request = INTEGER(away_request_sexp);
+  shift_game = INTEGER(shift_game_sexp);
+  shift_period = INTEGER(shift_period_sexp);
+  shift_player = INTEGER(shift_player_sexp);
+  shift_start = INTEGER(shift_start_sexp);
+  shift_end = INTEGER(shift_end_sexp);
+
+  out = PROTECT(allocVector(VECSXP, 6));
+  out_names = PROTECT(allocVector(STRSXP, 6));
+  home_remaining = PROTECT(allocMatrix(REALSXP, n_events, n_slots));
+  away_remaining = PROTECT(allocMatrix(REALSXP, n_events, n_slots));
+  home_elapsed = PROTECT(allocMatrix(REALSXP, n_events, n_slots));
+  away_elapsed = PROTECT(allocMatrix(REALSXP, n_events, n_slots));
+  home_since = PROTECT(allocMatrix(REALSXP, n_events, n_slots));
+  away_since = PROTECT(allocMatrix(REALSXP, n_events, n_slots));
 
   shift_prev_end = (int *) R_alloc((size_t) n_shifts, sizeof(int));
   ranges = (PlayerRange *) R_alloc((size_t) (n_shifts > 0 ? n_shifts : 1), sizeof(PlayerRange));
