@@ -25,12 +25,14 @@ Install the official version from [CRAN](https://cran.r-project.org)
 with:
 
 ``` r
+
 install.packages('nhlscraper')
 ```
 
 Install the development version from [GitHub](https://github.com/) with:
 
 ``` r
+
 install.packages('devtools')
 devtools::install_github('RentoSaijo/nhlscraper')
 ```

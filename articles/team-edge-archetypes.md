@@ -30,6 +30,7 @@ Before focusing on the five-team comparison, it helps to see which clubs
 topped the headline EDGE categories in the 2024-25 regular season.
 
 ``` r
+
 # Pull 2024-25 team EDGE leaders.
 edge_leaders <- nhlscraper::team_edge_leaders(
   season = 20242025,
@@ -83,7 +84,7 @@ make_table(
 | Neutral-zone time         | DAL  | 0.187      |
 | Defensive-zone time       | CAR  | 0.355      |
 
-League-leading 2024-25 team EDGE categories.
+League-leading 2024-25 team EDGE categories. {.table}
 
 The leader board already tells an important story: one team does not own
 everything. Carolina owns territorial control, Colorado dominates speed,
@@ -97,6 +98,7 @@ the article is more resilient when one nested response comes back
 incomplete.
 
 ``` r
+
 # Define selected teams and robust fetch helpers.
 team_ids <- c(CAR = 12, COL = 21, EDM = 22, FLA = 13, WSH = 15)
 fetch_with_retry <- function(fetch_fun, validator, tries = 3) {
@@ -277,14 +279,14 @@ make_table(
 ```
 
 | team | points | wins | offensiveZonePctg | maxSkatingSpeed | burstsOver22 | shotAttemptsOver90 | hardestShot | interiorShare |
-|:-----|-------:|-----:|------------------:|----------------:|-------------:|-------------------:|------------:|--------------:|
-| CAR  |     99 |   47 |             0.461 |          24.491 |           98 |                 65 |      100.14 |         0.316 |
-| COL  |    102 |   49 |             0.425 |          24.817 |          212 |                 53 |       98.42 |         0.302 |
-| EDM  |    101 |   48 |             0.429 |          24.359 |          174 |                136 |       98.96 |         0.346 |
-| FLA  |     98 |   47 |             0.439 |          23.415 |           48 |                 46 |      105.05 |         0.313 |
-| WSH  |    111 |   51 |             0.395 |          23.341 |           97 |                105 |       99.55 |         0.319 |
+|:---|---:|---:|---:|---:|---:|---:|---:|---:|
+| CAR | 99 | 47 | 0.461 | 24.491 | 98 | 65 | 100.14 | 0.316 |
+| COL | 102 | 49 | 0.425 | 24.817 | 212 | 53 | 98.42 | 0.302 |
+| EDM | 101 | 48 | 0.429 | 24.359 | 174 | 136 | 98.96 | 0.346 |
+| FLA | 98 | 47 | 0.439 | 23.415 | 48 | 46 | 105.05 | 0.313 |
+| WSH | 111 | 51 | 0.395 | 23.341 | 97 | 105 | 99.55 | 0.319 |
 
-Five-team 2024-25 EDGE profile comparison.
+Five-team 2024-25 EDGE profile comparison. {.table}
 
 This table is exactly why EDGE data are fun. Carolina owns the strongest
 offensive-zone share in the group. Colorado is the speed monster.
@@ -300,6 +302,7 @@ The fastest way to see those archetypes is to put territorial control
 beside pure pace.
 
 ``` r
+
 # Plot territorial control and burst volume.
 old_par <- graphics::par(no.readonly = TRUE)
 graphics::par(mfrow = c(1, 2), mar = c(5, 7, 3, 1))
@@ -331,6 +334,7 @@ teams.](team-edge-archetypes_files/figure-html/pace-plot-1.png)
 Territorial control and pace look different across elite 2024-25 teams.
 
 ``` r
+
 graphics::par(old_par)
 ```
 
@@ -346,6 +350,7 @@ The shot mix tells a second story. Some teams live at the net front.
 Others attack more often from circles and points before crashing inside.
 
 ``` r
+
 # Plot shot mix shares.
 shot_mix <- t(as.matrix(team_profiles[, c(
   'interiorShare',
@@ -393,6 +398,7 @@ Another strength of the EDGE summaries is that they keep the most
 extreme team traits connected to the players who generated them.
 
 ``` r
+
 # Show players behind each team's most extreme speed and shot events.
 player_table <- team_profiles[, c(
   'team',
@@ -415,7 +421,8 @@ make_table(
 | FLA  | Carter Verhaeghe |          23.415 | Gustav Forsling  |      105.05 |
 | WSH  | Martin Fehérváry |          23.341 | John Carlson     |       99.55 |
 
-Players behind each team’s fastest burst and hardest shot.
+Players behind each team’s fastest burst and hardest shot. {.table
+style="width:100%;"}
 
 That detail keeps the analysis from drifting into abstraction. A team
 style is still built by players. Colorado’s pace story lives inside

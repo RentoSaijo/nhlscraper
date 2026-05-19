@@ -27,6 +27,7 @@ We want one row per player with career regular-season scoring, career
 playoff scoring, and basic biometrics.
 
 ``` r
+
 # Pull playoff, regular-season, and biometric records.
 playoff_stats <- nhlscraper::skater_playoff_statistics()
 career_stats <- nhlscraper::skater_statistics()[, c(
@@ -99,16 +100,17 @@ analysis_tbl[['weightQuartile']] <- cut(
   labels = c('Lightest', 'Second', 'Third', 'Heaviest')
 )
 nrow(analysis_tbl)
-#> [1] 1680
+#> [1] 1711
 ```
 
-That leaves 1680 modern skaters. The sample is large enough to smooth
+That leaves 1711 modern skaters. The sample is large enough to smooth
 away one-hot playoff runs, but still focused enough to keep the
 comparison about contemporary hockey. To make the shape of the data
 concrete, it helps to peek at a few of the strongest playoff scorers in
 the sample.
 
 ``` r
+
 # Show sample of strongest playoff scorers.
 sample_tbl <- analysis_tbl[
   order(-analysis_tbl[['playoffPPG']], -analysis_tbl[['gamesPlayed']]),
@@ -130,18 +132,19 @@ make_table(
 )
 ```
 
-|       | playerFullName   | positionCode | weight | rsGamesPlayed | gamesPlayed | regularPPG | playoffPPG | playoffLift |
-|:------|:-----------------|:-------------|-------:|--------------:|------------:|-----------:|-----------:|------------:|
-| 12088 | Connor McDavid   | C            |    194 |           789 |          96 |      1.531 |      1.562 |       0.031 |
-| 12089 | Connor McDavid   | C            |    194 |           789 |          96 |      1.531 |      1.562 |       0.031 |
-| 11907 | Leon Draisaitl   | C            |    209 |           855 |          96 |      1.232 |      1.469 |       0.237 |
-| 11908 | Leon Draisaitl   | C            |    209 |           855 |          96 |      1.232 |      1.469 |       0.237 |
-| 11792 | Nathan MacKinnon | C            |    200 |           945 |          95 |      1.203 |      1.316 |       0.113 |
-| 11793 | Nathan MacKinnon | C            |    200 |           945 |          95 |      1.203 |      1.316 |       0.113 |
-| 8431  | Marian Hossa     | R            |    207 |          1309 |          20 |      0.866 |      1.300 |       0.434 |
-| 12106 | Mikko Rantanen   | R            |    228 |           711 |          81 |      1.094 |      1.247 |       0.153 |
+|  | playerFullName | positionCode | weight | rsGamesPlayed | gamesPlayed | regularPPG | playoffPPG | playoffLift |
+|:---|:---|:---|---:|---:|---:|---:|---:|---:|
+| 12145 | Connor McDavid | C | 194 | 794 | 102 | 1.537 | 1.529 | -0.007 |
+| 12146 | Connor McDavid | C | 194 | 794 | 102 | 1.537 | 1.529 | -0.007 |
+| 11956 | Leon Draisaitl | C | 209 | 855 | 102 | 1.232 | 1.480 | 0.249 |
+| 11957 | Leon Draisaitl | C | 209 | 855 | 102 | 1.232 | 1.480 | 0.249 |
+| 11833 | Nathan MacKinnon | C | 200 | 950 | 104 | 1.202 | 1.327 | 0.125 |
+| 11834 | Nathan MacKinnon | C | 200 | 950 | 104 | 1.202 | 1.327 | 0.125 |
+| 8431 | Marian Hossa | R | 207 | 1309 | 20 | 0.866 | 1.300 | 0.434 |
+| 12162 | Mikko Rantanen | R | 228 | 716 | 81 | 1.092 | 1.247 | 0.155 |
 
-Top playoff scoring rates among skaters in the working sample.
+Top playoff scoring rates among skaters in the working sample. {.table
+style="width:100%;"}
 
 ## Compare Weight Quartiles
 
@@ -152,6 +155,7 @@ groups in playoff scoring rate, or at least show a meaningfully smaller
 drop from regular-season scoring.
 
 ``` r
+
 # Summarize scoring levels and playoff lift by quartile.
 quartile_summary <- aggregate(
   cbind(regularPPG, playoffPPG, playoffLift) ~ weightQuartile,
@@ -177,20 +181,20 @@ make_table(
 
 |     | weightQuartile |   n | regularPPG | playoffPPG | playoffLift |
 |:----|:---------------|----:|-----------:|-----------:|------------:|
-| 2   | Lightest       | 420 |      0.511 |      0.461 |      -0.050 |
-| 3   | Second         | 420 |      0.475 |      0.416 |      -0.059 |
-| 4   | Third          | 420 |      0.438 |      0.380 |      -0.058 |
-| 1   | Heaviest       | 420 |      0.417 |      0.378 |      -0.040 |
+| 2   | Lightest       | 427 |      0.508 |      0.458 |      -0.050 |
+| 3   | Second         | 428 |      0.479 |      0.420 |      -0.059 |
+| 4   | Third          | 428 |      0.440 |      0.384 |      -0.056 |
+| 1   | Heaviest       | 428 |      0.417 |      0.375 |      -0.042 |
 
 Regular-season scoring, playoff scoring, and playoff lift by weight
-quartile.
+quartile. {.table}
 
 This is where the cliché starts to wobble. The lightest quartile posts
-the strongest playoff scoring rate in the sample at about 0.461 points
-per game, while the heaviest quartile sits at about 0.378. But the
+the strongest playoff scoring rate in the sample at about 0.458 points
+per game, while the heaviest quartile sits at about 0.375. But the
 second question is more subtle. The heaviest skaters do **not** lead in
 raw playoff scoring, yet they also show the smallest drop from their own
-regular-season baseline. Their average playoff lift is about -0.040,
+regular-season baseline. Their average playoff lift is about -0.042,
 compared with -0.050 for the lightest group. That is a more interesting
 result than a simple yes-or-no size verdict. Bigger skaters are not the
 most productive playoff scorers on average, but they may lose slightly
@@ -202,6 +206,7 @@ A table gives the means. A plot shows whether those means reflect broad
 tendencies or just a few stars.
 
 ``` r
+
 # Plot playoff scoring distribution and average lift.
 old_par <- graphics::par(no.readonly = TRUE)
 graphics::par(mfrow = c(1, 2), mar = c(8, 4, 3, 1))
@@ -232,6 +237,7 @@ quartile.](playoff-size_files/figure-html/quartile-plot-1.png)
 Playoff scoring level and playoff lift by weight quartile.
 
 ``` r
+
 graphics::par(old_par)
 ```
 
@@ -250,6 +256,7 @@ One way to make the translation question feel real is to look at the
 players with the biggest positive playoff bump.
 
 ``` r
+
 # Show largest positive playoff lifts among larger-sample skaters.
 risers_tbl <- analysis_tbl[
   analysis_tbl[['gamesPlayed']] >= 40,
@@ -270,21 +277,21 @@ make_table(
 )
 ```
 
-|       | playerFullName    | positionBucket | weight | regularPPG | playoffPPG | playoffLift |
-|:------|:------------------|:---------------|-------:|-----------:|-----------:|------------:|
-| 8218  | Daniel Brière     | Forward        |    174 |      0.715 |      1.059 |       0.344 |
-| 12588 | Evan Bouchard     | Defense        |    192 |      0.769 |      1.080 |       0.311 |
-| 12589 | Evan Bouchard     | Defense        |    192 |      0.769 |      1.080 |       0.311 |
-| 11780 | Artturi Lehkonen  | Forward        |    179 |      0.510 |      0.778 |       0.268 |
-| 10817 | Jakob Silfverberg | Forward        |    207 |      0.455 |      0.719 |       0.264 |
-| 11910 | Sam Bennett       | Forward        |    193 |      0.515 |      0.766 |       0.251 |
-| 11907 | Leon Draisaitl    | Forward        |    209 |      1.232 |      1.469 |       0.237 |
-| 11908 | Leon Draisaitl    | Forward        |    209 |      1.232 |      1.469 |       0.237 |
-| 12202 | Evan Rodrigues    | Forward        |    182 |      0.438 |      0.672 |       0.234 |
-| 10805 | Ryan O’Reilly     | Forward        |    207 |      0.728 |      0.961 |       0.233 |
+|  | playerFullName | positionBucket | weight | regularPPG | playoffPPG | playoffLift |
+|:---|:---|:---|---:|---:|---:|---:|
+| 8218 | Daniel Brière | Forward | 174 | 0.715 | 1.059 | 0.344 |
+| 12706 | Evan Bouchard | Defense | 192 | 0.776 | 1.086 | 0.310 |
+| 12707 | Evan Bouchard | Defense | 192 | 0.776 | 1.086 | 0.310 |
+| 11820 | Artturi Lehkonen | Forward | 179 | 0.509 | 0.788 | 0.279 |
+| 10827 | Jakob Silfverberg | Forward | 207 | 0.455 | 0.719 | 0.264 |
+| 11958 | Sam Bennett | Forward | 193 | 0.514 | 0.766 | 0.253 |
+| 11956 | Leon Draisaitl | Forward | 209 | 1.232 | 1.480 | 0.249 |
+| 11957 | Leon Draisaitl | Forward | 209 | 1.232 | 1.480 | 0.249 |
+| 10849 | Nazem Kadri | Forward | 185 | 0.716 | 0.952 | 0.237 |
+| 12273 | Evan Rodrigues | Forward | 182 | 0.438 | 0.672 | 0.234 |
 
 Largest playoff scoring lifts among skaters with at least 40 playoff
-games.
+games. {.table style="width:100%;"}
 
 This table also hints at an important caveat: some of the best playoff
 translators are defensemen. That matters because defense is a position
@@ -298,6 +305,7 @@ simple model with playoff lift as the response and height, weight, and a
 defense indicator as predictors.
 
 ``` r
+
 # Fit simple playoff-lift model.
 lift_fit <- stats::lm(
   playoffLift ~ height + weight + I(positionCode == 'D'),
@@ -328,12 +336,13 @@ make_table(
 
 | term              | Estimate | Std. Error | t value | Pr(\>\|t\|) |
 |:------------------|---------:|-----------:|--------:|------------:|
-| Intercept         |  -0.0165 |     0.1221 | -0.1352 |      0.8925 |
-| Height            |  -0.0012 |     0.0021 | -0.5817 |      0.5608 |
-| Weight            |   0.0002 |     0.0003 |  0.7715 |      0.4405 |
-| Defense indicator |   0.0305 |     0.0068 |  4.4641 |      0.0000 |
+| Intercept         |   0.0055 |     0.1196 |  0.0463 |      0.9631 |
+| Height            |  -0.0016 |     0.0021 | -0.7601 |      0.4473 |
+| Weight            |   0.0002 |     0.0003 |  0.8594 |      0.3902 |
+| Defense indicator |   0.0280 |     0.0067 |  4.1941 |      0.0000 |
 
 Linear model of playoff scoring lift on height, weight, and position.
+{.table}
 
 In this specification, neither height nor weight carries a strong
 standalone slope once position is accounted for. The cleanest signal is

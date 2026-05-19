@@ -12,8 +12,8 @@
 <link rel="icon" sizes="any" href="../favicon.ico">
 <link rel="manifest" href="../site.webmanifest">
 <script src="../lightswitch.js"></script><script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
-<script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
+<link href="../deps/bootstrap-5.3.8/bootstrap.min.css" rel="stylesheet">
+<script src="../deps/bootstrap-5.3.8/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
 <link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
 <script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="How Costly Are Back-to-Backs in the Salary-Cap Era?">
 </head>
@@ -25,7 +25,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">nhlscraper</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.6.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.6.0.9000</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -84,7 +84,7 @@
       <img src="../logo.png" class="logo" alt=""><h1>How Costly Are Back-to-Backs in the Salary-Cap Era?</h1>
             
       
-      <small class="dont-index">Source: <a href="https://github.com/RentoSaijo/nhlscraper/blob/v0.6.0/vignettes/back-to-back-tax.Rmd" class="external-link"><code>vignettes/back-to-back-tax.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/RentoSaijo/nhlscraper/blob/main/vignettes/back-to-back-tax.Rmd" class="external-link"><code>vignettes/back-to-back-tax.Rmd</code></a></small>
       <div class="d-none name"><code>back-to-back-tax.Rmd</code></div>
     </div>
 
@@ -221,31 +221,31 @@ bucket.</caption>
 <tr class="odd">
 <td align="left">0</td>
 <td align="right">8648</td>
-<td align="right">0.448</td>
-<td align="right">-0.275</td>
+<td align="right">0.450</td>
+<td align="right">-0.274</td>
 </tr>
 <tr class="even">
 <td align="left">1</td>
 <td align="right">27756</td>
-<td align="right">0.506</td>
-<td align="right">0.039</td>
+<td align="right">0.508</td>
+<td align="right">0.038</td>
 </tr>
 <tr class="odd">
 <td align="left">2</td>
 <td align="right">9441</td>
-<td align="right">0.520</td>
-<td align="right">0.118</td>
+<td align="right">0.521</td>
+<td align="right">0.119</td>
 </tr>
 <tr class="even">
 <td align="left">3+</td>
 <td align="right">4723</td>
-<td align="right">0.500</td>
-<td align="right">0.041</td>
+<td align="right">0.501</td>
+<td align="right">0.042</td>
 </tr>
 </tbody>
 </table>
-<p>The back-to-back effect is real. Teams on zero rest win about 44.8
-percent of the time, compared with about 52.0 percent on two days of
+<p>The back-to-back effect is real. Teams on zero rest win about 45.0
+percent of the time, compared with about 52.1 percent on two days of
 rest. Goal differential moves the same way: teams on zero rest are
 underwater on average, while teams with one or two days off are slightly
 positive. That is already enough to say the schedule complaint has
@@ -321,29 +321,29 @@ in their own building.</p>
 <tbody>
 <tr class="odd">
 <td align="left">0</td>
-<td align="right">0.507</td>
-<td align="right">0.421</td>
+<td align="right">0.509</td>
+<td align="right">0.422</td>
 </tr>
 <tr class="even">
 <td align="left">1</td>
-<td align="right">0.548</td>
-<td align="right">0.459</td>
+<td align="right">0.550</td>
+<td align="right">0.461</td>
 </tr>
 <tr class="odd">
 <td align="left">2</td>
-<td align="right">0.556</td>
-<td align="right">0.479</td>
+<td align="right">0.557</td>
+<td align="right">0.480</td>
 </tr>
 <tr class="even">
 <td align="left">3+</td>
 <td align="right">0.526</td>
-<td align="right">0.465</td>
+<td align="right">0.466</td>
 </tr>
 </tbody>
 </table>
 <p>Back-to-backs hurt everywhere, but they hurt more on the road. On
-zero rest, road teams win only about 42.1 percent of the time, while
-home teams on zero rest still manage about 50.7 percent.</p>
+zero rest, road teams win only about 42.2 percent of the time, while
+home teams on zero rest still manage about 50.9 percent.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">graphics</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq_len</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">home_road_table</span><span class="op">)</span><span class="op">)</span>,</span>
@@ -440,38 +440,38 @@ effects together.</p>
 <tbody>
 <tr class="odd">
 <td align="left">Intercept</td>
-<td align="right">-0.3162</td>
+<td align="right">-0.3094</td>
 <td align="right">0.0225</td>
-<td align="right">-14.0740</td>
-<td align="right">0e+00</td>
+<td align="right">-13.7767</td>
+<td align="right">0.0000</td>
 </tr>
 <tr class="even">
 <td align="left">One day versus zero</td>
-<td align="right">0.1627</td>
+<td align="right">0.1630</td>
 <td align="right">0.0251</td>
-<td align="right">6.4829</td>
-<td align="right">0e+00</td>
+<td align="right">6.4975</td>
+<td align="right">0.0000</td>
 </tr>
 <tr class="odd">
 <td align="left">Two days versus zero</td>
-<td align="right">0.2172</td>
+<td align="right">0.2142</td>
 <td align="right">0.0302</td>
-<td align="right">7.1907</td>
-<td align="right">0e+00</td>
+<td align="right">7.0940</td>
+<td align="right">0.0000</td>
 </tr>
 <tr class="even">
 <td align="left">Three-plus days versus zero</td>
-<td align="right">0.1240</td>
+<td align="right">0.1193</td>
 <td align="right">0.0366</td>
-<td align="right">3.3834</td>
-<td align="right">7e-04</td>
+<td align="right">3.2557</td>
+<td align="right">0.0011</td>
 </tr>
 <tr class="odd">
 <td align="left">Home indicator</td>
-<td align="right">0.3368</td>
+<td align="right">0.3376</td>
 <td align="right">0.0181</td>
-<td align="right">18.6006</td>
-<td align="right">0e+00</td>
+<td align="right">18.6448</td>
+<td align="right">0.0000</td>
 </tr>
 </tbody>
 </table>
@@ -539,19 +539,19 @@ zero-rest games.</caption>
 <td align="left">6</td>
 <td align="left">BOS</td>
 <td align="right">281</td>
-<td align="right">0.495</td>
+<td align="right">0.498</td>
 </tr>
 <tr class="even">
+<td align="left">28</td>
+<td align="left">SJS</td>
+<td align="right">271</td>
+<td align="right">0.491</td>
+</tr>
+<tr class="odd">
 <td align="left">5</td>
 <td align="left">PIT</td>
 <td align="right">303</td>
 <td align="right">0.488</td>
-</tr>
-<tr class="odd">
-<td align="left">28</td>
-<td align="left">SJS</td>
-<td align="right">271</td>
-<td align="right">0.487</td>
 </tr>
 <tr class="even">
 <td align="left">16</td>
@@ -563,19 +563,19 @@ zero-rest games.</caption>
 <td align="left">19</td>
 <td align="left">STL</td>
 <td align="right">295</td>
-<td align="right">0.478</td>
+<td align="right">0.481</td>
 </tr>
 <tr class="even">
 <td align="left">12</td>
 <td align="left">CAR</td>
 <td align="right">321</td>
-<td align="right">0.477</td>
+<td align="right">0.480</td>
 </tr>
 <tr class="odd">
 <td align="left">18</td>
 <td align="left">NSH</td>
 <td align="right">260</td>
-<td align="right">0.473</td>
+<td align="right">0.477</td>
 </tr>
 <tr class="even">
 <td align="left">26</td>

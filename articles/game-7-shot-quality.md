@@ -25,6 +25,7 @@ to two visuals that show how the game breathed.
 We work from the final itself, Game 7 of the 2024 Final (`2023030417`).
 
 ``` r
+
 # Pull summary, play-by-play, and roster context.
 game_summary <- nhlscraper::gc_summary(2023030417)
 pbp_xg <- nhlscraper::calculate_expected_goals(
@@ -79,6 +80,7 @@ Before getting fancy, it helps to put the official result and the xG
 estimate side by side.
 
 ``` r
+
 # Summarize team-level scoreboard and xG results.
 team_table <- data.frame(
   team = c(home_abbrev, away_abbrev),
@@ -108,7 +110,7 @@ make_table(
 | FLA  |     2 |          21 | 2.260 |     0.108 |
 | EDM  |     1 |          24 | 2.499 |     0.104 |
 
-Game 7 team context: score, shots on goal, and expected goals.
+Game 7 team context: score, shots on goal, and expected goals. {.table}
 
 The result and the process point in the same direction, but only
 narrowly. Florida edges Edmonton in goals, edges Edmonton in raw xG, and
@@ -124,6 +126,7 @@ end within one chance. Period-level xG helps show where the pressure
 actually accumulated.
 
 ``` r
+
 # Summarize xG by period and team.
 period_data <- data.frame(
   periodNumber = shots[['periodNumber']],
@@ -162,7 +165,7 @@ make_table(
 |      2 |  0.408 |  0.822 |
 |      3 |  1.224 |  1.138 |
 
-Expected goals by period in Game 7.
+Expected goals by period in Game 7. {.table}
 
 Florida’s biggest push arrives in the third period. That matters because
 it matches the feel of the game: Edmonton kept hanging around, but
@@ -176,6 +179,7 @@ things about working directly from the event log is that you can ask
 which specific looks drove the game.
 
 ``` r
+
 # Show largest individual shot-quality events.
 chance_idx <- order(-shots[['xG']])
 chance_table <- data.frame(
@@ -208,7 +212,7 @@ make_table(
 | Connor McDavid  | EDM  |      3 | 17:17        |         82 |          3 | 0.116 |
 | Matthew Tkachuk | FLA  |      1 | 18:41        |         84 |         -8 | 0.109 |
 
-Highest-xG individual chances in Game 7.
+Highest-xG individual chances in Game 7. {.table}
 
 That table is a nice reminder that a one-game study can still be
 concrete. Instead of saying “Florida had a slight edge,” you can point
@@ -222,6 +226,7 @@ traded dangerous looks, or because one team held a long territorial edge
 that never quite broke the score open.
 
 ``` r
+
 # Build cumulative xG paths for both teams.
 build_cum_path <- function(team_id) {
   team_idx <- shots[['eventOwnerTeamId']] == team_id
@@ -244,6 +249,7 @@ away_path <- build_cum_path(away_id)
 ```
 
 ``` r
+
 graphics::plot(
   home_path[['minutes']],
   home_path[['cumXG']],
@@ -289,6 +295,7 @@ dangerous* the looks were. A shot map shows *where* those looks came
 from.
 
 ``` r
+
 # Split shot map inputs by team.
 home_shots <- shots[shots[['eventOwnerTeamId']] == home_id, ]
 away_shots <- shots[shots[['eventOwnerTeamId']] == away_id, ]

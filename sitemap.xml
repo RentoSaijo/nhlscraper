@@ -63,11 +63,6 @@
 <url><loc>https://rentosaijo.github.io/nhlscraper/reference/dot-html_event_code_to_type_desc.html</loc></url>
 <url><loc>https://rentosaijo.github.io/nhlscraper/reference/dot-html_extract_actor_player_ids.html</loc></url>
 <url><loc>https://rentosaijo.github.io/nhlscraper/reference/dot-html_extract_tagged_players.html</loc></url>
-<url><loc>https://rentosaijo.github.io/nhlscraper/reference/dot-html_on_ice_can_override_strength_context.html</loc></url>
-<url><loc>https://rentosaijo.github.io/nhlscraper/reference/dot-html_on_ice_matches_event_actors.html</loc></url>
-<url><loc>https://rentosaijo.github.io/nhlscraper/reference/dot-html_on_ice_matches_late_empty_net.html</loc></url>
-<url><loc>https://rentosaijo.github.io/nhlscraper/reference/dot-html_on_ice_matches_reconstructed_strength.html</loc></url>
-<url><loc>https://rentosaijo.github.io/nhlscraper/reference/dot-html_on_ice_matches_situation_code.html</loc></url>
 <url><loc>https://rentosaijo.github.io/nhlscraper/reference/dot-html_pbp_report_url.html</loc></url>
 <url><loc>https://rentosaijo.github.io/nhlscraper/reference/dot-html_report_request.html</loc></url>
 <url><loc>https://rentosaijo.github.io/nhlscraper/reference/dot-lookup_roster_player_id.html</loc></url>
@@ -86,7 +81,6 @@
 <url><loc>https://rentosaijo.github.io/nhlscraper/reference/dot-on_ice_skater_slots.html</loc></url>
 <url><loc>https://rentosaijo.github.io/nhlscraper/reference/dot-on_ice_timing_scalar_column_names.html</loc></url>
 <url><loc>https://rentosaijo.github.io/nhlscraper/reference/dot-optional_html_pbp_rows_from_response.html</loc></url>
-<url><loc>https://rentosaijo.github.io/nhlscraper/reference/dot-override_strength_context_from_html.html</loc></url>
 <url><loc>https://rentosaijo.github.io/nhlscraper/reference/dot-parallel_request_failed.html</loc></url>
 <url><loc>https://rentosaijo.github.io/nhlscraper/reference/dot-parse_html_elapsed_clock.html</loc></url>
 <url><loc>https://rentosaijo.github.io/nhlscraper/reference/dot-parse_html_on_ice_cell.html</loc></url>
@@ -98,7 +92,6 @@
 <url><loc>https://rentosaijo.github.io/nhlscraper/reference/dot-perform_parallel_requests.html</loc></url>
 <url><loc>https://rentosaijo.github.io/nhlscraper/reference/dot-public_pbp_is_shootout_eligible.html</loc></url>
 <url><loc>https://rentosaijo.github.io/nhlscraper/reference/dot-public_pbp_legal_period_seconds.html</loc></url>
-<url><loc>https://rentosaijo.github.io/nhlscraper/reference/dot-reconstruct_skater_counts_from_penalties.html</loc></url>
 <url><loc>https://rentosaijo.github.io/nhlscraper/reference/dot-repair_public_pbp_sequence.html</loc></url>
 <url><loc>https://rentosaijo.github.io/nhlscraper/reference/dot-require_public_pbp_columns.html</loc></url>
 <url><loc>https://rentosaijo.github.io/nhlscraper/reference/dot-require_shift_chart_columns.html</loc></url>
@@ -271,6 +264,7 @@
 <url><loc>https://rentosaijo.github.io/nhlscraper/reference/series.html</loc></url>
 <url><loc>https://rentosaijo.github.io/nhlscraper/reference/series_schedule.html</loc></url>
 <url><loc>https://rentosaijo.github.io/nhlscraper/reference/shift_chart.html</loc></url>
+<url><loc>https://rentosaijo.github.io/nhlscraper/reference/shift_chart_summary.html</loc></url>
 <url><loc>https://rentosaijo.github.io/nhlscraper/reference/shift_charts.html</loc></url>
 <url><loc>https://rentosaijo.github.io/nhlscraper/reference/shifts.html</loc></url>
 <url><loc>https://rentosaijo.github.io/nhlscraper/reference/skater_edge_leaders.html</loc></url>

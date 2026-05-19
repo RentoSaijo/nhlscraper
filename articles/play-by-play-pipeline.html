@@ -12,8 +12,8 @@
 <link rel="icon" sizes="any" href="../favicon.ico">
 <link rel="manifest" href="../site.webmanifest">
 <script src="../lightswitch.js"></script><script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
-<script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
+<link href="../deps/bootstrap-5.3.8/bootstrap.min.css" rel="stylesheet">
+<script src="../deps/bootstrap-5.3.8/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
 <link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
 <script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="How gc_play_by_play() and wsc_play_by_play() Work">
 </head>
@@ -25,7 +25,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">nhlscraper</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.6.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.6.0.9000</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -84,7 +84,7 @@
       <img src="../logo.png" class="logo" alt=""><h1>How gc_play_by_play() and wsc_play_by_play() Work</h1>
             
       
-      <small class="dont-index">Source: <a href="https://github.com/RentoSaijo/nhlscraper/blob/v0.6.0/vignettes/play-by-play-pipeline.Rmd" class="external-link"><code>vignettes/play-by-play-pipeline.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/RentoSaijo/nhlscraper/blob/main/vignettes/play-by-play-pipeline.Rmd" class="external-link"><code>vignettes/play-by-play-pipeline.Rmd</code></a></small>
       <div class="d-none name"><code>play-by-play-pipeline.Rmd</code></div>
     </div>
 
@@ -179,11 +179,11 @@ columns:</p>
 <li><code>manDifferential</code></li>
 <li><code>strengthState</code></li>
 </ul>
-<p>These are the public summary columns that describe the state context
-of the play. The raw <code>situationCode</code> itself is kept in the
-output as-is. That preserves the upstream source record even when the
-package later concludes that the HTML report indicates a more realistic
-on-ice identity set.</p>
+<p>These are the public summary columns that describe the intended rules
+context of the play. The raw <code>situationCode</code> itself is kept
+in the output as-is. The HTML report can later supply a
+different-looking player identity set, but it does not rewrite these
+<code>situationCode</code>-derived state columns.</p>
 </div>
 <div class="section level2">
 <h2 id="step-5-add-coordinate-and-shot-context-enrichment-">Step 5: Add coordinate and shot-context enrichment.<a class="anchor" aria-label="anchor" href="#step-5-add-coordinate-and-shot-context-enrichment-"></a>
@@ -223,9 +223,11 @@ shooting perspective.</p>
 <div class="section level2">
 <h2 id="step-7-match-html-rows-back-to-api-rows-">Step 7: Match HTML rows back to API rows.<a class="anchor" aria-label="anchor" href="#step-7-match-html-rows-back-to-api-rows-"></a>
 </h2>
-<p>The package does not join HTML to API rows only on time. It builds a
-richer event signature on both sides and uses that to align the reports.
-The matching logic uses combinations of:</p>
+<p>The package does not join HTML to API rows only on time, and it does
+not require the HTML on-ice counts to agree with
+<code>situationCode</code>. It builds a richer event signature on both
+sides and uses that to align the reports. The matching logic uses
+combinations of:</p>
 <ul>
 <li>period</li>
 <li>elapsed seconds</li>
@@ -238,41 +240,34 @@ The matching logic uses combinations of:</p>
 the API event sequence is, the safer the HTML match becomes.</p>
 </div>
 <div class="section level2">
-<h2 id="step-8-decide-whether-an-html-on-ice-row-is-safe-to-use-">Step 8: Decide whether an HTML on-ice row is safe to use.<a class="anchor" aria-label="anchor" href="#step-8-decide-whether-an-html-on-ice-row-is-safe-to-use-"></a>
+<h2 id="step-8-keep-state-context-separate-from-player-identity-">Step 8: Keep state context separate from player identity.<a class="anchor" aria-label="anchor" href="#step-8-keep-state-context-separate-from-player-identity-"></a>
 </h2>
-<p>A matched HTML row is not accepted blindly. The package checks
-whether the HTML on-ice set is compatible with the API-side
-understanding of the play. There are three main acceptance paths:</p>
-<ol style="list-style-type: decimal">
-<li>The HTML player counts match the raw
-<code>situationCode</code>.</li>
-<li>The HTML player counts match a rules-based strength reconstruction
-from the API penalty sequence.</li>
-<li>The HTML counts disagree, but the event actors clearly sit inside
-the HTML on-ice sets, which makes the row useful for player identity
-even if the upstream count context is off.</li>
-</ol>
-<p>That third path is the deliberate compromise between strict
-consistency and recording what most likely happened on the ice.</p>
+<p>A matched HTML row is used for the on-ice player ID columns. It is
+not used to recalculate the <code>situationCode</code>-derived context
+columns. This keeps two related but different concepts separate:</p>
+<ul>
+<li>
+<code>situationCode</code>, <code>homeSkaterCount</code>,
+<code>awaySkaterCount</code>, empty-net flags,
+<code>manDifferential</code>, and <code>strengthState</code> describe
+the intended rules state.</li>
+<li>
+<code>homeGoaliePlayerId</code>, <code>awayGoaliePlayerId</code>,
+and the skater ID columns describe the players listed in the HTML report
+for that event.</li>
+</ul>
+<p>The HTML report can list more or fewer players than the intended
+state implies. That can happen around line changes, unusual bench
+situations, or report noise. The package preserves the listed identities
+without letting those counts change the intended state context.</p>
 </div>
 <div class="section level2">
-<h2 id="step-9-reconstruct-known-strength-state-mistakes-conservatively-">Step 9: Reconstruct known strength-state mistakes
-conservatively.<a class="anchor" aria-label="anchor" href="#step-9-reconstruct-known-strength-state-mistakes-conservatively-"></a>
+<h2 id="step-9-keep-one-on-one-rows-constrained-">Step 9: Keep one-on-one rows constrained.<a class="anchor" aria-label="anchor" href="#step-9-keep-one-on-one-rows-constrained-"></a>
 </h2>
-<p>Some API stretches clearly carry stale or implausible manpower state
-even though the event stream itself gives enough information to
-reconstruct the expected skater counts. The reconstruction logic handles
-narrow cases such as:</p>
-<ul>
-<li>active penalties</li>
-<li>double minors</li>
-<li>goal-based minor releases</li>
-<li>coincidental major suppression</li>
-<li>delayed-penalty and late empty-net situations</li>
-</ul>
-<p>When the package has enough evidence to trust the rules-based
-reconstruction, it updates the derived strength context columns. The raw
-<code>situationCode</code> still remains untouched.</p>
+<p>Penalty-shot and shootout rows with <code>0101</code> or
+<code>1010</code> are different. Those states are genuinely one-on-one
+plays. Even if the HTML report lists extra players, the package records
+only the shooter and the defending goalie for those rows.</p>
 </div>
 <div class="section level2">
 <h2 id="step-10-populate-on-ice-player-ids-">Step 10: Populate on-ice player IDs.<a class="anchor" aria-label="anchor" href="#step-10-populate-on-ice-player-ids-"></a>
@@ -308,9 +303,9 @@ dynamically to <code>skater6</code>, <code>skater7</code>,
 <h3 id="shootouts-and-penalty-shots">Shootouts and penalty shots<a class="anchor" aria-label="anchor" href="#shootouts-and-penalty-shots"></a>
 </h3>
 <p>Rows with one-on-one states such as <code>0101</code> and
-<code>1010</code> are allowed to populate only the shooter and the
-defending goalie. The HTML report typically shows only those players,
-which is correct for the event.</p>
+<code>1010</code> populate only the shooter and the defending goalie.
+Extra HTML-listed players on those rows are treated as report noise
+because the play is supposed to be one shooter against one goalie.</p>
 </div>
 <div class="section level3">
 <h3 id="unmatched-delayed-penalty-rows">Unmatched delayed-penalty rows<a class="anchor" aria-label="anchor" href="#unmatched-delayed-penalty-rows"></a>
@@ -367,9 +362,9 @@ is already built.</p>
 <li>start from the API play-by-play</li>
 <li>repair only the event-order and strength mistakes that are logically
 supportable</li>
-<li>use the HTML report to recover the actual players on the ice</li>
-<li>preserve the raw <code>situationCode</code>, but do not let it block
-clearly useful player identity rows</li>
+<li>use <code>situationCode</code> for intended manpower context</li>
+<li>use the HTML report to recover listed on-ice player identities</li>
+<li>keep one-on-one rows to shooter plus goalie</li>
 <li>use <code><a href="../reference/shift_chart.html">shift_chart()</a></code> later when you need shift timing
 rather than event-level player identity</li>
 </ul>

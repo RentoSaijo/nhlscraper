@@ -23,6 +23,7 @@ split picks into first-round selections and everyone taken from Rounds 2
 through 7.
 
 ``` r
+
 # Pull draft picks and keep skaters with measured size.
 draft_tbl <- nhlscraper::draft_picks()
 draft_tbl <- draft_tbl[
@@ -69,6 +70,7 @@ The first pass is simple: average height and weight by era and round
 bucket.
 
 ``` r
+
 # Summarize size by era and round bucket.
 era_summary <- aggregate(
   cbind(height, weight) ~ era + roundBucket,
@@ -94,7 +96,7 @@ make_table(
 | 2010-2019 | Rounds 2-7  | 72.575 | 186.634 |
 | 2020-2025 | Rounds 2-7  | 72.981 | 185.607 |
 
-Average drafted skater size by era and draft bucket.
+Average drafted skater size by era and draft bucket. {.table}
 
 The shape is more nuanced than the usual “the game keeps getting bigger”
 story. Average first-round size surged in the 1990s, stayed elevated in
@@ -112,6 +114,7 @@ reduce noise from small annual swings, we use a five-draft rolling
 average.
 
 ``` r
+
 # Compute annual mean height by round bucket.
 round1_annual <- aggregate(
   height ~ draftYear,
@@ -138,6 +141,7 @@ later_annual[['rollHeight']] <- as.numeric(stats::filter(
 ```
 
 ``` r
+
 graphics::plot(
   round1_annual[['draftYear']],
   round1_annual[['rollHeight']],
@@ -186,6 +190,7 @@ more intuitive marker. Here we ask what share of drafted skaters were at
 least 6-foot-2.
 
 ``` r
+
 # Summarize share of taller skaters by era.
 tall_share <- aggregate(
   tallSkater ~ era + roundBucket,
@@ -219,7 +224,7 @@ make_table(
 | 2020-2025 | Round 1     |      0.400 |  185 |
 | 2020-2025 | Rounds 2-7  |      0.417 | 1017 |
 
-Share of drafted skaters measuring at least 6-foot-2.
+Share of drafted skaters measuring at least 6-foot-2. {.table}
 
 The first round is where the story becomes loudest. In the 1990s, about
 60.8 percent of first-round skaters in the sample were at least
@@ -227,6 +232,7 @@ The first round is where the story becomes loudest. In the 1990s, about
 a major shift in what the “ideal” first-round skater looked like.
 
 ``` r
+
 # Plot tall-skater shares by era.
 tall_matrix <- rbind(
   tall_share[['tallSkater']][tall_share[['roundBucket']] == 'Round 1'],
@@ -260,6 +266,7 @@ Part of any draft-size story is just that defensemen tend to run bigger
 than forwards. So it helps to break the sample out by position family.
 
 ``` r
+
 # Summarize size by era and position family.
 position_summary <- aggregate(
   cbind(height, weight) ~ era + positionBucket,
@@ -285,7 +292,7 @@ make_table(
 | 2010-2019 | Forward        | 72.246 | 185.289 |
 | 2020-2025 | Forward        | 72.516 | 183.561 |
 
-Average drafted skater size by era and position family.
+Average drafted skater size by era and position family. {.table}
 
 Defensemen are consistently taller and heavier than forwards, which is
 exactly what most observers would expect. But the 1990s surge does not
@@ -299,6 +306,7 @@ As a simple check, we can fit a linear model with height as the response
 and draft year, first-round status, and defense status as predictors.
 
 ``` r
+
 # Fit simple draft-height model.
 draft_fit <- stats::lm(
   height ~ draftYear + I(roundNumber == 1) + I(positionCode == 'D'),
@@ -334,7 +342,7 @@ make_table(
 | First-round indicator |   0.5170 |     0.0610 |  8.4729 |           0 |
 | Defense indicator     |   1.0542 |     0.0413 | 25.5233 |           0 |
 
-Linear model of drafted skater height.
+Linear model of drafted skater height. {.table}
 
 This model says the first-round premium is still real even after
 accounting for time and position. First-round skaters come in roughly

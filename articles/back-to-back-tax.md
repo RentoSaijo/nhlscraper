@@ -24,6 +24,7 @@ gives us one row per game. To study rest, we need one row per
 and an away-team record.
 
 ``` r
+
 # Pull regular-season game and team records.
 games_tbl <- nhlscraper::games()
 teams_tbl <- nhlscraper::teams()
@@ -104,6 +105,7 @@ Now we can ask the direct question: how do teams perform on zero rest
 compared with one, two, or three-plus days off?
 
 ``` r
+
 # Summarize results by rest bucket.
 rest_summary <- aggregate(
   cbind(win, goalDiff) ~ restBucket,
@@ -126,15 +128,15 @@ make_table(
 
 | restBucket | games |   win | goalDiff |
 |:-----------|------:|------:|---------:|
-| 0          |  8648 | 0.448 |   -0.275 |
-| 1          | 27756 | 0.506 |    0.039 |
-| 2          |  9441 | 0.520 |    0.118 |
-| 3+         |  4723 | 0.500 |    0.041 |
+| 0          |  8648 | 0.450 |   -0.274 |
+| 1          | 27756 | 0.508 |    0.038 |
+| 2          |  9441 | 0.521 |    0.119 |
+| 3+         |  4723 | 0.501 |    0.042 |
 
-Win rate and average goal differential by rest bucket.
+Win rate and average goal differential by rest bucket. {.table}
 
-The back-to-back effect is real. Teams on zero rest win about 44.8
-percent of the time, compared with about 52.0 percent on two days of
+The back-to-back effect is real. Teams on zero rest win about 45.0
+percent of the time, compared with about 52.1 percent on two days of
 rest. Goal differential moves the same way: teams on zero rest are
 underwater on average, while teams with one or two days off are slightly
 positive. That is already enough to say the schedule complaint has
@@ -143,6 +145,7 @@ teeth, but the context gets sharper once we split home and road games.
 ## Plot Rest Curve
 
 ``` r
+
 graphics::barplot(
   rest_summary[['win']],
   names.arg = rest_summary[['restBucket']],
@@ -176,6 +179,7 @@ than back-to-backs at home, and even rested teams usually perform better
 in their own building.
 
 ``` r
+
 # Summarize rest effect by venue.
 home_road_summary <- aggregate(
   win ~ restBucket + isHome,
@@ -204,18 +208,19 @@ make_table(
 
 | restBucket | homeWinRate | awayWinRate |
 |:-----------|------------:|------------:|
-| 0          |       0.507 |       0.421 |
-| 1          |       0.548 |       0.459 |
-| 2          |       0.556 |       0.479 |
-| 3+         |       0.526 |       0.465 |
+| 0          |       0.509 |       0.422 |
+| 1          |       0.550 |       0.461 |
+| 2          |       0.557 |       0.480 |
+| 3+         |       0.526 |       0.466 |
 
-Home and road win rate by rest bucket.
+Home and road win rate by rest bucket. {.table}
 
 Back-to-backs hurt everywhere, but they hurt more on the road. On zero
-rest, road teams win only about 42.1 percent of the time, while home
-teams on zero rest still manage about 50.7 percent.
+rest, road teams win only about 42.2 percent of the time, while home
+teams on zero rest still manage about 50.9 percent.
 
 ``` r
+
 graphics::plot(
   seq_len(nrow(home_road_table)),
   home_road_table[['homeWinRate']],
@@ -266,6 +271,7 @@ A quick logistic model gives us a clean way to describe those two
 effects together.
 
 ``` r
+
 # Fit simple win model with rest and venue.
 rest_fit <- stats::glm(
   as.integer(win) ~ restBucket + isHome,
@@ -298,13 +304,13 @@ make_table(
 
 | term                        | Estimate | Std. Error |  z value | Pr(\>\|z\|) |
 |:----------------------------|---------:|-----------:|---------:|------------:|
-| Intercept                   |  -0.3162 |     0.0225 | -14.0740 |       0e+00 |
-| One day versus zero         |   0.1627 |     0.0251 |   6.4829 |       0e+00 |
-| Two days versus zero        |   0.2172 |     0.0302 |   7.1907 |       0e+00 |
-| Three-plus days versus zero |   0.1240 |     0.0366 |   3.3834 |       7e-04 |
-| Home indicator              |   0.3368 |     0.0181 |  18.6006 |       0e+00 |
+| Intercept                   |  -0.3094 |     0.0225 | -13.7767 |      0.0000 |
+| One day versus zero         |   0.1630 |     0.0251 |   6.4975 |      0.0000 |
+| Two days versus zero        |   0.2142 |     0.0302 |   7.0940 |      0.0000 |
+| Three-plus days versus zero |   0.1193 |     0.0366 |   3.2557 |      0.0011 |
+| Home indicator              |   0.3376 |     0.0181 |  18.6448 |      0.0000 |
 
-Logistic model of wins on rest and venue.
+Logistic model of wins on rest and venue. {.table}
 
 The signs all point the same way. More rest helps, and playing at home
 helps. The biggest rest gains come immediately when teams escape
@@ -316,6 +322,7 @@ League averages are useful, but back-to-backs also become a fun team
 question: which clubs have managed them best over a large sample?
 
 ``` r
+
 # Rank teams by back-to-back win rate.
 zero_rest_tbl <- team_games[team_games[['restDays']] == 0, c('teamId', 'win')]
 zero_rest_tbl <- aggregate(
@@ -350,17 +357,17 @@ make_table(
 |:----|:------------|------:|--------:|
 | 3   | NYR         |   280 |   0.564 |
 | 33  | VGK         |    98 |   0.561 |
-| 6   | BOS         |   281 |   0.495 |
+| 6   | BOS         |   281 |   0.498 |
+| 28  | SJS         |   271 |   0.491 |
 | 5   | PIT         |   303 |   0.488 |
-| 28  | SJS         |   271 |   0.487 |
 | 16  | CHI         |   310 |   0.484 |
-| 19  | STL         |   295 |   0.478 |
-| 12  | CAR         |   321 |   0.477 |
-| 18  | NSH         |   260 |   0.473 |
+| 19  | STL         |   295 |   0.481 |
+| 12  | CAR         |   321 |   0.480 |
+| 18  | NSH         |   260 |   0.477 |
 | 26  | LAK         |   271 |   0.472 |
 
 Best back-to-back win rates among teams with at least 50 zero-rest
-games.
+games. {.table}
 
 This is a nice example of how a broad workflow can still end in a
 fan-readable leaderboard. Once the team-game table exists, you can pivot

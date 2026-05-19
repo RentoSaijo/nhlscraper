@@ -346,6 +346,8 @@ Functions to access data about the games
   : Access the raw World Showcase (WSC) play-by-play for a game
 - [`shift_chart()`](https://rentosaijo.github.io/nhlscraper/reference/shift_chart.md)
   : Access the shift chart for a game
+- [`shift_chart_summary()`](https://rentosaijo.github.io/nhlscraper/reference/shift_chart_summary.md)
+  : Access the shift chart time-on-ice summary for a game
 - [`game_odds()`](https://rentosaijo.github.io/nhlscraper/reference/game_odds.md)
   : Access the real-time game odds for a country by partnered bookmaker
 

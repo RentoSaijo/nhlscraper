@@ -29,6 +29,7 @@ system is really six separate ridge models applied to six mutually
 exclusive game states. Those partitions are:
 
 ``` r
+
 partition_table <- data.frame(
   partition = c("sd", "ev", "pp", "sh", "en", "ps"),
   meaning = c(
@@ -56,7 +57,7 @@ make_table(
 | en        | Opponent net is empty                           |
 | ps        | Penalty-shot and shootout-style situations      |
 
-The six shot partitions used by nhlscraper’s xG model.
+The six shot partitions used by nhlscraper’s xG model. {.table}
 
 That split is not cosmetic. It reflects the fact that a 5v5 wrist shot,
 a 4v4 rush chance, a power-play seam pass, and an empty-net try do not
@@ -88,6 +89,7 @@ full play-by-play data, then adds the context needed for shot-quality
 modeling:
 
 ``` r
+
 pbp <- nhlscraper::gc_pbps(season) |>
   nhlscraper::add_shift_times(nhlscraper::shift_charts(season)) |>
   nhlscraper::add_deltas() |>
@@ -105,6 +107,7 @@ dominates the sample, while empty-net and shootout situations are much
 smaller.
 
 ``` r
+
 train_summary <- data.frame(
   partition = c("sd", "ev", "pp", "sh", "en", "ps"),
   games = c(2798, 1280, 2793, 2241, 1245, 230),
@@ -127,7 +130,7 @@ make_table(
 | en        |  1245 |   1828 |    0.5739 |
 | ps        |   230 |   1188 |    0.3157 |
 
-Training sample size and goal rate by partition.
+Training sample size and goal rate by partition. {.table}
 
 That table explains why the package should not promise identical
 stability across every state. The `sd` model gets to learn from a very
@@ -231,6 +234,7 @@ from the grouped CV table. For reference, the grouped-CV summary at the
 selected penalty looks like this:
 
 ``` r
+
 cv_summary <- data.frame(
   partition = c("sd", "ev", "pp", "sh", "en", "ps"),
   cv_log_loss = c(0.1986, 0.3314, 0.3036, 0.2211, 0.6191, 0.6241),
@@ -255,6 +259,7 @@ make_table(
 | ps        |      0.6241 |     0.5264 |   0.2163 |
 
 Grouped cross-validation diagnostics at the selected ridge penalty.
+{.table}
 
 The broad reading is sensible. `sd` dominates the sample and has the
 steadiest large-sample behavior. `sh` discriminates well but from a much
@@ -270,6 +275,7 @@ saved ridge workflows on `2021-22`, `2023-24`, and `2025-26`, with
 and `2024-25` training window. Overall external results:
 
 ``` r
+
 overall_results <- data.frame(
   season = c("2021-22", "2023-24", "2025-26"),
   rows = c(122341, 122180, 74169),
@@ -292,7 +298,7 @@ make_table(
 | 2023-24 | 122180 |    0.0718 |  0.0715 |   0.2222 |  0.7775 |            0.9958 |
 | 2025-26 |  74169 |    0.0744 |  0.0779 |   0.2319 |  0.7617 |            1.0465 |
 
-External evaluation summary by season.
+External evaluation summary by season. {.table}
 
 The `2025-26` row is the one to focus on. It says the model remained
 usable on a future season, with overall calibration slightly high and
@@ -300,6 +306,7 @@ ROC AUC still in a respectable range for a public-data xG model. The
 `2025-26` partition results tell the same story in more detail:
 
 ``` r
+
 future_partition_results <- data.frame(
   partition = c("sd", "ev", "pp", "sh", "en", "ps"),
   rows = c(57157, 1750, 12489, 1610, 604, 559),
@@ -323,7 +330,7 @@ make_table(
 | en        |   604 |   0.5959 |  0.7400 |            1.0115 |
 | ps        |   559 |   0.6336 |  0.5131 |            0.9623 |
 
-Future-season (`2025-26`) external results by partition.
+Future-season (`2025-26`) external results by partition. {.table}
 
 That table is a good reminder that xG should be interpreted with the
 structure of the game state in mind. The 5v5 `sd` model is the

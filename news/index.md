@@ -1,5 +1,16 @@
 # Changelog
 
+## nhlscraper 0.6.0.9000
+
+- [`shift_chart()`](https://rentosaijo.github.io/nhlscraper/reference/shift_chart.md)
+  now returns `periodNumber` instead of `period`.
+- [`shift_chart_summary()`](https://rentosaijo.github.io/nhlscraper/reference/shift_chart_summary.md)
+  now returns per-strength TOI splits per player per period.
+- [`gc_play_by_play()`](https://rentosaijo.github.io/nhlscraper/reference/gc_play_by_play.md)
+  and
+  [`wsc_play_by_play()`](https://rentosaijo.github.io/nhlscraper/reference/wsc_play_by_play.md)
+  now follows some new logic.
+
 ## nhlscraper 0.6.0
 
 CRAN release: 2026-04-07
