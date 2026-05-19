@@ -255,6 +255,7 @@ reference:
       - wsc_play_by_play
       - wsc_play_by_play_raw
       - shift_chart
+      - shift_chart_summary
       - game_odds
   
   - subtitle: "Event"

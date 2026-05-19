@@ -438,11 +438,14 @@ add_shift_times <- function(play_by_play, shift_chart) {
     ),
     'add_shift_times'
   )
+  if (!('periodNumber' %in% names(shift_chart)) && 'period' %in% names(shift_chart)) {
+    shift_chart$periodNumber <- shift_chart$period
+  }
   .require_shift_chart_columns(
     shift_chart,
     c(
       'gameId',
-      'period',
+      'periodNumber',
       'playerId',
       'startSecondsElapsedInPeriod',
       'endSecondsElapsedInPeriod'
@@ -1761,9 +1764,12 @@ add_shift_times <- function(play_by_play, shift_chart) {
 #' @returns filtered and sorted shift data.frame
 #' @keywords internal
 .sort_shift_chart_for_timing <- function(shift_data) {
+  if (!('periodNumber' %in% names(shift_data)) && 'period' %in% names(shift_data)) {
+    shift_data$periodNumber <- shift_data$period
+  }
   shift_data <- shift_data[
     !is.na(shift_data$gameId) &
-      !is.na(shift_data$period) &
+      !is.na(shift_data$periodNumber) &
       !is.na(shift_data$playerId) &
       !is.na(shift_data$startSecondsElapsedInPeriod) &
       !is.na(shift_data$endSecondsElapsedInPeriod),
@@ -1775,7 +1781,7 @@ add_shift_times <- function(play_by_play, shift_chart) {
   }
   ord <- order(
     as.integer(shift_data$gameId),
-    as.integer(shift_data$period),
+    as.integer(shift_data$periodNumber),
     as.integer(shift_data$playerId),
     as.integer(shift_data$startSecondsElapsedInPeriod),
     as.integer(shift_data$endSecondsElapsedInPeriod)
@@ -1824,7 +1830,7 @@ add_shift_times <- function(play_by_play, shift_chart) {
   }
 
   prev_end <- rep(NA_integer_, nrow(shift_data))
-  keys <- paste(shift_data$gameId, shift_data$period, shift_data$playerId, sep = ':')
+  keys <- paste(shift_data$gameId, shift_data$periodNumber, shift_data$playerId, sep = ':')
   if (nrow(shift_data) > 1L) {
     for (i in 2:nrow(shift_data)) {
       if (keys[i] == keys[i - 1L]) {
@@ -1938,7 +1944,7 @@ add_shift_times <- function(play_by_play, shift_chart) {
       home_request,
       away_request,
       as.integer(shift_data$gameId),
-      as.integer(shift_data$period),
+      as.integer(shift_data$periodNumber),
       as.integer(shift_data$playerId),
       as.integer(shift_data$startSecondsElapsedInPeriod),
       as.integer(shift_data$endSecondsElapsedInPeriod)

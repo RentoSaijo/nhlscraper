@@ -108,6 +108,43 @@ test_that("HTML PBP parser handles dotted team abbreviations", {
   expect_equal(out$awayGoaliePlayerId, 2802L)
 })
 
+test_that("HTML PBP parser maps stoppage and boundary events with on-ice cells", {
+  roster_lookup <- .build_game_roster_lookup(data.frame(
+    teamId = c(rep(8L, 6L), rep(10L, 6L)),
+    playerId = c(801:806, 1001:1006),
+    sweaterNumber = c(31L, 11L, 12L, 13L, 14L, 15L, 35L, 37L, 38L, 39L, 40L, 41L),
+    positionCode = c("G", rep("F", 5L), "G", rep("F", 5L)),
+    playerLastName = paste0("P", c(801:806, 1001:1006)),
+    playerFirstName = "A",
+    stringsAsFactors = FALSE
+  ))
+
+  html <- paste(
+    "<table>",
+    "<tr><th>#</th><th>Per</th><th>Str</th><th>Time:ElapsedGame</th><th>Event</th><th>Description</th><th>MTL On Ice</th><th>TOR On Ice</th></tr>",
+    "<tr><td>4</td><td>1</td><td>EV</td><td>0:0020:00</td><td>PSTR</td><td>Period Start</td><td>31 G 11 F 12 F 13 F 14 F 15 F</td><td>35 G 37 F 38 F 39 F 40 F 41 F</td></tr>",
+    "<tr><td>17</td><td>1</td><td>EV</td><td>2:2117:39</td><td>STOP</td><td>GOALIE STOPPED</td><td>31 G 11 F 12 F 13 F 14 F 15 F</td><td>35 G 37 F 38 F 39 F 40 F 41 F</td></tr>",
+    "<tr><td>112</td><td>1</td><td>EV</td><td>20:000:00</td><td>PEND</td><td>Period End</td><td>31 G 11 F 12 F 13 F 14 F 15 F</td><td>35 G 37 F 38 F 39 F 40 F 41 F</td></tr>",
+    "<tr><td>334</td><td>3</td><td>EV</td><td>20:000:00</td><td>GEND</td><td>Game End</td><td>31 G 11 F 12 F 13 F 14 F 15 F</td><td>35 G 37 F 38 F 39 F 40 F 41 F</td></tr>",
+    "</table>"
+  )
+  out <- .parse_html_pbp_doc(
+    doc = xml2::read_html(html),
+    roster_lookup = roster_lookup,
+    home_team_id = 10L,
+    away_team_id = 8L,
+    home_abbrev = "TOR",
+    away_abbrev = "MTL",
+    is_playoffs = FALSE
+  )
+
+  expect_equal(out$typeDescKey, c("period-start", "stoppage", "period-end", "game-end"))
+  expect_equal(out$homeGoaliePlayerId, rep(1001L, 4L))
+  expect_equal(out$awayGoaliePlayerId, rep(801L, 4L))
+  expect_equal(out$homeSkaterPlayerIds[[2]], 1002:1006)
+  expect_equal(out$awaySkaterPlayerIds[[2]], 802:806)
+})
+
 test_that("HTML actor parser handles reversed faceoff player order", {
   roster_lookup <- .build_game_roster_lookup(data.frame(
     teamId = c(8L, 10L),
@@ -351,6 +388,57 @@ test_that("HTML on-ice enrichment keeps penalty on-ice rows and rescues matched 
   expect_equal(out$awaySkater1PlayerId[3], 801L)
 })
 
+test_that("HTML on-ice enrichment populates stoppage and boundary rows", {
+  play_by_play <- data.frame(
+    gameId = rep(1L, 4L),
+    eventId = c(10L, 11L, 12L, 13L),
+    periodNumber = c(1L, 1L, 1L, 1L),
+    secondsElapsedInPeriod = c(0L, 141L, 1200L, 1200L),
+    sortOrder = c(10L, 11L, 12L, 13L),
+    eventTypeDescKey = c("period-start", "stoppage", "period-end", "game-end"),
+    eventOwnerTeamId = c(NA_integer_, NA_integer_, NA_integer_, NA_integer_),
+    isHome = c(NA, NA, NA, NA),
+    situationCode = c(NA_character_, NA_character_, NA_character_, NA_character_),
+    stringsAsFactors = FALSE
+  )
+  html_rows <- data.frame(
+    htmlEventNumber = c(4L, 17L, 112L, 334L),
+    period = c(1L, 1L, 1L, 1L),
+    strengthCodeHtml = c("EV", "EV", "EV", "EV"),
+    secondsElapsedInPeriod = c(0L, 141L, 1200L, 1200L),
+    htmlEventCode = c("PSTR", "STOP", "PEND", "GEND"),
+    typeDescKey = c("period-start", "stoppage", "period-end", "game-end"),
+    description = c("Period Start", "GOALIE STOPPED", "Period End", "Game End"),
+    ownerTeamId = c(NA_integer_, NA_integer_, NA_integer_, NA_integer_),
+    primaryPlayerId = c(NA_integer_, NA_integer_, NA_integer_, NA_integer_),
+    secondaryPlayerId = c(NA_integer_, NA_integer_, NA_integer_, NA_integer_),
+    tertiaryPlayerId = c(NA_integer_, NA_integer_, NA_integer_, NA_integer_),
+    homeGoaliePlayerId = rep(1001L, 4L),
+    awayGoaliePlayerId = rep(2001L, 4L),
+    stringsAsFactors = FALSE
+  )
+  html_rows$homeSkaterPlayerIds <- rep(list(1002:1006), 4L)
+  html_rows$awaySkaterPlayerIds <- rep(list(2002:2006), 4L)
+
+  local_mocked_bindings(
+    .fetch_html_pbp_on_ice = function(...) html_rows,
+    .package = "nhlscraper"
+  )
+
+  out <- .add_html_on_ice_players(
+    play_by_play,
+    game = 1L,
+    rosters = data.frame(),
+    home_team = list(id = 10L, abbrev = "TOR"),
+    away_team = list(id = 8L, abbrev = "MTL")
+  )
+
+  expect_equal(out$homeGoaliePlayerId, rep(1001L, 4L))
+  expect_equal(out$awayGoaliePlayerId, rep(2001L, 4L))
+  expect_equal(out$homeSkater1PlayerId, rep(1002L, 4L))
+  expect_equal(out$awaySkater5PlayerId, rep(2006L, 4L))
+})
+
 test_that("drop_illogical_ordered_events moves the opening faceoff ahead of later plays", {
   play_by_play <- data.frame(
     gameId = rep(1L, 4L),
@@ -368,7 +456,7 @@ test_that("drop_illogical_ordered_events moves the opening faceoff ahead of late
   expect_equal(out$sortOrder, c(5L, 6L, 7L, 8L))
 })
 
-test_that("HTML on-ice enrichment populates one-on-one shootout rows", {
+test_that("HTML on-ice enrichment keeps one-on-one rows to shooter and goalie", {
   play_by_play <- data.frame(
     gameId = rep(1L, 2L),
     eventId = c(10L, 11L),
@@ -400,8 +488,8 @@ test_that("HTML on-ice enrichment populates one-on-one shootout rows", {
     awayGoaliePlayerId = c(2001L, 2001L),
     stringsAsFactors = FALSE
   )
-  html_rows$homeSkaterPlayerIds <- list(integer(), integer())
-  html_rows$awaySkaterPlayerIds <- list(integer(), integer())
+  html_rows$homeSkaterPlayerIds <- list(910:915, 1010:1015)
+  html_rows$awaySkaterPlayerIds <- list(2010:2015, 920:925)
 
   local_mocked_bindings(
     .fetch_html_pbp_on_ice = function(...) html_rows,
@@ -435,7 +523,7 @@ test_that("HTML on-ice enrichment populates one-on-one shootout rows", {
   expect_true(is.na(out$skater1PlayerIdAgainst[2]))
 })
 
-test_that("HTML on-ice enrichment accepts penalty-reconstructed skater counts", {
+test_that("HTML on-ice enrichment preserves situationCode counts across penalty state mismatches", {
   play_by_play <- data.frame(
     gameId = rep(1L, 2L),
     gameTypeId = rep(2L, 2L),
@@ -499,18 +587,18 @@ test_that("HTML on-ice enrichment accepts penalty-reconstructed skater counts", 
   )
 
   expect_equal(out$homeSkaterCount[2], 5L)
-  expect_equal(out$awaySkaterCount[2], 4L)
+  expect_equal(out$awaySkaterCount[2], 5L)
   expect_false(out$homeIsEmptyNet[2])
   expect_false(out$awayIsEmptyNet[2])
-  expect_equal(out$manDifferential[2], 1L)
-  expect_equal(out$strengthState[2], "power-play")
+  expect_equal(out$manDifferential[2], 0L)
+  expect_equal(out$strengthState[2], "even-strength")
   expect_equal(out$homeGoaliePlayerId[2], 1001L)
   expect_equal(out$awayGoaliePlayerId[2], 2001L)
   expect_equal(out$homeSkater1PlayerId[2], 1002L)
   expect_equal(out$awaySkater4PlayerId[2], 2005L)
 })
 
-test_that("HTML on-ice enrichment accepts delayed-penalty shots before the call is assessed", {
+test_that("HTML on-ice enrichment preserves situationCode counts on delayed-penalty shots", {
   play_by_play <- data.frame(
     gameId = rep(1L, 2L),
     gameTypeId = rep(2L, 2L),
@@ -574,9 +662,9 @@ test_that("HTML on-ice enrichment accepts delayed-penalty shots before the call 
   )
 
   expect_equal(out$homeSkaterCount[1], 5L)
-  expect_equal(out$awaySkaterCount[1], 5L)
+  expect_equal(out$awaySkaterCount[1], 6L)
   expect_false(out$homeIsEmptyNet[1])
-  expect_false(out$awayIsEmptyNet[1])
+  expect_true(out$awayIsEmptyNet[1])
   expect_equal(out$manDifferential[1], 0L)
   expect_equal(out$strengthState[1], "even-strength")
   expect_equal(out$homeGoaliePlayerId[1], 1001L)
@@ -585,7 +673,7 @@ test_that("HTML on-ice enrichment accepts delayed-penalty shots before the call 
   expect_equal(out$homeSkater5PlayerId[1], 1006L)
 })
 
-test_that("HTML on-ice enrichment accepts late empty-net pulls for the trailing team", {
+test_that("HTML on-ice enrichment preserves situationCode counts on late empty-net mismatches", {
   play_by_play <- data.frame(
     gameId = 1L,
     gameTypeId = 2L,
@@ -647,9 +735,9 @@ test_that("HTML on-ice enrichment accepts late empty-net pulls for the trailing 
   )
 
   expect_equal(out$homeSkaterCount, 5L)
-  expect_equal(out$awaySkaterCount, 6L)
+  expect_equal(out$awaySkaterCount, 5L)
   expect_false(out$homeIsEmptyNet)
-  expect_true(out$awayIsEmptyNet)
+  expect_false(out$awayIsEmptyNet)
   expect_equal(out$manDifferential, 0L)
   expect_equal(out$homeGoaliePlayerId, 1001L)
   expect_true(is.na(out$awayGoaliePlayerId))
@@ -726,7 +814,7 @@ test_that("HTML on-ice enrichment backfills unmatched delayed-penalty rows from 
   expect_equal(out$awaySkaterCount[2], 5L)
 })
 
-test_that("actor-based HTML on-ice rescues update derived strength context when HTML is plausible", {
+test_that("actor-based HTML on-ice keeps player IDs without updating derived strength context", {
   play_by_play <- data.frame(
     gameId = 1L,
     gameTypeId = 2L,
@@ -789,9 +877,9 @@ test_that("actor-based HTML on-ice rescues update derived strength context when 
   expect_equal(out$awayGoaliePlayerId, 2001L)
   expect_equal(out$awaySkater5PlayerId, 2006L)
   expect_equal(out$homeSkaterCount, 5L)
-  expect_equal(out$awaySkaterCount, 5L)
-  expect_equal(out$manDifferential, 0L)
-  expect_equal(out$strengthState, "even-strength")
+  expect_equal(out$awaySkaterCount, 4L)
+  expect_equal(out$manDifferential, 1L)
+  expect_equal(out$strengthState, "power-play")
 })
 
 test_that("HTML on-ice enrichment preserves seven-skater overflow rows", {
@@ -981,6 +1069,45 @@ test_that("add_shift_times() populates scalar goalie and skater timing columns",
   expect_equal(out$skater7SecondsElapsedInShiftAgainst, c(40, 80))
   expect_equal(out$skater8SecondsElapsedInShiftFor, c(40, 80))
   expect_equal(out$skater8SecondsElapsedInShiftAgainst, c(40, 80))
+})
+
+test_that("add_shift_times() accepts periodNumber shift data", {
+  play_by_play <- data.frame(
+    gameId = 1L,
+    periodNumber = 1L,
+    secondsElapsedInPeriod = 40L,
+    eventTypeDescKey = "shot-on-goal",
+    isHome = TRUE,
+    homeGoaliePlayerId = 101L,
+    awayGoaliePlayerId = 201L,
+    homeSkater1PlayerId = 111L,
+    awaySkater1PlayerId = 211L,
+    homeSkater2PlayerId = NA_integer_,
+    awaySkater2PlayerId = NA_integer_,
+    homeSkater3PlayerId = NA_integer_,
+    awaySkater3PlayerId = NA_integer_,
+    homeSkater4PlayerId = NA_integer_,
+    awaySkater4PlayerId = NA_integer_,
+    homeSkater5PlayerId = NA_integer_,
+    awaySkater5PlayerId = NA_integer_,
+    stringsAsFactors = FALSE
+  )
+  shift_data <- data.frame(
+    gameId = rep(1L, 4L),
+    teamId = c(1L, 1L, 2L, 2L),
+    playerId = c(101L, 111L, 201L, 211L),
+    periodNumber = rep(1L, 4L),
+    startSecondsElapsedInPeriod = rep(0L, 4L),
+    endSecondsElapsedInPeriod = c(120L, 50L, 120L, 60L),
+    stringsAsFactors = FALSE
+  )
+
+  out <- add_shift_times(play_by_play, shift_data)
+
+  expect_equal(out$homeGoalieSecondsRemainingInShift, 80)
+  expect_equal(out$homeSkater1SecondsRemainingInShift, 10)
+  expect_equal(out$awayGoalieSecondsRemainingInShift, 80)
+  expect_equal(out$awaySkater1SecondsRemainingInShift, 20)
 })
 
 test_that("add_shift_times() handles multi-game aggregates", {
