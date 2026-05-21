@@ -399,6 +399,38 @@ shift_charts <- function(season = 20242025) {
   )
 }
 
+#' Access the shift chart summaries for a season
+#' 
+#' `shift_chart_summaries()` loads the shift chart summaries for a given
+#' `season`.
+#' 
+#' @inheritParams roster
+#' @returns data.frame with one row per player per period
+#' @examples
+#' # May take >5s, so skip.
+#' \donttest{shift_chart_summaries_20212022 <- shift_chart_summaries(season = 20212022)}
+#' @export
+
+shift_chart_summaries <- function(season = 20242025) {
+  tryCatch(
+    expr = {
+      u <- paste0(
+        'https://huggingface.co/datasets/RentoSaijo/NHL_DB/resolve/main/',
+        'data/game/scss/NHL_SCSS_',
+        season,
+        '.parquet'
+      )
+      tmp <- tempfile(fileext = '.parquet')
+      utils::download.file(u, tmp, mode = 'wb', quiet = TRUE)
+      as.data.frame(arrow::read_parquet(tmp), stringsAsFactors = FALSE)
+    },
+    error = function(e) {
+      message('Invalid argument(s); refer to help file.')
+      data.frame()
+    }
+  )
+}
+
 #' Access the replays for a season
 #' 
 #' `replays()` loads the replays for a given `season`.

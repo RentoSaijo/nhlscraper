@@ -279,6 +279,7 @@ reference:
       - wsc_play_by_plays
       - wsc_play_by_plays_raw
       - shift_charts
+      - shift_chart_summaries
       - replays
   
   - subtitle: "Clean"
