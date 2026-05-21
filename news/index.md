@@ -6,10 +6,17 @@
   now returns `periodNumber` instead of `period`.
 - [`shift_chart_summary()`](https://rentosaijo.github.io/nhlscraper/reference/shift_chart_summary.md)
   now returns per-strength TOI splits per player per period.
+- [`shift_chart_summaries()`](https://rentosaijo.github.io/nhlscraper/reference/shift_chart_summaries.md)
+  now returns season-aggregate version of above.
 - [`gc_play_by_play()`](https://rentosaijo.github.io/nhlscraper/reference/gc_play_by_play.md)
   and
   [`wsc_play_by_play()`](https://rentosaijo.github.io/nhlscraper/reference/wsc_play_by_play.md)
-  now follows some new logic.
+  (and subsequently
+  [`gc_play_by_plays()`](https://rentosaijo.github.io/nhlscraper/reference/gc_play_by_plays.md)
+  and
+  [`wsc_play_by_plays()`](https://rentosaijo.github.io/nhlscraper/reference/wsc_play_by_plays.md))
+  now follows new logic documented in the “Article” section on the
+  documentation website.
 
 ## nhlscraper 0.6.0
 

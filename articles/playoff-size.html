@@ -188,8 +188,8 @@ playoff scoring, and basic biometrics.</p>
 <span>  labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'Lightest'</span>, <span class="st">'Second'</span>, <span class="st">'Third'</span>, <span class="st">'Heaviest'</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">analysis_tbl</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] 1711</span></span></code></pre></div>
-<p>That leaves 1711 modern skaters. The sample is large enough to smooth
+<span><span class="co">#&gt; [1] 1712</span></span></code></pre></div>
+<p>That leaves 1712 modern skaters. The sample is large enough to smooth
 away one-hot playoff runs, but still focused enough to keep the
 comparison about contemporary hockey. To make the shape of the data
 concrete, it helps to peek at a few of the strongest playoff scorers in
@@ -290,10 +290,10 @@ sample.</caption>
 <td align="left">C</td>
 <td align="right">200</td>
 <td align="right">950</td>
-<td align="right">104</td>
+<td align="right">105</td>
 <td align="right">1.202</td>
-<td align="right">1.327</td>
-<td align="right">0.125</td>
+<td align="right">1.324</td>
+<td align="right">0.122</td>
 </tr>
 <tr class="even">
 <td align="left">11834</td>
@@ -301,10 +301,10 @@ sample.</caption>
 <td align="left">C</td>
 <td align="right">200</td>
 <td align="right">950</td>
-<td align="right">104</td>
+<td align="right">105</td>
 <td align="right">1.202</td>
-<td align="right">1.327</td>
-<td align="right">0.125</td>
+<td align="right">1.324</td>
+<td align="right">0.122</td>
 </tr>
 <tr class="odd">
 <td align="left">8431</td>
@@ -376,9 +376,9 @@ weight quartile.</caption>
 <tr class="odd">
 <td align="left">2</td>
 <td align="left">Lightest</td>
-<td align="right">427</td>
-<td align="right">0.508</td>
-<td align="right">0.458</td>
+<td align="right">428</td>
+<td align="right">0.507</td>
+<td align="right">0.457</td>
 <td align="right">-0.050</td>
 </tr>
 <tr class="even">
@@ -386,15 +386,15 @@ weight quartile.</caption>
 <td align="left">Second</td>
 <td align="right">428</td>
 <td align="right">0.479</td>
-<td align="right">0.420</td>
-<td align="right">-0.059</td>
+<td align="right">0.421</td>
+<td align="right">-0.058</td>
 </tr>
 <tr class="odd">
 <td align="left">4</td>
 <td align="left">Third</td>
 <td align="right">428</td>
 <td align="right">0.440</td>
-<td align="right">0.384</td>
+<td align="right">0.383</td>
 <td align="right">-0.056</td>
 </tr>
 <tr class="even">
@@ -408,7 +408,7 @@ weight quartile.</caption>
 </tbody>
 </table>
 <p>This is where the cliché starts to wobble. The lightest quartile
-posts the strongest playoff scoring rate in the sample at about 0.458
+posts the strongest playoff scoring rate in the sample at about 0.457
 points per game, while the heaviest quartile sits at about 0.375. But
 the second question is more subtle. The heaviest skaters do
 <strong>not</strong> lead in raw playoff scoring, yet they also show the
@@ -542,8 +542,8 @@ playoff games.</caption>
 <td align="left">Forward</td>
 <td align="right">179</td>
 <td align="right">0.509</td>
-<td align="right">0.788</td>
-<td align="right">0.279</td>
+<td align="right">0.774</td>
+<td align="right">0.264</td>
 </tr>
 <tr class="odd">
 <td align="left">10827</td>
@@ -582,15 +582,6 @@ playoff games.</caption>
 <td align="right">0.249</td>
 </tr>
 <tr class="odd">
-<td align="left">10849</td>
-<td align="left">Nazem Kadri</td>
-<td align="left">Forward</td>
-<td align="right">185</td>
-<td align="right">0.716</td>
-<td align="right">0.952</td>
-<td align="right">0.237</td>
-</tr>
-<tr class="even">
 <td align="left">12273</td>
 <td align="left">Evan Rodrigues</td>
 <td align="left">Forward</td>
@@ -598,6 +589,15 @@ playoff games.</caption>
 <td align="right">0.438</td>
 <td align="right">0.672</td>
 <td align="right">0.234</td>
+</tr>
+<tr class="even">
+<td align="left">10812</td>
+<td align="left">Ryan O’Reilly</td>
+<td align="left">Forward</td>
+<td align="right">207</td>
+<td align="right">0.728</td>
+<td align="right">0.961</td>
+<td align="right">0.232</td>
 </tr>
 </tbody>
 </table>
@@ -652,30 +652,30 @@ position.</caption>
 <tbody>
 <tr class="odd">
 <td align="left">Intercept</td>
-<td align="right">0.0055</td>
-<td align="right">0.1196</td>
-<td align="right">0.0463</td>
-<td align="right">0.9631</td>
+<td align="right">0.0053</td>
+<td align="right">0.1194</td>
+<td align="right">0.0443</td>
+<td align="right">0.9647</td>
 </tr>
 <tr class="even">
 <td align="left">Height</td>
 <td align="right">-0.0016</td>
 <td align="right">0.0021</td>
-<td align="right">-0.7601</td>
-<td align="right">0.4473</td>
+<td align="right">-0.7646</td>
+<td align="right">0.4446</td>
 </tr>
 <tr class="odd">
 <td align="left">Weight</td>
 <td align="right">0.0002</td>
 <td align="right">0.0003</td>
-<td align="right">0.8594</td>
-<td align="right">0.3902</td>
+<td align="right">0.8748</td>
+<td align="right">0.3818</td>
 </tr>
 <tr class="even">
 <td align="left">Defense indicator</td>
-<td align="right">0.0280</td>
+<td align="right">0.0279</td>
 <td align="right">0.0067</td>
-<td align="right">4.1941</td>
+<td align="right">4.1843</td>
 <td align="right">0.0000</td>
 </tr>
 </tbody>
