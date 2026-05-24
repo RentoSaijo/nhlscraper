@@ -2,6 +2,8 @@
 
 ## nhlscraper 0.6.1
 
+CRAN release: 2026-05-24
+
 - [`shift_chart()`](https://rentosaijo.github.io/nhlscraper/reference/shift_chart.md)
   now returns `periodNumber` instead of `period`.
 - [`shift_chart_summary()`](https://rentosaijo.github.io/nhlscraper/reference/shift_chart_summary.md)
