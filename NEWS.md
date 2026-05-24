@@ -1,4 +1,4 @@
-# nhlscraper 0.6.0.9000
+# nhlscraper 0.6.1
 - `shift_chart()` now returns `periodNumber` instead of `period`.
 - `shift_chart_summary()` now returns per-strength TOI splits per player per period.
 - `shift_chart_summaries()` now returns season-aggregate version of above.

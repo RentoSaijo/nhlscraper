@@ -210,8 +210,8 @@ SEXP nhlscraper_on_ice_shift_timings(SEXP data_list) {
     error("Requested player matrices must be integer matrices.");
   }
 
-  home_dim = getAttrib(home_request_sexp, R_DimSymbol);
-  away_dim = getAttrib(away_request_sexp, R_DimSymbol);
+  home_dim = PROTECT(getAttrib(home_request_sexp, R_DimSymbol));
+  away_dim = PROTECT(getAttrib(away_request_sexp, R_DimSymbol));
   if (
     TYPEOF(home_dim) != INTSXP ||
     TYPEOF(away_dim) != INTSXP ||
@@ -333,6 +333,6 @@ SEXP nhlscraper_on_ice_shift_timings(SEXP data_list) {
   SET_STRING_ELT(out_names, 5, mkChar("awaySinceLast"));
   setAttrib(out, R_NamesSymbol, out_names);
 
-  UNPROTECT(8);
+  UNPROTECT(10);
   return out;
 }

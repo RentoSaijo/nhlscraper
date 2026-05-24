@@ -104,6 +104,19 @@ skater_game_report <- function(
 ) {
   tryCatch(
     expr = {
+      season    <- suppressWarnings(as.integer(season[[1]]))
+      game_type <- suppressWarnings(as.integer(game_type[[1]]))
+      start_year <- season %/% 10000
+      end_year   <- season %% 10000
+      if (
+        is.na(season) ||
+        is.na(game_type) ||
+        start_year < 1917 ||
+        end_year != start_year + 1 ||
+        !game_type %in% 1:3
+      ) {
+        stop('Invalid argument(s).')
+      }
       if (game_type != 2) {
         report <- nhl_api(
           path  = sprintf('en/skater/%s', category),
