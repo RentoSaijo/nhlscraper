@@ -1,5 +1,7 @@
 # Changelog
 
+## nhlscraper 0.6.1.9000
+
 ## nhlscraper 0.6.1
 
 CRAN release: 2026-05-24
