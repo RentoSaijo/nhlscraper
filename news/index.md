@@ -1,6 +1,6 @@
 # Changelog
 
-## nhlscraper 0.6.0.9000
+## nhlscraper 0.6.1
 
 - [`shift_chart()`](https://rentosaijo.github.io/nhlscraper/reference/shift_chart.md)
   now returns `periodNumber` instead of `period`.

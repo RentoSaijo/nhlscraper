@@ -1,7 +1,7 @@
 # Access the shift chart time-on-ice summary for a game
 
 `shift_chart_summary()` retrieves per-player, per-period time-on-ice
-splits from the NHL HTML shift reports.
+splits from the HTML shift reports.
 
 ## Usage
 
@@ -13,7 +13,9 @@ shift_chart_summary(game = 2023030417)
 
 - game:
 
-  game ID
+  integer ID (e.g., 2025020275); see
+  [`games()`](https://rentosaijo.github.io/nhlscraper/reference/games.md)
+  for reference
 
 ## Value
 
