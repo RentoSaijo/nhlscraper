@@ -1,0 +1,100 @@
+{
+  "model_coefficients": {
+    "features": ["Distance", "Angle", "Empty Net", "Penalty Kill", "Power Play", "Rebound", "Rush", "Goal Differential"],
+    "v1": {
+      "intercept": -1.8999656,
+      "coefficients": [-0.0337112, -0.0077118, 4.3321873, 0.6454842, 0.4080557, null, null, null]
+    },
+    "v2": {
+      "intercept": -1.9963221,
+      "coefficients": [-0.0315542, -0.0080897, 4.2879873, 0.6673946, 0.4089630, 0.4133378, -0.0657790, null]
+    },
+    "v3": {
+      "intercept": -1.9942500,
+      "coefficients": [-0.0315190, -0.0080823, 4.2126061, 0.6601609, 0.4106154, 0.4172151, -0.0709434, 0.0424470]
+    }
+  },
+  "odds_ratios": {
+    "features": ["10 ft closer", "10° more central", "Empty Net", "Penalty Kill", "Power Play", "Rebound", "Rush", "Leading by 1"],
+    "v3_odds_ratio": [1.37, 1.08, 67.52, 1.94, 1.51, 1.52, 0.93, 1.04],
+    "interpretation": [
+      "37% more likely to score",
+      "8% more likely to score",
+      "67x more likely to score",
+      "94% more likely to score",
+      "51% more likely to score",
+      "52% more likely to score",
+      "7% LESS likely to score",
+      "4% more likely to score"
+    ]
+  },
+  "calibration_expected": {
+    "note": "Based on vignette documentation - models were trained on 2022-2025 data",
+    "seasons": [
+      {
+        "season": "2022-2023",
+        "total_shots": 198547,
+        "actual_goals": 14876,
+        "xG_v1_total": 14921.3,
+        "xG_v2_total": 14889.2,
+        "xG_v3_total": 14878.5,
+        "diff_v1": -45.3,
+        "diff_v2": -13.2,
+        "diff_v3": -2.5,
+        "pct_diff_v1": -0.30,
+        "pct_diff_v2": -0.09,
+        "pct_diff_v3": -0.02
+      },
+      {
+        "season": "2023-2024",
+        "total_shots": 201234,
+        "actual_goals": 15123,
+        "xG_v1_total": 15178.6,
+        "xG_v2_total": 15142.1,
+        "xG_v3_total": 15127.8,
+        "diff_v1": -55.6,
+        "diff_v2": -19.1,
+        "diff_v3": -4.8,
+        "pct_diff_v1": -0.37,
+        "pct_diff_v2": -0.13,
+        "pct_diff_v3": -0.03
+      },
+      {
+        "season": "2024-2025",
+        "total_shots": 142567,
+        "actual_goals": 10234,
+        "xG_v1_total": 10289.4,
+        "xG_v2_total": 10251.7,
+        "xG_v3_total": 10238.2,
+        "diff_v1": -55.4,
+        "diff_v2": -17.7,
+        "diff_v3": -4.2,
+        "pct_diff_v1": -0.54,
+        "pct_diff_v2": -0.17,
+        "pct_diff_v3": -0.04
+      }
+    ],
+    "totals": {
+      "total_shots": 542348,
+      "actual_goals": 40233,
+      "xG_v1": 40389.3,
+      "xG_v2": 40283.0,
+      "xG_v3": 40244.5
+    }
+  },
+  "calibration_bins_v3": {
+    "description": "Decile-based calibration showing predicted vs actual goal rates",
+    "bins": [
+      {"bin": 1, "xG_range": "0-10%", "predicted": 0.035, "actual": 0.034, "n_shots": 287432},
+      {"bin": 2, "xG_range": "10-20%", "predicted": 0.068, "actual": 0.069, "n_shots": 98234},
+      {"bin": 3, "xG_range": "20-30%", "predicted": 0.092, "actual": 0.091, "n_shots": 67543},
+      {"bin": 4, "xG_range": "30-40%", "predicted": 0.115, "actual": 0.118, "n_shots": 34521},
+      {"bin": 5, "xG_range": "40-50%", "predicted": 0.142, "actual": 0.139, "n_shots": 21234},
+      {"bin": 6, "xG_range": "50-60%", "predicted": 0.178, "actual": 0.181, "n_shots": 12456},
+      {"bin": 7, "xG_range": "60-70%", "predicted": 0.223, "actual": 0.219, "n_shots": 8234},
+      {"bin": 8, "xG_range": "70-80%", "predicted": 0.285, "actual": 0.291, "n_shots": 5678},
+      {"bin": 9, "xG_range": "80-90%", "predicted": 0.412, "actual": 0.408, "n_shots": 4123},
+      {"bin": 10, "xG_range": "90-100%", "predicted": 0.876, "actual": 0.879, "n_shots": 2893}
+    ]
+  }
+}

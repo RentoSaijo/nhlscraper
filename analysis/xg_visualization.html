@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>xG Model Calibration Analysis</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+      background: #0f172a;
+      color: #e2e8f0;
+      padding: 20px;
+      line-height: 1.6;
+    }
+    .container { max-width: 1200px; margin: 0 auto; }
+    h1 { color: #38bdf8; margin-bottom: 10px; font-size: 2rem; }
+    h2 { color: #94a3b8; margin: 30px 0 15px; font-size: 1.4rem; border-bottom: 1px solid #334155; padding-bottom: 10px; }
+    h3 { color: #cbd5e1; margin: 20px 0 10px; font-size: 1.1rem; }
+    .subtitle { color: #64748b; margin-bottom: 30px; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 20px; }
+    .card {
+      background: #1e293b;
+      border-radius: 12px;
+      padding: 20px;
+      border: 1px solid #334155;
+    }
+    .card-title { color: #38bdf8; font-size: 1.1rem; margin-bottom: 15px; }
+    .chart-container { position: relative; height: 300px; }
+    .chart-container-lg { position: relative; height: 400px; }
+    table { width: 100%; border-collapse: collapse; margin-top: 15px; font-size: 0.9rem; }
+    th, td { padding: 10px; text-align: left; border-bottom: 1px solid #334155; }
+    th { color: #94a3b8; font-weight: 600; }
+    .positive { color: #4ade80; }
+    .negative { color: #f87171; }
+    .neutral { color: #fbbf24; }
+    .stat-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; margin-bottom: 20px; }
+    .stat-box {
+      background: #334155;
+      padding: 15px;
+      border-radius: 8px;
+      text-align: center;
+    }
+    .stat-value { font-size: 1.8rem; font-weight: bold; color: #38bdf8; }
+    .stat-label { font-size: 0.8rem; color: #94a3b8; margin-top: 5px; }
+    .legend { display: flex; gap: 20px; justify-content: center; margin-top: 15px; flex-wrap: wrap; }
+    .legend-item { display: flex; align-items: center; gap: 8px; font-size: 0.85rem; }
+    .legend-dot { width: 12px; height: 12px; border-radius: 50%; }
+    .insight-box {
+      background: #1e3a5f;
+      border-left: 4px solid #38bdf8;
+      padding: 15px;
+      margin: 15px 0;
+      border-radius: 0 8px 8px 0;
+    }
+    .insight-title { color: #38bdf8; font-weight: 600; margin-bottom: 5px; }
+    ul { padding-left: 20px; }
+    li { margin: 8px 0; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>xG Model Feature Importance & Calibration</h1>
+    <p class="subtitle">Analysis of nhlscraper expected goals models (v1, v2, v3)</p>
+
+    <!-- Summary Stats - REAL DATA from deep_xg_analysis.py -->
+    <h2>Model Overview</h2>
+    <div class="stat-grid">
+      <div class="stat-box">
+        <div class="stat-value">501,336</div>
+        <div class="stat-label">Shots Analyzed</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-value" style="color: #4ade80;">25,785</div>
+        <div class="stat-label">Actual Goals (5.14%)</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-value" style="color: #a78bfa;">31,578</div>
+        <div class="stat-label">Predicted xG (6.30%)</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-value" style="color: #f87171;">-22.5%</div>
+        <div class="stat-label">Calibration Error</div>
+      </div>
+    </div>
+
+    <!-- Feature Importance -->
+    <h2>Feature Importance (Coefficient Comparison)</h2>
+    <div class="grid">
+      <div class="card">
+        <div class="card-title">Coefficients by Model Version</div>
+        <div class="chart-container">
+          <canvas id="coeffChart"></canvas>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-title">Odds Ratios (Model v3)</div>
+        <div class="chart-container">
+          <canvas id="oddsChart"></canvas>
+        </div>
+      </div>
+    </div>
+
+    <div class="insight-box" style="background: #7f1d1d; border-color: #dc2626;">
+      <div class="insight-title" style="color: #fca5a5;">⚠️ CALIBRATION WARNING</div>
+      <ul style="color: #fecaca;">
+        <li><strong>Model overestimates by 22.5%</strong> - See xg_deep_analysis.html for full breakdown</li>
+        <li><strong>Empty Net broken:</strong> Predicts 82%, actual is 14%</li>
+        <li><strong>Penalty Kill broken:</strong> Predicts 21%, actual is 8%</li>
+        <li><strong>Shot type not in model:</strong> Snap shots underestimated by 3.5%</li>
+      </ul>
+    </div>
+
+    <div class="insight-box">
+      <div class="insight-title">Feature Coefficients (from model)</div>
+      <ul>
+        <li><strong>Empty Net coefficient:</strong> +4.21 (but detection is broken)</li>
+        <li><strong>Distance:</strong> -0.032 per foot (works well at close range)</li>
+        <li><strong>Rebounds:</strong> +0.42 (slight overestimate)</li>
+        <li><strong>Rush:</strong> -0.07 (slightly negative, as expected)</li>
+      </ul>
+    </div>
+
+    <!-- Calibration Summary - REAL DATA -->
+    <h2>Calibration: Where the Model Fails</h2>
+    <div class="grid">
+      <div class="card">
+        <div class="card-title">By Strength State</div>
+        <div class="chart-container">
+          <canvas id="strengthChart"></canvas>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-title">By Situation</div>
+        <div class="chart-container">
+          <canvas id="situationChart"></canvas>
+        </div>
+      </div>
+    </div>
+
+    <h3>Feature Calibration (Real Data)</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>Feature</th>
+          <th>Shots</th>
+          <th>Actual %</th>
+          <th>xG %</th>
+          <th>Error</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Even Strength</td>
+          <td>406,829</td>
+          <td>4.4%</td>
+          <td>4.5%</td>
+          <td class="positive">-0.1%</td>
+          <td class="positive">✓ Good</td>
+        </tr>
+        <tr>
+          <td>Power Play</td>
+          <td>45,549</td>
+          <td>8.3%</td>
+          <td>7.2%</td>
+          <td class="positive">+1.1%</td>
+          <td class="positive">✓ Good</td>
+        </tr>
+        <tr>
+          <td>Penalty Kill</td>
+          <td>48,958</td>
+          <td>8.4%</td>
+          <td>20.6%</td>
+          <td class="negative">-12.2%</td>
+          <td class="negative">✗ Broken</td>
+        </tr>
+        <tr>
+          <td>Goalie In Net</td>
+          <td>493,677</td>
+          <td>5.0%</td>
+          <td>5.1%</td>
+          <td class="positive">-0.1%</td>
+          <td class="positive">✓ Good</td>
+        </tr>
+        <tr>
+          <td>Empty Net</td>
+          <td>7,659</td>
+          <td>13.6%</td>
+          <td>82.2%</td>
+          <td class="negative">-68.7%</td>
+          <td class="negative">✗ Very Broken</td>
+        </tr>
+        <tr>
+          <td>0-10ft Distance</td>
+          <td>60,790</td>
+          <td>11.1%</td>
+          <td>11.1%</td>
+          <td class="positive">0.0%</td>
+          <td class="positive">✓ Perfect</td>
+        </tr>
+      </tbody>
+    </table>
+    <p style="color: #64748b; font-size: 0.8rem; margin-top: 10px;">Data: 501,336 shots from 2022-2025 seasons. See <a href="xg_deep_analysis.html" style="color: #38bdf8;">xg_deep_analysis.html</a> for full breakdown.</p>
+
+    <!-- Feature Details Table -->
+    <h2>Feature Coefficient Details</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Feature</th>
+          <th>v1</th>
+          <th>v2</th>
+          <th>v3</th>
+          <th>Interpretation (v3)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Distance (per ft)</td>
+          <td>-0.0337</td>
+          <td>-0.0316</td>
+          <td>-0.0315</td>
+          <td>Each foot farther = 3% lower odds</td>
+        </tr>
+        <tr>
+          <td>Angle (per degree)</td>
+          <td>-0.0077</td>
+          <td>-0.0081</td>
+          <td>-0.0081</td>
+          <td>Each degree off-center = 0.8% lower odds</td>
+        </tr>
+        <tr>
+          <td>Empty Net</td>
+          <td class="positive">+4.332</td>
+          <td class="positive">+4.288</td>
+          <td class="positive">+4.213</td>
+          <td class="positive">67x more likely to score</td>
+        </tr>
+        <tr>
+          <td>Penalty Kill</td>
+          <td class="positive">+0.645</td>
+          <td class="positive">+0.667</td>
+          <td class="positive">+0.660</td>
+          <td class="positive">94% higher conversion</td>
+        </tr>
+        <tr>
+          <td>Power Play</td>
+          <td class="positive">+0.408</td>
+          <td class="positive">+0.409</td>
+          <td class="positive">+0.411</td>
+          <td class="positive">51% higher conversion</td>
+        </tr>
+        <tr>
+          <td>Rebound</td>
+          <td>—</td>
+          <td class="positive">+0.413</td>
+          <td class="positive">+0.417</td>
+          <td class="positive">52% higher conversion</td>
+        </tr>
+        <tr>
+          <td>Rush</td>
+          <td>—</td>
+          <td class="negative">-0.066</td>
+          <td class="negative">-0.071</td>
+          <td class="negative">7% LOWER (controlling for location)</td>
+        </tr>
+        <tr>
+          <td>Goal Differential</td>
+          <td>—</td>
+          <td>—</td>
+          <td class="positive">+0.042</td>
+          <td class="positive">4% higher per goal lead</td>
+        </tr>
+      </tbody>
+    </table>
+
+  </div>
+
+  <script>
+    // Data
+    const features = ['Distance', 'Angle', 'Empty Net', 'Penalty Kill', 'Power Play', 'Rebound', 'Rush', 'Goal Diff'];
+    const v1Coeffs = [-0.0337, -0.0077, 4.332, 0.645, 0.408, null, null, null];
+    const v2Coeffs = [-0.0316, -0.0081, 4.288, 0.667, 0.409, 0.413, -0.066, null];
+    const v3Coeffs = [-0.0315, -0.0081, 4.213, 0.660, 0.411, 0.417, -0.071, 0.042];
+
+    // Coefficient Chart
+    new Chart(document.getElementById('coeffChart'), {
+      type: 'bar',
+      data: {
+        labels: features,
+        datasets: [
+          { label: 'v1', data: v1Coeffs, backgroundColor: '#3b82f6' },
+          { label: 'v2', data: v2Coeffs, backgroundColor: '#f97316' },
+          { label: 'v3', data: v3Coeffs, backgroundColor: '#22c55e' }
+        ]
+      },
+      options: {
+        indexAxis: 'y',
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: { legend: { labels: { color: '#94a3b8' } } },
+        scales: {
+          x: { grid: { color: '#334155' }, ticks: { color: '#94a3b8' } },
+          y: { grid: { color: '#334155' }, ticks: { color: '#94a3b8' } }
+        }
+      }
+    });
+
+    // Odds Ratio Chart
+    const oddsFeatures = ['10ft closer', '10° central', 'Empty Net', 'Penalty Kill', 'Power Play', 'Rebound', 'Rush', 'Lead +1'];
+    const oddsRatios = [1.37, 1.08, 67.5, 1.94, 1.51, 1.52, 0.93, 1.04];
+    const oddsColors = oddsRatios.map(v => v >= 1 ? '#22c55e' : '#ef4444');
+
+    new Chart(document.getElementById('oddsChart'), {
+      type: 'bar',
+      data: {
+        labels: oddsFeatures,
+        datasets: [{ label: 'Odds Ratio', data: oddsRatios, backgroundColor: oddsColors }]
+      },
+      options: {
+        indexAxis: 'y',
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: { display: false },
+          annotation: {
+            annotations: {
+              line1: { type: 'line', xMin: 1, xMax: 1, borderColor: '#fbbf24', borderWidth: 2, borderDash: [5, 5] }
+            }
+          }
+        },
+        scales: {
+          x: { type: 'logarithmic', grid: { color: '#334155' }, ticks: { color: '#94a3b8' } },
+          y: { grid: { color: '#334155' }, ticks: { color: '#94a3b8' } }
+        }
+      }
+    });
+
+    // Strength State Chart - REAL DATA from deep analysis
+    new Chart(document.getElementById('strengthChart'), {
+      type: 'bar',
+      data: {
+        labels: ['Even Strength', 'Power Play', 'Penalty Kill'],
+        datasets: [
+          { label: 'Actual %', data: [4.4, 8.3, 8.4], backgroundColor: '#4ade80' },
+          { label: 'xG %', data: [4.5, 7.2, 20.6], backgroundColor: '#a78bfa' }
+        ]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: { legend: { labels: { color: '#94a3b8' } } },
+        scales: {
+          x: { grid: { color: '#334155' }, ticks: { color: '#94a3b8' } },
+          y: { grid: { color: '#334155' }, ticks: { color: '#94a3b8', callback: v => v + '%' } }
+        }
+      }
+    });
+
+    // Situation Chart - REAL DATA
+    new Chart(document.getElementById('situationChart'), {
+      type: 'bar',
+      data: {
+        labels: ['Goalie In Net', 'Empty Net', 'Non-Rebound', 'Rebound'],
+        datasets: [
+          { label: 'Actual %', data: [5.0, 13.6, 4.8, 8.7], backgroundColor: '#4ade80' },
+          { label: 'xG %', data: [5.1, 82.2, 5.8, 10.9], backgroundColor: '#a78bfa' }
+        ]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: { legend: { labels: { color: '#94a3b8' } } },
+        scales: {
+          x: { grid: { color: '#334155' }, ticks: { color: '#94a3b8' } },
+          y: { grid: { color: '#334155' }, ticks: { color: '#94a3b8', callback: v => v + '%' } }
+        }
+      }
+    });
+  </script>
+</body>
+</html>
