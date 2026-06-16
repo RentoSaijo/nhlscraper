@@ -20,7 +20,8 @@ Goalies) OR character of 'NAS'/'NA Skaters'/'North American Skaters',
 data.frame with one row per player
 }
 \description{
-\code{draft_rankings()} retrieves the draft rankings for a class and category as a \code{data.frame} where each row represents player and includes detail on player identity, role, handedness, and biographical profile plus draft-board context, scouting background, and pick/round progression.
+\code{draft_rankings()} returns NHL Central Scouting rankings for one draft class
+and skater/goalie region group, with one row per ranked prospect.
 }
 \examples{
 draft_rankings_INTL_Skaters_2017 <- draft_rankings(

@@ -10,7 +10,8 @@ team_logos()
 data.frame with one row per logo
 }
 \description{
-\code{team_logos()} retrieves all the team logos as a \code{data.frame} where each row represents logo and includes detail on team identity, affiliation, and matchup-side context.
+\code{team_logos()} returns records-site logo metadata with one row per team logo
+interval, including team ID, logo URL fields, and start/end season IDs.
 }
 \examples{
 all_team_logos <- team_logos()

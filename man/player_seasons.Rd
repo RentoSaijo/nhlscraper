@@ -13,7 +13,8 @@ player_seasons(player = 8478402)
 data.frame with one row per season
 }
 \description{
-\code{player_seasons()} retrieves the season(s) and game type(s) in which a player played as a \code{data.frame} where each row represents season and includes detail on date/season filtering windows and chronological context.
+\code{player_seasons()} returns the seasons and game type IDs available in a
+player's GameCenter game-log payload.
 }
 \examples{
 Martin_Necas_seasons <- player_seasons(player = 8480039)

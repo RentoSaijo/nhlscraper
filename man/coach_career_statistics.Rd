@@ -13,7 +13,8 @@ coach_career_stats()
 data.frame with one row per coach
 }
 \description{
-\code{coach_career_statistics()} retrieves the career statistics for all the coaches as a \code{data.frame} where each row represents coach and includes detail on ranking movement, points pace, and division/conference position signals.
+\code{coach_career_statistics()} returns regular-season plus playoff career
+coaching records with one row per coach.
 }
 \examples{
 coach_career_stats <- coach_career_statistics()

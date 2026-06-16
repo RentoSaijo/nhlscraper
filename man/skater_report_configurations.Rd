@@ -13,7 +13,10 @@ skater_report_configs()
 list with various items
 }
 \description{
-\code{skater_report_configurations()} retrieves the configurations for skater reports as a nested \code{list} that separates summary and detail blocks for production, workload, efficiency, and result-level performance outcomes, situational splits across home/road, strength state, and overtime/shootout states, and configuration catalogs for valid report categories and filters.
+\code{skater_report_configurations()} returns the skater-report configuration
+block from the stats API, including valid report categories, fields, filters,
+and split options accepted by \code{\link[=skater_season_report]{skater_season_report()}} and
+\code{\link[=skater_game_report]{skater_game_report()}}.
 }
 \examples{
 skater_report_configs <- skater_report_configurations()

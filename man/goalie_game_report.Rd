@@ -27,7 +27,8 @@ support pre-season}
 data.frame with one row per game per goalie
 }
 \description{
-\code{goalie_game_report()} retrieves various reports for a season, game type, and category for all the goalies by game as a \code{data.frame} where each row represents game per goalie and includes detail on game timeline state, period/clock progression, and matchup flow, player identity, role, handedness, and biographical profile, and production, workload, efficiency, and result-level performance outcomes.
+\code{goalie_game_report()} returns the game-level version of a selected goalie
+stats report, with one row per goalie per game and category-specific metrics.
 }
 \examples{
 # May take >5s, so skip.

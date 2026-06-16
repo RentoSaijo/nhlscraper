@@ -1,6 +1,8 @@
 #' Access all the franchises
 #'
-#' `franchises()` retrieves all the franchises as a `data.frame` where each row represents franchise and includes detail on team identity, affiliation, and matchup-side context.
+#' `franchises()` merges records-site franchise and franchise-detail metadata,
+#' returning one row per franchise with normalized franchise/team identifiers
+#' and names.
 #'
 #' @returns data.frame with one row per franchise
 #' @examples
@@ -33,7 +35,8 @@ franchises <- function() {
 
 #' Access the all-time statistics for all the franchises by game type
 #'
-#' `franchise_statistics()` retrieves the all-time statistics for all the franchises by game type as a `data.frame` where each row represents franchise per game type and includes detail on date/season filtering windows and chronological context, team identity, affiliation, and matchup-side context, and production, workload, efficiency, and result-level performance outcomes.
+#' `franchise_statistics()` returns all-time franchise totals by game type,
+#' including games, wins/losses, goals, points, and related aggregate fields.
 #'
 #' @returns data.frame with one row per franchise per game type
 #' @examples
@@ -65,7 +68,8 @@ franchise_stats <- function() {
 
 #' Access the all-time statistics for all the franchises by team and game type
 #'
-#' `franchise_team_statistics()` retrieves the all-time statistics for all the franchises by team and game type as a `data.frame` where each row represents team per franchise per game type and includes detail on date/season filtering windows and chronological context, team identity, affiliation, and matchup-side context, and production, workload, efficiency, and result-level performance outcomes.
+#' `franchise_team_statistics()` returns all-time totals by franchise-era team
+#' and game type, preserving separate rows for teams that share a franchise.
 #'
 #' @returns data.frame with one row per team per franchise per game type
 #' @examples
@@ -97,7 +101,9 @@ franchise_team_stats <- function() {
 
 #' Access the statistics for all the franchises by season and game type
 #'
-#' `franchise_season_statistics()` retrieves the statistics for all the franchises by season and game type as a `data.frame` where each row represents franchise per season per game type and includes detail on date/season filtering windows and chronological context, team identity, affiliation, and matchup-side context, and production, workload, efficiency, and result-level performance outcomes.
+#' `franchise_season_statistics()` returns records-site franchise results by
+#' season and game type, including team, standing, record, goals, and points
+#' fields.
 #'
 #' @returns data.frame with one row per franchise per season per game type
 #' @examples
@@ -131,7 +137,8 @@ franchise_season_stats <- function() {
 #' Access the all-time statistics versus other franchises for all the 
 #' franchises by game type
 #'
-#' `franchise_versus_franchise()` retrieves the all-time statistics versus other franchises for all the franchises by game type as a `data.frame` where each row represents franchise per franchise per game type and includes detail on date/season filtering windows and chronological context plus team identity, affiliation, and matchup-side context.
+#' `franchise_versus_franchise()` returns all-time head-to-head records by
+#' franchise, opponent franchise, and game type.
 #'
 #' @returns data.frame with one row per franchise per franchise per game type
 #' @examples
@@ -169,7 +176,8 @@ franchise_vs_franchise <- function() {
 
 #' Access the playoff series results for all the franchises by situation
 #'
-#' `franchise_playoff_situational_results()` retrieves the playoff series results for all the franchises by situation as a `data.frame` where each row represents franchise per situation and includes detail on team identity, affiliation, and matchup-side context.
+#' `franchise_playoff_situational_results()` returns playoff series records by
+#' franchise and series situation, such as leading or trailing a series.
 #'
 #' @returns data.frame with one row per franchise per situation
 #' @examples

@@ -1,6 +1,7 @@
 #' Access the ESPN games for a season
 #'
-#' `espn_games()` retrieves the ESPN games for a season as a `data.frame` where each row represents ESPN and includes detail on game timing, matchup state, scoring flow, and situational event detail.
+#' `espn_games()` pages ESPN's NHL event index for a season and returns one row
+#' per event containing the ESPN game ID used by the other ESPN wrappers.
 #'
 #' @inheritParams roster
 #'
@@ -65,7 +66,9 @@ espn_games <- function(season = season_now()) {
 
 #' Access the ESPN summary for a game
 #'
-#' `espn_game_summary()` retrieves the ESPN summary for a game as a nested `list` that separates summary and detail blocks for date/season filtering windows and chronological context, venue/location geography and regional metadata, and playoff-series progression, round status, and series leverage.
+#' `espn_game_summary()` returns ESPN's competition summary for one game after
+#' dropping large availability/link/detail blocks, leaving the compact game,
+#' competitor, venue, date, format, and series fields exposed by the core API.
 #'
 #' @param game integer ID (e.g., 401777460); see [espn_games()] for 
 #' reference
@@ -129,7 +132,9 @@ espn_game_summary <- function(game = 401777460) {
 
 #' Access the ESPN play-by-play for a game
 #'
-#' `espn_play_by_play()` retrieves the ESPN play-by-play for a game as a `data.frame` where each row represents event and includes detail on game timeline state, period/clock progression, and matchup flow, team identity, affiliation, and matchup-side context, and situational splits across home/road, strength state, and overtime/shootout states.
+#' `espn_play_by_play()` returns ESPN's play rows for one game with one row per
+#' event, normalized event IDs, period labels, clock/text fields, team refs, and
+#' coordinate fields when ESPN supplies them.
 #'
 #' @inheritParams espn_game_summary
 #'
@@ -172,7 +177,9 @@ espn_pbp <- function(game = 401777460) {
 
 #' Access the ESPN odds for a game
 #'
-#' `espn_game_odds()` retrieves the ESPN odds for a game as a `data.frame` where each row represents provider and includes detail on team identity, affiliation, and matchup-side context plus betting market snapshots with side/total prices and provider variation.
+#' `espn_game_odds()` returns ESPN's odds items for one game with one row per
+#' provider/market entry and camelCase names for nested price, spread, and total
+#' fields.
 #'
 #' @inheritParams espn_game_summary
 #'

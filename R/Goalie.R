@@ -1,6 +1,9 @@
 #' Access the configurations for goalie reports
 #'
-#' `goalie_report_configurations()` retrieves the configurations for goalie reports as a nested `list` that separates summary and detail blocks for situational splits across home/road, strength state, and overtime/shootout states plus configuration catalogs for valid report categories and filters.
+#' `goalie_report_configurations()` returns the goalie-report configuration
+#' block from the stats API, including valid report categories, fields, filters,
+#' and split options accepted by [goalie_season_report()] and
+#' [goalie_game_report()].
 #'
 #' @returns list with various items
 #' @examples
@@ -29,7 +32,9 @@ goalie_report_configs <- function() {
 #' Access various reports for a season, game type, and category for all 
 #' the goalies by season
 #'
-#' `goalie_season_report()` retrieves various reports for a season, game type, and category for all the goalies by season as a `data.frame` where each row represents player and includes detail on date/season filtering windows and chronological context, player identity, role, handedness, and biographical profile, and production, workload, efficiency, and result-level performance outcomes.
+#' `goalie_season_report()` returns a season-level goalie report for a selected
+#' stats category, with one row per goalie and the metric columns defined by
+#' that category.
 #'
 #' @inheritParams roster_statistics
 #' @param category character (e.g., 'advanced'); see 
@@ -82,7 +87,8 @@ goalie_season_report <- function(
 #' Access various reports for a season, game type, and category for all 
 #' the goalies by game
 #'
-#' `goalie_game_report()` retrieves various reports for a season, game type, and category for all the goalies by game as a `data.frame` where each row represents game per goalie and includes detail on game timeline state, period/clock progression, and matchup flow, player identity, role, handedness, and biographical profile, and production, workload, efficiency, and result-level performance outcomes.
+#' `goalie_game_report()` returns the game-level version of a selected goalie
+#' stats report, with one row per goalie per game and category-specific metrics.
 #'
 #' @inheritParams goalie_season_report
 #'
@@ -98,9 +104,9 @@ goalie_season_report <- function(
 #' @export
 
 goalie_game_report <- function(
-    season    = season_now(), 
-    game_type = game_type_now(), 
-    category  = 'summary'
+  season    = season_now(),
+  game_type = game_type_now(),
+  category  = 'summary'
 ) {
   tryCatch(
     expr = {
@@ -132,7 +138,8 @@ goalie_game_report <- function(
 
 #' Access the career statistics for all the goalies
 #'
-#' `goalie_statistics()` retrieves the career statistics for all the goalies as a `data.frame` where each row represents player and includes detail on team identity, affiliation, and matchup-side context, player identity, role, handedness, and biographical profile, and production, workload, efficiency, and result-level performance outcomes.
+#' `goalie_statistics()` returns records-site regular-season plus playoff career
+#' goalie totals, with one row per goalie.
 #'
 #' @returns data.frame with one row per player
 #' @examples
@@ -165,7 +172,8 @@ goalie_stats <- function() {
 
 #' Access the career regular season statistics for all the goalies
 #'
-#' `goalie_regular_statistics()` retrieves the career regular season statistics for all the goalies as a `data.frame` where each row represents goalie and includes detail on date/season filtering windows and chronological context, team identity, affiliation, and matchup-side context, and player identity, role, handedness, and biographical profile.
+#' `goalie_regular_statistics()` returns records-site regular-season career
+#' goalie totals, with one row per goalie.
 #'
 #' @returns data.frame with one row per goalie
 #' @examples
@@ -199,7 +207,9 @@ goalie_regular_stats <- function() {
 
 #' Access the statistics for all the goalies by season, game type, and team.
 #'
-#' `goalie_season_statistics()` retrieves the statistics for all the goalies by season, game type, and team as a `data.frame` where each row represents player per season per game type, separated by team if applicable and includes detail on date/season filtering windows and chronological context, team identity, affiliation, and matchup-side context, and player identity, role, handedness, and biographical profile.
+#' `goalie_season_statistics()` returns records-site goalie stat rows by player,
+#' team, season, and game type, preserving separate rows when a goalie changed
+#' teams.
 #'
 #' @returns data.frame with one row per player per season per game type, 
 #' separated by team if applicable
@@ -235,7 +245,8 @@ goalie_season_stats <- function() {
 
 #' Access the statistics for all the goalies by game
 #'
-#' `goalie_game_statistics()` retrieves the statistics for all the goalies by game as a `data.frame` with detail on game timeline state, period/clock progression, and matchup flow, date/season filtering windows and chronological context, and team identity, affiliation, and matchup-side context.
+#' `goalie_game_statistics()` returns records-site goalie stat rows by player
+#' and game, including opponent fields and normalized team abbreviations.
 #'
 #' @returns data.frame with one row per goalie per game
 #' @examples
@@ -271,7 +282,8 @@ goalie_game_stats <- function() {
 
 #' Access the playoff statistics for all the goalies by series
 #'
-#' `goalie_series_statistics()` retrieves the playoff statistics for all the goalies by series as a `data.frame` where each row represents player per series and includes detail on date/season filtering windows and chronological context, team identity, affiliation, and matchup-side context, and player identity, role, handedness, and biographical profile.
+#' `goalie_series_statistics()` returns records-site playoff goalie totals by
+#' player and playoff series.
 #'
 #' @returns data.frame with one row per player per series
 #' @examples
@@ -304,7 +316,8 @@ goalie_series_stats <- function() {
 
 #' Access the career scoring statistics for all the goalies
 #'
-#' `goalie_scoring()` retrieves the career scoring statistics for all the goalies as a `data.frame` where each row represents player and includes detail on date/season filtering windows and chronological context, team identity, affiliation, and matchup-side context, and player identity, role, handedness, and biographical profile.
+#' `goalie_scoring()` returns records-site career scoring totals for goalies,
+#' with one row per goalie.
 #'
 #' @returns data.frame with one row per player
 #' @examples
@@ -330,7 +343,8 @@ goalie_scoring <- function() {
 
 #' Access the scoring statistics for all the goalies by game
 #'
-#' `goalie_game_scoring()` retrieves the scoring statistics for all the goalies by game as a `data.frame` with detail on game timeline state, period/clock progression, and matchup flow, date/season filtering windows and chronological context, and team identity, affiliation, and matchup-side context.
+#' `goalie_game_scoring()` returns records-site goalie scoring rows by player
+#' and game.
 #'
 #' @returns data.frame with one row per player per game
 #' @examples
@@ -356,7 +370,8 @@ goalie_game_scoring <- function() {
 
 #' Access the goalie statistics leaders for a season, game type, and category
 #'
-#' `goalie_leaders()` retrieves the goalie statistics leaders for a season, game type, and category as a `data.frame` where each row represents player and includes detail on player identity, role, handedness, and biographical profile.
+#' `goalie_leaders()` returns the NHL.com leaders table for one goalie category,
+#' season, and game type, with normalized player and team fields.
 #'
 #' @inheritParams roster_statistics
 #' @param category character of 'w'/'wins', 's'/shutouts', 
@@ -411,7 +426,9 @@ goalie_leaders <- function(
 
 #' Access the goalies on milestone watch
 #'
-#' `goalie_milestones()` retrieves the goalies on milestone watch as a `data.frame` where each row represents player and includes detail on date/season filtering windows and chronological context, player identity, role, handedness, and biographical profile, and ranking movement, points pace, and division/conference position signals.
+#' `goalie_milestones()` returns NHL.com goalie milestone-watch rows, including
+#' goalie/team identifiers and the milestone/countdown fields exposed by the
+#' endpoint.
 #'
 #' @returns data.frame with one row per player
 #' @examples

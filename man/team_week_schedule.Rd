@@ -19,7 +19,9 @@ reference; ID is preferable as there now exists duplicate three-letter codes
 data.frame with one row per game
 }
 \description{
-\code{team_week_schedule()} retrieves the schedule for a team and week since a date as a \code{data.frame} where each row represents game and includes detail on game timeline state, period/clock progression, and matchup flow, date/season filtering windows and chronological context, and team identity, affiliation, and matchup-side context.
+\code{team_week_schedule()} returns the same normalized club-schedule rows as
+\code{\link[=team_season_schedule]{team_season_schedule()}}, restricted to the API's week window starting from
+the requested date.
 }
 \examples{
 COL_schedule_Family_Week_2025 <- team_week_schedule(

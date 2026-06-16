@@ -1,6 +1,9 @@
 #' Access the configurations for skater reports
 #'
-#' `skater_report_configurations()` retrieves the configurations for skater reports as a nested `list` that separates summary and detail blocks for production, workload, efficiency, and result-level performance outcomes, situational splits across home/road, strength state, and overtime/shootout states, and configuration catalogs for valid report categories and filters.
+#' `skater_report_configurations()` returns the skater-report configuration
+#' block from the stats API, including valid report categories, fields, filters,
+#' and split options accepted by [skater_season_report()] and
+#' [skater_game_report()].
 #'
 #' @returns list with various items
 #' @examples
@@ -29,7 +32,9 @@ skater_report_configs <- function() {
 #' Access various reports for a season, game type, and category for all 
 #' the skaters by season
 #'
-#' `skater_season_report()` retrieves various reports for a season, game type, and category for all the skaters by season as a `data.frame` where each row represents player and includes detail on date/season filtering windows and chronological context, player identity, role, handedness, and biographical profile, and production, workload, efficiency, and result-level performance outcomes.
+#' `skater_season_report()` returns a season-level skater report for a selected
+#' stats category, with one row per player and the metric columns defined by
+#' that category.
 #'
 #' @inheritParams roster_statistics
 #' @param category character (e.g., 'puckPossessions'); see 
@@ -82,7 +87,9 @@ skater_season_report <- function(
 #' Access various reports for a season, game type, and category for all 
 #' the skaters by game
 #'
-#' `skater_game_report()` retrieves various reports for a season, game type, and category for all the skaters by game as a `data.frame` where each row represents game per player and includes detail on game timeline state, period/clock progression, and matchup flow, player identity, role, handedness, and biographical profile, and production, workload, efficiency, and result-level performance outcomes.
+#' `skater_game_report()` returns the game-level version of a selected skater
+#' stats report, with one row per player per game and category-specific metrics.
+#' Regular-season calls are paged by month to avoid oversized API requests.
 #'
 #' @inheritParams skater_season_report
 #'
@@ -198,7 +205,8 @@ skater_game_report <- function(
 
 #' Access the career statistics for all the skaters
 #'
-#' `skater_statistics()` retrieves the career statistics for all the skaters as a `data.frame` where each row represents player and includes detail on player identity, role, handedness, and biographical profile plus production, workload, efficiency, and result-level performance outcomes.
+#' `skater_statistics()` returns records-site regular-season plus playoff career
+#' scoring totals for skaters, with one row per player.
 #'
 #' @returns data.frame with one row per player
 #' @examples
@@ -231,7 +239,8 @@ skater_stats <- function() {
 
 #' Access the career regular season statistics for all the skaters
 #'
-#' `skater_regular_statistics()` retrieves the career regular season statistics for all the skaters as a `data.frame` where each row represents player and includes detail on team identity, affiliation, and matchup-side context, player identity, role, handedness, and biographical profile, and production, workload, efficiency, and result-level performance outcomes.
+#' `skater_regular_statistics()` returns records-site regular-season career
+#' scoring totals for skaters, with one row per player.
 #'
 #' @returns data.frame with one row per player
 #' @examples
@@ -264,7 +273,8 @@ skater_regular_stats <- function() {
 
 #' Access the career playoff statistics for all the skaters
 #'
-#' `skater_playoff_statistics()` retrieves the career playoff statistics for all the skaters as a `data.frame` where each row represents player and includes detail on team identity, affiliation, and matchup-side context, player identity, role, handedness, and biographical profile, and production, workload, efficiency, and result-level performance outcomes.
+#' `skater_playoff_statistics()` returns records-site playoff career scoring
+#' totals for skaters, with one row per player.
 #'
 #' @returns data.frame with one row per player
 #' @examples
@@ -297,7 +307,9 @@ skater_playoff_stats <- function() {
 
 #' Access the statistics for all the skaters by season, game type, and team
 #'
-#' `skater_season_statistics()` retrieves the statistics for all the skaters by season, game type, and team as a `data.frame` where each row represents player per season per game type, separated by team if applicable and includes detail on date/season filtering windows and chronological context, team identity, affiliation, and matchup-side context, and player identity, role, handedness, and biographical profile.
+#' `skater_season_statistics()` returns records-site player stat rows by
+#' player, team, season, and game type, preserving separate rows when a player
+#' changed teams.
 #'
 #' @returns data.frame with one row per player per season per game type, 
 #' separated by team if applicable
@@ -334,7 +346,8 @@ skater_season_stats <- function() {
 
 #' Access the playoff statistics for all the skaters by series
 #'
-#' `skater_series_statistics()` retrieves the playoff statistics for all the skaters by series as a `data.frame` where each row represents player per series and includes detail on date/season filtering windows and chronological context, team identity, affiliation, and matchup-side context, and player identity, role, handedness, and biographical profile.
+#' `skater_series_statistics()` returns records-site playoff skater totals by
+#' player and playoff series.
 #'
 #' @returns data.frame with one row per player per series
 #' @examples
@@ -368,7 +381,8 @@ skater_series_stats <- function() {
 
 #' Access the skater statistics leaders for a season, game type, and category
 #'
-#' `skater_leaders()` retrieves the skater statistics leaders for a season, game type, and category as a `data.frame` where each row represents player and includes detail on player identity, role, handedness, and biographical profile.
+#' `skater_leaders()` returns the NHL.com leaders table for one skater category,
+#' season, and game type, with normalized player and team fields.
 #'
 #' @inheritParams roster_statistics
 #' @param category string of 'a'/'assists', 'g'/goals', 
@@ -434,7 +448,9 @@ skater_leaders <- function(
 
 #' Access the skaters on milestone watch
 #'
-#' `skater_milestones()` retrieves the skaters on milestone watch as a `data.frame` where each row represents player and includes detail on date/season filtering windows and chronological context, player identity, role, handedness, and biographical profile, and production, workload, efficiency, and result-level performance outcomes.
+#' `skater_milestones()` returns NHL.com skater milestone-watch rows, including
+#' player/team identifiers and the milestone/countdown fields exposed by the
+#' endpoint.
 #'
 #' @returns data.frame with one row per player
 #' @examples

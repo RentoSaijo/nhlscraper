@@ -29,7 +29,8 @@ will NOT support pre-season}
 data.frame with one row per shot location
 }
 \description{
-\code{goalie_edge_shot_location()} retrieves the EDGE shot location statistics for a goalie, season, game type, and category as a \code{data.frame} where each row represents shot location and includes detail on production, workload, efficiency, and result-level performance outcomes plus NHL EDGE style tracking outputs and relative-performance context.
+\code{goalie_edge_shot_location()} returns a goalie's EDGE save results by shot
+location, either as detailed splits or shot-location totals.
 }
 \examples{
 Mackenzie_Blackwood_shot_location_totals_regular_20242025 <- 

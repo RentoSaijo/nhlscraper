@@ -22,7 +22,9 @@ reference}
 data.frame with one row per player
 }
 \description{
-\code{roster()} retrieves the roster for a team, season, and position as a \code{data.frame} where each row represents player and includes detail on player identity, role, handedness, and biographical profile.
+\code{roster()} returns a team's roster for one season and position group, with
+one row per player and normalized ID, name, sweater, position, height/weight,
+birth, and handedness fields when available.
 }
 \examples{
 COL_defensemen_20242025 <- roster(

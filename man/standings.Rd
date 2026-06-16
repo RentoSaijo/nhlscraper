@@ -14,7 +14,9 @@ standings(date = "now")
 data.frame with one row per team
 }
 \description{
-\code{standings()} retrieves the standings for a date as a \code{data.frame} where each row represents team and includes detail on date/season filtering windows and chronological context, production, workload, efficiency, and result-level performance outcomes, and ranking movement, points pace, and division/conference position signals.
+\code{standings()} returns public standings for one date with one row per team,
+including rank, record, points, streak, division/conference, and normalized
+team fields.
 }
 \examples{
 standings_Halloween_2025 <- standings(date = '2025-10-31')

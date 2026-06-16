@@ -1,6 +1,8 @@
 #' Access the replay for an event
 #'
-#' `replay()` retrieves the replay for an event as a `data.frame` where each row represents decisecond and includes detail on team identity, affiliation, and matchup-side context plus player identity, role, handedness, and biographical profile.
+#' `replay()` downloads NHL puck/player tracking sprite data for one goal event
+#' and returns one row per decisecond with puck coordinates plus dynamic
+#' `playerN*` columns for tracked skaters.
 #'
 #' @param game integer ID (e.g., 2025020262); see [games()] for reference
 #' @param event integer ID (e.g., 751); see [gc_play_by_play()] and/or 
@@ -141,7 +143,9 @@ replay <- function(game = 2023030417, event = 866) {
 
 #' Access all the penalty shots
 #'
-#' `penalty_shots()` retrieves all the penalty shots as a `data.frame` where each row represents penalty shot and includes detail on game timeline state, period/clock progression, and matchup flow plus date/season filtering windows and chronological context.
+#' `penalty_shots()` returns historical penalty-shot records with one row per
+#' attempt, including game, season/game type, shooter/goalie, team, and outcome
+#' fields.
 #'
 #' @returns data.frame with one row per penalty shot
 #' @examples

@@ -17,8 +17,9 @@ reference}
 data.frame with one row per raw event (play) per game
 }
 \description{
-\code{gc_play_by_plays_raw()} loads the raw GC play-by-plays for a given
-\code{season}.
+\code{gc_play_by_plays_raw()} downloads the stored season-level GameCenter
+parquet snapshot and returns the raw rows without public-schema cleanup or
+situation-code padding.
 }
 \examples{
 # May take >5s, so skip.

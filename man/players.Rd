@@ -10,7 +10,8 @@ players()
 data.frame with one row per player
 }
 \description{
-\code{players()} retrieves all the players as a \code{data.frame} where each row represents player and includes detail on player identity, role, handedness, and biographical profile.
+\code{players()} returns the records-site player registry with one row per player
+and normalized IDs, names, position, handedness, and birth fields.
 }
 \examples{
 # May take >5s, so skip.

@@ -13,7 +13,8 @@ goalie_stats()
 data.frame with one row per player
 }
 \description{
-\code{goalie_statistics()} retrieves the career statistics for all the goalies as a \code{data.frame} where each row represents player and includes detail on team identity, affiliation, and matchup-side context, player identity, role, handedness, and biographical profile, and production, workload, efficiency, and result-level performance outcomes.
+\code{goalie_statistics()} returns records-site regular-season plus playoff career
+goalie totals, with one row per goalie.
 }
 \examples{
 goalie_stats <- goalie_statistics()

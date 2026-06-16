@@ -14,7 +14,8 @@ reference}
 data.frame with one row per series
 }
 \description{
-\code{bracket()} retrieves the playoff bracket for a season as a \code{data.frame} where each row represents series and includes detail on team identity, affiliation, and matchup-side context.
+\code{bracket()} returns the public playoff bracket for one season, with one row
+per series and normalized team, seed, score, and series-status fields.
 }
 \examples{
 bracket_20242025 <- bracket(season = 20242025)

@@ -1,7 +1,8 @@
 #' Access the season(s) and game type(s) in which there exists goalie EDGE 
 #' statistics
 #'
-#' `goalie_edge_seasons()` retrieves the season(s) and game type(s) in which there exists goalie EDGE statistics as a `data.frame` where each row represents season and includes detail on date/season filtering windows and chronological context plus NHL EDGE style tracking outputs and relative-performance context.
+#' `goalie_edge_seasons()` returns the seasons and game type IDs for which the
+#' NHL EDGE goalie endpoints expose data.
 #'
 #' @returns data.frame with one row per season
 #' @examples
@@ -28,7 +29,9 @@ goalie_edge_seasons <- function() {
 
 #' Access the goalie EDGE statistics leaders for a season and game type
 #'
-#' `goalie_edge_leaders()` retrieves the goalie EDGE statistics leaders for a season and game type as a nested `list` that separates summary and detail blocks for NHL EDGE style tracking outputs and relative-performance context.
+#' `goalie_edge_leaders()` returns the goalie EDGE landing-page leader groups
+#' for one season and game type, such as save percentage, 5-on-5 save
+#' percentage, and shot-location leader blocks.
 #'
 #' @param season integer in YYYYYYYY (e.g., 20242025); see 
 #' [goalie_edge_seasons()] for reference
@@ -66,7 +69,9 @@ goalie_edge_leaders <- function(season = 'now', game_type = '') {
 
 #' Access the EDGE summary for a goalie, season, and game type
 #'
-#' `goalie_edge_summary()` retrieves the EDGE summary for a goalie, season, and game type as a nested `list` that separates summary and detail blocks for player identity, role, handedness, and biographical profile plus NHL EDGE style tracking outputs and relative-performance context.
+#' `goalie_edge_summary()` returns the full NHL EDGE detail payload for one
+#' goalie, season, and game type, including goalie metadata and the available
+#' save-percentage and shot-location summary blocks.
 #'
 #' @inheritParams goalie_edge_leaders
 #' @param player integer ID (e.g., 8478406)
@@ -81,9 +86,9 @@ goalie_edge_leaders <- function(season = 'now', game_type = '') {
 #' @export
 
 goalie_edge_summary <- function(
-    player    = 8476945, 
-    season    = 'now', 
-    game_type = ''
+  player    = 8476945,
+  season    = 'now',
+  game_type = ''
 ) {
   tryCatch(
     expr = {
@@ -107,7 +112,8 @@ goalie_edge_summary <- function(
 #' Access the EDGE save percentage statistics for a goalie, season, game type, 
 #' and category
 #'
-#' `goalie_edge_save_percentage()` retrieves the EDGE save percentage statistics for a goalie, season, game type, and category as a nested `list` that separates summary and detail blocks for NHL EDGE style tracking outputs and relative-performance context.
+#' `goalie_edge_save_percentage()` returns a goalie's EDGE save-percentage
+#' detail list, or recent game rows when `category = 'last 10'`.
 #'
 #' @inheritParams goalie_edge_summary
 #' @param category character of 'd'/'details' or 'l'/'l10'/'last 10'
@@ -157,7 +163,9 @@ goalie_edge_save_percentage <- function(
 #' Access the EDGE 5 vs. 5 statistics for a goalie, season, game type, and 
 #' category
 #'
-#' `goalie_edge_five_versus_five()` retrieves the EDGE 5 vs. 5 statistics for a goalie, season, game type, and category as a nested `list` that separates summary and detail blocks for production, workload, efficiency, and result-level performance outcomes plus NHL EDGE style tracking outputs and relative-performance context.
+#' `goalie_edge_five_versus_five()` returns goalie EDGE 5-on-5 save-percentage
+#' detail for one goalie/season/game type. Use `category = 'details'` for the
+#' full split list or `category = 'last 10'` for game-level recent form.
 #'
 #' @inheritParams goalie_edge_summary
 #' @param category character of 'd'/'details' or 'l'/'l10'/'last 10'
@@ -217,7 +225,8 @@ goalie_edge_5_vs_5 <- function(
 #' Access the EDGE shot location statistics for a goalie, season, game type, 
 #' and category
 #'
-#' `goalie_edge_shot_location()` retrieves the EDGE shot location statistics for a goalie, season, game type, and category as a `data.frame` where each row represents shot location and includes detail on production, workload, efficiency, and result-level performance outcomes plus NHL EDGE style tracking outputs and relative-performance context.
+#' `goalie_edge_shot_location()` returns a goalie's EDGE save results by shot
+#' location, either as detailed splits or shot-location totals.
 #'
 #' @inheritParams goalie_edge_summary
 #' @param category character of 'd'/details' or 't'/'totals'
@@ -234,10 +243,10 @@ goalie_edge_5_vs_5 <- function(
 #' @export
 
 goalie_edge_shot_location <- function(
-    player    = 8476945,
-    season    = 'now', 
-    game_type = '', 
-    category  = 'details'
+  player    = 8476945,
+  season    = 'now',
+  game_type = '',
+  category  = 'details'
 ) {
   tryCatch(
     expr = {

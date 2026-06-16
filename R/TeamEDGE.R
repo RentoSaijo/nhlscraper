@@ -1,7 +1,8 @@
 #' Access the season(s) and game type(s) in which there exists team EDGE 
 #' statistics
 #'
-#' `team_edge_seasons()` retrieves the season(s) and game type(s) in which there exists team EDGE statistics as a `data.frame` where each row represents season and includes detail on date/season filtering windows and chronological context plus NHL EDGE style tracking outputs and relative-performance context.
+#' `team_edge_seasons()` returns the seasons and game type IDs for which the NHL
+#' EDGE team endpoints expose data.
 #'
 #' @returns data.frame with one row per season
 #' @examples
@@ -28,7 +29,8 @@ team_edge_seasons <- function() {
 
 #' Access the team EDGE statistics leaders for a season and game type
 #'
-#' `team_edge_leaders()` retrieves the team EDGE statistics leaders for a season and game type as a nested `list` that separates summary and detail blocks for NHL EDGE style tracking outputs and relative-performance context.
+#' `team_edge_leaders()` returns the team EDGE landing-page leader groups for
+#' one season and game type, such as skating, shot, and zone-time leader blocks.
 #'
 #' @param season integer in YYYYYYYY (e.g., 20242025); see 
 #' [team_edge_seasons()] for reference
@@ -66,7 +68,9 @@ team_edge_leaders <- function(season = 'now', game_type = '') {
 
 #' Access the EDGE summary for a team, season, and game type
 #'
-#' `team_edge_summary()` retrieves the EDGE summary for a team, season, and game type as a nested `list` that separates summary and detail blocks for team identity, affiliation, and matchup-side context plus NHL EDGE style tracking outputs and relative-performance context.
+#' `team_edge_summary()` returns the full NHL EDGE detail payload for one team,
+#' season, and game type, including team metadata and the available skating,
+#' shot, and zone-time summary blocks.
 #'
 #' @inheritParams team_seasons
 #' @inheritParams team_edge_leaders
@@ -103,7 +107,8 @@ team_edge_summary <- function(team = 1, season = 'now', game_type = '') {
 #' Access the EDGE zone time statistics for a team, season, game type, and 
 #' category
 #'
-#' `team_edge_zone_time()` retrieves the EDGE zone time statistics for a team, season, game type, and category as a `data.frame` where each row represents strength state and includes detail on NHL EDGE style tracking outputs and relative-performance context.
+#' `team_edge_zone_time()` returns a team's EDGE zone-time detail table by
+#' strength state, or the shot-differential split list when requested.
 #'
 #' @inheritParams team_edge_summary
 #' @param category character of 'd'/'details' or 
@@ -158,7 +163,8 @@ team_edge_zone_time <- function(
 #' Access the EDGE skating distance statistics for a team, season, game type, 
 #' and category
 #'
-#' `team_edge_skating_distance()` retrieves the EDGE skating distance statistics for a team, season, game type, and category as a `data.frame` where each row represents combination of strength state and position and includes detail on team identity, affiliation, and matchup-side context, ranking movement, points pace, and division/conference position signals, and NHL EDGE style tracking outputs and relative-performance context.
+#' `team_edge_skating_distance()` returns team EDGE skating-distance detail by
+#' strength state and position, or recent game rows when `category = 'last 10'`.
 #'
 #' @inheritParams team_edge_summary
 #' @param category character of 'd'/'details' or 'l'/'l10'/'last 10'
@@ -208,7 +214,8 @@ team_edge_skating_distance <- function(
 #' Access the EDGE skating speed statistics for a team, season, game type, and 
 #' category
 #'
-#' `team_edge_skating_speed()` retrieves the EDGE skating speed statistics for a team, season, game type, and category as a `data.frame` where each row represents position and includes detail on team identity, affiliation, and matchup-side context, player identity, role, handedness, and biographical profile, and ranking movement, points pace, and division/conference position signals.
+#' `team_edge_skating_speed()` returns team EDGE skating-speed detail by
+#' position, or top-speed burst rows when `category = 'top speeds'`.
 #'
 #' @inheritParams team_edge_summary
 #' @param category character of 'd'/'details' or 't'/'top'/'top speeds'
@@ -257,7 +264,8 @@ team_edge_skating_speed <- function(
 #' Access the EDGE shot location statistics for a team, season, game type, and 
 #' category
 #'
-#' `team_edge_shot_location()` retrieves the EDGE shot location statistics for a team, season, game type, and category as a `data.frame` where each row represents location and includes detail on production, workload, efficiency, and result-level performance outcomes plus NHL EDGE style tracking outputs and relative-performance context.
+#' `team_edge_shot_location()` returns team EDGE shot-location detail by rink
+#' region, or totals by strength state and position when `category = 'totals'`.
 #'
 #' @inheritParams team_edge_summary
 #' @param category character of 'd'/details' or 't'/'totals'
@@ -306,7 +314,8 @@ team_edge_shot_location <- function(
 #' Access the EDGE shot speed statistics for a team, season, game type, and 
 #' category
 #'
-#' `team_edge_shot_speed()` retrieves the EDGE shot speed statistics for a team, season, game type, and category as a `data.frame` where each row represents position and includes detail on team identity, affiliation, and matchup-side context, player identity, role, handedness, and biographical profile, and ranking movement, points pace, and division/conference position signals.
+#' `team_edge_shot_speed()` returns team EDGE shot-speed detail by position, or
+#' hardest-shot rows when `category = 'hardest'`.
 #'
 #' @inheritParams team_edge_summary
 #' @param category character of 'd'/'details' or 'h'/'hardest'

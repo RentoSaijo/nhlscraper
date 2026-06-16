@@ -13,7 +13,8 @@ franchise_team_stats()
 data.frame with one row per team per franchise per game type
 }
 \description{
-\code{franchise_team_statistics()} retrieves the all-time statistics for all the franchises by team and game type as a \code{data.frame} where each row represents team per franchise per game type and includes detail on date/season filtering windows and chronological context, team identity, affiliation, and matchup-side context, and production, workload, efficiency, and result-level performance outcomes.
+\code{franchise_team_statistics()} returns all-time totals by franchise-era team
+and game type, preserving separate rows for teams that share a franchise.
 }
 \examples{
 franchise_team_stats <- franchise_team_statistics()

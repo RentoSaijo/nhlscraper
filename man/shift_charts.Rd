@@ -14,7 +14,9 @@ reference}
 data.frame with one row per event (play) per game
 }
 \description{
-\code{shift_charts()} loads the shift charts for a given \code{season}.
+\code{shift_charts()} downloads the stored season-level shift-chart parquet
+snapshot, removes the storage-only \code{id} column, and returns one row per
+parsed shift.
 }
 \examples{
 # May take >5s, so skip.

@@ -13,7 +13,8 @@ goalie_game_stats()
 data.frame with one row per goalie per game
 }
 \description{
-\code{goalie_game_statistics()} retrieves the statistics for all the goalies by game as a \code{data.frame} with detail on game timeline state, period/clock progression, and matchup flow, date/season filtering windows and chronological context, and team identity, affiliation, and matchup-side context.
+\code{goalie_game_statistics()} returns records-site goalie stat rows by player
+and game, including opponent fields and normalized team abbreviations.
 }
 \examples{
 \donttest{goalie_game_stats <- goalie_game_statistics()}

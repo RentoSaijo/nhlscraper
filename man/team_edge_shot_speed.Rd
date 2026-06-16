@@ -33,7 +33,8 @@ data.frame with one row per position (category = 'details') or
 shot (category = 'hardest')
 }
 \description{
-\code{team_edge_shot_speed()} retrieves the EDGE shot speed statistics for a team, season, game type, and category as a \code{data.frame} where each row represents position and includes detail on team identity, affiliation, and matchup-side context, player identity, role, handedness, and biographical profile, and ranking movement, points pace, and division/conference position signals.
+\code{team_edge_shot_speed()} returns team EDGE shot-speed detail by position, or
+hardest-shot rows when \code{category = 'hardest'}.
 }
 \examples{
 COL_hardest_shots_regular_20242025 <- team_edge_shot_speed(

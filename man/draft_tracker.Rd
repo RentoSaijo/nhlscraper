@@ -10,7 +10,8 @@ draft_tracker()
 data.frame with one row per player
 }
 \description{
-\code{draft_tracker()} retrieves the real-time draft tracker as a \code{data.frame} where each row represents player and includes detail on team identity, affiliation, and matchup-side context, player identity, role, handedness, and biographical profile, and venue/location geography and regional metadata.
+\code{draft_tracker()} returns the live NHL draft tracker picks for the current
+draft, with normalized player, team, round, and pick fields.
 }
 \examples{
 draft_tracker <- draft_tracker()

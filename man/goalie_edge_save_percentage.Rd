@@ -30,7 +30,8 @@ list with two items (category = 'details') or data.frame with one
 row per game (category = 'last 10')
 }
 \description{
-\code{goalie_edge_save_percentage()} retrieves the EDGE save percentage statistics for a goalie, season, game type, and category as a nested \code{list} that separates summary and detail blocks for NHL EDGE style tracking outputs and relative-performance context.
+\code{goalie_edge_save_percentage()} returns a goalie's EDGE save-percentage
+detail list, or recent game rows when \code{category = 'last 10'}.
 }
 \examples{
 Mackenzie_Blackwood_L10_sP_regular_20242025 <- 

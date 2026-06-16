@@ -17,7 +17,8 @@ reference}
 data.frame with one row per event (play) per game
 }
 \description{
-\code{gc_play_by_plays()} loads the GC play-by-plays for a given \code{season}.
+\code{gc_play_by_plays()} downloads the cleaned season-level GameCenter parquet
+snapshot and pads \code{situationCode} to the four-character public format.
 }
 \examples{
 # May take >5s, so skip.

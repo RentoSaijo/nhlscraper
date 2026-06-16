@@ -13,7 +13,8 @@ location(zip = 10001)
 data.frame with one row per team
 }
 \description{
-\code{location()} retrieves the location for a zip code as a \code{data.frame} where each row represents team and includes detail on venue/location geography and regional metadata.
+\code{location()} returns the NHL postal lookup result for one ZIP/postal code,
+including country, region, and related local-market fields when available.
 }
 \examples{
 Cranbrook_Schools <- location(48304)

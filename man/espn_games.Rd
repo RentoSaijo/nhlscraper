@@ -14,7 +14,8 @@ reference}
 data.frame with one row per ESPN game
 }
 \description{
-\code{espn_games()} retrieves the ESPN games for a season as a \code{data.frame} where each row represents ESPN and includes detail on game timing, matchup state, scoring flow, and situational event detail.
+\code{espn_games()} pages ESPN's NHL event index for a season and returns one row
+per event containing the ESPN game ID used by the other ESPN wrappers.
 }
 \examples{
 ESPN_games_20242025 <- espn_games(season = 20242025)

@@ -10,7 +10,9 @@ draft_picks()
 data.frame with one row per pick
 }
 \description{
-\code{draft_picks()} retrieves all the draft picks as a \code{data.frame} where each row represents pick and includes detail on team identity, affiliation, and matchup-side context plus player identity, role, handedness, and biographical profile.
+\code{draft_picks()} returns the historical draft-pick table with one row per
+pick, including draft year/round/overall slot, team, player, position, and
+biographical fields.
 }
 \examples{
 # May take >5s, so skip.

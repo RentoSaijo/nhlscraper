@@ -10,7 +10,9 @@ games()
 data.frame with one row per game
 }
 \description{
-\code{games()} retrieves all the games as a \code{data.frame} where each row represents game and includes detail on game timeline state, period/clock progression, and matchup flow plus date/season filtering windows and chronological context.
+\code{games()} returns the stats API game catalog with one row per NHL game,
+ordered by \code{gameId} and normalized to \code{gameId}, \code{seasonId}, and
+\code{gameTypeId}.
 }
 \examples{
 # May take >5s, so skip.

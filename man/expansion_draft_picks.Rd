@@ -10,7 +10,8 @@ expansion_draft_picks()
 data.frame with one row per pick
 }
 \description{
-\code{expansion_draft_picks()} retrieves all the expansion draft picks as a \code{data.frame} where each row represents pick and includes detail on date/season filtering windows and chronological context plus team identity, affiliation, and matchup-side context.
+\code{expansion_draft_picks()} returns historical expansion-draft picks with one
+row per selected player/team/season combination.
 }
 \examples{
 all_expansion_draft_picks <- expansion_draft_picks()

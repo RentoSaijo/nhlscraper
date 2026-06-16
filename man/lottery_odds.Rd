@@ -10,7 +10,8 @@ lottery_odds()
 data.frame with one row per draft lottery
 }
 \description{
-\code{lottery_odds()} retrieves the draft lottery odds as a \code{data.frame} where each row represents draft lottery and includes detail on draft-cycle evaluation, ranking, and selection tracking detail.
+\code{lottery_odds()} returns historical draft-lottery odds and outcomes by draft
+year and lottery slot.
 }
 \examples{
 lottery_odds <- lottery_odds()

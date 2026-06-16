@@ -13,7 +13,9 @@ game_odds(country = "US")
 data.frame with one row per game
 }
 \description{
-\code{game_odds()} retrieves the real-time game odds for a country by partnered bookmaker as a \code{data.frame} where each row represents game and includes detail on betting market lines, prices, and provider-level context.
+\code{game_odds()} returns the public partner-game feed for one country, with one
+row per current game and normalized team, game type, bookmaker, and odds
+fields when NHL exposes them.
 }
 \examples{
 game_odds_CA <- game_odds(country = 'CA')

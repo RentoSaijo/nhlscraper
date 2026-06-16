@@ -30,7 +30,8 @@ data.frame with one row per strength state (category = 'details')
 or list with six items (category = 'starts')
 }
 \description{
-\code{skater_edge_zone_time()} retrieves the EDGE zone time statistics for a skater, season, game type, and category as a \code{data.frame} where each row represents strength state and includes detail on NHL EDGE style tracking outputs and relative-performance context.
+\code{skater_edge_zone_time()} returns a skater's EDGE zone-time detail table by
+strength state, or the zone-start split list when \code{category = 'starts'}.
 }
 \examples{
 Martin_Necas_starts_regular_20242025 <- skater_edge_zone_time(

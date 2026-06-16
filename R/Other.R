@@ -1,6 +1,7 @@
 #' Access the glossary
 #'
-#' `glossary()` retrieves the glossary as a `data.frame` where each row represents terminology and includes detail on reference definitions and rules-framework information.
+#' `glossary()` returns NHL glossary terms with one row per term and normalized
+#' terminology IDs/names.
 #'
 #' @returns data.frame with one row per terminology
 #' @examples
@@ -24,7 +25,8 @@ glossary <- function() {
 
 #' Access all the countries
 #'
-#' `countries()` retrieves all the countries as a `data.frame` where each row represents country and includes detail on reference metadata, regional context, and media availability detail.
+#' `countries()` returns the stats API country catalog with one row per country
+#' and normalized two-/three-letter country fields.
 #'
 #' @returns data.frame with one row per country
 #' @examples
@@ -48,7 +50,8 @@ countries <- function() {
 
 #' Access the location for a zip code
 #'
-#' `location()` retrieves the location for a zip code as a `data.frame` where each row represents team and includes detail on venue/location geography and regional metadata.
+#' `location()` returns the NHL postal lookup result for one ZIP/postal code,
+#' including country, region, and related local-market fields when available.
 #'
 #' @param zip integer (e.g., 48304)
 #'
@@ -79,7 +82,9 @@ location <- function(zip = 10001) {
 
 #' Access all the streams
 #'
-#' `streams()` retrieves all the streams as a `data.frame` where each row represents stream and includes detail on reference metadata, regional context, and media availability detail.
+#' `streams()` returns the public "where to watch" payload for the current
+#' region, including broadcast/streaming providers when the endpoint is
+#' available.
 #'
 #' @returns data.frame with one row per stream
 #' @examples
@@ -100,7 +105,8 @@ streams <- function() {
 
 #' Access the NHL Network TV schedule for a date
 #'
-#' `tv_schedule()` retrieves the NHL Network TV schedule for a date as a `data.frame` where each row represents program and includes detail on date/season filtering windows and chronological context.
+#' `tv_schedule()` returns NHL Network broadcast schedule rows for one date,
+#' with one row per program/broadcast item.
 #'
 #' @inheritParams standings
 #'

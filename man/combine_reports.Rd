@@ -10,7 +10,8 @@ combine_reports()
 data.frame with one row per player
 }
 \description{
-\code{combine_reports()} retrieves the draft combine reports as a \code{data.frame} where each row represents player and includes detail on player identity, role, handedness, and biographical profile.
+\code{combine_reports()} returns draft-combine measurements and test results with
+one row per player/event result.
 }
 \examples{
 combine_reports <- combine_reports()

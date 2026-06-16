@@ -14,8 +14,8 @@ reference}
 data.frame with one row per player per period
 }
 \description{
-\code{shift_chart_summaries()} loads the shift chart summaries for a given
-\code{season}.
+\code{shift_chart_summaries()} downloads the stored season-level shift-summary
+parquet snapshot with per-player, per-period time-on-ice splits.
 }
 \examples{
 # May take >5s, so skip.

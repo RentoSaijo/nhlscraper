@@ -13,7 +13,7 @@
 parsed JSON (i.e., data.frame or list)
 }
 \description{
-\code{.nhl_json_from_response()} converts an \code{httr2} response object into a parsed
-JSON object using the package's standard flattening settings.
+\code{.nhl_json_from_response()} converts an \code{httr2} response object into parsed
+JSON using the package's standard UTF-8 and flattening settings.
 }
 \keyword{internal}

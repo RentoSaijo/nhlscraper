@@ -24,7 +24,8 @@ support pre-season}
 data.frame with one row per player
 }
 \description{
-\code{skater_leaders()} retrieves the skater statistics leaders for a season, game type, and category as a \code{data.frame} where each row represents player and includes detail on player identity, role, handedness, and biographical profile.
+\code{skater_leaders()} returns the NHL.com leaders table for one skater category,
+season, and game type, with normalized player and team fields.
 }
 \examples{
 TOI_leaders_regular_20242025 <- skater_leaders(

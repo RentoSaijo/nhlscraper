@@ -29,7 +29,8 @@ will NOT support pre-season}
 data.frame with one row per shot location
 }
 \description{
-\code{skater_edge_shot_location()} retrieves the EDGE shot location statistics for a skater, season, game type, and category as a \code{data.frame} where each row represents shot location and includes detail on production, workload, efficiency, and result-level performance outcomes plus NHL EDGE style tracking outputs and relative-performance context.
+\code{skater_edge_shot_location()} returns a skater's EDGE shot-location detail
+by rink region, or totals by shot-location bucket when \code{category = 'totals'}.
 }
 \examples{
 Martin_Necas_shot_location_totals_regular_20242025 <- 

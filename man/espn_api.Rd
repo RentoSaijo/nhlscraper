@@ -2,21 +2,23 @@
 % Please edit documentation in R/Utility.R
 \name{espn_api}
 \alias{espn_api}
-\title{Call the ESPN API with 429 (rate limit) error-handling}
+\title{Call the ESPN API}
 \usage{
 espn_api(path, query = list(), type)
 }
 \arguments{
-\item{path}{character}
+\item{path}{character path relative to the selected ESPN API host}
 
-\item{query}{list}
+\item{query}{named list of URL query parameters}
 
-\item{type}{character of 'g' for general and 'c' for core}
+\item{type}{character of 'g' for the site API or 'c' for the core API}
 }
 \value{
-parsed JSON (i.e., data.frame or list)
+parsed JSON object, usually a data.frame or nested list
 }
 \description{
-Call the ESPN API with 429 (rate limit) error-handling
+\code{espn_api()} performs a retrying request against the ESPN site or core API
+and parses the JSON response with the same flattening rules used for NHL API
+calls.
 }
 \keyword{internal}

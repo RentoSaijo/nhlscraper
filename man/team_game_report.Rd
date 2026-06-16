@@ -27,7 +27,9 @@ support pre-season}
 data.frame with one row per game per team
 }
 \description{
-\code{team_game_report()} retrieves various reports for a season, game type, and category for all the teams by game as a \code{data.frame} where each row represents game per team and includes detail on game timeline state, period/clock progression, and matchup flow, team identity, affiliation, and matchup-side context, and production, workload, efficiency, and result-level performance outcomes.
+\code{team_game_report()} returns the game-level version of a selected team stats
+report, with one row per team per game and the category-specific metric
+columns exposed by the stats API.
 }
 \examples{
 situational_team_game_report_playoffs_20212022 <- team_game_report(

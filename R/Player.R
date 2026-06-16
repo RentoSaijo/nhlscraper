@@ -1,6 +1,7 @@
 #' Access all the players
 #'
-#' `players()` retrieves all the players as a `data.frame` where each row represents player and includes detail on player identity, role, handedness, and biographical profile.
+#' `players()` returns the records-site player registry with one row per player
+#' and normalized IDs, names, position, handedness, and birth fields.
 #'
 #' @returns data.frame with one row per player
 #' @examples
@@ -34,7 +35,8 @@ players <- function() {
 
 #' Access the season(s) and game type(s) in which a player played
 #'
-#' `player_seasons()` retrieves the season(s) and game type(s) in which a player played as a `data.frame` where each row represents season and includes detail on date/season filtering windows and chronological context.
+#' `player_seasons()` returns the seasons and game type IDs available in a
+#' player's GameCenter game-log payload.
 #'
 #' @param player integer ID (e.g., 8480039); see [players()] for reference
 #'
@@ -64,7 +66,9 @@ player_seasons <- function(player = 8478402) {
 
 #' Access the summary for a player
 #'
-#' `player_summary()` retrieves the summary for a player as a nested `list` that separates summary and detail blocks for player identity, role, handedness, and biographical profile.
+#' `player_summary()` returns the public player landing payload for one player,
+#' including bio/team fields, current season stats, career totals, season totals,
+#' awards, and featured media when available.
 #'
 #' @inheritParams player_seasons
 #'
@@ -96,7 +100,9 @@ player_summary <- function(player = 8478402) {
 
 #' Access the game log for a player, season, and game type
 #'
-#' `player_game_log()` retrieves the game log for a player, season, and game type as a `data.frame` where each row represents game and includes detail on game timeline state, period/clock progression, and matchup flow plus production, workload, efficiency, and result-level performance outcomes.
+#' `player_game_log()` returns one player's GameCenter game log for a season and
+#' game type, with one row per game and normalized opponent, score/result, and
+#' player stat fields.
 #'
 #' @inheritParams player_seasons
 #' @inheritParams roster_statistics
@@ -141,7 +147,8 @@ player_game_log <- function(
 
 #' Access the spotlight players
 #'
-#' `spotlight_players()` retrieves the spotlight players as a `data.frame` where each row represents player and includes detail on team identity, affiliation, and matchup-side context plus player identity, role, handedness, and biographical profile.
+#' `spotlight_players()` returns NHL.com player-spotlight entries with normalized
+#' player, position, and team fields.
 #'
 #' @returns data.frame with one row per player
 #' @examples

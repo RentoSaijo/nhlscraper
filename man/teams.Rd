@@ -10,7 +10,8 @@ teams()
 data.frame with one row per team
 }
 \description{
-\code{teams()} retrieves all the teams as a \code{data.frame} where each row represents team and includes detail on team identity, affiliation, and matchup-side context.
+\code{teams()} returns the stats API team catalog with one row per franchise-era
+team entry and normalized identifiers, full names, and tri-codes.
 }
 \examples{
 all_teams <- teams()

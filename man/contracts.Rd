@@ -10,7 +10,10 @@ contracts()
 data.frame with one row per contract
 }
 \description{
-\code{contracts()} loads preprocessed contract records bundled with the package and returns a cleaned \code{data.frame} with package-consistent column names, season IDs, numeric money fields, and team/player identifiers.
+\code{contracts()} loads preprocessed contract records bundled with the package,
+resolves each row to an NHL player ID when the player registry has a clear
+match, drops unresolved/ambiguous matches, and returns normalized contract
+seasons and money fields.
 }
 \examples{
 \donttest{all_contracts <- contracts()}

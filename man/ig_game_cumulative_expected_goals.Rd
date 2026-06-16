@@ -3,8 +3,7 @@
 \name{ig_game_cumulative_expected_goals}
 \alias{ig_game_cumulative_expected_goals}
 \alias{ig_game_cum_xG}
-\title{Save an Instagram (IG) share-able cumulative expected goals (xG) time-series
-plot for a game}
+\title{Save an Instagram (IG) shareable cumulative expected goals (xG) plot}
 \usage{
 ig_game_cumulative_expected_goals(game = 2023030417, model = NULL, save = TRUE)
 
@@ -15,19 +14,21 @@ ig_game_cum_xG(game = 2023030417, model = NULL)
 
 \item{model}{deprecated legacy model selector; ignored}
 
-\item{save}{logical only FALSE for tests}
+\item{save}{logical; use \code{FALSE} to draw on the active graphics device during
+tests or custom workflows}
 }
 \value{
-\code{NULL}
+\code{NULL}, invisibly
 }
 \description{
-\code{ig_game_cumulative_expected_goals()} saves an IG share-able cumulative xG
-time-series plot for a given \code{game} as a PNG.
+\code{ig_game_cumulative_expected_goals()} fetches one GameCenter play-by-play,
+scores shot attempts with \code{\link[=calculate_expected_goals]{calculate_expected_goals()}}, and renders a
+home/away cumulative xG time series on a 1080-by-566-style PNG canvas.
 }
 \examples{
 # May take >5s, so skip.
 \donttest{ig_game_cumulative_expected_goals(
-  game  = 2023030417, 
+  game  = 2023030417,
   save  = FALSE
 )}
 }

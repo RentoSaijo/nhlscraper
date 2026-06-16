@@ -16,7 +16,8 @@ reference; ID is preferable as there now exists duplicate three-letter codes
 data.frame with one row per season
 }
 \description{
-\code{team_seasons()} retrieves the season(s) and game type(s) in which a team played as a \code{data.frame} where each row represents season and includes detail on date/season filtering windows and chronological context.
+\code{team_seasons()} returns the seasons and game type IDs available for a team
+in the public club-stats API.
 }
 \examples{
 COL_seasons <- team_seasons(team = 21)

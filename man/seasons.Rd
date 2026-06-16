@@ -10,7 +10,8 @@ seasons()
 data.frame with one row per season
 }
 \description{
-\code{seasons()} retrieves all the seasons as a \code{data.frame} where each row represents season and includes detail on date/season filtering windows and chronological context.
+\code{seasons()} returns the stats API season catalog with one row per season,
+including season IDs, date boundaries, and game-type metadata.
 }
 \examples{
 all_seasons <- seasons()

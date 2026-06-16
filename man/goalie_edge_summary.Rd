@@ -21,7 +21,9 @@ will NOT support pre-season}
 list of various items
 }
 \description{
-\code{goalie_edge_summary()} retrieves the EDGE summary for a goalie, season, and game type as a nested \code{list} that separates summary and detail blocks for player identity, role, handedness, and biographical profile plus NHL EDGE style tracking outputs and relative-performance context.
+\code{goalie_edge_summary()} returns the full NHL EDGE detail payload for one
+goalie, season, and game type, including goalie metadata and the available
+save-percentage and shot-location summary blocks.
 }
 \examples{
 Mackenzie_Blackwood_EDGE_summary_regular_20242025 <- goalie_edge_summary(

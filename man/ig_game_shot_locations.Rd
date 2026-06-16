@@ -3,7 +3,7 @@
 \name{ig_game_shot_locations}
 \alias{ig_game_shot_locations}
 \alias{ig_game_shot_locs}
-\title{Save an Instagram (IG) share-able shot-location plot for a game}
+\title{Save an Instagram (IG) shareable shot-location plot for a game}
 \usage{
 ig_game_shot_locations(
   game = 2023030417,
@@ -21,20 +21,23 @@ ig_game_shot_locs(game = 2023030417, team = "home", model = NULL)
 
 \item{model}{deprecated legacy model selector; ignored}
 
-\item{save}{logical only FALSE for tests}
+\item{save}{logical; use \code{FALSE} to draw on the active graphics device during
+tests or custom workflows}
 }
 \value{
-\code{NULL}
+\code{NULL}, invisibly
 }
 \description{
-\code{ig_game_shot_locations()} saves an IG share-able shot location plot for a
-given \code{game}.
+\code{ig_game_shot_locations()} fetches one GameCenter play-by-play, scores its
+shot attempts with \code{\link[=calculate_expected_goals]{calculate_expected_goals()}}, filters to the selected home
+or away team, and renders a 1080-by-566-style PNG shot map. Points are
+jittered for readability, shaped by event result, and colored by capped xG.
 }
 \examples{
 # May take >5s, so skip.
 \donttest{ig_game_shot_locations(
-  game  = 2023030417, 
-  team  = 'H', 
+  game  = 2023030417,
+  team  = 'H',
   save  = FALSE
 )}
 }

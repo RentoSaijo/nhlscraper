@@ -14,7 +14,8 @@ reference}
 data.frame with one row per decisecond
 }
 \description{
-\code{replays()} loads the replays for a given \code{season}.
+\code{replays()} downloads the stored season-level puck/player tracking parquet
+snapshot and returns one row per tracked decisecond.
 }
 \examples{
 # May take >5s, so skip.

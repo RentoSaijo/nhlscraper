@@ -13,7 +13,8 @@ skater_regular_stats()
 data.frame with one row per player
 }
 \description{
-\code{skater_regular_statistics()} retrieves the career regular season statistics for all the skaters as a \code{data.frame} where each row represents player and includes detail on team identity, affiliation, and matchup-side context, player identity, role, handedness, and biographical profile, and production, workload, efficiency, and result-level performance outcomes.
+\code{skater_regular_statistics()} returns records-site regular-season career
+scoring totals for skaters, with one row per player.
 }
 \examples{
 skater_regular_stats <- skater_regular_statistics()

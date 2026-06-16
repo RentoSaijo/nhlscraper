@@ -1,6 +1,7 @@
 #' Access all the ESPN players
 #'
-#' `espn_players()` retrieves all the ESPN players as a `data.frame` where each row represents ESPN player and includes detail on person-level profile context and performance history with situational splits.
+#' `espn_players()` pages ESPN's athlete index and returns one row per athlete
+#' containing the ESPN player ID used by [espn_player_summary()].
 #'
 #' @returns data.frame with one row per ESPN player
 #' @examples
@@ -33,7 +34,9 @@ espn_players <- function() {
 
 #' Access the ESPN summary for a player
 #'
-#' `espn_player_summary()` retrieves the ESPN summary for a player as a `data.frame` where each row represents one result and includes detail on game timing, matchup state, scoring flow, and situational event detail.
+#' `espn_player_summary()` returns a compact one-row ESPN athlete profile with
+#' name, birth, size, handedness, draft, debut, position, experience, and active
+#' status fields.
 #'
 #' @param player integer ID (e.g., 3988803); see [espn_players()] for 
 #' reference

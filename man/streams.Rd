@@ -10,7 +10,9 @@ streams()
 data.frame with one row per stream
 }
 \description{
-\code{streams()} retrieves all the streams as a \code{data.frame} where each row represents stream and includes detail on reference metadata, regional context, and media availability detail.
+\code{streams()} returns the public "where to watch" payload for the current
+region, including broadcast/streaming providers when the endpoint is
+available.
 }
 \examples{
 all_streams <- streams()

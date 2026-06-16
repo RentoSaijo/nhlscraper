@@ -19,7 +19,9 @@ reference; ID is preferable as there now exists duplicate three-letter codes
 data.frame with one row per player
 }
 \description{
-\code{team_prospects()} retrieves the prospects for a team and position as a \code{data.frame} where each row represents player and includes detail on player identity, role, handedness, and biographical profile.
+\code{team_prospects()} returns a team's prospect list for one position group,
+including prospect/player IDs, names, position, size, birth data, and
+prospect status fields when available.
 }
 \examples{
 COL_forward_prospects <- team_prospects(

@@ -3,8 +3,7 @@
 \name{x_game_cumulative_expected_goals}
 \alias{x_game_cumulative_expected_goals}
 \alias{x_game_cum_xG}
-\title{Save an X (Twitter) share-able cumulative expected goals (xG) time-series
-plot for a game}
+\title{Save an X (Twitter) shareable cumulative expected goals (xG) plot}
 \usage{
 x_game_cumulative_expected_goals(game = 2023030417, model = NULL, save = TRUE)
 
@@ -15,19 +14,21 @@ x_game_cum_xG(game = 2023030417, model = NULL)
 
 \item{model}{deprecated legacy model selector; ignored}
 
-\item{save}{logical only FALSE for tests}
+\item{save}{logical; use \code{FALSE} to draw on the active graphics device during
+tests or custom workflows}
 }
 \value{
-\code{NULL}
+\code{NULL}, invisibly
 }
 \description{
-\code{x_game_cumulative_expected_goals()} saves an X share-able cumulative xG
-time-series plot for a given \code{game} as a PNG.
+\code{x_game_cumulative_expected_goals()} is the X/Twitter-sized companion to
+\code{\link[=ig_game_cumulative_expected_goals]{ig_game_cumulative_expected_goals()}}. It uses the same xG-scored cumulative
+series on a 1200-by-675-style canvas.
 }
 \examples{
 # May take >5s, so skip.
 \donttest{x_game_cumulative_expected_goals(
-  game  = 2023030417, 
+  game  = 2023030417,
   save  = FALSE
 )}
 }

@@ -10,7 +10,8 @@ spotlight_players()
 data.frame with one row per player
 }
 \description{
-\code{spotlight_players()} retrieves the spotlight players as a \code{data.frame} where each row represents player and includes detail on team identity, affiliation, and matchup-side context plus player identity, role, handedness, and biographical profile.
+\code{spotlight_players()} returns NHL.com player-spotlight entries with normalized
+player, position, and team fields.
 }
 \examples{
 spotlight_players <- spotlight_players()

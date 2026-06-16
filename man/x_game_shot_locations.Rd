@@ -3,7 +3,7 @@
 \name{x_game_shot_locations}
 \alias{x_game_shot_locations}
 \alias{x_game_shot_locs}
-\title{Save an X (Twitter) share-able shot-location plot for a game}
+\title{Save an X (Twitter) shareable shot-location plot for a game}
 \usage{
 x_game_shot_locations(
   game = 2023030417,
@@ -21,19 +21,21 @@ x_game_shot_locs(game = 2023030417, team = "home", model = NULL)
 
 \item{model}{deprecated legacy model selector; ignored}
 
-\item{save}{logical only FALSE for tests}
+\item{save}{logical; use \code{FALSE} to draw on the active graphics device during
+tests or custom workflows}
 }
 \value{
-\code{NULL}
+\code{NULL}, invisibly
 }
 \description{
-\code{x_game_shot_locations()} saves an X share-able shot-location plot for a
-given \code{game}.
+\code{x_game_shot_locations()} is the X/Twitter-sized companion to
+\code{\link[=ig_game_shot_locations]{ig_game_shot_locations()}}. It uses the same xG-scored shot map and legend
+logic on a 1200-by-675-style canvas.
 }
 \examples{
 # May take >5s, so skip.
 \donttest{x_game_shot_locations(
-  game  = 2023030417, 
+  game  = 2023030417,
   team  = 'H',
   save  = FALSE
 )}

@@ -13,7 +13,9 @@ game_rosters(game = 2023030417)
 data.frame with one row per player
 }
 \description{
-\code{game_rosters()} retrieves the rosters for a game as a \code{data.frame} where each row represents player and includes detail on team identity, affiliation, and matchup-side context plus player identity, role, handedness, and biographical profile.
+\code{game_rosters()} returns the roster spots from a GameCenter play-by-play
+payload with one row per dressed player, including team ID, sweater number,
+position, and normalized player name fields.
 }
 \examples{
 rosters_Martin_Necas_legacy_game <- game_rosters(game = 2025020275)

@@ -35,7 +35,8 @@ data.frame with one row per strength state
 differential')
 }
 \description{
-\code{team_edge_zone_time()} retrieves the EDGE zone time statistics for a team, season, game type, and category as a \code{data.frame} where each row represents strength state and includes detail on NHL EDGE style tracking outputs and relative-performance context.
+\code{team_edge_zone_time()} returns a team's EDGE zone-time detail table by
+strength state, or the shot-differential split list when requested.
 }
 \examples{
 COL_dS_regular_20242025 <- team_edge_zone_time(

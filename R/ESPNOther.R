@@ -1,6 +1,7 @@
 #' Access the ESPN transactions for a season
 #'
-#' `espn_transactions()` retrieves the ESPN transactions for a season as a `data.frame` where each row represents transaction and includes detail on availability and transaction-status tracking detail.
+#' `espn_transactions()` pages ESPN's transaction feed across a season window
+#' and returns one row per transaction with normalized team fields.
 #'
 #' @param season integer in YYYYYYYY (e.g., 20242025); the summer of the latter 
 #' year is included
@@ -91,7 +92,8 @@ espn_transactions <- function(season = season_now()) {
 
 #' Access the ESPN futures for a season
 #'
-#' `espn_futures()` retrieves the ESPN futures for a season as a `data.frame` where each row represents type and includes detail on betting market snapshots with side/total prices and provider variation.
+#' `espn_futures()` returns ESPN futures markets for one season with one row per
+#' future type and nested book/odds detail retained in ESPN's payload columns.
 #'
 #' @inheritParams roster
 #'
@@ -130,7 +132,8 @@ espn_futures <- function(season = season_now()) {
 
 #' Access the real-time ESPN injury reports
 #'
-#' `espn_injuries()` retrieves the real-time ESPN injury reports as a `data.frame` where each row represents team and includes detail on availability status tracking for injuries or transactions.
+#' `espn_injuries()` returns ESPN's current injury report with one outer row per
+#' team and nested player injury details where ESPN includes them.
 #'
 #' @returns nested data.frame with one row per team (outer) and player (inner)
 #' @examples

@@ -13,7 +13,9 @@ wsc_summary(game = 2023030417)
 list of various items
 }
 \description{
-\code{wsc_summary()} retrieves the World Showcase (WSC) summary for a game as a nested \code{list} that separates summary and detail blocks for game timeline state, period/clock progression, and matchup flow, date/season filtering windows and chronological context, and venue/location geography and regional metadata.
+\code{wsc_summary()} returns the World Showcase game-story payload for one game,
+including recap/story blocks, team metadata, scoring state, and supporting
+media/link fields when that endpoint provides them.
 }
 \examples{
 wsc_summary_Martin_Necas_legacy_game <- wsc_summary(game = 2025020275)

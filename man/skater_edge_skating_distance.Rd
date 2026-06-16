@@ -30,7 +30,8 @@ data.frame with one row per strength state (category = 'details')
 or game (category = 'last 10')
 }
 \description{
-\code{skater_edge_skating_distance()} retrieves the EDGE skating distance statistics for a skater, season, game type, and category as a \code{data.frame} where each row represents strength state and includes detail on team identity, affiliation, and matchup-side context, player identity, role, handedness, and biographical profile, and tracking/spatial detail such as location, speed, distance, and zone distribution.
+\code{skater_edge_skating_distance()} returns a skater's EDGE distance detail by
+strength state, or recent game rows when \code{category = 'last 10'}.
 }
 \examples{
 Martin_Necas_L10_skating_distance_regular_20242025 <- 

@@ -30,7 +30,8 @@ list with four items (category = 'details') or data.frame with
 one row per burst (category = 'top speeds')
 }
 \description{
-\code{skater_edge_skating_speed()} retrieves the EDGE skating speed statistics for a skater, season, game type, and category as a nested \code{list} that separates summary and detail blocks for NHL EDGE style tracking outputs and relative-performance context.
+\code{skater_edge_skating_speed()} returns a skater's EDGE skating-speed detail
+list, or top-speed burst rows when \code{category = 'top speeds'}.
 }
 \examples{
 Martin_Necas_top_speeds_regular_20242025 <- skater_edge_skating_speed(

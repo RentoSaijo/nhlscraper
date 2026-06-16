@@ -21,7 +21,9 @@ will NOT support pre-season}
 list of various items
 }
 \description{
-\code{skater_edge_summary()} retrieves the EDGE summary for a skater, season, and game type as a nested \code{list} that separates summary and detail blocks for player identity, role, handedness, and biographical profile plus NHL EDGE style tracking outputs and relative-performance context.
+\code{skater_edge_summary()} returns the full NHL EDGE detail payload for one
+skater, season, and game type, including player metadata and the available
+skating, shot, and zone-time summary blocks.
 }
 \examples{
 Martin_Necas_EDGE_summary_regular_20242025 <- skater_edge_summary(

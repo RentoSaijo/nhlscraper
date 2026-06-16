@@ -13,7 +13,10 @@ gc_summary(game = 2023030417)
 list of various items
 }
 \description{
-\code{gc_summary()} retrieves the GameCenter (GC) summary for a game as a nested \code{list} that separates summary and detail blocks for game timeline state, period/clock progression, and matchup flow, date/season filtering windows and chronological context, and venue/location geography and regional metadata.
+\code{gc_summary()} combines the GameCenter landing and right-rail payloads for
+one game. The nested list includes the scoreboard, team records, scoring
+summary, three stars, game videos, officials, season/game identifiers, and
+related GameCenter metadata when available.
 }
 \examples{
 gc_summary_Martin_Necas_legacy_game <- gc_summary(game = 2025020275)

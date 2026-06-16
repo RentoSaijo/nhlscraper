@@ -10,7 +10,8 @@ countries()
 data.frame with one row per country
 }
 \description{
-\code{countries()} retrieves all the countries as a \code{data.frame} where each row represents country and includes detail on reference metadata, regional context, and media availability detail.
+\code{countries()} returns the stats API country catalog with one row per country
+and normalized two-/three-letter country fields.
 }
 \examples{
 all_countries <- countries()

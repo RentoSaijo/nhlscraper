@@ -10,7 +10,9 @@ goalie_milestones()
 data.frame with one row per player
 }
 \description{
-\code{goalie_milestones()} retrieves the goalies on milestone watch as a \code{data.frame} where each row represents player and includes detail on date/season filtering windows and chronological context, player identity, role, handedness, and biographical profile, and ranking movement, points pace, and division/conference position signals.
+\code{goalie_milestones()} returns NHL.com goalie milestone-watch rows, including
+goalie/team identifiers and the milestone/countdown fields exposed by the
+endpoint.
 }
 \examples{
 goalie_milestones <- goalie_milestones()

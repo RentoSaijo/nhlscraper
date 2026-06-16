@@ -1,6 +1,7 @@
 #' Access all the coaches
 #'
-#' `coaches()` retrieves all the coaches as a `data.frame` where each row represents coach and includes detail on team identity, affiliation, and matchup-side context plus player identity, role, handedness, and biographical profile.
+#' `coaches()` returns the records-site coach registry with one row per coach
+#' and normalized coach IDs, names, and birth fields.
 #'
 #' @returns data.frame with one row per coach
 #' @examples
@@ -27,7 +28,8 @@ coaches <- function() {
 
 #' Access the career statistics for all the coaches
 #'
-#' `coach_career_statistics()` retrieves the career statistics for all the coaches as a `data.frame` where each row represents coach and includes detail on ranking movement, points pace, and division/conference position signals.
+#' `coach_career_statistics()` returns regular-season plus playoff career
+#' coaching records with one row per coach.
 #'
 #' @returns data.frame with one row per coach
 #' @examples
@@ -61,7 +63,8 @@ coach_career_stats <- function() {
 
 #' Access the statistics for all the coaches by franchise and game type
 #'
-#' `coach_franchise_statistics()` retrieves the statistics for all the coaches by franchise and game type as a `data.frame` where each row represents franchise per coach per game type and includes detail on date/season filtering windows and chronological context, team identity, affiliation, and matchup-side context, and player identity, role, handedness, and biographical profile.
+#' `coach_franchise_statistics()` returns coach records by franchise and game
+#' type, with one row per coach/franchise/game-type stint.
 #'
 #' @returns data.frame with one row per franchise per coach per game type
 #' @examples

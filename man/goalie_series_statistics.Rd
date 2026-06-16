@@ -13,7 +13,8 @@ goalie_series_stats()
 data.frame with one row per player per series
 }
 \description{
-\code{goalie_series_statistics()} retrieves the playoff statistics for all the goalies by series as a \code{data.frame} where each row represents player per series and includes detail on date/season filtering windows and chronological context, team identity, affiliation, and matchup-side context, and player identity, role, handedness, and biographical profile.
+\code{goalie_series_statistics()} returns records-site playoff goalie totals by
+player and playoff series.
 }
 \examples{
 goalie_series_stats <- goalie_series_statistics()

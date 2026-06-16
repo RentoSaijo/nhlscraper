@@ -10,7 +10,8 @@ award_winners()
 data.frame with one row per winner/finalist
 }
 \description{
-\code{award_winners()} retrieves all the award winners/finalists as a \code{data.frame} where each row represents winner/finalist and includes detail on date/season filtering windows and chronological context, team identity, affiliation, and matchup-side context, and player identity, role, handedness, and biographical profile.
+\code{award_winners()} returns historical trophy winners and finalists with one
+row per player/season/status entry.
 }
 \examples{
 all_award_winners <- award_winners()

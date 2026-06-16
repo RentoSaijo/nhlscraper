@@ -13,7 +13,8 @@ skater_stats()
 data.frame with one row per player
 }
 \description{
-\code{skater_statistics()} retrieves the career statistics for all the skaters as a \code{data.frame} where each row represents player and includes detail on player identity, role, handedness, and biographical profile plus production, workload, efficiency, and result-level performance outcomes.
+\code{skater_statistics()} returns records-site regular-season plus playoff career
+scoring totals for skaters, with one row per player.
 }
 \examples{
 skater_stats <- skater_statistics()

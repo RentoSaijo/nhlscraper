@@ -1,6 +1,8 @@
 #' Access all the playoff series by game
 #'
-#' `series()` retrieves all the playoff series by game as a `data.frame` where each row represents game per series and includes detail on game timeline state, period/clock progression, and matchup flow, date/season filtering windows and chronological context, and playoff-series progression, round status, and series leverage.
+#' `series()` returns the records-site playoff-series game table with one row
+#' per game/series entry, including season, series letter, round, teams, and
+#' game ID fields.
 #'
 #' @returns data.frame with one row per game per series
 #' @examples
@@ -24,7 +26,8 @@ series <- function() {
 
 #' Access the playoff statistics by season
 #'
-#' `playoff_season_statistics()` retrieves the playoff statistics by season as a `data.frame` where each row represents season and includes detail on date/season filtering windows and chronological context.
+#' `playoff_season_statistics()` returns league-wide playoff totals by season,
+#' including games, goals, and related year-level totals.
 #'
 #' @returns data.frame with one row per season
 #' @examples
@@ -54,7 +57,8 @@ playoff_season_stats <- function() {
 
 #' Access the playoff bracket for a season
 #'
-#' `bracket()` retrieves the playoff bracket for a season as a `data.frame` where each row represents series and includes detail on team identity, affiliation, and matchup-side context.
+#' `bracket()` returns the public playoff bracket for one season, with one row
+#' per series and normalized team, seed, score, and series-status fields.
 #'
 #' @inheritParams roster
 #'
@@ -86,7 +90,9 @@ bracket <- function(season = season_now()){
 
 #' Access the playoff schedule for a season and series
 #'
-#' `series_schedule()` retrieves the playoff schedule for a season and series as a `data.frame` where each row represents game and includes detail on game timeline state, period/clock progression, and matchup flow, date/season filtering windows and chronological context, and team identity, affiliation, and matchup-side context.
+#' `series_schedule()` returns the public schedule for one playoff series, with
+#' one row per game and normalized game, team, score/status, venue, and broadcast
+#' fields.
 #'
 #' @inheritParams roster
 #' @param series one-letter code (e.g., 'O'); see [series()] and/or 

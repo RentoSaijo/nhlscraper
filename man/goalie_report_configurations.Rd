@@ -13,7 +13,10 @@ goalie_report_configs()
 list with various items
 }
 \description{
-\code{goalie_report_configurations()} retrieves the configurations for goalie reports as a nested \code{list} that separates summary and detail blocks for situational splits across home/road, strength state, and overtime/shootout states plus configuration catalogs for valid report categories and filters.
+\code{goalie_report_configurations()} returns the goalie-report configuration
+block from the stats API, including valid report categories, fields, filters,
+and split options accepted by \code{\link[=goalie_season_report]{goalie_season_report()}} and
+\code{\link[=goalie_game_report]{goalie_game_report()}}.
 }
 \examples{
 goalie_report_configs <- goalie_report_configurations()

@@ -10,7 +10,7 @@ attendance()
 data.frame with one row per season
 }
 \description{
-\code{attendance()} retrieves the attendance by season and game type as a \code{data.frame} where each row represents season and includes detail on date/season filtering windows and chronological context.
+\code{attendance()} returns records-site attendance totals by season and game type.
 }
 \examples{
 all_attendance <- attendance()

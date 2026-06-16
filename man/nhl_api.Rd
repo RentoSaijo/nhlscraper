@@ -2,21 +2,23 @@
 % Please edit documentation in R/Utility.R
 \name{nhl_api}
 \alias{nhl_api}
-\title{Call the NHL API with 429 (rate limit) error-handling}
+\title{Call the NHL API}
 \usage{
 nhl_api(path, query = list(), type)
 }
 \arguments{
-\item{path}{character}
+\item{path}{character path relative to the selected API host}
 
-\item{query}{list}
+\item{query}{named list of URL query parameters}
 
-\item{type}{character of 'w' for web, 's' for stats, and 'r' for records}
+\item{type}{character of 'w' for the web API, 's' for the stats API, or 'r'
+for the records API}
 }
 \value{
-parsed JSON (i.e., data.frame or list)
+parsed JSON object, usually a data.frame or nested list
 }
 \description{
-Call the NHL API with 429 (rate limit) error-handling
+\code{nhl_api()} performs a retrying request against one of the NHL API hosts and
+parses the JSON response with the package's standard flattening rules.
 }
 \keyword{internal}

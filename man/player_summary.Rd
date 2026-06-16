@@ -13,7 +13,9 @@ player_summary(player = 8478402)
 list with various items
 }
 \description{
-\code{player_summary()} retrieves the summary for a player as a nested \code{list} that separates summary and detail blocks for player identity, role, handedness, and biographical profile.
+\code{player_summary()} returns the public player landing payload for one player,
+including bio/team fields, current season stats, career totals, season totals,
+awards, and featured media when available.
 }
 \examples{
 Martin_Necas_summary <- player_summary(player = 8480039)

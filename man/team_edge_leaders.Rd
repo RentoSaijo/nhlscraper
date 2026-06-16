@@ -19,7 +19,8 @@ will NOT support pre-season}
 list of various items
 }
 \description{
-\code{team_edge_leaders()} retrieves the team EDGE statistics leaders for a season and game type as a nested \code{list} that separates summary and detail blocks for NHL EDGE style tracking outputs and relative-performance context.
+\code{team_edge_leaders()} returns the team EDGE landing-page leader groups for
+one season and game type, such as skating, shot, and zone-time leader blocks.
 }
 \examples{
 team_EDGE_leaders_regular_20242025 <- team_edge_leaders(

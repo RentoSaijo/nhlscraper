@@ -14,7 +14,8 @@ reference}
 nested data.frame with one row per type (outer) and book (inner)
 }
 \description{
-\code{espn_futures()} retrieves the ESPN futures for a season as a \code{data.frame} where each row represents type and includes detail on betting market snapshots with side/total prices and provider variation.
+\code{espn_futures()} returns ESPN futures markets for one season with one row per
+future type and nested book/odds detail retained in ESPN's payload columns.
 }
 \examples{
 ESPN_futures_20252026 <- espn_futures(20252026)

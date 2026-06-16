@@ -13,7 +13,9 @@ team_season_stats()
 data.frame with one row per team per season per game type
 }
 \description{
-\code{team_season_statistics()} retrieves the statistics for all the teams by season and game type as a \code{data.frame} where each row represents team per season per game type and includes detail on date/season filtering windows and chronological context, team identity, affiliation, and matchup-side context, and production, workload, efficiency, and result-level performance outcomes.
+\code{team_season_statistics()} returns records-site team totals by team, season,
+and game type, including win/loss, goal, shot, standings-point, and related
+season-total fields.
 }
 \examples{
 # May take >5s, so skip.

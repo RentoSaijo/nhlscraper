@@ -19,7 +19,9 @@ will NOT support pre-season}
 list of various items
 }
 \description{
-\code{goalie_edge_leaders()} retrieves the goalie EDGE statistics leaders for a season and game type as a nested \code{list} that separates summary and detail blocks for NHL EDGE style tracking outputs and relative-performance context.
+\code{goalie_edge_leaders()} returns the goalie EDGE landing-page leader groups
+for one season and game type, such as save percentage, 5-on-5 save
+percentage, and shot-location leader blocks.
 }
 \examples{
 goalie_EDGE_leaders_regular_20242025 <- goalie_edge_leaders(

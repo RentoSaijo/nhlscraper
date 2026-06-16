@@ -13,7 +13,10 @@ shift_chart(game = 2023030417)
 data.frame with one row per shift
 }
 \description{
-\code{shift_chart()} retrieves the shift chart for a game as a \code{data.frame} where each row represents shift and includes detail on game timeline state, period/clock progression, and matchup flow, date/season filtering windows and chronological context, and team identity, affiliation, and matchup-side context.
+\code{shift_chart()} returns one row per player shift for a game with \code{gameId},
+\code{teamId}, \code{playerId}, shift number, period, start/end clocks, elapsed
+period/game seconds, and duration. It uses the stats API when available and
+falls back to the NHL HTML shift reports for older or missing games.
 }
 \examples{
 shifts_Martin_Necas_legacy_game <- shift_chart(game = 2025020275)

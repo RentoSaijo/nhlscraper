@@ -1,6 +1,7 @@
 #' Access all the seasons
 #'
-#' `seasons()` retrieves all the seasons as a `data.frame` where each row represents season and includes detail on date/season filtering windows and chronological context.
+#' `seasons()` returns the stats API season catalog with one row per season,
+#' including season IDs, date boundaries, and game-type metadata.
 #'
 #' @returns data.frame with one row per season
 #' @examples
@@ -67,7 +68,8 @@ game_type_now <- function() {
 
 #' Access the standings rules by season
 #'
-#' `standings_rules()` retrieves the standings rules by season as a `data.frame` where each row represents season and includes detail on date/season filtering windows and chronological context.
+#' `standings_rules()` returns the public standings-season catalog with one row
+#' per season and the rules/metadata used by standings endpoints.
 #'
 #' @returns data.frame with one row per season
 #' @examples
@@ -90,7 +92,9 @@ standings_rules <- function() {
 
 #' Access the standings for a date
 #'
-#' `standings()` retrieves the standings for a date as a `data.frame` where each row represents team and includes detail on date/season filtering windows and chronological context, production, workload, efficiency, and result-level performance outcomes, and ranking movement, points pace, and division/conference position signals.
+#' `standings()` returns public standings for one date with one row per team,
+#' including rank, record, points, streak, division/conference, and normalized
+#' team fields.
 #'
 #' @param date character in 'YYYY-MM-DD' (e.g., '2025-01-01'); see 
 #' [seasons()] for reference
@@ -120,7 +124,8 @@ standings <- function(date = 'now') {
 
 #' Access the schedule for a date
 #'
-#' `schedule()` retrieves the schedule for a date as a `data.frame` where each row represents game and includes detail on game timing, matchup state, scoring flow, and situational event detail.
+#' `schedule()` returns the public schedule rows for one date, including game
+#' IDs, teams, start/status, scores, venue, broadcasts, and links.
 #'
 #' @inheritParams standings
 #'
@@ -153,7 +158,8 @@ schedule <- function(date = Sys.Date()) {
 
 #' Access all the venues
 #'
-#' `venues()` retrieves all the venues as a `data.frame` where each row represents venue and includes detail on venue/location geography and regional metadata.
+#' `venues()` returns the records-site venue catalog with one row per venue and
+#' location/name fields.
 #'
 #' @returns data.frame with one row per venue
 #' @examples
@@ -176,7 +182,7 @@ venues <- function() {
 
 #' Access the attendance by season and game type
 #'
-#' `attendance()` retrieves the attendance by season and game type as a `data.frame` where each row represents season and includes detail on date/season filtering windows and chronological context.
+#' `attendance()` returns records-site attendance totals by season and game type.
 #'
 #' @returns data.frame with one row per season
 #' @examples

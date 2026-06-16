@@ -21,7 +21,9 @@ support pre-season}
 data.frame with one row per game
 }
 \description{
-\code{player_game_log()} retrieves the game log for a player, season, and game type as a \code{data.frame} where each row represents game and includes detail on game timeline state, period/clock progression, and matchup flow plus production, workload, efficiency, and result-level performance outcomes.
+\code{player_game_log()} returns one player's GameCenter game log for a season and
+game type, with one row per game and normalized opponent, score/result, and
+player stat fields.
 }
 \examples{
 Martin_Necas_game_log_regular_20242025 <- player_game_log(

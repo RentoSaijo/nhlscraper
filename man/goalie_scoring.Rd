@@ -10,7 +10,8 @@ goalie_scoring()
 data.frame with one row per player
 }
 \description{
-\code{goalie_scoring()} retrieves the career scoring statistics for all the goalies as a \code{data.frame} where each row represents player and includes detail on date/season filtering windows and chronological context, team identity, affiliation, and matchup-side context, and player identity, role, handedness, and biographical profile.
+\code{goalie_scoring()} returns records-site career scoring totals for goalies,
+with one row per goalie.
 }
 \examples{
 goalie_scoring <- goalie_scoring()

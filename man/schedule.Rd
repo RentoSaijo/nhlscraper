@@ -14,7 +14,8 @@ schedule(date = Sys.Date())
 data.frame with one row per game
 }
 \description{
-\code{schedule()} retrieves the schedule for a date as a \code{data.frame} where each row represents game and includes detail on game timing, matchup state, scoring flow, and situational event detail.
+\code{schedule()} returns the public schedule rows for one date, including game
+IDs, teams, start/status, scores, venue, broadcasts, and links.
 }
 \examples{
 schedule_Halloween_2025 <- schedule(date = '2025-10-31')

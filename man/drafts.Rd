@@ -10,7 +10,9 @@ drafts()
 data.frame with one row per draft
 }
 \description{
-\code{drafts()} retrieves all the drafts as a \code{data.frame} where each row represents draft and includes detail on venue/location geography and regional metadata.
+\code{drafts()} merges the records draft master and stats draft-round endpoints,
+returning one row per draft year with IDs, dates, location, and round
+metadata.
 }
 \examples{
 all_drafts <- drafts()

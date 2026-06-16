@@ -1,6 +1,11 @@
+# ----- Packaged Data ----- #
+
 #' Access all contracts from packaged internal data
 #'
-#' `contracts()` loads preprocessed contract records bundled with the package and returns a cleaned `data.frame` with package-consistent column names, season IDs, numeric money fields, and team/player identifiers.
+#' `contracts()` loads preprocessed contract records bundled with the package,
+#' resolves each row to an NHL player ID when the player registry has a clear
+#' match, drops unresolved/ambiguous matches, and returns normalized contract
+#' seasons and money fields.
 #'
 #' @returns data.frame with one row per contract
 #' @examples
@@ -194,10 +199,82 @@ contracts <- function() {
   )
 }
 
+# ----- Remote Parquet Loaders ----- #
+
+#' Build a Hugging Face NHL_DB parquet URL
+#'
+#' `.nhldb_url()` builds URLs for the season-level parquet snapshots used by
+#' the bulk loaders.
+#'
+#' @param path character path inside the NHL_DB repository
+#' @returns character scalar URL
+#' @keywords internal
+.nhldb_url <- function(path) {
+  paste0(
+    'https://huggingface.co/datasets/RentoSaijo/NHL_DB/resolve/main/',
+    path
+  )
+}
+
+#' Download and read a remote parquet file
+#'
+#' `.read_remote_parquet()` downloads a parquet file to a temporary path and
+#' returns it as a base data.frame.
+#'
+#' @param path character path inside the NHL_DB repository
+#' @param timeout optional download timeout in seconds
+#' @param method optional `utils::download.file()` method
+#' @returns data.frame
+#' @keywords internal
+.read_remote_parquet <- function(path, timeout = NULL, method = NULL) {
+  if (!is.null(timeout)) {
+    old_timeout <- getOption('timeout')
+    on.exit(options(timeout = old_timeout), add = TRUE)
+    options(timeout = timeout)
+  }
+  tmp <- tempfile(fileext = '.parquet')
+  on.exit(unlink(tmp), add = TRUE)
+  args <- list(
+    url      = .nhldb_url(path),
+    destfile = tmp,
+    mode     = 'wb',
+    quiet    = TRUE
+  )
+  if (!is.null(method)) {
+    args$method <- method
+  }
+  do.call(utils::download.file, args)
+  as.data.frame(arrow::read_parquet(tmp), stringsAsFactors = FALSE)
+}
+
+#' Pad public situation codes
+#'
+#' `.pad_public_situation_code()` preserves missing values and zero-pads
+#' nonempty situation codes to the four-character public play-by-play form.
+#'
+#' @param play_by_plays data.frame containing `situationCode`
+#' @returns data.frame
+#' @keywords internal
+.pad_public_situation_code <- function(play_by_plays) {
+  if (!('situationCode' %in% names(play_by_plays))) {
+    return(play_by_plays)
+  }
+  raw_situation <- play_by_plays[['situationCode']]
+  situation_chr <- as.character(raw_situation)
+  situation_pad <- rep(NA_character_, length(situation_chr))
+  valid         <- !is.na(situation_chr) & nchar(situation_chr) > 0
+  if (any(valid)) {
+    situation_pad[valid] <- sprintf('%04d', as.integer(situation_chr[valid]))
+  }
+  play_by_plays[['situationCode']] <- situation_pad
+  play_by_plays
+}
+
 #' Access the raw GameCenter (GC) play-by-plays for a season
 #' 
-#' `gc_play_by_plays_raw()` loads the raw GC play-by-plays for a given
-#' `season`.
+#' `gc_play_by_plays_raw()` downloads the stored season-level GameCenter
+#' parquet snapshot and returns the raw rows without public-schema cleanup or
+#' situation-code padding.
 #' 
 #' @inheritParams roster
 #' @returns data.frame with one row per raw event (play) per game
@@ -209,15 +286,10 @@ contracts <- function() {
 gc_play_by_plays_raw <- function(season = 20242025) {
   tryCatch(
     expr = {
-      u <- paste0(
-        'https://huggingface.co/datasets/RentoSaijo/NHL_DB/resolve/main/',
-        'data/game/pbps/gc/NHL_PBPS_GC_Raw_',
-        season,
-        '.parquet'
-      )
-      tmp <- tempfile(fileext = '.parquet')
-      utils::download.file(u, tmp, mode = 'wb', quiet = TRUE)
-      as.data.frame(arrow::read_parquet(tmp), stringsAsFactors = FALSE)
+      .read_remote_parquet(sprintf(
+        'data/game/pbps/gc/NHL_PBPS_GC_Raw_%s.parquet',
+        season
+      ))
     },
     error = function(e) {
       message('Invalid argument(s); refer to help file.')
@@ -235,7 +307,8 @@ gc_pbps_raw <- function(season = 20242025) {
 
 #' Access the GameCenter (GC) play-by-plays for a season
 #' 
-#' `gc_play_by_plays()` loads the GC play-by-plays for a given `season`.
+#' `gc_play_by_plays()` downloads the cleaned season-level GameCenter parquet
+#' snapshot and pads `situationCode` to the four-character public format.
 #' 
 #' @inheritParams roster
 #' @returns data.frame with one row per event (play) per game
@@ -247,24 +320,11 @@ gc_pbps_raw <- function(season = 20242025) {
 gc_play_by_plays <- function(season = 20242025) {
   tryCatch(
     expr = {
-      u <- paste0(
-        'https://huggingface.co/datasets/RentoSaijo/NHL_DB/resolve/main/',
-        'data/game/pbps/gc/NHL_PBPS_GC_',
-        season,
-        '.parquet'
-      )
-      tmp <- tempfile(fileext = '.parquet')
-      utils::download.file(u, tmp, mode = 'wb', quiet = TRUE)
-      pbps <- as.data.frame(arrow::read_parquet(tmp), stringsAsFactors = FALSE)
-      raw_situation <- pbps[['situationCode']]
-      situation_chr <- as.character(raw_situation)
-      situation_pad <- rep(NA_character_, length(situation_chr))
-      valid         <- !is.na(situation_chr) & nchar(situation_chr) > 0
-      if (any(valid)) {
-        situation_pad[valid] <- sprintf('%04d', as.integer(situation_chr[valid]))
-      }
-      pbps[['situationCode']] <- situation_pad
-      pbps
+      .read_remote_parquet(sprintf(
+        'data/game/pbps/gc/NHL_PBPS_GC_%s.parquet',
+        season
+      )) |>
+        .pad_public_situation_code()
     },
     error = function(e) {
       message('Invalid argument(s); refer to help file.')
@@ -282,8 +342,9 @@ gc_pbps <- function(season = 20242025) {
 
 #' Access the raw World Showcase (WSC) play-by-plays for a season
 #' 
-#' `wsc_play_by_plays_raw()` loads the raw WSC play-by-plays for a given
-#' `season`.
+#' `wsc_play_by_plays_raw()` downloads the stored season-level World Showcase
+#' parquet snapshot and returns the raw rows without public-schema cleanup or
+#' situation-code padding.
 #' 
 #' @inheritParams roster
 #' @returns data.frame with one row per raw event (play) per game
@@ -295,15 +356,10 @@ gc_pbps <- function(season = 20242025) {
 wsc_play_by_plays_raw <- function(season = 20242025) {
   tryCatch(
     expr = {
-      u <- paste0(
-        'https://huggingface.co/datasets/RentoSaijo/NHL_DB/resolve/main/',
-        'data/game/pbps/wsc/NHL_PBPS_WSC_Raw_',
-        season,
-        '.parquet'
-      )
-      tmp <- tempfile(fileext = '.parquet')
-      utils::download.file(u, tmp, mode = 'wb', quiet = TRUE)
-      as.data.frame(arrow::read_parquet(tmp), stringsAsFactors = FALSE)
+      .read_remote_parquet(sprintf(
+        'data/game/pbps/wsc/NHL_PBPS_WSC_Raw_%s.parquet',
+        season
+      ))
     },
     error = function(e) {
       message('Invalid argument(s); refer to help file.')
@@ -321,7 +377,9 @@ wsc_pbps_raw <- function(season = 20242025) {
 
 #' Access the World Showcase (WSC) play-by-plays for a season
 #' 
-#' `wsc_play_by_plays()` loads the WSC play-by-plays for a given `season`.
+#' `wsc_play_by_plays()` downloads the cleaned season-level World Showcase
+#' parquet snapshot and pads `situationCode` to the four-character public
+#' format.
 #' 
 #' @inheritParams roster
 #' @returns data.frame with one row per event (play) per game
@@ -333,24 +391,11 @@ wsc_pbps_raw <- function(season = 20242025) {
 wsc_play_by_plays <- function(season = 20242025) {
   tryCatch(
     expr = {
-      u <- paste0(
-        'https://huggingface.co/datasets/RentoSaijo/NHL_DB/resolve/main/',
-        'data/game/pbps/wsc/NHL_PBPS_WSC_',
-        season,
-        '.parquet'
-      )
-      tmp <- tempfile(fileext = '.parquet')
-      utils::download.file(u, tmp, mode = 'wb', quiet = TRUE)
-      pbps <- as.data.frame(arrow::read_parquet(tmp), stringsAsFactors = FALSE)
-      raw_situation <- pbps[['situationCode']]
-      situation_chr <- as.character(raw_situation)
-      situation_pad <- rep(NA_character_, length(situation_chr))
-      valid         <- !is.na(situation_chr) & nchar(situation_chr) > 0
-      if (any(valid)) {
-        situation_pad[valid] <- sprintf('%04d', as.integer(situation_chr[valid]))
-      }
-      pbps[['situationCode']] <- situation_pad
-      pbps
+      .read_remote_parquet(sprintf(
+        'data/game/pbps/wsc/NHL_PBPS_WSC_%s.parquet',
+        season
+      )) |>
+        .pad_public_situation_code()
     },
     error = function(e) {
       message('Invalid argument(s); refer to help file.')
@@ -368,7 +413,9 @@ wsc_pbps <- function(season = 20242025) {
 
 #' Access the shift charts for a season
 #' 
-#' `shift_charts()` loads the shift charts for a given `season`.
+#' `shift_charts()` downloads the stored season-level shift-chart parquet
+#' snapshot, removes the storage-only `id` column, and returns one row per
+#' parsed shift.
 #' 
 #' @inheritParams roster
 #' @returns data.frame with one row per event (play) per game
@@ -380,15 +427,10 @@ wsc_pbps <- function(season = 20242025) {
 shift_charts <- function(season = 20242025) {
   tryCatch(
     expr = {
-      u <- paste0(
-        'https://huggingface.co/datasets/RentoSaijo/NHL_DB/resolve/main/',
-        'data/game/scs/NHL_SCS_',
-        season,
-        '.parquet'
-      )
-      tmp <- tempfile(fileext = '.parquet')
-      utils::download.file(u, tmp, mode = 'wb', quiet = TRUE)
-      shifts <- as.data.frame(arrow::read_parquet(tmp), stringsAsFactors = FALSE)
+      shifts <- .read_remote_parquet(sprintf(
+        'data/game/scs/NHL_SCS_%s.parquet',
+        season
+      ))
       shifts$id <- NULL
       shifts
     },
@@ -401,8 +443,8 @@ shift_charts <- function(season = 20242025) {
 
 #' Access the shift chart summaries for a season
 #' 
-#' `shift_chart_summaries()` loads the shift chart summaries for a given
-#' `season`.
+#' `shift_chart_summaries()` downloads the stored season-level shift-summary
+#' parquet snapshot with per-player, per-period time-on-ice splits.
 #' 
 #' @inheritParams roster
 #' @returns data.frame with one row per player per period
@@ -414,15 +456,10 @@ shift_charts <- function(season = 20242025) {
 shift_chart_summaries <- function(season = 20242025) {
   tryCatch(
     expr = {
-      u <- paste0(
-        'https://huggingface.co/datasets/RentoSaijo/NHL_DB/resolve/main/',
-        'data/game/scss/NHL_SCSS_',
-        season,
-        '.parquet'
-      )
-      tmp <- tempfile(fileext = '.parquet')
-      utils::download.file(u, tmp, mode = 'wb', quiet = TRUE)
-      as.data.frame(arrow::read_parquet(tmp), stringsAsFactors = FALSE)
+      .read_remote_parquet(sprintf(
+        'data/game/scss/NHL_SCSS_%s.parquet',
+        season
+      ))
     },
     error = function(e) {
       message('Invalid argument(s); refer to help file.')
@@ -433,7 +470,8 @@ shift_chart_summaries <- function(season = 20242025) {
 
 #' Access the replays for a season
 #' 
-#' `replays()` loads the replays for a given `season`.
+#' `replays()` downloads the stored season-level puck/player tracking parquet
+#' snapshot and returns one row per tracked decisecond.
 #' 
 #' @inheritParams roster
 #' @returns data.frame with one row per decisecond
@@ -443,20 +481,13 @@ shift_chart_summaries <- function(season = 20242025) {
 #' @export
 
 replays <- function(season = 20242025) {
-  old_timeout <- getOption('timeout')
-  on.exit(options(timeout = old_timeout), add = TRUE)
-  options(timeout = 600)
   tryCatch(
     expr = {
-      u <- paste0(
-        'https://huggingface.co/datasets/RentoSaijo/NHL_DB/resolve/main/',
-        'data/event/replays/NHL_REPLAYS_', 
-        season, 
-        '.parquet'
+      .read_remote_parquet(
+        path = sprintf('data/event/replays/NHL_REPLAYS_%s.parquet', season),
+        timeout = 600,
+        method = 'libcurl'
       )
-      tmp <- tempfile(fileext = '.parquet')
-      utils::download.file(u, tmp, mode = 'wb', quiet = TRUE, method = 'libcurl')
-      as.data.frame(arrow::read_parquet(tmp), stringsAsFactors = FALSE)
     },
     error = function(e) {
       message('Invalid argument(s); refer to help file.')
