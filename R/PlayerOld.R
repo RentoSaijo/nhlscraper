@@ -1,3 +1,5 @@
+# ----- Deprecated Functions ----- #
+
 #' Access all the players
 #' 
 #' `get_players()` is deprecated. Use [players()] instead.

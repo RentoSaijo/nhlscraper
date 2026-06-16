@@ -223,6 +223,7 @@ game_rosters <- function(game = 2023030417) {
 #'
 #' @returns character vector of supported event type keys
 #' @keywords internal
+
 .supported_strength_event_types <- function() {
   c(
     'period-start',
@@ -251,6 +252,7 @@ game_rosters <- function(game = 2023030417) {
 #'
 #' @returns character vector of supported on-ice player-ID event type keys
 #' @keywords internal
+
 .supported_html_on_ice_id_event_types <- function() {
   .supported_strength_event_types()
 }
@@ -269,6 +271,7 @@ game_rosters <- function(game = 2023030417) {
 #' @param min_slots integer scalar default floor for standard outputs
 #' @returns integer scalar
 #' @keywords internal
+
 .on_ice_skater_slots <- function(
   play_by_play = NULL,
   slot_count = NULL,
@@ -325,6 +328,7 @@ game_rosters <- function(game = 2023030417) {
 #'   caller
 #' @returns character vector of on-ice player ID columns
 #' @keywords internal
+
 .on_ice_id_scalar_column_names <- function(
   play_by_play = NULL,
   slot_count = NULL
@@ -358,6 +362,7 @@ game_rosters <- function(game = 2023030417) {
 #'   caller
 #' @returns character vector of scalar on-ice columns
 #' @keywords internal
+
 .on_ice_scalar_column_names <- function(
   play_by_play = NULL,
   slot_count = NULL
@@ -395,6 +400,7 @@ game_rosters <- function(game = 2023030417) {
 #'   caller
 #' @returns data.frame with empty on-ice columns added
 #' @keywords internal
+
 .add_empty_html_on_ice_columns <- function(play_by_play, slot_count = NULL) {
   slot_count <- .on_ice_skater_slots(
     play_by_play = play_by_play,
@@ -427,6 +433,7 @@ game_rosters <- function(game = 2023030417) {
 #' @param play_by_play data.frame play-by-play object
 #' @returns data.frame with unsupported rows masked
 #' @keywords internal
+
 .mask_strength_context_block <- function(play_by_play) {
   type_desc_key <- if ('eventTypeDescKey' %in% names(play_by_play)) {
     as.character(play_by_play$eventTypeDescKey)
@@ -463,6 +470,7 @@ game_rosters <- function(game = 2023030417) {
 #' @param x character vector of player names
 #' @returns normalized character vector
 #' @keywords internal
+
 .normalize_roster_person <- function(x) {
   x <- gsub('\\s+', ' ', x)
   x <- trimws(x)
@@ -480,6 +488,7 @@ game_rosters <- function(game = 2023030417) {
 #' @param rosters roster data.frame from the game play-by-play metadata
 #' @returns standardized roster lookup data.frame
 #' @keywords internal
+
 .build_game_roster_lookup <- function(rosters) {
   if (is.null(rosters) || !nrow(rosters)) {
     return(data.frame())
@@ -515,6 +524,7 @@ game_rosters <- function(game = 2023030417) {
 #' @param player_name optional player name
 #' @returns integer player ID or `NA_integer_`
 #' @keywords internal
+
 .lookup_roster_player_id <- function(
   roster_lookup,
   team_id,
@@ -563,6 +573,7 @@ game_rosters <- function(game = 2023030417) {
 #' @param is_playoffs logical; whether the game is a playoff game
 #' @returns integer period number or `NA_integer_`
 #' @keywords internal
+
 .parse_html_period_label <- function(x, is_playoffs = FALSE) {
   x <- trimws(toupper(as.character(x)))
   if (!length(x) || is.na(x) || !nzchar(x)) {
@@ -591,6 +602,7 @@ game_rosters <- function(game = 2023030417) {
 #' @param x HTML time field
 #' @returns integer seconds elapsed in period or `NA_integer_`
 #' @keywords internal
+
 .parse_html_elapsed_clock <- function(x) {
   x <- trimws(as.character(x))
   if (!length(x) || is.na(x)) {
@@ -621,6 +633,7 @@ game_rosters <- function(game = 2023030417) {
 #' @param x character vector of team abbreviations
 #' @returns normalized character vector
 #' @keywords internal
+
 .normalize_html_team_abbrev <- function(x) {
   x <- toupper(as.character(x))
   x <- gsub('[^A-Z]', '', x)
@@ -637,6 +650,7 @@ game_rosters <- function(game = 2023030417) {
 #' @param description optional HTML event description
 #' @returns event type key or `NA_character_`
 #' @keywords internal
+
 .html_event_code_to_type_desc <- function(event_code, description = NA_character_) {
   code_map <- c(
     FAC = 'faceoff',
@@ -683,6 +697,7 @@ game_rosters <- function(game = 2023030417) {
 #' @param away_team_id away-team ID
 #' @returns integer team ID or `NA_integer_`
 #' @keywords internal
+
 .html_desc_owner_team_id <- function(
   description,
   home_abbrev,
@@ -728,6 +743,7 @@ game_rosters <- function(game = 2023030417) {
 #' @param roster_lookup standardized roster lookup data.frame
 #' @returns data.frame of ordered team/player references
 #' @keywords internal
+
 .html_extract_tagged_players <- function(
   description,
   home_team_id,
@@ -791,6 +807,7 @@ game_rosters <- function(game = 2023030417) {
 #' @param roster_lookup standardized roster lookup data.frame
 #' @returns named list of actor player IDs
 #' @keywords internal
+
 .html_extract_actor_player_ids <- function(
   description,
   type_desc_key,
@@ -929,6 +946,7 @@ game_rosters <- function(game = 2023030417) {
 #' @param roster_lookup standardized roster lookup data.frame
 #' @returns named list containing goalie and skater player IDs
 #' @keywords internal
+
 .parse_html_on_ice_cell <- function(text, team_id, roster_lookup) {
   txt <- gsub('\u00A0', ' ', as.character(text), fixed = TRUE)
   txt <- gsub('\\s+', ' ', txt)
@@ -970,6 +988,7 @@ game_rosters <- function(game = 2023030417) {
 #' @param is_playoffs logical; whether the game is a playoff game
 #' @returns data.frame of parsed HTML play-by-play rows
 #' @keywords internal
+
 .parse_html_pbp_doc <- function(
   doc,
   roster_lookup,
@@ -1059,6 +1078,7 @@ game_rosters <- function(game = 2023030417) {
 #' @param game game ID
 #' @returns character scalar URL
 #' @keywords internal
+
 .html_pbp_report_url <- function(game) {
   season <- paste0(game %/% 1e6, game %/% 1e6 + 1L)
   game_code <- sprintf('%06d', game %% 10^6)
@@ -1079,6 +1099,7 @@ game_rosters <- function(game = 2023030417) {
 #' @param team_tag HTML report team tag
 #' @returns character scalar URL
 #' @keywords internal
+
 .html_shift_report_url <- function(game, team_tag) {
   season <- paste0(game %/% 1e6, game %/% 1e6 + 1L)
   game_code <- sprintf('%06d', game %% 10^6)
@@ -1098,6 +1119,7 @@ game_rosters <- function(game = 2023030417) {
 #' @param x character scalar
 #' @returns character scalar or `NA_character_`
 #' @keywords internal
+
 .extract_html_clock <- function(x) {
   if (is.na(x)) {
     return(NA_character_)
@@ -1121,6 +1143,7 @@ game_rosters <- function(game = 2023030417) {
 #' @param x character scalar
 #' @returns character scalar or `NA_character_`
 #' @keywords internal
+
 .format_html_shift_clock <- function(x) {
   if (is.na(x)) {
     return(NA_character_)
@@ -1144,6 +1167,7 @@ game_rosters <- function(game = 2023030417) {
 #' @param x character scalar
 #' @returns integer scalar or `NA_integer_`
 #' @keywords internal
+
 .html_time_to_seconds <- function(x) {
   if (is.na(x)) {
     return(NA_integer_)
@@ -1173,6 +1197,7 @@ game_rosters <- function(game = 2023030417) {
 #' @param x character vector
 #' @returns integer vector
 #' @keywords internal
+
 .html_clocks_to_seconds <- function(x) {
   vapply(x, .html_time_to_seconds, integer(1))
 }
@@ -1186,6 +1211,7 @@ game_rosters <- function(game = 2023030417) {
 #' @param period_number integer vector of period numbers
 #' @returns integer vector
 #' @keywords internal
+
 .game_period_base_seconds <- function(game, period_number) {
   is_playoffs <- game %/% 1e4 %% 1e2 == 3L
   base <- integer(length(period_number))
@@ -1209,6 +1235,7 @@ game_rosters <- function(game = 2023030417) {
 #' @inheritParams .fetch_html_pbp_on_ice
 #' @returns data.frame of parsed HTML play-by-play rows
 #' @keywords internal
+
 .parse_html_pbp_response <- function(
   resp,
   game,
@@ -1243,6 +1270,7 @@ game_rosters <- function(game = 2023030417) {
 #' @param away_abbrev away-team abbreviation
 #' @returns data.frame of parsed HTML play-by-play rows
 #' @keywords internal
+
 .fetch_html_pbp_on_ice <- function(
   game,
   rosters,
@@ -1273,6 +1301,7 @@ game_rosters <- function(game = 2023030417) {
 #' @param play_by_play data.frame play-by-play object
 #' @returns data.frame of API-side matching features
 #' @keywords internal
+
 .build_api_html_match_table <- function(play_by_play) {
   n <- nrow(play_by_play)
   out <- data.frame(
@@ -1340,6 +1369,7 @@ game_rosters <- function(game = 2023030417) {
 #' @param last_api_seq optional last matched API sequence number
 #' @returns named numeric vector of candidate scores
 #' @keywords internal
+
 .score_html_api_candidates <- function(api, html, cand, h_idx, last_api_seq = NULL) {
   if (!length(cand)) {
     return(stats::setNames(numeric(), character()))
@@ -1407,6 +1437,7 @@ game_rosters <- function(game = 2023030417) {
 #' @param html_rows data.frame parsed HTML play-by-play rows
 #' @returns data.frame of matched HTML rows with `apiIndex`
 #' @keywords internal
+
 .match_html_pbp_to_api <- function(play_by_play, html_rows) {
   api <- .build_api_html_match_table(play_by_play)
   if (!nrow(api) || is.null(html_rows) || !nrow(html_rows)) {
@@ -1567,6 +1598,7 @@ game_rosters <- function(game = 2023030417) {
 #' @param matched optional matched HTML rows from `.match_html_pbp_to_api()`
 #' @returns data.frame enriched with one-on-one shooter/goalie assignments
 #' @keywords internal
+
 .add_one_on_one_on_ice_players <- function(play_by_play, matched = data.frame()) {
   n <- nrow(play_by_play)
   if (!n) {
@@ -1658,6 +1690,7 @@ game_rosters <- function(game = 2023030417) {
 #' @param away_skaters integer vector of resolved away skater IDs
 #' @returns data.frame with scalar on-ice player-ID columns assigned for `idx`
 #' @keywords internal
+
 .assign_html_on_ice_player_ids <- function(
   play_by_play,
   idx,
@@ -1718,6 +1751,7 @@ game_rosters <- function(game = 2023030417) {
 #' @param play_by_play data.frame play-by-play object
 #' @returns logical vector
 #' @keywords internal
+
 .has_any_on_ice_player_ids <- function(play_by_play) {
   id_cols <- intersect(
     .on_ice_id_scalar_column_names(play_by_play = play_by_play),
@@ -1739,6 +1773,7 @@ game_rosters <- function(game = 2023030417) {
 #' @param max_gap_seconds integer scalar time window
 #' @returns data.frame with delayed-penalty rows backfilled where possible
 #' @keywords internal
+
 .backfill_delayed_penalty_on_ice_players <- function(
   play_by_play,
   max_gap_seconds = 15L
@@ -1841,6 +1876,7 @@ game_rosters <- function(game = 2023030417) {
 #' @param html_rows optional parsed HTML on-ice rows
 #' @returns data.frame enriched with HTML-derived on-ice columns
 #' @keywords internal
+
 .add_html_on_ice_players <- function(
   play_by_play,
   game,
@@ -1926,6 +1962,7 @@ game_rosters <- function(game = 2023030417) {
 #' @param n output row count
 #' @returns typed vector of missing values
 #' @keywords internal
+
 .empty_public_pbp_column <- function(name, n) {
   if (grepl(
     '^(?:home|away)GoaliePlayerId$|^goaliePlayerId(?:For|Against)$|^(?:home|away)Skater[0-9]+PlayerId$|^skater[0-9]+PlayerId(?:For|Against)$',
@@ -1976,6 +2013,7 @@ game_rosters <- function(game = 2023030417) {
 #' @param source output source, either `"gc"` or `"wsc"`
 #' @returns data.frame with the finalized public play-by-play schema
 #' @keywords internal
+
 .finalize_pbp_output <- function(play_by_play, source = c('gc', 'wsc')) {
   source <- match.arg(source)
   on_ice_cols <- .on_ice_id_scalar_column_names(play_by_play = play_by_play)
@@ -2052,6 +2090,7 @@ game_rosters <- function(game = 2023030417) {
 #' @param resp response or failure object
 #' @returns logical scalar
 #' @keywords internal
+
 .parallel_request_failed <- function(resp) {
   inherits(resp, 'httr2_failure')
 }
@@ -2065,6 +2104,7 @@ game_rosters <- function(game = 2023030417) {
 #' @inheritParams .fetch_html_pbp_on_ice
 #' @returns data.frame of parsed HTML rows or an empty data.frame
 #' @keywords internal
+
 .optional_html_pbp_rows_from_response <- function(
   resp,
   game,
@@ -2101,6 +2141,7 @@ game_rosters <- function(game = 2023030417) {
 #' @param game game ID
 #' @returns data.frame
 #' @keywords internal
+
 .prepare_gc_public_pbp_plays <- function(plays, game) {
   plays$gameId <- game
   plays <- plays[, c('gameId', setdiff(names(plays), 'gameId'))]
@@ -2137,6 +2178,7 @@ game_rosters <- function(game = 2023030417) {
 #' @param game game ID
 #' @returns data.frame
 #' @keywords internal
+
 .prepare_wsc_public_pbp_plays <- function(plays, game) {
   plays$id <- NULL
   plays$gameId <- game
@@ -2175,6 +2217,7 @@ game_rosters <- function(game = 2023030417) {
 #' @param source output source, either `gc` or `wsc`
 #' @returns data.frame in the finalized public play-by-play schema
 #' @keywords internal
+
 .clean_public_pbp_plays <- function(
   plays,
   game,

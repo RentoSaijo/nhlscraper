@@ -1,3 +1,5 @@
+# ----- Deprecated Functions ----- #
+
 #' Access all the officials
 #' 
 #' `get_officials()` is deprecated. Use [officials()] instead.

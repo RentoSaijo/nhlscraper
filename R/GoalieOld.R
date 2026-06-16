@@ -1,3 +1,5 @@
+# ----- Deprecated Functions ----- #
+
 #' Access the goalie statistics leaders for a season, game type, and category
 #' 
 #' `get_goalie_leaders()` is deprecated. Use [goalie_leaders()] instead.

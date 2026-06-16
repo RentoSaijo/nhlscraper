@@ -1,3 +1,5 @@
+# ----- Deprecated Functions ----- #
+
 #' Access all the seasons
 #' 
 #' `get_seasons()` is deprecated. Use [seasons()] instead.

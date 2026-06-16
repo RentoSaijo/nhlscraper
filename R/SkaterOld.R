@@ -1,3 +1,5 @@
+# ----- Deprecated Functions ----- #
+
 #' Access the skater statistics leaders for a season, game type, and category
 #' 
 #' `get_skater_leaders()` is deprecated. Use [skater_leaders()] instead.

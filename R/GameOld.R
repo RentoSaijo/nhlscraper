@@ -1,3 +1,5 @@
+# ----- Deprecated Functions ----- #
+
 #' Access all the games
 #' 
 #' `get_games()` is deprecated. Use [games()] instead.
@@ -108,9 +110,9 @@ get_game_story <- function(game = 2023030417) {
 #' @export
 
 get_game_boxscore <- function(
-    game        = 2023030417,
-    team        = 'home',
-    player_type = 'forwards'
+  game        = 2023030417,
+  team        = 'home',
+  player_type = 'forwards'
 ) {
   .Deprecated(
     new     = 'boxscore()',

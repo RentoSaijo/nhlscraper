@@ -1,3 +1,5 @@
+# ----- Deprecated Functions ----- #
+
 #' Access the playoff bracket for a season
 #' 
 #' `get_bracket()` is deprecated. Use [bracket()] instead.

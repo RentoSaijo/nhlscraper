@@ -4,6 +4,8 @@
   - The previous package scorer artifacts have been removed.
 - Removed minimum-dependency package language now that runtime scoring relies on external modeling packages.
 - Rebuilt packaged contract data from the updated `data-raw/NHL_Contracts_2020s.csv`.
+- Standardized all `R` code.
+- Improved all articles.
 
 # nhlscraper 0.6.1
 - `shift_chart()` now returns `periodNumber` instead of `period`.

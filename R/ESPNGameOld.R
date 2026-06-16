@@ -1,3 +1,5 @@
+# ----- Deprecated Functions ----- #
+
 #' Access the ESPN summary for an event (game)
 #' 
 #' `get_espn_event()` is deprecated. Use [espn_game_summary()] instead.

@@ -1,3 +1,5 @@
+# ----- Deprecated Functions ----- #
+
 #' Access all the drafts
 #' 
 #' `get_drafts()` is deprecated. Use [drafts()] instead.

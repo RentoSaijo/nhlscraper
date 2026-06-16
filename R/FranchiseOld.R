@@ -1,3 +1,5 @@
+# ----- Deprecated Functions ----- #
+
 #' Access all the franchises
 #' 
 #' `get_franchises()` is deprecated. Use [franchises()] instead.

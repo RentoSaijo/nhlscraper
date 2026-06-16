@@ -337,6 +337,7 @@ roster_statistics <- function(
 
 #' @rdname roster_statistics
 #' @export
+
 roster_stats <- function(
   team      = 1,
   season    = 'now',

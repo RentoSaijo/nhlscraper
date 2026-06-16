@@ -170,6 +170,7 @@ franchise_versus_franchise <- function() {
 
 #' @rdname franchise_versus_franchise
 #' @export
+
 franchise_vs_franchise <- function() {
   franchise_versus_franchise()
 }

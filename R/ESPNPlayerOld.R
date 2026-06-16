@@ -1,3 +1,5 @@
+# ----- Deprecated Functions ----- #
+
 #' Access all the ESPN athletes (players)
 #' 
 #' `get_espn_athletes()` is deprecated. Use [espn_players()] instead.

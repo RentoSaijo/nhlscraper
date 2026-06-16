@@ -1,3 +1,5 @@
+# ----- Deprecated Functions ----- #
+
 #' Access all the awards
 #' 
 #' `get_awards()` is deprecated. Use [awards()] instead.

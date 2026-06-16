@@ -8,6 +8,7 @@
 #' @param team character scalar
 #' @returns character scalar, either `home` or `away`
 #' @keywords internal
+
 .share_team_key <- function(team) {
   switch(
     substring(tolower(team), 1, 1),
@@ -25,6 +26,7 @@
 #' @param plot_type character of `shots` or `cumulative`
 #' @returns named list of plot settings
 #' @keywords internal
+
 .share_plot_spec <- function(platform, plot_type) {
   platform <- match.arg(platform, c('ig', 'x'))
   plot_type <- match.arg(plot_type, c('shots', 'cumulative'))
@@ -58,6 +60,7 @@
 #' @param save logical
 #' @returns logical indicating whether a device was opened
 #' @keywords internal
+
 .open_share_png <- function(file_name, spec, save) {
   if (!isTRUE(save)) {
     return(FALSE)
@@ -79,6 +82,7 @@
 #' @param game game ID
 #' @returns named list of game labels
 #' @keywords internal
+
 .share_game_labels <- function(game) {
   game_sum <- gc_summary(game)
   list(
@@ -96,6 +100,7 @@
 #' @param team character of `home` or `away`
 #' @returns character scalar
 #' @keywords internal
+
 .share_shot_location_title <- function(labels, team) {
   if (team == 'home') {
     shooting_abbrev <- labels$home_abbrev
@@ -128,6 +133,7 @@
 #' @param labels list returned by `.share_game_labels()`
 #' @returns character scalar
 #' @keywords internal
+
 .share_cumulative_title <- function(labels) {
   if (nzchar(labels$game_date)) {
     sprintf(
@@ -153,6 +159,7 @@
 #' @param game game ID
 #' @returns named list containing the full play-by-play and shot rows
 #' @keywords internal
+
 .share_game_shots <- function(game) {
   pbp <- gc_play_by_play(game)
   pbp <- calculate_expected_goals(pbp)
@@ -172,6 +179,7 @@
 #' @param team character of `home` or `away`
 #' @returns data.frame
 #' @keywords internal
+
 .share_filter_team_shots <- function(shots, team) {
   is_home_vec <- as.logical(shots[['isHome']])
   if (team == 'home') {
@@ -190,6 +198,7 @@
 #' @param xg numeric expected-goals vector
 #' @returns named list of color and legend metadata
 #' @keywords internal
+
 .share_xg_scale <- function(xg) {
   xg <- as.numeric(xg)
   xg[!is.finite(xg) | xg < 0] <- 0
@@ -239,6 +248,7 @@
 #' @param scale list returned by `.share_xg_scale()`
 #' @param spec list returned by `.share_plot_spec()`
 #' @keywords internal
+
 .draw_share_shot_legends <- function(scale, spec) {
   usr   <- graphics::par('usr')
   rng_y <- usr[4] - usr[3]
@@ -307,6 +317,7 @@
 #' @param spec list returned by `.share_plot_spec()`
 #' @returns `NULL`, invisibly
 #' @keywords internal
+
 .draw_share_shot_locations <- function(shots, plot_title, spec) {
   type_shot <- as.character(shots[['eventTypeDescKey']])
   x <- as.numeric(shots[['xCoordNorm']])
@@ -349,6 +360,7 @@
 #' @param play_by_play full game play-by-play
 #' @returns named list of cumulative xG series
 #' @keywords internal
+
 .share_cumulative_xg_series <- function(shots, play_by_play) {
   sec   <- as.numeric(shots[['secondsElapsedInGame']])
   xg    <- as.numeric(shots[['xG']])
@@ -399,6 +411,7 @@
 #' @param plot_title character scalar
 #' @returns `NULL`, invisibly
 #' @keywords internal
+
 .draw_share_cumulative_xg <- function(series, labels, plot_title) {
   max_xg <- max(c(series$home$xg, series$away$xg), na.rm = TRUE)
   if (!is.finite(max_xg) || max_xg <= 0) {
@@ -473,6 +486,7 @@
 #'   save  = FALSE
 #' )}
 #' @export
+
 ig_game_shot_locations <- function(
   game  = 2023030417,
   team  = 'home',
@@ -511,6 +525,7 @@ ig_game_shot_locations <- function(
 
 #' @rdname ig_game_shot_locations
 #' @export
+
 ig_game_shot_locs <- function(game = 2023030417, team = 'home', model = NULL) {
   ig_game_shot_locations(game, team, model)
 }
@@ -531,6 +546,7 @@ ig_game_shot_locs <- function(game = 2023030417, team = 'home', model = NULL) {
 #'   save  = FALSE
 #' )}
 #' @export
+
 x_game_shot_locations <- function(
   game  = 2023030417,
   team  = 'home',
@@ -568,6 +584,7 @@ x_game_shot_locations <- function(
 
 #' @rdname x_game_shot_locations
 #' @export
+
 x_game_shot_locs <- function(game = 2023030417, team = 'home', model = NULL) {
   x_game_shot_locations(game, team, model)
 }
@@ -587,6 +604,7 @@ x_game_shot_locs <- function(game = 2023030417, team = 'home', model = NULL) {
 #'   save  = FALSE
 #' )}
 #' @export
+
 ig_game_cumulative_expected_goals <- function(
   game  = 2023030417,
   model = NULL,
@@ -625,6 +643,7 @@ ig_game_cumulative_expected_goals <- function(
 
 #' @rdname ig_game_cumulative_expected_goals
 #' @export
+
 ig_game_cum_xG <- function(game = 2023030417, model = NULL) {
   ig_game_cumulative_expected_goals(game, model)
 }
@@ -644,6 +663,7 @@ ig_game_cum_xG <- function(game = 2023030417, model = NULL) {
 #'   save  = FALSE
 #' )}
 #' @export
+
 x_game_cumulative_expected_goals <- function(
   game  = 2023030417,
   model = NULL,
@@ -682,6 +702,7 @@ x_game_cumulative_expected_goals <- function(
 
 #' @rdname x_game_cumulative_expected_goals
 #' @export
+
 x_game_cum_xG <- function(game = 2023030417, model = NULL) {
   x_game_cumulative_expected_goals(game, model)
 }

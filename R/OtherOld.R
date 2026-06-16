@@ -1,3 +1,5 @@
+# ----- Deprecated Functions ----- #
+
 #' Access the glossary
 #' 
 #' `get_glossary()` is deprecated. Use [glossary()] instead.

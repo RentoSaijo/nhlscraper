@@ -22,6 +22,7 @@
 #'   pbp_with_xg <- calculate_expected_goals(play_by_play = pbp)
 #' }
 #' @export
+
 calculate_expected_goals <- function(play_by_play, model = NULL) {
   tryCatch(
     expr = {
@@ -92,6 +93,7 @@ calculate_expected_goals <- function(play_by_play, model = NULL) {
 
 #' @rdname calculate_expected_goals
 #' @export
+
 calculate_xG <- function(play_by_play, model = NULL) {
   calculate_expected_goals(play_by_play, model)
 }

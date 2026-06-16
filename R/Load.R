@@ -209,6 +209,7 @@ contracts <- function() {
 #' @param path character path inside the NHL_DB repository
 #' @returns character scalar URL
 #' @keywords internal
+
 .nhldb_url <- function(path) {
   paste0(
     'https://huggingface.co/datasets/RentoSaijo/NHL_DB/resolve/main/',
@@ -226,6 +227,7 @@ contracts <- function() {
 #' @param method optional `utils::download.file()` method
 #' @returns data.frame
 #' @keywords internal
+
 .read_remote_parquet <- function(path, timeout = NULL, method = NULL) {
   if (!is.null(timeout)) {
     old_timeout <- getOption('timeout')
@@ -255,6 +257,7 @@ contracts <- function() {
 #' @param play_by_plays data.frame containing `situationCode`
 #' @returns data.frame
 #' @keywords internal
+
 .pad_public_situation_code <- function(play_by_plays) {
   if (!('situationCode' %in% names(play_by_plays))) {
     return(play_by_plays)

@@ -1,8 +1,8 @@
 ---
-title: "How nhlscraper's Expected Goals Model Works"
+title: 'How nhlscraper Scores Expected Goals'
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{How nhlscraper's Expected Goals Model Works}
+  %\VignetteIndexEntry{How nhlscraper Scores Expected Goals}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -10,7 +10,11 @@ vignette: >
 ```{r setup, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
-  comment = "#>"
+  comment = '#>',
+  fig.align = 'center',
+  out.width = '92%',
+  fig.width = 7,
+  fig.height = 4.5
 )
 
 make_table <- function(x, caption, digits = 3) {
@@ -18,54 +22,229 @@ make_table <- function(x, caption, digits = 3) {
 }
 ```
 
-## Overview
+## What xG Means Here
 
-Expected goals, or xG, estimates the probability that a shot becomes a goal. `nhlscraper` now ships rolling XGBoost xG models trained outside the package in the companion model repository and bundled for package runtime scoring. The package does not train models locally. It prepares public play-by-play rows, routes each shot to the appropriate season vintage and game-state partition, bakes the frozen preprocessing matrix, and asks the bundled XGBoost booster for a probability.
+Expected goals, or xG, is the estimated probability that a shot becomes a goal.
+In `nhlscraper`, `calculate_expected_goals()` adds one column, `xG`, to a
+current-schema play-by-play table. Non-shot rows receive `NA`; shot-attempt rows
+receive probabilities from bundled XGBoost models.
 
-The shipped bundle contains six models for every target season from `2013-14` through the `2026-27` deployment vintage. Historical games use their matching target-season vintage when available. Seasons before the bundled range use the earliest vintage, and seasons after the bundled range use the latest deployment vintage.
+The package does **not** train models during package use. It ships frozen model
+bundles that were trained outside the package and then stored with the runtime
+preprocessing contract. That contract is just as important as the boosters:
+numeric medians, categorical levels, dummy-column maps, and final feature order
+all have to match training exactly.
 
-## Six Situations
+## Basic Use
 
-Each vintage is split into six mutually exclusive shot environments:
+```{r basic-use, eval = FALSE}
+pbp <- nhlscraper::gc_play_by_play(2023030417)
+pbp <- nhlscraper::add_shift_times(
+  play_by_play = pbp,
+  shift_chart  = nhlscraper::shift_chart(2023030417)
+)
+pbp <- nhlscraper::add_deltas(pbp)
+pbp <- nhlscraper::calculate_expected_goals(pbp)
+```
 
-```{r partition-table}
+`calculate_expected_goals()` can derive several missing context columns itself,
+but the richest input is a play-by-play that already has shift timing and
+event-to-event deltas. The function keeps the legacy `model` argument for
+compatibility, but that argument is ignored.
+
+## Six Shot Environments
+
+The model system is not one giant all-purpose classifier. Each target-season
+vintage contains six mutually exclusive models:
+
+```{r partition-table, echo = FALSE}
 partition_table <- data.frame(
-  partition = c("sd", "ev", "pp", "sh", "en", "ps"),
-  meaning = c(
-    "Regulation 5v5 without empty nets, plus fallback rows",
-    "Other even-strength states outside standard 5v5",
-    "Shooting team has a skater advantage",
-    "Shooting team is short-handed",
-    "Opponent net is empty",
-    "Penalty-shot and shootout-style situations"
+  partition = c('sd', 'ev', 'pp', 'sh', 'en', 'ps'),
+  name = c(
+    'Standard 5v5',
+    'Other even strength',
+    'Power play',
+    'Short-handed',
+    'Empty net',
+    'Penalty shot / shootout'
+  ),
+  rows_sent_there = c(
+    'Regulation 5v5 shots with both goalies in net, plus safe fallbacks.',
+    'Remaining even-strength shots such as 4v4 and 3v3.',
+    'Shots where the shooting team has a skater advantage.',
+    'Shots where the shooting team has fewer skaters.',
+    'Shots at an empty opposing net.',
+    'Penalty-shot and shootout-style one-on-one attempts.'
   ),
   stringsAsFactors = FALSE
 )
 make_table(
   partition_table,
-  caption = "The six shot partitions used by nhlscraper's xG models."
+  caption = 'Shot partitions used by calculate_expected_goals().'
 )
 ```
 
-The scorer applies these rules in order:
+The order matters. A shootout attempt is handled before empty-net or manpower
+rules. Empty-net shots are pulled out before normal strength partitions. Standard
+5v5 is separated from other even-strength play because its sample is large and
+its scoring environment is cleaner.
 
-1. Penalty-shot and shootout-style states (`1010` and `0101`) go to `ps`.
-2. Empty-net-against shots go to `en`.
-3. Standard 5v5 non-empty-net shots go to `sd`.
-4. Remaining even-strength shots go to `ev`.
-5. Skater-advantage shots go to `pp`.
-6. Skater-disadvantage shots go to `sh`.
+## Runtime Routing
 
-That split matters because a 5v5 point shot, a 4v4 rush, a power-play one-timer, an empty-net attempt, and a shootout attempt are different statistical problems.
+Each shot is routed by game season and game state:
 
-## Training Design
+```{r routing-plot, echo = FALSE, fig.width = 7.5, fig.height = 4.8, fig.cap = 'Runtime routing from play-by-play row to xG value.'}
+steps <- c(
+  'Shot row',
+  'Target season',
+  'Partition',
+  'Frozen recipe',
+  'XGBoost booster',
+  'xG'
+)
+box_x <- c(1, 2, 3, 3, 2, 1)
+box_y <- c(2, 2, 2, 1, 1, 1)
+box_w <- 0.78
+box_h <- 0.36
+draw_box <- function(x, y, label, number) {
+  wrapped_label <- paste(strwrap(paste0(number, '. ', label), width = 16), collapse = '\n')
+  graphics::rect(
+    xleft   = x - box_w / 2,
+    ybottom = y - box_h / 2,
+    xright  = x + box_w / 2,
+    ytop    = y + box_h / 2,
+    col     = '#fefae0',
+    border  = '#bc6c25',
+    lwd     = 1.5
+  )
+  graphics::text(
+    x      = x,
+    y      = y,
+    labels = wrapped_label,
+    cex    = 0.84,
+    col    = '#1f2933'
+  )
+}
+draw_arrow <- function(i, j) {
+  x0 <- box_x[i]
+  y0 <- box_y[i]
+  x1 <- box_x[j]
+  y1 <- box_y[j]
+  graphics::arrows(
+    x0     = x0 + sign(x1 - x0) * box_w / 2,
+    y0     = y0 + sign(y1 - y0) * box_h / 2,
+    x1     = x1 - sign(x1 - x0) * box_w / 2,
+    y1     = y1 - sign(y1 - y0) * box_h / 2,
+    length = 0.08,
+    lwd    = 1.3,
+    col    = '#495057'
+  )
+}
+graphics::plot(
+  NA_real_,
+  NA_real_,
+  type = 'n',
+  axes = FALSE,
+  xlab = '',
+  ylab = '',
+  xlim = c(0.45, 3.55),
+  ylim = c(0.55, 2.45)
+)
+for (i in seq_len(length(steps) - 1L)) {
+  draw_arrow(i, i + 1L)
+}
+for (i in seq_along(steps)) {
+  draw_box(box_x[i], box_y[i], steps[i], i)
+}
+```
 
-Every target-season model is leak-free: it is trained only on the three immediately previous seasons. For example, the `2026-27` deployment vintage was trained on `2023-24`, `2024-25`, and `2025-26`. Hyperparameters are selected upstream with capped rolling Bayesian optimization, then the chosen parameters are refit on the full three-season window for that vintage and partition.
+Historical games use the target-season vintage when one exists. Seasons before
+the bundled range use the earliest available vintage. Seasons beyond the bundled
+range use the latest deployment vintage. That behavior keeps scoring possible
+for old and future rows while preserving rolling-model logic where exact
+vintages exist.
 
-```{r deployment-training-table}
+## Feature Families
+
+The feature set is intentionally broader than "distance plus angle." The model
+frame includes information about where the shot came from, what happened just
+before it, who took it, who was in net, and what state the game was in.
+
+```{r feature-table, echo = FALSE}
+feature_table <- data.frame(
+  family = c(
+    'Shot geometry',
+    'Shot location bins',
+    'Previous-event movement',
+    'Rush and rebound context',
+    'Game state',
+    'Strength state',
+    'Shooter and goalie biometrics',
+    'Shift timing',
+    'Shootout counters'
+  ),
+  examples = c(
+    'x/y, normalized x/y, distance, angle',
+    'slot, net-front, point, flank, perimeter indicators',
+    'delta seconds, delta x/y, delta distance, delta angle',
+    'isRush, isRebound, createdRebound, previous event type',
+    'score differential, cumulative shots/Fenwick/Corsi',
+    'skater counts, manpower differential, empty-net flags',
+    'height, weight, handedness where available',
+    'seconds elapsed/remaining in shift for on-ice players',
+    'attempt order for one-on-one partitions'
+  ),
+  stringsAsFactors = FALSE
+)
+make_table(
+  feature_table,
+  caption = 'Feature families used by the bundled xG models.'
+)
+```
+
+Not every partition uses every feature in the same way, and not every row has
+every upstream field. The preprocessing bundle is responsible for converting the
+available public schema into the exact numeric matrix the booster expects.
+
+## Training Windows
+
+Each completed target-season vintage is trained only on earlier seasons. For a
+target season, the training window is the three immediately previous seasons.
+That keeps the evaluation leak-free: the model never trains on the season it is
+being evaluated against.
+
+```{r training-table, echo = FALSE}
+training_table <- data.frame(
+  target_vintage = c('2013-14', '2018-19', '2023-24', '2026-27 deployment'),
+  training_window = c(
+    'Earliest bundled historical window',
+    '2015-16, 2016-17, 2017-18',
+    '2020-21, 2021-22, 2022-23',
+    '2023-24, 2024-25, 2025-26'
+  ),
+  note = c(
+    'Uses the earliest supported vintage behavior.',
+    'Example completed rolling vintage.',
+    'Example modern completed rolling vintage.',
+    'Latest deployment model used for future/default scoring.'
+  ),
+  stringsAsFactors = FALSE
+)
+make_table(
+  training_table,
+  caption = 'Examples of rolling training windows.'
+)
+```
+
+## Deployment Vintage Size
+
+The latest deployment vintage is trained on a large three-season sample, but the
+six partitions differ dramatically in size and base goal rate.
+
+```{r deployment-training-table, echo = FALSE}
 deployment_training <- data.frame(
-  partition = c("sd", "ev", "pp", "sh", "en", "ps"),
-  train_seasons = rep("2023-24, 2024-25, 2025-26", 6),
+  partition = c('sd', 'ev', 'pp', 'sh', 'en', 'ps'),
+  train_seasons = rep('2023-24, 2024-25, 2025-26', 6),
   rows = c(283688, 7654, 59254, 8186, 2891, 2027),
   goals = c(16881, 813, 5678, 595, 1596, 645),
   goal_rate = c(0.0595, 0.1062, 0.0958, 0.0727, 0.5521, 0.3182),
@@ -73,51 +252,26 @@ deployment_training <- data.frame(
 )
 make_table(
   deployment_training,
-  caption = "Training volume for the shipped 2026-27 deployment vintage.",
+  caption = 'Training volume for the shipped 2026-27 deployment vintage.',
   digits = 4
 )
 ```
 
-## Runtime Features
+This is why the partitions exist. Empty-net attempts and penalty shots are not
+rare versions of ordinary five-on-five shots; they are different scoring
+problems with different base rates.
 
-The runtime scorer starts from the current public play-by-play schema. When needed, it adds the same context used by the training pipeline:
+## Completed-Season Evaluation
 
-```r
-pbp <- nhlscraper::gc_pbps(season) |>
-  nhlscraper::add_shift_times(nhlscraper::shift_charts(season)) |>
-  nhlscraper::add_deltas() |>
-  nhlscraper::add_shooter_biometrics() |>
-  nhlscraper::add_goalie_biometrics()
-```
+Completed-season evaluation currently covers target seasons from `2013-14`
+through `2025-26`.
 
-The XGBoost models use more than shot location. They include normalized shot geometry, slot and net-front flags, event-to-event movement, rebound and rush flags, previous-event descriptors, score state, shot/Fenwick/Corsi context, skater counts, strength state, shooter and goalie biometrics, shift-timing summaries, and shootout counters for `ps`.
-
-The package stores the preprocessing contract alongside the boosters: numeric medians, categorical levels, dummy-column maps, and feature order. That matters because XGBoost requires the runtime matrix to match training exactly.
-
-## Runtime Path
-
-For each shot, `calculate_expected_goals()` follows this path:
-
-1. Validate that the play-by-play uses the current public schema.
-2. Add missing context columns where the package can derive them.
-3. Build the model frame for shot events.
-4. Select the target-season vintage from `gameId`.
-5. Partition each shot into `sd`, `ev`, `pp`, `sh`, `en`, or `ps`.
-6. Bake the frozen preprocessing matrix for that vintage and partition.
-7. Score the row with the bundled XGBoost booster and return `xG`.
-
-The legacy `model` argument remains accepted for compatibility, but it is ignored.
-
-## Evaluation
-
-Historical target-season evaluation covers `2013-14` through `2025-26`. Across those completed seasons, ROC AUC ranges from `0.7685` to `0.7945`, and calibration ratio ranges from `0.9626` to `1.0332`.
-
-```{r season-table}
+```{r season-results, echo = FALSE}
 season_results <- data.frame(
   season = c(
-    "2013-14", "2014-15", "2015-16", "2016-17", "2017-18",
-    "2018-19", "2019-20", "2020-21", "2021-22", "2022-23",
-    "2023-24", "2024-25", "2025-26"
+    '2013-14', '2014-15', '2015-16', '2016-17', '2017-18',
+    '2018-19', '2019-20', '2020-21', '2021-22', '2022-23',
+    '2023-24', '2024-25', '2025-26'
   ),
   rows = c(
     112051, 110922, 110263, 111708, 120543, 118438, 105028,
@@ -131,10 +285,6 @@ season_results <- data.frame(
     0.0665, 0.0664, 0.0669, 0.0666, 0.0664, 0.0674, 0.0694,
     0.0690, 0.0730, 0.0764, 0.0720, 0.0693, 0.0761
   ),
-  log_loss = c(
-    0.2084, 0.2095, 0.2070, 0.2091, 0.2124, 0.2165, 0.2183,
-    0.2184, 0.2235, 0.2276, 0.2221, 0.2192, 0.2197
-  ),
   roc_auc = c(
     0.7868, 0.7807, 0.7814, 0.7767, 0.7793, 0.7790, 0.7791,
     0.7843, 0.7756, 0.7685, 0.7737, 0.7812, 0.7945
@@ -142,34 +292,80 @@ season_results <- data.frame(
   calibration_ratio = c(
     1.0065, 1.0011, 0.9876, 0.9918, 1.0224, 1.0328, 1.0093,
     1.0332, 1.0012, 0.9626, 0.9899, 1.0309, 0.9669
-  )
+  ),
+  stringsAsFactors = FALSE
 )
 make_table(
   season_results,
-  caption = "Completed-season xG evaluation by target season.",
+  caption = 'Completed-season xG evaluation by target season.',
   digits = 4
 )
 ```
 
-The latest completed target season is `2025-26`. Its partition-level results show the expected pattern: standard 5v5 carries the largest and most stable sample, special-teams models remain useful, empty-net attempts behave like their own scoring environment, and shootout/penalty-shot attempts are noisier.
-
-```{r latest-partition-table}
-latest_partition_results <- data.frame(
-  partition = c("sd", "ev", "pp", "sh", "en", "ps"),
-  rows = c(92973, 2719, 19915, 2632, 1055, 835),
-  goal_rate = c(0.0610, 0.0982, 0.0951, 0.0707, 0.5185, 0.3234),
-  xg_rate = c(0.0615, 0.1051, 0.1032, 0.0786, 0.5662, 0.3323),
-  log_loss = c(0.1935, 0.3036, 0.2962, 0.1949, 0.6035, 0.6301),
-  roc_auc = c(0.8004, 0.7112, 0.6748, 0.8589, 0.7532, 0.5439),
-  calibration_ratio = c(0.9925, 0.9339, 0.9211, 0.8988, 0.9158, 0.9731)
+```{r evaluation-plot, echo = FALSE, fig.cap = 'Observed goal rate and xG rate by completed target season.'}
+old_par <- graphics::par(no.readonly = TRUE)
+graphics::par(mar = c(7, 4, 3, 1))
+graphics::plot(
+  seq_len(nrow(season_results)),
+  season_results[['goal_rate']],
+  type = 'b',
+  pch = 19,
+  lwd = 2,
+  col = '#1d3557',
+  xaxt = 'n',
+  ylim = range(c(season_results[['goal_rate']], season_results[['xg_rate']])),
+  xlab = '',
+  ylab = 'Rate'
 )
-make_table(
-  latest_partition_results,
-  caption = "Latest completed-season (`2025-26`) results by partition.",
-  digits = 4
+graphics::lines(
+  seq_len(nrow(season_results)),
+  season_results[['xg_rate']],
+  type = 'b',
+  pch = 17,
+  lwd = 2,
+  col = '#e63946'
 )
+graphics::axis(
+  side = 1,
+  at = seq_len(nrow(season_results)),
+  labels = season_results[['season']],
+  las = 2,
+  cex.axis = 0.75
+)
+graphics::mtext('Target Season', side = 1, line = 5)
+graphics::legend(
+  'topleft',
+  legend = c('Observed goal rate', 'Average xG'),
+  col = c('#1d3557', '#e63946'),
+  pch = c(19, 17),
+  lwd = 2,
+  bty = 'n'
+)
+graphics::par(old_par)
 ```
 
-## Practical Takeaways
+Across completed seasons, ROC AUC ranges from `0.7685` to `0.7945`, and the
+calibration ratio ranges from `0.9626` to `1.0332`. Those values are not a
+promise that every game-level sum will be exact. They are a check that, across
+large seasonal samples, the model stays close to observed scoring rates while
+preserving useful ranking power.
 
-`nhlscraper` no longer exposes xG as a menu of model versions. The package ships one coherent xG system made of rolling season vintages and six game-state partitions. For users, the interface stays simple: call `calculate_expected_goals()` on current-schema play-by-play data and read the returned `xG` column. Internally, the scorer now uses the same training contract as the upstream XGBoost models.
+## Caveats
+
+Use xG as an estimate of chance quality, not as a perfect replay of intent. The
+model sees public event and tracking-derived context. It does not see every
+screen, pre-shot pass, goalie sightline, defensive stick, shooter injury, or
+tactical instruction. The best use is comparative:
+
+- Which team created more dangerous attempts?
+- Which period changed the game?
+- Which players produced the best looks?
+- Did a club win by shot volume, shot quality, or finishing?
+
+## Key Takeaway
+
+`calculate_expected_goals()` is intentionally simple at the user level and more
+careful under the hood. Give it a current-schema play-by-play, and it routes
+each shot through a rolling season vintage, a game-state partition, a frozen
+preprocessing recipe, and a bundled XGBoost booster. The returned `xG` column is
+therefore easy to use, but it is not a black box stapled onto raw NHL data.

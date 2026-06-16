@@ -1,3 +1,5 @@
+# ----- Deprecated Functions ----- #
+
 #' Access the real-time ESPN injury reports
 #' 
 #' `get_espn_injuries()` is deprecated. Use [espn_injuries()] instead.

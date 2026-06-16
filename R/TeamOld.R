@@ -1,3 +1,5 @@
+# ----- Deprecated Functions ----- #
+
 #' Access all the teams
 #' 
 #' `get_teams()` is deprecated. Use [teams()] instead.

@@ -1,3 +1,5 @@
+# ----- Deprecated Functions ----- #
+
 #' Access the ESPN coaches for a season
 #' 
 #' `get_espn_coaches()` is defunct. Use [coaches()] instead.

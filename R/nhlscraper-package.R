@@ -55,4 +55,5 @@
 #' @name nhlscraper
 #' @aliases nhlscraper-package
 #' @useDynLib nhlscraper, .registration = TRUE
+
 "_PACKAGE"

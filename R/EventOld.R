@@ -1,3 +1,5 @@
+# ----- Deprecated Functions ----- #
+
 #' Access all the penalty shots
 #' 
 #' `ps()` is deprecated. Use [penalty_shots()] instead.

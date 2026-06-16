@@ -1,3 +1,5 @@
+# ----- Deprecated Functions ----- #
+
 #' Access all the ESPN teams for a season
 #' 
 #' `get_espn_teams()` is defunct. Use [espn_teams()] instead.

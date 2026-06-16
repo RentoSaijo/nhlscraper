@@ -16,6 +16,7 @@
 #' @param play_by_play data.frame of play-by-play(s) using the current public schema returned by [gc_play_by_play()], [gc_play_by_plays()], [wsc_play_by_play()], or [wsc_play_by_plays()]
 #' @returns data.frame with one row per event (play) and added columns: `eventIdPrev`, `secondsElapsedInSequence`, `dSecondsElapsedInSequence`, `dXCoord`, `dYCoord`, `dXCoordNorm`, `dYCoordNorm`, `dDistance`, `dAngle`, `dXCoordPerSecond`, `dYCoordPerSecond`, `dXCoordNormPerSecond`, `dYCoordNormPerSecond`, `dDistancePerSecond`, `dAnglePerSecond`
 #' @export
+
 add_deltas <- function(play_by_play) {
   delta_ctx <- .compute_pbp_deltas(play_by_play)
   out <- .apply_pbp_delta_columns(play_by_play, delta_ctx)
@@ -31,6 +32,7 @@ add_deltas <- function(play_by_play) {
 #' @param n integer row count
 #' @returns named list of empty delta vectors
 #' @keywords internal
+
 .empty_pbp_delta_context <- function(n) {
   list(
     eventIdPrev = rep(NA_integer_, n),
@@ -58,6 +60,7 @@ add_deltas <- function(play_by_play) {
 #'
 #' @returns character vector of public delta column names
 #' @keywords internal
+
 .pbp_delta_public_cols <- function() {
   c(
     'eventIdPrev',
@@ -86,6 +89,7 @@ add_deltas <- function(play_by_play) {
 #' @inheritParams add_deltas
 #' @returns named list containing delta context vectors
 #' @keywords internal
+
 .compute_pbp_deltas_in_r <- function(play_by_play) {
   n <- nrow(play_by_play)
   out <- .empty_pbp_delta_context(n)
@@ -210,6 +214,7 @@ add_deltas <- function(play_by_play) {
 #' @inheritParams add_deltas
 #' @returns named list containing delta context vectors
 #' @keywords internal
+
 .compute_pbp_deltas <- function(play_by_play) {
   .require_public_pbp_columns(
     play_by_play,
@@ -262,6 +267,7 @@ add_deltas <- function(play_by_play) {
 #' @param delta_ctx named list returned by `.compute_pbp_deltas()`
 #' @returns data.frame with public delta columns inserted
 #' @keywords internal
+
 .apply_pbp_delta_columns <- function(play_by_play, delta_ctx) {
   public_cols <- .pbp_delta_public_cols()
   legacy_cols <- c(
@@ -418,6 +424,7 @@ add_goalie_biometrics <- function(play_by_play) {
 #'   pbp <- add_shift_times(pbp, sc)
 #' }
 #' @export
+
 add_shift_times <- function(play_by_play, shift_chart) {
   slot_count <- .on_ice_skater_slots(play_by_play = play_by_play)
   required_skater_cols <- unique(c(
@@ -557,6 +564,7 @@ add_shift_times <- function(play_by_play, shift_chart) {
 #' @param play_by_play data.frame play-by-play object
 #' @returns data.frame with current public column names where available
 #' @keywords internal
+
 .normalize_public_pbp_names <- function(play_by_play) {
   if (!is.data.frame(play_by_play) || !ncol(play_by_play)) {
     return(play_by_play)
@@ -593,6 +601,7 @@ add_shift_times <- function(play_by_play, shift_chart) {
 #'
 #' @returns integer vector of game IDs
 #' @keywords internal
+
 .covid_round_robin_shootout_game_ids <- function() {
   c(2019030002L, 2019030016L)
 }
@@ -606,6 +615,7 @@ add_shift_times <- function(play_by_play, shift_chart) {
 #' @param game_type_id integer game type IDs
 #' @returns logical vector
 #' @keywords internal
+
 .public_pbp_is_shootout_eligible <- function(game_id, game_type_id) {
   (!is.na(game_type_id) & game_type_id == 2L) |
     (!is.na(game_id) & game_id %in% .covid_round_robin_shootout_game_ids())
@@ -621,6 +631,7 @@ add_shift_times <- function(play_by_play, shift_chart) {
 #' @param period integer period numbers
 #' @returns integer vector of legal period lengths in seconds
 #' @keywords internal
+
 .public_pbp_legal_period_seconds <- function(game_id, game_type_id, period) {
   shootout_eligible <- .public_pbp_is_shootout_eligible(game_id, game_type_id)
   out <- ifelse(
@@ -647,6 +658,7 @@ add_shift_times <- function(play_by_play, shift_chart) {
 #' @param seconds integer/numeric vector of elapsed seconds
 #' @returns character vector
 #' @keywords internal
+
 .format_elapsed_clock <- function(seconds) {
   seconds <- suppressWarnings(as.integer(seconds))
   out <- rep(NA_character_, length(seconds))
@@ -716,6 +728,7 @@ add_shift_times <- function(play_by_play, shift_chart) {
 #' @inheritParams .strip_game_id
 #' @returns data.frame with repaired clocks and ordering where feasible
 #' @keywords internal
+
 .repair_public_pbp_sequence <- function(play_by_play) {
   n <- nrow(play_by_play)
   if (
@@ -1004,6 +1017,7 @@ add_shift_times <- function(play_by_play, shift_chart) {
 #' @param symbol native symbol name
 #' @returns logical scalar indicating whether the symbol is available
 #' @keywords internal
+
 .ensure_local_native_symbol <- function(symbol) {
   if (is.loaded(symbol)) {
     return(TRUE)
@@ -1046,6 +1060,7 @@ add_shift_times <- function(play_by_play, shift_chart) {
 #' @param fn_name calling function name used in the error message
 #' @returns `NULL`, invisibly, or an error if required columns are missing
 #' @keywords internal
+
 .require_public_pbp_columns <- function(play_by_play, cols, fn_name) {
   missing_cols <- setdiff(cols, names(play_by_play))
   if (length(missing_cols)) {
@@ -1070,6 +1085,7 @@ add_shift_times <- function(play_by_play, shift_chart) {
 #' @param fn_name calling function name used in the error message
 #' @returns `NULL`, invisibly, or an error if required columns are missing
 #' @keywords internal
+
 .require_shift_chart_columns <- function(shift_chart, cols, fn_name) {
   missing_cols <- setdiff(cols, names(shift_chart))
   if (length(missing_cols)) {
@@ -1092,6 +1108,7 @@ add_shift_times <- function(play_by_play, shift_chart) {
 #' @param types character vector of event type keys to keep
 #' @returns logical vector
 #' @keywords internal
+
 .shot_event_mask <- function(play_by_play, types) {
   n <- nrow(play_by_play)
   if (!n) return(logical(0))
@@ -1111,6 +1128,7 @@ add_shift_times <- function(play_by_play, shift_chart) {
 #' @param play_by_play data.frame play-by-play object
 #' @returns named list of logical and integer shot-context vectors
 #' @keywords internal
+
 .compute_shot_context <- function(play_by_play) {
   n <- nrow(play_by_play)
   if (!n) {
@@ -1340,6 +1358,7 @@ add_shift_times <- function(play_by_play, shift_chart) {
 #' @param play_by_play data.frame play-by-play object
 #' @returns data.frame with shot context columns added
 #' @keywords internal
+
 .apply_shot_context <- function(play_by_play) {
   ctx <- .compute_shot_context(play_by_play)
   if (is.null(ctx$homeShots) && !is.null(ctx$homeSOG)) {
@@ -1424,6 +1443,7 @@ add_shift_times <- function(play_by_play, shift_chart) {
 #' @param situation_code vector of raw situation codes
 #' @returns character vector of parse-ready situation codes
 #' @keywords internal
+
 .normalize_situation_code_for_parse <- function(situation_code) {
   sc_chr <- as.character(situation_code)
   ok <- !is.na(sc_chr) & grepl('^[0-9]{1,4}$', sc_chr)
@@ -1443,6 +1463,7 @@ add_shift_times <- function(play_by_play, shift_chart) {
 #' @param situation_code vector of raw situation codes
 #' @returns integer matrix with away/home goalie and skater counts
 #' @keywords internal
+
 .parse_situation_code_components <- function(situation_code) {
   sc_chr <- .normalize_situation_code_for_parse(situation_code)
   cbind(
@@ -1460,6 +1481,7 @@ add_shift_times <- function(play_by_play, shift_chart) {
 #' @inheritParams .strip_game_id
 #' @returns data.frame with one row per event (play) and added columns: `homeIsEmptyNet`, `awayIsEmptyNet`, `homeSkaterCount`, `awaySkaterCount`, `isEmptyNetFor`, `isEmptyNetAgainst`, `skaterCountFor`, `skaterCountAgainst`, `manDifferential`, and `strengthState`
 #' @keywords internal
+
 .strip_situation_code <- function(play_by_play) {
   sc_raw <- if ('situationCode' %in% names(play_by_play)) {
     play_by_play$situationCode
@@ -1716,6 +1738,7 @@ add_shift_times <- function(play_by_play, shift_chart) {
 #' @param name column name to extract
 #' @returns integer vector
 #' @keywords internal
+
 .on_ice_int_col <- function(df, name) {
   if (name %in% names(df)) as.integer(df[[name]]) else rep(NA_integer_, nrow(df))
 }
@@ -1732,6 +1755,7 @@ add_shift_times <- function(play_by_play, shift_chart) {
 #'   caller
 #' @returns character vector of column names
 #' @keywords internal
+
 .on_ice_timing_scalar_column_names <- function(
   metric_suffix,
   play_by_play = NULL,
@@ -1763,6 +1787,7 @@ add_shift_times <- function(play_by_play, shift_chart) {
 #' @param shift_data data.frame shift chart data
 #' @returns filtered and sorted shift data.frame
 #' @keywords internal
+
 .sort_shift_chart_for_timing <- function(shift_data) {
   if (!('periodNumber' %in% names(shift_data)) && 'period' %in% names(shift_data)) {
     shift_data$periodNumber <- shift_data$period
@@ -1798,6 +1823,7 @@ add_shift_times <- function(play_by_play, shift_chart) {
 #' @param shift_data data.frame shift chart data
 #' @returns list containing home and away timing matrices
 #' @keywords internal
+
 .compute_on_ice_shift_timing_in_r <- function(play_by_play, shift_data) {
   n <- nrow(play_by_play)
   slot_count <- .on_ice_skater_slots(play_by_play = play_by_play)
@@ -1915,6 +1941,7 @@ add_shift_times <- function(play_by_play, shift_chart) {
 #' @param shift_data data.frame shift chart data
 #' @returns list containing home and away timing matrices
 #' @keywords internal
+
 .compute_on_ice_shift_timing_matrices <- function(play_by_play, shift_data) {
   shift_data <- .sort_shift_chart_for_timing(shift_data)
   if (
@@ -1964,6 +1991,7 @@ add_shift_times <- function(play_by_play, shift_chart) {
 #' @param metric_suffix scalar timing suffix
 #' @returns data.frame with timing columns assigned
 #' @keywords internal
+
 .assign_on_ice_shift_metric <- function(
   play_by_play,
   home_matrix,
@@ -2015,6 +2043,7 @@ add_shift_times <- function(play_by_play, shift_chart) {
 #' @param shift_data optional shift chart data.frame
 #' @returns data.frame with scalar on-ice timing columns added
 #' @keywords internal
+
 .add_on_ice_shift_timing_context <- function(
   play_by_play,
   game,

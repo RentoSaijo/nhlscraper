@@ -213,6 +213,7 @@ goalie_edge_five_versus_five <- function(
 
 #' @rdname goalie_edge_five_versus_five
 #' @export
+
 goalie_edge_5_vs_5 <- function(
   player    = 8476945,
   season    = 'now', 
