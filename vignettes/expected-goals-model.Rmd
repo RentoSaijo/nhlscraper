@@ -20,17 +20,19 @@ make_table <- function(x, caption, digits = 3) {
 
 ## Overview
 
-Expected goals, or xG, is an attempt to answer a simple question more carefully than the box score can: *how likely was this shot to become a goal?* A long point wrister through traffic, a rebound from the top of the crease, a backdoor one-timer, and an empty-net clear all count as shot attempts, but they are not equally dangerous. xG tries to put those attempts on the same probability scale. That broad idea is familiar. The harder part is building a model that is useful inside a package. `nhlscraper` has to do more than fit well in a notebook. It has to run on public play-by-play columns, stay light on runtime dependencies, and score rows quickly enough to be practical inside analysis and plotting helpers. That is why the current package model is not a heavy gradient-boosting system. It is a partitioned ridge logistic regression rebuild that can be scored with base-R math once the preprocessing rules and coefficients are frozen. This article explains the model in the order that matters most for package users: what it is trying to estimate, how the shot space is partitioned, what data it was trained on, what information it uses, how the ridge architecture works at runtime, and what the current evaluation results look like.
+Expected goals, or xG, estimates the probability that a shot becomes a goal. `nhlscraper` now ships rolling XGBoost xG models trained outside the package in the companion model repository and bundled for package runtime scoring. The package does not train models locally. It prepares public play-by-play rows, routes each shot to the appropriate season vintage and game-state partition, bakes the frozen preprocessing matrix, and asks the bundled XGBoost booster for a probability.
 
-## One Model, Six Situations
+The shipped bundle contains six models for every target season from `2013-14` through the `2026-27` deployment vintage. Historical games use their matching target-season vintage when available. Seasons before the bundled range use the earliest vintage, and seasons after the bundled range use the latest deployment vintage.
 
-The first thing to understand is that `nhlscraper` no longer treats xG as a menu of version numbers. There is one built-in xG system, but that system is really six separate ridge models applied to six mutually exclusive game states. Those partitions are:
+## Six Situations
+
+Each vintage is split into six mutually exclusive shot environments:
 
 ```{r partition-table}
 partition_table <- data.frame(
   partition = c("sd", "ev", "pp", "sh", "en", "ps"),
   meaning = c(
-    "Regulation 5v5 without empty nets",
+    "Regulation 5v5 without empty nets, plus fallback rows",
     "Other even-strength states outside standard 5v5",
     "Shooting team has a skater advantage",
     "Shooting team is short-handed",
@@ -41,11 +43,11 @@ partition_table <- data.frame(
 )
 make_table(
   partition_table,
-  caption = "The six shot partitions used by nhlscraper's xG model."
+  caption = "The six shot partitions used by nhlscraper's xG models."
 )
 ```
 
-That split is not cosmetic. It reflects the fact that a 5v5 wrist shot, a 4v4 rush chance, a power-play seam pass, and an empty-net try do not live in the same statistical environment. The package therefore partitions the shot first and only then applies the relevant ridge model. In package terms, the decision rules are explicit:
+The scorer applies these rules in order:
 
 1. Penalty-shot and shootout-style states (`1010` and `0101`) go to `ps`.
 2. Empty-net-against shots go to `en`.
@@ -54,11 +56,31 @@ That split is not cosmetic. It reflects the fact that a 5v5 wrist shot, a 4v4 ru
 5. Skater-advantage shots go to `pp`.
 6. Skater-disadvantage shots go to `sh`.
 
-That matters analytically too. When someone says "the xG model," what the package is actually doing is choosing among six different coefficient sets that were trained on six different shot environments.
+That split matters because a 5v5 point shot, a 4v4 rush, a power-play one-timer, an empty-net attempt, and a shootout attempt are different statistical problems.
 
-## Training Data
+## Training Design
 
-The ridge rebuild was trained on the current public `nhlscraper` play-by-play schema rather than on a private one-off table. That decision keeps the runtime implementation honest, because the package scorer has to reproduce the same feature engineering from columns that package users can actually obtain. The training window covers the `2023-24` and `2024-25` seasons. The preparation pipeline starts from full play-by-play data, then adds the context needed for shot-quality modeling:
+Every target-season model is leak-free: it is trained only on the three immediately previous seasons. For example, the `2026-27` deployment vintage was trained on `2023-24`, `2024-25`, and `2025-26`. Hyperparameters are selected upstream with capped rolling Bayesian optimization, then the chosen parameters are refit on the full three-season window for that vintage and partition.
+
+```{r deployment-training-table}
+deployment_training <- data.frame(
+  partition = c("sd", "ev", "pp", "sh", "en", "ps"),
+  train_seasons = rep("2023-24, 2024-25, 2025-26", 6),
+  rows = c(283688, 7654, 59254, 8186, 2891, 2027),
+  goals = c(16881, 813, 5678, 595, 1596, 645),
+  goal_rate = c(0.0595, 0.1062, 0.0958, 0.0727, 0.5521, 0.3182),
+  stringsAsFactors = FALSE
+)
+make_table(
+  deployment_training,
+  caption = "Training volume for the shipped 2026-27 deployment vintage.",
+  digits = 4
+)
+```
+
+## Runtime Features
+
+The runtime scorer starts from the current public play-by-play schema. When needed, it adds the same context used by the training pipeline:
 
 ```r
 pbp <- nhlscraper::gc_pbps(season) |>
@@ -68,142 +90,86 @@ pbp <- nhlscraper::gc_pbps(season) |>
   nhlscraper::add_goalie_biometrics()
 ```
 
-That pipeline matters because the model is not just a location model. It depends on event-to-event movement, score and attempt context, previous-event information, shift burden, and player biometrics. The package scorer therefore mirrors the same preparation steps before it scores a row. The training volumes are also uneven across partitions, which is exactly what you would expect from NHL data. Standard 5v5 dominates the sample, while empty-net and shootout situations are much smaller.
+The XGBoost models use more than shot location. They include normalized shot geometry, slot and net-front flags, event-to-event movement, rebound and rush flags, previous-event descriptors, score state, shot/Fenwick/Corsi context, skater counts, strength state, shooter and goalie biometrics, shift-timing summaries, and shootout counters for `ps`.
 
-```{r train-table}
-train_summary <- data.frame(
+The package stores the preprocessing contract alongside the boosters: numeric medians, categorical levels, dummy-column maps, and feature order. That matters because XGBoost requires the runtime matrix to match training exactly.
+
+## Runtime Path
+
+For each shot, `calculate_expected_goals()` follows this path:
+
+1. Validate that the play-by-play uses the current public schema.
+2. Add missing context columns where the package can derive them.
+3. Build the model frame for shot events.
+4. Select the target-season vintage from `gameId`.
+5. Partition each shot into `sd`, `ev`, `pp`, `sh`, `en`, or `ps`.
+6. Bake the frozen preprocessing matrix for that vintage and partition.
+7. Score the row with the bundled XGBoost booster and return `xG`.
+
+The legacy `model` argument remains accepted for compatibility, but it is ignored.
+
+## Evaluation
+
+Historical target-season evaluation covers `2013-14` through `2025-26`. Across those completed seasons, ROC AUC ranges from `0.7685` to `0.7945`, and calibration ratio ranges from `0.9626` to `1.0332`.
+
+```{r season-table}
+season_results <- data.frame(
+  season = c(
+    "2013-14", "2014-15", "2015-16", "2016-17", "2017-18",
+    "2018-19", "2019-20", "2020-21", "2021-22", "2022-23",
+    "2023-24", "2024-25", "2025-26"
+  ),
+  rows = c(
+    112051, 110922, 110263, 111708, 120543, 118438, 105028,
+    79111, 122341, 122701, 123126, 120445, 120129
+  ),
+  goal_rate = c(
+    0.0670, 0.0665, 0.0660, 0.0660, 0.0679, 0.0697, 0.0701,
+    0.0712, 0.0730, 0.0736, 0.0712, 0.0714, 0.0736
+  ),
+  xg_rate = c(
+    0.0665, 0.0664, 0.0669, 0.0666, 0.0664, 0.0674, 0.0694,
+    0.0690, 0.0730, 0.0764, 0.0720, 0.0693, 0.0761
+  ),
+  log_loss = c(
+    0.2084, 0.2095, 0.2070, 0.2091, 0.2124, 0.2165, 0.2183,
+    0.2184, 0.2235, 0.2276, 0.2221, 0.2192, 0.2197
+  ),
+  roc_auc = c(
+    0.7868, 0.7807, 0.7814, 0.7767, 0.7793, 0.7790, 0.7791,
+    0.7843, 0.7756, 0.7685, 0.7737, 0.7812, 0.7945
+  ),
+  calibration_ratio = c(
+    1.0065, 1.0011, 0.9876, 0.9918, 1.0224, 1.0328, 1.0093,
+    1.0332, 1.0012, 0.9626, 0.9899, 1.0309, 0.9669
+  )
+)
+make_table(
+  season_results,
+  caption = "Completed-season xG evaluation by target season.",
+  digits = 4
+)
+```
+
+The latest completed target season is `2025-26`. Its partition-level results show the expected pattern: standard 5v5 carries the largest and most stable sample, special-teams models remain useful, empty-net attempts behave like their own scoring environment, and shootout/penalty-shot attempts are noisier.
+
+```{r latest-partition-table}
+latest_partition_results <- data.frame(
   partition = c("sd", "ev", "pp", "sh", "en", "ps"),
-  games = c(2798, 1280, 2793, 2241, 1245, 230),
-  rows = c(188930, 4907, 38903, 5539, 1828, 1188),
-  goal_rate = c(0.0593, 0.1113, 0.0973, 0.0738, 0.5739, 0.3157)
+  rows = c(92973, 2719, 19915, 2632, 1055, 835),
+  goal_rate = c(0.0610, 0.0982, 0.0951, 0.0707, 0.5185, 0.3234),
+  xg_rate = c(0.0615, 0.1051, 0.1032, 0.0786, 0.5662, 0.3323),
+  log_loss = c(0.1935, 0.3036, 0.2962, 0.1949, 0.6035, 0.6301),
+  roc_auc = c(0.8004, 0.7112, 0.6748, 0.8589, 0.7532, 0.5439),
+  calibration_ratio = c(0.9925, 0.9339, 0.9211, 0.8988, 0.9158, 0.9731)
 )
 make_table(
-  train_summary,
-  caption = "Training sample size and goal rate by partition.",
+  latest_partition_results,
+  caption = "Latest completed-season (`2025-26`) results by partition.",
   digits = 4
 )
 ```
-
-That table explains why the package should not promise identical stability across every state. The `sd` model gets to learn from a very large 5v5 sample. The `ps` model does not.
-
-## What the Model Uses
-
-The package model is rich, but the inputs fall into a few intuitive families.
-
-### Shot Geometry
-
-Every partition starts with the spatial basics: normalized x and y coordinates, shot distance, and shot angle. Those remain the backbone of the model because location still carries a large share of shot-quality signal.
-
-### Event-to-Event Movement
-
-`nhlscraper` also tracks how the puck and shot location moved relative to the prior event. That includes raw and per-second deltas in normalized x, normalized y, distance, angle, and sequence time. These movement features help separate a static outside shot from a chance that developed through rapid lateral or downhill movement.
-
-### Game Context
-
-The ridge models also see state variables such as period, overtime, score differential, shots/Fenwick/Corsi context, skater counts, and strength state. Those features help the model understand whether a shot happened in a settled 5v5 environment, a special-teams sequence, a tied game late, or a tilted score state after a long run of pressure.
-
-### Chance Descriptors
-
-Some features are deliberately interpretable hockey flags rather than generic numerics:
-
-- `isBehindNet`
-- `crossedRoyalRoad`
-- `isRebound`
-- `isRush`
-- previous-event context through `typeDescKeyPrev`
-
-Those features capture patterns that hockey analysts already describe in words, but the model still estimates their value from data rather than imposing it by hand.
-
-### Player and Shift Context
-
-The package model also includes shooter and goalie biometrics plus shift-timing features. That means the scorer can distinguish not only *where* a shot came from, but also something about *who* took it, *who* faced it, and how taxed the skaters were when it happened.
-
-This is the main reason the runtime scorer now tries to add shift-time context before scoring when those columns are missing. The ridge model was trained with that information, so the package should use it when it can.
-
-## Why Ridge Logistic Regression
-
-The architectural choice is straightforward: ridge logistic regression is the compromise that best fits package reality. It offers three practical advantages:
-
-1. The model is still expressive once the feature engineering is rich.
-2. The fitted scorer can be frozen into coefficients plus preprocessing constants.
-3. The runtime package code does not need `glmnet`, `tidymodels`, or any other modeling dependency just to score a play-by-play.
-
-The price is that preprocessing matters. The package cannot stop at "here are the coefficients." It also has to preserve the training-time dummy maps, median imputations, normalization constants, and zero-variance removals. Those frozen artifacts are trained upstream in `rentosrink/models/xG/nhlscraper/` and then copied into the package; `nhlscraper` itself is only packaging and scoring them at runtime, not retraining them locally. That frozen preprocessing contract is exactly what the current package implementation now carries internally. In other words, the runtime path is:
-
-1. Engineer the same public-schema features used at training time.
-2. Partition the shot into one of six states.
-3. Apply the partition-specific preprocessing rules.
-4. Compute the linear predictor with the frozen ridge coefficients.
-5. Convert that score to a probability with the logistic link.
-
-## How It Was Trained
-
-Training used grouped cross-validation by `gameId` across the full `2023-24` and `2024-25` pool. That grouping matters because hockey shots from the same game are not independent in the way ordinary row-wise cross-validation would pretend they are. Grouped folds make the tuning step more realistic by holding out whole games together. After choosing the ridge penalty from grouped cross-validation, each partition was refit on all available rows from the training window. That means the cross-validation results are tuning diagnostics, not unseen-future proof. The future-facing claim should come from the external tests, not from the grouped CV table. For reference, the grouped-CV summary at the selected penalty looks like this:
-
-```{r cv-table}
-cv_summary <- data.frame(
-  partition = c("sd", "ev", "pp", "sh", "en", "ps"),
-  cv_log_loss = c(0.1986, 0.3314, 0.3036, 0.2211, 0.6191, 0.6241),
-  cv_roc_auc = c(0.7718, 0.6728, 0.6693, 0.7960, 0.7002, 0.5264),
-  cv_brier = c(0.0525, 0.0953, 0.0852, 0.0628, 0.2161, 0.2163)
-)
-
-make_table(
-  cv_summary,
-  caption = "Grouped cross-validation diagnostics at the selected ridge penalty.",
-  digits = 4
-)
-```
-
-The broad reading is sensible. `sd` dominates the sample and has the steadiest large-sample behavior. `sh` discriminates well but from a much smaller base. `ps` is the least stable partition because it is both structurally different and much smaller.
-
-## External Results
-
-The more interesting question is how the model behaves away from the training fold selection step. The external evaluation script scores the saved ridge workflows on `2021-22`, `2023-24`, and `2025-26`, with `2025-26` acting as the genuine future season relative to the `2023-24` and `2024-25` training window. Overall external results:
-
-```{r overall-table}
-overall_results <- data.frame(
-  season = c("2021-22", "2023-24", "2025-26"),
-  rows = c(122341, 122180, 74169),
-  goal_rate = c(0.0730, 0.0718, 0.0744),
-  xg_rate = c(0.0757, 0.0715, 0.0779),
-  log_loss = c(0.2316, 0.2222, 0.2319),
-  roc_auc = c(0.7463, 0.7775, 0.7617),
-  calibration_ratio = c(1.0363, 0.9958, 1.0465)
-)
-make_table(
-  overall_results,
-  caption = "External evaluation summary by season.",
-  digits = 4
-)
-```
-
-The `2025-26` row is the one to focus on. It says the model remained usable on a future season, with overall calibration slightly high and ROC AUC still in a respectable range for a public-data xG model. The `2025-26` partition results tell the same story in more detail:
-
-```{r future-partition-table}
-future_partition_results <- data.frame(
-  partition = c("sd", "ev", "pp", "sh", "en", "ps"),
-  rows = c(57157, 1750, 12489, 1610, 604, 559),
-  log_loss = c(0.2056, 0.3109, 0.3045, 0.2198, 0.5959, 0.6336),
-  roc_auc = c(0.7615, 0.7021, 0.6517, 0.7844, 0.7400, 0.5131),
-  calibration_ratio = c(1.0324, 1.1482, 1.0818, 1.1837, 1.0115, 0.9623)
-)
-make_table(
-  future_partition_results,
-  caption = "Future-season (`2025-26`) external results by partition.",
-  digits = 4
-)
-```
-
-That table is a good reminder that xG should be interpreted with the structure of the game state in mind. The 5v5 `sd` model is the workhorse. Empty-net scoring behaves like its own world. Shootout scoring is much noisier. None of that is a flaw in the package implementation. It is the underlying data-generating process telling you that some states are more predictable and better sampled than others.
 
 ## Practical Takeaways
 
-If you want the short version of what changed in the package, it is this:
-
-1. `nhlscraper` no longer exposes xG as a set of model versions.
-2. The built-in scorer is now a single six-partition ridge system.
-3. The package mirrors the training-time preprocessing instead of relying on a runtime modeling dependency.
-4. The model uses more than shot location: it also uses movement, state, previous-event context, biometrics, and shift burden.
-
-That makes the package xG path more coherent. The implementation is lighter, the modeling contract is explicit, and the article story is easier to tell honestly: this is not one monolithic probability model pretending all shots are alike. It is a practical package-facing system that first asks *what kind of shot environment is this?* and only then asks *how likely is this attempt to score?*
+`nhlscraper` no longer exposes xG as a menu of model versions. The package ships one coherent xG system made of rolling season vintages and six game-state partitions. For users, the interface stays simple: call `calculate_expected_goals()` on current-schema play-by-play data and read the returned `xG` column. Internally, the scorer now uses the same training contract as the upstream XGBoost models.

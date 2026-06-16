@@ -1,4 +1,9 @@
 # nhlscraper 0.6.1.9000
+- `calculate_expected_goals()` now ships and scores against the completed rolling XGBoost xG model bundle from the companion NHLxG project.
+  - The scorer now routes each shot by target-season vintage and six game-state partitions, with bundled boosters and frozen preprocessing artifacts for `2013-14` through the `2026-27` deployment vintage.
+  - The previous package scorer artifacts have been removed.
+- Removed minimum-dependency package language now that runtime scoring relies on external modeling packages.
+- Rebuilt packaged contract data from the updated `data-raw/NHL_Contracts_2020s.csv`.
 
 # nhlscraper 0.6.1
 - `shift_chart()` now returns `periodNumber` instead of `period`.
@@ -18,8 +23,8 @@
   - `add_deltas()` now handles event-to-event deltas in C, returns raw and normalized X/Y deltas alongside distance and angle deltas, and properly handles same-second events and shootouts/penalty shots with `1/n` estimation.
   - `calculate_speed()` is now defunct; use `add_deltas()` instead.
 - `gc_play_by_play_raw()` and `wsc_play_by_play_raw()` now returns raw play-by-play data; note that there are heavy inconsistencies in this uncleaned data as [audited](https://github.com/RentoSaijo/nhlscraper/tree/main/other/audits/pbps).
-- `calculate_expected_goals()` now uses a fixed six-partition ridge xG model.
-  - The scorer now mirrors the training-time preprocessing with delta, biometric, previous-event, and shift-timing context where available, while keeping runtime dependencies minimal.
+- `calculate_expected_goals()` now uses a fixed six-partition xG model.
+  - The scorer now mirrors the training-time preprocessing with delta, biometric, previous-event, and shift-timing context where available.
   - The scorer now expects the current public play-by-play schema directly and no longer backfills legacy xG alias columns such as `typeDescKey`, `period`, `SOGFor`, `SOGAgainst`, and `SOGDifferential`.
   - `ig_game_shot_locations()`, `x_game_shot_locations()`, `ig_game_cumulative_expected_goals()`, and `x_game_cumulative_expected_goals()` still accept `model` for backward compatibility, but it is now ignored.
   - Check out our "Article" section on the documentation website to learn more. 

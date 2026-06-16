@@ -6,8 +6,8 @@
 \alias{nhlscraper-package}
 \title{nhlscraper: Scrape, clean, and visualize NHL data}
 \description{
-\code{nhlscraper} is a minimum-dependency R package to scrape, clean, and
-visualize NHL data via the NHL and ESPN APIs. It primarily wraps 125+
+\code{nhlscraper} is an R package to scrape, clean, and visualize NHL data via
+the NHL and ESPN APIs. It primarily wraps 125+
 \href{https://github.com/RentoSaijo/nhlscraper/wiki}{endpoints} from high-level
 multi-season summaries and award winners to low-level decisecond replays and
 bookmakers' odds, making them significantly more accessible. It also

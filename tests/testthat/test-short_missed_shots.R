@@ -66,7 +66,11 @@ test_that("calculate_expected_goals() scores short missed shots with xG", {
       shots
     },
     .xg_partition_shots = function(shots) rep("sd", nrow(shots)),
-    .xg_score_partition = function(df, spec) rep(0.2, nrow(df)),
+    .xg_load_bundle = function() list(partition_specs = "sd"),
+    .xg_select_target_season = function(game_id, bundle) {
+      rep(20262027L, length(game_id))
+    },
+    .xg_score_xgboost = function(df, model_key, bundle) rep(0.2, nrow(df)),
     .package = "nhlscraper"
   )
 

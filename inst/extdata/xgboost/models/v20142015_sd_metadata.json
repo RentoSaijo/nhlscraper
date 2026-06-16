@@ -1,0 +1,28 @@
+{
+  "vintage": "v20142015",
+  "targetSeason": 20142015,
+  "partition": "sd",
+  "trainSeasons": [20112012, 20122013, 20132014],
+  "validationSeasons": 3,
+  "validationSeasonIds": [20122013, 20132014],
+  "validationFoldCount": 2,
+  "bayesInitial": 6,
+  "bayesIter": 6,
+  "rows": 220297,
+  "goals": 12300,
+  "goalRate": 0.0558,
+  "bestParams": {
+    "trees": 560,
+    "learn_rate": 0.0499,
+    "tree_depth": 8,
+    "min_n": 40.2957,
+    "loss_reduction": 1.5193,
+    "sample_size": 0.9389,
+    "mtry": 0.468,
+    "stop_iter": 67
+  },
+  "trainingStartedAt": "2026-06-16 08:17:11.015567",
+  "trainingFinishedAt": "2026-06-16 08:20:55.532264",
+  "trainingElapsedMins": 3.7419,
+  "builtAt": "2026-06-16 08:20:55.532264"
+}

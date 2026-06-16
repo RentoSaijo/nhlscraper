@@ -13,7 +13,8 @@ Imports:
   httr2 (>= 1.2.0),
   jsonlite (>= 2.0.0),
   xml2 (>= 1.5.0),
-  arrow (>= 23.0.0)
+  arrow (>= 23.0.0),
+  xgboost (>= 3.2.0)
 Suggests:
   testthat (>= 3.0.0),
   knitr (>= 1.50.0),
