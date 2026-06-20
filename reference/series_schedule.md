@@ -1,10 +1,8 @@
 # Access the playoff schedule for a season and series
 
-`series_schedule()` retrieves the playoff schedule for a season and
-series as a `data.frame` where each row represents game and includes
-detail on game timeline state, period/clock progression, and matchup
-flow, date/season filtering windows and chronological context, and team
-identity, affiliation, and matchup-side context.
+`series_schedule()` returns the public schedule for one playoff series,
+with one row per game and normalized game, team, score/status, venue,
+and broadcast fields.
 
 ## Usage
 

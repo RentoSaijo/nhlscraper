@@ -1,6 +1,7 @@
 # Access the replays for a season
 
-`replays()` loads the replays for a given `season`.
+`replays()` downloads the stored season-level puck/player tracking
+parquet snapshot and returns one row per tracked decisecond.
 
 ## Usage
 

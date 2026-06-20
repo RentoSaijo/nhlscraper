@@ -1,39 +1,37 @@
-# Do Elite Teams Really All Play the Same Way?
+# Do Elite Teams Build Offense the Same Way?
 
-## Overview
+## Question
 
-It is easy to talk about “elite teams” as if they all converge on the
-same style. In practice, they usually do not. Some clubs choke the game
-with zone time, some win with speed, some pile up dangerous volume, and
-some lean on shot power and finishing talent. That is exactly the kind
-of question the NHL EDGE wrappers in `nhlscraper` are built for. This
-example asks: **if we compare several top 2024-25 teams, do they
-actually arrive at offense the same way?** We will use
-[`nhlscraper::team_edge_leaders()`](https://rentosaijo.github.io/nhlscraper/reference/team_edge_leaders.md)
-to set the league-wide scene, then a set of team-level EDGE endpoints to
-compare five excellent 2024-25 clubs:
+“Good team” is not a style. Some good teams bury opponents in
+offensive-zone time. Some attack with speed. Some win with interior
+volume. Some create fear from the blue line and circles because every
+hard shot can become a rebound.
 
-- `CAR` for territorial control.
-- `COL` for speed.
-- `EDM` for dangerous volume.
-- `FLA` for force and shot power.
-- `WSH` as a strong regular-season counterexample that was not built
-  around pure territorial dominance.
+The NHL EDGE wrappers let us compare those styles directly. This article
+asks:
 
-The goal is not to crown one style as best. The goal is to show how
-different contender identities become visible once tracking data is easy
-to scrape.
+> **Do several elite 2024-25 teams manufacture offense in the same way,
+> or do they have distinct tracking-data fingerprints?**
 
-## Start With League Leaders
+We will compare five strong clubs:
 
-Before focusing on the five-team comparison, it helps to see which clubs
-topped the headline EDGE categories in the 2024-25 regular season.
+- Carolina (`CAR`) as the territorial-pressure candidate.
+- Colorado (`COL`) as the pace candidate.
+- Edmonton (`EDM`) as the dangerous-volume candidate.
+- Florida (`FLA`) as the force/interior-pressure candidate.
+- Washington (`WSH`) as the counterexample that won plenty without
+  fitting every tracking stereotype.
+
+## League Leaders First
+
+Before building profiles, look at a few league-leading team EDGE
+categories.
 
 ``` r
 
-# Pull 2024-25 team EDGE leaders.
+# Pull team EDGE leaders.
 edge_leaders <- nhlscraper::team_edge_leaders(
-  season = 20242025,
+  season    = 20242025,
   game_type = 2
 )
 
@@ -70,7 +68,7 @@ leader_table <- data.frame(
 )
 make_table(
   leader_table,
-  caption = 'League-leading 2024-25 team EDGE categories.'
+  caption = 'Selected 2024-25 team EDGE leaders.'
 )
 ```
 
@@ -84,23 +82,23 @@ make_table(
 | Neutral-zone time         | DAL  | 0.187      |
 | Defensive-zone time       | CAR  | 0.355      |
 
-League-leading 2024-25 team EDGE categories. {.table}
+Selected 2024-25 team EDGE leaders. {.table}
 
-The leader board already tells an important story: one team does not own
-everything. Carolina owns territorial control, Colorado dominates speed,
-and Edmonton wins the dangerous-volume categories. That is the setup for
-a richer comparison.
+The leader table is already a warning against one-size-fits-all
+thinking. The same team does not lead every tracking category.
 
-## Build Five-Team Profiles
+## Build Team Profiles
 
-We will build the five-team comparison from targeted EDGE endpoints so
-the article is more resilient when one nested response comes back
-incomplete.
+We will fetch four team-level views: zone time, skating speed, shot
+speed, and shot location. A few helper functions make the article more
+resilient when a nested EDGE response is temporarily incomplete.
 
 ``` r
 
-# Define selected teams and robust fetch helpers.
+# Define team set.
 team_ids <- c(CAR = 12, COL = 21, EDM = 22, FLA = 13, WSH = 15)
+
+# Define robust helpers.
 fetch_with_retry <- function(fetch_fun, validator, tries = 3) {
   for (i in seq_len(tries)) {
     value <- try(fetch_fun(), silent = TRUE)
@@ -114,66 +112,72 @@ fetch_with_retry <- function(fetch_fun, validator, tries = 3) {
 valid_df <- function(x, required_cols) {
   is.data.frame(x) && nrow(x) > 0 && all(required_cols %in% names(x))
 }
-extract_name <- function(first_name, last_name) {
-  if (is.na(first_name) || is.na(last_name) || first_name == '' || last_name == '') {
+safe_num <- function(x) {
+  out <- suppressWarnings(as.numeric(x))
+  ifelse(is.na(out), NA_real_, out)
+}
+safe_name <- function(first_name, last_name) {
+  if (
+    is.na(first_name) ||
+      is.na(last_name) ||
+      first_name == '' ||
+      last_name == ''
+  ) {
     return(NA_character_)
   }
   paste(first_name, last_name)
 }
+safe_summary_num <- function(x, path) {
+  value <- tryCatch({
+    for (nm in path) x <- x[[nm]]
+    x
+  }, error = function(e) NA_real_)
+  safe_num(value)
+}
+
+# Build one profile row.
 build_team_profile <- function(team_code, team_id) {
   team_summary <- fetch_with_retry(
     function() nhlscraper::team_edge_summary(
-      team = team_id,
-      season = 20242025,
+      team      = team_id,
+      season    = 20242025,
       game_type = 2
     ),
-    function(x) is.list(x) && 'team' %in% names(x)
+    function(x) is.list(x)
   )
   zone_rows <- fetch_with_retry(
     function() nhlscraper::team_edge_zone_time(
-      team = team_id,
-      season = 20242025,
+      team      = team_id,
+      season    = 20242025,
       game_type = 2,
-      category = 'details'
+      category  = 'details'
     ),
     function(x) valid_df(x, c('strengthCode', 'offensiveZonePctg'))
   )
   skating_rows <- fetch_with_retry(
     function() nhlscraper::team_edge_skating_speed(
-      team = team_id,
-      season = 20242025,
+      team      = team_id,
+      season    = 20242025,
       game_type = 2,
-      category = 'details'
+      category  = 'details'
     ),
-    function(x) {
-      valid_df(x, c(
-        'positionCode',
-        'maxSkatingSpeed.imperial',
-        'burstsOver22.value'
-      ))
-    }
+    function(x) valid_df(x, c('positionCode', 'maxSkatingSpeed.imperial', 'burstsOver22.value'))
   )
   shot_speed_rows <- fetch_with_retry(
     function() nhlscraper::team_edge_shot_speed(
-      team = team_id,
-      season = 20242025,
+      team      = team_id,
+      season    = 20242025,
       game_type = 2,
-      category = 'details'
+      category  = 'details'
     ),
-    function(x) {
-      valid_df(x, c(
-        'position',
-        'topShotSpeed.imperial',
-        'shotAttempts90To100.value'
-      ))
-    }
+    function(x) valid_df(x, c('position', 'topShotSpeed.imperial', 'shotAttempts90To100.value'))
   )
   shot_location_rows <- fetch_with_retry(
     function() nhlscraper::team_edge_shot_location(
-      team = team_id,
-      season = 20242025,
+      team      = team_id,
+      season    = 20242025,
       game_type = 2,
-      category = 'details'
+      category  = 'details'
     ),
     function(x) valid_df(x, c('area', 'sog'))
   )
@@ -185,17 +189,17 @@ build_team_profile <- function(team_code, team_id) {
   ) {
     return(data.frame(
       team = team_code,
-      points = if (is.null(team_summary)) NA_real_ else as.numeric(team_summary[['team']][['points']]),
-      wins = if (is.null(team_summary)) NA_real_ else as.numeric(team_summary[['team']][['wins']]),
+      points = safe_summary_num(team_summary, c('team', 'points')),
+      wins = safe_summary_num(team_summary, c('team', 'wins')),
       offensiveZonePctg = NA_real_,
       maxSkatingSpeed = NA_real_,
       burstsOver22 = NA_real_,
       shotAttemptsOver90 = NA_real_,
       hardestShot = NA_real_,
+      trackedShots = NA_real_,
       interiorShare = NA_real_,
       circleShare = NA_real_,
       pointShare = NA_real_,
-      otherShare = NA_real_,
       fastestSkater = NA_character_,
       hardestShooter = NA_character_,
       stringsAsFactors = FALSE
@@ -226,38 +230,41 @@ build_team_profile <- function(team_code, team_id) {
     'Outside R',
     'Beyond Red Line'
   )
-  total_shots <- sum(shot_location_rows[['sog']])
+  total_shots <- sum(shot_location_rows[['sog']], na.rm = TRUE)
   data.frame(
     team = team_code,
-    points = if (is.null(team_summary)) NA_real_ else as.numeric(team_summary[['team']][['points']]),
-    wins = if (is.null(team_summary)) NA_real_ else as.numeric(team_summary[['team']][['wins']]),
-    offensiveZonePctg = as.numeric(zone_row[['offensiveZonePctg']][1]),
-    maxSkatingSpeed = as.numeric(skating_row[['maxSkatingSpeed.imperial']][1]),
-    burstsOver22 = as.numeric(skating_row[['burstsOver22.value']][1]),
-    shotAttemptsOver90 = as.numeric(
-      shot_speed_row[['shotAttemptsOver100.value']][1] +
-        shot_speed_row[['shotAttempts90To100.value']][1]
+    points = safe_summary_num(team_summary, c('team', 'points')),
+    wins = safe_summary_num(team_summary, c('team', 'wins')),
+    offensiveZonePctg = safe_num(zone_row[['offensiveZonePctg']][1]),
+    maxSkatingSpeed = safe_num(skating_row[['maxSkatingSpeed.imperial']][1]),
+    burstsOver22 = safe_num(skating_row[['burstsOver22.value']][1]),
+    shotAttemptsOver90 = sum(
+      safe_num(shot_speed_row[['shotAttemptsOver100.value']][1]),
+      safe_num(shot_speed_row[['shotAttempts90To100.value']][1]),
+      na.rm = TRUE
     ),
-    hardestShot = as.numeric(shot_speed_row[['topShotSpeed.imperial']][1]),
-    interiorShare = sum(shot_location_rows[['sog']][interior_mask]) / total_shots,
-    circleShare = sum(shot_location_rows[['sog']][circle_mask]) / total_shots,
-    pointShare = sum(shot_location_rows[['sog']][point_mask]) / total_shots,
-    otherShare = sum(shot_location_rows[['sog']][!(interior_mask | circle_mask | point_mask)]) / total_shots,
-    fastestSkater = extract_name(
+    hardestShot = safe_num(shot_speed_row[['topShotSpeed.imperial']][1]),
+    trackedShots = total_shots,
+    interiorShare = sum(shot_location_rows[['sog']][interior_mask], na.rm = TRUE) / total_shots,
+    circleShare = sum(shot_location_rows[['sog']][circle_mask], na.rm = TRUE) / total_shots,
+    pointShare = sum(shot_location_rows[['sog']][point_mask], na.rm = TRUE) / total_shots,
+    fastestSkater = safe_name(
       skating_row[['maxSkatingSpeed.overlay.player.firstName.default']][1],
       skating_row[['maxSkatingSpeed.overlay.player.lastName.default']][1]
     ),
-    hardestShooter = extract_name(
+    hardestShooter = safe_name(
       shot_speed_row[['topShotSpeed.overlay.player.firstName.default']][1],
       shot_speed_row[['topShotSpeed.overlay.player.lastName.default']][1]
     ),
     stringsAsFactors = FALSE
   )
 }
+
+# Build profile table.
 team_profiles <- Map(
   build_team_profile,
   team_code = names(team_ids),
-  team_id = unname(team_ids)
+  team_id   = unname(team_ids)
 )
 team_profiles <- do.call(rbind, team_profiles)
 rownames(team_profiles) <- NULL
@@ -274,7 +281,8 @@ profile_table <- team_profiles[, c(
 )]
 make_table(
   profile_table,
-  caption = 'Five-team 2024-25 EDGE profile comparison.'
+  caption = 'Five-team 2024-25 EDGE profile comparison.',
+  digits = 3
 )
 ```
 
@@ -288,118 +296,133 @@ make_table(
 
 Five-team 2024-25 EDGE profile comparison. {.table}
 
-This table is exactly why EDGE data are fun. Carolina owns the strongest
-offensive-zone share in the group. Colorado is the speed monster.
-Edmonton is the dangerous-volume machine. Florida has the loudest
-single-shot power in the set. Washington, meanwhile, wins a lot without
-looking like the cleanest territorial team on the page. That is already
-enough to reject the idea that there is one universal blueprint for
-elite team offense.
+## Build an Archetype Scorecard
 
-## Compare Possession and Pace
-
-The fastest way to see those archetypes is to put territorial control
-beside pure pace.
+Raw metrics have different scales, so a quick within-sample rescale
+makes the profiles easier to compare. A score of `1` means best among
+these five teams; a score of `0` means lowest among these five teams.
 
 ``` r
 
-# Plot territorial control and burst volume.
-old_par <- graphics::par(no.readonly = TRUE)
-graphics::par(mfrow = c(1, 2), mar = c(5, 7, 3, 1))
-ordered_zone <- team_profiles[order(team_profiles[['offensiveZonePctg']]), ]
-graphics::barplot(
-  ordered_zone[['offensiveZonePctg']],
-  names.arg = ordered_zone[['team']],
-  horiz = TRUE,
-  las = 1,
-  col = '#2a9d8f',
-  border = NA,
-  xlab = 'Offensive-Zone Share'
+# Rescale profile metrics within sample.
+rescale01 <- function(x) {
+  rng <- range(x, na.rm = TRUE)
+  if (!all(is.finite(rng)) || diff(rng) == 0) {
+    return(rep(NA_real_, length(x)))
+  }
+  (x - rng[1]) / diff(rng)
+}
+scorecard <- data.frame(
+  team = team_profiles[['team']],
+  territory = rescale01(team_profiles[['offensiveZonePctg']]),
+  pace = rescale01(team_profiles[['burstsOver22']]),
+  shotPower = rescale01(team_profiles[['shotAttemptsOver90']]),
+  interior = rescale01(team_profiles[['interiorShare']]),
+  hardestShot = rescale01(team_profiles[['hardestShot']]),
+  stringsAsFactors = FALSE
 )
-ordered_bursts <- team_profiles[order(team_profiles[['burstsOver22']]), ]
-graphics::barplot(
-  ordered_bursts[['burstsOver22']],
-  names.arg = ordered_bursts[['team']],
-  horiz = TRUE,
-  las = 1,
-  col = '#e76f51',
-  border = NA,
-  xlab = 'Bursts Over 22 MPH'
+make_table(
+  scorecard,
+  caption = 'Within-sample EDGE archetype scores.',
+  digits = 3
 )
 ```
 
-![Territorial control and pace look different across elite 2024-25
-teams.](team-edge-archetypes_files/figure-html/pace-plot-1.png)
+| team | territory |  pace | shotPower | interior | hardestShot |
+|:-----|----------:|------:|----------:|---------:|------------:|
+| CAR  |     1.000 | 0.305 |     0.211 |    0.312 |       0.259 |
+| COL  |     0.460 | 1.000 |     0.078 |    0.000 |       0.000 |
+| EDM  |     0.523 | 0.768 |     1.000 |    1.000 |       0.081 |
+| FLA  |     0.670 | 0.000 |     0.000 |    0.258 |       1.000 |
+| WSH  |     0.000 | 0.299 |     0.656 |    0.393 |       0.170 |
 
-Territorial control and pace look different across elite 2024-25 teams.
+Within-sample EDGE archetype scores. {.table}
 
 ``` r
 
-graphics::par(old_par)
+# Plot archetype scorecard.
+score_matrix <- t(as.matrix(scorecard[, -1]))
+colnames(score_matrix) <- scorecard[['team']]
+graphics::barplot(
+  score_matrix,
+  beside = TRUE,
+  col = c('#264653', '#2a9d8f', '#e9c46a', '#f4a261', '#e76f51'),
+  ylim = c(0, 1.35),
+  ylab = 'Within-Sample Score',
+  xlab = 'Team'
+)
+graphics::legend(
+  'top',
+  legend = rownames(score_matrix),
+  fill = c('#264653', '#2a9d8f', '#e9c46a', '#f4a261', '#e76f51'),
+  bty = 'n',
+  cex = 0.75,
+  ncol = 3
+)
 ```
 
-Carolina and Colorado are both excellent teams, but they do not get
-there in the same way. Carolina’s profile screams territorial pressure.
-Colorado’s profile screams pace. Edmonton leans closer to Colorado on
-velocity, but its dangerous-volume numbers make the attack feel more
-direct and shot-driven.
+![Within-sample archetype scorecard for five
+teams.](team-edge-archetypes_files/figure-html/scorecard-plot-1.png)
 
-## Compare Shot Geography
+Within-sample archetype scorecard for five teams.
 
-The shot mix tells a second story. Some teams live at the net front.
-Others attack more often from circles and points before crashing inside.
+This is the article’s main picture. Carolina’s offense looks
+territorial. Colorado’s looks fast. Florida’s profile carries shot-power
+and interior pressure. Edmonton brings the dangerous-volume flavor.
+Washington is the useful reminder that winning teams do not have to max
+out every tracking trait.
+
+## Shot Geography
+
+Shot mix gives the scorecard some texture. Interior share is not the
+same thing as total offense; it is the shape of the tracked attempts.
 
 ``` r
 
-# Plot shot mix shares.
+# Plot shot-location mix.
 shot_mix <- t(as.matrix(team_profiles[, c(
   'interiorShare',
   'circleShare',
-  'pointShare',
-  'otherShare'
+  'pointShare'
 )]))
 colnames(shot_mix) <- team_profiles[['team']]
-rownames(shot_mix) <- c(
-  'Interior',
-  'Circles and slot',
-  'Points and perimeter',
-  'Other'
-)
+rownames(shot_mix) <- c('Interior', 'Circles / slot', 'Points / perimeter')
 graphics::barplot(
   shot_mix,
   beside = FALSE,
-  col = c('#1b4332', '#40916c', '#74c69d', '#d8f3dc'),
-  ylim = c(0, 1),
+  col = c('#1b4332', '#52b788', '#b7e4c7'),
+  ylim = c(0, 1.18),
   ylab = 'Share of Tracked Shots',
   xlab = 'Team'
 )
 graphics::legend(
-  'topright',
+  'top',
   legend = rownames(shot_mix),
-  fill = c('#1b4332', '#40916c', '#74c69d', '#d8f3dc'),
-  bty = 'n'
+  fill = c('#1b4332', '#52b788', '#b7e4c7'),
+  bty = 'n',
+  cex = 0.8,
+  horiz = TRUE
 )
 ```
 
-![Shot-geography mix for five elite 2024-25
-teams.](team-edge-archetypes_files/figure-html/shot-mix-plot-1.png)
+![Tracked shot-location mix by
+team.](team-edge-archetypes_files/figure-html/shot-mix-plot-1.png)
 
-Shot-geography mix for five elite 2024-25 teams.
+Tracked shot-location mix by team.
 
-This plot sharpens the style discussion. Edmonton and Florida push a
-larger share of tracked shots toward the interior. Carolina keeps a
-broader attack map while still controlling territory. Washington’s shot
-mix helps explain how a team can win plenty without leading the pure
-pace categories.
+The shot mix keeps the style comparison grounded. A team can be fast
+without living at the net front. A team can own territory without having
+the hardest shot profile. The categories overlap, but they do not
+collapse into one generic “good offense” number.
 
-## Put Player Names on Team Traits
+## Put Names Back on Traits
 
-Another strength of the EDGE summaries is that they keep the most
-extreme team traits connected to the players who generated them.
+Tracking data become more interesting when team traits are tied back to
+players.
 
 ``` r
 
-# Show players behind each team's most extreme speed and shot events.
+# Show players behind extreme traits.
 player_table <- team_profiles[, c(
   'team',
   'fastestSkater',
@@ -409,7 +432,7 @@ player_table <- team_profiles[, c(
 )]
 make_table(
   player_table,
-  caption = "Players behind each team's fastest burst and hardest shot."
+  caption = 'Players behind each team profile.'
 )
 ```
 
@@ -421,22 +444,22 @@ make_table(
 | FLA  | Carter Verhaeghe |          23.415 | Gustav Forsling  |      105.05 |
 | WSH  | Martin Fehérváry |          23.341 | John Carlson     |       99.55 |
 
-Players behind each team’s fastest burst and hardest shot. {.table
-style="width:100%;"}
+Players behind each team profile. {.table style="width:100%;"}
 
-That detail keeps the analysis from drifting into abstraction. A team
-style is still built by players. Colorado’s pace story lives inside
-names like Miles Wood and Cale Makar. Florida’s shot-power identity
-lives in specific shooters. The tracking layer works best when it keeps
-those levels connected.
+This is why the EDGE wrappers are useful beyond leaderboards. They let
+you move from team identity to the players who create that identity
+without leaving R.
 
 ## What We Learned
 
-Elite teams do not all play the same way. In this 2024-25 EDGE sample,
-Carolina looks like the territorial heavyweight, Colorado looks like the
-pace team, Edmonton looks like the dangerous-volume attack, and Florida
-and Washington bring their own different blends of interior pressure and
-shot power. That makes the NHL EDGE wrappers especially valuable example
-material, because they let you move from generic talk about “style” to a
-direct, scrapeable comparison of how different good teams actually
-manufacture offense.
+Elite offense is plural. Carolina can look elite through zone-time
+dominance. Colorado can look elite through pace. Florida can look elite
+through force and interior pressure. Edmonton can look elite through
+dangerous-volume traits. Washington can win enough to belong in the
+conversation while reminding us that the cleanest tracking profile is
+not the only path to results.
+
+That is the broader `nhlscraper` lesson: the NHL EDGE endpoints are not
+just novel leaderboards. They are style data. Once scraped into tables,
+they let you ask whether teams that land near each other in the
+standings actually play the same sport in the same way.

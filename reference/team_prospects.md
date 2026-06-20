@@ -1,8 +1,8 @@
 # Access the prospects for a team and position
 
-`team_prospects()` retrieves the prospects for a team and position as a
-`data.frame` where each row represents player and includes detail on
-player identity, role, handedness, and biographical profile.
+`team_prospects()` returns a team's prospect list for one position
+group, including prospect/player IDs, names, position, size, birth data,
+and prospect status fields when available.
 
 ## Usage
 

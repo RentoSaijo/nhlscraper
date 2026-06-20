@@ -1,8 +1,8 @@
 # Access the ESPN futures for a season
 
-`espn_futures()` retrieves the ESPN futures for a season as a
-`data.frame` where each row represents type and includes detail on
-betting market snapshots with side/total prices and provider variation.
+`espn_futures()` returns ESPN futures markets for one season with one
+row per future type and nested book/odds detail retained in ESPN's
+payload columns.
 
 ## Usage
 

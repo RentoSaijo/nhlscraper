@@ -1,6 +1,8 @@
-# Call the ESPN API with 429 (rate limit) error-handling
+# Call the ESPN API
 
-Call the ESPN API with 429 (rate limit) error-handling
+`espn_api()` performs a retrying request against the ESPN site or core
+API and parses the JSON response with the same flattening rules used for
+NHL API calls.
 
 ## Usage
 
@@ -12,16 +14,16 @@ espn_api(path, query = list(), type)
 
 - path:
 
-  character
+  character path relative to the selected ESPN API host
 
 - query:
 
-  list
+  named list of URL query parameters
 
 - type:
 
-  character of 'g' for general and 'c' for core
+  character of 'g' for the site API or 'c' for the core API
 
 ## Value
 
-parsed JSON (i.e., data.frame or list)
+parsed JSON object, usually a data.frame or nested list

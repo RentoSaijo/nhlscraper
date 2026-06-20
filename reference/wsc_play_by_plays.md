@@ -1,6 +1,8 @@
 # Access the World Showcase (WSC) play-by-plays for a season
 
-`wsc_play_by_plays()` loads the WSC play-by-plays for a given `season`.
+`wsc_play_by_plays()` downloads the cleaned season-level World Showcase
+parquet snapshot and pads `situationCode` to the four-character public
+format.
 
 ## Usage
 

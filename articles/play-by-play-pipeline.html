@@ -5,7 +5,7 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<title>How gc_play_by_play() and wsc_play_by_play() Work • nhlscraper</title>
+<title>How the Play-By-Play Pipeline Works • nhlscraper</title>
 <!-- favicons --><link rel="icon" type="image/png" sizes="96x96" href="../favicon-96x96.png">
 <link rel="icon" type="”image/svg+xml”" href="../favicon.svg">
 <link rel="apple-touch-icon" sizes="180x180" href="../apple-touch-icon.png">
@@ -15,7 +15,7 @@
 <link href="../deps/bootstrap-5.3.8/bootstrap.min.css" rel="stylesheet">
 <script src="../deps/bootstrap-5.3.8/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
 <link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
-<script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="How gc_play_by_play() and wsc_play_by_play() Work">
+<script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="How the Play-By-Play Pipeline Works">
 </head>
 <body>
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
@@ -81,7 +81,7 @@
 
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
-      <img src="../logo.png" class="logo" alt=""><h1>How gc_play_by_play() and wsc_play_by_play() Work</h1>
+      <img src="../logo.png" class="logo" alt=""><h1>How the Play-By-Play Pipeline Works</h1>
             
       
       <small class="dont-index">Source: <a href="https://github.com/RentoSaijo/nhlscraper/blob/main/vignettes/play-by-play-pipeline.Rmd" class="external-link"><code>vignettes/play-by-play-pipeline.Rmd</code></a></small>
@@ -91,285 +91,293 @@
     
     
 <div class="section level2">
-<h2 id="overview">Overview<a class="anchor" aria-label="anchor" href="#overview"></a>
+<h2 id="why-this-article-exists">Why This Article Exists<a class="anchor" aria-label="anchor" href="#why-this-article-exists"></a>
+</h2>
+<p>The play-by-play functions are the package’s most opinionated tools.
+They do not simply flatten an NHL endpoint and hand the result back.
+They reconcile multiple public sources, repair a few known event-order
+problems, derive a large public schema, and add event-level on-ice
+player IDs from the official HTML report.</p>
+<p>That makes <code><a href="../reference/gc_play_by_play.html">gc_play_by_play()</a></code> and
+<code><a href="../reference/wsc_play_by_play.html">wsc_play_by_play()</a></code> extremely useful, but it also means the
+output deserves a mental model. This article is that model. It is
+strictly informational: the goal is to explain what the pipeline trusts,
+what it derives, what it refuses to infer, and where
+<code><a href="../reference/shift_chart.html">shift_chart()</a></code> fits.</p>
+</div>
+<div class="section level2">
+<h2 id="two-feeds-one-public-schema">Two Feeds, One Public Schema<a class="anchor" aria-label="anchor" href="#two-feeds-one-public-schema"></a>
 </h2>
 <p><code><a href="../reference/gc_play_by_play.html">gc_play_by_play()</a></code> and <code><a href="../reference/wsc_play_by_play.html">wsc_play_by_play()</a></code>
-return the same cleaned public play-by-play schema, but they do not
-start from the same raw feed. <code><a href="../reference/gc_play_by_play.html">gc_play_by_play()</a></code> starts from
-the GameCenter play-by-play feed. <code><a href="../reference/wsc_play_by_play.html">wsc_play_by_play()</a></code> starts
-from the World Showcase feed and uses GameCenter metadata to keep the
-output aligned with the same roster, team, and HTML report context. The
-pipeline is intentionally source-aware:</p>
-<ul>
-<li>The API play-by-play is the source of truth for event order, event
-identity, and raw <code>situationCode</code>.</li>
-<li>The HTML play-by-play report is the primary source for on-ice player
-identities.</li>
-<li>
-<code><a href="../reference/shift_chart.html">shift_chart()</a></code> is not used to populate on-ice player IDs
-inside these functions. It is a separate downstream source for shift
-timing via <code><a href="../reference/add_shift_times.html">add_shift_times()</a></code>.</li>
-</ul>
-<p>This article walks through the process step by step.</p>
-</div>
-<div class="section level2">
-<h2 id="step-1-fetch-the-raw-sources-">Step 1: Fetch the raw sources.<a class="anchor" aria-label="anchor" href="#step-1-fetch-the-raw-sources-"></a>
-</h2>
-<p>For a single game, the functions fetch the raw API play-by-play plus
-the HTML play-by-play report. <code><a href="../reference/wsc_play_by_play.html">wsc_play_by_play()</a></code> also
-fetches the WSC play-by-play feed itself. Those requests are now issued
-in parallel, because network latency dominates total runtime much more
-than the in-memory cleaning steps do.</p>
+start from different event feeds, but both return a cleaned event table.
+The source split looks like this:</p>
+<table class="table">
+<caption>Public sources used by the play-by-play and shift-chart
+pipeline.</caption>
+<colgroup>
+<col width="17%">
+<col width="28%">
+<col width="53%">
+</colgroup>
+<thead><tr class="header">
+<th align="left">source</th>
+<th align="left">used_by</th>
+<th align="left">role</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td align="left">GameCenter API</td>
+<td align="left">gc_play_by_play(), game metadata for WSC</td>
+<td align="left">Authoritative event stream for GameCenter rows and
+common metadata.</td>
+</tr>
+<tr class="even">
+<td align="left">World Showcase API</td>
+<td align="left">wsc_play_by_play()</td>
+<td align="left">Alternate event stream with UTC timestamps and fewer
+clip fields.</td>
+</tr>
+<tr class="odd">
+<td align="left">HTML play-by-play report</td>
+<td align="left">gc_play_by_play(), wsc_play_by_play()</td>
+<td align="left">Primary source for event-level on-ice goalie and skater
+IDs.</td>
+</tr>
+<tr class="even">
+<td align="left">Stats shift-chart API</td>
+<td align="left">shift_chart()</td>
+<td align="left">Preferred source for player shift start/end
+clocks.</td>
+</tr>
+<tr class="odd">
+<td align="left">HTML shift reports</td>
+<td align="left">shift_chart() fallback</td>
+<td align="left">Fallback source for shift start/end clocks when stats
+API rows are missing.</td>
+</tr>
+</tbody>
+</table>
+<p>The important separation is identity versus timing. HTML play-by-play
+reports are used to recover who was on the ice for an event. Shift
+charts are used later to calculate how long those players had been on
+the ice.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">gc</span>  <span class="op">&lt;-</span> <span class="fu">nhlscraper</span><span class="fu">::</span><span class="fu"><a href="../reference/gc_play_by_play.html">gc_play_by_play</a></span><span class="op">(</span><span class="fl">2023030417</span><span class="op">)</span></span>
-<span><span class="va">wsc</span> <span class="op">&lt;-</span> <span class="fu">nhlscraper</span><span class="fu">::</span><span class="fu"><a href="../reference/wsc_play_by_play.html">wsc_play_by_play</a></span><span class="op">(</span><span class="fl">2023030417</span><span class="op">)</span></span></code></pre></div>
-<p>The HTML report is fetched for every game because it is the only
-source that consistently exposes the full on-ice player sets.</p>
+<code class="sourceCode R"><span><span class="va">pbp</span> <span class="op">&lt;-</span> <span class="fu">nhlscraper</span><span class="fu">::</span><span class="fu"><a href="../reference/gc_play_by_play.html">gc_play_by_play</a></span><span class="op">(</span><span class="fl">2023030417</span><span class="op">)</span></span>
+<span><span class="va">shifts</span> <span class="op">&lt;-</span> <span class="fu">nhlscraper</span><span class="fu">::</span><span class="fu"><a href="../reference/shift_chart.html">shift_chart</a></span><span class="op">(</span><span class="fl">2023030417</span><span class="op">)</span></span>
+<span><span class="va">pbp</span> <span class="op">&lt;-</span> <span class="fu">nhlscraper</span><span class="fu">::</span><span class="fu"><a href="../reference/add_shift_times.html">add_shift_times</a></span><span class="op">(</span><span class="va">pbp</span>, <span class="va">shifts</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
-<h2 id="step-2-standardize-the-raw-play-by-play-feed-">Step 2: Standardize the raw play-by-play feed.<a class="anchor" aria-label="anchor" href="#step-2-standardize-the-raw-play-by-play-feed-"></a>
+<h2 id="pipeline-map">Pipeline Map<a class="anchor" aria-label="anchor" href="#pipeline-map"></a>
 </h2>
-<p>Once the raw feed is downloaded, the package standardizes the columns
-before doing any enrichment. That includes:</p>
-<ul>
-<li>moving the <code>gameId</code> into the table</li>
-<li>flattening nested API fields into a consistent tabular shape</li>
-<li>renaming public-facing columns such as <code>periodNumber</code>,
-<code>eventTypeCode</code>, and <code>eventTypeDescKey</code>
-</li>
-<li>filling obvious source omissions such as missing
-<code>shootingPlayerId</code> values on goal rows when the scorer is
-known</li>
-</ul>
-<p>The aim here is to make the downstream logic operate on one internal
-structure, even when the upstream feed formats differ.</p>
+<p>The high-level flow is deliberately conservative. The API event feed
+remains the backbone. The HTML report is matched back onto that
+backbone. Derived features are added only after the event order and
+public naming are stable.</p>
+<div class="figure" style="text-align: center">
+<img src="play-by-play-pipeline_files/figure-html/pipeline-plot-1.png" class="r-plt" alt="Conceptual order of the play-by-play cleanup pipeline." width="92%"><p class="caption">
+Conceptual order of the play-by-play cleanup pipeline.
+</p>
+</div>
 </div>
 <div class="section level2">
-<h2 id="step-3-repair-obviously-impossible-event-ordering-">Step 3: Repair obviously impossible event ordering.<a class="anchor" aria-label="anchor" href="#step-3-repair-obviously-impossible-event-ordering-"></a>
+<h2 id="what-gets-repaired">What Gets Repaired<a class="anchor" aria-label="anchor" href="#what-gets-repaired"></a>
 </h2>
-<p>The API play-by-play remains authoritative, but not every upstream
-<code>sortOrder</code> is logically consistent. Before any HTML matching
-happens, the pipeline repairs clear boundary mistakes. The guiding
-principle is conservative: only fix sequences that are plainly
-impossible from the game clock and event context.</p>
-<p>Examples:</p>
-<ul>
-<li>no event can happen between <code>period-start</code> and the
-opening <code>faceoff</code>
-</li>
-<li>illogically ordered boundary faceoffs are dropped</li>
-<li>blocked shots keep the API event identity, but their directional
-perspective is normalized to the shooting team so they behave like the
-other shot events</li>
-</ul>
-<p>This matters because HTML matching becomes much more reliable once
-the API timeline itself is internally coherent.</p>
+<p>The package is not trying to rewrite the game. It fixes only issues
+that are plainly incompatible with the event clock or with the package’s
+public schema.</p>
+<table class="table">
+<caption>Conservative repairs made before public output is
+finalized.</caption>
+<colgroup>
+<col width="31%">
+<col width="68%">
+</colgroup>
+<thead><tr class="header">
+<th align="left">issue</th>
+<th align="left">action</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td align="left">Source-specific column names</td>
+<td align="left">Rename to stable public names such as periodNumber and
+eventTypeDescKey.</td>
+</tr>
+<tr class="even">
+<td align="left">Goal row without shootingPlayerId</td>
+<td align="left">Use scoringPlayerId as shootingPlayerId when the scorer
+is known.</td>
+</tr>
+<tr class="odd">
+<td align="left">Blocked-shot zone perspective</td>
+<td align="left">Normalize blocked shots to the shooting-team
+perspective.</td>
+</tr>
+<tr class="even">
+<td align="left">Impossible period-boundary order</td>
+<td align="left">Drop or repair only the small set of rows that violate
+clock boundaries.</td>
+</tr>
+<tr class="odd">
+<td align="left">Missing public output columns</td>
+<td align="left">Allocate typed NA columns so GC and WSC outputs keep
+stable schemas.</td>
+</tr>
+</tbody>
+</table>
+<p>The design goal is auditability. When something can be derived
+directly, the package derives it. When something would require a hockey
+assumption that cannot be verified from the public sources, the package
+leaves the public state alone.</p>
 </div>
 <div class="section level2">
-<h2 id="step-4-derive-the-game-state-columns-from-situationcode-">Step 4: Derive the game-state columns from
-<code>situationCode</code>.<a class="anchor" aria-label="anchor" href="#step-4-derive-the-game-state-columns-from-situationcode-"></a>
+<h2 id="situationcode-means-state-not-identity">
+<code>situationCode</code> Means State, Not Identity<a class="anchor" aria-label="anchor" href="#situationcode-means-state-not-identity"></a>
 </h2>
-<p>The raw <code>situationCode</code> is parsed into the public state
+<p>The raw <code>situationCode</code> is parsed into manpower state
 columns:</p>
 <ul>
 <li><code>homeIsEmptyNet</code></li>
 <li><code>awayIsEmptyNet</code></li>
 <li><code>homeSkaterCount</code></li>
 <li><code>awaySkaterCount</code></li>
+<li><code>isEmptyNetFor</code></li>
+<li><code>isEmptyNetAgainst</code></li>
+<li><code>skaterCountFor</code></li>
+<li><code>skaterCountAgainst</code></li>
 <li><code>manDifferential</code></li>
 <li><code>strengthState</code></li>
 </ul>
-<p>These are the public summary columns that describe the intended rules
-context of the play. The raw <code>situationCode</code> itself is kept
-in the output as-is. The HTML report can later supply a
-different-looking player identity set, but it does not rewrite these
-<code>situationCode</code>-derived state columns.</p>
+<p>Those columns describe the intended rules state of the event. They
+are not recalculated from the HTML on-ice player list. That distinction
+is important because the official HTML report can list extra skaters
+around line changes, delayed penalties, bench situations, or reporting
+quirks.</p>
 </div>
 <div class="section level2">
-<h2 id="step-5-add-coordinate-and-shot-context-enrichment-">Step 5: Add coordinate and shot-context enrichment.<a class="anchor" aria-label="anchor" href="#step-5-add-coordinate-and-shot-context-enrichment-"></a>
+<h2 id="html-matching">HTML Matching<a class="anchor" aria-label="anchor" href="#html-matching"></a>
 </h2>
-<p>After the structural cleanup, the play-by-play gets the geometric and
-shot-context features used elsewhere in the package. That includes:</p>
-<ul>
-<li>normalized rink coordinates</li>
-<li>shot distance</li>
-<li>shot angle</li>
-<li>rush flags</li>
-<li>rebound flags</li>
-<li>rebound-creation flags</li>
-<li>cumulative goal, shot, Fenwick, and Corsi counts from the event
-stream</li>
-</ul>
-<p>These features are derived from the cleaned API event log, not from
-the HTML report.</p>
+<p>The HTML report is not joined to the API feed only by clock. A single
+game can have multiple events in the same second, and a clock-only join
+would create bad matches. The package builds matching signatures
+from:</p>
+<table class="table">
+<caption>Signals used when matching HTML rows back to API
+events.</caption>
+<colgroup>
+<col width="27%">
+<col width="72%">
+</colgroup>
+<thead><tr class="header">
+<th align="left">feature</th>
+<th align="left">why_it_matters</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td align="left">Period</td>
+<td align="left">Prevents same-clock matches across periods.</td>
+</tr>
+<tr class="even">
+<td align="left">Elapsed seconds</td>
+<td align="left">Keeps the match near the official event time.</td>
+</tr>
+<tr class="odd">
+<td align="left">Event type</td>
+<td align="left">Separates faceoffs, shots, hits, penalties, goals, and
+stoppages.</td>
+</tr>
+<tr class="even">
+<td align="left">Event-owning team</td>
+<td align="left">Prevents same-time events by opposite teams from
+swapping.</td>
+</tr>
+<tr class="odd">
+<td align="left">Primary actor</td>
+<td align="left">Anchors the event to the shooter, scorer, hitter,
+winner, or penalized player.</td>
+</tr>
+<tr class="even">
+<td align="left">Secondary and tertiary actors</td>
+<td align="left">Disambiguates goals, blocks, faceoffs, hits, and
+penalties.</td>
+</tr>
+<tr class="odd">
+<td align="left">Local event order</td>
+<td align="left">Avoids backwards matches in duplicate clusters.</td>
+</tr>
+</tbody>
+</table>
+<p>Once a match is accepted, the HTML on-ice IDs are written into scalar
+columns: <code>homeGoaliePlayerId</code>,
+<code>awayGoaliePlayerId</code>, <code>homeSkater1PlayerId</code>,
+<code>awaySkater1PlayerId</code>, <code>skater1PlayerIdFor</code>,
+<code>skater1PlayerIdAgainst</code>, and so on. Five skater slots are
+guaranteed; additional <code>skater6</code>, <code>skater7</code>, and
+later slots appear only when a game requires them.</p>
 </div>
 <div class="section level2">
-<h2 id="step-6-parse-the-html-play-by-play-report-">Step 6: Parse the HTML play-by-play report.<a class="anchor" aria-label="anchor" href="#step-6-parse-the-html-play-by-play-report-"></a>
+<h2 id="one-on-one-rows-are-special">One-On-One Rows Are Special<a class="anchor" aria-label="anchor" href="#one-on-one-rows-are-special"></a>
 </h2>
-<p>The HTML report is parsed into a second event table that
-contains:</p>
-<ul>
-<li>the event type</li>
-<li>the period and clock</li>
-<li>team ownership context</li>
-<li>key player signatures used for matching</li>
-<li>the home and away on-ice player sets</li>
-</ul>
-<p>The parser also handles the known HTML-side quirks, including the
-fact that the HTML report records blocked shots from the defending
-perspective while the package standardizes blocked shots from the
-shooting perspective.</p>
+<p>Penalty shots and shootouts are not ordinary strength states. Rows
+such as <code>0101</code> and <code>1010</code> are constrained to the
+shooter and defending goalie. Even if the HTML report shows extra
+players, the public on-ice identity columns are kept to the one-on-one
+context because that is the play being recorded.</p>
 </div>
 <div class="section level2">
-<h2 id="step-7-match-html-rows-back-to-api-rows-">Step 7: Match HTML rows back to API rows.<a class="anchor" aria-label="anchor" href="#step-7-match-html-rows-back-to-api-rows-"></a>
+<h2 id="delayed-penalty-backfill">Delayed-Penalty Backfill<a class="anchor" aria-label="anchor" href="#delayed-penalty-backfill"></a>
 </h2>
-<p>The package does not join HTML to API rows only on time, and it does
-not require the HTML on-ice counts to agree with
-<code>situationCode</code>. It builds a richer event signature on both
-sides and uses that to align the reports. The matching logic uses
-combinations of:</p>
-<ul>
-<li>period</li>
-<li>elapsed seconds</li>
-<li>event type</li>
-<li>event-owning team</li>
-<li>primary event actors</li>
-<li>supporting player signatures</li>
-</ul>
-<p>This step is where the earlier ordering repair pays off. The cleaner
-the API event sequence is, the safer the HTML match becomes.</p>
+<p>Some delayed-penalty marker rows do not appear as ordinary event rows
+in the HTML report. When that happens, the package can backfill on-ice
+IDs from the nearest prior compatible event in the same period. The
+backfill is allowed only when the state signature is unchanged, the time
+gap is tiny, and the prior row already has a populated on-ice set. This
+is intentionally narrow.</p>
 </div>
 <div class="section level2">
-<h2 id="step-8-keep-state-context-separate-from-player-identity-">Step 8: Keep state context separate from player identity.<a class="anchor" aria-label="anchor" href="#step-8-keep-state-context-separate-from-player-identity-"></a>
+<h2 id="gc-and-wsc-differences">GC and WSC Differences<a class="anchor" aria-label="anchor" href="#gc-and-wsc-differences"></a>
 </h2>
-<p>A matched HTML row is used for the on-ice player ID columns. It is
-not used to recalculate the <code>situationCode</code>-derived context
-columns. This keeps two related but different concepts separate:</p>
-<ul>
-<li>
-<code>situationCode</code>, <code>homeSkaterCount</code>,
-<code>awaySkaterCount</code>, empty-net flags,
-<code>manDifferential</code>, and <code>strengthState</code> describe
-the intended rules state.</li>
-<li>
-<code>homeGoaliePlayerId</code>, <code>awayGoaliePlayerId</code>,
-and the skater ID columns describe the players listed in the HTML report
-for that event.</li>
-</ul>
-<p>The HTML report can list more or fewer players than the intended
-state implies. That can happen around line changes, unusual bench
-situations, or report noise. The package preserves the listed identities
-without letting those counts change the intended state context.</p>
+<p>The public schemas are aligned, but not identical. GameCenter rows
+include GameCenter clip fields such as <code>highlightClip</code>,
+<code>discreteClip</code>, and <code>pptReplayUrl</code>. WSC rows
+include <code>utc</code> immediately after game elapsed seconds and omit
+the GC-only clip fields. That source-specific difference is intentional
+because the source feeds do not expose exactly the same metadata.</p>
 </div>
 <div class="section level2">
-<h2 id="step-9-keep-one-on-one-rows-constrained-">Step 9: Keep one-on-one rows constrained.<a class="anchor" aria-label="anchor" href="#step-9-keep-one-on-one-rows-constrained-"></a>
+<h2 id="practical-checklist">Practical Checklist<a class="anchor" aria-label="anchor" href="#practical-checklist"></a>
 </h2>
-<p>Penalty-shot and shootout rows with <code>0101</code> or
-<code>1010</code> are different. Those states are genuinely one-on-one
-plays. Even if the HTML report lists extra players, the package records
-only the shooter and the defending goalie for those rows.</p>
-</div>
-<div class="section level2">
-<h2 id="step-10-populate-on-ice-player-ids-">Step 10: Populate on-ice player IDs.<a class="anchor" aria-label="anchor" href="#step-10-populate-on-ice-player-ids-"></a>
-</h2>
-<p>Once a matched HTML row is accepted, the package writes the scalar
-on-ice player ID columns into the play-by-play row. That includes:</p>
-<ul>
-<li>
-<code>homeGoaliePlayerId</code> and
-<code>awayGoaliePlayerId</code>
-</li>
-<li>
-<code>homeSkater1PlayerId</code> through
-<code>homeSkater5PlayerId</code> by default, with extra skater slots
-added only when the game needs them</li>
-<li>
-<code>awaySkater1PlayerId</code> through
-<code>awaySkater5PlayerId</code> by default, with extra skater slots
-added only when the game needs them</li>
-<li>the corresponding <code>...For</code> and <code>...Against</code>
-columns</li>
-</ul>
-<p>The base schema tracks the standard five skaters. If the HTML report
-shows an extra attacker or any other overflow row, the package expands
-dynamically to <code>skater6</code>, <code>skater7</code>,
-<code>skater8</code>, and so on instead of truncating the row.</p>
-</div>
-<div class="section level2">
-<h2 id="step-11-handle-one-on-one-and-delayed-penalty-edge-cases-">Step 11: Handle one-on-one and delayed-penalty edge cases.<a class="anchor" aria-label="anchor" href="#step-11-handle-one-on-one-and-delayed-penalty-edge-cases-"></a>
-</h2>
-<p>Two edge-case families need their own rules.</p>
-<div class="section level3">
-<h3 id="shootouts-and-penalty-shots">Shootouts and penalty shots<a class="anchor" aria-label="anchor" href="#shootouts-and-penalty-shots"></a>
-</h3>
-<p>Rows with one-on-one states such as <code>0101</code> and
-<code>1010</code> populate only the shooter and the defending goalie.
-Extra HTML-listed players on those rows are treated as report noise
-because the play is supposed to be one shooter against one goalie.</p>
-</div>
-<div class="section level3">
-<h3 id="unmatched-delayed-penalty-rows">Unmatched delayed-penalty rows<a class="anchor" aria-label="anchor" href="#unmatched-delayed-penalty-rows"></a>
-</h3>
-<p>Some supported delayed-penalty rows do not appear in the HTML report
-at all. In those cases, the package can backfill the on-ice player IDs
-from the nearest prior populated row in the same period when:</p>
-<ul>
-<li>the state signature is unchanged</li>
-<li>the time gap is very small</li>
-<li>the prior row already has a compatible populated on-ice set</li>
-</ul>
-<p>This fixes cases where the HTML report skips the delayed-penalty
-marker but clearly preserves the same live-play skaters immediately
-before the whistle.</p>
-</div>
-</div>
-<div class="section level2">
-<h2 id="step-12-finalize-the-public-schema-">Step 12: Finalize the public schema.<a class="anchor" aria-label="anchor" href="#step-12-finalize-the-public-schema-"></a>
-</h2>
-<p>The last step is to expose the cleaned public-facing schema and hide
-the internal staging details. Both <code><a href="../reference/gc_play_by_play.html">gc_play_by_play()</a></code> and
-<code><a href="../reference/wsc_play_by_play.html">wsc_play_by_play()</a></code> return one row per event with:</p>
-<ul>
-<li>the same core event columns</li>
-<li>the same strength and on-ice player ID columns</li>
-<li>the same cumulative game-state columns</li>
-</ul>
-<p>The only intentional difference is source-specific metadata such as
-<code>utc</code> in the WSC output and GameCenter clip fields in the GC
-output.</p>
-</div>
-<div class="section level2">
-<h2 id="how-shift_chart-fits-in">How <code>shift_chart()</code> Fits In<a class="anchor" aria-label="anchor" href="#how-shift_chart-fits-in"></a>
-</h2>
-<p><code><a href="../reference/shift_chart.html">shift_chart()</a></code> is related, but it solves a different
-problem. It provides shift windows, not event identities. In practical
-use:</p>
+<p>Use this sequence when building event-level analysis:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">pbp</span>    <span class="op">&lt;-</span> <span class="fu">nhlscraper</span><span class="fu">::</span><span class="fu"><a href="../reference/gc_play_by_play.html">gc_play_by_play</a></span><span class="op">(</span><span class="fl">2023030417</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="co"># Load cleaned event stream.</span></span>
+<span><span class="va">pbp</span> <span class="op">&lt;-</span> <span class="fu">nhlscraper</span><span class="fu">::</span><span class="fu"><a href="../reference/gc_play_by_play.html">gc_play_by_play</a></span><span class="op">(</span><span class="fl">2023030417</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Add shift timing when fatigue or shift length matters.</span></span>
 <span><span class="va">shifts</span> <span class="op">&lt;-</span> <span class="fu">nhlscraper</span><span class="fu">::</span><span class="fu"><a href="../reference/shift_chart.html">shift_chart</a></span><span class="op">(</span><span class="fl">2023030417</span><span class="op">)</span></span>
-<span><span class="va">pbp_with_shift_times</span> <span class="op">&lt;-</span> <span class="fu">nhlscraper</span><span class="fu">::</span><span class="fu"><a href="../reference/add_shift_times.html">add_shift_times</a></span><span class="op">(</span><span class="va">pbp</span>, <span class="va">shifts</span><span class="op">)</span></span></code></pre></div>
-<p>This is why the package keeps the HTML play-by-play report as the
-primary on-ice identity source inside <code><a href="../reference/gc_play_by_play.html">gc_play_by_play()</a></code> and
-<code><a href="../reference/wsc_play_by_play.html">wsc_play_by_play()</a></code>, while <code><a href="../reference/shift_chart.html">shift_chart()</a></code>
-remains the right tool for shift-timing context after the play-by-play
-is already built.</p>
+<span><span class="va">pbp</span> <span class="op">&lt;-</span> <span class="fu">nhlscraper</span><span class="fu">::</span><span class="fu"><a href="../reference/add_shift_times.html">add_shift_times</a></span><span class="op">(</span><span class="va">pbp</span>, <span class="va">shifts</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Add movement context when previous-event geometry matters.</span></span>
+<span><span class="va">pbp</span> <span class="op">&lt;-</span> <span class="fu">nhlscraper</span><span class="fu">::</span><span class="fu"><a href="../reference/add_deltas.html">add_deltas</a></span><span class="op">(</span><span class="va">pbp</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Score shots when chance quality matters.</span></span>
+<span><span class="va">pbp</span> <span class="op">&lt;-</span> <span class="fu">nhlscraper</span><span class="fu">::</span><span class="fu"><a href="../reference/calculate_expected_goals.html">calculate_expected_goals</a></span><span class="op">(</span><span class="va">pbp</span><span class="op">)</span></span></code></pre></div>
+<p>Use <code><a href="../reference/gc_play_by_play_raw.html">gc_play_by_play_raw()</a></code> or
+<code><a href="../reference/wsc_play_by_play_raw.html">wsc_play_by_play_raw()</a></code> only when you want to inspect the
+upstream feed itself. Use <code><a href="../reference/gc_play_by_play.html">gc_play_by_play()</a></code> or
+<code><a href="../reference/wsc_play_by_play.html">wsc_play_by_play()</a></code> when you want the package’s public
+analysis schema.</p>
 </div>
 <div class="section level2">
-<h2 id="practical-summary">Practical Summary<a class="anchor" aria-label="anchor" href="#practical-summary"></a>
+<h2 id="key-takeaway">Key Takeaway<a class="anchor" aria-label="anchor" href="#key-takeaway"></a>
 </h2>
-<p>If you want the shortest mental model, it is this:</p>
+<p>The pipeline keeps three ideas separate:</p>
 <ul>
-<li>start from the API play-by-play</li>
-<li>repair only the event-order and strength mistakes that are logically
-supportable</li>
-<li>use <code>situationCode</code> for intended manpower context</li>
-<li>use the HTML report to recover listed on-ice player identities</li>
-<li>keep one-on-one rows to shooter plus goalie</li>
-<li>use <code><a href="../reference/shift_chart.html">shift_chart()</a></code> later when you need shift timing
-rather than event-level player identity</li>
+<li>API events define what happened and in what order.</li>
+<li>
+<code>situationCode</code> defines the intended manpower state.</li>
+<li>HTML reports define who was listed on the ice.</li>
 </ul>
-<p>That balance is what lets the final play-by-play stay both practical
-and auditable.</p>
+<p>That separation is what makes the output practical for research while
+still being honest about where each piece of information came from.</p>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside>

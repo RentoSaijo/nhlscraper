@@ -1,8 +1,8 @@
 # Access all the team logos
 
-`team_logos()` retrieves all the team logos as a `data.frame` where each
-row represents logo and includes detail on team identity, affiliation,
-and matchup-side context.
+`team_logos()` returns records-site logo metadata with one row per team
+logo interval, including team ID, logo URL fields, and start/end season
+IDs.
 
 ## Usage
 

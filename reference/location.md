@@ -1,8 +1,8 @@
 # Access the location for a zip code
 
-`location()` retrieves the location for a zip code as a `data.frame`
-where each row represents team and includes detail on venue/location
-geography and regional metadata.
+`location()` returns the NHL postal lookup result for one ZIP/postal
+code, including country, region, and related local-market fields when
+available.
 
 ## Usage
 

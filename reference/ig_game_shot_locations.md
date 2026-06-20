@@ -1,7 +1,11 @@
-# Save an Instagram (IG) share-able shot-location plot for a game
+# Save an Instagram (IG) shareable shot-location plot for a game
 
-`ig_game_shot_locations()` saves an IG share-able shot location plot for
-a given `game`.
+`ig_game_shot_locations()` fetches one GameCenter play-by-play, scores
+its shot attempts with
+[`calculate_expected_goals()`](https://rentosaijo.github.io/nhlscraper/reference/calculate_expected_goals.md),
+filters to the selected home or away team, and renders a
+1080-by-566-style PNG shot map. Points are jittered for readability,
+shaped by event result, and colored by capped xG.
 
 ## Usage
 
@@ -34,19 +38,20 @@ ig_game_shot_locs(game = 2023030417, team = "home", model = NULL)
 
 - save:
 
-  logical only FALSE for tests
+  logical; use `FALSE` to draw on the active graphics device during
+  tests or custom workflows
 
 ## Value
 
-`NULL`
+`NULL`, invisibly
 
 ## Examples
 
 ``` r
 # May take >5s, so skip.
 ig_game_shot_locations(
-  game  = 2023030417, 
-  team  = 'H', 
+  game  = 2023030417,
+  team  = 'H',
   save  = FALSE
 )
 ```

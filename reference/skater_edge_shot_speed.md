@@ -1,9 +1,7 @@
 # Access the EDGE shot speed statistics for a skater, season, game type, and category
 
-`skater_edge_shot_speed()` retrieves the EDGE shot speed statistics for
-a skater, season, game type, and category as a nested `list` that
-separates summary and detail blocks for NHL EDGE style tracking outputs
-and relative-performance context.
+`skater_edge_shot_speed()` returns a skater's EDGE shot-speed detail
+list, or hardest-shot rows when `category = 'hardest'`.
 
 ## Usage
 

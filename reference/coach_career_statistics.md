@@ -1,9 +1,7 @@
 # Access the career statistics for all the coaches
 
-`coach_career_statistics()` retrieves the career statistics for all the
-coaches as a `data.frame` where each row represents coach and includes
-detail on ranking movement, points pace, and division/conference
-position signals.
+`coach_career_statistics()` returns regular-season plus playoff career
+coaching records with one row per coach.
 
 ## Usage
 

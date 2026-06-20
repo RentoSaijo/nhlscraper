@@ -1,34 +1,31 @@
-# Do Bigger Skaters Hold Their Scoring in the Playoffs?
+# Do Bigger Skaters Translate Better in the Playoffs?
 
-## Overview
+## Question
 
-Playoff hockey has a stubborn stereotype: once the checking tightens,
-skill supposedly gives way to mass. Bigger skaters are assumed to
-survive the grind better, win more net-front battles, and keep producing
-when series turn meaner. That story sounds plausible, but it bundles two
-different ideas together. The first is about **absolute playoff
-scoring**: do heavier skaters actually score more? The second is about
-**playoff translation**: even if bigger players do not outscore smaller
-ones outright, do they lose *less* offense when the regular season gives
-way to the postseason? This example tackles both questions at once. We
-combine
-[`nhlscraper::skater_playoff_statistics()`](https://rentosaijo.github.io/nhlscraper/reference/skater_playoff_statistics.md),
-[`nhlscraper::skater_statistics()`](https://rentosaijo.github.io/nhlscraper/reference/skater_statistics.md),
+The playoff-size cliché is familiar: heavier teams supposedly survive
+the grind, win the walls, and keep scoring when space disappears. But
+that claim hides two different questions:
+
+- Do bigger skaters score more in the playoffs?
+- Do bigger skaters lose less scoring when regular-season hockey becomes
+  playoff hockey?
+
+This article uses
+[`skater_playoff_statistics()`](https://rentosaijo.github.io/nhlscraper/reference/skater_playoff_statistics.md),
+[`skater_statistics()`](https://rentosaijo.github.io/nhlscraper/reference/skater_statistics.md),
 and
-[`nhlscraper::players()`](https://rentosaijo.github.io/nhlscraper/reference/players.md)
-to build a salary-cap-era sample of skaters with meaningful
-regular-season and playoff workloads. From there, we compare
-regular-season points per game, playoff points per game, and the gap
-between them.
+[`players()`](https://rentosaijo.github.io/nhlscraper/reference/players.md)
+to compare career regular-season scoring, career playoff scoring, and
+the gap between the two.
 
-## Build Analysis Table
+## Build Player Table
 
-We want one row per player with career regular-season scoring, career
-playoff scoring, and basic biometrics.
+We keep salary-cap-era skaters with meaningful regular-season and
+playoff samples. The unit is one player, not one season.
 
 ``` r
 
-# Pull playoff, regular-season, and biometric records.
+# Pull scoring and bio tables.
 playoff_stats <- nhlscraper::skater_playoff_statistics()
 career_stats <- nhlscraper::skater_statistics()[, c(
   'playerId',
@@ -43,7 +40,7 @@ player_bios <- nhlscraper::players()[, c(
   'weight'
 )]
 
-# Join player-level tables.
+# Join player-level sources.
 analysis_tbl <- merge(
   playoff_stats,
   career_stats,
@@ -57,16 +54,18 @@ analysis_tbl <- merge(
   all.x = TRUE
 )
 
-# Keep salary-cap skaters with meaningful samples.
+# Keep modern skaters with stable samples.
 analysis_tbl <- analysis_tbl[
   !is.na(analysis_tbl[['height']]) &
     !is.na(analysis_tbl[['weight']]) &
     analysis_tbl[['firstSeasonForGameType']] >= 20052006 &
     analysis_tbl[['gamesPlayed']] >= 20 &
     analysis_tbl[['rsGamesPlayed']] >= 200,
+  ,
+  drop = FALSE
 ]
 
-# Fill missing names and compute scoring rates.
+# Fill names and compute rates.
 analysis_tbl[['playerFullName']] <- ifelse(
   is.na(analysis_tbl[['playerFullName']]) |
     analysis_tbl[['playerFullName']] == '',
@@ -89,74 +88,31 @@ analysis_tbl[['positionBucket']] <- ifelse(
 )
 
 # Assign equal-count weight quartiles.
-weight_share <- rank(
+weight_rank <- rank(
   analysis_tbl[['weight']],
   ties.method = 'first'
 ) / nrow(analysis_tbl)
 analysis_tbl[['weightQuartile']] <- cut(
-  weight_share,
+  weight_rank,
   breaks = c(0, 0.25, 0.50, 0.75, 1),
   include.lowest = TRUE,
   labels = c('Lightest', 'Second', 'Third', 'Heaviest')
 )
 nrow(analysis_tbl)
-#> [1] 1719
+#> [1] 1732
 ```
 
-That leaves 1719 modern skaters. The sample is large enough to smooth
-away one-hot playoff runs, but still focused enough to keep the
-comparison about contemporary hockey. To make the shape of the data
-concrete, it helps to peek at a few of the strongest playoff scorers in
-the sample.
+The sample has 1732 skaters. That filters out one-series mirages while
+still leaving enough players to compare body types.
+
+## Level Versus Translation
+
+First, compare regular-season scoring, playoff scoring, and playoff lift
+by weight quartile.
 
 ``` r
 
-# Show sample of strongest playoff scorers.
-sample_tbl <- analysis_tbl[
-  order(-analysis_tbl[['playoffPPG']], -analysis_tbl[['gamesPlayed']]),
-  c(
-    'playerFullName',
-    'positionCode',
-    'weight',
-    'rsGamesPlayed',
-    'gamesPlayed',
-    'regularPPG',
-    'playoffPPG',
-    'playoffLift'
-  )
-]
-sample_tbl <- utils::head(sample_tbl, 8)
-make_table(
-  sample_tbl,
-  caption = 'Top playoff scoring rates among skaters in the working sample.'
-)
-```
-
-|  | playerFullName | positionCode | weight | rsGamesPlayed | gamesPlayed | regularPPG | playoffPPG | playoffLift |
-|:---|:---|:---|---:|---:|---:|---:|---:|---:|
-| 12145 | Connor McDavid | C | 194 | 794 | 102 | 1.537 | 1.529 | -0.007 |
-| 12146 | Connor McDavid | C | 194 | 794 | 102 | 1.537 | 1.529 | -0.007 |
-| 11956 | Leon Draisaitl | C | 209 | 855 | 102 | 1.232 | 1.480 | 0.249 |
-| 11957 | Leon Draisaitl | C | 209 | 855 | 102 | 1.232 | 1.480 | 0.249 |
-| 11833 | Nathan MacKinnon | C | 200 | 950 | 106 | 1.202 | 1.311 | 0.109 |
-| 11834 | Nathan MacKinnon | C | 200 | 950 | 106 | 1.202 | 1.311 | 0.109 |
-| 8431 | Marian Hossa | R | 207 | 1309 | 20 | 0.866 | 1.300 | 0.434 |
-| 12162 | Mikko Rantanen | R | 228 | 716 | 81 | 1.092 | 1.247 | 0.155 |
-
-Top playoff scoring rates among skaters in the working sample. {.table
-style="width:100%;"}
-
-## Compare Weight Quartiles
-
-Now we can step back from individual names and ask the population
-question. If heavier skaters really become more dangerous in the
-playoffs, the heaviest quartile should sit clearly above the lighter
-groups in playoff scoring rate, or at least show a meaningfully smaller
-drop from regular-season scoring.
-
-``` r
-
-# Summarize scoring levels and playoff lift by quartile.
+# Summarize scoring by weight quartile.
 quartile_summary <- aggregate(
   cbind(regularPPG, playoffPPG, playoffLift) ~ weightQuartile,
   data = analysis_tbl,
@@ -175,60 +131,51 @@ quartile_summary <- quartile_summary[
 ]
 make_table(
   quartile_summary,
-  caption = 'Regular-season scoring, playoff scoring, and playoff lift by weight quartile.'
+  caption = 'Regular-season scoring, playoff scoring, and playoff lift by weight quartile.',
+  digits = 3
 )
 ```
 
 |     | weightQuartile |   n | regularPPG | playoffPPG | playoffLift |
 |:----|:---------------|----:|-----------:|-----------:|------------:|
-| 2   | Lightest       | 429 |      0.507 |      0.457 |      -0.050 |
-| 3   | Second         | 430 |      0.480 |      0.423 |      -0.057 |
-| 4   | Third          | 430 |      0.438 |      0.382 |      -0.056 |
-| 1   | Heaviest       | 430 |      0.418 |      0.376 |      -0.041 |
+| 2   | Lightest       | 433 |      0.507 |      0.458 |      -0.048 |
+| 3   | Second         | 433 |      0.479 |      0.421 |      -0.058 |
+| 4   | Third          | 433 |      0.436 |      0.379 |      -0.057 |
+| 1   | Heaviest       | 433 |      0.419 |      0.378 |      -0.041 |
 
 Regular-season scoring, playoff scoring, and playoff lift by weight
 quartile. {.table}
 
-This is where the cliché starts to wobble. The lightest quartile posts
-the strongest playoff scoring rate in the sample at about 0.457 points
-per game, while the heaviest quartile sits at about 0.376. But the
-second question is more subtle. The heaviest skaters do **not** lead in
-raw playoff scoring, yet they also show the smallest drop from their own
-regular-season baseline. Their average playoff lift is about -0.041,
-compared with -0.050 for the lightest group. That is a more interesting
-result than a simple yes-or-no size verdict. Bigger skaters are not the
-most productive playoff scorers on average, but they may lose slightly
-less offense when conditions tighten.
-
-## Visualize Level Versus Translation
-
-A table gives the means. A plot shows whether those means reflect broad
-tendencies or just a few stars.
+The most important distinction is level versus translation. Lighter
+skaters can still post higher raw scoring rates. Bigger skaters can
+still translate a bit better relative to their own regular-season
+baseline. Those are different claims, and mixing them together is how
+playoff clichés become sloppy.
 
 ``` r
 
-# Plot playoff scoring distribution and average lift.
+# Plot playoff scoring and playoff lift.
 old_par <- graphics::par(no.readonly = TRUE)
 graphics::par(mfrow = c(1, 2), mar = c(8, 4, 3, 1))
 graphics::boxplot(
   playoffPPG ~ weightQuartile,
   data = analysis_tbl,
-  col = c('#d9ed92', '#b5e48c', '#76c893', '#34a0a4'),
-  border = '#3a5a40',
+  col = c('#d8f3dc', '#b7e4c7', '#74c69d', '#2d6a4f'),
+  border = '#1b4332',
   las = 2,
-  ylab = 'Playoff Points Per Game',
-  xlab = ''
+  xlab = '',
+  ylab = 'Playoff Points Per Game'
 )
 graphics::barplot(
   quartile_summary[['playoffLift']],
   names.arg = quartile_summary[['weightQuartile']],
-  col = c('#f4d35e', '#ee964b', '#f95738', '#7b2cbf'),
+  col = c('#fcbf49', '#f77f00', '#d62828', '#6a4c93'),
   border = NA,
   las = 2,
-  ylab = 'Playoff Lift',
-  xlab = ''
+  xlab = '',
+  ylab = 'Playoff Lift'
 )
-graphics::abline(h = 0, lty = 2, col = '#4d4d4d')
+graphics::abline(h = 0, lty = 2, col = '#495057')
 ```
 
 ![Playoff scoring level and playoff lift by weight
@@ -241,23 +188,65 @@ Playoff scoring level and playoff lift by weight quartile.
 graphics::par(old_par)
 ```
 
-The left panel reinforces the first point: heavier groups do not shift
-upward as playoff scorers. The right panel reinforces the second: every
-group scores less in the playoffs than in the regular season on average,
-but the drop is a little shallower for the heaviest skaters. That
-combination makes intuitive hockey sense. Many larger players are not
-offense-first stars, so their absolute scoring rates start lower. But
-their game may translate a bit more cleanly into playoff conditions than
-the regular-season scoring records alone suggest.
+Every group loses scoring on average. The interesting question is how
+much.
 
-## See Who Gains Most
+## Position Is Part of the Story
 
-One way to make the translation question feel real is to look at the
-players with the biggest positive playoff bump.
+Weight and position are tangled. Defensemen are heavier, score less, and
+often play playoff minutes that are less offense-driven. Splitting
+forwards and defensemen helps keep the interpretation honest.
 
 ``` r
 
-# Show largest positive playoff lifts among larger-sample skaters.
+# Summarize rates by position and quartile.
+position_summary <- aggregate(
+  cbind(regularPPG, playoffPPG, playoffLift) ~ positionBucket + weightQuartile,
+  data = analysis_tbl,
+  FUN = mean
+)
+position_counts <- aggregate(
+  playerId ~ positionBucket + weightQuartile,
+  data = analysis_tbl,
+  FUN = length
+)
+names(position_counts)[names(position_counts) == 'playerId'] <- 'n'
+position_summary <- merge(
+  position_summary,
+  position_counts,
+  by = c('positionBucket', 'weightQuartile')
+)
+make_table(
+  position_summary,
+  caption = 'Scoring translation by position family and weight quartile.',
+  digits = 3
+)
+```
+
+| positionBucket | weightQuartile | regularPPG | playoffPPG | playoffLift |   n |
+|:---------------|:---------------|-----------:|-----------:|------------:|----:|
+| Defense        | Heaviest       |      0.307 |      0.285 |      -0.022 | 197 |
+| Defense        | Lightest       |      0.437 |      0.414 |      -0.023 |  82 |
+| Defense        | Second         |      0.384 |      0.336 |      -0.048 | 142 |
+| Defense        | Third          |      0.311 |      0.272 |      -0.039 | 158 |
+| Forward        | Heaviest       |      0.513 |      0.456 |      -0.057 | 236 |
+| Forward        | Lightest       |      0.523 |      0.468 |      -0.054 | 351 |
+| Forward        | Second         |      0.526 |      0.462 |      -0.064 | 291 |
+| Forward        | Third          |      0.507 |      0.440 |      -0.067 | 275 |
+
+Scoring translation by position family and weight quartile. {.table}
+
+The split keeps the story from becoming too neat. Size alone is not the
+answer. Role, position, and baseline scoring level matter.
+
+## Which Players Actually Rise?
+
+Population averages are useful, but the player list is where the
+question feels like hockey.
+
+``` r
+
+# Show largest positive playoff lifts.
 risers_tbl <- analysis_tbl[
   analysis_tbl[['gamesPlayed']] >= 40,
   c(
@@ -266,47 +255,87 @@ risers_tbl <- analysis_tbl[
     'weight',
     'regularPPG',
     'playoffPPG',
-    'playoffLift'
+    'playoffLift',
+    'gamesPlayed'
   )
 ]
 risers_tbl <- risers_tbl[order(-risers_tbl[['playoffLift']]), ]
 risers_tbl <- utils::head(risers_tbl, 10)
 make_table(
   risers_tbl,
-  caption = 'Largest playoff scoring lifts among skaters with at least 40 playoff games.'
+  caption = 'Largest playoff scoring lifts among skaters with at least 40 playoff games.',
+  digits = 3
 )
 ```
 
-|  | playerFullName | positionBucket | weight | regularPPG | playoffPPG | playoffLift |
-|:---|:---|:---|---:|---:|---:|---:|
-| 8218 | Daniel Brière | Forward | 174 | 0.715 | 1.059 | 0.344 |
-| 12706 | Evan Bouchard | Defense | 192 | 0.776 | 1.086 | 0.310 |
-| 12707 | Evan Bouchard | Defense | 192 | 0.776 | 1.086 | 0.310 |
-| 10827 | Jakob Silfverberg | Forward | 207 | 0.455 | 0.719 | 0.264 |
-| 11958 | Sam Bennett | Forward | 193 | 0.514 | 0.766 | 0.253 |
-| 11820 | Artturi Lehkonen | Forward | 179 | 0.509 | 0.759 | 0.250 |
-| 11956 | Leon Draisaitl | Forward | 209 | 1.232 | 1.480 | 0.249 |
-| 11957 | Leon Draisaitl | Forward | 209 | 1.232 | 1.480 | 0.249 |
-| 12273 | Evan Rodrigues | Forward | 182 | 0.438 | 0.672 | 0.234 |
-| 10812 | Ryan O’Reilly | Forward | 207 | 0.728 | 0.961 | 0.232 |
+|  | playerFullName | positionBucket | weight | regularPPG | playoffPPG | playoffLift | gamesPlayed |
+|:---|:---|:---|---:|---:|---:|---:|---:|
+| 8218 | Daniel Brière | Forward | 174 | 0.715 | 1.059 | 0.344 | 68 |
+| 12706 | Evan Bouchard | Defense | 192 | 0.776 | 1.086 | 0.310 | 81 |
+| 12707 | Evan Bouchard | Defense | 192 | 0.776 | 1.086 | 0.310 | 81 |
+| 10827 | Jakob Silfverberg | Forward | 207 | 0.455 | 0.719 | 0.264 | 57 |
+| 11958 | Sam Bennett | Forward | 193 | 0.514 | 0.766 | 0.253 | 77 |
+| 11956 | Leon Draisaitl | Forward | 209 | 1.232 | 1.480 | 0.249 | 102 |
+| 11957 | Leon Draisaitl | Forward | 209 | 1.232 | 1.480 | 0.249 | 102 |
+| 12273 | Evan Rodrigues | Forward | 182 | 0.438 | 0.672 | 0.234 | 61 |
+| 10812 | Ryan O’Reilly | Forward | 207 | 0.728 | 0.961 | 0.232 | 51 |
+| 12274 | Evan Rodrigues | Forward | 182 | 0.438 | 0.667 | 0.228 | 45 |
 
 Largest playoff scoring lifts among skaters with at least 40 playoff
-games. {.table style="width:100%;"}
-
-This table also hints at an important caveat: some of the best playoff
-translators are defensemen. That matters because defense is a position
-where the scoring baseline is lower to begin with. A small absolute
-scoring gain there can look like a meaningful playoff bump.
-
-## Fit Simple Model
-
-To separate size from position a little more directly, we can fit a
-simple model with playoff lift as the response and height, weight, and a
-defense indicator as predictors.
+games. {.table}
 
 ``` r
 
-# Fit simple playoff-lift model.
+# Show largest negative playoff lifts.
+fallers_tbl <- analysis_tbl[
+  analysis_tbl[['gamesPlayed']] >= 40,
+  c(
+    'playerFullName',
+    'positionBucket',
+    'weight',
+    'regularPPG',
+    'playoffPPG',
+    'playoffLift',
+    'gamesPlayed'
+  )
+]
+fallers_tbl <- fallers_tbl[order(fallers_tbl[['playoffLift']]), ]
+fallers_tbl <- utils::head(fallers_tbl, 10)
+make_table(
+  fallers_tbl,
+  caption = 'Largest playoff scoring drops among skaters with at least 40 playoff games.',
+  digits = 3
+)
+```
+
+|  | playerFullName | positionBucket | weight | regularPPG | playoffPPG | playoffLift | gamesPlayed |
+|:---|:---|:---|---:|---:|---:|---:|---:|
+| 11439 | J.T. Miller | Forward | 211 | 0.812 | 0.400 | -0.412 | 40 |
+| 8541 | Martin St. Louis | Forward | 180 | 0.911 | 0.500 | -0.411 | 44 |
+| 12280 | Artemi Panarin | Forward | 176 | 1.149 | 0.761 | -0.389 | 46 |
+| 11162 | Tyler Seguin | Forward | 205 | 0.813 | 0.429 | -0.384 | 42 |
+| 12588 | Robert Thomas | Forward | 207 | 0.868 | 0.500 | -0.368 | 52 |
+| 12589 | Robert Thomas | Forward | 207 | 0.868 | 0.500 | -0.368 | 52 |
+| 12017 | Ivan Barbashev | Forward | 203 | 0.526 | 0.180 | -0.346 | 50 |
+| 12748 | Noah Dobson | Defense | 200 | 0.592 | 0.250 | -0.342 | 44 |
+| 10831 | John Tavares | Forward | 217 | 0.936 | 0.608 | -0.328 | 51 |
+| 8675 | Brad Richards | Forward | 199 | 0.828 | 0.509 | -0.319 | 55 |
+
+Largest playoff scoring drops among skaters with at least 40 playoff
+games. {.table style="width:100%;"}
+
+These tables are deliberately humbling. Playoff translation is not a
+body-type sorting machine. Some lighter players hold up beautifully.
+Some bigger players drop. The useful signal is a tendency, not a rule.
+
+## Model the Gap
+
+A simple model lets us ask whether height or weight carries a standalone
+slope once position is included.
+
+``` r
+
+# Fit playoff-lift model.
 lift_fit <- stats::lm(
   playoffLift ~ height + weight + I(positionCode == 'D'),
   data = analysis_tbl
@@ -329,37 +358,34 @@ lift_fit_tbl <- lift_fit_tbl[, c(
 )]
 make_table(
   lift_fit_tbl,
-  caption = 'Linear model of playoff scoring lift on height, weight, and position.',
+  caption = 'Linear model of playoff scoring lift.',
   digits = 4
 )
 ```
 
 | term              | Estimate | Std. Error | t value | Pr(\>\|t\|) |
 |:------------------|---------:|-----------:|--------:|------------:|
-| Intercept         |   0.0144 |     0.1192 |  0.1211 |      0.9037 |
-| Height            |  -0.0018 |     0.0021 | -0.8464 |      0.3974 |
-| Weight            |   0.0003 |     0.0003 |  0.9425 |      0.3460 |
-| Defense indicator |   0.0275 |     0.0066 |  4.1327 |      0.0000 |
+| Intercept         |   0.0088 |     0.1180 |  0.0742 |      0.9409 |
+| Height            |  -0.0015 |     0.0020 | -0.7414 |      0.4585 |
+| Weight            |   0.0002 |     0.0003 |  0.7464 |      0.4555 |
+| Defense indicator |   0.0274 |     0.0066 |  4.1546 |      0.0000 |
 
-Linear model of playoff scoring lift on height, weight, and position.
-{.table}
+Linear model of playoff scoring lift. {.table}
 
-In this specification, neither height nor weight carries a strong
-standalone slope once position is accounted for. The cleanest signal is
-positional: defensemen, on average, lose less scoring in the playoffs
-than forwards do. That does not mean size is irrelevant. It means the
-popular claim that bigger skaters *as such* become better playoff
-scorers is too blunt. Role and position explain more than a simple
-bigger-is-better story.
+The plain-language result is that size is not magic. Once position is in
+the model, the direct height/weight slopes are not the headline. The
+playoff translation cliché is closer to a role-and-usage story than a
+simple bigger-is-better story.
 
 ## What We Learned
 
-The modern playoff-size cliché is only half right. Bigger skaters do
-**not** post the best playoff scoring rates on average. The lightest
-quartile still scores more. But bigger skaters also do **not** collapse
-when the postseason starts; if anything, their scoring translates a bit
-more cleanly relative to regular-season expectations. That is a useful
-lesson for exploratory work with `nhlscraper`: the most interesting
-answer is often a split answer. A single workflow can move from headline
-myth, to player-level table, to population comparison, to a more careful
-interpretation of what the data really say.
+Bigger skaters do not automatically become better playoff scorers. The
+lighter groups can still lead in raw playoff points per game. But the
+heaviest group can look slightly sturdier relative to its own
+regular-season scoring baseline.
+
+That split answer is the point. `nhlscraper` makes it easy to combine
+career stats and player bios, but the interpretation still has to
+respect the shape of the data. A good mini research question is not
+always one where the cliché is true or false. Sometimes the best answer
+is: true in one sense, false in another.

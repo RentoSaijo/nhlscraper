@@ -1,8 +1,8 @@
 # Access all the streams
 
-`streams()` retrieves all the streams as a `data.frame` where each row
-represents stream and includes detail on reference metadata, regional
-context, and media availability detail.
+`streams()` returns the public "where to watch" payload for the current
+region, including broadcast/streaming providers when the endpoint is
+available.
 
 ## Usage
 

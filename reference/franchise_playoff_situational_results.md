@@ -1,9 +1,7 @@
 # Access the playoff series results for all the franchises by situation
 
-`franchise_playoff_situational_results()` retrieves the playoff series
-results for all the franchises by situation as a `data.frame` where each
-row represents franchise per situation and includes detail on team
-identity, affiliation, and matchup-side context.
+`franchise_playoff_situational_results()` returns playoff series records
+by franchise and series situation, such as leading or trailing a series.
 
 ## Usage
 

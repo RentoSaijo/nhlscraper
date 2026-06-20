@@ -1,9 +1,8 @@
 # Access the replay for an event
 
-`replay()` retrieves the replay for an event as a `data.frame` where
-each row represents decisecond and includes detail on team identity,
-affiliation, and matchup-side context plus player identity, role,
-handedness, and biographical profile.
+`replay()` downloads NHL puck/player tracking sprite data for one goal
+event and returns one row per decisecond with puck coordinates plus
+dynamic `playerN*` columns for tracked skaters.
 
 ## Usage
 

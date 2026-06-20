@@ -1,9 +1,7 @@
 # Access the draft rankings for a class and category
 
-`draft_rankings()` retrieves the draft rankings for a class and category
-as a `data.frame` where each row represents player and includes detail
-on player identity, role, handedness, and biographical profile plus
-draft-board context, scouting background, and pick/round progression.
+`draft_rankings()` returns NHL Central Scouting rankings for one draft
+class and skater/goalie region group, with one row per ranked prospect.
 
 ## Usage
 

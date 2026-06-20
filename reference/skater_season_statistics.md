@@ -1,12 +1,8 @@
 # Access the statistics for all the skaters by season, game type, and team
 
-`skater_season_statistics()` retrieves the statistics for all the
-skaters by season, game type, and team as a `data.frame` where each row
-represents player per season per game type, separated by team if
-applicable and includes detail on date/season filtering windows and
-chronological context, team identity, affiliation, and matchup-side
-context, and player identity, role, handedness, and biographical
-profile.
+`skater_season_statistics()` returns records-site player stat rows by
+player, team, season, and game type, preserving separate rows when a
+player changed teams.
 
 ## Usage
 

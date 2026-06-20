@@ -1,10 +1,8 @@
 # Access the EDGE shot location statistics for a team, season, game type, and category
 
-`team_edge_shot_location()` retrieves the EDGE shot location statistics
-for a team, season, game type, and category as a `data.frame` where each
-row represents location and includes detail on production, workload,
-efficiency, and result-level performance outcomes plus NHL EDGE style
-tracking outputs and relative-performance context.
+`team_edge_shot_location()` returns team EDGE shot-location detail by
+rink region, or totals by strength state and position when
+`category = 'totals'`.
 
 ## Usage
 

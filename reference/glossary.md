@@ -1,8 +1,7 @@
 # Access the glossary
 
-`glossary()` retrieves the glossary as a `data.frame` where each row
-represents terminology and includes detail on reference definitions and
-rules-framework information.
+`glossary()` returns NHL glossary terms with one row per term and
+normalized terminology IDs/names.
 
 ## Usage
 

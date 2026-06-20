@@ -1,8 +1,8 @@
 # Access the summary for a player
 
-`player_summary()` retrieves the summary for a player as a nested `list`
-that separates summary and detail blocks for player identity, role,
-handedness, and biographical profile.
+`player_summary()` returns the public player landing payload for one
+player, including bio/team fields, current season stats, career totals,
+season totals, awards, and featured media when available.
 
 ## Usage
 

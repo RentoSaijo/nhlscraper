@@ -1,11 +1,8 @@
 # Access various reports for a season, game type, and category for all the goalies by game
 
-`goalie_game_report()` retrieves various reports for a season, game
-type, and category for all the goalies by game as a `data.frame` where
-each row represents game per goalie and includes detail on game timeline
-state, period/clock progression, and matchup flow, player identity,
-role, handedness, and biographical profile, and production, workload,
-efficiency, and result-level performance outcomes.
+`goalie_game_report()` returns the game-level version of a selected
+goalie stats report, with one row per goalie per game and
+category-specific metrics.
 
 ## Usage
 

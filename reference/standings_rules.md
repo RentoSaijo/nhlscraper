@@ -1,8 +1,7 @@
 # Access the standings rules by season
 
-`standings_rules()` retrieves the standings rules by season as a
-`data.frame` where each row represents season and includes detail on
-date/season filtering windows and chronological context.
+`standings_rules()` returns the public standings-season catalog with one
+row per season and the rules/metadata used by standings endpoints.
 
 ## Usage
 

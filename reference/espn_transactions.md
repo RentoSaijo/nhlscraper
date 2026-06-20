@@ -1,8 +1,7 @@
 # Access the ESPN transactions for a season
 
-`espn_transactions()` retrieves the ESPN transactions for a season as a
-`data.frame` where each row represents transaction and includes detail
-on availability and transaction-status tracking detail.
+`espn_transactions()` pages ESPN's transaction feed across a season
+window and returns one row per transaction with normalized team fields.
 
 ## Usage
 

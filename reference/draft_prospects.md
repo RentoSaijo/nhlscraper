@@ -1,9 +1,8 @@
 # Access all the draft prospects
 
-`draft_prospects()` retrieves all the draft prospects as a `data.frame`
-where each row represents player and includes detail on player identity,
-role, handedness, and biographical profile plus broadcast carriage,
-media availability, and viewing-link metadata.
+`draft_prospects()` returns the records-site prospect registry with one
+row per prospect and normalized prospect/player IDs, names, birth data,
+and profile fields.
 
 ## Usage
 

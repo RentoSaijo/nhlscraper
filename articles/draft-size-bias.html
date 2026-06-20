@@ -5,7 +5,7 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<title>Did the NHL Draft's Size Obsession Peak in the 1990s? • nhlscraper</title>
+<title>When Did NHL Teams Draft the Biggest Skaters? • nhlscraper</title>
 <!-- favicons --><link rel="icon" type="image/png" sizes="96x96" href="../favicon-96x96.png">
 <link rel="icon" type="”image/svg+xml”" href="../favicon.svg">
 <link rel="apple-touch-icon" sizes="180x180" href="../apple-touch-icon.png">
@@ -15,7 +15,7 @@
 <link href="../deps/bootstrap-5.3.8/bootstrap.min.css" rel="stylesheet">
 <script src="../deps/bootstrap-5.3.8/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
 <link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
-<script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Did the NHL Draft's Size Obsession Peak in the 1990s?">
+<script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="When Did NHL Teams Draft the Biggest Skaters?">
 </head>
 <body>
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
@@ -81,7 +81,7 @@
 
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
-      <img src="../logo.png" class="logo" alt=""><h1>Did the NHL Draft's Size Obsession Peak in the 1990s?</h1>
+      <img src="../logo.png" class="logo" alt=""><h1>When Did NHL Teams Draft the Biggest Skaters?</h1>
             
       
       <small class="dont-index">Source: <a href="https://github.com/RentoSaijo/nhlscraper/blob/main/vignettes/draft-size-bias.Rmd" class="external-link"><code>vignettes/draft-size-bias.Rmd</code></a></small>
@@ -91,39 +91,45 @@
     
     
 <div class="section level2">
-<h2 id="overview">Overview<a class="anchor" aria-label="anchor" href="#overview"></a>
+<h2 id="question">Question<a class="anchor" aria-label="anchor" href="#question"></a>
 </h2>
-<p>NHL draft discourse has always had a body-type vocabulary. Prospects
-are praised for “frame”, “length”, and “pro build” long before anyone
-knows whether those gifts will actually translate into NHL impact. What
-changes over time is the <strong>intensity</strong> of that preference.
-This example asks a historical version of the size question:
-<strong>when was the NHL draft most tilted toward bigger
-skaters?</strong> Instead of looking at one ranking board, we use
-<code><a href="../reference/draft_picks.html">nhlscraper::draft_picks()</a></code> to study actual selections across
-almost half a century of drafts. The goal is not to claim that teams
-ever drafted size <em>instead of</em> skill. The goal is to see whether
-certain eras leaned harder on size as a tiebreaker, especially near the
-top of the board.</p>
+<p>Draft rooms have always loved the language of size: frame, reach,
+length, projectable build. But was the league always equally obsessed
+with bigger skaters, or did that preference peak in a particular
+era?</p>
+<p>This article uses <code><a href="../reference/draft_picks.html">nhlscraper::draft_picks()</a></code> to turn that
+old scouting cliché into a measurable history. The mini research
+question is:</p>
+<blockquote>
+<p><strong>When was the NHL draft most tilted toward bigger skaters,
+especially in the first round?</strong></p>
+</blockquote>
+<p>We will keep the analysis intentionally simple: height, weight,
+round, position, and draft year. That is enough to show how the top of
+the draft board changed over time.</p>
 </div>
 <div class="section level2">
-<h2 id="build-draft-sample">Build Draft Sample<a class="anchor" aria-label="anchor" href="#build-draft-sample"></a>
+<h2 id="build-sample">Build Sample<a class="anchor" aria-label="anchor" href="#build-sample"></a>
 </h2>
-<p>We keep skaters drafted from 1979 onward, drop goalies, and require
-non-missing height and weight. To keep the comparisons intuitive, we
-split picks into first-round selections and everyone taken from Rounds 2
-through 7.</p>
+<p>We keep skaters from 1979 onward, drop goalies, require measured
+height and weight, and limit the comparison to Rounds 1 through 7 so
+older marathon drafts do not distort the later-round pool.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># Pull draft picks and keep skaters with measured size.</span></span>
+<code class="sourceCode R"><span><span class="co"># Pull draft picks.</span></span>
 <span><span class="va">draft_tbl</span> <span class="op">&lt;-</span> <span class="fu">nhlscraper</span><span class="fu">::</span><span class="fu"><a href="../reference/draft_picks.html">draft_picks</a></span><span class="op">(</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Keep modern skater sample.</span></span>
 <span><span class="va">draft_tbl</span> <span class="op">&lt;-</span> <span class="va">draft_tbl</span><span class="op">[</span></span>
 <span>  <span class="va">draft_tbl</span><span class="op">[[</span><span class="st">'draftYear'</span><span class="op">]</span><span class="op">]</span> <span class="op">&gt;=</span> <span class="fl">1979</span> <span class="op">&amp;</span></span>
+<span>    <span class="va">draft_tbl</span><span class="op">[[</span><span class="st">'roundNumber'</span><span class="op">]</span><span class="op">]</span> <span class="op">&lt;=</span> <span class="fl">7</span> <span class="op">&amp;</span></span>
 <span>    <span class="va">draft_tbl</span><span class="op">[[</span><span class="st">'positionCode'</span><span class="op">]</span><span class="op">]</span> <span class="op">!=</span> <span class="st">'G'</span> <span class="op">&amp;</span></span>
 <span>    <span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">draft_tbl</span><span class="op">[[</span><span class="st">'height'</span><span class="op">]</span><span class="op">]</span><span class="op">)</span> <span class="op">&amp;</span></span>
 <span>    <span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">draft_tbl</span><span class="op">[[</span><span class="st">'weight'</span><span class="op">]</span><span class="op">]</span><span class="op">)</span>,</span>
+<span>  ,</span>
+<span>  drop <span class="op">=</span> <span class="cn">FALSE</span></span>
 <span><span class="op">]</span></span>
 <span></span>
-<span><span class="co"># Create era, round, and position buckets.</span></span>
+<span><span class="co"># Create analysis buckets.</span></span>
 <span><span class="va">draft_tbl</span><span class="op">[[</span><span class="st">'roundBucket'</span><span class="op">]</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/ifelse.html" class="external-link">ifelse</a></span><span class="op">(</span></span>
 <span>  <span class="va">draft_tbl</span><span class="op">[[</span><span class="st">'roundNumber'</span><span class="op">]</span><span class="op">]</span> <span class="op">==</span> <span class="fl">1</span>,</span>
 <span>  <span class="st">'Round 1'</span>,</span>
@@ -137,7 +143,7 @@ through 7.</p>
 <span>    <span class="st">'1990-1999'</span>,</span>
 <span>    <span class="st">'2000-2009'</span>,</span>
 <span>    <span class="st">'2010-2019'</span>,</span>
-<span>    <span class="st">'2020-2025'</span></span>
+<span>    <span class="st">'2020-present'</span></span>
 <span>  <span class="op">)</span></span>
 <span><span class="op">)</span></span>
 <span><span class="va">draft_tbl</span><span class="op">[[</span><span class="st">'positionBucket'</span><span class="op">]</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/ifelse.html" class="external-link">ifelse</a></span><span class="op">(</span></span>
@@ -146,421 +152,499 @@ through 7.</p>
 <span>  <span class="st">'Forward'</span></span>
 <span><span class="op">)</span></span>
 <span><span class="va">draft_tbl</span><span class="op">[[</span><span class="st">'tallSkater'</span><span class="op">]</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="va">draft_tbl</span><span class="op">[[</span><span class="st">'height'</span><span class="op">]</span><span class="op">]</span> <span class="op">&gt;=</span> <span class="fl">74</span></span>
+<span><span class="va">draft_tbl</span><span class="op">[[</span><span class="st">'bigSkater'</span><span class="op">]</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="va">draft_tbl</span><span class="op">[[</span><span class="st">'height'</span><span class="op">]</span><span class="op">]</span> <span class="op">&gt;=</span> <span class="fl">74</span> <span class="op">&amp;</span></span>
+<span>  <span class="va">draft_tbl</span><span class="op">[[</span><span class="st">'weight'</span><span class="op">]</span><span class="op">]</span> <span class="op">&gt;=</span> <span class="fl">205</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">draft_tbl</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] 9998</span></span></code></pre></div>
-<p>That gives us 9998 drafted skaters with usable height and weight
-measurements. This is a big enough pool to tell an era story rather than
-a class-of-one story.</p>
+<span><span class="co">#&gt; [1] 8166</span></span></code></pre></div>
+<p>That gives us 8166 drafted skaters. The sample is broad enough to
+study eras, but narrow enough that “later round” means roughly the same
+thing across modern draft history.</p>
 </div>
 <div class="section level2">
-<h2 id="start-with-era-averages">Start With Era Averages<a class="anchor" aria-label="anchor" href="#start-with-era-averages"></a>
+<h2 id="first-look-era-and-round">First Look: Era and Round<a class="anchor" aria-label="anchor" href="#first-look-era-and-round"></a>
 </h2>
-<p>The first pass is simple: average height and weight by era and round
-bucket.</p>
+<p>If size was truly prized near the top of the board, first-round
+skaters should be bigger than later-round skaters in most eras.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Summarize size by era and round bucket.</span></span>
 <span><span class="va">era_summary</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/aggregate.html" class="external-link">aggregate</a></span><span class="op">(</span></span>
-<span>  <span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">cbind</a></span><span class="op">(</span><span class="va">height</span>, <span class="va">weight</span><span class="op">)</span> <span class="op">~</span> <span class="va">era</span> <span class="op">+</span> <span class="va">roundBucket</span>,</span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">cbind</a></span><span class="op">(</span><span class="va">height</span>, <span class="va">weight</span>, <span class="va">tallSkater</span>, <span class="va">bigSkater</span><span class="op">)</span> <span class="op">~</span> <span class="va">era</span> <span class="op">+</span> <span class="va">roundBucket</span>,</span>
 <span>  data <span class="op">=</span> <span class="va">draft_tbl</span>,</span>
 <span>  FUN <span class="op">=</span> <span class="va">mean</span></span>
 <span><span class="op">)</span></span>
+<span><span class="va">era_counts</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/aggregate.html" class="external-link">aggregate</a></span><span class="op">(</span></span>
+<span>  <span class="va">height</span> <span class="op">~</span> <span class="va">era</span> <span class="op">+</span> <span class="va">roundBucket</span>,</span>
+<span>  data <span class="op">=</span> <span class="va">draft_tbl</span>,</span>
+<span>  FUN <span class="op">=</span> <span class="va">length</span></span>
+<span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">era_counts</span><span class="op">)</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">era_counts</span><span class="op">)</span> <span class="op">==</span> <span class="st">'height'</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="st">'n'</span></span>
+<span><span class="va">era_summary</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/merge.html" class="external-link">merge</a></span><span class="op">(</span></span>
+<span>  <span class="va">era_summary</span>,</span>
+<span>  <span class="va">era_counts</span>,</span>
+<span>  by <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'era'</span>, <span class="st">'roundBucket'</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span><span class="va">era_summary</span> <span class="op">&lt;-</span> <span class="va">era_summary</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
+<span>  <span class="st">'era'</span>,</span>
+<span>  <span class="st">'roundBucket'</span>,</span>
+<span>  <span class="st">'n'</span>,</span>
+<span>  <span class="st">'height'</span>,</span>
+<span>  <span class="st">'weight'</span>,</span>
+<span>  <span class="st">'tallSkater'</span>,</span>
+<span>  <span class="st">'bigSkater'</span></span>
+<span><span class="op">)</span><span class="op">]</span></span>
 <span><span class="fu">make_table</span><span class="op">(</span></span>
 <span>  <span class="va">era_summary</span>,</span>
-<span>  caption <span class="op">=</span> <span class="st">'Average drafted skater size by era and draft bucket.'</span></span>
+<span>  caption <span class="op">=</span> <span class="st">'Drafted skater size by era and draft bucket.'</span>,</span>
+<span>  digits <span class="op">=</span> <span class="fl">3</span></span>
 <span><span class="op">)</span></span></code></pre></div>
-<table class="table">
-<caption>Average drafted skater size by era and draft bucket.</caption>
+<table style="width:100%;" class="table">
+<caption>Drafted skater size by era and draft bucket.</caption>
+<colgroup>
+<col width="19%">
+<col width="18%">
+<col width="7%">
+<col width="10%">
+<col width="12%">
+<col width="16%">
+<col width="15%">
+</colgroup>
 <thead><tr class="header">
 <th align="left">era</th>
 <th align="left">roundBucket</th>
+<th align="right">n</th>
 <th align="right">height</th>
 <th align="right">weight</th>
+<th align="right">tallSkater</th>
+<th align="right">bigSkater</th>
 </tr></thead>
 <tbody>
 <tr class="odd">
 <td align="left">1979-1989</td>
 <td align="left">Round 1</td>
+<td align="right">226</td>
 <td align="right">72.934</td>
 <td align="right">200.659</td>
-</tr>
-<tr class="even">
-<td align="left">1990-1999</td>
-<td align="left">Round 1</td>
-<td align="right">74.060</td>
-<td align="right">209.534</td>
-</tr>
-<tr class="odd">
-<td align="left">2000-2009</td>
-<td align="left">Round 1</td>
-<td align="right">73.694</td>
-<td align="right">203.086</td>
-</tr>
-<tr class="even">
-<td align="left">2010-2019</td>
-<td align="left">Round 1</td>
-<td align="right">72.889</td>
-<td align="right">189.757</td>
-</tr>
-<tr class="odd">
-<td align="left">2020-2025</td>
-<td align="left">Round 1</td>
-<td align="right">73.032</td>
-<td align="right">188.292</td>
+<td align="right">0.363</td>
+<td align="right">0.221</td>
 </tr>
 <tr class="even">
 <td align="left">1979-1989</td>
 <td align="left">Rounds 2-7</td>
-<td align="right">72.381</td>
-<td align="right">192.216</td>
+<td align="right">1225</td>
+<td align="right">72.509</td>
+<td align="right">193.566</td>
+<td align="right">0.322</td>
+<td align="right">0.153</td>
 </tr>
 <tr class="odd">
 <td align="left">1990-1999</td>
+<td align="left">Round 1</td>
+<td align="right">232</td>
+<td align="right">74.060</td>
+<td align="right">209.534</td>
+<td align="right">0.608</td>
+<td align="right">0.500</td>
+</tr>
+<tr class="even">
+<td align="left">1990-1999</td>
 <td align="left">Rounds 2-7</td>
-<td align="right">73.094</td>
-<td align="right">195.145</td>
+<td align="right">1405</td>
+<td align="right">73.260</td>
+<td align="right">197.044</td>
+<td align="right">0.433</td>
+<td align="right">0.224</td>
+</tr>
+<tr class="odd">
+<td align="left">2000-2009</td>
+<td align="left">Round 1</td>
+<td align="right">278</td>
+<td align="right">73.694</td>
+<td align="right">203.086</td>
+<td align="right">0.536</td>
+<td align="right">0.349</td>
 </tr>
 <tr class="even">
 <td align="left">2000-2009</td>
 <td align="left">Rounds 2-7</td>
-<td align="right">73.148</td>
-<td align="right">195.120</td>
+<td align="right">1693</td>
+<td align="right">73.162</td>
+<td align="right">195.432</td>
+<td align="right">0.435</td>
+<td align="right">0.214</td>
 </tr>
 <tr class="odd">
 <td align="left">2010-2019</td>
-<td align="left">Rounds 2-7</td>
-<td align="right">72.575</td>
-<td align="right">186.634</td>
+<td align="left">Round 1</td>
+<td align="right">296</td>
+<td align="right">72.889</td>
+<td align="right">189.757</td>
+<td align="right">0.368</td>
+<td align="right">0.132</td>
 </tr>
 <tr class="even">
-<td align="left">2020-2025</td>
+<td align="left">2010-2019</td>
 <td align="left">Rounds 2-7</td>
+<td align="right">1609</td>
+<td align="right">72.575</td>
+<td align="right">186.634</td>
+<td align="right">0.331</td>
+<td align="right">0.093</td>
+</tr>
+<tr class="odd">
+<td align="left">2020-present</td>
+<td align="left">Round 1</td>
+<td align="right">185</td>
+<td align="right">73.032</td>
+<td align="right">188.292</td>
+<td align="right">0.400</td>
+<td align="right">0.103</td>
+</tr>
+<tr class="even">
+<td align="left">2020-present</td>
+<td align="left">Rounds 2-7</td>
+<td align="right">1017</td>
 <td align="right">72.981</td>
 <td align="right">185.607</td>
+<td align="right">0.417</td>
+<td align="right">0.114</td>
 </tr>
 </tbody>
 </table>
-<p>The shape is more nuanced than the usual “the game keeps getting
-bigger” story. Average first-round size surged in the 1990s, stayed
-elevated in the 2000s, then fell back in the 2010s. The top of the board
-in the modern era is still not exactly small, but it does not look like
-the peak size era. Just as important, first-round skaters are
-consistently larger than later-round skaters. The draft’s size
-preference shows up not only across eras, but also in <em>where</em>
-teams are willing to spend their most expensive picks.</p>
+<p>The first-round premium is visible almost everywhere, but the 1990s
+and 2000s stand out. That was the period when spending a premium pick on
+a bigger skater looked most normal. The modern top of the board is still
+not small, but it is not the same size arms race.</p>
 </div>
 <div class="section level2">
-<h2 id="plot-the-first-round-size-arc">Plot the First-Round Size Arc<a class="anchor" aria-label="anchor" href="#plot-the-first-round-size-arc"></a>
+<h2 id="plot-the-size-cycle">Plot the Size Cycle<a class="anchor" aria-label="anchor" href="#plot-the-size-cycle"></a>
 </h2>
-<p>A year-by-year line makes the rise-and-fall pattern easier to see. To
-reduce noise from small annual swings, we use a five-draft rolling
-average.</p>
+<p>A rolling average makes the shape easier to see than era bins
+alone.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># Compute annual mean height by round bucket.</span></span>
-<span><span class="va">round1_annual</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/aggregate.html" class="external-link">aggregate</a></span><span class="op">(</span></span>
-<span>  <span class="va">height</span> <span class="op">~</span> <span class="va">draftYear</span>,</span>
-<span>  data <span class="op">=</span> <span class="va">draft_tbl</span><span class="op">[</span><span class="va">draft_tbl</span><span class="op">[[</span><span class="st">'roundBucket'</span><span class="op">]</span><span class="op">]</span> <span class="op">==</span> <span class="st">'Round 1'</span>, <span class="op">]</span>,</span>
+<code class="sourceCode R"><span><span class="co"># Compute annual first-round and later-round height.</span></span>
+<span><span class="va">annual_height</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/aggregate.html" class="external-link">aggregate</a></span><span class="op">(</span></span>
+<span>  <span class="va">height</span> <span class="op">~</span> <span class="va">draftYear</span> <span class="op">+</span> <span class="va">roundBucket</span>,</span>
+<span>  data <span class="op">=</span> <span class="va">draft_tbl</span>,</span>
 <span>  FUN <span class="op">=</span> <span class="va">mean</span></span>
 <span><span class="op">)</span></span>
-<span><span class="va">later_annual</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/aggregate.html" class="external-link">aggregate</a></span><span class="op">(</span></span>
-<span>  <span class="va">height</span> <span class="op">~</span> <span class="va">draftYear</span>,</span>
-<span>  data <span class="op">=</span> <span class="va">draft_tbl</span><span class="op">[</span><span class="va">draft_tbl</span><span class="op">[[</span><span class="st">'roundBucket'</span><span class="op">]</span><span class="op">]</span> <span class="op">==</span> <span class="st">'Rounds 2-7'</span>, <span class="op">]</span>,</span>
-<span>  FUN <span class="op">=</span> <span class="va">mean</span></span>
+<span><span class="va">annual_height</span> <span class="op">&lt;-</span> <span class="va">annual_height</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/order.html" class="external-link">order</a></span><span class="op">(</span></span>
+<span>  <span class="va">annual_height</span><span class="op">[[</span><span class="st">'roundBucket'</span><span class="op">]</span><span class="op">]</span>,</span>
+<span>  <span class="va">annual_height</span><span class="op">[[</span><span class="st">'draftYear'</span><span class="op">]</span><span class="op">]</span></span>
+<span><span class="op">)</span>, <span class="op">]</span></span>
+<span><span class="va">annual_height</span><span class="op">[[</span><span class="st">'rollHeight'</span><span class="op">]</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/ave.html" class="external-link">ave</a></span><span class="op">(</span></span>
+<span>  <span class="va">annual_height</span><span class="op">[[</span><span class="st">'height'</span><span class="op">]</span><span class="op">]</span>,</span>
+<span>  <span class="va">annual_height</span><span class="op">[[</span><span class="st">'roundBucket'</span><span class="op">]</span><span class="op">]</span>,</span>
+<span>  FUN <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="fu">stats</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/stats/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">x</span>, <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">1</span> <span class="op">/</span> <span class="fl">5</span>, <span class="fl">5</span><span class="op">)</span>, sides <span class="op">=</span> <span class="fl">2</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># Smooth annual means with five-draft rolling averages.</span></span>
-<span><span class="va">round1_annual</span><span class="op">[[</span><span class="st">'rollHeight'</span><span class="op">]</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="fu">stats</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/stats/filter.html" class="external-link">filter</a></span><span class="op">(</span></span>
-<span>  <span class="va">round1_annual</span><span class="op">[[</span><span class="st">'height'</span><span class="op">]</span><span class="op">]</span>,</span>
-<span>  <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">1</span> <span class="op">/</span> <span class="fl">5</span>, <span class="fl">5</span><span class="op">)</span>,</span>
-<span>  sides <span class="op">=</span> <span class="fl">2</span></span>
-<span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="va">later_annual</span><span class="op">[[</span><span class="st">'rollHeight'</span><span class="op">]</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="fu">stats</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/stats/filter.html" class="external-link">filter</a></span><span class="op">(</span></span>
-<span>  <span class="va">later_annual</span><span class="op">[[</span><span class="st">'height'</span><span class="op">]</span><span class="op">]</span>,</span>
-<span>  <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">1</span> <span class="op">/</span> <span class="fl">5</span>, <span class="fl">5</span><span class="op">)</span>,</span>
-<span>  sides <span class="op">=</span> <span class="fl">2</span></span>
-<span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<span><span class="va">round_one</span> <span class="op">&lt;-</span> <span class="va">annual_height</span><span class="op">[</span><span class="va">annual_height</span><span class="op">[[</span><span class="st">'roundBucket'</span><span class="op">]</span><span class="op">]</span> <span class="op">==</span> <span class="st">'Round 1'</span>, <span class="op">]</span></span>
+<span><span class="va">later_rounds</span> <span class="op">&lt;-</span> <span class="va">annual_height</span><span class="op">[</span><span class="va">annual_height</span><span class="op">[[</span><span class="st">'roundBucket'</span><span class="op">]</span><span class="op">]</span> <span class="op">==</span> <span class="st">'Rounds 2-7'</span>, <span class="op">]</span></span></code></pre></div>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">graphics</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span></span>
-<span>  <span class="va">round1_annual</span><span class="op">[[</span><span class="st">'draftYear'</span><span class="op">]</span><span class="op">]</span>,</span>
-<span>  <span class="va">round1_annual</span><span class="op">[[</span><span class="st">'rollHeight'</span><span class="op">]</span><span class="op">]</span>,</span>
+<span>  <span class="va">round_one</span><span class="op">[[</span><span class="st">'draftYear'</span><span class="op">]</span><span class="op">]</span>,</span>
+<span>  <span class="va">round_one</span><span class="op">[[</span><span class="st">'rollHeight'</span><span class="op">]</span><span class="op">]</span>,</span>
 <span>  type <span class="op">=</span> <span class="st">'l'</span>,</span>
-<span>  lwd <span class="op">=</span> <span class="fl">2</span>,</span>
-<span>  col <span class="op">=</span> <span class="st">'#0f4c5c'</span>,</span>
-<span>  ylim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/range.html" class="external-link">range</a></span><span class="op">(</span></span>
-<span>    <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">round1_annual</span><span class="op">[[</span><span class="st">'rollHeight'</span><span class="op">]</span><span class="op">]</span>, <span class="va">later_annual</span><span class="op">[[</span><span class="st">'rollHeight'</span><span class="op">]</span><span class="op">]</span><span class="op">)</span>,</span>
-<span>    na.rm <span class="op">=</span> <span class="cn">TRUE</span></span>
-<span>  <span class="op">)</span>,</span>
+<span>  lwd <span class="op">=</span> <span class="fl">2.5</span>,</span>
+<span>  col <span class="op">=</span> <span class="st">'#003049'</span>,</span>
+<span>  ylim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/range.html" class="external-link">range</a></span><span class="op">(</span><span class="va">annual_height</span><span class="op">[[</span><span class="st">'rollHeight'</span><span class="op">]</span><span class="op">]</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>,</span>
 <span>  xlab <span class="op">=</span> <span class="st">'Draft Year'</span>,</span>
 <span>  ylab <span class="op">=</span> <span class="st">'Average Height (Inches)'</span></span>
 <span><span class="op">)</span></span>
 <span><span class="fu">graphics</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/graphics/lines.html" class="external-link">lines</a></span><span class="op">(</span></span>
-<span>  <span class="va">later_annual</span><span class="op">[[</span><span class="st">'draftYear'</span><span class="op">]</span><span class="op">]</span>,</span>
-<span>  <span class="va">later_annual</span><span class="op">[[</span><span class="st">'rollHeight'</span><span class="op">]</span><span class="op">]</span>,</span>
-<span>  lwd <span class="op">=</span> <span class="fl">2</span>,</span>
-<span>  col <span class="op">=</span> <span class="st">'#e36414'</span></span>
+<span>  <span class="va">later_rounds</span><span class="op">[[</span><span class="st">'draftYear'</span><span class="op">]</span><span class="op">]</span>,</span>
+<span>  <span class="va">later_rounds</span><span class="op">[[</span><span class="st">'rollHeight'</span><span class="op">]</span><span class="op">]</span>,</span>
+<span>  lwd <span class="op">=</span> <span class="fl">2.5</span>,</span>
+<span>  col <span class="op">=</span> <span class="st">'#f77f00'</span></span>
 <span><span class="op">)</span></span>
+<span><span class="fu">graphics</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/graphics/abline.html" class="external-link">abline</a></span><span class="op">(</span>v <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1990</span>, <span class="fl">2000</span>, <span class="fl">2010</span>, <span class="fl">2020</span><span class="op">)</span>, lty <span class="op">=</span> <span class="fl">3</span>, col <span class="op">=</span> <span class="st">'#adb5bd'</span><span class="op">)</span></span>
 <span><span class="fu">graphics</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/graphics/legend.html" class="external-link">legend</a></span><span class="op">(</span></span>
 <span>  <span class="st">'topright'</span>,</span>
 <span>  legend <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'Round 1'</span>, <span class="st">'Rounds 2-7'</span><span class="op">)</span>,</span>
-<span>  col <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'#0f4c5c'</span>, <span class="st">'#e36414'</span><span class="op">)</span>,</span>
-<span>  lwd <span class="op">=</span> <span class="fl">2</span>,</span>
+<span>  col <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'#003049'</span>, <span class="st">'#f77f00'</span><span class="op">)</span>,</span>
+<span>  lwd <span class="op">=</span> <span class="fl">2.5</span>,</span>
 <span>  bty <span class="op">=</span> <span class="st">'n'</span></span>
 <span><span class="op">)</span></span></code></pre></div>
 <div class="figure" style="text-align: center">
-<img src="draft-size-bias_files/figure-html/rolling-plot-1.png" class="r-plt" alt="Five-draft rolling average height for first-round skaters and later-round skaters." width="90%"><p class="caption">
-Five-draft rolling average height for first-round skaters and
-later-round skaters.
+<img src="draft-size-bias_files/figure-html/rolling-plot-1.png" class="r-plt" alt="Five-draft rolling average height by draft bucket." width="92%"><p class="caption">
+Five-draft rolling average height by draft bucket.
 </p>
 </div>
-<p>The picture is striking. The first round visibly bulks up in the
-1990s, stays large through the 2000s, and then cools off. Later rounds
-move in the same direction, but less dramatically. That is exactly what
-you would expect if size became a stronger premium near the very top of
-the draft board during that period.</p>
+<p>The graph has a real arc: build up, peak, cool down. The first-round
+line rises hardest into the 1990s and remains elevated into the 2000s.
+Later rounds follow the same broad climate, but less aggressively. That
+is the fingerprint of a top-of-board preference rather than a
+league-wide measurement artifact.</p>
 </div>
 <div class="section level2">
-<h2 id="ask-how-often-teams-chased-tall-skaters">Ask How Often Teams Chased Tall Skaters<a class="anchor" aria-label="anchor" href="#ask-how-often-teams-chased-tall-skaters"></a>
+<h2 id="tall-is-one-thing-big-is-another">Tall Is One Thing; Big Is Another<a class="anchor" aria-label="anchor" href="#tall-is-one-thing-big-is-another"></a>
 </h2>
-<p>Averages can hide roster mix, so it helps to translate height into a
-more intuitive marker. Here we ask what share of drafted skaters were at
-least 6-foot-2.</p>
+<p>Height alone can make a player sound physically imposing. Weight adds
+another dimension. Here we ask how often teams drafted skaters who were
+both at least 6-foot-2 and at least 205 pounds.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># Summarize share of taller skaters by era.</span></span>
-<span><span class="va">tall_share</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/aggregate.html" class="external-link">aggregate</a></span><span class="op">(</span></span>
-<span>  <span class="va">tallSkater</span> <span class="op">~</span> <span class="va">era</span> <span class="op">+</span> <span class="va">roundBucket</span>,</span>
+<code class="sourceCode R"><span><span class="co"># Summarize big-skater share by era and round bucket.</span></span>
+<span><span class="va">big_share</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/aggregate.html" class="external-link">aggregate</a></span><span class="op">(</span></span>
+<span>  <span class="va">bigSkater</span> <span class="op">~</span> <span class="va">era</span> <span class="op">+</span> <span class="va">roundBucket</span>,</span>
 <span>  data <span class="op">=</span> <span class="va">draft_tbl</span>,</span>
 <span>  FUN <span class="op">=</span> <span class="va">mean</span></span>
 <span><span class="op">)</span></span>
-<span><span class="va">tall_counts</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/aggregate.html" class="external-link">aggregate</a></span><span class="op">(</span></span>
-<span>  <span class="va">height</span> <span class="op">~</span> <span class="va">era</span> <span class="op">+</span> <span class="va">roundBucket</span>,</span>
-<span>  data <span class="op">=</span> <span class="va">draft_tbl</span>,</span>
-<span>  FUN <span class="op">=</span> <span class="va">length</span></span>
+<span><span class="va">big_share</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/merge.html" class="external-link">merge</a></span><span class="op">(</span></span>
+<span>  <span class="va">big_share</span>,</span>
+<span>  <span class="va">era_counts</span>,</span>
+<span>  by <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'era'</span>, <span class="st">'roundBucket'</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">tall_counts</span><span class="op">)</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">tall_counts</span><span class="op">)</span> <span class="op">==</span> <span class="st">'height'</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="st">'n'</span></span>
-<span><span class="va">tall_share</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/merge.html" class="external-link">merge</a></span><span class="op">(</span><span class="va">tall_share</span>, <span class="va">tall_counts</span>, by <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'era'</span>, <span class="st">'roundBucket'</span><span class="op">)</span><span class="op">)</span></span>
-<span></span>
+<span><span class="va">big_share</span> <span class="op">&lt;-</span> <span class="va">big_share</span><span class="op">[</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/order.html" class="external-link">order</a></span><span class="op">(</span><span class="va">big_share</span><span class="op">[[</span><span class="st">'era'</span><span class="op">]</span><span class="op">]</span>, <span class="va">big_share</span><span class="op">[[</span><span class="st">'roundBucket'</span><span class="op">]</span><span class="op">]</span><span class="op">)</span>,</span>
+<span><span class="op">]</span></span>
 <span><span class="fu">make_table</span><span class="op">(</span></span>
-<span>  <span class="va">tall_share</span>,</span>
-<span>  caption <span class="op">=</span> <span class="st">'Share of drafted skaters measuring at least 6-foot-2.'</span></span>
+<span>  <span class="va">big_share</span>,</span>
+<span>  caption <span class="op">=</span> <span class="st">'Share of drafted skaters at least 6-foot-2 and 205 pounds.'</span>,</span>
+<span>  digits <span class="op">=</span> <span class="fl">3</span></span>
 <span><span class="op">)</span></span></code></pre></div>
 <table class="table">
-<caption>Share of drafted skaters measuring at least 6-foot-2.</caption>
+<caption>Share of drafted skaters at least 6-foot-2 and 205
+pounds.</caption>
 <thead><tr class="header">
 <th align="left">era</th>
 <th align="left">roundBucket</th>
-<th align="right">tallSkater</th>
+<th align="right">bigSkater</th>
 <th align="right">n</th>
 </tr></thead>
 <tbody>
 <tr class="odd">
 <td align="left">1979-1989</td>
 <td align="left">Round 1</td>
-<td align="right">0.363</td>
+<td align="right">0.221</td>
 <td align="right">226</td>
 </tr>
 <tr class="even">
 <td align="left">1979-1989</td>
 <td align="left">Rounds 2-7</td>
-<td align="right">0.296</td>
-<td align="right">2070</td>
+<td align="right">0.153</td>
+<td align="right">1225</td>
 </tr>
 <tr class="odd">
 <td align="left">1990-1999</td>
 <td align="left">Round 1</td>
-<td align="right">0.608</td>
+<td align="right">0.500</td>
 <td align="right">232</td>
 </tr>
 <tr class="even">
 <td align="left">1990-1999</td>
 <td align="left">Rounds 2-7</td>
-<td align="right">0.402</td>
-<td align="right">2107</td>
+<td align="right">0.224</td>
+<td align="right">1405</td>
 </tr>
 <tr class="odd">
 <td align="left">2000-2009</td>
 <td align="left">Round 1</td>
-<td align="right">0.536</td>
+<td align="right">0.349</td>
 <td align="right">278</td>
 </tr>
 <tr class="even">
 <td align="left">2000-2009</td>
 <td align="left">Rounds 2-7</td>
-<td align="right">0.429</td>
-<td align="right">1978</td>
+<td align="right">0.214</td>
+<td align="right">1693</td>
 </tr>
 <tr class="odd">
 <td align="left">2010-2019</td>
 <td align="left">Round 1</td>
-<td align="right">0.368</td>
+<td align="right">0.132</td>
 <td align="right">296</td>
 </tr>
 <tr class="even">
 <td align="left">2010-2019</td>
 <td align="left">Rounds 2-7</td>
-<td align="right">0.331</td>
+<td align="right">0.093</td>
 <td align="right">1609</td>
 </tr>
 <tr class="odd">
-<td align="left">2020-2025</td>
+<td align="left">2020-present</td>
 <td align="left">Round 1</td>
-<td align="right">0.400</td>
+<td align="right">0.103</td>
 <td align="right">185</td>
 </tr>
 <tr class="even">
-<td align="left">2020-2025</td>
+<td align="left">2020-present</td>
 <td align="left">Rounds 2-7</td>
-<td align="right">0.417</td>
+<td align="right">0.114</td>
 <td align="right">1017</td>
 </tr>
 </tbody>
 </table>
-<p>The first round is where the story becomes loudest. In the 1990s,
-about 60.8 percent of first-round skaters in the sample were at least
-6-foot-2. In the 2010s that share dropped to about 36.8 percent. That is
-a major shift in what the “ideal” first-round skater looked like.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># Plot tall-skater shares by era.</span></span>
-<span><span class="va">tall_matrix</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">rbind</a></span><span class="op">(</span></span>
-<span>  <span class="va">tall_share</span><span class="op">[[</span><span class="st">'tallSkater'</span><span class="op">]</span><span class="op">]</span><span class="op">[</span><span class="va">tall_share</span><span class="op">[[</span><span class="st">'roundBucket'</span><span class="op">]</span><span class="op">]</span> <span class="op">==</span> <span class="st">'Round 1'</span><span class="op">]</span>,</span>
-<span>  <span class="va">tall_share</span><span class="op">[[</span><span class="st">'tallSkater'</span><span class="op">]</span><span class="op">]</span><span class="op">[</span><span class="va">tall_share</span><span class="op">[[</span><span class="st">'roundBucket'</span><span class="op">]</span><span class="op">]</span> <span class="op">==</span> <span class="st">'Rounds 2-7'</span><span class="op">]</span></span>
+<code class="sourceCode R"><span><span class="co"># Plot big-skater share by era.</span></span>
+<span><span class="va">round_levels</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'Round 1'</span>, <span class="st">'Rounds 2-7'</span><span class="op">)</span></span>
+<span><span class="va">big_matrix</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">rbind</a></span><span class="op">(</span></span>
+<span>  <span class="va">big_share</span><span class="op">[[</span><span class="st">'bigSkater'</span><span class="op">]</span><span class="op">]</span><span class="op">[</span><span class="va">big_share</span><span class="op">[[</span><span class="st">'roundBucket'</span><span class="op">]</span><span class="op">]</span> <span class="op">==</span> <span class="va">round_levels</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span>,</span>
+<span>  <span class="va">big_share</span><span class="op">[[</span><span class="st">'bigSkater'</span><span class="op">]</span><span class="op">]</span><span class="op">[</span><span class="va">big_share</span><span class="op">[[</span><span class="st">'roundBucket'</span><span class="op">]</span><span class="op">]</span> <span class="op">==</span> <span class="va">round_levels</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span><span class="op">]</span></span>
 <span><span class="op">)</span></span>
 <span><span class="fu">graphics</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/graphics/barplot.html" class="external-link">barplot</a></span><span class="op">(</span></span>
-<span>  <span class="va">tall_matrix</span>,</span>
+<span>  <span class="va">big_matrix</span>,</span>
 <span>  beside <span class="op">=</span> <span class="cn">TRUE</span>,</span>
-<span>  col <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'#1b4332'</span>, <span class="st">'#95d5b2'</span><span class="op">)</span>,</span>
-<span>  ylim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">0.7</span><span class="op">)</span>,</span>
+<span>  col <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'#2d6a4f'</span>, <span class="st">'#95d5b2'</span><span class="op">)</span>,</span>
+<span>  border <span class="op">=</span> <span class="cn">NA</span>,</span>
+<span>  ylim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">max</a></span><span class="op">(</span><span class="va">big_matrix</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op">*</span> <span class="fl">1.25</span><span class="op">)</span>,</span>
 <span>  names.arg <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/levels.html" class="external-link">levels</a></span><span class="op">(</span><span class="va">draft_tbl</span><span class="op">[[</span><span class="st">'era'</span><span class="op">]</span><span class="op">]</span><span class="op">)</span>,</span>
-<span>  ylab <span class="op">=</span> <span class="st">'Share At Least 6-Foot-2'</span>,</span>
-<span>  xlab <span class="op">=</span> <span class="st">'Draft Era'</span></span>
+<span>  las <span class="op">=</span> <span class="fl">2</span>,</span>
+<span>  ylab <span class="op">=</span> <span class="st">'Share of Big Skaters'</span></span>
 <span><span class="op">)</span></span>
 <span><span class="fu">graphics</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/graphics/legend.html" class="external-link">legend</a></span><span class="op">(</span></span>
 <span>  <span class="st">'topright'</span>,</span>
-<span>  legend <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'Round 1'</span>, <span class="st">'Rounds 2-7'</span><span class="op">)</span>,</span>
-<span>  fill <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'#1b4332'</span>, <span class="st">'#95d5b2'</span><span class="op">)</span>,</span>
+<span>  legend <span class="op">=</span> <span class="va">round_levels</span>,</span>
+<span>  fill <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'#2d6a4f'</span>, <span class="st">'#95d5b2'</span><span class="op">)</span>,</span>
 <span>  bty <span class="op">=</span> <span class="st">'n'</span></span>
 <span><span class="op">)</span></span></code></pre></div>
 <div class="figure" style="text-align: center">
-<img src="draft-size-bias_files/figure-html/tall-share-plot-1.png" class="r-plt" alt="Share of drafted skaters at least 6-foot-2 by era and round bucket." width="90%"><p class="caption">
-Share of drafted skaters at least 6-foot-2 by era and round bucket.
+<img src="draft-size-bias_files/figure-html/big-share-plot-1.png" class="r-plt" alt="Share of big skaters by era and round bucket." width="92%"><p class="caption">
+Share of big skaters by era and round bucket.
 </p>
 </div>
+<p>This version makes the first-round story louder. Bigger bodies were
+not merely available in the draft pool; teams were more willing to spend
+their most valuable picks on them during the peak-size era.</p>
 </div>
 <div class="section level2">
-<h2 id="separate-position-from-era">Separate Position From Era<a class="anchor" aria-label="anchor" href="#separate-position-from-era"></a>
+<h2 id="separate-defensemen-from-forwards">Separate Defensemen From Forwards<a class="anchor" aria-label="anchor" href="#separate-defensemen-from-forwards"></a>
 </h2>
-<p>Part of any draft-size story is just that defensemen tend to run
-bigger than forwards. So it helps to break the sample out by position
-family.</p>
+<p>The obvious objection is positional mix. Defensemen are bigger than
+forwards, so maybe the era pattern is just a defenseman pattern. We can
+split the sample by position family before jumping to conclusions.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Summarize size by era and position family.</span></span>
 <span><span class="va">position_summary</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/aggregate.html" class="external-link">aggregate</a></span><span class="op">(</span></span>
-<span>  <span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">cbind</a></span><span class="op">(</span><span class="va">height</span>, <span class="va">weight</span><span class="op">)</span> <span class="op">~</span> <span class="va">era</span> <span class="op">+</span> <span class="va">positionBucket</span>,</span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">cbind</a></span><span class="op">(</span><span class="va">height</span>, <span class="va">weight</span>, <span class="va">bigSkater</span><span class="op">)</span> <span class="op">~</span> <span class="va">era</span> <span class="op">+</span> <span class="va">positionBucket</span>,</span>
 <span>  data <span class="op">=</span> <span class="va">draft_tbl</span>,</span>
 <span>  FUN <span class="op">=</span> <span class="va">mean</span></span>
 <span><span class="op">)</span></span>
+<span><span class="va">position_counts</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/aggregate.html" class="external-link">aggregate</a></span><span class="op">(</span></span>
+<span>  <span class="va">height</span> <span class="op">~</span> <span class="va">era</span> <span class="op">+</span> <span class="va">positionBucket</span>,</span>
+<span>  data <span class="op">=</span> <span class="va">draft_tbl</span>,</span>
+<span>  FUN <span class="op">=</span> <span class="va">length</span></span>
+<span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">position_counts</span><span class="op">)</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">position_counts</span><span class="op">)</span> <span class="op">==</span> <span class="st">'height'</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="st">'n'</span></span>
+<span><span class="va">position_summary</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/merge.html" class="external-link">merge</a></span><span class="op">(</span></span>
+<span>  <span class="va">position_summary</span>,</span>
+<span>  <span class="va">position_counts</span>,</span>
+<span>  by <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'era'</span>, <span class="st">'positionBucket'</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
 <span><span class="fu">make_table</span><span class="op">(</span></span>
 <span>  <span class="va">position_summary</span>,</span>
-<span>  caption <span class="op">=</span> <span class="st">'Average drafted skater size by era and position family.'</span></span>
+<span>  caption <span class="op">=</span> <span class="st">'Drafted skater size by era and position family.'</span>,</span>
+<span>  digits <span class="op">=</span> <span class="fl">3</span></span>
 <span><span class="op">)</span></span></code></pre></div>
 <table class="table">
-<caption>Average drafted skater size by era and position
-family.</caption>
+<caption>Drafted skater size by era and position family.</caption>
 <thead><tr class="header">
 <th align="left">era</th>
 <th align="left">positionBucket</th>
 <th align="right">height</th>
 <th align="right">weight</th>
+<th align="right">bigSkater</th>
+<th align="right">n</th>
 </tr></thead>
 <tbody>
 <tr class="odd">
 <td align="left">1979-1989</td>
 <td align="left">Defense</td>
-<td align="right">72.981</td>
-<td align="right">197.046</td>
-</tr>
-<tr class="even">
-<td align="left">1990-1999</td>
-<td align="left">Defense</td>
-<td align="right">73.897</td>
-<td align="right">200.884</td>
-</tr>
-<tr class="odd">
-<td align="left">2000-2009</td>
-<td align="left">Defense</td>
-<td align="right">73.888</td>
-<td align="right">200.536</td>
-</tr>
-<tr class="even">
-<td align="left">2010-2019</td>
-<td align="left">Defense</td>
-<td align="right">73.255</td>
-<td align="right">190.180</td>
-</tr>
-<tr class="odd">
-<td align="left">2020-2025</td>
-<td align="left">Defense</td>
-<td align="right">73.840</td>
-<td align="right">190.435</td>
+<td align="right">73.139</td>
+<td align="right">198.336</td>
+<td align="right">0.224</td>
+<td align="right">518</td>
 </tr>
 <tr class="even">
 <td align="left">1979-1989</td>
 <td align="left">Forward</td>
-<td align="right">72.117</td>
-<td align="right">190.719</td>
+<td align="right">72.262</td>
+<td align="right">192.636</td>
+<td align="right">0.130</td>
+<td align="right">933</td>
 </tr>
 <tr class="odd">
 <td align="left">1990-1999</td>
+<td align="left">Defense</td>
+<td align="right">74.088</td>
+<td align="right">203.200</td>
+<td align="right">0.358</td>
+<td align="right">589</td>
+</tr>
+<tr class="even">
+<td align="left">1990-1999</td>
 <td align="left">Forward</td>
-<td align="right">72.781</td>
-<td align="right">194.079</td>
+<td align="right">72.972</td>
+<td align="right">196.349</td>
+<td align="right">0.210</td>
+<td align="right">1048</td>
+</tr>
+<tr class="odd">
+<td align="left">2000-2009</td>
+<td align="left">Defense</td>
+<td align="right">73.915</td>
+<td align="right">201.045</td>
+<td align="right">0.325</td>
+<td align="right">714</td>
 </tr>
 <tr class="even">
 <td align="left">2000-2009</td>
 <td align="left">Forward</td>
-<td align="right">72.832</td>
-<td align="right">193.575</td>
+<td align="right">72.852</td>
+<td align="right">193.936</td>
+<td align="right">0.181</td>
+<td align="right">1257</td>
 </tr>
 <tr class="odd">
+<td align="left">2010-2019</td>
+<td align="left">Defense</td>
+<td align="right">73.255</td>
+<td align="right">190.180</td>
+<td align="right">0.128</td>
+<td align="right">713</td>
+</tr>
+<tr class="even">
 <td align="left">2010-2019</td>
 <td align="left">Forward</td>
 <td align="right">72.246</td>
 <td align="right">185.289</td>
+<td align="right">0.081</td>
+<td align="right">1192</td>
+</tr>
+<tr class="odd">
+<td align="left">2020-present</td>
+<td align="left">Defense</td>
+<td align="right">73.840</td>
+<td align="right">190.435</td>
+<td align="right">0.167</td>
+<td align="right">430</td>
 </tr>
 <tr class="even">
-<td align="left">2020-2025</td>
+<td align="left">2020-present</td>
 <td align="left">Forward</td>
 <td align="right">72.516</td>
 <td align="right">183.561</td>
+<td align="right">0.082</td>
+<td align="right">772</td>
 </tr>
 </tbody>
 </table>
-<p>Defensemen are consistently taller and heavier than forwards, which
-is exactly what most observers would expect. But the 1990s surge does
-not disappear once position is split out. The size bulge is still
-visible, especially for first-round picks, so this is not just a story
-about drafting more defensemen.</p>
+<p>Defensemen are bigger in every era, as expected. But the 1990s/2000s
+pattern does not vanish. The draft’s size cycle shows up inside position
+families, not only because teams drafted more defensemen.</p>
 </div>
 <div class="section level2">
 <h2 id="estimate-first-round-premium">Estimate First-Round Premium<a class="anchor" aria-label="anchor" href="#estimate-first-round-premium"></a>
 </h2>
-<p>As a simple check, we can fit a linear model with height as the
-response and draft year, first-round status, and defense status as
-predictors.</p>
+<p>A simple model helps summarize the top-of-board effect while
+controlling for position and broad era.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># Fit simple draft-height model.</span></span>
-<span><span class="va">draft_fit</span> <span class="op">&lt;-</span> <span class="fu">stats</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/stats/lm.html" class="external-link">lm</a></span><span class="op">(</span></span>
-<span>  <span class="va">height</span> <span class="op">~</span> <span class="va">draftYear</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/base/AsIs.html" class="external-link">I</a></span><span class="op">(</span><span class="va">roundNumber</span> <span class="op">==</span> <span class="fl">1</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/base/AsIs.html" class="external-link">I</a></span><span class="op">(</span><span class="va">positionCode</span> <span class="op">==</span> <span class="st">'D'</span><span class="op">)</span>,</span>
+<code class="sourceCode R"><span><span class="co"># Fit height model.</span></span>
+<span><span class="va">height_fit</span> <span class="op">&lt;-</span> <span class="fu">stats</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/stats/lm.html" class="external-link">lm</a></span><span class="op">(</span></span>
+<span>  <span class="va">height</span> <span class="op">~</span> <span class="va">era</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/base/AsIs.html" class="external-link">I</a></span><span class="op">(</span><span class="va">roundNumber</span> <span class="op">==</span> <span class="fl">1</span><span class="op">)</span> <span class="op">+</span> <span class="va">positionBucket</span>,</span>
 <span>  data <span class="op">=</span> <span class="va">draft_tbl</span></span>
 <span><span class="op">)</span></span>
-<span><span class="va">draft_fit_tbl</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html" class="external-link">as.data.frame</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">draft_fit</span><span class="op">)</span><span class="op">$</span><span class="va">coefficients</span><span class="op">)</span></span>
-<span><span class="va">draft_fit_tbl</span><span class="op">[[</span><span class="st">'term'</span><span class="op">]</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">rownames</a></span><span class="op">(</span><span class="va">draft_fit_tbl</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">rownames</a></span><span class="op">(</span><span class="va">draft_fit_tbl</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="cn">NULL</span></span>
-<span><span class="va">draft_fit_tbl</span><span class="op">[[</span><span class="st">'term'</span><span class="op">]</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
-<span>  <span class="st">'Intercept'</span>,</span>
-<span>  <span class="st">'Draft year'</span>,</span>
-<span>  <span class="st">'First-round indicator'</span>,</span>
-<span>  <span class="st">'Defense indicator'</span></span>
-<span><span class="op">)</span></span>
-<span><span class="va">draft_fit_tbl</span> <span class="op">&lt;-</span> <span class="va">draft_fit_tbl</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
+<span><span class="va">height_fit_tbl</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html" class="external-link">as.data.frame</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">height_fit</span><span class="op">)</span><span class="op">$</span><span class="va">coefficients</span><span class="op">)</span></span>
+<span><span class="va">height_fit_tbl</span><span class="op">[[</span><span class="st">'term'</span><span class="op">]</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">rownames</a></span><span class="op">(</span><span class="va">height_fit_tbl</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">rownames</a></span><span class="op">(</span><span class="va">height_fit_tbl</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="cn">NULL</span></span>
+<span><span class="va">height_fit_tbl</span> <span class="op">&lt;-</span> <span class="va">height_fit_tbl</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
 <span>  <span class="st">'term'</span>,</span>
 <span>  <span class="st">'Estimate'</span>,</span>
 <span>  <span class="st">'Std. Error'</span>,</span>
@@ -568,18 +652,18 @@ predictors.</p>
 <span>  <span class="st">'Pr(&gt;|t|)'</span></span>
 <span><span class="op">)</span><span class="op">]</span></span>
 <span><span class="fu">make_table</span><span class="op">(</span></span>
-<span>  <span class="va">draft_fit_tbl</span>,</span>
+<span>  <span class="va">height_fit_tbl</span>,</span>
 <span>  caption <span class="op">=</span> <span class="st">'Linear model of drafted skater height.'</span>,</span>
 <span>  digits <span class="op">=</span> <span class="fl">4</span></span>
 <span><span class="op">)</span></span></code></pre></div>
 <table class="table">
 <caption>Linear model of drafted skater height.</caption>
 <colgroup>
-<col width="31%">
-<col width="13%">
+<col width="32%">
+<col width="12%">
 <col width="15%">
-<col width="11%">
-<col width="27%">
+<col width="13%">
+<col width="26%">
 </colgroup>
 <thead><tr class="header">
 <th align="left">term</th>
@@ -590,55 +674,75 @@ predictors.</p>
 </tr></thead>
 <tbody>
 <tr class="odd">
-<td align="left">Intercept</td>
-<td align="right">58.4427</td>
-<td align="right">3.0281</td>
-<td align="right">19.3002</td>
-<td align="right">0</td>
+<td align="left">(Intercept)</td>
+<td align="right">73.1921</td>
+<td align="right">0.0603</td>
+<td align="right">1213.2533</td>
+<td align="right">0.0000</td>
 </tr>
 <tr class="even">
-<td align="left">Draft year</td>
-<td align="right">0.0070</td>
-<td align="right">0.0015</td>
-<td align="right">4.6221</td>
-<td align="right">0</td>
+<td align="left">era1990-1999</td>
+<td align="right">0.8027</td>
+<td align="right">0.0714</td>
+<td align="right">11.2417</td>
+<td align="right">0.0000</td>
 </tr>
 <tr class="odd">
-<td align="left">First-round indicator</td>
-<td align="right">0.5170</td>
-<td align="right">0.0610</td>
-<td align="right">8.4729</td>
-<td align="right">0</td>
+<td align="left">era2000-2009</td>
+<td align="right">0.6635</td>
+<td align="right">0.0685</td>
+<td align="right">9.6853</td>
+<td align="right">0.0000</td>
 </tr>
 <tr class="even">
-<td align="left">Defense indicator</td>
-<td align="right">1.0542</td>
-<td align="right">0.0413</td>
-<td align="right">25.5233</td>
-<td align="right">0</td>
+<td align="left">era2010-2019</td>
+<td align="right">0.0304</td>
+<td align="right">0.0690</td>
+<td align="right">0.4410</td>
+<td align="right">0.6592</td>
+</tr>
+<tr class="odd">
+<td align="left">era2020-present</td>
+<td align="right">0.4145</td>
+<td align="right">0.0772</td>
+<td align="right">5.3666</td>
+<td align="right">0.0000</td>
+</tr>
+<tr class="even">
+<td align="left">I(roundNumber == 1)TRUE</td>
+<td align="right">0.4767</td>
+<td align="right">0.0616</td>
+<td align="right">7.7428</td>
+<td align="right">0.0000</td>
+</tr>
+<tr class="odd">
+<td align="left">positionBucketForward</td>
+<td align="right">-1.0756</td>
+<td align="right">0.0456</td>
+<td align="right">-23.5900</td>
+<td align="right">0.0000</td>
 </tr>
 </tbody>
 </table>
-<p>This model says the first-round premium is still real even after
-accounting for time and position. First-round skaters come in roughly
-0.52 inches taller on average, while defensemen add about 1.05 inches on
-top of that. The draft-year slope itself is small because the historical
-pattern is not a straight line. That is the core takeaway of the whole
-article: draft size preference looks less like a steady march and more
-like a boom that peaked in the 1990s and early 2000s.</p>
+<p>The model is not meant to be a final draft theory. It is a compact
+check on the pattern. The first-round coefficient stays positive after
+accounting for era and position family, which matches the visual story:
+teams have historically paid a premium for size near the top of the
+board.</p>
 </div>
 <div class="section level2">
 <h2 id="what-we-learned">What We Learned<a class="anchor" aria-label="anchor" href="#what-we-learned"></a>
 </h2>
-<p>The draft has never been indifferent to size, especially in the first
-round. Bigger skaters have consistently been favored near the top of the
-board, and defensemen have carried their own structural size premium the
-whole way through. But the strongest form of that bias does not appear
-to be a modern invention. In this sample, the most size-forward era is
-the 1990s, with the 2000s not far behind. That makes
-<code><a href="../reference/draft_picks.html">nhlscraper::draft_picks()</a></code> a useful reminder that draft
-archetypes move in cycles: the league does not just change, it
-overcorrects and then changes back.</p>
+<p>The draft’s size preference looks cyclical, not linear. The 1990s and
+2000s were the loudest size eras in this sample, especially in Round 1.
+Since then, the top of the board has become less extreme, even though
+first-round skaters remain bigger than later-round skaters on
+average.</p>
+<p>That is the useful lesson for <code>nhlscraper</code>: a simple
+endpoint like <code><a href="../reference/draft_picks.html">draft_picks()</a></code> can answer a surprisingly rich
+historical question when you reshape it carefully. The package gives you
+the raw ingredients; the fun starts when you turn those ingredients into
+a hockey argument someone would actually want to debate.</p>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside>

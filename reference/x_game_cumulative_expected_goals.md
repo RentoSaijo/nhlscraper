@@ -1,7 +1,9 @@
-# Save an X (Twitter) share-able cumulative expected goals (xG) time-series plot for a game
+# Save an X (Twitter) shareable cumulative expected goals (xG) plot
 
-`x_game_cumulative_expected_goals()` saves an X share-able cumulative xG
-time-series plot for a given `game` as a PNG.
+`x_game_cumulative_expected_goals()` is the X/Twitter-sized companion to
+[`ig_game_cumulative_expected_goals()`](https://rentosaijo.github.io/nhlscraper/reference/ig_game_cumulative_expected_goals.md).
+It uses the same xG-scored cumulative series on a 1200-by-675-style
+canvas.
 
 ## Usage
 
@@ -25,18 +27,19 @@ x_game_cum_xG(game = 2023030417, model = NULL)
 
 - save:
 
-  logical only FALSE for tests
+  logical; use `FALSE` to draw on the active graphics device during
+  tests or custom workflows
 
 ## Value
 
-`NULL`
+`NULL`, invisibly
 
 ## Examples
 
 ``` r
 # May take >5s, so skip.
 x_game_cumulative_expected_goals(
-  game  = 2023030417, 
+  game  = 2023030417,
   save  = FALSE
 )
 ```

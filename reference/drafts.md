@@ -1,8 +1,8 @@
 # Access all the drafts
 
-`drafts()` retrieves all the drafts as a `data.frame` where each row
-represents draft and includes detail on venue/location geography and
-regional metadata.
+`drafts()` merges the records draft master and stats draft-round
+endpoints, returning one row per draft year with IDs, dates, location,
+and round metadata.
 
 ## Usage
 

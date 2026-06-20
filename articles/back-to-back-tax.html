@@ -5,7 +5,7 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<title>How Costly Are Back-to-Backs in the Salary-Cap Era? • nhlscraper</title>
+<title>How Much Do Back-to-Backs Cost? • nhlscraper</title>
 <!-- favicons --><link rel="icon" type="image/png" sizes="96x96" href="../favicon-96x96.png">
 <link rel="icon" type="”image/svg+xml”" href="../favicon.svg">
 <link rel="apple-touch-icon" sizes="180x180" href="../apple-touch-icon.png">
@@ -15,7 +15,7 @@
 <link href="../deps/bootstrap-5.3.8/bootstrap.min.css" rel="stylesheet">
 <script src="../deps/bootstrap-5.3.8/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
 <link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
-<script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="How Costly Are Back-to-Backs in the Salary-Cap Era?">
+<script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="How Much Do Back-to-Backs Cost?">
 </head>
 <body>
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
@@ -81,7 +81,7 @@
 
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
-      <img src="../logo.png" class="logo" alt=""><h1>How Costly Are Back-to-Backs in the Salary-Cap Era?</h1>
+      <img src="../logo.png" class="logo" alt=""><h1>How Much Do Back-to-Backs Cost?</h1>
             
       
       <small class="dont-index">Source: <a href="https://github.com/RentoSaijo/nhlscraper/blob/main/vignettes/back-to-back-tax.Rmd" class="external-link"><code>vignettes/back-to-back-tax.Rmd</code></a></small>
@@ -91,35 +91,38 @@
     
     
 <div class="section level2">
-<h2 id="overview">Overview<a class="anchor" aria-label="anchor" href="#overview"></a>
+<h2 id="question">Question<a class="anchor" aria-label="anchor" href="#question"></a>
 </h2>
-<p>Few schedule complaints are as universal as the back-to-back. Coaches
-hate them, players complain about them, broadcasters invoke them as a
-built-in excuse, and fans treat them as a warning label the moment the
-puck drops. But how big is the penalty, really? Is the back-to-back tax
-large enough to show up cleanly in results, or is it mostly noise
-wrapped in narrative? This example uses <code><a href="../reference/games.html">nhlscraper::games()</a></code>
-and <code><a href="../reference/teams.html">nhlscraper::teams()</a></code> to build every regular-season
-team-game from the salary-cap era onward, compute the number of off-days
-before each game, and compare win rate and goal differential across rest
-buckets. The result is a compact way to turn a schedule cliché into a
-league-wide estimate.</p>
+<p>The second night of a back-to-back is one of hockey’s favorite
+pregame excuses. It sounds reasonable: tired legs, shorter meetings,
+travel, less goalie certainty, no real practice day. But schedule
+complaints are easy to overstate.</p>
+<p>This guided example asks a league-wide question:</p>
+<blockquote>
+<p><strong>In the salary-cap era, how much worse do teams perform when
+they play with zero days of rest?</strong></p>
+</blockquote>
+<p>We will use <code><a href="../reference/games.html">nhlscraper::games()</a></code> to build one row per
+team-game, calculate rest from each team’s previous game date, and
+compare win rate and goal differential.</p>
 </div>
 <div class="section level2">
-<h2 id="build-team-game-table">Build Team-Game Table<a class="anchor" aria-label="anchor" href="#build-team-game-table"></a>
+<h2 id="build-team-games">Build Team-Games<a class="anchor" aria-label="anchor" href="#build-team-games"></a>
 </h2>
-<p><code><a href="../reference/games.html">nhlscraper::games()</a></code> gives us one row per game. To study
-rest, we need one row per <strong>team-game</strong>, which means
-expanding each game into a home-team record and an away-team record.</p>
+<p>The source table has one row per game. Rest is a team-level property,
+so each game becomes two records: one for the home team and one for the
+away team.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># Pull regular-season game and team records.</span></span>
+<code class="sourceCode R"><span><span class="co"># Pull game and team catalogs.</span></span>
 <span><span class="va">games_tbl</span> <span class="op">&lt;-</span> <span class="fu">nhlscraper</span><span class="fu">::</span><span class="fu"><a href="../reference/games.html">games</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="va">teams_tbl</span> <span class="op">&lt;-</span> <span class="fu">nhlscraper</span><span class="fu">::</span><span class="fu"><a href="../reference/teams.html">teams</a></span><span class="op">(</span><span class="op">)</span></span>
 <span></span>
-<span><span class="co"># Keep salary-cap regular-season games.</span></span>
+<span><span class="co"># Keep completed salary-cap regular-season games.</span></span>
 <span><span class="va">games_tbl</span> <span class="op">&lt;-</span> <span class="va">games_tbl</span><span class="op">[</span></span>
 <span>  <span class="va">games_tbl</span><span class="op">[[</span><span class="st">'seasonId'</span><span class="op">]</span><span class="op">]</span> <span class="op">&gt;=</span> <span class="fl">20052006</span> <span class="op">&amp;</span></span>
-<span>    <span class="va">games_tbl</span><span class="op">[[</span><span class="st">'gameTypeId'</span><span class="op">]</span><span class="op">]</span> <span class="op">==</span> <span class="fl">2</span>,</span>
+<span>    <span class="va">games_tbl</span><span class="op">[[</span><span class="st">'gameTypeId'</span><span class="op">]</span><span class="op">]</span> <span class="op">==</span> <span class="fl">2</span> <span class="op">&amp;</span></span>
+<span>    <span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">games_tbl</span><span class="op">[[</span><span class="st">'homeScore'</span><span class="op">]</span><span class="op">]</span><span class="op">)</span> <span class="op">&amp;</span></span>
+<span>    <span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">games_tbl</span><span class="op">[[</span><span class="st">'visitingScore'</span><span class="op">]</span><span class="op">]</span><span class="op">)</span>,</span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
 <span>    <span class="st">'gameId'</span>,</span>
 <span>    <span class="st">'seasonId'</span>,</span>
@@ -133,41 +136,46 @@ expanding each game into a home-team record and an away-team record.</p>
 <span></span>
 <span><span class="co"># Expand games into team-game rows.</span></span>
 <span><span class="va">home_games</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span>
-<span>  gameId <span class="op">=</span> <span class="va">games_tbl</span><span class="op">[[</span><span class="st">'gameId'</span><span class="op">]</span><span class="op">]</span>,</span>
-<span>  seasonId <span class="op">=</span> <span class="va">games_tbl</span><span class="op">[[</span><span class="st">'seasonId'</span><span class="op">]</span><span class="op">]</span>,</span>
-<span>  gameDate <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/as.Date.html" class="external-link">as.Date</a></span><span class="op">(</span><span class="va">games_tbl</span><span class="op">[[</span><span class="st">'gameDate'</span><span class="op">]</span><span class="op">]</span><span class="op">)</span>,</span>
-<span>  teamId <span class="op">=</span> <span class="va">games_tbl</span><span class="op">[[</span><span class="st">'homeTeamId'</span><span class="op">]</span><span class="op">]</span>,</span>
-<span>  isHome <span class="op">=</span> <span class="cn">TRUE</span>,</span>
-<span>  goalsFor <span class="op">=</span> <span class="va">games_tbl</span><span class="op">[[</span><span class="st">'homeScore'</span><span class="op">]</span><span class="op">]</span>,</span>
+<span>  gameId       <span class="op">=</span> <span class="va">games_tbl</span><span class="op">[[</span><span class="st">'gameId'</span><span class="op">]</span><span class="op">]</span>,</span>
+<span>  seasonId     <span class="op">=</span> <span class="va">games_tbl</span><span class="op">[[</span><span class="st">'seasonId'</span><span class="op">]</span><span class="op">]</span>,</span>
+<span>  gameDate     <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/as.Date.html" class="external-link">as.Date</a></span><span class="op">(</span><span class="va">games_tbl</span><span class="op">[[</span><span class="st">'gameDate'</span><span class="op">]</span><span class="op">]</span><span class="op">)</span>,</span>
+<span>  teamId       <span class="op">=</span> <span class="va">games_tbl</span><span class="op">[[</span><span class="st">'homeTeamId'</span><span class="op">]</span><span class="op">]</span>,</span>
+<span>  isHome       <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  goalsFor     <span class="op">=</span> <span class="va">games_tbl</span><span class="op">[[</span><span class="st">'homeScore'</span><span class="op">]</span><span class="op">]</span>,</span>
 <span>  goalsAgainst <span class="op">=</span> <span class="va">games_tbl</span><span class="op">[[</span><span class="st">'visitingScore'</span><span class="op">]</span><span class="op">]</span></span>
 <span><span class="op">)</span></span>
 <span><span class="va">away_games</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span>
-<span>  gameId <span class="op">=</span> <span class="va">games_tbl</span><span class="op">[[</span><span class="st">'gameId'</span><span class="op">]</span><span class="op">]</span>,</span>
-<span>  seasonId <span class="op">=</span> <span class="va">games_tbl</span><span class="op">[[</span><span class="st">'seasonId'</span><span class="op">]</span><span class="op">]</span>,</span>
-<span>  gameDate <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/as.Date.html" class="external-link">as.Date</a></span><span class="op">(</span><span class="va">games_tbl</span><span class="op">[[</span><span class="st">'gameDate'</span><span class="op">]</span><span class="op">]</span><span class="op">)</span>,</span>
-<span>  teamId <span class="op">=</span> <span class="va">games_tbl</span><span class="op">[[</span><span class="st">'visitingTeamId'</span><span class="op">]</span><span class="op">]</span>,</span>
-<span>  isHome <span class="op">=</span> <span class="cn">FALSE</span>,</span>
-<span>  goalsFor <span class="op">=</span> <span class="va">games_tbl</span><span class="op">[[</span><span class="st">'visitingScore'</span><span class="op">]</span><span class="op">]</span>,</span>
+<span>  gameId       <span class="op">=</span> <span class="va">games_tbl</span><span class="op">[[</span><span class="st">'gameId'</span><span class="op">]</span><span class="op">]</span>,</span>
+<span>  seasonId     <span class="op">=</span> <span class="va">games_tbl</span><span class="op">[[</span><span class="st">'seasonId'</span><span class="op">]</span><span class="op">]</span>,</span>
+<span>  gameDate     <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/as.Date.html" class="external-link">as.Date</a></span><span class="op">(</span><span class="va">games_tbl</span><span class="op">[[</span><span class="st">'gameDate'</span><span class="op">]</span><span class="op">]</span><span class="op">)</span>,</span>
+<span>  teamId       <span class="op">=</span> <span class="va">games_tbl</span><span class="op">[[</span><span class="st">'visitingTeamId'</span><span class="op">]</span><span class="op">]</span>,</span>
+<span>  isHome       <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  goalsFor     <span class="op">=</span> <span class="va">games_tbl</span><span class="op">[[</span><span class="st">'visitingScore'</span><span class="op">]</span><span class="op">]</span>,</span>
 <span>  goalsAgainst <span class="op">=</span> <span class="va">games_tbl</span><span class="op">[[</span><span class="st">'homeScore'</span><span class="op">]</span><span class="op">]</span></span>
 <span><span class="op">)</span></span>
 <span><span class="va">team_games</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">rbind</a></span><span class="op">(</span><span class="va">home_games</span>, <span class="va">away_games</span><span class="op">)</span></span>
 <span></span>
-<span><span class="co"># Sort within team and compute off-days since previous game.</span></span>
+<span><span class="co"># Sort within team.</span></span>
 <span><span class="va">team_games</span> <span class="op">&lt;-</span> <span class="va">team_games</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/order.html" class="external-link">order</a></span><span class="op">(</span></span>
 <span>  <span class="va">team_games</span><span class="op">[[</span><span class="st">'teamId'</span><span class="op">]</span><span class="op">]</span>,</span>
 <span>  <span class="va">team_games</span><span class="op">[[</span><span class="st">'gameDate'</span><span class="op">]</span><span class="op">]</span>,</span>
 <span>  <span class="va">team_games</span><span class="op">[[</span><span class="st">'gameId'</span><span class="op">]</span><span class="op">]</span></span>
 <span><span class="op">)</span>, <span class="op">]</span></span>
-<span><span class="va">team_games</span><span class="op">[[</span><span class="st">'previousGameDate'</span><span class="op">]</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/ave.html" class="external-link">ave</a></span><span class="op">(</span></span>
-<span>  <span class="va">team_games</span><span class="op">[[</span><span class="st">'gameDate'</span><span class="op">]</span><span class="op">]</span>,</span>
-<span>  <span class="va">team_games</span><span class="op">[[</span><span class="st">'teamId'</span><span class="op">]</span><span class="op">]</span>,</span>
-<span>  FUN <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/as.Date.html" class="external-link">as.Date</a></span><span class="op">(</span><span class="cn">NA</span><span class="op">)</span>, <span class="fu">utils</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">x</span>, <span class="op">-</span><span class="fl">1</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Compute previous game date within team.</span></span>
+<span><span class="va">team_games</span><span class="op">[[</span><span class="st">'previousGameDate'</span><span class="op">]</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/as.Date.html" class="external-link">as.Date</a></span><span class="op">(</span><span class="cn">NA</span><span class="op">)</span></span>
+<span><span class="kw">for</span> <span class="op">(</span><span class="va">team_id</span> <span class="kw">in</span> <span class="fu"><a href="https://rdrr.io/r/base/unique.html" class="external-link">unique</a></span><span class="op">(</span><span class="va">team_games</span><span class="op">[[</span><span class="st">'teamId'</span><span class="op">]</span><span class="op">]</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="va">idx</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/which.html" class="external-link">which</a></span><span class="op">(</span><span class="va">team_games</span><span class="op">[[</span><span class="st">'teamId'</span><span class="op">]</span><span class="op">]</span> <span class="op">==</span> <span class="va">team_id</span><span class="op">)</span></span>
+<span>  <span class="va">team_games</span><span class="op">[[</span><span class="st">'previousGameDate'</span><span class="op">]</span><span class="op">]</span><span class="op">[</span><span class="va">idx</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/base/as.Date.html" class="external-link">as.Date</a></span><span class="op">(</span><span class="cn">NA</span><span class="op">)</span>,</span>
+<span>    <span class="fu">utils</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">team_games</span><span class="op">[[</span><span class="st">'gameDate'</span><span class="op">]</span><span class="op">]</span><span class="op">[</span><span class="va">idx</span><span class="op">]</span>, <span class="op">-</span><span class="fl">1</span><span class="op">)</span></span>
+<span>  <span class="op">)</span></span>
+<span><span class="op">}</span></span>
+<span></span>
+<span><span class="co"># Create rest and result fields.</span></span>
 <span><span class="va">team_games</span><span class="op">[[</span><span class="st">'restDays'</span><span class="op">]</span><span class="op">]</span> <span class="op">&lt;-</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/integer.html" class="external-link">as.integer</a></span><span class="op">(</span><span class="va">team_games</span><span class="op">[[</span><span class="st">'gameDate'</span><span class="op">]</span><span class="op">]</span> <span class="op">-</span> <span class="va">team_games</span><span class="op">[[</span><span class="st">'previousGameDate'</span><span class="op">]</span><span class="op">]</span><span class="op">)</span> <span class="op">-</span> <span class="fl">1L</span></span>
 <span><span class="va">team_games</span> <span class="op">&lt;-</span> <span class="va">team_games</span><span class="op">[</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">team_games</span><span class="op">[[</span><span class="st">'restDays'</span><span class="op">]</span><span class="op">]</span><span class="op">)</span>, <span class="op">]</span></span>
-<span></span>
-<span><span class="co"># Bucket rest and compute result metrics.</span></span>
 <span><span class="va">team_games</span><span class="op">[[</span><span class="st">'restBucket'</span><span class="op">]</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/ifelse.html" class="external-link">ifelse</a></span><span class="op">(</span></span>
 <span>  <span class="va">team_games</span><span class="op">[[</span><span class="st">'restDays'</span><span class="op">]</span><span class="op">]</span> <span class="op">&gt;=</span> <span class="fl">3</span>,</span>
 <span>  <span class="st">'3+'</span>,</span>
@@ -179,16 +187,16 @@ expanding each game into a home-team record and an away-team record.</p>
 <span><span class="op">)</span></span>
 <span><span class="va">team_games</span><span class="op">[[</span><span class="st">'win'</span><span class="op">]</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="va">team_games</span><span class="op">[[</span><span class="st">'goalsFor'</span><span class="op">]</span><span class="op">]</span> <span class="op">&gt;</span> <span class="va">team_games</span><span class="op">[[</span><span class="st">'goalsAgainst'</span><span class="op">]</span><span class="op">]</span></span>
 <span><span class="va">team_games</span><span class="op">[[</span><span class="st">'goalDiff'</span><span class="op">]</span><span class="op">]</span> <span class="op">&lt;-</span></span>
-<span>  <span class="va">team_games</span><span class="op">[[</span><span class="st">'goalsFor'</span><span class="op">]</span><span class="op">]</span> <span class="op">-</span> <span class="va">team_games</span><span class="op">[[</span><span class="st">'goalsAgainst'</span><span class="op">]</span><span class="op">]</span></span></code></pre></div>
-<p>The key definition here is simple: if a team last played yesterday,
-the next game gets <code>restDays = 0</code>, which is the second night
-of a back-to-back.</p>
+<span>  <span class="va">team_games</span><span class="op">[[</span><span class="st">'goalsFor'</span><span class="op">]</span><span class="op">]</span> <span class="op">-</span> <span class="va">team_games</span><span class="op">[[</span><span class="st">'goalsAgainst'</span><span class="op">]</span><span class="op">]</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">team_games</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] 50568</span></span></code></pre></div>
+<p>The definition is literal: <code>restDays = 0</code> means the team
+played yesterday. That is the second night of a back-to-back.</p>
 </div>
 <div class="section level2">
-<h2 id="start-with-league-wide-rest-buckets">Start With League-Wide Rest Buckets<a class="anchor" aria-label="anchor" href="#start-with-league-wide-rest-buckets"></a>
+<h2 id="league-wide-rest-curve">League-Wide Rest Curve<a class="anchor" aria-label="anchor" href="#league-wide-rest-curve"></a>
 </h2>
-<p>Now we can ask the direct question: how do teams perform on zero rest
-compared with one, two, or three-plus days off?</p>
+<p>First we compare all team-games by rest bucket.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Summarize results by rest bucket.</span></span>
 <span><span class="va">rest_summary</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/aggregate.html" class="external-link">aggregate</a></span><span class="op">(</span></span>
@@ -203,10 +211,10 @@ compared with one, two, or three-plus days off?</p>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/match.html" class="external-link">match</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/levels.html" class="external-link">levels</a></span><span class="op">(</span><span class="va">team_games</span><span class="op">[[</span><span class="st">'restBucket'</span><span class="op">]</span><span class="op">]</span><span class="op">)</span>, <span class="va">rest_summary</span><span class="op">[[</span><span class="st">'restBucket'</span><span class="op">]</span><span class="op">]</span><span class="op">)</span>,</span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'restBucket'</span>, <span class="st">'games'</span>, <span class="st">'win'</span>, <span class="st">'goalDiff'</span><span class="op">)</span></span>
 <span><span class="op">]</span></span>
-<span></span>
 <span><span class="fu">make_table</span><span class="op">(</span></span>
 <span>  <span class="va">rest_summary</span>,</span>
-<span>  caption <span class="op">=</span> <span class="st">'Win rate and average goal differential by rest bucket.'</span></span>
+<span>  caption <span class="op">=</span> <span class="st">'Win rate and average goal differential by rest bucket.'</span>,</span>
+<span>  digits <span class="op">=</span> <span class="fl">3</span></span>
 <span><span class="op">)</span></span></code></pre></div>
 <table class="table">
 <caption>Win rate and average goal differential by rest
@@ -244,19 +252,14 @@ bucket.</caption>
 </tr>
 </tbody>
 </table>
-<p>The back-to-back effect is real. Teams on zero rest win about 45.0
-percent of the time, compared with about 52.1 percent on two days of
-rest. Goal differential moves the same way: teams on zero rest are
-underwater on average, while teams with one or two days off are slightly
-positive. That is already enough to say the schedule complaint has
-teeth, but the context gets sharper once we split home and road
-games.</p>
-</div>
-<div class="section level2">
-<h2 id="plot-rest-curve">Plot Rest Curve<a class="anchor" aria-label="anchor" href="#plot-rest-curve"></a>
-</h2>
+<p>The zero-rest penalty is visible in both columns. Teams on a
+back-to-back win less often and get outscored on average. The biggest
+improvement comes from moving from zero days of rest to one.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu">graphics</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/graphics/barplot.html" class="external-link">barplot</a></span><span class="op">(</span></span>
+<code class="sourceCode R"><span><span class="co"># Plot win rate and goal differential by rest bucket.</span></span>
+<span><span class="va">old_par</span> <span class="op">&lt;-</span> <span class="fu">graphics</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span>no.readonly <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="fu">graphics</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span>mfrow <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span>, mar <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">5</span>, <span class="fl">4</span>, <span class="fl">3</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu">graphics</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/graphics/barplot.html" class="external-link">barplot</a></span><span class="op">(</span></span>
 <span>  <span class="va">rest_summary</span><span class="op">[[</span><span class="st">'win'</span><span class="op">]</span><span class="op">]</span>,</span>
 <span>  names.arg <span class="op">=</span> <span class="va">rest_summary</span><span class="op">[[</span><span class="st">'restBucket'</span><span class="op">]</span><span class="op">]</span>,</span>
 <span>  col <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'#d62828'</span>, <span class="st">'#f77f00'</span>, <span class="st">'#fcbf49'</span>, <span class="st">'#90be6d'</span><span class="op">)</span>,</span>
@@ -265,101 +268,151 @@ games.</p>
 <span>  xlab <span class="op">=</span> <span class="st">'Days of Rest'</span>,</span>
 <span>  ylab <span class="op">=</span> <span class="st">'Win Rate'</span></span>
 <span><span class="op">)</span></span>
-<span><span class="fu">graphics</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/graphics/abline.html" class="external-link">abline</a></span><span class="op">(</span></span>
-<span>  h <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">team_games</span><span class="op">[[</span><span class="st">'win'</span><span class="op">]</span><span class="op">]</span><span class="op">)</span>,</span>
-<span>  lty <span class="op">=</span> <span class="fl">2</span>,</span>
-<span>  col <span class="op">=</span> <span class="st">'#4d4d4d'</span></span>
-<span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu">graphics</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/graphics/abline.html" class="external-link">abline</a></span><span class="op">(</span>h <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">team_games</span><span class="op">[[</span><span class="st">'win'</span><span class="op">]</span><span class="op">]</span><span class="op">)</span>, lty <span class="op">=</span> <span class="fl">2</span>, col <span class="op">=</span> <span class="st">'#495057'</span><span class="op">)</span></span>
+<span><span class="fu">graphics</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/graphics/barplot.html" class="external-link">barplot</a></span><span class="op">(</span></span>
+<span>  <span class="va">rest_summary</span><span class="op">[[</span><span class="st">'goalDiff'</span><span class="op">]</span><span class="op">]</span>,</span>
+<span>  names.arg <span class="op">=</span> <span class="va">rest_summary</span><span class="op">[[</span><span class="st">'restBucket'</span><span class="op">]</span><span class="op">]</span>,</span>
+<span>  col <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'#d62828'</span>, <span class="st">'#f77f00'</span>, <span class="st">'#fcbf49'</span>, <span class="st">'#90be6d'</span><span class="op">)</span>,</span>
+<span>  border <span class="op">=</span> <span class="cn">NA</span>,</span>
+<span>  xlab <span class="op">=</span> <span class="st">'Days of Rest'</span>,</span>
+<span>  ylab <span class="op">=</span> <span class="st">'Average Goal Differential'</span></span>
+<span><span class="op">)</span></span>
+<span><span class="fu">graphics</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/graphics/abline.html" class="external-link">abline</a></span><span class="op">(</span>h <span class="op">=</span> <span class="fl">0</span>, lty <span class="op">=</span> <span class="fl">2</span>, col <span class="op">=</span> <span class="st">'#495057'</span><span class="op">)</span></span></code></pre></div>
 <div class="figure" style="text-align: center">
-<img src="back-to-back-tax_files/figure-html/rest-plot-1.png" class="r-plt" alt="Win rate across rest buckets in the salary-cap era." width="90%"><p class="caption">
-Win rate across rest buckets in the salary-cap era.
+<img src="back-to-back-tax_files/figure-html/rest-plot-1.png" class="r-plt" alt="Team performance by days of rest." width="92%"><p class="caption">
+Team performance by days of rest.
 </p>
 </div>
-<p>The overall curve climbs immediately once teams move off the second
-night of a back-to-back. It does not rise forever, because three-plus
-days of rest can include rust or unusual schedule contexts, but the
-biggest step is clearly from zero days to one.</p>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">graphics</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span><span class="va">old_par</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
-<h2 id="separate-home-and-road-context">Separate Home and Road Context<a class="anchor" aria-label="anchor" href="#separate-home-and-road-context"></a>
+<h2 id="home-ice-does-not-erase-fatigue">Home Ice Does Not Erase Fatigue<a class="anchor" aria-label="anchor" href="#home-ice-does-not-erase-fatigue"></a>
 </h2>
-<p>Travel and venue matter. Back-to-backs on the road should be tougher
-than back-to-backs at home, and even rested teams usually perform better
-in their own building.</p>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<p>Back-to-backs are not all equal. A tired team at home is still in a
+better spot than a tired team on the road.</p>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Summarize rest effect by venue.</span></span>
-<span><span class="va">home_road_summary</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/aggregate.html" class="external-link">aggregate</a></span><span class="op">(</span></span>
-<span>  <span class="va">win</span> <span class="op">~</span> <span class="va">restBucket</span> <span class="op">+</span> <span class="va">isHome</span>,</span>
+<span><span class="va">venue_summary</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/aggregate.html" class="external-link">aggregate</a></span><span class="op">(</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">cbind</a></span><span class="op">(</span><span class="va">win</span>, <span class="va">goalDiff</span><span class="op">)</span> <span class="op">~</span> <span class="va">restBucket</span> <span class="op">+</span> <span class="va">isHome</span>,</span>
 <span>  data <span class="op">=</span> <span class="va">team_games</span>,</span>
 <span>  FUN <span class="op">=</span> <span class="va">mean</span></span>
 <span><span class="op">)</span></span>
-<span><span class="va">home_wins</span> <span class="op">&lt;-</span> <span class="va">home_road_summary</span><span class="op">[</span></span>
-<span>  <span class="va">home_road_summary</span><span class="op">[[</span><span class="st">'isHome'</span><span class="op">]</span><span class="op">]</span>,</span>
-<span>  <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'restBucket'</span>, <span class="st">'win'</span><span class="op">)</span></span>
-<span><span class="op">]</span></span>
-<span><span class="va">away_wins</span> <span class="op">&lt;-</span> <span class="va">home_road_summary</span><span class="op">[</span></span>
-<span>  <span class="op">!</span><span class="va">home_road_summary</span><span class="op">[[</span><span class="st">'isHome'</span><span class="op">]</span><span class="op">]</span>,</span>
-<span>  <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'restBucket'</span>, <span class="st">'win'</span><span class="op">)</span></span>
-<span><span class="op">]</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">home_wins</span><span class="op">)</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">home_wins</span><span class="op">)</span> <span class="op">==</span> <span class="st">'win'</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="st">'homeWinRate'</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">away_wins</span><span class="op">)</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">away_wins</span><span class="op">)</span> <span class="op">==</span> <span class="st">'win'</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="st">'awayWinRate'</span></span>
-<span><span class="va">home_road_table</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/merge.html" class="external-link">merge</a></span><span class="op">(</span><span class="va">home_wins</span>, <span class="va">away_wins</span>, by <span class="op">=</span> <span class="st">'restBucket'</span><span class="op">)</span></span>
-<span><span class="va">home_road_table</span> <span class="op">&lt;-</span> <span class="va">home_road_table</span><span class="op">[</span></span>
-<span>  <span class="fu"><a href="https://rdrr.io/r/base/match.html" class="external-link">match</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/levels.html" class="external-link">levels</a></span><span class="op">(</span><span class="va">team_games</span><span class="op">[[</span><span class="st">'restBucket'</span><span class="op">]</span><span class="op">]</span><span class="op">)</span>, <span class="va">home_road_table</span><span class="op">[[</span><span class="st">'restBucket'</span><span class="op">]</span><span class="op">]</span><span class="op">)</span>,</span>
-<span><span class="op">]</span></span>
+<span><span class="va">venue_counts</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/aggregate.html" class="external-link">aggregate</a></span><span class="op">(</span></span>
+<span>  <span class="va">gameId</span> <span class="op">~</span> <span class="va">restBucket</span> <span class="op">+</span> <span class="va">isHome</span>,</span>
+<span>  data <span class="op">=</span> <span class="va">team_games</span>,</span>
+<span>  FUN <span class="op">=</span> <span class="va">length</span></span>
+<span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">venue_counts</span><span class="op">)</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">venue_counts</span><span class="op">)</span> <span class="op">==</span> <span class="st">'gameId'</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="st">'games'</span></span>
+<span><span class="va">venue_summary</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/merge.html" class="external-link">merge</a></span><span class="op">(</span></span>
+<span>  <span class="va">venue_summary</span>,</span>
+<span>  <span class="va">venue_counts</span>,</span>
+<span>  by <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'restBucket'</span>, <span class="st">'isHome'</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span><span class="va">venue_summary</span><span class="op">[[</span><span class="st">'venue'</span><span class="op">]</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/ifelse.html" class="external-link">ifelse</a></span><span class="op">(</span></span>
+<span>  <span class="va">venue_summary</span><span class="op">[[</span><span class="st">'isHome'</span><span class="op">]</span><span class="op">]</span>,</span>
+<span>  <span class="st">'Home'</span>,</span>
+<span>  <span class="st">'Away'</span></span>
+<span><span class="op">)</span></span>
+<span><span class="va">venue_summary</span> <span class="op">&lt;-</span> <span class="va">venue_summary</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
+<span>  <span class="st">'restBucket'</span>,</span>
+<span>  <span class="st">'venue'</span>,</span>
+<span>  <span class="st">'games'</span>,</span>
+<span>  <span class="st">'win'</span>,</span>
+<span>  <span class="st">'goalDiff'</span></span>
+<span><span class="op">)</span><span class="op">]</span></span>
 <span><span class="fu">make_table</span><span class="op">(</span></span>
-<span>  <span class="va">home_road_table</span>,</span>
-<span>  caption <span class="op">=</span> <span class="st">'Home and road win rate by rest bucket.'</span></span>
+<span>  <span class="va">venue_summary</span>,</span>
+<span>  caption <span class="op">=</span> <span class="st">'Rest effect split by home and road games.'</span>,</span>
+<span>  digits <span class="op">=</span> <span class="fl">3</span></span>
 <span><span class="op">)</span></span></code></pre></div>
 <table class="table">
-<caption>Home and road win rate by rest bucket.</caption>
+<caption>Rest effect split by home and road games.</caption>
 <thead><tr class="header">
 <th align="left">restBucket</th>
-<th align="right">homeWinRate</th>
-<th align="right">awayWinRate</th>
+<th align="left">venue</th>
+<th align="right">games</th>
+<th align="right">win</th>
+<th align="right">goalDiff</th>
 </tr></thead>
 <tbody>
 <tr class="odd">
 <td align="left">0</td>
-<td align="right">0.509</td>
+<td align="left">Away</td>
+<td align="right">5895</td>
 <td align="right">0.422</td>
+<td align="right">-0.453</td>
+</tr>
+<tr class="even">
+<td align="left">0</td>
+<td align="left">Home</td>
+<td align="right">2753</td>
+<td align="right">0.509</td>
+<td align="right">0.107</td>
+</tr>
+<tr class="odd">
+<td align="left">1</td>
+<td align="left">Away</td>
+<td align="right">12979</td>
+<td align="right">0.461</td>
+<td align="right">-0.250</td>
 </tr>
 <tr class="even">
 <td align="left">1</td>
+<td align="left">Home</td>
+<td align="right">14777</td>
 <td align="right">0.550</td>
-<td align="right">0.461</td>
+<td align="right">0.292</td>
 </tr>
 <tr class="odd">
 <td align="left">2</td>
-<td align="right">0.557</td>
+<td align="left">Away</td>
+<td align="right">4375</td>
 <td align="right">0.480</td>
+<td align="right">-0.111</td>
+</tr>
+<tr class="even">
+<td align="left">2</td>
+<td align="left">Home</td>
+<td align="right">5066</td>
+<td align="right">0.557</td>
+<td align="right">0.317</td>
+</tr>
+<tr class="odd">
+<td align="left">3+</td>
+<td align="left">Away</td>
+<td align="right">2035</td>
+<td align="right">0.466</td>
+<td align="right">-0.173</td>
 </tr>
 <tr class="even">
 <td align="left">3+</td>
+<td align="left">Home</td>
+<td align="right">2688</td>
 <td align="right">0.526</td>
-<td align="right">0.466</td>
+<td align="right">0.205</td>
 </tr>
 </tbody>
 </table>
-<p>Back-to-backs hurt everywhere, but they hurt more on the road. On
-zero rest, road teams win only about 42.2 percent of the time, while
-home teams on zero rest still manage about 50.9 percent.</p>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu">graphics</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span></span>
-<span>  <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq_len</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">home_road_table</span><span class="op">)</span><span class="op">)</span>,</span>
-<span>  <span class="va">home_road_table</span><span class="op">[[</span><span class="st">'homeWinRate'</span><span class="op">]</span><span class="op">]</span>,</span>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Plot venue-specific rest curves.</span></span>
+<span><span class="va">home_rows</span> <span class="op">&lt;-</span> <span class="va">venue_summary</span><span class="op">[</span><span class="va">venue_summary</span><span class="op">[[</span><span class="st">'venue'</span><span class="op">]</span><span class="op">]</span> <span class="op">==</span> <span class="st">'Home'</span>, <span class="op">]</span></span>
+<span><span class="va">away_rows</span> <span class="op">&lt;-</span> <span class="va">venue_summary</span><span class="op">[</span><span class="va">venue_summary</span><span class="op">[[</span><span class="st">'venue'</span><span class="op">]</span><span class="op">]</span> <span class="op">==</span> <span class="st">'Away'</span>, <span class="op">]</span></span>
+<span><span class="fu">graphics</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq_len</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">home_rows</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>  <span class="va">home_rows</span><span class="op">[[</span><span class="st">'win'</span><span class="op">]</span><span class="op">]</span>,</span>
 <span>  type <span class="op">=</span> <span class="st">'b'</span>,</span>
 <span>  pch <span class="op">=</span> <span class="fl">19</span>,</span>
 <span>  lwd <span class="op">=</span> <span class="fl">2</span>,</span>
 <span>  col <span class="op">=</span> <span class="st">'#1d3557'</span>,</span>
 <span>  xaxt <span class="op">=</span> <span class="st">'n'</span>,</span>
-<span>  ylim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.35</span>, <span class="fl">0.60</span><span class="op">)</span>,</span>
+<span>  ylim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.34</span>, <span class="fl">0.62</span><span class="op">)</span>,</span>
 <span>  xlab <span class="op">=</span> <span class="st">'Days of Rest'</span>,</span>
 <span>  ylab <span class="op">=</span> <span class="st">'Win Rate'</span></span>
 <span><span class="op">)</span></span>
 <span><span class="fu">graphics</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/graphics/lines.html" class="external-link">lines</a></span><span class="op">(</span></span>
-<span>  <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq_len</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">home_road_table</span><span class="op">)</span><span class="op">)</span>,</span>
-<span>  <span class="va">home_road_table</span><span class="op">[[</span><span class="st">'awayWinRate'</span><span class="op">]</span><span class="op">]</span>,</span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq_len</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">away_rows</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>  <span class="va">away_rows</span><span class="op">[[</span><span class="st">'win'</span><span class="op">]</span><span class="op">]</span>,</span>
 <span>  type <span class="op">=</span> <span class="st">'b'</span>,</span>
 <span>  pch <span class="op">=</span> <span class="fl">19</span>,</span>
 <span>  lwd <span class="op">=</span> <span class="fl">2</span>,</span>
@@ -367,8 +420,8 @@ home teams on zero rest still manage about 50.9 percent.</p>
 <span><span class="op">)</span></span>
 <span><span class="fu">graphics</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/graphics/axis.html" class="external-link">axis</a></span><span class="op">(</span></span>
 <span>  side <span class="op">=</span> <span class="fl">1</span>,</span>
-<span>  at <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq_len</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">home_road_table</span><span class="op">)</span><span class="op">)</span>,</span>
-<span>  labels <span class="op">=</span> <span class="va">home_road_table</span><span class="op">[[</span><span class="st">'restBucket'</span><span class="op">]</span><span class="op">]</span></span>
+<span>  at <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq_len</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">home_rows</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>  labels <span class="op">=</span> <span class="va">home_rows</span><span class="op">[[</span><span class="st">'restBucket'</span><span class="op">]</span><span class="op">]</span></span>
 <span><span class="op">)</span></span>
 <span><span class="fu">graphics</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/graphics/legend.html" class="external-link">legend</a></span><span class="op">(</span></span>
 <span>  <span class="st">'bottomright'</span>,</span>
@@ -379,148 +432,187 @@ home teams on zero rest still manage about 50.9 percent.</p>
 <span>  bty <span class="op">=</span> <span class="st">'n'</span></span>
 <span><span class="op">)</span></span></code></pre></div>
 <div class="figure" style="text-align: center">
-<img src="back-to-back-tax_files/figure-html/home-road-plot-1.png" class="r-plt" alt="Home and road win rate across rest buckets." width="90%"><p class="caption">
-Home and road win rate across rest buckets.
+<img src="back-to-back-tax_files/figure-html/venue-plot-1.png" class="r-plt" alt="Home and road win rate by rest bucket." width="92%"><p class="caption">
+Home and road win rate by rest bucket.
 </p>
 </div>
-<p>The two lines stay separated almost the whole way through. Rest
-helps, but home ice helps too, and the schedule tax is harshest when
-teams have to absorb both fatigue and travel.</p>
+<p>The lines stay separated. Home ice helps, rest helps, and the worst
+combination is exactly the one coaches complain about most: no rest on
+the road.</p>
 </div>
 <div class="section level2">
-<h2 id="fit-simple-rest-model">Fit Simple Rest Model<a class="anchor" aria-label="anchor" href="#fit-simple-rest-model"></a>
+<h2 id="has-the-schedule-become-kinder">Has the Schedule Become Kinder?<a class="anchor" aria-label="anchor" href="#has-the-schedule-become-kinder"></a>
 </h2>
-<p>A quick logistic model gives us a clean way to describe those two
-effects together.</p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># Fit simple win model with rest and venue.</span></span>
-<span><span class="va">rest_fit</span> <span class="op">&lt;-</span> <span class="fu">stats</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/stats/glm.html" class="external-link">glm</a></span><span class="op">(</span></span>
-<span>  <span class="fu"><a href="https://rdrr.io/r/base/integer.html" class="external-link">as.integer</a></span><span class="op">(</span><span class="va">win</span><span class="op">)</span> <span class="op">~</span> <span class="va">restBucket</span> <span class="op">+</span> <span class="va">isHome</span>,</span>
+<p>The league can reduce pain by reducing the share of team-games played
+on zero rest. We can track that share by season.</p>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Summarize zero-rest share by season.</span></span>
+<span><span class="va">season_rest</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/aggregate.html" class="external-link">aggregate</a></span><span class="op">(</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/AsIs.html" class="external-link">I</a></span><span class="op">(</span><span class="va">restDays</span> <span class="op">==</span> <span class="fl">0</span><span class="op">)</span> <span class="op">~</span> <span class="va">seasonId</span>,</span>
 <span>  data <span class="op">=</span> <span class="va">team_games</span>,</span>
-<span>  family <span class="op">=</span> <span class="fu">stats</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/stats/family.html" class="external-link">binomial</a></span><span class="op">(</span><span class="op">)</span></span>
+<span>  FUN <span class="op">=</span> <span class="va">mean</span></span>
 <span><span class="op">)</span></span>
-<span><span class="va">rest_fit_tbl</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html" class="external-link">as.data.frame</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">rest_fit</span><span class="op">)</span><span class="op">$</span><span class="va">coefficients</span><span class="op">)</span></span>
-<span><span class="va">rest_fit_tbl</span><span class="op">[[</span><span class="st">'term'</span><span class="op">]</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">rownames</a></span><span class="op">(</span><span class="va">rest_fit_tbl</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">rownames</a></span><span class="op">(</span><span class="va">rest_fit_tbl</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="cn">NULL</span></span>
-<span><span class="va">rest_fit_tbl</span><span class="op">[[</span><span class="st">'term'</span><span class="op">]</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
-<span>  <span class="st">'Intercept'</span>,</span>
-<span>  <span class="st">'One day versus zero'</span>,</span>
-<span>  <span class="st">'Two days versus zero'</span>,</span>
-<span>  <span class="st">'Three-plus days versus zero'</span>,</span>
-<span>  <span class="st">'Home indicator'</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">season_rest</span><span class="op">)</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">season_rest</span><span class="op">)</span> <span class="op">==</span> <span class="st">'I(restDays == 0)'</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="st">'zeroRestShare'</span></span>
+<span><span class="va">season_rest</span> <span class="op">&lt;-</span> <span class="va">season_rest</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/order.html" class="external-link">order</a></span><span class="op">(</span><span class="va">season_rest</span><span class="op">[[</span><span class="st">'seasonId'</span><span class="op">]</span><span class="op">]</span><span class="op">)</span>, <span class="op">]</span></span>
+<span><span class="va">season_text</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">as.character</a></span><span class="op">(</span><span class="va">season_rest</span><span class="op">[[</span><span class="st">'seasonId'</span><span class="op">]</span><span class="op">]</span><span class="op">)</span></span>
+<span><span class="va">season_rest</span><span class="op">[[</span><span class="st">'season'</span><span class="op">]</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/substr.html" class="external-link">substr</a></span><span class="op">(</span><span class="va">season_text</span>, <span class="fl">1</span>, <span class="fl">4</span><span class="op">)</span>,</span>
+<span>  <span class="st">'-'</span>,</span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/substr.html" class="external-link">substr</a></span><span class="op">(</span><span class="va">season_text</span>, <span class="fl">7</span>, <span class="fl">8</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
-<span><span class="va">rest_fit_tbl</span> <span class="op">&lt;-</span> <span class="va">rest_fit_tbl</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
-<span>  <span class="st">'term'</span>,</span>
-<span>  <span class="st">'Estimate'</span>,</span>
-<span>  <span class="st">'Std. Error'</span>,</span>
-<span>  <span class="st">'z value'</span>,</span>
-<span>  <span class="st">'Pr(&gt;|z|)'</span></span>
-<span><span class="op">)</span><span class="op">]</span></span>
 <span><span class="fu">make_table</span><span class="op">(</span></span>
-<span>  <span class="va">rest_fit_tbl</span>,</span>
-<span>  caption <span class="op">=</span> <span class="st">'Logistic model of wins on rest and venue.'</span>,</span>
-<span>  digits <span class="op">=</span> <span class="fl">4</span></span>
+<span>  <span class="fu">utils</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">tail</a></span><span class="op">(</span><span class="va">season_rest</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'season'</span>, <span class="st">'zeroRestShare'</span><span class="op">)</span><span class="op">]</span>, <span class="fl">8</span><span class="op">)</span>,</span>
+<span>  caption <span class="op">=</span> <span class="st">'Recent share of team-games played on zero rest.'</span>,</span>
+<span>  digits <span class="op">=</span> <span class="fl">3</span></span>
 <span><span class="op">)</span></span></code></pre></div>
 <table class="table">
-<caption>Logistic model of wins on rest and venue.</caption>
-<colgroup>
-<col width="36%">
-<col width="11%">
-<col width="14%">
-<col width="11%">
-<col width="25%">
-</colgroup>
+<caption>Recent share of team-games played on zero rest.</caption>
 <thead><tr class="header">
-<th align="left">term</th>
-<th align="right">Estimate</th>
-<th align="right">Std. Error</th>
-<th align="right">z value</th>
-<th align="right">Pr(&gt;|z|)</th>
+<th align="left"></th>
+<th align="left">season</th>
+<th align="right">zeroRestShare</th>
 </tr></thead>
 <tbody>
 <tr class="odd">
-<td align="left">Intercept</td>
-<td align="right">-0.3094</td>
-<td align="right">0.0225</td>
-<td align="right">-13.7767</td>
-<td align="right">0.0000</td>
+<td align="left">14</td>
+<td align="left">2018-19</td>
+<td align="right">0.158</td>
 </tr>
 <tr class="even">
-<td align="left">One day versus zero</td>
-<td align="right">0.1630</td>
-<td align="right">0.0251</td>
-<td align="right">6.4975</td>
-<td align="right">0.0000</td>
+<td align="left">15</td>
+<td align="left">2019-20</td>
+<td align="right">0.163</td>
 </tr>
 <tr class="odd">
-<td align="left">Two days versus zero</td>
-<td align="right">0.2142</td>
-<td align="right">0.0302</td>
-<td align="right">7.0940</td>
-<td align="right">0.0000</td>
+<td align="left">16</td>
+<td align="left">2020-21</td>
+<td align="right">0.173</td>
 </tr>
 <tr class="even">
-<td align="left">Three-plus days versus zero</td>
-<td align="right">0.1193</td>
-<td align="right">0.0366</td>
-<td align="right">3.2557</td>
-<td align="right">0.0011</td>
+<td align="left">17</td>
+<td align="left">2021-22</td>
+<td align="right">0.165</td>
 </tr>
 <tr class="odd">
-<td align="left">Home indicator</td>
-<td align="right">0.3376</td>
-<td align="right">0.0181</td>
-<td align="right">18.6448</td>
-<td align="right">0.0000</td>
+<td align="left">18</td>
+<td align="left">2022-23</td>
+<td align="right">0.156</td>
+</tr>
+<tr class="even">
+<td align="left">19</td>
+<td align="left">2023-24</td>
+<td align="right">0.137</td>
+</tr>
+<tr class="odd">
+<td align="left">20</td>
+<td align="left">2024-25</td>
+<td align="right">0.152</td>
+</tr>
+<tr class="even">
+<td align="left">21</td>
+<td align="left">2025-26</td>
+<td align="right">0.164</td>
 </tr>
 </tbody>
 </table>
-<p>The signs all point the same way. More rest helps, and playing at
-home helps. The biggest rest gains come immediately when teams escape
-zero-rest games.</p>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Plot season trend in zero-rest games.</span></span>
+<span><span class="va">season_x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq_len</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">season_rest</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">label_idx</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">1L</span>, <span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">season_rest</span><span class="op">)</span>, by <span class="op">=</span> <span class="fl">2L</span><span class="op">)</span></span>
+<span><span class="va">old_par</span> <span class="op">&lt;-</span> <span class="fu">graphics</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span>no.readonly <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="fu">graphics</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span>mar <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">7</span>, <span class="fl">4</span>, <span class="fl">3</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu">graphics</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span></span>
+<span>  <span class="va">season_x</span>,</span>
+<span>  <span class="va">season_rest</span><span class="op">[[</span><span class="st">'zeroRestShare'</span><span class="op">]</span><span class="op">]</span>,</span>
+<span>  type <span class="op">=</span> <span class="st">'h'</span>,</span>
+<span>  lwd <span class="op">=</span> <span class="fl">3</span>,</span>
+<span>  col <span class="op">=</span> <span class="st">'#457b9d'</span>,</span>
+<span>  xaxt <span class="op">=</span> <span class="st">'n'</span>,</span>
+<span>  xlab <span class="op">=</span> <span class="st">''</span>,</span>
+<span>  ylab <span class="op">=</span> <span class="st">'Zero-Rest Share'</span></span>
+<span><span class="op">)</span></span>
+<span><span class="fu">graphics</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/graphics/points.html" class="external-link">points</a></span><span class="op">(</span></span>
+<span>  <span class="va">season_x</span>,</span>
+<span>  <span class="va">season_rest</span><span class="op">[[</span><span class="st">'zeroRestShare'</span><span class="op">]</span><span class="op">]</span>,</span>
+<span>  pch <span class="op">=</span> <span class="fl">19</span>,</span>
+<span>  col <span class="op">=</span> <span class="st">'#1d3557'</span></span>
+<span><span class="op">)</span></span>
+<span><span class="fu">graphics</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/graphics/axis.html" class="external-link">axis</a></span><span class="op">(</span></span>
+<span>  side <span class="op">=</span> <span class="fl">1</span>,</span>
+<span>  at <span class="op">=</span> <span class="va">season_x</span><span class="op">[</span><span class="va">label_idx</span><span class="op">]</span>,</span>
+<span>  labels <span class="op">=</span> <span class="va">season_rest</span><span class="op">[[</span><span class="st">'season'</span><span class="op">]</span><span class="op">]</span><span class="op">[</span><span class="va">label_idx</span><span class="op">]</span>,</span>
+<span>  las <span class="op">=</span> <span class="fl">2</span>,</span>
+<span>  cex.axis <span class="op">=</span> <span class="fl">0.75</span></span>
+<span><span class="op">)</span></span>
+<span><span class="fu">graphics</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/graphics/mtext.html" class="external-link">mtext</a></span><span class="op">(</span><span class="st">'Season'</span>, side <span class="op">=</span> <span class="fl">1</span>, line <span class="op">=</span> <span class="fl">5</span><span class="op">)</span></span></code></pre></div>
+<div class="figure" style="text-align: center">
+<img src="back-to-back-tax_files/figure-html/season-plot-1.png" class="r-plt" alt="Share of team-games played on zero rest by season." width="92%"><p class="caption">
+Share of team-games played on zero rest by season.
+</p>
+</div>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">graphics</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span><span class="va">old_par</span><span class="op">)</span></span></code></pre></div>
+<p>This turns the article from “back-to-backs are hard” into a second
+question: how often does the league ask teams to absorb that cost?</p>
 </div>
 <div class="section level2">
-<h2 id="see-which-teams-handle-zero-rest-best">See Which Teams Handle Zero Rest Best<a class="anchor" aria-label="anchor" href="#see-which-teams-handle-zero-rest-best"></a>
+<h2 id="team-leaderboard">Team Leaderboard<a class="anchor" aria-label="anchor" href="#team-leaderboard"></a>
 </h2>
-<p>League averages are useful, but back-to-backs also become a fun team
-question: which clubs have managed them best over a large sample?</p>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># Rank teams by back-to-back win rate.</span></span>
-<span><span class="va">zero_rest_tbl</span> <span class="op">&lt;-</span> <span class="va">team_games</span><span class="op">[</span><span class="va">team_games</span><span class="op">[[</span><span class="st">'restDays'</span><span class="op">]</span><span class="op">]</span> <span class="op">==</span> <span class="fl">0</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'teamId'</span>, <span class="st">'win'</span><span class="op">)</span><span class="op">]</span></span>
-<span><span class="va">zero_rest_tbl</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/aggregate.html" class="external-link">aggregate</a></span><span class="op">(</span></span>
+<p>Once the team-game table exists, a league-wide question can become a
+team identity question.</p>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Rank teams by zero-rest win rate.</span></span>
+<span><span class="va">zero_rest_tbl</span> <span class="op">&lt;-</span> <span class="va">team_games</span><span class="op">[</span></span>
+<span>  <span class="va">team_games</span><span class="op">[[</span><span class="st">'restDays'</span><span class="op">]</span><span class="op">]</span> <span class="op">==</span> <span class="fl">0</span>,</span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'teamId'</span>, <span class="st">'win'</span>, <span class="st">'goalDiff'</span><span class="op">)</span></span>
+<span><span class="op">]</span></span>
+<span><span class="va">zero_summary</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/aggregate.html" class="external-link">aggregate</a></span><span class="op">(</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">cbind</a></span><span class="op">(</span><span class="va">win</span>, <span class="va">goalDiff</span><span class="op">)</span> <span class="op">~</span> <span class="va">teamId</span>,</span>
+<span>  data <span class="op">=</span> <span class="va">zero_rest_tbl</span>,</span>
+<span>  FUN <span class="op">=</span> <span class="va">mean</span></span>
+<span><span class="op">)</span></span>
+<span><span class="va">zero_counts</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/aggregate.html" class="external-link">aggregate</a></span><span class="op">(</span></span>
 <span>  <span class="va">win</span> <span class="op">~</span> <span class="va">teamId</span>,</span>
 <span>  data <span class="op">=</span> <span class="va">zero_rest_tbl</span>,</span>
-<span>  FUN <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>winRate <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>, games <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span></span>
+<span>  FUN <span class="op">=</span> <span class="va">length</span></span>
 <span><span class="op">)</span></span>
-<span><span class="va">zero_rest_tbl</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span>
-<span>  teamId <span class="op">=</span> <span class="va">zero_rest_tbl</span><span class="op">[[</span><span class="st">'teamId'</span><span class="op">]</span><span class="op">]</span>,</span>
-<span>  winRate <span class="op">=</span> <span class="va">zero_rest_tbl</span><span class="op">[[</span><span class="st">'win'</span><span class="op">]</span><span class="op">]</span><span class="op">[</span>, <span class="st">'winRate'</span><span class="op">]</span>,</span>
-<span>  games <span class="op">=</span> <span class="va">zero_rest_tbl</span><span class="op">[[</span><span class="st">'win'</span><span class="op">]</span><span class="op">]</span><span class="op">[</span>, <span class="st">'games'</span><span class="op">]</span></span>
-<span><span class="op">)</span></span>
-<span><span class="va">zero_rest_tbl</span> <span class="op">&lt;-</span> <span class="va">zero_rest_tbl</span><span class="op">[</span><span class="va">zero_rest_tbl</span><span class="op">[[</span><span class="st">'games'</span><span class="op">]</span><span class="op">]</span> <span class="op">&gt;=</span> <span class="fl">50</span>, <span class="op">]</span></span>
-<span><span class="va">zero_rest_tbl</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/merge.html" class="external-link">merge</a></span><span class="op">(</span></span>
-<span>  <span class="va">zero_rest_tbl</span>,</span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">zero_counts</span><span class="op">)</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">zero_counts</span><span class="op">)</span> <span class="op">==</span> <span class="st">'win'</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="st">'games'</span></span>
+<span><span class="va">zero_summary</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/merge.html" class="external-link">merge</a></span><span class="op">(</span><span class="va">zero_summary</span>, <span class="va">zero_counts</span>, by <span class="op">=</span> <span class="st">'teamId'</span><span class="op">)</span></span>
+<span><span class="va">zero_summary</span> <span class="op">&lt;-</span> <span class="va">zero_summary</span><span class="op">[</span><span class="va">zero_summary</span><span class="op">[[</span><span class="st">'games'</span><span class="op">]</span><span class="op">]</span> <span class="op">&gt;=</span> <span class="fl">50</span>, <span class="op">]</span></span>
+<span><span class="va">zero_summary</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/merge.html" class="external-link">merge</a></span><span class="op">(</span></span>
+<span>  <span class="va">zero_summary</span>,</span>
 <span>  <span class="va">teams_tbl</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'teamId'</span>, <span class="st">'teamTriCode'</span><span class="op">)</span><span class="op">]</span>,</span>
 <span>  by <span class="op">=</span> <span class="st">'teamId'</span>,</span>
 <span>  all.x <span class="op">=</span> <span class="cn">TRUE</span></span>
 <span><span class="op">)</span></span>
-<span><span class="va">zero_rest_tbl</span> <span class="op">&lt;-</span> <span class="va">zero_rest_tbl</span><span class="op">[</span></span>
-<span>  <span class="fu"><a href="https://rdrr.io/r/base/order.html" class="external-link">order</a></span><span class="op">(</span><span class="op">-</span><span class="va">zero_rest_tbl</span><span class="op">[[</span><span class="st">'winRate'</span><span class="op">]</span><span class="op">]</span><span class="op">)</span>,</span>
-<span>  <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'teamTriCode'</span>, <span class="st">'games'</span>, <span class="st">'winRate'</span><span class="op">)</span></span>
-<span><span class="op">]</span></span>
-<span><span class="va">zero_rest_tbl</span> <span class="op">&lt;-</span> <span class="fu">utils</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">zero_rest_tbl</span>, <span class="fl">10</span><span class="op">)</span></span>
+<span><span class="va">best_zero</span> <span class="op">&lt;-</span> <span class="va">zero_summary</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/order.html" class="external-link">order</a></span><span class="op">(</span><span class="op">-</span><span class="va">zero_summary</span><span class="op">[[</span><span class="st">'win'</span><span class="op">]</span><span class="op">]</span><span class="op">)</span>, <span class="op">]</span></span>
+<span><span class="va">best_zero</span> <span class="op">&lt;-</span> <span class="fu">utils</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">best_zero</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
+<span>  <span class="st">'teamTriCode'</span>,</span>
+<span>  <span class="st">'games'</span>,</span>
+<span>  <span class="st">'win'</span>,</span>
+<span>  <span class="st">'goalDiff'</span></span>
+<span><span class="op">)</span><span class="op">]</span>, <span class="fl">8</span><span class="op">)</span></span>
+<span><span class="va">worst_zero</span> <span class="op">&lt;-</span> <span class="va">zero_summary</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/order.html" class="external-link">order</a></span><span class="op">(</span><span class="va">zero_summary</span><span class="op">[[</span><span class="st">'win'</span><span class="op">]</span><span class="op">]</span><span class="op">)</span>, <span class="op">]</span></span>
+<span><span class="va">worst_zero</span> <span class="op">&lt;-</span> <span class="fu">utils</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">worst_zero</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
+<span>  <span class="st">'teamTriCode'</span>,</span>
+<span>  <span class="st">'games'</span>,</span>
+<span>  <span class="st">'win'</span>,</span>
+<span>  <span class="st">'goalDiff'</span></span>
+<span><span class="op">)</span><span class="op">]</span>, <span class="fl">8</span><span class="op">)</span></span>
 <span><span class="fu">make_table</span><span class="op">(</span></span>
-<span>  <span class="va">zero_rest_tbl</span>,</span>
-<span>  caption <span class="op">=</span> <span class="st">'Best back-to-back win rates among teams with at least 50 zero-rest games.'</span></span>
+<span>  <span class="va">best_zero</span>,</span>
+<span>  caption <span class="op">=</span> <span class="st">'Best zero-rest win rates among teams with at least 50 games.'</span>,</span>
+<span>  digits <span class="op">=</span> <span class="fl">3</span></span>
 <span><span class="op">)</span></span></code></pre></div>
 <table class="table">
-<caption>Best back-to-back win rates among teams with at least 50
-zero-rest games.</caption>
+<caption>Best zero-rest win rates among teams with at least 50
+games.</caption>
 <thead><tr class="header">
 <th align="left"></th>
 <th align="left">teamTriCode</th>
 <th align="right">games</th>
-<th align="right">winRate</th>
+<th align="right">win</th>
+<th align="right">goalDiff</th>
 </tr></thead>
 <tbody>
 <tr class="odd">
@@ -528,79 +620,151 @@ zero-rest games.</caption>
 <td align="left">NYR</td>
 <td align="right">280</td>
 <td align="right">0.564</td>
+<td align="right">0.425</td>
 </tr>
 <tr class="even">
 <td align="left">33</td>
 <td align="left">VGK</td>
 <td align="right">98</td>
 <td align="right">0.561</td>
+<td align="right">0.214</td>
 </tr>
 <tr class="odd">
 <td align="left">6</td>
 <td align="left">BOS</td>
 <td align="right">281</td>
 <td align="right">0.498</td>
+<td align="right">0.110</td>
 </tr>
 <tr class="even">
 <td align="left">28</td>
 <td align="left">SJS</td>
 <td align="right">271</td>
 <td align="right">0.491</td>
+<td align="right">-0.074</td>
 </tr>
 <tr class="odd">
 <td align="left">5</td>
 <td align="left">PIT</td>
 <td align="right">303</td>
 <td align="right">0.488</td>
+<td align="right">-0.026</td>
 </tr>
 <tr class="even">
 <td align="left">16</td>
 <td align="left">CHI</td>
 <td align="right">310</td>
 <td align="right">0.484</td>
+<td align="right">-0.123</td>
 </tr>
 <tr class="odd">
 <td align="left">19</td>
 <td align="left">STL</td>
 <td align="right">295</td>
 <td align="right">0.481</td>
+<td align="right">-0.064</td>
 </tr>
 <tr class="even">
 <td align="left">12</td>
 <td align="left">CAR</td>
 <td align="right">321</td>
 <td align="right">0.480</td>
-</tr>
-<tr class="odd">
-<td align="left">18</td>
-<td align="left">NSH</td>
-<td align="right">260</td>
-<td align="right">0.477</td>
-</tr>
-<tr class="even">
-<td align="left">26</td>
-<td align="left">LAK</td>
-<td align="right">271</td>
-<td align="right">0.472</td>
+<td align="right">-0.146</td>
 </tr>
 </tbody>
 </table>
-<p>This is a nice example of how a broad workflow can still end in a
-fan-readable leaderboard. Once the team-game table exists, you can pivot
-from league averages to team-specific back-to-back identities without
-changing tools.</p>
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">make_table</span><span class="op">(</span></span>
+<span>  <span class="va">worst_zero</span>,</span>
+<span>  caption <span class="op">=</span> <span class="st">'Lowest zero-rest win rates among teams with at least 50 games.'</span>,</span>
+<span>  digits <span class="op">=</span> <span class="fl">3</span></span>
+<span><span class="op">)</span></span></code></pre></div>
+<table class="table">
+<caption>Lowest zero-rest win rates among teams with at least 50
+games.</caption>
+<thead><tr class="header">
+<th align="left"></th>
+<th align="left">teamTriCode</th>
+<th align="right">games</th>
+<th align="right">win</th>
+<th align="right">goalDiff</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td align="left">34</td>
+<td align="left">SEA</td>
+<td align="right">53</td>
+<td align="right">0.302</td>
+<td align="right">-1.113</td>
+</tr>
+<tr class="even">
+<td align="left">32</td>
+<td align="left">ARI</td>
+<td align="right">124</td>
+<td align="right">0.347</td>
+<td align="right">-0.871</td>
+</tr>
+<tr class="odd">
+<td align="left">7</td>
+<td align="left">BUF</td>
+<td align="right">335</td>
+<td align="right">0.379</td>
+<td align="right">-0.573</td>
+</tr>
+<tr class="even">
+<td align="left">29</td>
+<td align="left">CBJ</td>
+<td align="right">329</td>
+<td align="right">0.389</td>
+<td align="right">-0.584</td>
+</tr>
+<tr class="odd">
+<td align="left">11</td>
+<td align="left">ATL</td>
+<td align="right">95</td>
+<td align="right">0.389</td>
+<td align="right">-0.779</td>
+</tr>
+<tr class="even">
+<td align="left">22</td>
+<td align="left">EDM</td>
+<td align="right">232</td>
+<td align="right">0.401</td>
+<td align="right">-0.534</td>
+</tr>
+<tr class="odd">
+<td align="left">4</td>
+<td align="left">PHI</td>
+<td align="right">310</td>
+<td align="right">0.416</td>
+<td align="right">-0.574</td>
+</tr>
+<tr class="even">
+<td align="left">10</td>
+<td align="left">TOR</td>
+<td align="right">303</td>
+<td align="right">0.419</td>
+<td align="right">-0.416</td>
+</tr>
+</tbody>
+</table>
+<p>This is where a broad endpoint becomes fan-readable. The same
+reshaped table can support league averages, venue splits, season trends,
+and team debates.</p>
 </div>
 <div class="section level2">
 <h2 id="what-we-learned">What We Learned<a class="anchor" aria-label="anchor" href="#what-we-learned"></a>
 </h2>
-<p>Back-to-backs are not just an excuse. In the salary-cap era, teams on
-zero rest win less often and get outscored on average. The penalty eases
-quickly once teams have even one off-day, and it is especially sharp for
-road games. That makes this a strong high-level example for
-<code>nhlscraper</code>: with one all-games endpoint and a little
-reshaping, you can turn a familiar hockey complaint into a quantified
-league-wide effect, then keep drilling down to venue splits and team
-leaderboards.</p>
+<p>Back-to-backs are not just a broadcast excuse. In the salary-cap era,
+zero-rest teams win less often and carry worse goal differential. The
+penalty is sharpest on the road, and the league-wide cost is large
+enough to be visible with only <code><a href="../reference/games.html">games()</a></code> and a careful
+reshape.</p>
+<p>The broader lesson is methodological: <code>nhlscraper</code>
+endpoints often start as simple catalogs, but the interesting questions
+appear after you change the unit of analysis. Here, one row per game
+became one row per team-game, and the schedule suddenly had a measurable
+price.</p>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside>

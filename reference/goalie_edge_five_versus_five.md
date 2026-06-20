@@ -1,10 +1,9 @@
 # Access the EDGE 5 vs. 5 statistics for a goalie, season, game type, and category
 
-`goalie_edge_five_versus_five()` retrieves the EDGE 5 vs. 5 statistics
-for a goalie, season, game type, and category as a nested `list` that
-separates summary and detail blocks for production, workload,
-efficiency, and result-level performance outcomes plus NHL EDGE style
-tracking outputs and relative-performance context.
+`goalie_edge_five_versus_five()` returns goalie EDGE 5-on-5
+save-percentage detail for one goalie/season/game type. Use
+`category = 'details'` for the full split list or `category = 'last 10'`
+for game-level recent form.
 
 ## Usage
 

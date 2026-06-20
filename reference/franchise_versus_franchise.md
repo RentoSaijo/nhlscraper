@@ -1,10 +1,7 @@
 # Access the all-time statistics versus other franchises for all the franchises by game type
 
-`franchise_versus_franchise()` retrieves the all-time statistics versus
-other franchises for all the franchises by game type as a `data.frame`
-where each row represents franchise per franchise per game type and
-includes detail on date/season filtering windows and chronological
-context plus team identity, affiliation, and matchup-side context.
+`franchise_versus_franchise()` returns all-time head-to-head records by
+franchise, opponent franchise, and game type.
 
 ## Usage
 

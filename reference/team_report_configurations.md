@@ -1,10 +1,11 @@
 # Access the configurations for team reports
 
-`team_report_configurations()` retrieves the configurations for team
-reports as a nested `list` that separates summary and detail blocks for
-situational splits across home/road, strength state, and
-overtime/shootout states plus configuration catalogs for valid report
-categories and filters.
+`team_report_configurations()` returns the team-report configuration
+block from the stats API, including valid report categories, fields,
+filters, and split options accepted by
+[`team_season_report()`](https://rentosaijo.github.io/nhlscraper/reference/team_season_report.md)
+and
+[`team_game_report()`](https://rentosaijo.github.io/nhlscraper/reference/team_game_report.md).
 
 ## Usage
 

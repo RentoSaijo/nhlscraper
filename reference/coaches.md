@@ -1,9 +1,7 @@
 # Access all the coaches
 
-`coaches()` retrieves all the coaches as a `data.frame` where each row
-represents coach and includes detail on team identity, affiliation, and
-matchup-side context plus player identity, role, handedness, and
-biographical profile.
+`coaches()` returns the records-site coach registry with one row per
+coach and normalized coach IDs, names, and birth fields.
 
 ## Usage
 

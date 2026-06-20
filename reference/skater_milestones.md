@@ -1,10 +1,8 @@
 # Access the skaters on milestone watch
 
-`skater_milestones()` retrieves the skaters on milestone watch as a
-`data.frame` where each row represents player and includes detail on
-date/season filtering windows and chronological context, player
-identity, role, handedness, and biographical profile, and production,
-workload, efficiency, and result-level performance outcomes.
+`skater_milestones()` returns NHL.com skater milestone-watch rows,
+including player/team identifiers and the milestone/countdown fields
+exposed by the endpoint.
 
 ## Usage
 

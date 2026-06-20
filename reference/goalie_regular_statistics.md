@@ -1,11 +1,7 @@
 # Access the career regular season statistics for all the goalies
 
-`goalie_regular_statistics()` retrieves the career regular season
-statistics for all the goalies as a `data.frame` where each row
-represents goalie and includes detail on date/season filtering windows
-and chronological context, team identity, affiliation, and matchup-side
-context, and player identity, role, handedness, and biographical
-profile.
+`goalie_regular_statistics()` returns records-site regular-season career
+goalie totals, with one row per goalie.
 
 ## Usage
 

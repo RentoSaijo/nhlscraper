@@ -1,8 +1,7 @@
 # Access the schedule for a date
 
-`schedule()` retrieves the schedule for a date as a `data.frame` where
-each row represents game and includes detail on game timing, matchup
-state, scoring flow, and situational event detail.
+`schedule()` returns the public schedule rows for one date, including
+game IDs, teams, start/status, scores, venue, broadcasts, and links.
 
 ## Usage
 

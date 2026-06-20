@@ -1,6 +1,8 @@
 # Access the shift charts for a season
 
-`shift_charts()` loads the shift charts for a given `season`.
+`shift_charts()` downloads the stored season-level shift-chart parquet
+snapshot, removes the storage-only `id` column, and returns one row per
+parsed shift.
 
 ## Usage
 

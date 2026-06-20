@@ -1,8 +1,8 @@
 # Access all the players
 
-`players()` retrieves all the players as a `data.frame` where each row
-represents player and includes detail on player identity, role,
-handedness, and biographical profile.
+`players()` returns the records-site player registry with one row per
+player and normalized IDs, names, position, handedness, and birth
+fields.
 
 ## Usage
 

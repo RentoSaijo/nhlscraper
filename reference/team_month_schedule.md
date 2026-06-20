@@ -1,10 +1,9 @@
 # Access the schedule for a team and month
 
-`team_month_schedule()` retrieves the schedule for a team and month as a
-`data.frame` where each row represents game and includes detail on game
-timeline state, period/clock progression, and matchup flow, date/season
-filtering windows and chronological context, and team identity,
-affiliation, and matchup-side context.
+`team_month_schedule()` returns the same normalized club-schedule rows
+as
+[`team_season_schedule()`](https://rentosaijo.github.io/nhlscraper/reference/team_season_schedule.md),
+restricted to the requested `YYYY-MM` month.
 
 ## Usage
 

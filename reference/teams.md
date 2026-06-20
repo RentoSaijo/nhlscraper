@@ -1,8 +1,8 @@
 # Access all the teams
 
-`teams()` retrieves all the teams as a `data.frame` where each row
-represents team and includes detail on team identity, affiliation, and
-matchup-side context.
+`teams()` returns the stats API team catalog with one row per
+franchise-era team entry and normalized identifiers, full names, and
+tri-codes.
 
 ## Usage
 

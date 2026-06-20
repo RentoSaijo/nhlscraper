@@ -1,9 +1,8 @@
 # Access the EDGE summary for a goalie, season, and game type
 
-`goalie_edge_summary()` retrieves the EDGE summary for a goalie, season,
-and game type as a nested `list` that separates summary and detail
-blocks for player identity, role, handedness, and biographical profile
-plus NHL EDGE style tracking outputs and relative-performance context.
+`goalie_edge_summary()` returns the full NHL EDGE detail payload for one
+goalie, season, and game type, including goalie metadata and the
+available save-percentage and shot-location summary blocks.
 
 ## Usage
 

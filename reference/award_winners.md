@@ -1,10 +1,7 @@
 # Access all the award winners/finalists
 
-`award_winners()` retrieves all the award winners/finalists as a
-`data.frame` where each row represents winner/finalist and includes
-detail on date/season filtering windows and chronological context, team
-identity, affiliation, and matchup-side context, and player identity,
-role, handedness, and biographical profile.
+`award_winners()` returns historical trophy winners and finalists with
+one row per player/season/status entry.
 
 ## Usage
 

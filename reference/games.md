@@ -1,9 +1,8 @@
 # Access all the games
 
-`games()` retrieves all the games as a `data.frame` where each row
-represents game and includes detail on game timeline state, period/clock
-progression, and matchup flow plus date/season filtering windows and
-chronological context.
+`games()` returns the stats API game catalog with one row per NHL game,
+ordered by `gameId` and normalized to `gameId`, `seasonId`, and
+`gameTypeId`.
 
 ## Usage
 

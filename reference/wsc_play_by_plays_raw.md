@@ -1,7 +1,8 @@
 # Access the raw World Showcase (WSC) play-by-plays for a season
 
-`wsc_play_by_plays_raw()` loads the raw WSC play-by-plays for a given
-`season`.
+`wsc_play_by_plays_raw()` downloads the stored season-level World
+Showcase parquet snapshot and returns the raw rows without public-schema
+cleanup or situation-code padding.
 
 ## Usage
 

@@ -1,11 +1,7 @@
 # Access the EDGE shot speed statistics for a team, season, game type, and category
 
-`team_edge_shot_speed()` retrieves the EDGE shot speed statistics for a
-team, season, game type, and category as a `data.frame` where each row
-represents position and includes detail on team identity, affiliation,
-and matchup-side context, player identity, role, handedness, and
-biographical profile, and ranking movement, points pace, and
-division/conference position signals.
+`team_edge_shot_speed()` returns team EDGE shot-speed detail by
+position, or hardest-shot rows when `category = 'hardest'`.
 
 ## Usage
 

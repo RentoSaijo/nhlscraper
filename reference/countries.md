@@ -1,8 +1,7 @@
 # Access all the countries
 
-`countries()` retrieves all the countries as a `data.frame` where each
-row represents country and includes detail on reference metadata,
-regional context, and media availability detail.
+`countries()` returns the stats API country catalog with one row per
+country and normalized two-/three-letter country fields.
 
 ## Usage
 

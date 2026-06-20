@@ -1,11 +1,8 @@
 # Access various reports for a season, game type, and category for all the skaters by season
 
-`skater_season_report()` retrieves various reports for a season, game
-type, and category for all the skaters by season as a `data.frame` where
-each row represents player and includes detail on date/season filtering
-windows and chronological context, player identity, role, handedness,
-and biographical profile, and production, workload, efficiency, and
-result-level performance outcomes.
+`skater_season_report()` returns a season-level skater report for a
+selected stats category, with one row per player and the metric columns
+defined by that category.
 
 ## Usage
 

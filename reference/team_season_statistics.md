@@ -1,11 +1,8 @@
 # Access the statistics for all the teams by season and game type
 
-`team_season_statistics()` retrieves the statistics for all the teams by
-season and game type as a `data.frame` where each row represents team
-per season per game type and includes detail on date/season filtering
-windows and chronological context, team identity, affiliation, and
-matchup-side context, and production, workload, efficiency, and
-result-level performance outcomes.
+`team_season_statistics()` returns records-site team totals by team,
+season, and game type, including win/loss, goal, shot, standings-point,
+and related season-total fields.
 
 ## Usage
 

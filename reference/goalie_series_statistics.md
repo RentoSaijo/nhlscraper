@@ -1,11 +1,7 @@
 # Access the playoff statistics for all the goalies by series
 
-`goalie_series_statistics()` retrieves the playoff statistics for all
-the goalies by series as a `data.frame` where each row represents player
-per series and includes detail on date/season filtering windows and
-chronological context, team identity, affiliation, and matchup-side
-context, and player identity, role, handedness, and biographical
-profile.
+`goalie_series_statistics()` returns records-site playoff goalie totals
+by player and playoff series.
 
 ## Usage
 

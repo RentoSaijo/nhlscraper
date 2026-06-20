@@ -1,10 +1,8 @@
 # Access the standings for a date
 
-`standings()` retrieves the standings for a date as a `data.frame` where
-each row represents team and includes detail on date/season filtering
-windows and chronological context, production, workload, efficiency, and
-result-level performance outcomes, and ranking movement, points pace,
-and division/conference position signals.
+`standings()` returns public standings for one date with one row per
+team, including rank, record, points, streak, division/conference, and
+normalized team fields.
 
 ## Usage
 

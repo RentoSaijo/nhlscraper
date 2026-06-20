@@ -1,8 +1,8 @@
 # Access all the ESPN players
 
-`espn_players()` retrieves all the ESPN players as a `data.frame` where
-each row represents ESPN player and includes detail on person-level
-profile context and performance history with situational splits.
+`espn_players()` pages ESPN's athlete index and returns one row per
+athlete containing the ESPN player ID used by
+[`espn_player_summary()`](https://rentosaijo.github.io/nhlscraper/reference/espn_player_summary.md).
 
 ## Usage
 

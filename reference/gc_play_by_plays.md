@@ -1,6 +1,8 @@
 # Access the GameCenter (GC) play-by-plays for a season
 
-`gc_play_by_plays()` loads the GC play-by-plays for a given `season`.
+`gc_play_by_plays()` downloads the cleaned season-level GameCenter
+parquet snapshot and pads `situationCode` to the four-character public
+format.
 
 ## Usage
 

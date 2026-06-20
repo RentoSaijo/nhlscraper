@@ -1,9 +1,8 @@
 # Access the skater EDGE statistics leaders for a season and game type
 
-`skater_edge_leaders()` retrieves the skater EDGE statistics leaders for
-a season and game type as a nested `list` that separates summary and
-detail blocks for NHL EDGE style tracking outputs and
-relative-performance context.
+`skater_edge_leaders()` returns the skater EDGE landing-page leader
+groups for one season and game type, such as speed, distance, shot
+speed, shot location, and zone-time leader blocks.
 
 ## Usage
 

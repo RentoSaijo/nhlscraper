@@ -1,11 +1,7 @@
 # Access the playoff statistics for all the skaters by series
 
-`skater_series_statistics()` retrieves the playoff statistics for all
-the skaters by series as a `data.frame` where each row represents player
-per series and includes detail on date/season filtering windows and
-chronological context, team identity, affiliation, and matchup-side
-context, and player identity, role, handedness, and biographical
-profile.
+`skater_series_statistics()` returns records-site playoff skater totals
+by player and playoff series.
 
 ## Usage
 

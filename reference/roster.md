@@ -1,8 +1,8 @@
 # Access the roster for a team, season, and position
 
-`roster()` retrieves the roster for a team, season, and position as a
-`data.frame` where each row represents player and includes detail on
-player identity, role, handedness, and biographical profile.
+`roster()` returns a team's roster for one season and position group,
+with one row per player and normalized ID, name, sweater, position,
+height/weight, birth, and handedness fields when available.
 
 ## Usage
 

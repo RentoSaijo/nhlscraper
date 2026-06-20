@@ -1,11 +1,11 @@
 # Access the configurations for skater reports
 
-`skater_report_configurations()` retrieves the configurations for skater
-reports as a nested `list` that separates summary and detail blocks for
-production, workload, efficiency, and result-level performance outcomes,
-situational splits across home/road, strength state, and
-overtime/shootout states, and configuration catalogs for valid report
-categories and filters.
+`skater_report_configurations()` returns the skater-report configuration
+block from the stats API, including valid report categories, fields,
+filters, and split options accepted by
+[`skater_season_report()`](https://rentosaijo.github.io/nhlscraper/reference/skater_season_report.md)
+and
+[`skater_game_report()`](https://rentosaijo.github.io/nhlscraper/reference/skater_game_report.md).
 
 ## Usage
 

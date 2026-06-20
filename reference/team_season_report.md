@@ -1,11 +1,8 @@
 # Access various reports for a season, game type, and category for all the teams by season
 
-`team_season_report()` retrieves various reports for a season, game
-type, and category for all the teams by season as a `data.frame` where
-each row represents team and includes detail on date/season filtering
-windows and chronological context, team identity, affiliation, and
-matchup-side context, and production, workload, efficiency, and
-result-level performance outcomes.
+`team_season_report()` returns a season-level team report for a selected
+stats category, with one row per team and the metric columns defined by
+that category.
 
 ## Usage
 

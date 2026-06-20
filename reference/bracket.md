@@ -1,8 +1,8 @@
 # Access the playoff bracket for a season
 
-`bracket()` retrieves the playoff bracket for a season as a `data.frame`
-where each row represents series and includes detail on team identity,
-affiliation, and matchup-side context.
+`bracket()` returns the public playoff bracket for one season, with one
+row per series and normalized team, seed, score, and series-status
+fields.
 
 ## Usage
 

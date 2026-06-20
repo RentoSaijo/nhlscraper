@@ -1,9 +1,7 @@
 # Access the season(s) and game type(s) in which a team played
 
-`team_seasons()` retrieves the season(s) and game type(s) in which a
-team played as a `data.frame` where each row represents season and
-includes detail on date/season filtering windows and chronological
-context.
+`team_seasons()` returns the seasons and game type IDs available for a
+team in the public club-stats API.
 
 ## Usage
 

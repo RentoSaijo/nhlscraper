@@ -1,9 +1,7 @@
 # Access the season(s) and game type(s) in which a player played
 
-`player_seasons()` retrieves the season(s) and game type(s) in which a
-player played as a `data.frame` where each row represents season and
-includes detail on date/season filtering windows and chronological
-context.
+`player_seasons()` returns the seasons and game type IDs available in a
+player's GameCenter game-log payload.
 
 ## Usage
 

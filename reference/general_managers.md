@@ -1,8 +1,7 @@
 # Access all the general managers
 
-`general_managers()` retrieves all the general managers as a
-`data.frame` where each row represents general manager and includes
-detail on player identity, role, handedness, and biographical profile.
+`general_managers()` returns the records-site general-manager registry
+with one row per general manager and normalized ID/name fields.
 
 ## Usage
 

@@ -1,6 +1,8 @@
-# Call the NHL API with 429 (rate limit) error-handling
+# Call the NHL API
 
-Call the NHL API with 429 (rate limit) error-handling
+`nhl_api()` performs a retrying request against one of the NHL API hosts
+and parses the JSON response with the package's standard flattening
+rules.
 
 ## Usage
 
@@ -12,16 +14,17 @@ nhl_api(path, query = list(), type)
 
 - path:
 
-  character
+  character path relative to the selected API host
 
 - query:
 
-  list
+  named list of URL query parameters
 
 - type:
 
-  character of 'w' for web, 's' for stats, and 'r' for records
+  character of 'w' for the web API, 's' for the stats API, or 'r' for
+  the records API
 
 ## Value
 
-parsed JSON (i.e., data.frame or list)
+parsed JSON object, usually a data.frame or nested list

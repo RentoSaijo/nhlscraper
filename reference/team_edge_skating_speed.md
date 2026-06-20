@@ -1,11 +1,7 @@
 # Access the EDGE skating speed statistics for a team, season, game type, and category
 
-`team_edge_skating_speed()` retrieves the EDGE skating speed statistics
-for a team, season, game type, and category as a `data.frame` where each
-row represents position and includes detail on team identity,
-affiliation, and matchup-side context, player identity, role,
-handedness, and biographical profile, and ranking movement, points pace,
-and division/conference position signals.
+`team_edge_skating_speed()` returns team EDGE skating-speed detail by
+position, or top-speed burst rows when `category = 'top speeds'`.
 
 ## Usage
 

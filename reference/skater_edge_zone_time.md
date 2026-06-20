@@ -1,9 +1,8 @@
 # Access the EDGE zone time statistics for a skater, season, game type, and category
 
-`skater_edge_zone_time()` retrieves the EDGE zone time statistics for a
-skater, season, game type, and category as a `data.frame` where each row
-represents strength state and includes detail on NHL EDGE style tracking
-outputs and relative-performance context.
+`skater_edge_zone_time()` returns a skater's EDGE zone-time detail table
+by strength state, or the zone-start split list when
+`category = 'starts'`.
 
 ## Usage
 

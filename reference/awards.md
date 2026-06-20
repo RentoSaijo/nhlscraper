@@ -1,8 +1,7 @@
 # Access all the awards
 
-`awards()` retrieves all the awards as a `data.frame` where each row
-represents award and includes detail on recognition, leaderboard, and
-milestone-watch context.
+`awards()` returns the records-site trophy catalog with one row per
+award and normalized trophy IDs, names, and short names.
 
 ## Usage
 

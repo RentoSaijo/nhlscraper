@@ -425,18 +425,16 @@ Functions to help share the data (WIP)
 
 - [`ig_game_shot_locations()`](https://rentosaijo.github.io/nhlscraper/reference/ig_game_shot_locations.md)
   [`ig_game_shot_locs()`](https://rentosaijo.github.io/nhlscraper/reference/ig_game_shot_locations.md)
-  : Save an Instagram (IG) share-able shot-location plot for a game
+  : Save an Instagram (IG) shareable shot-location plot for a game
 - [`x_game_shot_locations()`](https://rentosaijo.github.io/nhlscraper/reference/x_game_shot_locations.md)
   [`x_game_shot_locs()`](https://rentosaijo.github.io/nhlscraper/reference/x_game_shot_locations.md)
-  : Save an X (Twitter) share-able shot-location plot for a game
+  : Save an X (Twitter) shareable shot-location plot for a game
 - [`ig_game_cumulative_expected_goals()`](https://rentosaijo.github.io/nhlscraper/reference/ig_game_cumulative_expected_goals.md)
   [`ig_game_cum_xG()`](https://rentosaijo.github.io/nhlscraper/reference/ig_game_cumulative_expected_goals.md)
-  : Save an Instagram (IG) share-able cumulative expected goals (xG)
-  time-series plot for a game
+  : Save an Instagram (IG) shareable cumulative expected goals (xG) plot
 - [`x_game_cumulative_expected_goals()`](https://rentosaijo.github.io/nhlscraper/reference/x_game_cumulative_expected_goals.md)
   [`x_game_cum_xG()`](https://rentosaijo.github.io/nhlscraper/reference/x_game_cumulative_expected_goals.md)
-  : Save an X (Twitter) share-able cumulative expected goals (xG)
-  time-series plot for a game
+  : Save an X (Twitter) shareable cumulative expected goals (xG) plot
 
 ## ESPN API
 

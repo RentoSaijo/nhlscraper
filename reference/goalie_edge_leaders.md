@@ -1,9 +1,8 @@
 # Access the goalie EDGE statistics leaders for a season and game type
 
-`goalie_edge_leaders()` retrieves the goalie EDGE statistics leaders for
-a season and game type as a nested `list` that separates summary and
-detail blocks for NHL EDGE style tracking outputs and
-relative-performance context.
+`goalie_edge_leaders()` returns the goalie EDGE landing-page leader
+groups for one season and game type, such as save percentage, 5-on-5
+save percentage, and shot-location leader blocks.
 
 ## Usage
 

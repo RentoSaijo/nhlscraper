@@ -1,12 +1,8 @@
 # Access the statistics for all the goalies by season, game type, and team.
 
-`goalie_season_statistics()` retrieves the statistics for all the
-goalies by season, game type, and team as a `data.frame` where each row
-represents player per season per game type, separated by team if
-applicable and includes detail on date/season filtering windows and
-chronological context, team identity, affiliation, and matchup-side
-context, and player identity, role, handedness, and biographical
-profile.
+`goalie_season_statistics()` returns records-site goalie stat rows by
+player, team, season, and game type, preserving separate rows when a
+goalie changed teams.
 
 ## Usage
 

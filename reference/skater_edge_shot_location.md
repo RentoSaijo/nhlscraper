@@ -1,11 +1,8 @@
 # Access the EDGE shot location statistics for a skater, season, game type, and category
 
-`skater_edge_shot_location()` retrieves the EDGE shot location
-statistics for a skater, season, game type, and category as a
-`data.frame` where each row represents shot location and includes detail
-on production, workload, efficiency, and result-level performance
-outcomes plus NHL EDGE style tracking outputs and relative-performance
-context.
+`skater_edge_shot_location()` returns a skater's EDGE shot-location
+detail by rink region, or totals by shot-location bucket when
+`category = 'totals'`.
 
 ## Usage
 

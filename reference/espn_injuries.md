@@ -1,8 +1,7 @@
 # Access the real-time ESPN injury reports
 
-`espn_injuries()` retrieves the real-time ESPN injury reports as a
-`data.frame` where each row represents team and includes detail on
-availability status tracking for injuries or transactions.
+`espn_injuries()` returns ESPN's current injury report with one outer
+row per team and nested player injury details where ESPN includes them.
 
 ## Usage
 

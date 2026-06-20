@@ -1,11 +1,7 @@
 # Access the career regular season statistics for all the skaters
 
-`skater_regular_statistics()` retrieves the career regular season
-statistics for all the skaters as a `data.frame` where each row
-represents player and includes detail on team identity, affiliation, and
-matchup-side context, player identity, role, handedness, and
-biographical profile, and production, workload, efficiency, and
-result-level performance outcomes.
+`skater_regular_statistics()` returns records-site regular-season career
+scoring totals for skaters, with one row per player.
 
 ## Usage
 

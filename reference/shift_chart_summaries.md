@@ -1,7 +1,8 @@
 # Access the shift chart summaries for a season
 
-`shift_chart_summaries()` loads the shift chart summaries for a given
-`season`.
+`shift_chart_summaries()` downloads the stored season-level
+shift-summary parquet snapshot with per-player, per-period time-on-ice
+splits.
 
 ## Usage
 

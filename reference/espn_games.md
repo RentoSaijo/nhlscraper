@@ -1,8 +1,8 @@
 # Access the ESPN games for a season
 
-`espn_games()` retrieves the ESPN games for a season as a `data.frame`
-where each row represents ESPN and includes detail on game timing,
-matchup state, scoring flow, and situational event detail.
+`espn_games()` pages ESPN's NHL event index for a season and returns one
+row per event containing the ESPN game ID used by the other ESPN
+wrappers.
 
 ## Usage
 

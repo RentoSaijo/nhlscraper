@@ -1,10 +1,8 @@
 # Access the schedule for a team and season
 
-`team_season_schedule()` retrieves the schedule for a team and season as
-a `data.frame` where each row represents game and includes detail on
-game timeline state, period/clock progression, and matchup flow,
-date/season filtering windows and chronological context, and team
-identity, affiliation, and matchup-side context.
+`team_season_schedule()` returns one team's season schedule with one row
+per game and normalized game, opponent, score/status, venue, broadcast,
+and link fields.
 
 ## Usage
 

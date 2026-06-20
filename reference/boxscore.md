@@ -1,9 +1,8 @@
 # Access the boxscore for a game, team, and position
 
-`boxscore()` retrieves the boxscore for a game, team, and position as a
-`data.frame` where each row represents player and includes detail on
-player identity, role, handedness, and biographical profile plus
-production, workload, efficiency, and result-level performance outcomes.
+`boxscore()` returns one side of the GameCenter boxscore for one
+position group. Each row is a player with normalized name/position
+fields and the game-stat columns exposed for that group.
 
 ## Usage
 

@@ -1,7 +1,8 @@
 # Access the raw GameCenter (GC) play-by-plays for a season
 
-`gc_play_by_plays_raw()` loads the raw GC play-by-plays for a given
-`season`.
+`gc_play_by_plays_raw()` downloads the stored season-level GameCenter
+parquet snapshot and returns the raw rows without public-schema cleanup
+or situation-code padding.
 
 ## Usage
 

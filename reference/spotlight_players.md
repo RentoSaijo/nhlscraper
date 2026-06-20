@@ -1,9 +1,7 @@
 # Access the spotlight players
 
-`spotlight_players()` retrieves the spotlight players as a `data.frame`
-where each row represents player and includes detail on team identity,
-affiliation, and matchup-side context plus player identity, role,
-handedness, and biographical profile.
+`spotlight_players()` returns NHL.com player-spotlight entries with
+normalized player, position, and team fields.
 
 ## Usage
 

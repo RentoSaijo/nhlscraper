@@ -1,8 +1,7 @@
 # Access the draft combine reports
 
-`combine_reports()` retrieves the draft combine reports as a
-`data.frame` where each row represents player and includes detail on
-player identity, role, handedness, and biographical profile.
+`combine_reports()` returns draft-combine measurements and test results
+with one row per player/event result.
 
 ## Usage
 

@@ -54,7 +54,16 @@
 
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.6.1.9000" id="nhlscraper-0619000">nhlscraper 0.6.1.9000<a class="anchor" aria-label="anchor" href="#nhlscraper-0619000"></a></h2>
-</div>
+<ul><li>
+<code><a href="../reference/calculate_expected_goals.html">calculate_expected_goals()</a></code> now ships and scores against the completed rolling XGBoost xG model bundle from the companion NHLxG project.
+<ul><li>The scorer now routes each shot by target-season vintage and six game-state partitions, with bundled boosters and frozen preprocessing artifacts for <code>2013-14</code> through the <code>2026-27</code> deployment vintage.</li>
+<li>The previous package scorer artifacts have been removed.</li>
+</ul></li>
+<li>Removed minimum-dependency package language now that runtime scoring relies on external modeling packages.</li>
+<li>Rebuilt packaged contract data from the updated <code>data-raw/NHL_Contracts_2020s.csv</code>.</li>
+<li>Standardized all <code>R</code> code.</li>
+<li>Improved all articles.</li>
+</ul></div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.6.1" id="nhlscraper-061">nhlscraper 0.6.1<a class="anchor" aria-label="anchor" href="#nhlscraper-061"></a></h2><p class="text-muted">CRAN release: 2026-05-24</p>
 <ul><li>
@@ -89,8 +98,8 @@
 <li>
 <code><a href="../reference/gc_play_by_play_raw.html">gc_play_by_play_raw()</a></code> and <code><a href="../reference/wsc_play_by_play_raw.html">wsc_play_by_play_raw()</a></code> now returns raw play-by-play data; note that there are heavy inconsistencies in this uncleaned data as <a href="https://github.com/RentoSaijo/nhlscraper/tree/main/other/audits/pbps" class="external-link">audited</a>.</li>
 <li>
-<code><a href="../reference/calculate_expected_goals.html">calculate_expected_goals()</a></code> now uses a fixed six-partition ridge xG model.
-<ul><li>The scorer now mirrors the training-time preprocessing with delta, biometric, previous-event, and shift-timing context where available, while keeping runtime dependencies minimal.</li>
+<code><a href="../reference/calculate_expected_goals.html">calculate_expected_goals()</a></code> now uses a fixed six-partition xG model.
+<ul><li>The scorer now mirrors the training-time preprocessing with delta, biometric, previous-event, and shift-timing context where available.</li>
 <li>The scorer now expects the current public play-by-play schema directly and no longer backfills legacy xG alias columns such as <code>typeDescKey</code>, <code>period</code>, <code>SOGFor</code>, <code>SOGAgainst</code>, and <code>SOGDifferential</code>.</li>
 <li>
 <code><a href="../reference/ig_game_shot_locations.html">ig_game_shot_locations()</a></code>, <code><a href="../reference/x_game_shot_locations.html">x_game_shot_locations()</a></code>, <code><a href="../reference/ig_game_cumulative_expected_goals.html">ig_game_cumulative_expected_goals()</a></code>, and <code><a href="../reference/x_game_cumulative_expected_goals.html">x_game_cumulative_expected_goals()</a></code> still accept <code>model</code> for backward compatibility, but it is now ignored.</li>

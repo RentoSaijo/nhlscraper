@@ -1,7 +1,8 @@
 # Build an NHL API request
 
-`.nhl_request()` constructs an NHL API request with the standard retry
-policy used throughout the package.
+`.nhl_request()` selects the requested NHL API host and constructs a
+retrying request object. It is used by public wrappers that need to
+fetch requests in parallel before parsing the body.
 
 ## Usage
 

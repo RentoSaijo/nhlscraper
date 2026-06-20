@@ -1,7 +1,10 @@
-# Save an Instagram (IG) share-able cumulative expected goals (xG) time-series plot for a game
+# Save an Instagram (IG) shareable cumulative expected goals (xG) plot
 
-`ig_game_cumulative_expected_goals()` saves an IG share-able cumulative
-xG time-series plot for a given `game` as a PNG.
+`ig_game_cumulative_expected_goals()` fetches one GameCenter
+play-by-play, scores shot attempts with
+[`calculate_expected_goals()`](https://rentosaijo.github.io/nhlscraper/reference/calculate_expected_goals.md),
+and renders a home/away cumulative xG time series on a 1080-by-566-style
+PNG canvas.
 
 ## Usage
 
@@ -25,18 +28,19 @@ ig_game_cum_xG(game = 2023030417, model = NULL)
 
 - save:
 
-  logical only FALSE for tests
+  logical; use `FALSE` to draw on the active graphics device during
+  tests or custom workflows
 
 ## Value
 
-`NULL`
+`NULL`, invisibly
 
 ## Examples
 
 ``` r
 # May take >5s, so skip.
 ig_game_cumulative_expected_goals(
-  game  = 2023030417, 
+  game  = 2023030417,
   save  = FALSE
 )
 ```

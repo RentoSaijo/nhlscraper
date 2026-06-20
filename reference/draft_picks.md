@@ -1,9 +1,8 @@
 # Access all the draft picks
 
-`draft_picks()` retrieves all the draft picks as a `data.frame` where
-each row represents pick and includes detail on team identity,
-affiliation, and matchup-side context plus player identity, role,
-handedness, and biographical profile.
+`draft_picks()` returns the historical draft-pick table with one row per
+pick, including draft year/round/overall slot, team, player, position,
+and biographical fields.
 
 ## Usage
 

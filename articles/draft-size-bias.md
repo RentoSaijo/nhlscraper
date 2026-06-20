@@ -1,39 +1,46 @@
-# Did the NHL Draft's Size Obsession Peak in the 1990s?
+# When Did NHL Teams Draft the Biggest Skaters?
 
-## Overview
+## Question
 
-NHL draft discourse has always had a body-type vocabulary. Prospects are
-praised for “frame”, “length”, and “pro build” long before anyone knows
-whether those gifts will actually translate into NHL impact. What
-changes over time is the **intensity** of that preference. This example
-asks a historical version of the size question: **when was the NHL draft
-most tilted toward bigger skaters?** Instead of looking at one ranking
-board, we use
+Draft rooms have always loved the language of size: frame, reach,
+length, projectable build. But was the league always equally obsessed
+with bigger skaters, or did that preference peak in a particular era?
+
+This article uses
 [`nhlscraper::draft_picks()`](https://rentosaijo.github.io/nhlscraper/reference/draft_picks.md)
-to study actual selections across almost half a century of drafts. The
-goal is not to claim that teams ever drafted size *instead of* skill.
-The goal is to see whether certain eras leaned harder on size as a
-tiebreaker, especially near the top of the board.
+to turn that old scouting cliché into a measurable history. The mini
+research question is:
 
-## Build Draft Sample
+> **When was the NHL draft most tilted toward bigger skaters, especially
+> in the first round?**
 
-We keep skaters drafted from 1979 onward, drop goalies, and require
-non-missing height and weight. To keep the comparisons intuitive, we
-split picks into first-round selections and everyone taken from Rounds 2
-through 7.
+We will keep the analysis intentionally simple: height, weight, round,
+position, and draft year. That is enough to show how the top of the
+draft board changed over time.
+
+## Build Sample
+
+We keep skaters from 1979 onward, drop goalies, require measured height
+and weight, and limit the comparison to Rounds 1 through 7 so older
+marathon drafts do not distort the later-round pool.
 
 ``` r
 
-# Pull draft picks and keep skaters with measured size.
+# Pull draft picks.
 draft_tbl <- nhlscraper::draft_picks()
+
+# Keep modern skater sample.
 draft_tbl <- draft_tbl[
   draft_tbl[['draftYear']] >= 1979 &
+    draft_tbl[['roundNumber']] <= 7 &
     draft_tbl[['positionCode']] != 'G' &
     !is.na(draft_tbl[['height']]) &
     !is.na(draft_tbl[['weight']]),
+  ,
+  drop = FALSE
 ]
 
-# Create era, round, and position buckets.
+# Create analysis buckets.
 draft_tbl[['roundBucket']] <- ifelse(
   draft_tbl[['roundNumber']] == 1,
   'Round 1',
@@ -47,7 +54,7 @@ draft_tbl[['era']] <- cut(
     '1990-1999',
     '2000-2009',
     '2010-2019',
-    '2020-2025'
+    '2020-present'
   )
 )
 draft_tbl[['positionBucket']] <- ifelse(
@@ -56,272 +63,287 @@ draft_tbl[['positionBucket']] <- ifelse(
   'Forward'
 )
 draft_tbl[['tallSkater']] <- draft_tbl[['height']] >= 74
+draft_tbl[['bigSkater']] <- draft_tbl[['height']] >= 74 &
+  draft_tbl[['weight']] >= 205
 nrow(draft_tbl)
-#> [1] 9998
+#> [1] 8166
 ```
 
-That gives us 9998 drafted skaters with usable height and weight
-measurements. This is a big enough pool to tell an era story rather than
-a class-of-one story.
+That gives us 8166 drafted skaters. The sample is broad enough to study
+eras, but narrow enough that “later round” means roughly the same thing
+across modern draft history.
 
-## Start With Era Averages
+## First Look: Era and Round
 
-The first pass is simple: average height and weight by era and round
-bucket.
+If size was truly prized near the top of the board, first-round skaters
+should be bigger than later-round skaters in most eras.
 
 ``` r
 
 # Summarize size by era and round bucket.
 era_summary <- aggregate(
-  cbind(height, weight) ~ era + roundBucket,
+  cbind(height, weight, tallSkater, bigSkater) ~ era + roundBucket,
   data = draft_tbl,
   FUN = mean
 )
+era_counts <- aggregate(
+  height ~ era + roundBucket,
+  data = draft_tbl,
+  FUN = length
+)
+names(era_counts)[names(era_counts) == 'height'] <- 'n'
+era_summary <- merge(
+  era_summary,
+  era_counts,
+  by = c('era', 'roundBucket')
+)
+era_summary <- era_summary[, c(
+  'era',
+  'roundBucket',
+  'n',
+  'height',
+  'weight',
+  'tallSkater',
+  'bigSkater'
+)]
 make_table(
   era_summary,
-  caption = 'Average drafted skater size by era and draft bucket.'
+  caption = 'Drafted skater size by era and draft bucket.',
+  digits = 3
 )
 ```
 
-| era       | roundBucket | height |  weight |
-|:----------|:------------|-------:|--------:|
-| 1979-1989 | Round 1     | 72.934 | 200.659 |
-| 1990-1999 | Round 1     | 74.060 | 209.534 |
-| 2000-2009 | Round 1     | 73.694 | 203.086 |
-| 2010-2019 | Round 1     | 72.889 | 189.757 |
-| 2020-2025 | Round 1     | 73.032 | 188.292 |
-| 1979-1989 | Rounds 2-7  | 72.381 | 192.216 |
-| 1990-1999 | Rounds 2-7  | 73.094 | 195.145 |
-| 2000-2009 | Rounds 2-7  | 73.148 | 195.120 |
-| 2010-2019 | Rounds 2-7  | 72.575 | 186.634 |
-| 2020-2025 | Rounds 2-7  | 72.981 | 185.607 |
+| era          | roundBucket |    n | height |  weight | tallSkater | bigSkater |
+|:-------------|:------------|-----:|-------:|--------:|-----------:|----------:|
+| 1979-1989    | Round 1     |  226 | 72.934 | 200.659 |      0.363 |     0.221 |
+| 1979-1989    | Rounds 2-7  | 1225 | 72.509 | 193.566 |      0.322 |     0.153 |
+| 1990-1999    | Round 1     |  232 | 74.060 | 209.534 |      0.608 |     0.500 |
+| 1990-1999    | Rounds 2-7  | 1405 | 73.260 | 197.044 |      0.433 |     0.224 |
+| 2000-2009    | Round 1     |  278 | 73.694 | 203.086 |      0.536 |     0.349 |
+| 2000-2009    | Rounds 2-7  | 1693 | 73.162 | 195.432 |      0.435 |     0.214 |
+| 2010-2019    | Round 1     |  296 | 72.889 | 189.757 |      0.368 |     0.132 |
+| 2010-2019    | Rounds 2-7  | 1609 | 72.575 | 186.634 |      0.331 |     0.093 |
+| 2020-present | Round 1     |  185 | 73.032 | 188.292 |      0.400 |     0.103 |
+| 2020-present | Rounds 2-7  | 1017 | 72.981 | 185.607 |      0.417 |     0.114 |
 
-Average drafted skater size by era and draft bucket. {.table}
+Drafted skater size by era and draft bucket. {.table
+style="width:100%;"}
 
-The shape is more nuanced than the usual “the game keeps getting bigger”
-story. Average first-round size surged in the 1990s, stayed elevated in
-the 2000s, then fell back in the 2010s. The top of the board in the
-modern era is still not exactly small, but it does not look like the
-peak size era. Just as important, first-round skaters are consistently
-larger than later-round skaters. The draft’s size preference shows up
-not only across eras, but also in *where* teams are willing to spend
-their most expensive picks.
+The first-round premium is visible almost everywhere, but the 1990s and
+2000s stand out. That was the period when spending a premium pick on a
+bigger skater looked most normal. The modern top of the board is still
+not small, but it is not the same size arms race.
 
-## Plot the First-Round Size Arc
+## Plot the Size Cycle
 
-A year-by-year line makes the rise-and-fall pattern easier to see. To
-reduce noise from small annual swings, we use a five-draft rolling
-average.
+A rolling average makes the shape easier to see than era bins alone.
 
 ``` r
 
-# Compute annual mean height by round bucket.
-round1_annual <- aggregate(
-  height ~ draftYear,
-  data = draft_tbl[draft_tbl[['roundBucket']] == 'Round 1', ],
+# Compute annual first-round and later-round height.
+annual_height <- aggregate(
+  height ~ draftYear + roundBucket,
+  data = draft_tbl,
   FUN = mean
 )
-later_annual <- aggregate(
-  height ~ draftYear,
-  data = draft_tbl[draft_tbl[['roundBucket']] == 'Rounds 2-7', ],
-  FUN = mean
+annual_height <- annual_height[order(
+  annual_height[['roundBucket']],
+  annual_height[['draftYear']]
+), ]
+annual_height[['rollHeight']] <- ave(
+  annual_height[['height']],
+  annual_height[['roundBucket']],
+  FUN = function(x) as.numeric(stats::filter(x, rep(1 / 5, 5), sides = 2))
 )
-
-# Smooth annual means with five-draft rolling averages.
-round1_annual[['rollHeight']] <- as.numeric(stats::filter(
-  round1_annual[['height']],
-  rep(1 / 5, 5),
-  sides = 2
-))
-later_annual[['rollHeight']] <- as.numeric(stats::filter(
-  later_annual[['height']],
-  rep(1 / 5, 5),
-  sides = 2
-))
+round_one <- annual_height[annual_height[['roundBucket']] == 'Round 1', ]
+later_rounds <- annual_height[annual_height[['roundBucket']] == 'Rounds 2-7', ]
 ```
 
 ``` r
 
 graphics::plot(
-  round1_annual[['draftYear']],
-  round1_annual[['rollHeight']],
+  round_one[['draftYear']],
+  round_one[['rollHeight']],
   type = 'l',
-  lwd = 2,
-  col = '#0f4c5c',
-  ylim = range(
-    c(round1_annual[['rollHeight']], later_annual[['rollHeight']]),
-    na.rm = TRUE
-  ),
+  lwd = 2.5,
+  col = '#003049',
+  ylim = range(annual_height[['rollHeight']], na.rm = TRUE),
   xlab = 'Draft Year',
   ylab = 'Average Height (Inches)'
 )
 graphics::lines(
-  later_annual[['draftYear']],
-  later_annual[['rollHeight']],
-  lwd = 2,
-  col = '#e36414'
+  later_rounds[['draftYear']],
+  later_rounds[['rollHeight']],
+  lwd = 2.5,
+  col = '#f77f00'
 )
+graphics::abline(v = c(1990, 2000, 2010, 2020), lty = 3, col = '#adb5bd')
 graphics::legend(
   'topright',
   legend = c('Round 1', 'Rounds 2-7'),
-  col = c('#0f4c5c', '#e36414'),
-  lwd = 2,
+  col = c('#003049', '#f77f00'),
+  lwd = 2.5,
   bty = 'n'
 )
 ```
 
-![Five-draft rolling average height for first-round skaters and
-later-round
-skaters.](draft-size-bias_files/figure-html/rolling-plot-1.png)
+![Five-draft rolling average height by draft
+bucket.](draft-size-bias_files/figure-html/rolling-plot-1.png)
 
-Five-draft rolling average height for first-round skaters and
-later-round skaters.
+Five-draft rolling average height by draft bucket.
 
-The picture is striking. The first round visibly bulks up in the 1990s,
-stays large through the 2000s, and then cools off. Later rounds move in
-the same direction, but less dramatically. That is exactly what you
-would expect if size became a stronger premium near the very top of the
-draft board during that period.
+The graph has a real arc: build up, peak, cool down. The first-round
+line rises hardest into the 1990s and remains elevated into the 2000s.
+Later rounds follow the same broad climate, but less aggressively. That
+is the fingerprint of a top-of-board preference rather than a
+league-wide measurement artifact.
 
-## Ask How Often Teams Chased Tall Skaters
+## Tall Is One Thing; Big Is Another
 
-Averages can hide roster mix, so it helps to translate height into a
-more intuitive marker. Here we ask what share of drafted skaters were at
-least 6-foot-2.
+Height alone can make a player sound physically imposing. Weight adds
+another dimension. Here we ask how often teams drafted skaters who were
+both at least 6-foot-2 and at least 205 pounds.
 
 ``` r
 
-# Summarize share of taller skaters by era.
-tall_share <- aggregate(
-  tallSkater ~ era + roundBucket,
+# Summarize big-skater share by era and round bucket.
+big_share <- aggregate(
+  bigSkater ~ era + roundBucket,
   data = draft_tbl,
   FUN = mean
 )
-tall_counts <- aggregate(
-  height ~ era + roundBucket,
-  data = draft_tbl,
-  FUN = length
+big_share <- merge(
+  big_share,
+  era_counts,
+  by = c('era', 'roundBucket')
 )
-names(tall_counts)[names(tall_counts) == 'height'] <- 'n'
-tall_share <- merge(tall_share, tall_counts, by = c('era', 'roundBucket'))
-
+big_share <- big_share[
+  order(big_share[['era']], big_share[['roundBucket']]),
+]
 make_table(
-  tall_share,
-  caption = 'Share of drafted skaters measuring at least 6-foot-2.'
+  big_share,
+  caption = 'Share of drafted skaters at least 6-foot-2 and 205 pounds.',
+  digits = 3
 )
 ```
 
-| era       | roundBucket | tallSkater |    n |
-|:----------|:------------|-----------:|-----:|
-| 1979-1989 | Round 1     |      0.363 |  226 |
-| 1979-1989 | Rounds 2-7  |      0.296 | 2070 |
-| 1990-1999 | Round 1     |      0.608 |  232 |
-| 1990-1999 | Rounds 2-7  |      0.402 | 2107 |
-| 2000-2009 | Round 1     |      0.536 |  278 |
-| 2000-2009 | Rounds 2-7  |      0.429 | 1978 |
-| 2010-2019 | Round 1     |      0.368 |  296 |
-| 2010-2019 | Rounds 2-7  |      0.331 | 1609 |
-| 2020-2025 | Round 1     |      0.400 |  185 |
-| 2020-2025 | Rounds 2-7  |      0.417 | 1017 |
+| era          | roundBucket | bigSkater |    n |
+|:-------------|:------------|----------:|-----:|
+| 1979-1989    | Round 1     |     0.221 |  226 |
+| 1979-1989    | Rounds 2-7  |     0.153 | 1225 |
+| 1990-1999    | Round 1     |     0.500 |  232 |
+| 1990-1999    | Rounds 2-7  |     0.224 | 1405 |
+| 2000-2009    | Round 1     |     0.349 |  278 |
+| 2000-2009    | Rounds 2-7  |     0.214 | 1693 |
+| 2010-2019    | Round 1     |     0.132 |  296 |
+| 2010-2019    | Rounds 2-7  |     0.093 | 1609 |
+| 2020-present | Round 1     |     0.103 |  185 |
+| 2020-present | Rounds 2-7  |     0.114 | 1017 |
 
-Share of drafted skaters measuring at least 6-foot-2. {.table}
-
-The first round is where the story becomes loudest. In the 1990s, about
-60.8 percent of first-round skaters in the sample were at least
-6-foot-2. In the 2010s that share dropped to about 36.8 percent. That is
-a major shift in what the “ideal” first-round skater looked like.
+Share of drafted skaters at least 6-foot-2 and 205 pounds. {.table}
 
 ``` r
 
-# Plot tall-skater shares by era.
-tall_matrix <- rbind(
-  tall_share[['tallSkater']][tall_share[['roundBucket']] == 'Round 1'],
-  tall_share[['tallSkater']][tall_share[['roundBucket']] == 'Rounds 2-7']
+# Plot big-skater share by era.
+round_levels <- c('Round 1', 'Rounds 2-7')
+big_matrix <- rbind(
+  big_share[['bigSkater']][big_share[['roundBucket']] == round_levels[1]],
+  big_share[['bigSkater']][big_share[['roundBucket']] == round_levels[2]]
 )
 graphics::barplot(
-  tall_matrix,
+  big_matrix,
   beside = TRUE,
-  col = c('#1b4332', '#95d5b2'),
-  ylim = c(0, 0.7),
+  col = c('#2d6a4f', '#95d5b2'),
+  border = NA,
+  ylim = c(0, max(big_matrix, na.rm = TRUE) * 1.25),
   names.arg = levels(draft_tbl[['era']]),
-  ylab = 'Share At Least 6-Foot-2',
-  xlab = 'Draft Era'
+  las = 2,
+  ylab = 'Share of Big Skaters'
 )
 graphics::legend(
   'topright',
-  legend = c('Round 1', 'Rounds 2-7'),
-  fill = c('#1b4332', '#95d5b2'),
+  legend = round_levels,
+  fill = c('#2d6a4f', '#95d5b2'),
   bty = 'n'
 )
 ```
 
-![Share of drafted skaters at least 6-foot-2 by era and round
-bucket.](draft-size-bias_files/figure-html/tall-share-plot-1.png)
+![Share of big skaters by era and round
+bucket.](draft-size-bias_files/figure-html/big-share-plot-1.png)
 
-Share of drafted skaters at least 6-foot-2 by era and round bucket.
+Share of big skaters by era and round bucket.
 
-## Separate Position From Era
+This version makes the first-round story louder. Bigger bodies were not
+merely available in the draft pool; teams were more willing to spend
+their most valuable picks on them during the peak-size era.
 
-Part of any draft-size story is just that defensemen tend to run bigger
-than forwards. So it helps to break the sample out by position family.
+## Separate Defensemen From Forwards
+
+The obvious objection is positional mix. Defensemen are bigger than
+forwards, so maybe the era pattern is just a defenseman pattern. We can
+split the sample by position family before jumping to conclusions.
 
 ``` r
 
 # Summarize size by era and position family.
 position_summary <- aggregate(
-  cbind(height, weight) ~ era + positionBucket,
+  cbind(height, weight, bigSkater) ~ era + positionBucket,
   data = draft_tbl,
   FUN = mean
 )
+position_counts <- aggregate(
+  height ~ era + positionBucket,
+  data = draft_tbl,
+  FUN = length
+)
+names(position_counts)[names(position_counts) == 'height'] <- 'n'
+position_summary <- merge(
+  position_summary,
+  position_counts,
+  by = c('era', 'positionBucket')
+)
 make_table(
   position_summary,
-  caption = 'Average drafted skater size by era and position family.'
+  caption = 'Drafted skater size by era and position family.',
+  digits = 3
 )
 ```
 
-| era       | positionBucket | height |  weight |
-|:----------|:---------------|-------:|--------:|
-| 1979-1989 | Defense        | 72.981 | 197.046 |
-| 1990-1999 | Defense        | 73.897 | 200.884 |
-| 2000-2009 | Defense        | 73.888 | 200.536 |
-| 2010-2019 | Defense        | 73.255 | 190.180 |
-| 2020-2025 | Defense        | 73.840 | 190.435 |
-| 1979-1989 | Forward        | 72.117 | 190.719 |
-| 1990-1999 | Forward        | 72.781 | 194.079 |
-| 2000-2009 | Forward        | 72.832 | 193.575 |
-| 2010-2019 | Forward        | 72.246 | 185.289 |
-| 2020-2025 | Forward        | 72.516 | 183.561 |
+| era          | positionBucket | height |  weight | bigSkater |    n |
+|:-------------|:---------------|-------:|--------:|----------:|-----:|
+| 1979-1989    | Defense        | 73.139 | 198.336 |     0.224 |  518 |
+| 1979-1989    | Forward        | 72.262 | 192.636 |     0.130 |  933 |
+| 1990-1999    | Defense        | 74.088 | 203.200 |     0.358 |  589 |
+| 1990-1999    | Forward        | 72.972 | 196.349 |     0.210 | 1048 |
+| 2000-2009    | Defense        | 73.915 | 201.045 |     0.325 |  714 |
+| 2000-2009    | Forward        | 72.852 | 193.936 |     0.181 | 1257 |
+| 2010-2019    | Defense        | 73.255 | 190.180 |     0.128 |  713 |
+| 2010-2019    | Forward        | 72.246 | 185.289 |     0.081 | 1192 |
+| 2020-present | Defense        | 73.840 | 190.435 |     0.167 |  430 |
+| 2020-present | Forward        | 72.516 | 183.561 |     0.082 |  772 |
 
-Average drafted skater size by era and position family. {.table}
+Drafted skater size by era and position family. {.table}
 
-Defensemen are consistently taller and heavier than forwards, which is
-exactly what most observers would expect. But the 1990s surge does not
-disappear once position is split out. The size bulge is still visible,
-especially for first-round picks, so this is not just a story about
-drafting more defensemen.
+Defensemen are bigger in every era, as expected. But the 1990s/2000s
+pattern does not vanish. The draft’s size cycle shows up inside position
+families, not only because teams drafted more defensemen.
 
 ## Estimate First-Round Premium
 
-As a simple check, we can fit a linear model with height as the response
-and draft year, first-round status, and defense status as predictors.
+A simple model helps summarize the top-of-board effect while controlling
+for position and broad era.
 
 ``` r
 
-# Fit simple draft-height model.
-draft_fit <- stats::lm(
-  height ~ draftYear + I(roundNumber == 1) + I(positionCode == 'D'),
+# Fit height model.
+height_fit <- stats::lm(
+  height ~ era + I(roundNumber == 1) + positionBucket,
   data = draft_tbl
 )
-draft_fit_tbl <- as.data.frame(summary(draft_fit)$coefficients)
-draft_fit_tbl[['term']] <- rownames(draft_fit_tbl)
-rownames(draft_fit_tbl) <- NULL
-draft_fit_tbl[['term']] <- c(
-  'Intercept',
-  'Draft year',
-  'First-round indicator',
-  'Defense indicator'
-)
-draft_fit_tbl <- draft_fit_tbl[, c(
+height_fit_tbl <- as.data.frame(summary(height_fit)$coefficients)
+height_fit_tbl[['term']] <- rownames(height_fit_tbl)
+rownames(height_fit_tbl) <- NULL
+height_fit_tbl <- height_fit_tbl[, c(
   'term',
   'Estimate',
   'Std. Error',
@@ -329,37 +351,40 @@ draft_fit_tbl <- draft_fit_tbl[, c(
   'Pr(>|t|)'
 )]
 make_table(
-  draft_fit_tbl,
+  height_fit_tbl,
   caption = 'Linear model of drafted skater height.',
   digits = 4
 )
 ```
 
-| term                  | Estimate | Std. Error | t value | Pr(\>\|t\|) |
-|:----------------------|---------:|-----------:|--------:|------------:|
-| Intercept             |  58.4427 |     3.0281 | 19.3002 |           0 |
-| Draft year            |   0.0070 |     0.0015 |  4.6221 |           0 |
-| First-round indicator |   0.5170 |     0.0610 |  8.4729 |           0 |
-| Defense indicator     |   1.0542 |     0.0413 | 25.5233 |           0 |
+| term                    | Estimate | Std. Error |   t value | Pr(\>\|t\|) |
+|:------------------------|---------:|-----------:|----------:|------------:|
+| (Intercept)             |  73.1921 |     0.0603 | 1213.2533 |      0.0000 |
+| era1990-1999            |   0.8027 |     0.0714 |   11.2417 |      0.0000 |
+| era2000-2009            |   0.6635 |     0.0685 |    9.6853 |      0.0000 |
+| era2010-2019            |   0.0304 |     0.0690 |    0.4410 |      0.6592 |
+| era2020-present         |   0.4145 |     0.0772 |    5.3666 |      0.0000 |
+| I(roundNumber == 1)TRUE |   0.4767 |     0.0616 |    7.7428 |      0.0000 |
+| positionBucketForward   |  -1.0756 |     0.0456 |  -23.5900 |      0.0000 |
 
 Linear model of drafted skater height. {.table}
 
-This model says the first-round premium is still real even after
-accounting for time and position. First-round skaters come in roughly
-0.52 inches taller on average, while defensemen add about 1.05 inches on
-top of that. The draft-year slope itself is small because the historical
-pattern is not a straight line. That is the core takeaway of the whole
-article: draft size preference looks less like a steady march and more
-like a boom that peaked in the 1990s and early 2000s.
+The model is not meant to be a final draft theory. It is a compact check
+on the pattern. The first-round coefficient stays positive after
+accounting for era and position family, which matches the visual story:
+teams have historically paid a premium for size near the top of the
+board.
 
 ## What We Learned
 
-The draft has never been indifferent to size, especially in the first
-round. Bigger skaters have consistently been favored near the top of the
-board, and defensemen have carried their own structural size premium the
-whole way through. But the strongest form of that bias does not appear
-to be a modern invention. In this sample, the most size-forward era is
-the 1990s, with the 2000s not far behind. That makes
-[`nhlscraper::draft_picks()`](https://rentosaijo.github.io/nhlscraper/reference/draft_picks.md)
-a useful reminder that draft archetypes move in cycles: the league does
-not just change, it overcorrects and then changes back.
+The draft’s size preference looks cyclical, not linear. The 1990s and
+2000s were the loudest size eras in this sample, especially in Round 1.
+Since then, the top of the board has become less extreme, even though
+first-round skaters remain bigger than later-round skaters on average.
+
+That is the useful lesson for `nhlscraper`: a simple endpoint like
+[`draft_picks()`](https://rentosaijo.github.io/nhlscraper/reference/draft_picks.md)
+can answer a surprisingly rich historical question when you reshape it
+carefully. The package gives you the raw ingredients; the fun starts
+when you turn those ingredients into a hockey argument someone would
+actually want to debate.

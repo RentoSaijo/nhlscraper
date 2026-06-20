@@ -2,6 +2,21 @@
 
 ## nhlscraper 0.6.1.9000
 
+- [`calculate_expected_goals()`](https://rentosaijo.github.io/nhlscraper/reference/calculate_expected_goals.md)
+  now ships and scores against the completed rolling XGBoost xG model
+  bundle from the companion NHLxG project.
+  - The scorer now routes each shot by target-season vintage and six
+    game-state partitions, with bundled boosters and frozen
+    preprocessing artifacts for `2013-14` through the `2026-27`
+    deployment vintage.
+  - The previous package scorer artifacts have been removed.
+- Removed minimum-dependency package language now that runtime scoring
+  relies on external modeling packages.
+- Rebuilt packaged contract data from the updated
+  `data-raw/NHL_Contracts_2020s.csv`.
+- Standardized all `R` code.
+- Improved all articles.
+
 ## nhlscraper 0.6.1
 
 CRAN release: 2026-05-24
@@ -68,10 +83,9 @@ CRAN release: 2026-04-07
   inconsistencies in this uncleaned data as
   [audited](https://github.com/RentoSaijo/nhlscraper/tree/main/other/audits/pbps).
 - [`calculate_expected_goals()`](https://rentosaijo.github.io/nhlscraper/reference/calculate_expected_goals.md)
-  now uses a fixed six-partition ridge xG model.
+  now uses a fixed six-partition xG model.
   - The scorer now mirrors the training-time preprocessing with delta,
-    biometric, previous-event, and shift-timing context where available,
-    while keeping runtime dependencies minimal.
+    biometric, previous-event, and shift-timing context where available.
   - The scorer now expects the current public play-by-play schema
     directly and no longer backfills legacy xG alias columns such as
     `typeDescKey`, `period`, `SOGFor`, `SOGAgainst`, and

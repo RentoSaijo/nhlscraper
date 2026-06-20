@@ -1,8 +1,8 @@
 # Access all the franchises
 
-`franchises()` retrieves all the franchises as a `data.frame` where each
-row represents franchise and includes detail on team identity,
-affiliation, and matchup-side context.
+`franchises()` merges records-site franchise and franchise-detail
+metadata, returning one row per franchise with normalized franchise/team
+identifiers and names.
 
 ## Usage
 

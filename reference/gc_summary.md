@@ -1,10 +1,9 @@
 # Access the GameCenter (GC) summary for a game
 
-`gc_summary()` retrieves the GameCenter (GC) summary for a game as a
-nested `list` that separates summary and detail blocks for game timeline
-state, period/clock progression, and matchup flow, date/season filtering
-windows and chronological context, and venue/location geography and
-regional metadata.
+`gc_summary()` combines the GameCenter landing and right-rail payloads
+for one game. The nested list includes the scoreboard, team records,
+scoring summary, three stars, game videos, officials, season/game
+identifiers, and related GameCenter metadata when available.
 
 ## Usage
 
