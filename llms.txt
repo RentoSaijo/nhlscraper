@@ -485,6 +485,8 @@ Functions to help clean the data
   : Add shooter biometrics to (a) play-by-play(s)
 - [`add_goalie_biometrics()`](https://rentosaijo.github.io/nhlscraper/reference/add_goalie_biometrics.md)
   : Add goalie biometrics to (a) play-by-play(s)
+- [`calculate_shift_times_by_situation()`](https://rentosaijo.github.io/nhlscraper/reference/calculate_shift_times_by_situation.md)
+  : Calculate shift times by exact situation code
 
 ### Model
 
