@@ -6,6 +6,10 @@
 - Rebuilt packaged contract data from the updated `data-raw/NHL_Contracts_2020s.csv`.
 - Standardized all `R` code.
 - Improved all articles.
+- `calculate_shift_times_by_situation()` is now added to split player-period
+  time on ice by exact `situationCode`, with situation columns expressed from
+  the player's team perspective rather than the play-by-play's away/home
+  perspective.
 
 # nhlscraper 0.6.1
 - `shift_chart()` now returns `periodNumber` instead of `period`.

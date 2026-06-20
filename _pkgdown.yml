@@ -290,6 +290,7 @@ reference:
       - add_shift_times
       - add_shooter_biometrics
       - add_goalie_biometrics
+      - calculate_shift_times_by_situation
   
   - subtitle: "Model"
     desc: >

@@ -535,7 +535,515 @@ add_shift_times <- function(play_by_play, shift_chart) {
   relocate_timing_cols(play_by_play)
 }
 
+#' Calculate shift times by exact situation code
+#'
+#' `calculate_shift_times_by_situation()` returns one row per player per period
+#' and splits time on ice by the exact play-by-play `situationCode` in effect
+#' during that player's shifts. This differs from [shift_chart_summary()],
+#' which reads the NHL HTML report's broad EV/PP/SH totals. Here, shift seconds
+#' come from [shift_chart()] and strength state comes from [gc_play_by_play()].
+#' When `season` is supplied, it overrides `game` and the function uses
+#' [gc_play_by_plays()] with [shift_charts()] for the full season.
+#'
+#' In the play-by-play, the four `situationCode` digits mean away goalie count,
+#' away skater count, home skater count, and home goalie count. In this output,
+#' the four digits in each situation-specific column mean player-team goalie
+#' count, player-team skater count, opponent skater count, and opponent goalie
+#' count. For example, raw `1451` means home skaters are on a 5-on-4 power play;
+#' those seconds are written to `1541TimeOnIce` for home players and
+#' `1451TimeOnIce` for away players.
+#'
+#' @param game integer ID (e.g., 2023030417); ignored when `season` is supplied
+#' @param season optional integer season ID (e.g., 20232024)
+#' @returns data.frame with one row per player per period and
+#'   situation-specific `TimeOnIce` columns
+#' @examples
+#' \donttest{
+#' shift_situations_2023030417 <- calculate_shift_times_by_situation(
+#'   game = 2023030417
+#' )
+#' }
+#' @export
+
+calculate_shift_times_by_situation <- function(game = 2023030417, season = NULL) {
+  tryCatch({
+    if (!is.null(season)) {
+      season <- as.integer(season)
+      if (length(season) != 1L || is.na(season) || season <= 0L) {
+        message(paste(
+          'Invalid argument(s); refer to help file.',
+          '\nProvided season:',
+          paste(season, collapse = ', ')
+        ))
+        return(data.frame())
+      }
+      return(.calculate_shift_times_by_situation_data(
+        play_by_play = gc_play_by_plays(season = season),
+        shift_chart  = shift_charts(season = season)
+      ))
+    }
+    game <- as.integer(game)
+    if (length(game) != 1L || is.na(game) || game <= 0L) {
+      message(paste(
+        'Invalid argument(s); refer to help file.',
+        '\nProvided game:',
+        paste(game, collapse = ', ')
+      ))
+      return(data.frame())
+    }
+    roster <- tryCatch(game_rosters(game = game), error = function(e) NULL)
+    .calculate_shift_times_by_situation_data(
+      play_by_play = gc_play_by_play(game = game),
+      shift_chart  = shift_chart(game = game),
+      roster       = roster
+    )
+  }, error = function(e) {
+    message('Invalid argument(s); refer to help file.')
+    data.frame()
+  })
+}
+
 # Internal helpers --------------------------------------------------------
+
+# Calculate shift times by situation from supplied data.
+.calculate_shift_times_by_situation_data <- function(
+  play_by_play,
+  shift_chart,
+  roster = NULL
+) {
+  if (!is.data.frame(play_by_play) || !is.data.frame(shift_chart)) {
+    return(data.frame())
+  }
+  .require_public_pbp_columns(
+    play_by_play,
+    c(
+      'gameId', 'periodNumber', 'secondsElapsedInPeriod', 'sortOrder',
+      'eventOwnerTeamId', 'isHome', 'situationCode'
+    ),
+    'calculate_shift_times_by_situation'
+  )
+  if (!('periodNumber' %in% names(shift_chart)) && 'period' %in% names(shift_chart)) {
+    shift_chart$periodNumber <- shift_chart$period
+  }
+  .require_shift_chart_columns(
+    shift_chart,
+    c(
+      'gameId', 'teamId', 'playerId', 'periodNumber',
+      'startSecondsElapsedInPeriod', 'endSecondsElapsedInPeriod'
+    ),
+    'calculate_shift_times_by_situation'
+  )
+  shift_chart$duration <- as.integer(
+    shift_chart$endSecondsElapsedInPeriod -
+      shift_chart$startSecondsElapsedInPeriod
+  )
+  shift_chart <- .sort_shift_chart_for_timing(shift_chart)
+  shift_chart <- shift_chart[
+    !is.na(shift_chart$teamId) &
+      !is.na(shift_chart$duration) &
+      shift_chart$duration > 0L,
+    ,
+    drop = FALSE
+  ]
+  if (!nrow(play_by_play) || !nrow(shift_chart)) {
+    return(data.frame())
+  }
+  summary   <- .shift_situation_base_summary(shift_chart)
+  intervals <- .shift_situation_intervals(play_by_play, shift_chart)
+  overlaps  <- .shift_situation_overlaps(shift_chart, intervals)
+  summary   <- .shift_situation_add_totals(summary, overlaps)
+  summary   <- .shift_situation_add_metadata(summary, roster)
+  .shift_situation_order_output(summary)
+}
+
+# Summarize player-period shift counts and total time on ice.
+.shift_situation_base_summary <- function(shift_chart) {
+  key_cols <- c('gameId', 'teamId', 'playerId', 'periodNumber')
+  shifts <- stats::aggregate(
+    shift_chart[['duration']],
+    shift_chart[key_cols],
+    length
+  )
+  time_on_ice <- stats::aggregate(
+    shift_chart[['duration']],
+    shift_chart[key_cols],
+    sum
+  )
+  names(shifts)[names(shifts) == 'x']            <- 'shifts'
+  names(time_on_ice)[names(time_on_ice) == 'x'] <- 'timeOnIce'
+  out <- merge(shifts, time_on_ice, by = key_cols, all = TRUE, sort = FALSE)
+  out <- out[order(
+    out$gameId,
+    out$teamId,
+    out$playerId,
+    out$periodNumber,
+    na.last = TRUE
+  ), ]
+  rownames(out) <- NULL
+  out$shifts    <- as.integer(out$shifts)
+  out$timeOnIce <- as.integer(round(out$timeOnIce))
+  out
+}
+
+# Convert play-by-play rows into situation intervals.
+.shift_situation_intervals <- function(play_by_play, shift_chart) {
+  play_by_play$situationCode <- .normalize_situation_code_for_parse(
+    play_by_play$situationCode
+  )
+  play_by_play <- play_by_play[
+    !is.na(play_by_play$gameId) &
+      !is.na(play_by_play$periodNumber) &
+      !is.na(play_by_play$secondsElapsedInPeriod) &
+      !is.na(play_by_play$situationCode),
+    ,
+    drop = FALSE
+  ]
+  if (!nrow(play_by_play)) {
+    return(data.frame())
+  }
+  game_teams <- .shift_situation_game_teams(play_by_play, shift_chart)
+  play_by_play <- play_by_play[order(
+    play_by_play$gameId,
+    play_by_play$periodNumber,
+    play_by_play$secondsElapsedInPeriod,
+    play_by_play$sortOrder,
+    seq_len(nrow(play_by_play)),
+    na.last = TRUE
+  ), ]
+  period_ends <- stats::aggregate(
+    shift_chart[['endSecondsElapsedInPeriod']],
+    shift_chart[, c('gameId', 'periodNumber'), drop = FALSE],
+    max
+  )
+  names(period_ends)[names(period_ends) == 'x'] <- 'periodEnd'
+  period_ends <- period_ends[order(
+    period_ends$gameId,
+    period_ends$periodNumber,
+    na.last = TRUE
+  ), ]
+  pbp_key <- paste(play_by_play$gameId, play_by_play$periodNumber, sep = ':')
+  pbp_split <- split(seq_len(nrow(play_by_play)), pbp_key)
+  out   <- vector('list', nrow(period_ends))
+  n_out <- 0L
+  for (i in seq_len(nrow(period_ends))) {
+    game_id <- period_ends$gameId[i]
+    period  <- period_ends$periodNumber[i]
+    period_end <- period_ends$periodEnd[i]
+    if (is.na(period_end) || period_end <= 0) {
+      next
+    }
+    pbp_idx <- pbp_split[[paste(game_id, period, sep = ':')]]
+    if (is.null(pbp_idx) || !length(pbp_idx)) {
+      next
+    }
+    period_pbp <- play_by_play[pbp_idx, , drop = FALSE]
+    state_idx <- which(!duplicated(period_pbp$secondsElapsedInPeriod, fromLast = TRUE))
+    state_time <- as.integer(period_pbp$secondsElapsedInPeriod[state_idx])
+    state_code <- as.character(period_pbp$situationCode[state_idx])
+    boundary <- sort(unique(c(
+      0L,
+      state_time[state_time >= 0L & state_time <= period_end],
+      as.integer(period_end)
+    )))
+    if (length(boundary) < 2L) {
+      next
+    }
+    starts <- utils::head(boundary, -1L)
+    ends   <- utils::tail(boundary, -1L)
+    pos    <- findInterval(starts, state_time)
+    pos[pos == 0L] <- 1L
+    keep <- ends > starts & !is.na(state_code[pos])
+    if (!any(keep)) {
+      next
+    }
+    team_idx <- match(game_id, game_teams$gameId)
+    n_out <- n_out + 1L
+    out[[n_out]] <- data.frame(
+      gameId = as.integer(game_id),
+      periodNumber = as.integer(period),
+      homeTeamId = as.integer(game_teams$homeTeamId[team_idx]),
+      awayTeamId = as.integer(game_teams$awayTeamId[team_idx]),
+      startSecondsElapsedInPeriod = as.integer(starts[keep]),
+      endSecondsElapsedInPeriod = as.integer(ends[keep]),
+      situationCode = as.integer(state_code[pos][keep]),
+      stringsAsFactors = FALSE
+    )
+  }
+  if (!n_out) {
+    return(data.frame())
+  }
+  intervals <- do.call(rbind, out[seq_len(n_out)])
+  intervals[order(
+    intervals$gameId,
+    intervals$periodNumber,
+    intervals$startSecondsElapsedInPeriod,
+    na.last = TRUE
+  ), ]
+}
+
+# Identify home and away team IDs for each game.
+.shift_situation_game_teams <- function(play_by_play, shift_chart) {
+  game_ids <- sort(unique(as.integer(shift_chart$gameId)))
+  out <- data.frame(
+    gameId = game_ids,
+    homeTeamId = NA_integer_,
+    awayTeamId = NA_integer_
+  )
+  for (i in seq_along(game_ids)) {
+    game_id <- game_ids[i]
+    pbp_idx <- which(play_by_play$gameId == game_id)
+    home_ids <- unique(as.integer(play_by_play$eventOwnerTeamId[
+      pbp_idx[play_by_play$isHome[pbp_idx] %in% TRUE]
+    ]))
+    away_ids <- unique(as.integer(play_by_play$eventOwnerTeamId[
+      pbp_idx[play_by_play$isHome[pbp_idx] %in% FALSE]
+    ]))
+    home_ids <- home_ids[!is.na(home_ids)]
+    away_ids <- away_ids[!is.na(away_ids)]
+    out$homeTeamId[i] <- if (length(home_ids)) home_ids[1L] else NA_integer_
+    out$awayTeamId[i] <- if (length(away_ids)) away_ids[1L] else NA_integer_
+    shift_team_ids <- unique(as.integer(shift_chart$teamId[shift_chart$gameId == game_id]))
+    shift_team_ids <- shift_team_ids[!is.na(shift_team_ids)]
+    if (is.na(out$homeTeamId[i]) && length(setdiff(shift_team_ids, out$awayTeamId[i])) == 1L) {
+      out$homeTeamId[i] <- setdiff(shift_team_ids, out$awayTeamId[i])
+    }
+    if (is.na(out$awayTeamId[i]) && length(setdiff(shift_team_ids, out$homeTeamId[i])) == 1L) {
+      out$awayTeamId[i] <- setdiff(shift_team_ids, out$homeTeamId[i])
+    }
+  }
+  out
+}
+
+# Intersect shift rows with situation intervals.
+.shift_situation_overlaps <- function(shift_chart, intervals) {
+  if (!nrow(shift_chart) || !nrow(intervals)) {
+    return(data.frame())
+  }
+  native <- NULL
+  if (.ensure_local_native_symbol('nhlscraper_shift_situation_overlaps')) {
+    native <- tryCatch(
+      .Call('nhlscraper_shift_situation_overlaps', list(
+        as.integer(shift_chart$gameId),
+        as.integer(shift_chart$teamId),
+        as.integer(shift_chart$periodNumber),
+        as.integer(shift_chart$startSecondsElapsedInPeriod),
+        as.integer(shift_chart$endSecondsElapsedInPeriod),
+        as.integer(intervals$gameId),
+        as.integer(intervals$periodNumber),
+        as.integer(intervals$homeTeamId),
+        as.integer(intervals$awayTeamId),
+        as.integer(intervals$startSecondsElapsedInPeriod),
+        as.integer(intervals$endSecondsElapsedInPeriod),
+        as.integer(intervals$situationCode)
+      )),
+      error = function(e) NULL
+    )
+  }
+  if (is.null(native)) {
+    native <- .shift_situation_overlaps_in_r(shift_chart, intervals)
+  }
+  if (!length(native$shiftIndex)) {
+    return(data.frame())
+  }
+  overlaps <- data.frame(
+    gameId = as.integer(shift_chart$gameId[native$shiftIndex]),
+    teamId = as.integer(shift_chart$teamId[native$shiftIndex]),
+    playerId = as.integer(shift_chart$playerId[native$shiftIndex]),
+    periodNumber = as.integer(shift_chart$periodNumber[native$shiftIndex]),
+    situationCode = sprintf('%04d', as.integer(native$situationCode)),
+    seconds = as.integer(native$seconds),
+    stringsAsFactors = FALSE
+  )
+  stats::aggregate(
+    seconds ~ gameId + teamId + playerId + periodNumber + situationCode,
+    data = overlaps,
+    FUN = sum
+  )
+}
+
+# R fallback for shift-situation overlaps.
+.shift_situation_overlaps_in_r <- function(shift_chart, intervals) {
+  out_shift <- integer()
+  out_code  <- integer()
+  out_sec   <- integer()
+  interval_key <- paste(intervals$gameId, intervals$periodNumber, sep = ':')
+  interval_split <- split(seq_len(nrow(intervals)), interval_key)
+  for (i in seq_len(nrow(shift_chart))) {
+    key <- paste(shift_chart$gameId[i], shift_chart$periodNumber[i], sep = ':')
+    idx <- interval_split[[key]]
+    if (is.null(idx)) {
+      next
+    }
+    overlap <- pmin(shift_chart$endSecondsElapsedInPeriod[i], intervals$endSecondsElapsedInPeriod[idx]) -
+      pmax(shift_chart$startSecondsElapsedInPeriod[i], intervals$startSecondsElapsedInPeriod[idx])
+    player_is_home <- ifelse(
+      shift_chart$teamId[i] == intervals$homeTeamId[idx],
+      TRUE,
+      ifelse(shift_chart$teamId[i] == intervals$awayTeamId[idx], FALSE, NA)
+    )
+    code <- .shift_situation_perspective_code(intervals$situationCode[idx], player_is_home)
+    keep <- overlap > 0 & !is.na(code)
+    if (!any(keep)) {
+      next
+    }
+    out_shift <- c(out_shift, rep(i, sum(keep)))
+    out_code  <- c(out_code, code[keep])
+    out_sec   <- c(out_sec, as.integer(overlap[keep]))
+  }
+  list(
+    shiftIndex = out_shift,
+    situationCode = out_code,
+    seconds = out_sec
+  )
+}
+
+# Convert raw situation codes to player-team perspective.
+.shift_situation_perspective_code <- function(situation_code, player_is_home) {
+  sc  <- as.integer(situation_code)
+  out <- rep(NA_integer_, length(sc))
+  away <- !is.na(player_is_home) & !player_is_home & !is.na(sc)
+  home <- !is.na(player_is_home) & player_is_home & !is.na(sc)
+  out[away] <- sc[away]
+  if (any(home)) {
+    aG <- sc[home] %/% 1000L
+    aS <- sc[home] %/% 100L %% 10L
+    hS <- sc[home] %/% 10L %% 10L
+    hG <- sc[home] %% 10L
+    out[home] <- hG * 1000L + hS * 100L + aS * 10L + aG
+  }
+  out
+}
+
+# Add wide situation total columns.
+.shift_situation_add_totals <- function(summary, overlaps) {
+  if (!nrow(summary) || !nrow(overlaps)) {
+    return(summary)
+  }
+  situation_codes <- sort(unique(overlaps$situationCode), decreasing = TRUE)
+  for (code in situation_codes) {
+    summary[[paste0(code, 'TimeOnIce')]] <- 0L
+  }
+  summary_key <- paste(
+    summary$gameId,
+    summary$teamId,
+    summary$playerId,
+    summary$periodNumber,
+    sep = ':'
+  )
+  overlap_key <- paste(
+    overlaps$gameId,
+    overlaps$teamId,
+    overlaps$playerId,
+    overlaps$periodNumber,
+    sep = ':'
+  )
+  row_idx <- match(overlap_key, summary_key)
+  keep <- !is.na(row_idx)
+  if (!any(keep)) {
+    return(summary)
+  }
+  row_factor <- factor(row_idx[keep], levels = seq_len(nrow(summary)))
+  code_factor <- factor(overlaps$situationCode[keep], levels = situation_codes)
+  total_matrix <- stats::xtabs(overlaps$seconds[keep] ~ row_factor + code_factor)
+  total_matrix <- matrix(
+    as.integer(total_matrix),
+    nrow = nrow(summary),
+    dimnames = list(NULL, paste0(situation_codes, 'TimeOnIce'))
+  )
+  total_df <- as.data.frame(total_matrix)
+  total_df[] <- lapply(total_df, as.integer)
+  summary[, names(total_df)] <- total_df
+  summary
+}
+
+# Add team and player metadata.
+.shift_situation_add_metadata <- function(summary, roster = NULL) {
+  if (!nrow(summary)) {
+    return(summary)
+  }
+  summary$.rowOrder <- seq_len(nrow(summary))
+  team_lookup <- tryCatch(teams(), error = function(e) data.frame())
+  if (is.data.frame(team_lookup) && all(c('teamId', 'teamTriCode') %in% names(team_lookup))) {
+    team_lookup <- team_lookup[, c('teamId', 'teamTriCode'), drop = FALSE]
+    team_lookup <- team_lookup[!duplicated(team_lookup$teamId), , drop = FALSE]
+    summary <- merge(summary, team_lookup, by = 'teamId', all.x = TRUE, sort = FALSE)
+  } else {
+    summary$teamTriCode <- NA_character_
+  }
+  player_lookup <- .shift_situation_player_lookup(roster)
+  if (nrow(player_lookup)) {
+    by_cols <- if ('teamId' %in% names(player_lookup)) c('teamId', 'playerId') else 'playerId'
+    summary <- merge(summary, player_lookup, by = by_cols, all.x = TRUE, sort = FALSE)
+  } else {
+    summary$playerFirstName <- NA_character_
+    summary$playerLastName  <- NA_character_
+    summary$sweaterNumber   <- NA_integer_
+    summary$positionCode    <- NA_character_
+  }
+  summary <- summary[order(summary$.rowOrder, na.last = TRUE), , drop = FALSE]
+  summary$.rowOrder <- NULL
+  summary
+}
+
+# Build player metadata lookup.
+.shift_situation_player_lookup <- function(roster = NULL) {
+  source <- if (is.data.frame(roster) && nrow(roster)) {
+    roster
+  } else {
+    tryCatch(players(), error = function(e) data.frame())
+  }
+  if (!is.data.frame(source) || !('playerId' %in% names(source)) || !nrow(source)) {
+    return(data.frame())
+  }
+  out <- data.frame(
+    playerId = as.integer(source$playerId),
+    playerFirstName = .shift_situation_lookup_col(source, 'playerFirstName', NA_character_),
+    playerLastName = .shift_situation_lookup_col(source, 'playerLastName', NA_character_),
+    sweaterNumber = suppressWarnings(as.integer(.shift_situation_lookup_col(source, 'sweaterNumber', NA_integer_))),
+    positionCode = as.character(.shift_situation_lookup_col(source, 'positionCode', NA_character_)),
+    stringsAsFactors = FALSE
+  )
+  if ('teamId' %in% names(source)) {
+    out$teamId <- as.integer(source$teamId)
+    out <- out[, c('teamId', setdiff(names(out), 'teamId')), drop = FALSE]
+    out <- out[!duplicated(out[, c('teamId', 'playerId')]), , drop = FALSE]
+  } else {
+    out <- out[!duplicated(out$playerId), , drop = FALSE]
+  }
+  out
+}
+
+# Read lookup column with fallback.
+.shift_situation_lookup_col <- function(source, col, fallback) {
+  if (col %in% names(source)) {
+    return(source[[col]])
+  }
+  rep(fallback, nrow(source))
+}
+
+# Order public output columns.
+.shift_situation_order_output <- function(summary) {
+  fixed_cols <- c(
+    'gameId',
+    'teamId',
+    'teamTriCode',
+    'playerId',
+    'playerFirstName',
+    'playerLastName',
+    'sweaterNumber',
+    'positionCode',
+    'periodNumber',
+    'shifts',
+    'timeOnIce'
+  )
+  for (col in fixed_cols) {
+    if (!(col %in% names(summary))) {
+      summary[[col]] <- NA
+    }
+  }
+  situation_cols <- grep('^[0-9]{4}TimeOnIce$', names(summary), value = TRUE)
+  summary[, c(fixed_cols, situation_cols), drop = FALSE]
+}
 
 #' Strip the game ID into the season ID, game type ID, and game number for all the events (plays) in a play-by-play
 #' 
