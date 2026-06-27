@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">nhlscraper</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.6.1.9000</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.7.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -53,14 +53,13 @@
     </div>
 
     <div class="section level2">
-<h2 class="pkg-version" data-toc-text="0.6.1.9000" id="nhlscraper-0619000">nhlscraper 0.6.1.9000<a class="anchor" aria-label="anchor" href="#nhlscraper-0619000"></a></h2>
+<h2 class="pkg-version" data-toc-text="0.7.0" id="nhlscraper-070">nhlscraper 0.7.0<a class="anchor" aria-label="anchor" href="#nhlscraper-070"></a></h2>
 <ul><li>
 <code><a href="../reference/calculate_expected_goals.html">calculate_expected_goals()</a></code> now ships and scores against the completed rolling XGBoost xG model bundle from the companion NHLxG project.
 <ul><li>The scorer now routes each shot by target-season vintage and six game-state partitions, with bundled boosters and frozen preprocessing artifacts for <code>2013-14</code> through the <code>2026-27</code> deployment vintage.</li>
 <li>The previous package scorer artifacts have been removed.</li>
 </ul></li>
 <li>Removed minimum-dependency package language now that runtime scoring relies on external modeling packages.</li>
-<li>Rebuilt packaged contract data from the updated <code>data-raw/NHL_Contracts_2020s.csv</code>.</li>
 <li>Standardized all <code>R</code> code.</li>
 <li>Improved all articles.</li>
 <li>

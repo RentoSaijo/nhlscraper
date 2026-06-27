@@ -1,6 +1,6 @@
 # Changelog
 
-## nhlscraper 0.6.1.9000
+## nhlscraper 0.7.0
 
 - [`calculate_expected_goals()`](https://rentosaijo.github.io/nhlscraper/reference/calculate_expected_goals.md)
   now ships and scores against the completed rolling XGBoost xG model
@@ -12,8 +12,6 @@
   - The previous package scorer artifacts have been removed.
 - Removed minimum-dependency package language now that runtime scoring
   relies on external modeling packages.
-- Rebuilt packaged contract data from the updated
-  `data-raw/NHL_Contracts_2020s.csv`.
 - Standardized all `R` code.
 - Improved all articles.
 - [`calculate_shift_times_by_situation()`](https://rentosaijo.github.io/nhlscraper/reference/calculate_shift_times_by_situation.md)

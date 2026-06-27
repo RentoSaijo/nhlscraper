@@ -66,10 +66,10 @@ draft_tbl[['tallSkater']] <- draft_tbl[['height']] >= 74
 draft_tbl[['bigSkater']] <- draft_tbl[['height']] >= 74 &
   draft_tbl[['weight']] >= 205
 nrow(draft_tbl)
-#> [1] 8166
+#> [1] 8313
 ```
 
-That gives us 8166 drafted skaters. The sample is broad enough to study
+That gives us 8313 drafted skaters. The sample is broad enough to study
 eras, but narrow enough that “later round” means roughly the same thing
 across modern draft history.
 
@@ -123,8 +123,8 @@ make_table(
 | 2000-2009    | Rounds 2-7  | 1693 | 73.162 | 195.432 |      0.435 |     0.214 |
 | 2010-2019    | Round 1     |  296 | 72.889 | 189.757 |      0.368 |     0.132 |
 | 2010-2019    | Rounds 2-7  | 1609 | 72.575 | 186.634 |      0.331 |     0.093 |
-| 2020-present | Round 1     |  185 | 73.032 | 188.292 |      0.400 |     0.103 |
-| 2020-present | Rounds 2-7  | 1017 | 72.981 | 185.607 |      0.417 |     0.114 |
+| 2020-present | Round 1     |  217 | 73.157 | 189.281 |      0.424 |     0.124 |
+| 2020-present | Rounds 2-7  | 1132 | 73.018 | 186.003 |      0.418 |     0.119 |
 
 Drafted skater size by era and draft bucket. {.table
 style="width:100%;"}
@@ -237,8 +237,8 @@ make_table(
 | 2000-2009    | Rounds 2-7  |     0.214 | 1693 |
 | 2010-2019    | Round 1     |     0.132 |  296 |
 | 2010-2019    | Rounds 2-7  |     0.093 | 1609 |
-| 2020-present | Round 1     |     0.103 |  185 |
-| 2020-present | Rounds 2-7  |     0.114 | 1017 |
+| 2020-present | Round 1     |     0.124 |  217 |
+| 2020-present | Rounds 2-7  |     0.119 | 1132 |
 
 Share of drafted skaters at least 6-foot-2 and 205 pounds. {.table}
 
@@ -319,8 +319,8 @@ make_table(
 | 2000-2009    | Forward        | 72.852 | 193.936 |     0.181 | 1257 |
 | 2010-2019    | Defense        | 73.255 | 190.180 |     0.128 |  713 |
 | 2010-2019    | Forward        | 72.246 | 185.289 |     0.081 | 1192 |
-| 2020-present | Defense        | 73.840 | 190.435 |     0.167 |  430 |
-| 2020-present | Forward        | 72.516 | 183.561 |     0.082 |  772 |
+| 2020-present | Defense        | 73.899 | 190.899 |     0.177 |  486 |
+| 2020-present | Forward        | 72.556 | 184.070 |     0.088 |  863 |
 
 Drafted skater size by era and position family. {.table}
 
@@ -359,13 +359,13 @@ make_table(
 
 | term                    | Estimate | Std. Error |   t value | Pr(\>\|t\|) |
 |:------------------------|---------:|-----------:|----------:|------------:|
-| (Intercept)             |  73.1921 |     0.0603 | 1213.2533 |      0.0000 |
-| era1990-1999            |   0.8027 |     0.0714 |   11.2417 |      0.0000 |
-| era2000-2009            |   0.6635 |     0.0685 |    9.6853 |      0.0000 |
-| era2010-2019            |   0.0304 |     0.0690 |    0.4410 |      0.6592 |
-| era2020-present         |   0.4145 |     0.0772 |    5.3666 |      0.0000 |
-| I(roundNumber == 1)TRUE |   0.4767 |     0.0616 |    7.7428 |      0.0000 |
-| positionBucketForward   |  -1.0756 |     0.0456 |  -23.5900 |      0.0000 |
+| (Intercept)             |  73.1963 |     0.0602 | 1215.2632 |      0.0000 |
+| era1990-1999            |   0.8028 |     0.0715 |   11.2331 |      0.0000 |
+| era2000-2009            |   0.6636 |     0.0686 |    9.6779 |      0.0000 |
+| era2010-2019            |   0.0303 |     0.0691 |    0.4387 |      0.6609 |
+| era2020-present         |   0.4592 |     0.0750 |    6.1261 |      0.0000 |
+| I(roundNumber == 1)TRUE |   0.4839 |     0.0609 |    7.9484 |      0.0000 |
+| positionBucketForward   |  -1.0838 |     0.0452 |  -23.9664 |      0.0000 |
 
 Linear model of drafted skater height. {.table}
 
