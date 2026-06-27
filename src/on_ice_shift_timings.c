@@ -36,6 +36,23 @@ static void require_vector_type_and_length(
   }
 }
 
+static void get_matrix_dims(SEXP x, int *n_rows, int *n_cols, const char *name) {
+  SEXP dim;
+  int has_dims;
+
+  PROTECT(dim = getAttrib(x, R_DimSymbol));
+  has_dims = TYPEOF(dim) == INTSXP && XLENGTH(dim) == 2;
+  if (has_dims) {
+    *n_rows = INTEGER(dim)[0];
+    *n_cols = INTEGER(dim)[1];
+  }
+  UNPROTECT(1);
+
+  if (!has_dims) {
+    error("%s must have two dimensions.", name);
+  }
+}
+
 static int lookup_range(
   const PlayerRange *ranges,
   int n_ranges,
@@ -147,8 +164,6 @@ SEXP nhlscraper_on_ice_shift_timings(SEXP data_list) {
   SEXP shift_player_sexp;
   SEXP shift_start_sexp;
   SEXP shift_end_sexp;
-  SEXP home_dim;
-  SEXP away_dim;
 
   const int *event_game;
   const int *event_period;
@@ -165,6 +180,8 @@ SEXP nhlscraper_on_ice_shift_timings(SEXP data_list) {
   int n_shifts;
   int n_rows;
   int n_slots;
+  int away_rows;
+  int away_slots;
   int *shift_prev_end;
   PlayerRange *ranges;
   int n_ranges = 0;
@@ -210,25 +227,15 @@ SEXP nhlscraper_on_ice_shift_timings(SEXP data_list) {
     error("Requested player matrices must be integer matrices.");
   }
 
-  home_dim = PROTECT(getAttrib(home_request_sexp, R_DimSymbol));
-  away_dim = PROTECT(getAttrib(away_request_sexp, R_DimSymbol));
-  if (
-    TYPEOF(home_dim) != INTSXP ||
-    TYPEOF(away_dim) != INTSXP ||
-    XLENGTH(home_dim) != 2 ||
-    XLENGTH(away_dim) != 2
-  ) {
-    error("Requested player matrices must have two dimensions.");
-  }
+  get_matrix_dims(home_request_sexp, &n_rows, &n_slots, "home_request");
+  get_matrix_dims(away_request_sexp, &away_rows, &away_slots, "away_request");
 
-  n_rows = INTEGER(home_dim)[0];
-  n_slots = INTEGER(home_dim)[1];
   if (
     n_rows < 0 ||
     n_slots < 0 ||
     n_rows != n_events ||
-    INTEGER(away_dim)[0] != n_events ||
-    INTEGER(away_dim)[1] != n_slots
+    away_rows != n_events ||
+    away_slots != n_slots
   ) {
     error("Requested player matrices have incompatible dimensions.");
   }
@@ -333,6 +340,6 @@ SEXP nhlscraper_on_ice_shift_timings(SEXP data_list) {
   SET_STRING_ELT(out_names, 5, mkChar("awaySinceLast"));
   setAttrib(out, R_NamesSymbol, out_names);
 
-  UNPROTECT(10);
+  UNPROTECT(8);
   return out;
 }

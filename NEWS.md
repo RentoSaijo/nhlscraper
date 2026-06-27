@@ -1,9 +1,8 @@
-# nhlscraper 0.6.1.9000
+# nhlscraper 0.7.0
 - `calculate_expected_goals()` now ships and scores against the completed rolling XGBoost xG model bundle from the companion NHLxG project.
   - The scorer now routes each shot by target-season vintage and six game-state partitions, with bundled boosters and frozen preprocessing artifacts for `2013-14` through the `2026-27` deployment vintage.
   - The previous package scorer artifacts have been removed.
 - Removed minimum-dependency package language now that runtime scoring relies on external modeling packages.
-- Rebuilt packaged contract data from the updated `data-raw/NHL_Contracts_2020s.csv`.
 - Standardized all `R` code.
 - Improved all articles.
 - `calculate_shift_times_by_situation()` is now added to split player-period
