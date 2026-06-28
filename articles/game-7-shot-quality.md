@@ -31,14 +31,6 @@ game_summary <- nhlscraper::gc_summary(game_id)
 pbp_xg <- nhlscraper::calculate_expected_goals(
   nhlscraper::gc_play_by_play(game_id)
 )
-#> Warning in utils::download.file(url = url, destfile = tmp, mode = "wb", :
-#> downloaded length 0 != reported length 3138
-#> Warning in utils::download.file(url = url, destfile = tmp, mode = "wb", :
-#> cannot open URL
-#> 'https://huggingface.co/datasets/RentoSaijo/NHLxG/resolve/main/models/v20232024_sd.xgb':
-#> HTTP status was '429 Unknown Error'
-#> Failed to download xG booster from https://huggingface.co/datasets/RentoSaijo/NHLxG/resolve/main/models/v20232024_sd.xgb. Install the NHLxG model assets in the cache or set `options(nhlscraper.xg_model_base_url = ...)`. Download status: cannot open URL 'https://huggingface.co/datasets/RentoSaijo/NHLxG/resolve/main/models/v20232024_sd.xgb'
-#> Invalid argument(s); refer to help file.
 xg_model_available <- 'xG' %in% names(pbp_xg) &&
   any(is.finite(pbp_xg[['xG']]) & pbp_xg[['xG']] > 0)
 if (!xg_model_available) {
@@ -102,13 +94,6 @@ shots[['timeInPeriod']] <- sprintf(
 )
 ```
 
-> Note: this rendered article uses a deterministic fallback xG estimate
-> because the external NHLxG booster store was unavailable during
-> vignette build. In normal package use,
-> [`calculate_expected_goals()`](https://rentosaijo.github.io/nhlscraper/reference/calculate_expected_goals.md)
-> supplies the model-scored values after downloading and caching the
-> needed booster.
-
 The key move is adding `xG` before summarizing. Once the event log is
 scored, a single game can be treated like a small research dataset.
 
@@ -146,8 +131,8 @@ make_table(
 
 | team | goals | shotsOnGoal | attempts |    xG | xGPerAttempt |
 |:-----|------:|------------:|---------:|------:|-------------:|
-| FLA  |     2 |          21 |       41 | 3.915 |        0.095 |
-| EDM  |     1 |          24 |       40 | 4.238 |        0.106 |
+| FLA  |     2 |          21 |       41 | 2.312 |        0.056 |
+| EDM  |     1 |          24 |       40 | 2.597 |        0.065 |
 
 Game 7 scoreboard and shot-quality summary. {.table}
 
@@ -190,9 +175,9 @@ make_table(
 
 | period | time  | team | scorer           |    xG |
 |-------:|:------|:-----|:-----------------|------:|
-|      1 | 04:27 | FLA  | Carter Verhaeghe | 0.224 |
-|      1 | 06:44 | EDM  | Mattias Janmark  | 0.193 |
-|      2 | 15:11 | FLA  | Sam Reinhart     | 0.080 |
+|      1 | 04:27 | FLA  | Carter Verhaeghe | 0.100 |
+|      1 | 06:44 | EDM  | Mattias Janmark  | 0.182 |
+|      2 | 15:11 | FLA  | Sam Reinhart     | 0.024 |
 
 Goal timeline with shot-quality estimate. {.table}
 
@@ -236,9 +221,9 @@ make_table(
 
 | period | FLA_xG | EDM_xG |
 |-------:|-------:|-------:|
-|      1 |  1.463 |  1.129 |
-|      2 |  1.255 |  1.381 |
-|      3 |  1.197 |  1.727 |
+|      1 |  0.575 |  0.601 |
+|      2 |  0.375 |  0.781 |
+|      3 |  1.361 |  1.214 |
 
 Expected goals by period. {.table}
 
@@ -307,18 +292,18 @@ make_table(
 
 | player             | team | period | time  | event        | xCoordNorm | yCoordNorm |    xG |
 |:-------------------|:-----|-------:|:------|:-------------|-----------:|-----------:|------:|
-| Zach Hyman         | EDM  |      3 | 12:57 | shot-on-goal |         85 |          1 | 0.269 |
-| Mattias Ekholm     | EDM  |      3 | 17:42 | shot-on-goal |         84 |          3 | 0.250 |
-| Adam Henrique      | EDM  |      1 | 00:21 | shot-on-goal |         82 |         -3 | 0.232 |
-| Kevin Stenlund     | FLA  |      2 | 15:37 | missed-shot  |         92 |         -7 | 0.232 |
-| Connor McDavid     | EDM  |      3 | 17:17 | missed-shot  |         82 |          3 | 0.232 |
-| Warren Foegele     | EDM  |      2 | 14:59 | shot-on-goal |         85 |         -7 | 0.228 |
-| Carter Verhaeghe   | FLA  |      1 | 04:27 | goal         |         83 |          6 | 0.224 |
-| Matthew Tkachuk    | FLA  |      1 | 18:41 | missed-shot  |         84 |         -8 | 0.215 |
-| Sam Bennett        | FLA  |      3 | 05:17 | shot-on-goal |         81 |          5 | 0.215 |
-| Eetu Luostarinen   | FLA  |      3 | 00:17 | missed-shot  |         80 |         -3 | 0.215 |
-| Vladimir Tarasenko | FLA  |      3 | 00:35 | missed-shot  |         87 |        -10 | 0.209 |
-| Zach Hyman         | EDM  |      3 | 12:56 | shot-on-goal |         79 |          2 | 0.209 |
+| Evan Rodrigues     | FLA  |      3 | 19:33 | missed-shot  |         16 |         17 | 0.647 |
+| Mattias Ekholm     | EDM  |      3 | 17:42 | shot-on-goal |         84 |          3 | 0.440 |
+| Zach Hyman         | EDM  |      3 | 12:57 | shot-on-goal |         85 |          1 | 0.191 |
+| Mattias Janmark    | EDM  |      1 | 06:44 | goal         |         77 |         -2 | 0.182 |
+| Sam Bennett        | FLA  |      3 | 05:17 | shot-on-goal |         81 |          5 | 0.162 |
+| Leon Draisaitl     | EDM  |      2 | 04:27 | missed-shot  |         75 |        -26 | 0.144 |
+| Connor McDavid     | EDM  |      3 | 17:17 | missed-shot  |         82 |          3 | 0.138 |
+| Warren Foegele     | EDM  |      1 | 02:20 | shot-on-goal |         64 |          4 | 0.126 |
+| Adam Henrique      | EDM  |      1 | 00:21 | shot-on-goal |         82 |         -3 | 0.122 |
+| Zach Hyman         | EDM  |      3 | 12:56 | shot-on-goal |         79 |          2 | 0.114 |
+| Vladimir Tarasenko | FLA  |      1 | 07:56 | missed-shot  |         78 |         -4 | 0.113 |
+| Aleksander Barkov  | FLA  |      3 | 03:29 | shot-on-goal |         58 |        -21 | 0.105 |
 
 Highest-xG attempts in Game 7. {.table}
 

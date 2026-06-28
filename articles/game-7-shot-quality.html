@@ -117,14 +117,6 @@ chances, cumulative xG, and shot geography.</p>
 <span><span class="va">pbp_xg</span> <span class="op">&lt;-</span> <span class="fu">nhlscraper</span><span class="fu">::</span><span class="fu"><a href="../reference/calculate_expected_goals.html">calculate_expected_goals</a></span><span class="op">(</span></span>
 <span>  <span class="fu">nhlscraper</span><span class="fu">::</span><span class="fu"><a href="../reference/gc_play_by_play.html">gc_play_by_play</a></span><span class="op">(</span><span class="va">game_id</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
-<span><span class="co">#&gt; Warning in utils::download.file(url = url, destfile = tmp, mode = "wb", :</span></span>
-<span><span class="co">#&gt; downloaded length 0 != reported length 3138</span></span>
-<span><span class="co">#&gt; Warning in utils::download.file(url = url, destfile = tmp, mode = "wb", :</span></span>
-<span><span class="co">#&gt; cannot open URL</span></span>
-<span><span class="co">#&gt; 'https://huggingface.co/datasets/RentoSaijo/NHLxG/resolve/main/models/v20232024_sd.xgb':</span></span>
-<span><span class="co">#&gt; HTTP status was '429 Unknown Error'</span></span>
-<span><span class="co">#&gt; Failed to download xG booster from https://huggingface.co/datasets/RentoSaijo/NHLxG/resolve/main/models/v20232024_sd.xgb. Install the NHLxG model assets in the cache or set `options(nhlscraper.xg_model_base_url = ...)`. Download status: cannot open URL 'https://huggingface.co/datasets/RentoSaijo/NHLxG/resolve/main/models/v20232024_sd.xgb'</span></span>
-<span><span class="co">#&gt; Invalid argument(s); refer to help file.</span></span>
 <span><span class="va">xg_model_available</span> <span class="op">&lt;-</span> <span class="st">'xG'</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">pbp_xg</span><span class="op">)</span> <span class="op">&amp;&amp;</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/any.html" class="external-link">any</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/is.finite.html" class="external-link">is.finite</a></span><span class="op">(</span><span class="va">pbp_xg</span><span class="op">[[</span><span class="st">'xG'</span><span class="op">]</span><span class="op">]</span><span class="op">)</span> <span class="op">&amp;</span> <span class="va">pbp_xg</span><span class="op">[[</span><span class="st">'xG'</span><span class="op">]</span><span class="op">]</span> <span class="op">&gt;</span> <span class="fl">0</span><span class="op">)</span></span>
 <span><span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="va">xg_model_available</span><span class="op">)</span> <span class="op">{</span></span>
@@ -186,13 +178,6 @@ chances, cumulative xG, and shot geography.</p>
 <span>  <span class="va">shots</span><span class="op">[[</span><span class="st">'secondsElapsedInPeriod'</span><span class="op">]</span><span class="op">]</span> <span class="op"><a href="https://rdrr.io/r/base/Arithmetic.html" class="external-link">%/%</a></span> <span class="fl">60</span>,</span>
 <span>  <span class="va">shots</span><span class="op">[[</span><span class="st">'secondsElapsedInPeriod'</span><span class="op">]</span><span class="op">]</span> <span class="op"><a href="https://rdrr.io/r/base/Arithmetic.html" class="external-link">%%</a></span> <span class="fl">60</span></span>
 <span><span class="op">)</span></span></code></pre></div>
-<blockquote>
-<p>Note: this rendered article uses a deterministic fallback xG estimate
-because the external NHLxG booster store was unavailable during vignette
-build. In normal package use, <code><a href="../reference/calculate_expected_goals.html">calculate_expected_goals()</a></code>
-supplies the model-scored values after downloading and caching the
-needed booster.</p>
-</blockquote>
 <p>The key move is adding <code>xG</code> before summarizing. Once the
 event log is scored, a single game can be treated like a small research
 dataset.</p>
@@ -243,16 +228,16 @@ dataset.</p>
 <td align="right">2</td>
 <td align="right">21</td>
 <td align="right">41</td>
-<td align="right">3.915</td>
-<td align="right">0.095</td>
+<td align="right">2.312</td>
+<td align="right">0.056</td>
 </tr>
 <tr class="even">
 <td align="left">EDM</td>
 <td align="right">1</td>
 <td align="right">24</td>
 <td align="right">40</td>
-<td align="right">4.238</td>
-<td align="right">0.106</td>
+<td align="right">2.597</td>
+<td align="right">0.065</td>
 </tr>
 </tbody>
 </table>
@@ -305,21 +290,21 @@ Cup-clinching score.</p>
 <td align="left">04:27</td>
 <td align="left">FLA</td>
 <td align="left">Carter Verhaeghe</td>
-<td align="right">0.224</td>
+<td align="right">0.100</td>
 </tr>
 <tr class="even">
 <td align="right">1</td>
 <td align="left">06:44</td>
 <td align="left">EDM</td>
 <td align="left">Mattias Janmark</td>
-<td align="right">0.193</td>
+<td align="right">0.182</td>
 </tr>
 <tr class="odd">
 <td align="right">2</td>
 <td align="left">15:11</td>
 <td align="left">FLA</td>
 <td align="left">Sam Reinhart</td>
-<td align="right">0.080</td>
+<td align="right">0.024</td>
 </tr>
 </tbody>
 </table>
@@ -368,18 +353,18 @@ from looks the model would consider dangerous.</p>
 <tbody>
 <tr class="odd">
 <td align="right">1</td>
-<td align="right">1.463</td>
-<td align="right">1.129</td>
+<td align="right">0.575</td>
+<td align="right">0.601</td>
 </tr>
 <tr class="even">
 <td align="right">2</td>
-<td align="right">1.255</td>
-<td align="right">1.381</td>
+<td align="right">0.375</td>
+<td align="right">0.781</td>
 </tr>
 <tr class="odd">
 <td align="right">3</td>
-<td align="right">1.197</td>
-<td align="right">1.727</td>
+<td align="right">1.361</td>
+<td align="right">1.214</td>
 </tr>
 </tbody>
 </table>
@@ -464,14 +449,14 @@ that moved the game.</p>
 </tr></thead>
 <tbody>
 <tr class="odd">
-<td align="left">Zach Hyman</td>
-<td align="left">EDM</td>
+<td align="left">Evan Rodrigues</td>
+<td align="left">FLA</td>
 <td align="right">3</td>
-<td align="left">12:57</td>
-<td align="left">shot-on-goal</td>
-<td align="right">85</td>
-<td align="right">1</td>
-<td align="right">0.269</td>
+<td align="left">19:33</td>
+<td align="left">missed-shot</td>
+<td align="right">16</td>
+<td align="right">17</td>
+<td align="right">0.647</td>
 </tr>
 <tr class="even">
 <td align="left">Mattias Ekholm</td>
@@ -481,67 +466,27 @@ that moved the game.</p>
 <td align="left">shot-on-goal</td>
 <td align="right">84</td>
 <td align="right">3</td>
-<td align="right">0.250</td>
+<td align="right">0.440</td>
 </tr>
 <tr class="odd">
-<td align="left">Adam Henrique</td>
-<td align="left">EDM</td>
-<td align="right">1</td>
-<td align="left">00:21</td>
-<td align="left">shot-on-goal</td>
-<td align="right">82</td>
-<td align="right">-3</td>
-<td align="right">0.232</td>
-</tr>
-<tr class="even">
-<td align="left">Kevin Stenlund</td>
-<td align="left">FLA</td>
-<td align="right">2</td>
-<td align="left">15:37</td>
-<td align="left">missed-shot</td>
-<td align="right">92</td>
-<td align="right">-7</td>
-<td align="right">0.232</td>
-</tr>
-<tr class="odd">
-<td align="left">Connor McDavid</td>
+<td align="left">Zach Hyman</td>
 <td align="left">EDM</td>
 <td align="right">3</td>
-<td align="left">17:17</td>
-<td align="left">missed-shot</td>
-<td align="right">82</td>
-<td align="right">3</td>
-<td align="right">0.232</td>
-</tr>
-<tr class="even">
-<td align="left">Warren Foegele</td>
-<td align="left">EDM</td>
-<td align="right">2</td>
-<td align="left">14:59</td>
+<td align="left">12:57</td>
 <td align="left">shot-on-goal</td>
 <td align="right">85</td>
-<td align="right">-7</td>
-<td align="right">0.228</td>
-</tr>
-<tr class="odd">
-<td align="left">Carter Verhaeghe</td>
-<td align="left">FLA</td>
 <td align="right">1</td>
-<td align="left">04:27</td>
-<td align="left">goal</td>
-<td align="right">83</td>
-<td align="right">6</td>
-<td align="right">0.224</td>
+<td align="right">0.191</td>
 </tr>
 <tr class="even">
-<td align="left">Matthew Tkachuk</td>
-<td align="left">FLA</td>
+<td align="left">Mattias Janmark</td>
+<td align="left">EDM</td>
 <td align="right">1</td>
-<td align="left">18:41</td>
-<td align="left">missed-shot</td>
-<td align="right">84</td>
-<td align="right">-8</td>
-<td align="right">0.215</td>
+<td align="left">06:44</td>
+<td align="left">goal</td>
+<td align="right">77</td>
+<td align="right">-2</td>
+<td align="right">0.182</td>
 </tr>
 <tr class="odd">
 <td align="left">Sam Bennett</td>
@@ -551,27 +496,47 @@ that moved the game.</p>
 <td align="left">shot-on-goal</td>
 <td align="right">81</td>
 <td align="right">5</td>
-<td align="right">0.215</td>
+<td align="right">0.162</td>
 </tr>
 <tr class="even">
-<td align="left">Eetu Luostarinen</td>
-<td align="left">FLA</td>
-<td align="right">3</td>
-<td align="left">00:17</td>
+<td align="left">Leon Draisaitl</td>
+<td align="left">EDM</td>
+<td align="right">2</td>
+<td align="left">04:27</td>
 <td align="left">missed-shot</td>
-<td align="right">80</td>
-<td align="right">-3</td>
-<td align="right">0.215</td>
+<td align="right">75</td>
+<td align="right">-26</td>
+<td align="right">0.144</td>
 </tr>
 <tr class="odd">
-<td align="left">Vladimir Tarasenko</td>
-<td align="left">FLA</td>
+<td align="left">Connor McDavid</td>
+<td align="left">EDM</td>
 <td align="right">3</td>
-<td align="left">00:35</td>
+<td align="left">17:17</td>
 <td align="left">missed-shot</td>
-<td align="right">87</td>
-<td align="right">-10</td>
-<td align="right">0.209</td>
+<td align="right">82</td>
+<td align="right">3</td>
+<td align="right">0.138</td>
+</tr>
+<tr class="even">
+<td align="left">Warren Foegele</td>
+<td align="left">EDM</td>
+<td align="right">1</td>
+<td align="left">02:20</td>
+<td align="left">shot-on-goal</td>
+<td align="right">64</td>
+<td align="right">4</td>
+<td align="right">0.126</td>
+</tr>
+<tr class="odd">
+<td align="left">Adam Henrique</td>
+<td align="left">EDM</td>
+<td align="right">1</td>
+<td align="left">00:21</td>
+<td align="left">shot-on-goal</td>
+<td align="right">82</td>
+<td align="right">-3</td>
+<td align="right">0.122</td>
 </tr>
 <tr class="even">
 <td align="left">Zach Hyman</td>
@@ -581,7 +546,27 @@ that moved the game.</p>
 <td align="left">shot-on-goal</td>
 <td align="right">79</td>
 <td align="right">2</td>
-<td align="right">0.209</td>
+<td align="right">0.114</td>
+</tr>
+<tr class="odd">
+<td align="left">Vladimir Tarasenko</td>
+<td align="left">FLA</td>
+<td align="right">1</td>
+<td align="left">07:56</td>
+<td align="left">missed-shot</td>
+<td align="right">78</td>
+<td align="right">-4</td>
+<td align="right">0.113</td>
+</tr>
+<tr class="even">
+<td align="left">Aleksander Barkov</td>
+<td align="left">FLA</td>
+<td align="right">3</td>
+<td align="left">03:29</td>
+<td align="left">shot-on-goal</td>
+<td align="right">58</td>
+<td align="right">-21</td>
+<td align="right">0.105</td>
 </tr>
 </tbody>
 </table>
