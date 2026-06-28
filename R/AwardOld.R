@@ -1,4 +1,4 @@
-# ----- Deprecated Functions ----- #
+# Deprecated Functions ---------------------------------------------------------
 
 #' Access all the awards
 #' 
@@ -6,7 +6,6 @@
 #' 
 #' @returns data.frame with one row per award
 #' @export
-
 get_awards <- function() {
   .Deprecated(
     new     = 'awards()',
@@ -25,7 +24,6 @@ get_awards <- function() {
 #' 
 #' @returns data.frame with one row per winner/finalist
 #' @export
-
 get_award_winners <- function() {
   .Deprecated(
     new     = 'award_winners()',

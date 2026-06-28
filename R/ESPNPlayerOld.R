@@ -1,4 +1,4 @@
-# ----- Deprecated Functions ----- #
+# Deprecated Functions ---------------------------------------------------------
 
 #' Access all the ESPN athletes (players)
 #' 
@@ -6,7 +6,6 @@
 #' 
 #' @returns data.frame with one row per ESPN athlete (player)
 #' @export
-
 get_espn_athletes <- function() {
   .Deprecated(
     new     = 'espn_players()',
@@ -24,7 +23,6 @@ get_espn_athletes <- function() {
 #' `get_espn_athlete()` is defunct. Use [espn_player_summary()] instead.
 #' 
 #' @export
-
 get_espn_athlete <- function() {
   .Defunct(
     new     = 'espn_player_summary()',

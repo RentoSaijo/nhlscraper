@@ -1,3 +1,5 @@
+# Goalie EDGE Functions ---------------------------------------------------------
+
 #' Access the season(s) and game type(s) in which there exists goalie EDGE 
 #' statistics
 #'
@@ -8,11 +10,10 @@
 #' @examples
 #' goalie_EDGE_seasons <- goalie_edge_seasons()
 #' @export
-
 goalie_edge_seasons <- function() {
   tryCatch(
     expr = {
-      seasons <- nhl_api(
+      seasons <- .nhl_api(
         path = sprintf('v1/edge/goalie-landing/now'),
         type = 'w'
       )$seasonsWithEdgeStats
@@ -47,15 +48,14 @@ goalie_edge_seasons <- function() {
 #'   game_type = 2
 #' )
 #' @export
-
 goalie_edge_leaders <- function(season = 'now', game_type = '') {
   tryCatch(
     expr = {
-      nhl_api(
+      .nhl_api(
         path = sprintf(
           'v1/edge/goalie-landing/%s/%s', 
           season, 
-          to_game_type_id(game_type)
+          .to_game_type_id(game_type)
         ),
         type = 'w'
       )$leaders
@@ -84,7 +84,6 @@ goalie_edge_leaders <- function(season = 'now', game_type = '') {
 #'   game_type = 2
 #' )
 #' @export
-
 goalie_edge_summary <- function(
   player    = 8476945,
   season    = 'now',
@@ -92,12 +91,12 @@ goalie_edge_summary <- function(
 ) {
   tryCatch(
     expr = {
-      nhl_api(
+      .nhl_api(
         path = sprintf(
           'v1/edge/goalie-detail/%s/%s/%s', 
           player,
           season, 
-          to_game_type_id(game_type)
+          .to_game_type_id(game_type)
         ),
         type = 'w'
       )
@@ -129,7 +128,6 @@ goalie_edge_summary <- function(
 #'     category  = 'L'
 #'   )
 #' @export
-
 goalie_edge_save_percentage <- function(
   player    = 8476945,
   season    = 'now', 
@@ -143,12 +141,12 @@ goalie_edge_save_percentage <- function(
         d = 'savePctgDetails',
         l = 'savePctgLast10'
       )
-      nhl_api(
+      .nhl_api(
         path = sprintf(
           'v1/edge/goalie-save-percentage-detail/%s/%s/%s', 
           player,
           season, 
-          to_game_type_id(game_type)
+          .to_game_type_id(game_type)
         ),
         type = 'w'
       )[[category]]
@@ -180,7 +178,6 @@ goalie_edge_save_percentage <- function(
 #'   category  = 'L'
 #'  )
 #' @export
-
 goalie_edge_five_versus_five <- function(
   player    = 8476945,
   season    = 'now', 
@@ -194,12 +191,12 @@ goalie_edge_five_versus_five <- function(
         d = 'savePctg5v5Details',
         l = 'savePctg5v5Last10'
       )
-      nhl_api(
+      .nhl_api(
         path = sprintf(
           'v1/edge/goalie-5v5-detail/%s/%s/%s', 
           player,
           season, 
-          to_game_type_id(game_type)
+          .to_game_type_id(game_type)
         ),
         type = 'w'
       )[[category]]
@@ -213,7 +210,6 @@ goalie_edge_five_versus_five <- function(
 
 #' @rdname goalie_edge_five_versus_five
 #' @export
-
 goalie_edge_5_vs_5 <- function(
   player    = 8476945,
   season    = 'now', 
@@ -242,7 +238,6 @@ goalie_edge_5_vs_5 <- function(
 #'     category  = 'T'
 #'   )
 #' @export
-
 goalie_edge_shot_location <- function(
   player    = 8476945,
   season    = 'now',
@@ -256,12 +251,12 @@ goalie_edge_shot_location <- function(
         d = 'shotLocationDetails',
         t = 'shotLocationTotals'
       )
-      nhl_api(
+      .nhl_api(
         path = sprintf(
           'v1/edge/goalie-shot-location-detail/%s/%s/%s', 
           player,
           season, 
-          to_game_type_id(game_type)
+          .to_game_type_id(game_type)
         ),
         type = 'w'
       )[[category]]

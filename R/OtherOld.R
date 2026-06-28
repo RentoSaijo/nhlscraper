@@ -1,4 +1,4 @@
-# ----- Deprecated Functions ----- #
+# Deprecated Functions ---------------------------------------------------------
 
 #' Access the glossary
 #' 
@@ -6,7 +6,6 @@
 #' 
 #' @returns data.frame with one row per terminology
 #' @export
-
 get_glossary <- function() {
   .Deprecated(
     new     = 'glossary()',
@@ -25,7 +24,6 @@ get_glossary <- function() {
 #' 
 #' @returns data.frame with one row per country
 #' @export
-
 get_countries <- function() {
   .Deprecated(
     new     = 'countries()',
@@ -44,7 +42,6 @@ get_countries <- function() {
 #' 
 #' @returns data.frame with one row per stream
 #' @export
-
 get_streams <- function() {
   .Deprecated(
     new     = 'streams()',
@@ -64,7 +61,6 @@ get_streams <- function() {
 #' @inheritParams standings
 #' @returns data.frame with one row per program
 #' @export
-
 get_tv_schedule <- function(date = 'now') {
   .Deprecated(
     new     = 'tv_schedule()',
@@ -82,7 +78,6 @@ get_tv_schedule <- function(date = 'now') {
 #' `ping()` is defunct.
 #' 
 #' @export
-
 ping <- function() {
   .Defunct(
     msg = paste(
@@ -98,7 +93,6 @@ ping <- function() {
 #' instead.
 #' 
 #' @export
-
 get_configuration <- function() {
   .Defunct(
     new     = 'team_report_configurations()',

@@ -1,4 +1,4 @@
-# ----- Deprecated Functions ----- #
+# Deprecated Functions ---------------------------------------------------------
 
 #' Access all the franchises
 #' 
@@ -6,7 +6,6 @@
 #' 
 #' @returns data.frame with one row per franchise
 #' @export
-
 get_franchises <- function() {
   .Deprecated(
     new     = 'franchises()',
@@ -26,7 +25,6 @@ get_franchises <- function() {
 #'
 #' @returns data.frame with one row per team per franchise per game type
 #' @export
-
 get_franchise_team_totals <- function() {
   .Deprecated(
     new     = 'franchise_team_statistics()',
@@ -46,7 +44,6 @@ get_franchise_team_totals <- function() {
 #' 
 #' @returns data.frame with one row per franchise per season per game type
 #' @export
-
 get_franchise_season_by_season <- function() {
   .Deprecated(
     new     = 'franchise_season_statistics()',
@@ -67,7 +64,6 @@ get_franchise_season_by_season <- function() {
 #' 
 #' @returns data.frame with one row per franchise per franchise per game type
 #' @export
-
 get_franchise_vs_franchise <- function() {
   .Deprecated(
     new     = 'franchise_versus_franchise()',

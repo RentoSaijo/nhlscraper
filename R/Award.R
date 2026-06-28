@@ -1,3 +1,5 @@
+# Award Functions ---------------------------------------------------------
+
 #' Access all the awards
 #'
 #' `awards()` returns the records-site trophy catalog with one row per award
@@ -7,10 +9,9 @@
 #' @examples
 #' all_awards <- awards()
 #' @export
-
 awards <- function() {
   tryCatch({
-    trophies <- nhl_api(
+    trophies <- .nhl_api(
       path = 'trophy',
       type = 'r'
     )$data
@@ -33,10 +34,9 @@ awards <- function() {
 #' @examples
 #' all_award_winners <- award_winners()
 #' @export
-
 award_winners <- function() {
   tryCatch({
-    winners    <- nhl_api(
+    winners    <- .nhl_api(
       path = 'award-details',
       type = 'r'
     )$data

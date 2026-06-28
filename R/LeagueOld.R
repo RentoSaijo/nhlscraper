@@ -1,4 +1,4 @@
-# ----- Deprecated Functions ----- #
+# Deprecated Functions ---------------------------------------------------------
 
 #' Access all the seasons
 #' 
@@ -6,7 +6,6 @@
 #' 
 #' @returns data.frame with one row per season
 #' @export
-
 get_seasons <- function() {
   .Deprecated(
     new     = 'seasons()',
@@ -25,7 +24,6 @@ get_seasons <- function() {
 #' instead.
 #' 
 #' @export
-
 get_season_now <- function() {
   .Defunct(
     new     = 'season_now()',
@@ -44,7 +42,6 @@ get_season_now <- function() {
 #' 
 #' @returns data.frame with one row per season
 #' @export
-
 get_standings_information <- function() {
   .Deprecated(
     new     = 'standings_rules()',
@@ -64,7 +61,6 @@ get_standings_information <- function() {
 #' @inheritParams standings
 #' @returns data.frame with one row per team
 #' @export
-
 get_standings <- function(date = '2025-01-01') {
   .Deprecated(
     new     = 'standings()',
@@ -84,7 +80,6 @@ get_standings <- function(date = '2025-01-01') {
 #' @inheritParams standings
 #' @returns data.frame with one row per game
 #' @export
-
 get_schedule <- function(date = '2025-01-01') {
   .Deprecated(
     new     = 'schedule()',
@@ -103,7 +98,6 @@ get_schedule <- function(date = '2025-01-01') {
 #' 
 #' @returns data.frame with one row per venue
 #' @export
-
 get_venues <- function() {
   .Deprecated(
     new     = 'venues()',
@@ -122,7 +116,6 @@ get_venues <- function() {
 #' 
 #' @returns data.frame with one row per season
 #' @export
-
 get_attendance <- function() {
   .Deprecated(
     new     = 'attendance()',

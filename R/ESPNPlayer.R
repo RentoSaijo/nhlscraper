@@ -1,3 +1,5 @@
+# ESPNPlayer Functions ---------------------------------------------------------
+
 #' Access all the ESPN players
 #'
 #' `espn_players()` pages ESPN's athlete index and returns one row per athlete
@@ -7,13 +9,12 @@
 #' @examples
 #' all_ESPN_players <- espn_players()
 #' @export
-
 espn_players <- function() {
   tryCatch({
     page <- 1
     all_players <- list()
     repeat {
-      players <- espn_api(
+      players <- .espn_api(
         path  = 'athletes',
         query = list(limit = 1000, page = page),
         type  = 'c'
@@ -45,7 +46,6 @@ espn_players <- function() {
 #' @examples
 #' ESPN_summary_Charlie_McAvoy <- espn_player_summary(player = 3988803)
 #' @export
-
 espn_player_summary <- function(player = 3988803) {
   get_or_na <- function(x, ...) {
     tryCatch({
@@ -57,7 +57,7 @@ espn_player_summary <- function(player = 3988803) {
     }, error = function(e) NA)
   }
   player <- tryCatch(
-    espn_api(
+    .espn_api(
       path = sprintf('athletes/%s', player),
       type = 'c'
     ),

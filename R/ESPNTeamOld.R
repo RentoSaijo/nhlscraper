@@ -1,11 +1,10 @@
-# ----- Deprecated Functions ----- #
+# Deprecated Functions ---------------------------------------------------------
 
 #' Access all the ESPN teams for a season
 #' 
 #' `get_espn_teams()` is defunct. Use [espn_teams()] instead.
 #' 
 #' @export
-
 get_espn_teams <- function() {
   .Defunct(
     new     = 'espn_teams()',
@@ -22,7 +21,6 @@ get_espn_teams <- function() {
 #' `get_espn_team()` is defunct. Use [espn_team_summary()] instead.
 #' 
 #' @export
-
 get_espn_team <- function() {
   .Defunct(
     new     = 'espn_team_summary()',

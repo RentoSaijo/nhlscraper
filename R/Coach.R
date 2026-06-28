@@ -1,3 +1,5 @@
+# Coach Functions ---------------------------------------------------------
+
 #' Access all the coaches
 #'
 #' `coaches()` returns the records-site coach registry with one row per coach
@@ -7,10 +9,9 @@
 #' @examples
 #' all_coaches <- coaches()
 #' @export
-
 coaches <- function() {
   tryCatch({
-    coaches <- nhl_api(
+    coaches <- .nhl_api(
       path = 'coach',
       type = 'r'
     )$data
@@ -35,10 +36,9 @@ coaches <- function() {
 #' @examples
 #' coach_career_stats <- coach_career_statistics()
 #' @export
-
 coach_career_statistics <- function() {
   tryCatch({
-    results <- nhl_api(
+    results <- .nhl_api(
       path = 'coach-career-records-regular-plus-playoffs',
       type = 'r'
     )$data
@@ -46,7 +46,7 @@ coach_career_statistics <- function() {
     results    <- results[order(results$coachId), ]
     names(results)[names(results) == 'startSeason'] <- 'startSeasonId'
     names(results)[names(results) == 'endSeason']   <- 'endSeasonId'
-    names(results) <- normalize_team_abbrev_cols(names(results))
+    names(results) <- .normalize_team_abbrev_cols(names(results))
     results
   }, error = function(e) {
     message('Unable to create connection; please try again later.')
@@ -56,7 +56,6 @@ coach_career_statistics <- function() {
 
 #' @rdname coach_career_statistics
 #' @export
-
 coach_career_stats <- function() {
   coach_career_statistics()
 }
@@ -70,10 +69,9 @@ coach_career_stats <- function() {
 #' @examples
 #' coach_franchise_stats <- coach_franchise_statistics()
 #' @export
-
 coach_franchise_statistics <- function() {
   tryCatch({
-    stats    <- nhl_api(
+    stats    <- .nhl_api(
       path = 'coach-franchise-records',
       type = 'r'
     )$data
@@ -83,7 +81,7 @@ coach_franchise_statistics <- function() {
     names(stats)[names(stats) == 'endSeason']   <- 'endSeasonId'
     names(stats)[names(stats) == 'firstName']   <- 'coachFirstName'
     names(stats)[names(stats) == 'lastName']    <- 'coachLastName'
-    names(stats) <- normalize_team_abbrev_cols(names(stats))
+    names(stats) <- .normalize_team_abbrev_cols(names(stats))
     stats
   }, error = function(e) {
     message('Unable to create connection; please try again later.')
@@ -93,7 +91,6 @@ coach_franchise_statistics <- function() {
 
 #' @rdname coach_franchise_statistics
 #' @export
-
 coach_franchise_stats <- function() {
   coach_franchise_statistics()
 }

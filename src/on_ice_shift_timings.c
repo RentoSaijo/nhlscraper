@@ -1,6 +1,10 @@
+/* Headers ------------------------------------------------------------- */
+
 #include <R.h>
 #include <Rinternals.h>
 #include <limits.h>
+
+/* Types --------------------------------------------------------------- */
 
 typedef struct {
   int game_id;
@@ -9,6 +13,8 @@ typedef struct {
   int start_idx;
   int end_idx;
 } PlayerRange;
+
+/* Validation Helpers -------------------------------------------------- */
 
 static int is_na_int(int x) {
   return x == NA_INTEGER;
@@ -53,6 +59,8 @@ static void get_matrix_dims(SEXP x, int *n_rows, int *n_cols, const char *name) 
   }
 }
 
+/* Lookup Helpers ------------------------------------------------------ */
+
 static int lookup_range(
   const PlayerRange *ranges,
   int n_ranges,
@@ -86,6 +94,8 @@ static int lookup_range(
   }
   return -1;
 }
+
+/* Matrix Fill Helpers ------------------------------------------------- */
 
 static void fill_slot_matrix(
   SEXP out_remaining,
@@ -152,6 +162,8 @@ static void fill_slot_matrix(
     }
   }
 }
+
+/* On-Ice Shift Timing Interface -------------------------------------- */
 
 SEXP nhlscraper_on_ice_shift_timings(SEXP data_list) {
   SEXP event_game_sexp;

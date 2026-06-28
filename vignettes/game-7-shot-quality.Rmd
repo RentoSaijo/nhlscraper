@@ -47,13 +47,32 @@ game_summary <- nhlscraper::gc_summary(game_id)
 pbp_xg <- nhlscraper::calculate_expected_goals(
   nhlscraper::gc_play_by_play(game_id)
 )
-if (!('xG' %in% names(pbp_xg))) {
-  stop(
-    paste(
-      'calculate_expected_goals() did not return an xG column during article build.',
-      'This usually means the loaded nhlscraper namespace is stale or scoring failed.'
-    )
+xg_model_available <- 'xG' %in% names(pbp_xg) &&
+  any(is.finite(pbp_xg[['xG']]) & pbp_xg[['xG']] > 0)
+if (!xg_model_available) {
+  shot_mask <- pbp_xg[['eventTypeDescKey']] %in% c(
+    'goal',
+    'shot-on-goal',
+    'missed-shot'
   )
+  distance <- rep(NA_real_, nrow(pbp_xg))
+  if ('distance' %in% names(pbp_xg)) {
+    distance <- suppressWarnings(as.numeric(pbp_xg[['distance']]))
+  } else if (all(c('xCoordNorm', 'yCoordNorm') %in% names(pbp_xg))) {
+    x <- suppressWarnings(as.numeric(pbp_xg[['xCoordNorm']]))
+    y <- suppressWarnings(as.numeric(pbp_xg[['yCoordNorm']]))
+    distance <- sqrt((89 - x) ^ 2 + y ^ 2)
+  }
+  distance[!is.finite(distance)] <- stats::median(distance[shot_mask], na.rm = TRUE)
+  distance[!is.finite(distance)] <- 35
+
+  fallback_xg <- 0.02 + 0.30 * exp(-distance / 22)
+  fallback_xg[pbp_xg[['eventTypeDescKey']] == 'goal'] <- pmax(
+    fallback_xg[pbp_xg[['eventTypeDescKey']] == 'goal'],
+    0.08
+  )
+  pbp_xg[['xG']] <- NA_real_
+  pbp_xg[['xG']][shot_mask] <- pmin(pmax(fallback_xg[shot_mask], 0.005), 0.65)
 }
 rosters <- nhlscraper::game_rosters(game_id)
 
@@ -89,6 +108,20 @@ shots[['timeInPeriod']] <- sprintf(
   shots[['secondsElapsedInPeriod']] %/% 60,
   shots[['secondsElapsedInPeriod']] %% 60
 )
+```
+
+```{r xg-source-note, echo = FALSE, results = 'asis'}
+if (!xg_model_available) {
+  cat(
+    paste(
+      '> Note: this rendered article uses a deterministic fallback xG estimate',
+      'because the external NHLxG booster store was unavailable during vignette',
+      'build. In normal package use, `calculate_expected_goals()` supplies the',
+      'model-scored values after downloading and caching the needed booster.'
+    ),
+    '\n\n'
+  )
+}
 ```
 
 The key move is adding `xG` before summarizing. Once the event log is scored, a

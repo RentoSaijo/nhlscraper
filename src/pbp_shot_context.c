@@ -1,6 +1,10 @@
+/* Headers ------------------------------------------------------------- */
+
 #include <R.h>
 #include <Rinternals.h>
 #include <limits.h>
+
+/* Validation Helpers -------------------------------------------------- */
 
 static int xlength_as_int(SEXP x, const char *name) {
   R_xlen_t n = XLENGTH(x);
@@ -23,6 +27,8 @@ static void require_vector_type_and_length(
     error("%s must have length %d.", name, expected_len);
   }
 }
+
+/* Team Tracking Helpers ---------------------------------------------- */
 
 static void reset_team_tracker(int *team_ids, int *team_last_time, int *team_last_idx) {
   int i;
@@ -51,6 +57,8 @@ static int lookup_team_slot(int *team_ids, int team_id) {
   }
   return -1;
 }
+
+/* Play-By-Play Shot Context Interface -------------------------------- */
 
 SEXP nhlscraper_pbp_shot_context(SEXP data_list) {
   SEXP order_time_sexp;

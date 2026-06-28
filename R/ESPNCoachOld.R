@@ -1,11 +1,10 @@
-# ----- Deprecated Functions ----- #
+# Deprecated Functions ---------------------------------------------------------
 
 #' Access the ESPN coaches for a season
 #' 
 #' `get_espn_coaches()` is defunct. Use [coaches()] instead.
 #' 
 #' @export
-
 get_espn_coaches <- function() {
   .Defunct(
     new     = 'coaches()',
@@ -22,7 +21,6 @@ get_espn_coaches <- function() {
 #' `get_espn_coach()` is defunct. Use [coach_career_statistics()] instead.
 #'
 #' @export
-
 get_espn_coach <- function() {
   .Defunct(
     new     = 'coach_career_statistics()',
@@ -39,7 +37,6 @@ get_espn_coach <- function() {
 #' `get_espn_coach_career()` is defunct. Use [coach_career_statistics()] instead.
 #'
 #' @export
-
 get_espn_coach_career <- function() {
   .Defunct(
     new     = 'coach_career_statistics()',

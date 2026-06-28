@@ -1,4 +1,4 @@
-# ----- Deprecated Functions ----- #
+# Deprecated Functions ---------------------------------------------------------
 
 #' Access all the players
 #' 
@@ -6,7 +6,6 @@
 #' 
 #' @returns data.frame with one row per player
 #' @export
-
 get_players <- function() {
   .Deprecated(
     new     = 'players()',
@@ -26,7 +25,6 @@ get_players <- function() {
 #' @inheritParams player_seasons
 #' @returns list with various items
 #' @export
-
 get_player_landing <- function(player = 8478402) {
   .Deprecated(
     new     = 'player_summary()',
@@ -47,7 +45,6 @@ get_player_landing <- function(player = 8478402) {
 #' @inheritParams roster_statistics
 #' @returns data.frame with one row per game
 #' @export
-
 get_player_game_log <- function(
   player    = 8478402, 
   season    = 'now', 
@@ -71,7 +68,6 @@ get_player_game_log <- function(
 #' 
 #' @returns data.frame with one row per player
 #' @export
-
 get_spotlight_players <- function() {
   .Deprecated(
     new     = 'spotlight_players()',

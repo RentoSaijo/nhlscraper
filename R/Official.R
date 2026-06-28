@@ -1,3 +1,5 @@
+# Official Functions ---------------------------------------------------------
+
 #' Access all the officials
 #'
 #' `officials()` returns the records-site official registry with one row per
@@ -7,10 +9,9 @@
 #' @examples
 #' all_officials <- officials()
 #' @export
-
 officials <- function() {
   tryCatch({
-    officials <- nhl_api(
+    officials <- .nhl_api(
       path = 'officials',
       type = 'r'
     )$data

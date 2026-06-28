@@ -1,3 +1,5 @@
+# League Functions ---------------------------------------------------------
+
 #' Access all the seasons
 #'
 #' `seasons()` returns the stats API season catalog with one row per season,
@@ -7,10 +9,9 @@
 #' @examples
 #' all_seasons <- seasons()
 #' @export
-
 seasons <- function() {
   tryCatch({
-    seasons <- nhl_api(
+    seasons <- .nhl_api(
       path = 'en/season',
       type = 's'
     )$data
@@ -31,10 +32,9 @@ seasons <- function() {
 #' @examples
 #' season_now <- season_now()
 #' @export
-
 season_now <- function() {
   tryCatch({
-    nhl_api(
+    .nhl_api(
       path = 'en/componentSeason',
       type = 's'
     )$data$seasonId
@@ -53,10 +53,9 @@ season_now <- function() {
 #' @examples
 #' game_type_now <- game_type_now()
 #' @export
-
 game_type_now <- function() {
   tryCatch({
-    nhl_api(
+    .nhl_api(
       path = 'en/componentSeason',
       type = 's'
     )$data$gameTypeId
@@ -75,10 +74,9 @@ game_type_now <- function() {
 #' @examples
 #' standings_rules <- standings_rules()
 #' @export
-
 standings_rules <- function() {
   tryCatch({
-    seasons <- nhl_api(
+    seasons <- .nhl_api(
       path = 'v1/standings-season',
       type = 'w'
     )$seasons
@@ -103,16 +101,15 @@ standings_rules <- function() {
 #' @examples
 #' standings_Halloween_2025 <- standings(date = '2025-10-31')
 #' @export
-
 standings <- function(date = 'now') {
   tryCatch(
     expr = {
-      standings <- nhl_api(
+      standings <- .nhl_api(
         path = sprintf('v1/standings/%s', date),
         type = 'w'
       )$standings
-      names(standings) <- normalize_locale_names(names(standings))
-      names(standings) <- normalize_team_abbrev_cols(names(standings))
+      names(standings) <- .normalize_locale_names(names(standings))
+      names(standings) <- .normalize_team_abbrev_cols(names(standings))
       standings
     },
     error = function(e) {
@@ -133,11 +130,10 @@ standings <- function(date = 'now') {
 #' @examples
 #' schedule_Halloween_2025 <- schedule(date = '2025-10-31')
 #' @export
-
 schedule <- function(date = Sys.Date()) {
   tryCatch(
     expr = {
-      gameWeek <- nhl_api(
+      gameWeek <- .nhl_api(
         path = sprintf('v1/schedule/%s', date),
         type = 'w'
       )$gameWeek
@@ -145,8 +141,8 @@ schedule <- function(date = Sys.Date()) {
       names(gameWeek)[names(gameWeek) == 'id']       <- 'gameId'
       names(gameWeek)[names(gameWeek) == 'season']   <- 'seasonId'
       names(gameWeek)[names(gameWeek) == 'gameType'] <- 'gameTypeId'
-      names(gameWeek) <- normalize_locale_names(names(gameWeek))
-      names(gameWeek) <- normalize_team_abbrev_cols(names(gameWeek))
+      names(gameWeek) <- .normalize_locale_names(names(gameWeek))
+      names(gameWeek) <- .normalize_team_abbrev_cols(names(gameWeek))
       gameWeek
     },
     error = function(e) {
@@ -165,10 +161,9 @@ schedule <- function(date = Sys.Date()) {
 #' @examples
 #' all_venues <- venues()
 #' @export
-
 venues <- function() {
   tryCatch({
-    venues    <- nhl_api(
+    venues    <- .nhl_api(
       path = 'venue',
       type = 'r'
     )$data
@@ -188,10 +183,9 @@ venues <- function() {
 #' @examples
 #' all_attendance <- attendance()
 #' @export
-
 attendance <- function() {
   tryCatch({
-    attendance <- nhl_api(
+    attendance <- .nhl_api(
       path = 'attendance',
       type = 'r'
     )$data

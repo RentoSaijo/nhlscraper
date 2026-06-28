@@ -1,6 +1,10 @@
+/* Headers ------------------------------------------------------------- */
+
 #include <R.h>
 #include <Rinternals.h>
 #include <limits.h>
+
+/* Validation Helpers -------------------------------------------------- */
 
 static int is_na_or_nan(double x) {
   return ISNA(x) || ISNAN(x);
@@ -34,6 +38,8 @@ static double diff_or_na(double current, double previous) {
   }
   return current - previous;
 }
+
+/* Play-By-Play Delta Interface --------------------------------------- */
 
 SEXP nhlscraper_pbp_deltas(SEXP data_list) {
   SEXP order_idx_sexp;

@@ -1,5 +1,7 @@
-test_that("streams() returns data.frame", {
-  skip_if_offline()
+# Tests ---------------------------------------------------------
+
+testthat::test_that('streams() returns data.frame', {
+  testthat::skip_if_offline()
   test <- streams()
-  expect_true(is.data.frame(test))
+  testthat::expect_true(is.data.frame(test))
 })

@@ -1,3 +1,5 @@
+# Player Functions ---------------------------------------------------------
+
 #' Access all the players
 #'
 #' `players()` returns the records-site player registry with one row per player
@@ -8,10 +10,9 @@
 #' # May take >5s, so skip.
 #' \donttest{all_players <- players()}
 #' @export
-
 players <- function() {
   tryCatch({
-    players <- nhl_api(
+    players <- .nhl_api(
       path = 'player',
       type = 'r'
     )$data
@@ -44,11 +45,10 @@ players <- function() {
 #' @examples
 #' Martin_Necas_seasons <- player_seasons(player = 8480039)
 #' @export
-
 player_seasons <- function(player = 8478402) {
   tryCatch(
     expr = {
-      seasons <- nhl_api(
+      seasons <- .nhl_api(
         path = sprintf('v1/player/%s/game-log/now', player),
         type = 'w'
       )$playerStatsSeasons
@@ -76,11 +76,10 @@ player_seasons <- function(player = 8478402) {
 #' @examples
 #' Martin_Necas_summary <- player_summary(player = 8480039)
 #' @export
-
 player_summary <- function(player = 8478402) {
   tryCatch(
     expr = {
-      summary <- nhl_api(
+      summary <- .nhl_api(
         path = sprintf('v1/player/%s/landing', player),
         type = 'w'
       )
@@ -88,7 +87,7 @@ player_summary <- function(player = 8478402) {
       names(summary)[names(summary) == 'lastName']     <- 'playerLastName'
       names(summary)[names(summary) == 'position']     <- 'positionCode'
       names(summary)[names(summary) == 'fullTeamName'] <- 'teamFullName'
-      names(summary) <- normalize_team_abbrev_cols(names(summary))
+      names(summary) <- .normalize_team_abbrev_cols(names(summary))
       summary
     },
     error = function(e) {
@@ -115,7 +114,6 @@ player_summary <- function(player = 8478402) {
 #'   game_type = 2
 #' )
 #' @export
-
 player_game_log <- function(
   player    = 8478402, 
   season    = 'now', 
@@ -123,7 +121,7 @@ player_game_log <- function(
 ) {
   tryCatch(
     expr = {
-      log <- nhl_api(
+      log <- .nhl_api(
         path = sprintf(
           'v1/player/%s/game-log/%s/%s', 
           player, 
@@ -134,8 +132,8 @@ player_game_log <- function(
       )
       log$playerStatsSeasons[0, ]
       out <- log$gameLog
-      names(out) <- normalize_locale_names(names(out))
-      names(out) <- normalize_team_abbrev_cols(names(out))
+      names(out) <- .normalize_locale_names(names(out))
+      names(out) <- .normalize_team_abbrev_cols(names(out))
       out
     },
     error = function(e) {
@@ -154,16 +152,15 @@ player_game_log <- function(
 #' @examples
 #' spotlight_players <- spotlight_players()
 #' @export
-
 spotlight_players <- function() {
   tryCatch({
-    players <- nhl_api(
+    players <- .nhl_api(
       path = 'v1/player-spotlight',
       type = 'w'
     )
     names(players)[names(players) == 'position'] <- 'positionCode'
-    names(players) <- normalize_locale_names(names(players))
-    names(players) <- scope_person_name_cols(names(players), 'player')
+    names(players) <- .normalize_locale_names(names(players))
+    names(players) <- .scope_person_name_cols(names(players), 'player')
     players
   }, error = function(e) {
     message('Unable to create connection; please try again later.')

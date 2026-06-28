@@ -1,3 +1,5 @@
+# Package Documentation ---------------------------------------------------------
+
 #' nhlscraper: Scrape, clean, and visualize NHL data
 #'
 #' `nhlscraper` is an R package to scrape, clean, and visualize NHL data via
@@ -56,4 +58,4 @@
 #' @aliases nhlscraper-package
 #' @useDynLib nhlscraper, .registration = TRUE
 
-"_PACKAGE"
+'_PACKAGE'

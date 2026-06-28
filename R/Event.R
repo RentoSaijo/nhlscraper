@@ -1,3 +1,5 @@
+# Event Functions ---------------------------------------------------------
+
 #' Access the replay for an event
 #'
 #' `replay()` downloads NHL puck/player tracking sprite data for one goal event
@@ -15,7 +17,6 @@
 #'   event = 751
 #' )
 #' @export
-
 replay <- function(game = 2023030417, event = 866) {
   tryCatch(
     expr = {
@@ -151,10 +152,9 @@ replay <- function(game = 2023030417, event = 866) {
 #' @examples
 #' all_pss <- penalty_shots()
 #' @export
-
 penalty_shots <- function() {
   tryCatch({
-    pss    <- nhl_api(
+    pss    <- .nhl_api(
       path = 'penalty-shots',
       type = 'r'
     )$data
@@ -162,7 +162,7 @@ penalty_shots <- function() {
     pss    <- pss[order(pss$gameId), ]
     names(pss)[names(pss) == 'season']   <- 'seasonId'
     names(pss)[names(pss) == 'gameType'] <- 'gameTypeId'
-    names(pss) <- normalize_team_abbrev_cols(names(pss))
+    names(pss) <- .normalize_team_abbrev_cols(names(pss))
     pss
   }, error = function(e) {
     message('Unable to create connection; please try again later.')
@@ -172,7 +172,6 @@ penalty_shots <- function() {
 
 #' @rdname penalty_shots
 #' @export
-
 pss <- function() {
   penalty_shots()
 }

@@ -25,7 +25,7 @@ fields.
 }
 \examples{
 COL_schedule_20252026 <- team_season_schedule(
-  team   = 21, 
+  team   = 21,
   season = 20252026
 )
 }

@@ -30,7 +30,7 @@ shot, and zone-time summary blocks.
 }
 \examples{
 COL_EDGE_summary_regular_20242025 <- team_edge_summary(
-  team      = 21, 
+  team      = 21,
   season    = 20242025,
   game_type = 2
 )

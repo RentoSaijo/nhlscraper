@@ -1,14 +1,17 @@
-test_that("espn_game_summary() returns non-empty list", {
-  skip_if_offline()
+# Tests ---------------------------------------------------------
+
+testthat::test_that('espn_game_summary() returns non-empty list', {
+  testthat::skip_if_offline()
   test <- espn_game_summary()
-  expect_true(is.list(test) && length(test) > 0)
+  testthat::expect_true(is.list(test) && length(test) > 0)
 })
 
-test_that("espn_game_summary(0) returns message and empty list", {
-  skip_if_offline()
-  expect_message(
+# Run espn game summary tests.
+testthat::test_that('espn_game_summary(0) returns message and empty list', {
+  testthat::skip_if_offline()
+  testthat::expect_message(
     test <- espn_game_summary(0),
     'Invalid argument\\(s\\); refer to help file\\.'
   )
-  expect_true(is.list(test) && length(test) == 0)
+  testthat::expect_true(is.list(test) && length(test) == 0)
 })

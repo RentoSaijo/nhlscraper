@@ -1,4 +1,4 @@
-# ----- Deprecated Functions ----- #
+# Deprecated Functions ---------------------------------------------------------
 
 #' Access all the officials
 #' 
@@ -6,7 +6,6 @@
 #' 
 #' @returns data.frame with one row per official
 #' @export
-
 get_officials <- function() {
   .Deprecated(
     new     = 'officials()',

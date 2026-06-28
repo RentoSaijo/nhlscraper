@@ -1,14 +1,17 @@
-test_that("location() returns non-empty data.frame", {
-  skip_if_offline()
+# Tests ---------------------------------------------------------
+
+testthat::test_that('location() returns non-empty data.frame', {
+  testthat::skip_if_offline()
   test <- location()
-  expect_true(is.data.frame(test) && nrow(test) > 0)
+  testthat::expect_true(is.data.frame(test) && nrow(test) > 0)
 })
 
-test_that("location(0) returns message and empty data.frame", {
-  skip_if_offline()
-  expect_message(
+# Run location tests.
+testthat::test_that('location(0) returns message and empty data.frame', {
+  testthat::skip_if_offline()
+  testthat::expect_message(
     test <- location(0),
     'Invalid argument\\(s\\); refer to help file\\.'
   )
-  expect_true(is.data.frame(test) && nrow(test) == 0)
+  testthat::expect_true(is.data.frame(test) && nrow(test) == 0)
 })

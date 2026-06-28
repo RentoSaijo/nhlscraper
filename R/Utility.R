@@ -1,8 +1,8 @@
-# ----- API Helpers ----- #
+# API Helpers ---------------------------------------------------------
 
 #' Call the NHL API
 #'
-#' `nhl_api()` performs a retrying request against one of the NHL API hosts and
+#' `.nhl_api()` performs a retrying request against one of the NHL API hosts and
 #' parses the JSON response with the package's standard flattening rules.
 #'
 #' @param path character path relative to the selected API host
@@ -11,8 +11,7 @@
 #'   for the records API
 #' @returns parsed JSON object, usually a data.frame or nested list
 #' @keywords internal
-
-nhl_api <- function(path, query = list(), type) {
+.nhl_api <- function(path, query = list(), type) {
   .nhl_json_from_response(
     httr2::req_perform(.nhl_request(path = path, query = query, type = type))
   )
@@ -26,7 +25,6 @@ nhl_api <- function(path, query = list(), type) {
 #' @param req httr2 request object
 #' @returns httr2 request object
 #' @keywords internal
-
 .request_with_retry <- function(req) {
   httr2::req_retry(
     req,
@@ -46,7 +44,6 @@ nhl_api <- function(path, query = list(), type) {
 #' @param query named list of URL query parameters
 #' @returns httr2 request object
 #' @keywords internal
-
 .api_request <- function(base_url, path, query = list()) {
   req <- httr2::request(paste0(base_url, path))
   req <- do.call(httr2::req_url_query, c(list(req), query))
@@ -64,7 +61,6 @@ nhl_api <- function(path, query = list(), type) {
 #' @param type character of 'w' for web, 's' for stats, and 'r' for records
 #' @returns httr2 request object
 #' @keywords internal
-
 .nhl_request <- function(path, query = list(), type) {
   base <- switch(
     type,
@@ -83,7 +79,6 @@ nhl_api <- function(path, query = list(), type) {
 #' @param resp httr2 response object
 #' @returns parsed JSON (i.e., data.frame or list)
 #' @keywords internal
-
 .nhl_json_from_response <- function(resp) {
   jsonlite::fromJSON(
     httr2::resp_body_string(resp, encoding = 'UTF-8'),
@@ -100,7 +95,6 @@ nhl_api <- function(path, query = list(), type) {
 #' @param url character scalar
 #' @returns httr2 request object
 #' @keywords internal
-
 .html_report_request <- function(url) {
   .request_with_retry(httr2::request(url))
 }
@@ -114,7 +108,6 @@ nhl_api <- function(path, query = list(), type) {
 #' @param on_error forwarded to [httr2::req_perform_parallel()]
 #' @returns list of responses or httr2 failure objects
 #' @keywords internal
-
 .perform_parallel_requests <- function(reqs, on_error = c('stop', 'return', 'continue')) {
   on_error <- match.arg(on_error)
   req_names <- names(reqs)
@@ -131,7 +124,7 @@ nhl_api <- function(path, query = list(), type) {
 
 #' Call the ESPN API
 #'
-#' `espn_api()` performs a retrying request against the ESPN site or core API
+#' `.espn_api()` performs a retrying request against the ESPN site or core API
 #' and parses the JSON response with the same flattening rules used for NHL API
 #' calls.
 #'
@@ -140,8 +133,7 @@ nhl_api <- function(path, query = list(), type) {
 #' @param type character of 'g' for the site API or 'c' for the core API
 #' @returns parsed JSON object, usually a data.frame or nested list
 #' @keywords internal
-
-espn_api <- function(path, query = list(), type) {
+.espn_api <- function(path, query = list(), type) {
   base <- switch(
     type,
     g = 'https://site.api.espn.com/apis/site/v2/sports/hockey/nhl/',
@@ -152,7 +144,7 @@ espn_api <- function(path, query = list(), type) {
   )
 }
 
-# ----- ID Helpers ----- #
+# ID Helpers ---------------------------------------------------------
 
 #' Convert to the appropriate game type ID
 #'
@@ -160,8 +152,7 @@ espn_api <- function(path, query = list(), type) {
 #' = playoff/post-season) OR character of 'pre', 'regular', or 'playoff'/'post'
 #' @returns integer in 1:3
 #' @keywords internal
-
-to_game_type_id <- function(game_type) {
+.to_game_type_id <- function(game_type) {
   switch(
     tolower(as.character(game_type)),
     `1`     = 1,
@@ -181,8 +172,7 @@ to_game_type_id <- function(game_type) {
 #' Avalanche'), OR three-letter code (e.g., 'COL')
 #' @returns integer in 1:68, character full name, OR three-letter code
 #' @keywords internal
-
-normalize_team_key <- function(team) {
+.normalize_team_key <- function(team) {
   gsub('[^a-z0-9]', '', tolower(trimws(as.character(team))))
 }
 
@@ -192,9 +182,8 @@ normalize_team_key <- function(team) {
 #' Avalanche'), OR three-letter code (e.g., 'COL')
 #' @returns three-letter code
 #' @keywords internal
-
-to_team_tri_code <- function(team, lookup = .to_team_tri_code) {
-  unname(lookup[normalize_team_key(team)])
+.coerce_team_tri_code <- function(team, lookup = .to_team_tri_code) {
+  unname(lookup[.normalize_team_key(team)])
 }
 
 #' Convert to the appropriate team ID
@@ -203,20 +192,18 @@ to_team_tri_code <- function(team, lookup = .to_team_tri_code) {
 #' Avalanche'), OR three-letter code (e.g., 'COL')
 #' @returns integer in 1:68
 #' @keywords internal
-
-to_team_id <- function(team, lookup = .to_team_id) {
-  unname(lookup[normalize_team_key(team)])
+.coerce_team_id <- function(team, lookup = .to_team_id) {
+  unname(lookup[.normalize_team_key(team)])
 }
 
-# ----- Name Helpers ----- #
+# Name Helpers ---------------------------------------------------------
 
 #' Convert dot-delimited names to camelCase
 #'
 #' @param x character vector
 #' @returns character vector
 #' @keywords internal
-
-dot_to_camel <- function(x) {
+.dot_to_camel <- function(x) {
   parts <- strsplit(x, '\\.')
   vapply(parts, function(p) {
     if (length(p) == 1L) return(p)
@@ -239,9 +226,8 @@ dot_to_camel <- function(x) {
 #' @param x character vector
 #' @returns character vector
 #' @keywords internal
-
-normalize_locale_names <- function(x) {
-  x <- dot_to_camel(x)
+.normalize_locale_names <- function(x) {
+  x <- .dot_to_camel(x)
   sub('Default$', '', x)
 }
 
@@ -251,8 +237,7 @@ normalize_locale_names <- function(x) {
 #' @param prefix character scalar (e.g., 'player', 'goalie', 'skater')
 #' @returns character vector
 #' @keywords internal
-
-scope_person_name_cols <- function(x, prefix) {
+.scope_person_name_cols <- function(x, prefix) {
   x <- gsub('^firstName([A-Z].*)?$', paste0(prefix, 'FirstName\\1'), x, perl = TRUE)
   x <- gsub('^lastName([A-Z].*)?$', paste0(prefix, 'LastName\\1'), x, perl = TRUE)
   x <- gsub('^fullName([A-Z].*)?$', paste0(prefix, 'FullName\\1'), x, perl = TRUE)
@@ -265,8 +250,7 @@ scope_person_name_cols <- function(x, prefix) {
 #' @param x character vector
 #' @returns character vector
 #' @keywords internal
-
-normalize_team_abbrev_cols <- function(x) {
+.normalize_team_abbrev_cols <- function(x) {
   x <- sub('TeamAbbreviations$', 'TeamTriCodes', x, perl = TRUE)
   x <- sub('TeamAbbreviation$', 'TeamTriCode', x, perl = TRUE)
   x <- sub('TeamAbbrevs$', 'TeamTriCodes', x, perl = TRUE)

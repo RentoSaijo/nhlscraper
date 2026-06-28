@@ -1,4 +1,4 @@
-# Public helpers ----------------------------------------------------------
+# Public Helpers ---------------------------------------------------------
 
 #' Add event-to-event deltas to a play-by-play
 #'
@@ -16,7 +16,6 @@
 #' @param play_by_play data.frame of play-by-play(s) using the current public schema returned by [gc_play_by_play()], [gc_play_by_plays()], [wsc_play_by_play()], or [wsc_play_by_plays()]
 #' @returns data.frame with one row per event (play) and added columns: `eventIdPrev`, `secondsElapsedInSequence`, `dSecondsElapsedInSequence`, `dXCoord`, `dYCoord`, `dXCoordNorm`, `dYCoordNorm`, `dDistance`, `dAngle`, `dXCoordPerSecond`, `dYCoordPerSecond`, `dXCoordNormPerSecond`, `dYCoordNormPerSecond`, `dDistancePerSecond`, `dAnglePerSecond`
 #' @export
-
 add_deltas <- function(play_by_play) {
   delta_ctx <- .compute_pbp_deltas(play_by_play)
   out <- .apply_pbp_delta_columns(play_by_play, delta_ctx)
@@ -32,7 +31,6 @@ add_deltas <- function(play_by_play) {
 #' @param n integer row count
 #' @returns named list of empty delta vectors
 #' @keywords internal
-
 .empty_pbp_delta_context <- function(n) {
   list(
     eventIdPrev = rep(NA_integer_, n),
@@ -60,7 +58,6 @@ add_deltas <- function(play_by_play) {
 #'
 #' @returns character vector of public delta column names
 #' @keywords internal
-
 .pbp_delta_public_cols <- function() {
   c(
     'eventIdPrev',
@@ -89,14 +86,12 @@ add_deltas <- function(play_by_play) {
 #' @inheritParams add_deltas
 #' @returns named list containing delta context vectors
 #' @keywords internal
-
 .compute_pbp_deltas_in_r <- function(play_by_play) {
   n <- nrow(play_by_play)
   out <- .empty_pbp_delta_context(n)
   if (!n) {
     return(out)
   }
-
   t <- play_by_play$secondsElapsedInGame
   x_raw <- play_by_play$xCoord
   y_raw <- play_by_play$yCoord
@@ -108,7 +103,6 @@ add_deltas <- function(play_by_play) {
   situation_code <- as.character(play_by_play$situationCode)
   is_faceoff <- play_by_play$eventTypeDescKey == 'faceoff'
   is_ps_so <- !is.na(situation_code) & situation_code %in% c('0101', '1010')
-
   for (g in unique(play_by_play$gameId)) {
     idx <- which(play_by_play$gameId == g)
     idx <- idx[order(t[idx], play_by_play$sortOrder[idx], na.last = TRUE)]
@@ -126,7 +120,6 @@ add_deltas <- function(play_by_play) {
     last_valid_since_faceoff <- NA_integer_
     current_seq <- 0L
     seq_start_time <- NA_real_
-
     for (k in seq_len(m)) {
       i <- idx[k]
       if (is_faceoff[i]) {
@@ -152,7 +145,6 @@ add_deltas <- function(play_by_play) {
         last_valid_since_faceoff <- k
       }
     }
-
     k <- 1L
     while (k <= m) {
       same_seq <- if (is.na(seq_id[k])) is.na(seq_id) else seq_id == seq_id[k]
@@ -161,7 +153,6 @@ add_deltas <- function(play_by_play) {
       same_second_count[same_second] <- sum(same_second, na.rm = TRUE)
       k <- max(which(same_second)) + 1L
     }
-
     curr_k <- which(!is.na(prev_pos))
     if (!length(curr_k)) {
       next
@@ -175,7 +166,6 @@ add_deltas <- function(play_by_play) {
     dy_norm <- y_norm[curr] - y_norm[prev]
     dd <- distance[curr] - distance[prev]
     da <- angle[curr] - angle[prev]
-
     out$dSecondsElapsedInSequence[curr] <- dt
     out$dXCoord[curr] <- dx_raw
     out$dYCoord[curr] <- dy_raw
@@ -184,7 +174,6 @@ add_deltas <- function(play_by_play) {
     out$dDistance[curr] <- dd
     out$dAngle[curr] <- da
     out$eventIdPrev[curr] <- event_id[prev]
-
     ok <- !is.na(dt) & dt >= 0
     j <- which(ok)
     if (length(j)) {
@@ -202,7 +191,6 @@ add_deltas <- function(play_by_play) {
       out$dAnglePerSecond[cc] <- da[j] / denom
     }
   }
-
   out
 }
 
@@ -214,7 +202,6 @@ add_deltas <- function(play_by_play) {
 #' @inheritParams add_deltas
 #' @returns named list containing delta context vectors
 #' @keywords internal
-
 .compute_pbp_deltas <- function(play_by_play) {
   .require_public_pbp_columns(
     play_by_play,
@@ -267,7 +254,6 @@ add_deltas <- function(play_by_play) {
 #' @param delta_ctx named list returned by `.compute_pbp_deltas()`
 #' @returns data.frame with public delta columns inserted
 #' @keywords internal
-
 .apply_pbp_delta_columns <- function(play_by_play, delta_ctx) {
   public_cols <- .pbp_delta_public_cols()
   legacy_cols <- c(
@@ -317,7 +303,6 @@ add_deltas <- function(play_by_play) {
 #' @param play_by_play data.frame of play-by-play(s) using the current public schema returned by [gc_play_by_play()], [gc_play_by_plays()], [wsc_play_by_play()], or [wsc_play_by_plays()]
 #' @returns data.frame with one row per event (play) and added columns: `shooterHeight`, `shooterWeight`, `shooterHandCode`, `shooterAge`, and `shooterPositionCode`
 #' @export
-
 add_shooter_biometrics <- function(play_by_play) {
   .require_public_pbp_columns(
     play_by_play,
@@ -359,13 +344,12 @@ add_shooter_biometrics <- function(play_by_play) {
 #' @param play_by_play data.frame of play-by-play(s) using the current public schema returned by [gc_play_by_play()], [gc_play_by_plays()], [wsc_play_by_play()], or [wsc_play_by_plays()]
 #' @returns data.frame with one row per event (play) and added columns: `goalieHeight`, `goalieWeight`, `goalieHandCode`, and `goalieAge`
 #' @export
-
 add_goalie_biometrics <- function(play_by_play) {
   .require_public_pbp_columns(play_by_play, 'gameId', 'add_goalie_biometrics')
   if (!('goalieInNetId' %in% names(play_by_play)) &&
       !('goaliePlayerIdAgainst' %in% names(play_by_play))) {
     stop(
-      "add_goalie_biometrics() requires public play-by-play column(s): goalieInNetId or goaliePlayerIdAgainst",
+      'add_goalie_biometrics() requires public play-by-play column(s): goalieInNetId or goaliePlayerIdAgainst',
       call. = FALSE
     )
   }
@@ -424,7 +408,6 @@ add_goalie_biometrics <- function(play_by_play) {
 #'   pbp <- add_shift_times(pbp, sc)
 #' }
 #' @export
-
 add_shift_times <- function(play_by_play, shift_chart) {
   slot_count <- .on_ice_skater_slots(play_by_play = play_by_play)
   required_skater_cols <- unique(c(
@@ -564,7 +547,6 @@ add_shift_times <- function(play_by_play, shift_chart) {
 #' )
 #' }
 #' @export
-
 calculate_shift_times_by_situation <- function(game = 2023030417, season = NULL) {
   tryCatch({
     if (!is.null(season)) {
@@ -603,9 +585,17 @@ calculate_shift_times_by_situation <- function(game = 2023030417, season = NULL)
   })
 }
 
-# Internal helpers --------------------------------------------------------
+# Internal Helpers ---------------------------------------------------------
 
-# Calculate shift times by situation from supplied data.
+#' Calculate shift times by situation from supplied data
+#'
+#' `.calculate_shift_times_by_situation_data()` is an internal helper for `calculate_shift_times_by_situation()`.
+#'
+#' @param play_by_play data.frame play-by-play input
+#' @param shift_chart data.frame shift-chart input
+#' @param roster optional data.frame roster input
+#' @returns Internal helper output.
+#' @keywords internal
 .calculate_shift_times_by_situation_data <- function(
   play_by_play,
   shift_chart,
@@ -656,7 +646,13 @@ calculate_shift_times_by_situation <- function(game = 2023030417, season = NULL)
   .shift_situation_order_output(summary)
 }
 
-# Summarize player-period shift counts and total time on ice.
+#' Summarize player-period shift totals
+#'
+#' `.shift_situation_base_summary()` is an internal helper for `calculate_shift_times_by_situation()`.
+#'
+#' @param shift_chart data.frame shift-chart input
+#' @returns Internal helper output.
+#' @keywords internal
 .shift_situation_base_summary <- function(shift_chart) {
   key_cols <- c('gameId', 'teamId', 'playerId', 'periodNumber')
   shifts <- stats::aggregate(
@@ -685,7 +681,14 @@ calculate_shift_times_by_situation <- function(game = 2023030417, season = NULL)
   out
 }
 
-# Convert play-by-play rows into situation intervals.
+#' Build shift-situation intervals
+#'
+#' `.shift_situation_intervals()` is an internal helper for `calculate_shift_times_by_situation()`.
+#'
+#' @param play_by_play data.frame play-by-play input
+#' @param shift_chart data.frame shift-chart input
+#' @returns Internal helper output.
+#' @keywords internal
 .shift_situation_intervals <- function(play_by_play, shift_chart) {
   play_by_play$situationCode <- .normalize_situation_code_for_parse(
     play_by_play$situationCode
@@ -781,7 +784,14 @@ calculate_shift_times_by_situation <- function(game = 2023030417, season = NULL)
   ), ]
 }
 
-# Identify home and away team IDs for each game.
+#' Identify game team IDs
+#'
+#' `.shift_situation_game_teams()` is an internal helper for `calculate_shift_times_by_situation()`.
+#'
+#' @param play_by_play data.frame play-by-play input
+#' @param shift_chart data.frame shift-chart input
+#' @returns Internal helper output.
+#' @keywords internal
 .shift_situation_game_teams <- function(play_by_play, shift_chart) {
   game_ids <- sort(unique(as.integer(shift_chart$gameId)))
   out <- data.frame(
@@ -814,7 +824,14 @@ calculate_shift_times_by_situation <- function(game = 2023030417, season = NULL)
   out
 }
 
-# Intersect shift rows with situation intervals.
+#' Intersect shifts with situation intervals
+#'
+#' `.shift_situation_overlaps()` is an internal helper for `calculate_shift_times_by_situation()`.
+#'
+#' @param shift_chart data.frame shift-chart input
+#' @param intervals data.frame situation intervals
+#' @returns Internal helper output.
+#' @keywords internal
 .shift_situation_overlaps <- function(shift_chart, intervals) {
   if (!nrow(shift_chart) || !nrow(intervals)) {
     return(data.frame())
@@ -861,7 +878,14 @@ calculate_shift_times_by_situation <- function(game = 2023030417, season = NULL)
   )
 }
 
-# R fallback for shift-situation overlaps.
+#' Compute shift-situation overlaps in R
+#'
+#' `.shift_situation_overlaps_in_r()` is an internal helper for `calculate_shift_times_by_situation()`.
+#'
+#' @param shift_chart data.frame shift-chart input
+#' @param intervals data.frame situation intervals
+#' @returns Internal helper output.
+#' @keywords internal
 .shift_situation_overlaps_in_r <- function(shift_chart, intervals) {
   out_shift <- integer()
   out_code  <- integer()
@@ -897,7 +921,14 @@ calculate_shift_times_by_situation <- function(game = 2023030417, season = NULL)
   )
 }
 
-# Convert raw situation codes to player-team perspective.
+#' Convert situation codes to player-team perspective
+#'
+#' `.shift_situation_perspective_code()` is an internal helper for `calculate_shift_times_by_situation()`.
+#'
+#' @param situation_code integer or character situation codes
+#' @param player_is_home logical vector indicating home-team perspective
+#' @returns Internal helper output.
+#' @keywords internal
 .shift_situation_perspective_code <- function(situation_code, player_is_home) {
   sc  <- as.integer(situation_code)
   out <- rep(NA_integer_, length(sc))
@@ -914,7 +945,14 @@ calculate_shift_times_by_situation <- function(game = 2023030417, season = NULL)
   out
 }
 
-# Add wide situation total columns.
+#' Add situation total columns
+#'
+#' `.shift_situation_add_totals()` is an internal helper for `calculate_shift_times_by_situation()`.
+#'
+#' @param summary data.frame summary input
+#' @param overlaps data.frame overlap totals
+#' @returns Internal helper output.
+#' @keywords internal
 .shift_situation_add_totals <- function(summary, overlaps) {
   if (!nrow(summary) || !nrow(overlaps)) {
     return(summary)
@@ -956,7 +994,14 @@ calculate_shift_times_by_situation <- function(game = 2023030417, season = NULL)
   summary
 }
 
-# Add team and player metadata.
+#' Add team and player metadata
+#'
+#' `.shift_situation_add_metadata()` is an internal helper for `calculate_shift_times_by_situation()`.
+#'
+#' @param summary data.frame summary input
+#' @param roster optional data.frame roster input
+#' @returns Internal helper output.
+#' @keywords internal
 .shift_situation_add_metadata <- function(summary, roster = NULL) {
   if (!nrow(summary)) {
     return(summary)
@@ -985,7 +1030,13 @@ calculate_shift_times_by_situation <- function(game = 2023030417, season = NULL)
   summary
 }
 
-# Build player metadata lookup.
+#' Build player metadata lookup
+#'
+#' `.shift_situation_player_lookup()` is an internal helper for `calculate_shift_times_by_situation()`.
+#'
+#' @param roster optional data.frame roster input
+#' @returns Internal helper output.
+#' @keywords internal
 .shift_situation_player_lookup <- function(roster = NULL) {
   source <- if (is.data.frame(roster) && nrow(roster)) {
     roster
@@ -1013,7 +1064,15 @@ calculate_shift_times_by_situation <- function(game = 2023030417, season = NULL)
   out
 }
 
-# Read lookup column with fallback.
+#' Read lookup column with fallback
+#'
+#' `.shift_situation_lookup_col()` is an internal helper for `calculate_shift_times_by_situation()`.
+#'
+#' @param source data.frame lookup source
+#' @param col character column name
+#' @param fallback fallback value
+#' @returns Internal helper output.
+#' @keywords internal
 .shift_situation_lookup_col <- function(source, col, fallback) {
   if (col %in% names(source)) {
     return(source[[col]])
@@ -1021,7 +1080,13 @@ calculate_shift_times_by_situation <- function(game = 2023030417, season = NULL)
   rep(fallback, nrow(source))
 }
 
-# Order public output columns.
+#' Order shift-situation output columns
+#'
+#' `.shift_situation_order_output()` is an internal helper for `calculate_shift_times_by_situation()`.
+#'
+#' @param summary data.frame summary input
+#' @returns Internal helper output.
+#' @keywords internal
 .shift_situation_order_output <- function(summary) {
   fixed_cols <- c(
     'gameId',
@@ -1052,7 +1117,6 @@ calculate_shift_times_by_situation <- function(game = 2023030417, season = NULL)
 #' @param play_by_play data.frame of play-by-play(s); see [gc_play_by_play()] and/or [wsc_play_by_play()] for reference
 #' @returns data.frame with one row per event (play) and added columns: `seasonId`, `gameTypeId`, and `gameNumber`
 #' @keywords internal
-
 .strip_game_id <- function(play_by_play) {
   game                    <- unique(play_by_play$gameId)
   play_by_play$seasonId   <- game %/% 1e6 * 1e4 + game %/% 1e6 + 1
@@ -1072,7 +1136,6 @@ calculate_shift_times_by_situation <- function(game = 2023030417, season = NULL)
 #' @param play_by_play data.frame play-by-play object
 #' @returns data.frame with current public column names where available
 #' @keywords internal
-
 .normalize_public_pbp_names <- function(play_by_play) {
   if (!is.data.frame(play_by_play) || !ncol(play_by_play)) {
     return(play_by_play)
@@ -1109,7 +1172,6 @@ calculate_shift_times_by_situation <- function(game = 2023030417, season = NULL)
 #'
 #' @returns integer vector of game IDs
 #' @keywords internal
-
 .covid_round_robin_shootout_game_ids <- function() {
   c(2019030002L, 2019030016L)
 }
@@ -1123,7 +1185,6 @@ calculate_shift_times_by_situation <- function(game = 2023030417, season = NULL)
 #' @param game_type_id integer game type IDs
 #' @returns logical vector
 #' @keywords internal
-
 .public_pbp_is_shootout_eligible <- function(game_id, game_type_id) {
   (!is.na(game_type_id) & game_type_id == 2L) |
     (!is.na(game_id) & game_id %in% .covid_round_robin_shootout_game_ids())
@@ -1139,7 +1200,6 @@ calculate_shift_times_by_situation <- function(game = 2023030417, season = NULL)
 #' @param period integer period numbers
 #' @returns integer vector of legal period lengths in seconds
 #' @keywords internal
-
 .public_pbp_legal_period_seconds <- function(game_id, game_type_id, period) {
   shootout_eligible <- .public_pbp_is_shootout_eligible(game_id, game_type_id)
   out <- ifelse(
@@ -1166,7 +1226,6 @@ calculate_shift_times_by_situation <- function(game = 2023030417, season = NULL)
 #' @param seconds integer/numeric vector of elapsed seconds
 #' @returns character vector
 #' @keywords internal
-
 .format_elapsed_clock <- function(seconds) {
   seconds <- suppressWarnings(as.integer(seconds))
   out <- rep(NA_character_, length(seconds))
@@ -1186,7 +1245,6 @@ calculate_shift_times_by_situation <- function(game = 2023030417, season = NULL)
 #' @inheritParams .strip_game_id
 #' @returns data.frame with one row per event (play) and added columns `secondsElapsedInPeriod` and `secondsElapsedInGame`
 #' @keywords internal
-
 .strip_time_period <- function(play_by_play) {
   isPlayoffs <- play_by_play$gameTypeId == 3
   time_in_period <- as.character(play_by_play$timeInPeriod)
@@ -1236,7 +1294,6 @@ calculate_shift_times_by_situation <- function(game = 2023030417, season = NULL)
 #' @inheritParams .strip_game_id
 #' @returns data.frame with repaired clocks and ordering where feasible
 #' @keywords internal
-
 .repair_public_pbp_sequence <- function(play_by_play) {
   n <- nrow(play_by_play)
   if (
@@ -1248,7 +1305,6 @@ calculate_shift_times_by_situation <- function(game = 2023030417, season = NULL)
   ) {
     return(play_by_play)
   }
-
   type_desc_key <- as.character(play_by_play$eventTypeDescKey)
   has_boundary_rows <- any(
     !is.na(type_desc_key) &
@@ -1257,7 +1313,6 @@ calculate_shift_times_by_situation <- function(game = 2023030417, season = NULL)
   if (!has_boundary_rows || all(play_by_play$seasonId < 20092010L, na.rm = TRUE)) {
     return(play_by_play)
   }
-
   has_clock_string <- !is.na(play_by_play$timeInPeriod) & nzchar(play_by_play$timeInPeriod)
   valid_clock <- !is.na(play_by_play$secondsElapsedInPeriod)
   drop_idx <- has_clock_string & !valid_clock
@@ -1267,43 +1322,36 @@ calculate_shift_times_by_situation <- function(game = 2023030417, season = NULL)
   if (!nrow(play_by_play)) {
     return(play_by_play)
   }
-
   row_id <- seq_len(nrow(play_by_play))
   original_sort <- suppressWarnings(as.integer(play_by_play$sortOrder))
   original_sort[is.na(original_sort)] <- seq_len(nrow(play_by_play))[is.na(original_sort)]
   new_sort <- original_sort
   new_seconds <- suppressWarnings(as.integer(play_by_play$secondsElapsedInPeriod))
-
   for (g in unique(play_by_play$gameId)) {
     idx_game <- which(play_by_play$gameId == g)
     idx_game <- idx_game[order(original_sort[idx_game], row_id[idx_game], na.last = TRUE)]
     if (!length(idx_game)) {
       next
     }
-
     periods <- sort(unique(play_by_play$periodNumber[idx_game]))
     periods <- periods[!is.na(periods)]
     idx_game_new <- integer()
-
     for (p in periods) {
       idx_period <- idx_game[play_by_play$periodNumber[idx_game] == p]
       if (!length(idx_period)) {
         next
       }
-
       period_types <- as.character(play_by_play$eventTypeDescKey[idx_period])
       period_secs <- new_seconds[idx_period]
       period_sort <- original_sort[idx_period]
       period_game_type <- suppressWarnings(as.integer(play_by_play$gameTypeId[idx_period][1L]))
       legal_max <- .public_pbp_legal_period_seconds(g, period_game_type, p)[1L]
-
       is_period_start <- !is.na(period_types) & period_types == 'period-start'
       is_period_end <- !is.na(period_types) & period_types == 'period-end'
       is_game_end <- !is.na(period_types) & period_types == 'game-end'
       is_shootout_complete <- !is.na(period_types) & period_types == 'shootout-complete'
       faceoff_pos <- which(!is.na(period_types) & period_types == 'faceoff')
       opening_faceoff_pos <- if (length(faceoff_pos)) faceoff_pos[1L] else integer()
-
       if (length(opening_faceoff_pos)) {
         pre_faceoff_pos <- seq_len(opening_faceoff_pos - 1L)
         pre_faceoff_pos <- pre_faceoff_pos[!is_period_start[pre_faceoff_pos]]
@@ -1319,7 +1367,6 @@ calculate_shift_times_by_situation <- function(game = 2023030417, season = NULL)
           }
         }
       }
-
       non_terminal_pos <- which(!(is_period_end | is_game_end | is_shootout_complete))
       observed_period_max <- suppressWarnings(max(period_secs[non_terminal_pos], na.rm = TRUE))
       if (!is.finite(observed_period_max)) {
@@ -1360,7 +1407,6 @@ calculate_shift_times_by_situation <- function(game = 2023030417, season = NULL)
       if (any(is_shootout_complete) && is.na(legal_max)) {
         period_secs[is_shootout_complete] <- terminal_sec
       }
-
       regular_pos <- which(!(is_period_start | is_period_end | is_game_end | is_shootout_complete))
       if (length(opening_faceoff_pos)) {
         regular_pos <- setdiff(regular_pos, opening_faceoff_pos)
@@ -1371,7 +1417,6 @@ calculate_shift_times_by_situation <- function(game = 2023030417, season = NULL)
         row_id[idx_period[regular_pos]],
         na.last = TRUE
       )]
-
       idx_period_new <- c(
         idx_period[which(is_period_start)],
         if (length(opening_faceoff_pos)) idx_period[opening_faceoff_pos] else integer(),
@@ -1383,7 +1428,6 @@ calculate_shift_times_by_situation <- function(game = 2023030417, season = NULL)
       idx_game_new <- c(idx_game_new, idx_period_new)
       new_seconds[idx_period] <- period_secs
     }
-
     if (length(idx_game_new) != length(idx_game)) {
       missing_idx <- setdiff(idx_game, idx_game_new)
       idx_game_new <- c(idx_game_new, missing_idx)
@@ -1391,7 +1435,6 @@ calculate_shift_times_by_situation <- function(game = 2023030417, season = NULL)
     idx_game_new <- idx_game_new[!duplicated(idx_game_new)]
     new_sort[idx_game_new] <- sort(original_sort[idx_game], na.last = TRUE)
   }
-
   play_by_play$sortOrder <- new_sort
   play_by_play$secondsElapsedInPeriod <- new_seconds
   play_by_play$timeInPeriod <- .format_elapsed_clock(play_by_play$secondsElapsedInPeriod)
@@ -1411,7 +1454,6 @@ calculate_shift_times_by_situation <- function(game = 2023030417, season = NULL)
 #' @inheritParams .strip_game_id
 #' @returns data.frame with illogically ordered boundary events removed
 #' @keywords internal
-
 .drop_illogical_ordered_events <- function(play_by_play) {
   n <- nrow(play_by_play)
   if (n < 3L) {
@@ -1455,20 +1497,17 @@ calculate_shift_times_by_situation <- function(game = 2023030417, season = NULL)
   ) {
     return(play_by_play)
   }
-
   row_id <- seq_len(n)
   game_id <- as.integer(play_by_play$gameId)
   period <- as.integer(play_by_play$periodNumber)
   type_desc_key <- as.character(play_by_play$eventTypeDescKey)
   sort_order <- as.integer(play_by_play$sortOrder)
-
   for (g in unique(game_id)) {
     idx_game <- which(game_id == g)
     idx_sorted <- idx_game[order(sort_order[idx_game], row_id[idx_game], na.last = TRUE)]
     if (length(idx_sorted) < 3L) {
       next
     }
-
     periods <- unique(period[idx_sorted])
     periods <- periods[!is.na(periods)]
     for (p in periods) {
@@ -1508,10 +1547,8 @@ calculate_shift_times_by_situation <- function(game = 2023030417, season = NULL)
       )
       idx_sorted[period[idx_sorted] == p] <- idx_period
     }
-
     sort_order[idx_sorted] <- sort(sort_order[idx_game], na.last = TRUE)
   }
-
   play_by_play$sortOrder <- sort_order
   play_by_play[order(sort_order, row_id, na.last = TRUE), , drop = FALSE]
 }
@@ -1525,7 +1562,6 @@ calculate_shift_times_by_situation <- function(game = 2023030417, season = NULL)
 #' @param symbol native symbol name
 #' @returns logical scalar indicating whether the symbol is available
 #' @keywords internal
-
 .ensure_local_native_symbol <- function(symbol) {
   if (is.loaded(symbol)) {
     return(TRUE)
@@ -1568,15 +1604,14 @@ calculate_shift_times_by_situation <- function(game = 2023030417, season = NULL)
 #' @param fn_name calling function name used in the error message
 #' @returns `NULL`, invisibly, or an error if required columns are missing
 #' @keywords internal
-
 .require_public_pbp_columns <- function(play_by_play, cols, fn_name) {
   missing_cols <- setdiff(cols, names(play_by_play))
   if (length(missing_cols)) {
     stop(
       sprintf(
-        "%s() requires public play-by-play column(s): %s",
+        '%s() requires public play-by-play column(s): %s',
         fn_name,
-        paste(missing_cols, collapse = ", ")
+        paste(missing_cols, collapse = ', ')
       ),
       call. = FALSE
     )
@@ -1593,15 +1628,14 @@ calculate_shift_times_by_situation <- function(game = 2023030417, season = NULL)
 #' @param fn_name calling function name used in the error message
 #' @returns `NULL`, invisibly, or an error if required columns are missing
 #' @keywords internal
-
 .require_shift_chart_columns <- function(shift_chart, cols, fn_name) {
   missing_cols <- setdiff(cols, names(shift_chart))
   if (length(missing_cols)) {
     stop(
       sprintf(
-        "%s() requires shift chart column(s): %s",
+        '%s() requires shift chart column(s): %s',
         fn_name,
-        paste(missing_cols, collapse = ", ")
+        paste(missing_cols, collapse = ', ')
       ),
       call. = FALSE
     )
@@ -1616,7 +1650,6 @@ calculate_shift_times_by_situation <- function(game = 2023030417, season = NULL)
 #' @param types character vector of event type keys to keep
 #' @returns logical vector
 #' @keywords internal
-
 .shot_event_mask <- function(play_by_play, types) {
   n <- nrow(play_by_play)
   if (!n) return(logical(0))
@@ -1636,7 +1669,6 @@ calculate_shift_times_by_situation <- function(game = 2023030417, season = NULL)
 #' @param play_by_play data.frame play-by-play object
 #' @returns named list of logical and integer shot-context vectors
 #' @keywords internal
-
 .compute_shot_context <- function(play_by_play) {
   n <- nrow(play_by_play)
   if (!n) {
@@ -1654,7 +1686,6 @@ calculate_shift_times_by_situation <- function(game = 2023030417, season = NULL)
       awayCorsi = integer(0)
     ))
   }
-
   type_desc_key <- if ('eventTypeDescKey' %in% names(play_by_play)) {
     as.character(play_by_play$eventTypeDescKey)
   } else {
@@ -1716,7 +1747,6 @@ calculate_shift_times_by_situation <- function(game = 2023030417, season = NULL)
   is_ps_so <- !is.na(situation_code) & situation_code %in% c('0101', '1010')
   order_time <- order(game_id, seconds_elapsed, sort_order, seq_len(n), na.last = TRUE)
   order_sort <- order(game_id, sort_order, seq_len(n), na.last = TRUE)
-
   compute_in_r <- function() {
     event_owner_team_id <- if ('eventOwnerTeamId' %in% names(play_by_play)) {
       as.integer(play_by_play$eventOwnerTeamId)
@@ -1729,7 +1759,6 @@ calculate_shift_times_by_situation <- function(game = 2023030417, season = NULL)
     is_rebound[is_attempt] <- FALSE
     created_rebound <- rep(NA, n)
     created_rebound[is_attempt] <- FALSE
-
     for (g in unique(game_id)) {
       idx_time <- order_time[game_id[order_time] == g]
       last_nz_dz_time <- NA_integer_
@@ -1770,11 +1799,9 @@ calculate_shift_times_by_situation <- function(game = 2023030417, season = NULL)
         }
       }
     }
-
     is_rush[is_attempt & is_ps_so] <- FALSE
     is_rebound[is_attempt & is_ps_so] <- FALSE
     created_rebound[is_attempt & is_ps_so] <- FALSE
-
     home_goals <- integer(n)
     away_goals <- integer(n)
     home_sog <- integer(n)
@@ -1783,7 +1810,6 @@ calculate_shift_times_by_situation <- function(game = 2023030417, season = NULL)
     away_fenwick <- integer(n)
     home_corsi <- integer(n)
     away_corsi <- integer(n)
-
     for (g in unique(game_id)) {
       idx_sort <- order_sort[game_id[order_sort] == g]
       hG <- 0L
@@ -1816,7 +1842,6 @@ calculate_shift_times_by_situation <- function(game = 2023030417, season = NULL)
         }
       }
     }
-
     list(
       isRush = is_rush,
       isRebound = is_rebound,
@@ -1831,11 +1856,9 @@ calculate_shift_times_by_situation <- function(game = 2023030417, season = NULL)
       awayCorsi = away_corsi
     )
   }
-
   if (!.ensure_local_native_symbol('nhlscraper_pbp_shot_context')) {
     return(compute_in_r())
   }
-
   tryCatch(
     .Call('nhlscraper_pbp_shot_context', list(
       as.integer(order_time),
@@ -1866,7 +1889,6 @@ calculate_shift_times_by_situation <- function(game = 2023030417, season = NULL)
 #' @param play_by_play data.frame play-by-play object
 #' @returns data.frame with shot context columns added
 #' @keywords internal
-
 .apply_shot_context <- function(play_by_play) {
   ctx <- .compute_shot_context(play_by_play)
   if (is.null(ctx$homeShots) && !is.null(ctx$homeSOG)) {
@@ -1884,7 +1906,6 @@ calculate_shift_times_by_situation <- function(game = 2023030417, season = NULL)
   } else {
     rep(NA_integer_, nrow(play_by_play))
   }
-
   play_by_play$isRush <- ctx$isRush
   play_by_play$isRebound <- ctx$isRebound
   play_by_play$createdRebound <- ctx$createdRebound
@@ -1951,7 +1972,6 @@ calculate_shift_times_by_situation <- function(game = 2023030417, season = NULL)
 #' @param situation_code vector of raw situation codes
 #' @returns character vector of parse-ready situation codes
 #' @keywords internal
-
 .normalize_situation_code_for_parse <- function(situation_code) {
   sc_chr <- as.character(situation_code)
   ok <- !is.na(sc_chr) & grepl('^[0-9]{1,4}$', sc_chr)
@@ -1971,7 +1991,6 @@ calculate_shift_times_by_situation <- function(game = 2023030417, season = NULL)
 #' @param situation_code vector of raw situation codes
 #' @returns integer matrix with away/home goalie and skater counts
 #' @keywords internal
-
 .parse_situation_code_components <- function(situation_code) {
   sc_chr <- .normalize_situation_code_for_parse(situation_code)
   cbind(
@@ -1989,7 +2008,6 @@ calculate_shift_times_by_situation <- function(game = 2023030417, season = NULL)
 #' @inheritParams .strip_game_id
 #' @returns data.frame with one row per event (play) and added columns: `homeIsEmptyNet`, `awayIsEmptyNet`, `homeSkaterCount`, `awaySkaterCount`, `isEmptyNetFor`, `isEmptyNetAgainst`, `skaterCountFor`, `skaterCountAgainst`, `manDifferential`, and `strengthState`
 #' @keywords internal
-
 .strip_situation_code <- function(play_by_play) {
   sc_raw <- if ('situationCode' %in% names(play_by_play)) {
     play_by_play$situationCode
@@ -2061,7 +2079,6 @@ calculate_shift_times_by_situation <- function(game = 2023030417, season = NULL)
 #' @inheritParams .strip_game_id
 #' @returns data.frame with one row per event (play) and added `isHome` column
 #' @keywords internal
-
 .flag_is_home <- function(play_by_play) {
   pbp <- play_by_play[order(play_by_play$sortOrder), ]
   n   <- nrow(pbp)
@@ -2103,7 +2120,6 @@ calculate_shift_times_by_situation <- function(game = 2023030417, season = NULL)
 #' @inheritParams .strip_game_id
 #' @returns data.frame with one row per event (play) and added `isRush` column
 #' @keywords internal
-
 .flag_is_rush <- function(play_by_play) {
   play_by_play$isRush <- .compute_shot_context(play_by_play)$isRush
   after               <- match('angle', names(play_by_play))
@@ -2119,7 +2135,6 @@ calculate_shift_times_by_situation <- function(game = 2023030417, season = NULL)
 #' @inheritParams .strip_game_id
 #' @returns data.frame with one row per event (play) and added columns: `createdRebound` and `isRebound`
 #' @keywords internal
-
 .flag_is_rebound <- function(play_by_play) {
   ctx <- .compute_shot_context(play_by_play)
   play_by_play$createdRebound <- ctx$createdRebound
@@ -2137,7 +2152,6 @@ calculate_shift_times_by_situation <- function(game = 2023030417, season = NULL)
 #' @inheritParams .strip_game_id
 #' @returns data.frame with one row per event (play) and added columns `xCoordNorm` and `yCoordNorm`
 #' @keywords internal
-
 .normalize_coordinates <- function(play_by_play) {
   n                       <- nrow(play_by_play)
   play_by_play$xCoordNorm <- NA_real_
@@ -2189,7 +2203,6 @@ calculate_shift_times_by_situation <- function(game = 2023030417, season = NULL)
 #' @inheritParams .strip_game_id
 #' @returns data.frame with one row per event (play) and added `distance` column
 #' @keywords internal
-
 .calculate_distance <- function(play_by_play) {
   net_x                 <- 89
   play_by_play$distance <- sqrt((net_x - play_by_play$xCoordNorm)^2 + (play_by_play$yCoordNorm)^2)
@@ -2206,7 +2219,6 @@ calculate_shift_times_by_situation <- function(game = 2023030417, season = NULL)
 #' @inheritParams .strip_game_id
 #' @returns data.frame with one row per event (play) and added `angle` column
 #' @keywords internal
-
 .calculate_angle <- function(play_by_play) {
   net_x            <- 89
   dx               <- net_x - play_by_play$xCoordNorm
@@ -2224,7 +2236,6 @@ calculate_shift_times_by_situation <- function(game = 2023030417, season = NULL)
 #' @inheritParams .strip_game_id
 #' @returns data.frame with one row per event (play) and added columns: `homeGoals`, `awayGoals`, `homeShots`, `awayShots`, `homeFenwick`, `awayFenwick`, `homeCorsi`, `awayCorsi`, `goalsFor`, `goalsAgainst`, `shotsFor`, `shotsAgainst`, `fenwickFor`, `fenwickAgainst`, `corsiFor`, `corsiAgainst`, `goalDifferential`, `shotDifferential`, `fenwickDifferential`, and `corsiDifferential`
 #' @keywords internal
-
 .count_goals_shots <- function(play_by_play) {
   play_by_play <- .apply_shot_context(play_by_play)
   insert <- c(
@@ -2246,7 +2257,6 @@ calculate_shift_times_by_situation <- function(game = 2023030417, season = NULL)
 #' @param name column name to extract
 #' @returns integer vector
 #' @keywords internal
-
 .on_ice_int_col <- function(df, name) {
   if (name %in% names(df)) as.integer(df[[name]]) else rep(NA_integer_, nrow(df))
 }
@@ -2263,7 +2273,6 @@ calculate_shift_times_by_situation <- function(game = 2023030417, season = NULL)
 #'   caller
 #' @returns character vector of column names
 #' @keywords internal
-
 .on_ice_timing_scalar_column_names <- function(
   metric_suffix,
   play_by_play = NULL,
@@ -2295,7 +2304,6 @@ calculate_shift_times_by_situation <- function(game = 2023030417, season = NULL)
 #' @param shift_data data.frame shift chart data
 #' @returns filtered and sorted shift data.frame
 #' @keywords internal
-
 .sort_shift_chart_for_timing <- function(shift_data) {
   if (!('periodNumber' %in% names(shift_data)) && 'period' %in% names(shift_data)) {
     shift_data$periodNumber <- shift_data$period
@@ -2331,7 +2339,6 @@ calculate_shift_times_by_situation <- function(game = 2023030417, season = NULL)
 #' @param shift_data data.frame shift chart data
 #' @returns list containing home and away timing matrices
 #' @keywords internal
-
 .compute_on_ice_shift_timing_in_r <- function(play_by_play, shift_data) {
   n <- nrow(play_by_play)
   slot_count <- .on_ice_skater_slots(play_by_play = play_by_play)
@@ -2345,7 +2352,6 @@ calculate_shift_times_by_situation <- function(game = 2023030417, season = NULL)
   )
   storage.mode(home_request) <- 'integer'
   storage.mode(away_request) <- 'integer'
-
   home_elapsed <- matrix(NA_real_, nrow = n, ncol = slot_count + 1L)
   away_elapsed <- matrix(NA_real_, nrow = n, ncol = slot_count + 1L)
   home_remaining <- matrix(NA_real_, nrow = n, ncol = slot_count + 1L)
@@ -2362,7 +2368,6 @@ calculate_shift_times_by_situation <- function(game = 2023030417, season = NULL)
       awaySinceLast = away_since
     ))
   }
-
   prev_end <- rep(NA_integer_, nrow(shift_data))
   keys <- paste(shift_data$gameId, shift_data$periodNumber, shift_data$playerId, sep = ':')
   if (nrow(shift_data) > 1L) {
@@ -2373,7 +2378,6 @@ calculate_shift_times_by_situation <- function(game = 2023030417, season = NULL)
     }
   }
   split_idx <- split(seq_len(nrow(shift_data)), keys)
-
   lookup_player <- function(game_id, period, seconds_elapsed, player_id) {
     if (
       is.na(game_id) ||
@@ -2406,7 +2410,6 @@ calculate_shift_times_by_situation <- function(game = 2023030417, season = NULL)
     }
     c(remaining, elapsed, since)
   }
-
   for (i in seq_len(n)) {
     for (j in seq_len(slot_count + 1L)) {
       home_vals <- lookup_player(
@@ -2429,7 +2432,6 @@ calculate_shift_times_by_situation <- function(game = 2023030417, season = NULL)
       away_since[i, j] <- away_vals[3L]
     }
   }
-
   list(
     homeRemaining = home_remaining,
     awayRemaining = away_remaining,
@@ -2449,7 +2451,6 @@ calculate_shift_times_by_situation <- function(game = 2023030417, season = NULL)
 #' @param shift_data data.frame shift chart data
 #' @returns list containing home and away timing matrices
 #' @keywords internal
-
 .compute_on_ice_shift_timing_matrices <- function(play_by_play, shift_data) {
   shift_data <- .sort_shift_chart_for_timing(shift_data)
   if (
@@ -2458,7 +2459,6 @@ calculate_shift_times_by_situation <- function(game = 2023030417, season = NULL)
   ) {
     return(.compute_on_ice_shift_timing_in_r(play_by_play, shift_data))
   }
-
   slot_count <- .on_ice_skater_slots(play_by_play = play_by_play)
   home_request <- cbind(
     as.integer(play_by_play$homeGoaliePlayerId),
@@ -2470,7 +2470,6 @@ calculate_shift_times_by_situation <- function(game = 2023030417, season = NULL)
   )
   storage.mode(home_request) <- 'integer'
   storage.mode(away_request) <- 'integer'
-
   tryCatch(
     .Call('nhlscraper_on_ice_shift_timings', list(
       as.integer(play_by_play$gameId),
@@ -2499,7 +2498,6 @@ calculate_shift_times_by_situation <- function(game = 2023030417, season = NULL)
 #' @param metric_suffix scalar timing suffix
 #' @returns data.frame with timing columns assigned
 #' @keywords internal
-
 .assign_on_ice_shift_metric <- function(
   play_by_play,
   home_matrix,
@@ -2551,7 +2549,6 @@ calculate_shift_times_by_situation <- function(game = 2023030417, season = NULL)
 #' @param shift_data optional shift chart data.frame
 #' @returns data.frame with scalar on-ice timing columns added
 #' @keywords internal
-
 .add_on_ice_shift_timing_context <- function(
   play_by_play,
   game,

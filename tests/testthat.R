@@ -1,4 +1,8 @@
+# Test Setup ---------------------------------------------------------
+
+# Load test libraries.
 library(testthat)
 library(nhlscraper)
 
-test_check('nhlscraper')
+# Run package tests.
+testthat::test_check('nhlscraper')

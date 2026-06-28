@@ -1,3 +1,5 @@
+# Skater Functions ---------------------------------------------------------
+
 #' Access the configurations for skater reports
 #'
 #' `skater_report_configurations()` returns the skater-report configuration
@@ -9,10 +11,9 @@
 #' @examples
 #' skater_report_configs <- skater_report_configurations()
 #' @export
-
 skater_report_configurations <- function() {
   tryCatch({
-    nhl_api(
+    .nhl_api(
       path = 'en/config',
       type = 's'
     )$playerReportData
@@ -24,7 +25,6 @@ skater_report_configurations <- function() {
 
 #' @rdname skater_report_configurations
 #' @export
-
 skater_report_configs <- function() {
   skater_report_configurations()
 }
@@ -50,7 +50,6 @@ skater_report_configs <- function() {
 #'     category  = 'puckPossessions'
 #'   )}
 #' @export
-
 skater_season_report <- function(
   season    = season_now(), 
   game_type = game_type_now(), 
@@ -58,7 +57,7 @@ skater_season_report <- function(
 ) {
   tryCatch(
     expr = {
-      report <- nhl_api(
+      report <- .nhl_api(
         path  = sprintf('en/skater/%s', category),
         query = list(
           limit       = -1,
@@ -74,7 +73,7 @@ skater_season_report <- function(
       )$data
       report <- report[order(report$playerId), ]
       names(report)[names(report) == 'lastName'] <- 'skaterLastName'
-      names(report) <- normalize_team_abbrev_cols(names(report))
+      names(report) <- .normalize_team_abbrev_cols(names(report))
       report
     },
     error = function(e) {
@@ -103,7 +102,6 @@ skater_season_report <- function(
 #'     category  = 'puckPossessions'
 #'   )}
 #' @export
-
 skater_game_report <- function(
   season    = season_now(), 
   game_type = game_type_now(), 
@@ -125,7 +123,7 @@ skater_game_report <- function(
         stop('Invalid argument(s).')
       }
       if (game_type != 2) {
-        report <- nhl_api(
+        report <- .nhl_api(
           path  = sprintf('en/skater/%s', category),
           query = list(
             limit       = -1,
@@ -158,7 +156,7 @@ skater_game_report <- function(
             game_type,
             paste0('\'', dates_chr, '\'', collapse = ',')
           )
-          page <- nhl_api(
+          page <- .nhl_api(
             path  = sprintf('en/skater/%s', category),
             query = list(
               limit       = -1,
@@ -193,7 +191,7 @@ skater_game_report <- function(
       }
       report <- report[order(report$playerId, report$gameId), ]
       names(report)[names(report) == 'lastName'] <- 'skaterLastName'
-      names(report) <- normalize_team_abbrev_cols(names(report))
+      names(report) <- .normalize_team_abbrev_cols(names(report))
       report
     },
     error = function(e) {
@@ -212,17 +210,16 @@ skater_game_report <- function(
 #' @examples
 #' skater_stats <- skater_statistics()
 #' @export
-
 skater_statistics <- function() {
   tryCatch({
-    stats    <- nhl_api(
+    stats    <- .nhl_api(
       path = 'skater-career-scoring-regular-plus-playoffs',
       type = 'r'
     )$data
     stats$id <- NULL
     names(stats)[names(stats) == 'firstName'] <- 'skaterFirstName'
     names(stats)[names(stats) == 'lastName']  <- 'skaterLastName'
-    names(stats) <- normalize_team_abbrev_cols(names(stats))
+    names(stats) <- .normalize_team_abbrev_cols(names(stats))
     stats[order(stats$playerId), ]
   }, error = function(e) {
     message('Unable to create connection; please try again later.')
@@ -232,7 +229,6 @@ skater_statistics <- function() {
 
 #' @rdname skater_statistics
 #' @export
-
 skater_stats <- function() {
   skater_statistics()
 }
@@ -246,17 +242,16 @@ skater_stats <- function() {
 #' @examples
 #' skater_regular_stats <- skater_regular_statistics()
 #' @export
-
 skater_regular_statistics <- function() {
   tryCatch({
-    stats    <- nhl_api(
+    stats    <- .nhl_api(
       path = 'skater-career-scoring-regular-season',
       type = 'r'
     )$data
     stats$id <- NULL
     names(stats)[names(stats) == 'firstName'] <- 'skaterFirstName'
     names(stats)[names(stats) == 'lastName']  <- 'skaterLastName'
-    names(stats) <- normalize_team_abbrev_cols(names(stats))
+    names(stats) <- .normalize_team_abbrev_cols(names(stats))
     stats
   }, error = function(e) {
     message('Unable to create connection; please try again later.')
@@ -266,7 +261,6 @@ skater_regular_statistics <- function() {
 
 #' @rdname skater_regular_statistics
 #' @export
-
 skater_regular_stats <- function() {
   skater_regular_statistics()
 }
@@ -280,17 +274,16 @@ skater_regular_stats <- function() {
 #' @examples
 #' skater_playoff_stats <- skater_playoff_statistics()
 #' @export
-
 skater_playoff_statistics <- function() {
   tryCatch({
-    stats    <- nhl_api(
+    stats    <- .nhl_api(
       path = 'skater-career-scoring-playoffs',
       type = 'r'
     )$data
     stats$id <- NULL
     names(stats)[names(stats) == 'firstName'] <- 'skaterFirstName'
     names(stats)[names(stats) == 'lastName']  <- 'skaterLastName'
-    names(stats) <- normalize_team_abbrev_cols(names(stats))
+    names(stats) <- .normalize_team_abbrev_cols(names(stats))
     stats
   }, error = function(e) {
     message('Unable to create connection; please try again later.')
@@ -300,7 +293,6 @@ skater_playoff_statistics <- function() {
 
 #' @rdname skater_playoff_statistics
 #' @export
-
 skater_playoff_stats <- function() {
   skater_playoff_statistics()
 }
@@ -317,10 +309,9 @@ skater_playoff_stats <- function() {
 #' # May take >5s, so skip.
 #' \donttest{skater_season_stats <- skater_season_statistics()}
 #' @export
-
 skater_season_statistics <- function() {
   tryCatch({
-    stats                    <- nhl_api(
+    stats                    <- .nhl_api(
       path = 'player-stats',
       type = 'r'
     )$data
@@ -339,7 +330,6 @@ skater_season_statistics <- function() {
 
 #' @rdname skater_season_statistics
 #' @export
-
 skater_season_stats <- function() {
   skater_season_statistics()
 }
@@ -354,17 +344,16 @@ skater_season_stats <- function() {
 #' # May take >5s, so skip.
 #' \donttest{skater_series_stats <- skater_series_statistics()}
 #' @export
-
 skater_series_statistics <- function() {
   tryCatch({
-    stats    <- nhl_api(
+    stats    <- .nhl_api(
       path = 'playoff-skater-series-stats',
       type = 'r'
     )$data
     stats$id <- NULL
     names(stats)[names(stats) == 'firstName'] <- 'skaterFirstName'
     names(stats)[names(stats) == 'lastName']  <- 'skaterLastName'
-    names(stats) <- normalize_team_abbrev_cols(names(stats))
+    names(stats) <- .normalize_team_abbrev_cols(names(stats))
     stats
   }, error = function(e) {
     message('Unable to create connection; please try again later.')
@@ -374,7 +363,6 @@ skater_series_statistics <- function() {
 
 #' @rdname skater_series_statistics
 #' @export
-
 skater_series_stats <- function() {
   skater_series_statistics()
 }
@@ -398,7 +386,6 @@ skater_series_stats <- function() {
 #'   category  = 'TOI'
 #' )
 #' @export
-
 skater_leaders <- function(
   season    = 'current',
   game_type = '',
@@ -428,15 +415,15 @@ skater_leaders <- function(
         f                            = 'faceoffLeaders',
         faceoffs                     = 'faceoffLeaders'
       )
-      skaters <- nhl_api(
+      skaters <- .nhl_api(
         path  = sprintf('v1/skater-stats-leaders/%s/%s', season, game_type),
         type  = 'w'
       )[[category]]
       names(skaters)[names(skaters) == 'id']       <- 'playerId'
       names(skaters)[names(skaters) == 'position'] <- 'positionCode'
-      names(skaters) <- normalize_locale_names(names(skaters))
-      names(skaters) <- scope_person_name_cols(names(skaters), 'skater')
-      names(skaters) <- normalize_team_abbrev_cols(names(skaters))
+      names(skaters) <- .normalize_locale_names(names(skaters))
+      names(skaters) <- .scope_person_name_cols(names(skaters), 'skater')
+      names(skaters) <- .normalize_team_abbrev_cols(names(skaters))
       skaters
     },
     error = function(e) {
@@ -456,17 +443,16 @@ skater_leaders <- function(
 #' @examples
 #' skater_milestones <- skater_milestones()
 #' @export
-
 skater_milestones <- function() {
   tryCatch({
-    milestones <- nhl_api(
+    milestones <- .nhl_api(
       path = 'en/milestones/skaters',
       type = 's'
     )$data
     milestones$id <- NULL
     names(milestones)[names(milestones) == 'firstName'] <- 'skaterFirstName'
     names(milestones)[names(milestones) == 'lastName']  <- 'skaterLastName'
-    names(milestones) <- normalize_team_abbrev_cols(names(milestones))
+    names(milestones) <- .normalize_team_abbrev_cols(names(milestones))
     milestones
   }, error = function(e) {
     message('Unable to create connection; please try again later.')

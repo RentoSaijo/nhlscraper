@@ -1,4 +1,6 @@
-#' Access the season(s) and game type(s) in which there exists team EDGE 
+# Team EDGE Functions ---------------------------------------------------------
+
+#' Access the season(s) and game type(s) in which there exists team EDGE
 #' statistics
 #'
 #' `team_edge_seasons()` returns the seasons and game type IDs for which the NHL
@@ -8,11 +10,10 @@
 #' @examples
 #' team_EDGE_seasons <- team_edge_seasons()
 #' @export
-
 team_edge_seasons <- function() {
   tryCatch(
     expr = {
-      seasons <- nhl_api(
+      seasons <- .nhl_api(
         path = sprintf('v1/edge/team-landing/now'),
         type = 'w'
       )$seasonsWithEdgeStats
@@ -32,11 +33,11 @@ team_edge_seasons <- function() {
 #' `team_edge_leaders()` returns the team EDGE landing-page leader groups for
 #' one season and game type, such as skating, shot, and zone-time leader blocks.
 #'
-#' @param season integer in YYYYYYYY (e.g., 20242025); see 
+#' @param season integer in YYYYYYYY (e.g., 20242025); see
 #' [team_edge_seasons()] for reference
-#' @param game_type integer in 1:3 (where 1 = pre-season, 2 = regular season, 3 
-#' = playoff/post-season) OR character of 'pre', 'regular', or 
-#' 'playoff'/'post'; see [team_edge_seasons()] for reference; most functions 
+#' @param game_type integer in 1:3 (where 1 = pre-season, 2 = regular season, 3
+#' = playoff/post-season) OR character of 'pre', 'regular', or
+#' 'playoff'/'post'; see [team_edge_seasons()] for reference; most functions
 #' will NOT support pre-season
 #'
 #' @returns list of various items
@@ -46,15 +47,14 @@ team_edge_seasons <- function() {
 #'   game_type = 2
 #' )
 #' @export
-
 team_edge_leaders <- function(season = 'now', game_type = '') {
   tryCatch(
     expr = {
-      nhl_api(
+      .nhl_api(
         path = sprintf(
-          'v1/edge/team-landing/%s/%s', 
-          season, 
-          to_game_type_id(game_type)
+          'v1/edge/team-landing/%s/%s',
+          season,
+          .to_game_type_id(game_type)
         ),
         type = 'w'
       )$leaders
@@ -78,21 +78,20 @@ team_edge_leaders <- function(season = 'now', game_type = '') {
 #' @returns list of various items
 #' @examples
 #' COL_EDGE_summary_regular_20242025 <- team_edge_summary(
-#'   team      = 21, 
+#'   team      = 21,
 #'   season    = 20242025,
 #'   game_type = 2
 #' )
 #' @export
-
 team_edge_summary <- function(team = 1, season = 'now', game_type = '') {
   tryCatch(
     expr = {
-      nhl_api(
+      .nhl_api(
         path = sprintf(
-          'v1/edge/team-detail/%s/%s/%s', 
-          to_team_id(team), 
-          season, 
-          to_game_type_id(game_type)
+          'v1/edge/team-detail/%s/%s/%s',
+          .coerce_team_id(team),
+          season,
+          .to_game_type_id(game_type)
         ),
         type = 'w'
       )
@@ -104,18 +103,18 @@ team_edge_summary <- function(team = 1, season = 'now', game_type = '') {
   )
 }
 
-#' Access the EDGE zone time statistics for a team, season, game type, and 
+#' Access the EDGE zone time statistics for a team, season, game type, and
 #' category
 #'
 #' `team_edge_zone_time()` returns a team's EDGE zone-time detail table by
 #' strength state, or the shot-differential split list when requested.
 #'
 #' @inheritParams team_edge_summary
-#' @param category character of 'd'/'details' or 
+#' @param category character of 'd'/'details' or
 #' 'dS'/'dSOG'/'dShot'/'shot differential'
 #'
-#' @returns data.frame with one row per strength state 
-#' (category = 'details') or list with four items (category = 'shot 
+#' @returns data.frame with one row per strength state
+#' (category = 'details') or list with four items (category = 'shot
 #' differential')
 #' @examples
 #' COL_dS_regular_20242025 <- team_edge_zone_time(
@@ -125,11 +124,10 @@ team_edge_summary <- function(team = 1, season = 'now', game_type = '') {
 #'   category  = 'dS'
 #' )
 #' @export
-
 team_edge_zone_time <- function(
-  team      = 1, 
-  season    = 'now', 
-  game_type = '', 
+  team      = 1,
+  season    = 'now',
+  game_type = '',
   category  = 'details'
 ) {
   tryCatch(
@@ -143,12 +141,12 @@ team_edge_zone_time <- function(
         dshot               = 'shotDifferential',
         `shot differential` = 'shotDifferential'
       )
-      nhl_api(
+      .nhl_api(
         path = sprintf(
-          'v1/edge/team-zone-time-details/%s/%s/%s', 
-          to_team_id(team), 
-          season, 
-          to_game_type_id(game_type)
+          'v1/edge/team-zone-time-details/%s/%s/%s',
+          .coerce_team_id(team),
+          season,
+          .to_game_type_id(game_type)
         ),
         type = 'w'
       )[[category]]
@@ -160,7 +158,7 @@ team_edge_zone_time <- function(
   )
 }
 
-#' Access the EDGE skating distance statistics for a team, season, game type, 
+#' Access the EDGE skating distance statistics for a team, season, game type,
 #' and category
 #'
 #' `team_edge_skating_distance()` returns team EDGE skating-distance detail by
@@ -169,7 +167,7 @@ team_edge_zone_time <- function(
 #' @inheritParams team_edge_summary
 #' @param category character of 'd'/'details' or 'l'/'l10'/'last 10'
 #'
-#' @returns data.frame with one row per combination of strength state and 
+#' @returns data.frame with one row per combination of strength state and
 #' position (category = 'details') or game (category = 'last 10')
 #' game
 #' @examples
@@ -180,11 +178,10 @@ team_edge_zone_time <- function(
 #'   category  = 'L'
 #' )
 #' @export
-
 team_edge_skating_distance <- function(
-  team      = 1, 
-  season    = 'now', 
-  game_type = '', 
+  team      = 1,
+  season    = 'now',
+  game_type = '',
   category  = 'details'
 ) {
   tryCatch(
@@ -194,12 +191,12 @@ team_edge_skating_distance <- function(
         d = 'skatingDistanceDetails',
         l = 'skatingDistanceLast10'
       )
-      nhl_api(
+      .nhl_api(
         path = sprintf(
-          'v1/edge/team-skating-distance-detail/%s/%s/%s', 
-          to_team_id(team), 
-          season, 
-          to_game_type_id(game_type)
+          'v1/edge/team-skating-distance-detail/%s/%s/%s',
+          .coerce_team_id(team),
+          season,
+          .to_game_type_id(game_type)
         ),
         type = 'w'
       )[[category]]
@@ -211,7 +208,7 @@ team_edge_skating_distance <- function(
   )
 }
 
-#' Access the EDGE skating speed statistics for a team, season, game type, and 
+#' Access the EDGE skating speed statistics for a team, season, game type, and
 #' category
 #'
 #' `team_edge_skating_speed()` returns team EDGE skating-speed detail by
@@ -220,7 +217,7 @@ team_edge_skating_distance <- function(
 #' @inheritParams team_edge_summary
 #' @param category character of 'd'/'details' or 't'/'top'/'top speeds'
 #'
-#' @returns data.frame with one row per position (category = 'details') or 
+#' @returns data.frame with one row per position (category = 'details') or
 #' burst (category = 'top speeds')
 #' @examples
 #' COL_top_speeds_regular_20242025 <- team_edge_skating_speed(
@@ -230,11 +227,10 @@ team_edge_skating_distance <- function(
 #'   category  = 'T'
 #' )
 #' @export
-
 team_edge_skating_speed <- function(
-  team      = 1, 
-  season    = 'now', 
-  game_type = '', 
+  team      = 1,
+  season    = 'now',
+  game_type = '',
   category  = 'details'
 ) {
   tryCatch(
@@ -244,12 +240,12 @@ team_edge_skating_speed <- function(
         d = 'skatingSpeedDetails',
         t = 'topSkatingSpeeds'
       )
-      nhl_api(
+      .nhl_api(
         path = sprintf(
-          'v1/edge/team-skating-speed-detail/%s/%s/%s', 
-          to_team_id(team), 
-          season, 
-          to_game_type_id(game_type)
+          'v1/edge/team-skating-speed-detail/%s/%s/%s',
+          .coerce_team_id(team),
+          season,
+          .to_game_type_id(game_type)
         ),
         type = 'w'
       )[[category]]
@@ -261,7 +257,7 @@ team_edge_skating_speed <- function(
   )
 }
 
-#' Access the EDGE shot location statistics for a team, season, game type, and 
+#' Access the EDGE shot location statistics for a team, season, game type, and
 #' category
 #'
 #' `team_edge_shot_location()` returns team EDGE shot-location detail by rink
@@ -270,7 +266,7 @@ team_edge_skating_speed <- function(
 #' @inheritParams team_edge_summary
 #' @param category character of 'd'/details' or 't'/'totals'
 #'
-#' @returns data.frame with one row per location (category = 'details') or 
+#' @returns data.frame with one row per location (category = 'details') or
 #' combination of strength state and position (category = 'totals')
 #' @examples
 #' COL_shot_location_totals_regular_20242025 <- team_edge_shot_location(
@@ -280,11 +276,10 @@ team_edge_skating_speed <- function(
 #'   category  = 'T'
 #' )
 #' @export
-
 team_edge_shot_location <- function(
-  team      = 1, 
-  season    = 'now', 
-  game_type = '', 
+  team      = 1,
+  season    = 'now',
+  game_type = '',
   category  = 'details'
 ) {
   tryCatch(
@@ -294,12 +289,12 @@ team_edge_shot_location <- function(
         d = 'shotLocationDetails',
         t = 'shotLocationTotals'
       )
-      nhl_api(
+      .nhl_api(
         path = sprintf(
-          'v1/edge/team-shot-location-detail/%s/%s/%s', 
-          to_team_id(team), 
-          season, 
-          to_game_type_id(game_type)
+          'v1/edge/team-shot-location-detail/%s/%s/%s',
+          .coerce_team_id(team),
+          season,
+          .to_game_type_id(game_type)
         ),
         type = 'w'
       )[[category]]
@@ -311,7 +306,7 @@ team_edge_shot_location <- function(
   )
 }
 
-#' Access the EDGE shot speed statistics for a team, season, game type, and 
+#' Access the EDGE shot speed statistics for a team, season, game type, and
 #' category
 #'
 #' `team_edge_shot_speed()` returns team EDGE shot-speed detail by position, or
@@ -320,7 +315,7 @@ team_edge_shot_location <- function(
 #' @inheritParams team_edge_summary
 #' @param category character of 'd'/'details' or 'h'/'hardest'
 #'
-#' @returns data.frame with one row per position (category = 'details') or 
+#' @returns data.frame with one row per position (category = 'details') or
 #' shot (category = 'hardest')
 #' @examples
 #' COL_hardest_shots_regular_20242025 <- team_edge_shot_speed(
@@ -330,11 +325,10 @@ team_edge_shot_location <- function(
 #'   category  = 'H'
 #' )
 #' @export
-
 team_edge_shot_speed <- function(
-  team      = 1, 
-  season    = 'now', 
-  game_type = '', 
+  team      = 1,
+  season    = 'now',
+  game_type = '',
   category  = 'details'
 ) {
   tryCatch(
@@ -344,12 +338,12 @@ team_edge_shot_speed <- function(
         d = 'shotSpeedDetails',
         h = 'hardestShots',
       )
-      nhl_api(
+      .nhl_api(
         path = sprintf(
-          'v1/edge/team-shot-speed-detail/%s/%s/%s', 
-          to_team_id(team), 
-          season, 
-          to_game_type_id(game_type)
+          'v1/edge/team-shot-speed-detail/%s/%s/%s',
+          .coerce_team_id(team),
+          season,
+          .to_game_type_id(game_type)
         ),
         type = 'w'
       )[[category]]

@@ -1,4 +1,4 @@
-# ----- Deprecated Functions ----- #
+# Deprecated Functions ---------------------------------------------------------
 
 #' Access all the games
 #' 
@@ -6,7 +6,6 @@
 #' 
 #' @returns data.frame with one row per game
 #' @export
-
 get_games <- function() {
   .Deprecated(
     new     = 'games()',
@@ -26,7 +25,6 @@ get_games <- function() {
 #' @inheritParams standings
 #' @returns data.frame with one row per game
 #' @export
-
 get_scores <- function(date = 'now') {
   .Deprecated(
     new     = 'scores()',
@@ -46,7 +44,6 @@ get_scores <- function(date = 'now') {
 #' @inheritParams standings
 #' @returns data.frame with one row per game
 #' @export
-
 get_scoreboards <- function(date = 'now') {
   .Deprecated(
     new     = 'scores()',
@@ -66,7 +63,6 @@ get_scoreboards <- function(date = 'now') {
 #' @inheritParams gc_summary
 #' @returns list of various items
 #' @export
-
 get_game_landing <- function(game = 2023030417) {
   .Deprecated(
     new     = 'gc_summary()',
@@ -86,7 +82,6 @@ get_game_landing <- function(game = 2023030417) {
 #' @inheritParams gc_summary
 #' @returns list of various items
 #' @export
-
 get_game_story <- function(game = 2023030417) {
   .Deprecated(
     new     = 'wsc_summary()',
@@ -108,7 +103,6 @@ get_game_story <- function(game = 2023030417) {
 #' @param player_type character of 'forwards', 'defense', or 'goalies'
 #' @returns data.frame with one row per player
 #' @export
-
 get_game_boxscore <- function(
   game        = 2023030417,
   team        = 'home',
@@ -132,7 +126,6 @@ get_game_boxscore <- function(
 #' @inheritParams gc_summary
 #' @returns data.frame with one row per event (play)
 #' @export
-
 get_gc_play_by_play <- function(game = 2023030417) {
   .Deprecated(
     new     = 'gc_play_by_play()',
@@ -152,7 +145,6 @@ get_gc_play_by_play <- function(game = 2023030417) {
 #' @inheritParams gc_summary
 #' @returns data.frame with one row per event (play)
 #' @export
-
 get_wsc_play_by_play <- function(game = 2023030417) {
   .Deprecated(
     new     = 'wsc_play_by_play()',
@@ -172,7 +164,6 @@ get_wsc_play_by_play <- function(game = 2023030417) {
 #' @inheritParams gc_summary
 #' @returns data.frame with one row per shift
 #' @export
-
 get_shift_charts <- function(game = 2023030417) {
   .Deprecated(
     new     = 'shift_chart()',
@@ -192,7 +183,6 @@ get_shift_charts <- function(game = 2023030417) {
 #' @inheritParams gc_summary
 #' @returns data.frame with one row per shift
 #' @export
-
 shifts <- function(game = 2023030417) {
   .Deprecated(
     new     = 'shift_chart()',
@@ -212,7 +202,6 @@ shifts <- function(game = 2023030417) {
 #' @inheritParams game_odds
 #' @returns data.frame with one row per game
 #' @export
-
 get_partner_odds <- function(country = 'US') {
   .Deprecated(
     new     = 'game_odds()',

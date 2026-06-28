@@ -1,4 +1,4 @@
-# ----- Deprecated Functions ----- #
+# Deprecated Functions ---------------------------------------------------------
 
 #' Access all the teams
 #' 
@@ -6,7 +6,6 @@
 #' 
 #' @returns data.frame with one row per team
 #' @export
-
 get_teams <- function() {
   .Deprecated(
     new     = 'teams()',
@@ -26,7 +25,6 @@ get_teams <- function() {
 #' @param team three-letter code (e.g., 'COL'); see [teams()] for reference
 #' @returns data.frame with one row per season
 #' @export
-
 get_team_seasons <- function(team = 'NJD') {
   .Deprecated(
     new     = 'team_seasons()',
@@ -49,7 +47,6 @@ get_team_seasons <- function(team = 'NJD') {
 #' @param player_type character of 'forwards', 'defensemen', or 'goalies'
 #' @returns data.frame with one row per player
 #' @export
-
 get_team_roster <- function(
   team        = 'NJD',
   season      = 'current',
@@ -79,7 +76,6 @@ get_team_roster <- function(
 #' @param player_type character of 'skaters' or 'goalies'
 #' @returns data.frame with one row per player
 #' @export
-
 get_team_roster_statistics <- function(
   team        = 'NJD',
   season      = 'now',
@@ -104,7 +100,6 @@ get_team_roster_statistics <- function(
 #' @inheritParams get_team_roster
 #' @returns data.frame with one row per player
 #' @export
-
 get_team_prospects <- function(team = 'NJD', player_type = 'forwards') {
   .Deprecated(
     new     = 'team_prospects()',
@@ -124,7 +119,6 @@ get_team_prospects <- function(team = 'NJD', player_type = 'forwards') {
 #' @inheritParams get_team_roster
 #' @returns data.frame with one row per game
 #' @export
-
 get_team_schedule <- function(team = 'NJD', season = 'now') {
   .Deprecated(
     new     = 'team_season_schedule()',
@@ -143,7 +137,6 @@ get_team_schedule <- function(team = 'NJD', season = 'now') {
 #' [team_game_report()] instead.
 #' 
 #' @export
-
 get_team_statistics <- function() {
   .Defunct(
     new     = 'team_season_report()',
@@ -160,7 +153,6 @@ get_team_statistics <- function() {
 #' `get_team_scoreboard()` is defunct.
 #' 
 #' @export
-
 get_team_scoreboard <- function() {
   .Defunct(
     msg = paste(

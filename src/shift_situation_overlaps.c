@@ -1,8 +1,12 @@
+/* Headers ------------------------------------------------------------- */
+
 #include <R.h>
 #include <Rinternals.h>
 #include <limits.h>
 #include <stdlib.h>
 #include <string.h>
+
+/* Validation Helpers -------------------------------------------------- */
 
 static int xlength_as_int(SEXP x, const char *name) {
   R_xlen_t n = XLENGTH(x);
@@ -30,6 +34,8 @@ static int is_na_int(int x) {
   return x == NA_INTEGER;
 }
 
+/* Interval Helpers ---------------------------------------------------- */
+
 static int key_less(int game_a, int period_a, int game_b, int period_b) {
   return game_a < game_b || (game_a == game_b && period_a < period_b);
 }
@@ -54,6 +60,8 @@ static int perspective_situation_code(int situation_code, int player_is_home) {
       away_skaters * 10 + away_goalie;
   }
 }
+
+/* Shift-Situation Overlap Interface ---------------------------------- */
 
 SEXP nhlscraper_shift_situation_overlaps(SEXP data_list) {
   SEXP shift_game_sexp;
@@ -129,7 +137,12 @@ SEXP nhlscraper_shift_situation_overlaps(SEXP data_list) {
   require_vector_type_and_length(interval_away_sexp, INTSXP, n_intervals, "interval_away");
   require_vector_type_and_length(interval_start_sexp, INTSXP, n_intervals, "interval_start");
   require_vector_type_and_length(interval_end_sexp, INTSXP, n_intervals, "interval_end");
-  require_vector_type_and_length(interval_situation_sexp, INTSXP, n_intervals, "interval_situation");
+  require_vector_type_and_length(
+    interval_situation_sexp,
+    INTSXP,
+    n_intervals,
+    "interval_situation"
+  );
 
   shift_game = INTEGER(shift_game_sexp);
   shift_team = INTEGER(shift_team_sexp);

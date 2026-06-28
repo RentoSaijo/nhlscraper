@@ -1,4 +1,6 @@
-test_that('calculate_shift_times_by_situation() splits exact strengths by player perspective', {
+# Tests ---------------------------------------------------------
+
+testthat::test_that('calculate_shift_times_by_situation() splits exact strengths by player perspective', {
   play_by_play <- data.frame(
     gameId = rep(1L, 4L),
     periodNumber = rep(1L, 4L),
@@ -28,7 +30,7 @@ test_that('calculate_shift_times_by_situation() splits exact strengths by player
     positionCode = c('C', 'L'),
     stringsAsFactors = FALSE
   )
-  local_mocked_bindings(
+  testthat::local_mocked_bindings(
     gc_play_by_play = function(game) play_by_play,
     shift_chart = function(game) shift_data,
     game_rosters = function(game) roster_data,
@@ -41,12 +43,10 @@ test_that('calculate_shift_times_by_situation() splits exact strengths by player
     },
     .package = 'nhlscraper'
   )
-
   out <- calculate_shift_times_by_situation(game = 1L)
   home <- out[out$playerId == 101L, ]
   away <- out[out$playerId == 201L, ]
-
-  expect_named(out, c(
+  testthat::expect_named(out, c(
     'gameId',
     'teamId',
     'teamTriCode',
@@ -62,19 +62,20 @@ test_that('calculate_shift_times_by_situation() splits exact strengths by player
     '1541TimeOnIce',
     '1451TimeOnIce'
   ))
-  expect_equal(home[['timeOnIce']], 300L)
-  expect_equal(home[['1551TimeOnIce']], 80L)
-  expect_equal(home[['1541TimeOnIce']], 120L)
-  expect_equal(home[['1451TimeOnIce']], 100L)
-  expect_equal(away[['timeOnIce']], 300L)
-  expect_equal(away[['1551TimeOnIce']], 80L)
-  expect_equal(away[['1541TimeOnIce']], 100L)
-  expect_equal(away[['1451TimeOnIce']], 120L)
-  expect_equal(home[['teamTriCode']], 'HOM')
-  expect_equal(away[['teamTriCode']], 'AWY')
+  testthat::expect_equal(home[['timeOnIce']], 300L)
+  testthat::expect_equal(home[['1551TimeOnIce']], 80L)
+  testthat::expect_equal(home[['1541TimeOnIce']], 120L)
+  testthat::expect_equal(home[['1451TimeOnIce']], 100L)
+  testthat::expect_equal(away[['timeOnIce']], 300L)
+  testthat::expect_equal(away[['1551TimeOnIce']], 80L)
+  testthat::expect_equal(away[['1541TimeOnIce']], 100L)
+  testthat::expect_equal(away[['1451TimeOnIce']], 120L)
+  testthat::expect_equal(home[['teamTriCode']], 'HOM')
+  testthat::expect_equal(away[['teamTriCode']], 'AWY')
 })
 
-test_that('calculate_shift_times_by_situation() uses season data when season is supplied', {
+# Run shift times by situation tests.
+testthat::test_that('calculate_shift_times_by_situation() uses season data when season is supplied', {
   play_by_play <- data.frame(
     gameId = rep(2L, 2L),
     periodNumber = rep(1L, 2L),
@@ -94,15 +95,15 @@ test_that('calculate_shift_times_by_situation() uses season data when season is 
     endSecondsElapsedInPeriod = 10L,
     stringsAsFactors = FALSE
   )
-  local_mocked_bindings(
+  testthat::local_mocked_bindings(
     gc_play_by_play = function(game) stop('game play-by-play should not be used'),
     shift_chart = function(game) stop('game shift chart should not be used'),
     gc_play_by_plays = function(season) {
-      expect_equal(season, 20242025L)
+      testthat::expect_equal(season, 20242025L)
       play_by_play
     },
     shift_charts = function(season) {
-      expect_equal(season, 20242025L)
+      testthat::expect_equal(season, 20242025L)
       shift_data
     },
     teams = function() {
@@ -124,12 +125,10 @@ test_that('calculate_shift_times_by_situation() uses season data when season is 
     },
     .package = 'nhlscraper'
   )
-
   out <- calculate_shift_times_by_situation(game = 0L, season = 20242025L)
-
-  expect_equal(nrow(out), 1L)
-  expect_equal(out[['gameId']], 2L)
-  expect_equal(out[['teamTriCode']], 'HOM')
-  expect_equal(out[['playerFirstName']], 'Season')
-  expect_equal(out[['1551TimeOnIce']], 10L)
+  testthat::expect_equal(nrow(out), 1L)
+  testthat::expect_equal(out[['gameId']], 2L)
+  testthat::expect_equal(out[['teamTriCode']], 'HOM')
+  testthat::expect_equal(out[['playerFirstName']], 'Season')
+  testthat::expect_equal(out[['1551TimeOnIce']], 10L)
 })

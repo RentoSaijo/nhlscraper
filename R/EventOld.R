@@ -1,4 +1,4 @@
-# ----- Deprecated Functions ----- #
+# Deprecated Functions ---------------------------------------------------------
 
 #' Access all the penalty shots
 #' 
@@ -6,7 +6,6 @@
 #'
 #' @returns data.frame with one row per penalty shot
 #' @export
-
 ps <- function() {
   .Deprecated(
     new     = 'penalty_shots()',

@@ -1,3 +1,5 @@
+# Draft Functions ---------------------------------------------------------
+
 #' Access all the drafts
 #'
 #' `drafts()` merges the records draft master and stats draft-round endpoints,
@@ -8,14 +10,13 @@
 #' @examples
 #' all_drafts <- drafts()
 #' @export
-
 drafts <- function() {
   tryCatch({
-    master <- nhl_api(
+    master <- .nhl_api(
       path = 'draft-master',
       type = 'r'
     )$data
-    rounds <- nhl_api(
+    rounds <- .nhl_api(
       path = 'en/draft',
       type = 's'
     )$data
@@ -44,10 +45,9 @@ drafts <- function() {
 #' # May take >5s, so skip.
 #' \donttest{all_draft_picks <- draft_picks()}
 #' @export
-
 draft_picks <- function() {
   tryCatch({
-    picks <- nhl_api(
+    picks <- .nhl_api(
       path = 'draft',
       type = 'r'
     )$data
@@ -75,10 +75,9 @@ draft_picks <- function() {
 #' # May take >5s, so skip.
 #' \donttest{all_prospects <- draft_prospects()}
 #' @export
-
 draft_prospects <- function() {
   tryCatch({
-    prospects <- nhl_api(
+    prospects <- .nhl_api(
       path = 'draft-prospect',
       type = 'r'
     )$data
@@ -116,7 +115,6 @@ draft_prospects <- function() {
 #'   category = 2
 #' )
 #' @export
-
 draft_rankings <- function(
   class    = season_now() %% 1e4,
   category = 1
@@ -142,7 +140,7 @@ draft_rankings <- function(
         `intl goalies`           = 4,
         `international goalies`  = 4
       )
-      rankings <- nhl_api(
+      rankings <- .nhl_api(
         path = sprintf('v1/draft/rankings/%s/%s', class, category),
         type = 'w'
       )$rankings
@@ -166,10 +164,9 @@ draft_rankings <- function(
 #' @examples
 #' combine_reports <- combine_reports()
 #' @export
-
 combine_reports <- function() {
   tryCatch({
-    reports    <- nhl_api(
+    reports    <- .nhl_api(
       path = 'combine',
       type = 'r'
     )$data
@@ -193,10 +190,9 @@ combine_reports <- function() {
 #' @examples
 #' lottery_odds <- lottery_odds()
 #' @export
-
 lottery_odds <- function() {
   tryCatch({
-    lotteries <- nhl_api(
+    lotteries <- .nhl_api(
       path = 'draft-lottery-odds',
       type = 'r'
     )$data
@@ -218,16 +214,15 @@ lottery_odds <- function() {
 #' @examples
 #' draft_tracker <- draft_tracker()
 #' @export
-
 draft_tracker <- function() {
   tryCatch({
-    picks <- nhl_api(
+    picks <- .nhl_api(
       path = 'v1/draft-tracker/picks/now',
       type = 'w'
     )$picks
-    names(picks) <- normalize_locale_names(names(picks))
-    names(picks) <- scope_person_name_cols(names(picks), 'player')
-    names(picks) <- normalize_team_abbrev_cols(names(picks))
+    names(picks) <- .normalize_locale_names(names(picks))
+    names(picks) <- .scope_person_name_cols(names(picks), 'player')
+    names(picks) <- .normalize_team_abbrev_cols(names(picks))
     picks
   }, error = function(e) {
     message('Unable to create connection; please try again later.')
@@ -244,10 +239,9 @@ draft_tracker <- function() {
 #' @examples
 #' all_expansion_drafts <- expansion_drafts()
 #' @export
-
 expansion_drafts <- function() {
   tryCatch({
-    drafts    <- nhl_api(
+    drafts    <- .nhl_api(
       path = 'expansion-draft-rules',
       type = 'r'
     )$data
@@ -268,10 +262,9 @@ expansion_drafts <- function() {
 #' @examples
 #' all_expansion_draft_picks <- expansion_draft_picks()
 #' @export
-
 expansion_draft_picks <- function() {
   tryCatch({
-    drafts    <- nhl_api(
+    drafts    <- .nhl_api(
       path = 'expansion-draft-picks',
       type = 'r'
     )$data

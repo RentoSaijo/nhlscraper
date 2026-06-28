@@ -1,3 +1,5 @@
+# Skater EDGE Functions ---------------------------------------------------------
+
 #' Access the season(s) and game type(s) in which there exists skater EDGE 
 #' statistics
 #'
@@ -8,11 +10,10 @@
 #' @examples
 #' skater_EDGE_seasons <- skater_edge_seasons()
 #' @export
-
 skater_edge_seasons <- function() {
   tryCatch(
     expr = {
-      seasons <- nhl_api(
+      seasons <- .nhl_api(
         path = sprintf('v1/edge/skater-landing/now'),
         type = 'w'
       )$seasonsWithEdgeStats
@@ -47,15 +48,14 @@ skater_edge_seasons <- function() {
 #'   game_type = 2
 #' )
 #' @export
-
 skater_edge_leaders <- function(season = 'now', game_type = '') {
   tryCatch(
     expr = {
-      nhl_api(
+      .nhl_api(
         path = sprintf(
           'v1/edge/skater-landing/%s/%s', 
           season, 
-          to_game_type_id(game_type)
+          .to_game_type_id(game_type)
         ),
         type = 'w'
       )$leaders
@@ -84,7 +84,6 @@ skater_edge_leaders <- function(season = 'now', game_type = '') {
 #'   game_type = 2
 #' )
 #' @export
-
 skater_edge_summary <- function(
   player    = 8478402, 
   season    = 'now', 
@@ -92,12 +91,12 @@ skater_edge_summary <- function(
 ) {
   tryCatch(
     expr = {
-      nhl_api(
+      .nhl_api(
         path = sprintf(
           'v1/edge/skater-detail/%s/%s/%s', 
           player,
           season, 
-          to_game_type_id(game_type)
+          .to_game_type_id(game_type)
         ),
         type = 'w'
       )
@@ -128,7 +127,6 @@ skater_edge_summary <- function(
 #'   category  = 'S'
 #' )
 #' @export
-
 skater_edge_zone_time <- function(
   player    = 8478402,
   season    = 'now', 
@@ -142,12 +140,12 @@ skater_edge_zone_time <- function(
         d = 'zoneTimeDetails',
         s = 'zoneStarts'
       )
-      nhl_api(
+      .nhl_api(
         path = sprintf(
           'v1/edge/skater-zone-time/%s/%s/%s', 
           player,
           season, 
-          to_game_type_id(game_type)
+          .to_game_type_id(game_type)
         ),
         type = 'w'
       )[[category]]
@@ -179,7 +177,6 @@ skater_edge_zone_time <- function(
 #'     category  = 'L'
 #'   )
 #' @export
-
 skater_edge_skating_distance <- function(
   player    = 8478402,
   season    = 'now', 
@@ -193,12 +190,12 @@ skater_edge_skating_distance <- function(
         d = 'skatingDistanceDetails',
         l = 'skatingDistanceLast10'
       )
-      nhl_api(
+      .nhl_api(
         path = sprintf(
           'v1/edge/skater-skating-distance-detail/%s/%s/%s', 
           player,
           season, 
-          to_game_type_id(game_type)
+          .to_game_type_id(game_type)
         ),
         type = 'w'
       )[[category]]
@@ -229,7 +226,6 @@ skater_edge_skating_distance <- function(
 #'   category  = 'T'
 #' )
 #' @export
-
 skater_edge_skating_speed <- function(
   player    = 8478402,
   season    = 'now', 
@@ -243,12 +239,12 @@ skater_edge_skating_speed <- function(
         d = 'skatingSpeedDetails',
         t = 'topSkatingSpeeds'
       )
-      nhl_api(
+      .nhl_api(
         path = sprintf(
           'v1/edge/skater-skating-speed-detail/%s/%s/%s', 
           player,
           season, 
-          to_game_type_id(game_type)
+          .to_game_type_id(game_type)
         ),
         type = 'w'
       )[[category]]
@@ -279,7 +275,6 @@ skater_edge_skating_speed <- function(
 #'     category  = 'T'
 #'   )
 #' @export
-
 skater_edge_shot_location <- function(
   player    = 8478402,
   season    = 'now', 
@@ -293,12 +288,12 @@ skater_edge_shot_location <- function(
         d = 'shotLocationDetails',
         t = 'shotLocationTotals'
       )
-      nhl_api(
+      .nhl_api(
         path = sprintf(
           'v1/edge/skater-shot-location-detail/%s/%s/%s', 
           player,
           season, 
-          to_game_type_id(game_type)
+          .to_game_type_id(game_type)
         ),
         type = 'w'
       )[[category]]
@@ -329,7 +324,6 @@ skater_edge_shot_location <- function(
 #'   category  = 'H'
 #' )
 #' @export
-
 skater_edge_shot_speed <- function(
   player    = 8478402,
   season    = 'now',
@@ -343,12 +337,12 @@ skater_edge_shot_speed <- function(
         d = 'shotSpeedDetails',
         h = 'hardestShots',
       )
-      nhl_api(
+      .nhl_api(
         path = sprintf(
           'v1/edge/skater-shot-speed-detail/%s/%s/%s', 
           player,
           season, 
-          to_game_type_id(game_type)
+          .to_game_type_id(game_type)
         ),
         type = 'w'
       )[[category]]

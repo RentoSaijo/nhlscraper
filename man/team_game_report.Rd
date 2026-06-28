@@ -33,8 +33,8 @@ columns exposed by the stats API.
 }
 \examples{
 situational_team_game_report_playoffs_20212022 <- team_game_report(
-  season    = 20212022, 
-  game_type = 3, 
+  season    = 20212022,
+  game_type = 3,
   category  = 'leadingtrailing'
 )
 }

@@ -1,14 +1,17 @@
-test_that("goalie_season_report(20242025, 3) returns non-empty data.frame", {
-  skip_if_offline()
+# Tests ---------------------------------------------------------
+
+testthat::test_that('goalie_season_report(20242025, 3) returns non-empty data.frame', {
+  testthat::skip_if_offline()
   test <- goalie_season_report(20242025, 3)
-  expect_true(is.data.frame(test) && nrow(test) > 0)
+  testthat::expect_true(is.data.frame(test) && nrow(test) > 0)
 })
 
-test_that("goalie_season_report(0) returns message and empty data.frame", {
-  skip_if_offline()
-  expect_message(
+# Run goalie season report tests.
+testthat::test_that('goalie_season_report(0) returns message and empty data.frame', {
+  testthat::skip_if_offline()
+  testthat::expect_message(
     test <- goalie_season_report(0),
     'Invalid argument\\(s\\); refer to help file\\.'
   )
-  expect_true(is.data.frame(test) && nrow(test) == 0)
+  testthat::expect_true(is.data.frame(test) && nrow(test) == 0)
 })

@@ -1,3 +1,5 @@
+# Lookup Setup ---------------------------------------------------------
+
 # Read data.
 NHL_Teams <- read.csv(
   'data-raw/NHL_Teams_19171918_20252026.csv',
@@ -13,8 +15,8 @@ if (length(missing_cols)) {
   )
 }
 
-# Define helper.
-normalize_key <- function(x) {
+# Define helpers.
+.normalize_key <- function(x) {
   x <- as.character(x)
   x <- tolower(trimws(x))
   x <- gsub('[^a-z0-9]', '', x)
@@ -25,33 +27,31 @@ normalize_key <- function(x) {
 tri_codes <- toupper(NHL_Teams$teamTriCode)
 ids       <- as.character(NHL_Teams$teamId)
 
-## ------------------------------------------------------------------
-## Lookup 1: any key -> tri-code  (.to_team_tri_code)
-## ------------------------------------------------------------------
+# Team Tri-Code Lookup ---------------------------------------------------------
 
+# Build team tri-code lookup.
 key_blocks_tri <- list(
-  normalize_key(NHL_Teams$teamId),
-  normalize_key(NHL_Teams$teamTriCode),
-  normalize_key(NHL_Teams$teamFullName)
+  .normalize_key(NHL_Teams$teamId),
+  .normalize_key(NHL_Teams$teamTriCode),
+  .normalize_key(NHL_Teams$teamFullName)
 )
 if ('teamTriCodeRaw' %in% names(NHL_Teams)) {
-  key_blocks_tri <- append(key_blocks_tri, list(normalize_key(NHL_Teams$teamTriCodeRaw)))
+  key_blocks_tri <- append(key_blocks_tri, list(.normalize_key(NHL_Teams$teamTriCodeRaw)))
 }
 keys_tri <- unlist(key_blocks_tri, use.names = FALSE)
 values_tri <- rep(tri_codes, times = length(key_blocks_tri))
 .to_team_tri_code <- stats::setNames(values_tri, keys_tri)
 
-## ------------------------------------------------------------------
-## Lookup 2: any key -> id  (.to_team_id)
-## ------------------------------------------------------------------
+# Team ID Lookup ---------------------------------------------------------
 
+# Build team ID lookup.
 key_blocks_id <- list(
-  normalize_key(NHL_Teams$teamId),
-  normalize_key(NHL_Teams$teamTriCode),
-  normalize_key(NHL_Teams$teamFullName)
+  .normalize_key(NHL_Teams$teamId),
+  .normalize_key(NHL_Teams$teamTriCode),
+  .normalize_key(NHL_Teams$teamFullName)
 )
 if ('teamTriCodeRaw' %in% names(NHL_Teams)) {
-  key_blocks_id <- append(key_blocks_id, list(normalize_key(NHL_Teams$teamTriCodeRaw)))
+  key_blocks_id <- append(key_blocks_id, list(.normalize_key(NHL_Teams$teamTriCodeRaw)))
 }
 keys_id <- unlist(key_blocks_id, use.names = FALSE)
 values_id <- rep(ids, times = length(key_blocks_id))

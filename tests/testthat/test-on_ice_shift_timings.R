@@ -1,6 +1,7 @@
-test_that("native on-ice shift timing matches R implementation", {
-  skip_if_not(.ensure_local_native_symbol("nhlscraper_on_ice_shift_timings"))
+# Tests ---------------------------------------------------------
 
+testthat::test_that('native on-ice shift timing matches R implementation', {
+  testthat::skip_if_not(.ensure_local_native_symbol('nhlscraper_on_ice_shift_timings'))
   play_by_play <- data.frame(
     gameId = rep(1L, 3L),
     periodNumber = rep(1L, 3L),
@@ -25,12 +26,10 @@ test_that("native on-ice shift timing matches R implementation", {
     startSecondsElapsedInPeriod = c(0L, 0L, 300L, 50L, 0L, 0L, 400L, 600L, 650L, 650L),
     endSecondsElapsedInPeriod = c(200L, 1200L, 500L, 150L, 1000L, 1200L, 800L, 800L, 900L, 900L)
   )
-
   expected <- .compute_on_ice_shift_timing_in_r(
     play_by_play,
     .sort_shift_chart_for_timing(shift_data)
   )
   actual <- .compute_on_ice_shift_timing_matrices(play_by_play, shift_data)
-
-  expect_equal(actual, expected)
+  testthat::expect_equal(actual, expected)
 })

@@ -33,8 +33,8 @@ category.
 }
 \examples{
 situational_team_season_report_playoffs_20212022 <- team_season_report(
-  season    = 20212022, 
-  game_type = 3, 
+  season    = 20212022,
+  game_type = 3,
   category  = 'leadingtrailing'
 )
 }

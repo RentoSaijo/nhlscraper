@@ -1,24 +1,28 @@
-test_that("shift_chart() returns non-empty data.frame", {
-  skip_if_offline()
+# Tests ---------------------------------------------------------
+
+testthat::test_that('shift_chart() returns non-empty data.frame', {
+  testthat::skip_if_offline()
   test <- shift_chart()
-  expect_true(is.data.frame(test) && nrow(test) > 0)
+  testthat::expect_true(is.data.frame(test) && nrow(test) > 0)
 })
 
-test_that("shift_chart(0) returns message and empty data.frame", {
-  skip_if_offline()
-  expect_message(
+# Run shift chart tests.
+testthat::test_that('shift_chart(0) returns message and empty data.frame', {
+  testthat::skip_if_offline()
+  testthat::expect_message(
     test <- shift_chart(0),
     'Invalid argument\\(s\\); refer to help file\\.'
   )
-  expect_true(is.data.frame(test) && nrow(test) == 0)
+  testthat::expect_true(is.data.frame(test) && nrow(test) == 0)
 })
 
-test_that("shift_chart() anchors overtime shifts to game time", {
-  local_mocked_bindings(
-    .perform_parallel_requests = function(...) stop("HTML unavailable"),
-    nhl_api = function(path, query = NULL, type = NULL) {
-      expect_equal(path, "en/shiftcharts")
-      game <- as.integer(sub("^gameId = ", "", query$cayenneExp))
+# Run shift chart tests.
+testthat::test_that('shift_chart() anchors overtime shifts to game time', {
+  testthat::local_mocked_bindings(
+    .perform_parallel_requests = function(...) stop('HTML unavailable'),
+    .nhl_api = function(path, query = NULL, type = NULL) {
+      testthat::expect_equal(path, 'en/shiftcharts')
+      game <- as.integer(sub('^gameId = ', '', query$cayenneExp))
       list(data = data.frame(
         id = 1:2,
         gameId = game,
@@ -26,35 +30,33 @@ test_that("shift_chart() anchors overtime shifts to game time", {
         playerId = c(101L, 101L),
         shiftNumber = c(1L, 2L),
         period = c(1L, 4L),
-        startTime = c("00:10", "00:05"),
-        endTime = c("00:20", "00:15"),
+        startTime = c('00:10', '00:05'),
+        endTime = c('00:20', '00:15'),
         eventDescription = c(NA_character_, NA_character_),
         stringsAsFactors = FALSE
       ))
     },
-    .package = "nhlscraper"
+    .package = 'nhlscraper'
   )
-
   reg <- shift_chart(2024020001)
-  expect_equal(reg$startSecondsElapsedInGame, c(10L, 3605L))
-  expect_equal(reg$endSecondsElapsedInGame, c(20L, 3615L))
-
+  testthat::expect_equal(reg$startSecondsElapsedInGame, c(10L, 3605L))
+  testthat::expect_equal(reg$endSecondsElapsedInGame, c(20L, 3615L))
   playoff <- shift_chart(2024030001)
-  expect_equal(playoff$startSecondsElapsedInGame, c(10L, 3605L))
-  expect_equal(playoff$endSecondsElapsedInGame, c(20L, 3615L))
+  testthat::expect_equal(playoff$startSecondsElapsedInGame, c(10L, 3605L))
+  testthat::expect_equal(playoff$endSecondsElapsedInGame, c(20L, 3615L))
 })
 
-test_that("shift_chart() prefers API shifts when the API returns rows", {
+# Run shift chart tests.
+testthat::test_that('shift_chart() prefers API shifts when the API returns rows', {
   html_calls <- 0L
-
-  local_mocked_bindings(
+  testthat::local_mocked_bindings(
     .perform_parallel_requests = function(...) {
       html_calls <<- html_calls + 1L
-      stop("HTML should not be called")
+      stop('HTML should not be called')
     },
-    nhl_api = function(path, query = NULL, type = NULL) {
-      expect_equal(path, "en/shiftcharts")
-      game <- as.integer(sub("^gameId = ", "", query$cayenneExp))
+    .nhl_api = function(path, query = NULL, type = NULL) {
+      testthat::expect_equal(path, 'en/shiftcharts')
+      game <- as.integer(sub('^gameId = ', '', query$cayenneExp))
       list(data = data.frame(
         id = 1L,
         gameId = game,
@@ -62,41 +64,39 @@ test_that("shift_chart() prefers API shifts when the API returns rows", {
         playerId = 101L,
         shiftNumber = 1L,
         period = 1L,
-        startTime = "00:10",
-        endTime = "00:20",
+        startTime = '00:10',
+        endTime = '00:20',
         eventDescription = NA_character_,
         stringsAsFactors = FALSE
       ))
     },
-    .package = "nhlscraper"
+    .package = 'nhlscraper'
   )
-
   out <- shift_chart(2024020001)
-
-  expect_equal(html_calls, 0L)
-  expect_equal(nrow(out), 1L)
-  expect_true("periodNumber" %in% names(out))
-  expect_false("period" %in% names(out))
-  expect_equal(out$playerId, 101L)
+  testthat::expect_equal(html_calls, 0L)
+  testthat::expect_equal(nrow(out), 1L)
+  testthat::expect_true('periodNumber' %in% names(out))
+  testthat::expect_false('period' %in% names(out))
+  testthat::expect_equal(out$playerId, 101L)
 })
 
-test_that("shift_chart() falls back to HTML when the API shift feed is empty", {
+# Run shift chart tests.
+testthat::test_that('shift_chart() falls back to HTML when the API shift feed is empty', {
   home_html <- paste(
-    "<table>",
-    "<tr><td>10 DOE, JOHN</td></tr>",
-    "<tr><td>1</td><td>1</td><td>00:00 / ON</td><td>00:20 / OFF</td><td></td><td></td></tr>",
-    "</table>"
+    '<table>',
+    '<tr><td>10 DOE, JOHN</td></tr>',
+    '<tr><td>1</td><td>1</td><td>00:00 / ON</td><td>00:20 / OFF</td><td></td><td></td></tr>',
+    '</table>'
   )
   away_html <- paste(
-    "<table>",
-    "<tr><td>20 SMITH, JANE</td></tr>",
-    "<tr><td>1</td><td>1</td><td>00:05 / ON</td><td>00:25 / OFF</td><td></td><td></td></tr>",
-    "</table>"
+    '<table>',
+    '<tr><td>20 SMITH, JANE</td></tr>',
+    '<tr><td>1</td><td>1</td><td>00:05 / ON</td><td>00:25 / OFF</td><td></td><td></td></tr>',
+    '</table>'
   )
-
-  local_mocked_bindings(
-    nhl_api = function(path, query = NULL, type = NULL) {
-      expect_equal(path, "en/shiftcharts")
+  testthat::local_mocked_bindings(
+    .nhl_api = function(path, query = NULL, type = NULL) {
+      testthat::expect_equal(path, 'en/shiftcharts')
       list(data = data.frame(
         id = integer(),
         gameId = integer(),
@@ -110,119 +110,115 @@ test_that("shift_chart() falls back to HTML when the API shift feed is empty", {
         stringsAsFactors = FALSE
       ))
     },
-    .perform_parallel_requests = function(reqs, on_error = "return") {
-      expect_named(reqs, c("pbp_meta", "home_report", "away_report"))
+    .perform_parallel_requests = function(reqs, on_error = 'return') {
+      testthat::expect_named(reqs, c('pbp_meta', 'home_report', 'away_report'))
       list(
-        pbp_meta = structure(list(kind = "pbp_meta"), class = "mock_resp"),
+        pbp_meta = structure(list(kind = 'pbp_meta'), class = 'mock_resp'),
         home_report = httr2::response(body = charToRaw(home_html)),
         away_report = httr2::response(body = charToRaw(away_html))
       )
     },
     .parallel_request_failed = function(resp) FALSE,
     .nhl_json_from_response = function(resp) {
-      expect_identical(resp$kind, "pbp_meta")
+      testthat::expect_identical(resp$kind, 'pbp_meta')
       list(
         rosterSpots = data.frame(
           teamId = c(1L, 2L),
-          sweaterNumber = c("10", "20"),
+          sweaterNumber = c('10', '20'),
           playerId = c(101L, 201L),
-          lastName.default = c("Doe", "Smith"),
-          firstName.default = c("John", "Jane"),
+          lastName.default = c('Doe', 'Smith'),
+          firstName.default = c('John', 'Jane'),
           stringsAsFactors = FALSE
         ),
         homeTeam = list(id = 1L),
         awayTeam = list(id = 2L)
       )
     },
-    .package = "nhlscraper"
+    .package = 'nhlscraper'
   )
-
   out <- shift_chart(2024020001)
-
-  expect_equal(nrow(out), 2L)
-  expect_equal(out$playerId, c(101L, 201L))
-  expect_true("periodNumber" %in% names(out))
-  expect_false("period" %in% names(out))
-  expect_equal(out$startSecondsElapsedInPeriod, c(0L, 5L))
-  expect_equal(out$endSecondsElapsedInPeriod, c(20L, 25L))
+  testthat::expect_equal(nrow(out), 2L)
+  testthat::expect_equal(out$playerId, c(101L, 201L))
+  testthat::expect_true('periodNumber' %in% names(out))
+  testthat::expect_false('period' %in% names(out))
+  testthat::expect_equal(out$startSecondsElapsedInPeriod, c(0L, 5L))
+  testthat::expect_equal(out$endSecondsElapsedInPeriod, c(20L, 25L))
 })
 
-test_that("shift_chart_summary() returns per-period time-on-ice splits without totals", {
+# Run shift chart tests.
+testthat::test_that('shift_chart_summary() returns per-period time-on-ice splits without totals', {
   home_html <- paste(
-    "<table>",
-    "<tr><td>10 DOE, JOHN</td></tr>",
-    "<tr><td>1</td><td>1</td><td>00:00 / 20:00</td><td>00:20 / 19:40</td><td>00:20</td><td></td></tr>",
-    "<tr><td>Per</td><td>SHF</td><td>AVG</td><td>TOI</td><td>EV TOT</td><td>PP TOT</td><td>SH TOT</td></tr>",
-    "<tr><td>1</td><td>2</td><td>00:45</td><td>01:30</td><td>01:00</td><td>00:20</td><td>00:10</td></tr>",
-    "<tr><td>TOT</td><td>2</td><td>00:45</td><td>01:30</td><td>01:00</td><td>00:20</td><td>00:10</td></tr>",
-    "</table>"
+    '<table>',
+    '<tr><td>10 DOE, JOHN</td></tr>',
+    '<tr><td>1</td><td>1</td><td>00:00 / 20:00</td><td>00:20 / 19:40</td><td>00:20</td><td></td></tr>',
+    '<tr><td>Per</td><td>SHF</td><td>AVG</td><td>TOI</td><td>EV TOT</td><td>PP TOT</td><td>SH TOT</td></tr>',
+    '<tr><td>1</td><td>2</td><td>00:45</td><td>01:30</td><td>01:00</td><td>00:20</td><td>00:10</td></tr>',
+    '<tr><td>TOT</td><td>2</td><td>00:45</td><td>01:30</td><td>01:00</td><td>00:20</td><td>00:10</td></tr>',
+    '</table>'
   )
   away_html <- paste(
-    "<table>",
-    "<tr><td>31 GOALIE, GINA</td></tr>",
-    "<tr><td>1</td><td>1</td><td>00:00 / 20:00</td><td>20:00 / 0:00</td><td>20:00</td><td>GP</td></tr>",
-    "<tr><td>Per</td><td>SHF</td><td>AVG</td><td>TOI</td><td>EV TOT</td><td>PP TOT</td><td>SH TOT</td></tr>",
-    "<tr><td>1</td><td>1</td><td>20:00</td><td>20:00</td><td>18:00</td><td>02:00</td><td>00:00</td></tr>",
-    "<tr><td>2</td><td>1</td><td>20:00</td><td>20:00</td><td>17:00</td><td>00:00</td><td>03:00</td></tr>",
-    "<tr><td>TOT</td><td>2</td><td>20:00</td><td>40:00</td><td>35:00</td><td>02:00</td><td>03:00</td></tr>",
-    "</table>"
+    '<table>',
+    '<tr><td>31 GOALIE, GINA</td></tr>',
+    '<tr><td>1</td><td>1</td><td>00:00 / 20:00</td><td>20:00 / 0:00</td><td>20:00</td><td>GP</td></tr>',
+    '<tr><td>Per</td><td>SHF</td><td>AVG</td><td>TOI</td><td>EV TOT</td><td>PP TOT</td><td>SH TOT</td></tr>',
+    '<tr><td>1</td><td>1</td><td>20:00</td><td>20:00</td><td>18:00</td><td>02:00</td><td>00:00</td></tr>',
+    '<tr><td>2</td><td>1</td><td>20:00</td><td>20:00</td><td>17:00</td><td>00:00</td><td>03:00</td></tr>',
+    '<tr><td>TOT</td><td>2</td><td>20:00</td><td>40:00</td><td>35:00</td><td>02:00</td><td>03:00</td></tr>',
+    '</table>'
   )
-
-  local_mocked_bindings(
-    .perform_parallel_requests = function(reqs, on_error = "return") {
-      expect_named(reqs, c("pbp_meta", "home_report", "away_report"))
+  testthat::local_mocked_bindings(
+    .perform_parallel_requests = function(reqs, on_error = 'return') {
+      testthat::expect_named(reqs, c('pbp_meta', 'home_report', 'away_report'))
       list(
-        pbp_meta = structure(list(kind = "pbp_meta"), class = "mock_resp"),
+        pbp_meta = structure(list(kind = 'pbp_meta'), class = 'mock_resp'),
         home_report = httr2::response(body = charToRaw(home_html)),
         away_report = httr2::response(body = charToRaw(away_html))
       )
     },
     .parallel_request_failed = function(resp) FALSE,
     .nhl_json_from_response = function(resp) {
-      expect_identical(resp$kind, "pbp_meta")
+      testthat::expect_identical(resp$kind, 'pbp_meta')
       list(
         rosterSpots = data.frame(
           teamId = c(1L, 2L),
-          sweaterNumber = c("10", "31"),
+          sweaterNumber = c('10', '31'),
           playerId = c(101L, 201L),
-          lastName.default = c("Doe", "Goalie"),
-          firstName.default = c("John", "Gina"),
-          positionCode = c("C", "G"),
+          lastName.default = c('Doe', 'Goalie'),
+          firstName.default = c('John', 'Gina'),
+          positionCode = c('C', 'G'),
           stringsAsFactors = FALSE
         ),
-        homeTeam = list(id = 1L, abbrev = "HOM"),
-        awayTeam = list(id = 2L, abbrev = "AWY")
+        homeTeam = list(id = 1L, abbrev = 'HOM'),
+        awayTeam = list(id = 2L, abbrev = 'AWY')
       )
     },
-    .package = "nhlscraper"
+    .package = 'nhlscraper'
   )
-
   out <- shift_chart_summary(2024020001)
-
-  expect_named(out, c(
-    "gameId",
-    "teamId",
-    "teamTriCode",
-    "playerId",
-    "playerFirstName",
-    "playerLastName",
-    "sweaterNumber",
-    "positionCode",
-    "periodNumber",
-    "shifts",
-    "timeOnIce",
-    "evTimeOnIce",
-    "ppTimeOnIce",
-    "shTimeOnIce"
+  testthat::expect_named(out, c(
+    'gameId',
+    'teamId',
+    'teamTriCode',
+    'playerId',
+    'playerFirstName',
+    'playerLastName',
+    'sweaterNumber',
+    'positionCode',
+    'periodNumber',
+    'shifts',
+    'timeOnIce',
+    'evTimeOnIce',
+    'ppTimeOnIce',
+    'shTimeOnIce'
   ))
-  expect_equal(nrow(out), 3L)
-  expect_equal(out$playerId, c(101L, 201L, 201L))
-  expect_equal(out$teamTriCode, c("HOM", "AWY", "AWY"))
-  expect_equal(out$positionCode, c("C", "G", "G"))
-  expect_equal(out$periodNumber, c(1L, 1L, 2L))
-  expect_equal(out$shifts, c(2L, 1L, 1L))
-  expect_equal(out$timeOnIce, c(90L, 1200L, 1200L))
-  expect_equal(out$evTimeOnIce, c(60L, 1080L, 1020L))
-  expect_equal(out$ppTimeOnIce, c(20L, 120L, 0L))
-  expect_equal(out$shTimeOnIce, c(10L, 0L, 180L))
+  testthat::expect_equal(nrow(out), 3L)
+  testthat::expect_equal(out$playerId, c(101L, 201L, 201L))
+  testthat::expect_equal(out$teamTriCode, c('HOM', 'AWY', 'AWY'))
+  testthat::expect_equal(out$positionCode, c('C', 'G', 'G'))
+  testthat::expect_equal(out$periodNumber, c(1L, 1L, 2L))
+  testthat::expect_equal(out$shifts, c(2L, 1L, 1L))
+  testthat::expect_equal(out$timeOnIce, c(90L, 1200L, 1200L))
+  testthat::expect_equal(out$evTimeOnIce, c(60L, 1080L, 1020L))
+  testthat::expect_equal(out$ppTimeOnIce, c(20L, 120L, 0L))
+  testthat::expect_equal(out$shTimeOnIce, c(10L, 0L, 180L))
 })

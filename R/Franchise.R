@@ -1,3 +1,5 @@
+# Franchise Functions ---------------------------------------------------------
+
 #' Access all the franchises
 #'
 #' `franchises()` merges records-site franchise and franchise-detail metadata,
@@ -8,14 +10,13 @@
 #' @examples
 #' all_franchises <- franchises()
 #' @export
-
 franchises <- function() {
   tryCatch({
-    franchises <- nhl_api(
+    franchises <- .nhl_api(
       path = 'franchise',
       type = 'r'
     )$data
-    details    <- nhl_api(
+    details    <- .nhl_api(
       path = 'franchise-detail',
       type = 'r'
     )$data
@@ -25,7 +26,7 @@ franchises <- function() {
     franchises <- merge(franchises[order(franchises$id), ], details, by = 'id')
     names(franchises)[names(franchises) == 'id']       <- 'franchiseId'
     names(franchises)[names(franchises) == 'fullName'] <- 'franchiseFullName'
-    names(franchises) <- normalize_team_abbrev_cols(names(franchises))
+    names(franchises) <- .normalize_team_abbrev_cols(names(franchises))
     franchises
   }, error = function(e) {
     message('Unable to create connection; please try again later.')
@@ -42,16 +43,15 @@ franchises <- function() {
 #' @examples
 #' franchise_stats <- franchise_statistics()
 #' @export
-
 franchise_statistics <- function() {
   tryCatch({
-    stats <- nhl_api(
+    stats <- .nhl_api(
       path = 'franchise-totals',
       type = 'r'
     )$data
     stats$id <- NULL
     names(stats)[names(stats) == 'teamAbbrev'] <- 'teamTriCode'
-    names(stats) <- normalize_team_abbrev_cols(names(stats))
+    names(stats) <- .normalize_team_abbrev_cols(names(stats))
     stats[order(stats$franchiseId, stats$gameTypeId), ]
   }, error = function(e) {
     message('Unable to create connection; please try again later.')
@@ -61,7 +61,6 @@ franchise_statistics <- function() {
 
 #' @rdname franchise_statistics
 #' @export
-
 franchise_stats <- function() {
   franchise_statistics()
 }
@@ -75,16 +74,15 @@ franchise_stats <- function() {
 #' @examples
 #' franchise_team_stats <- franchise_team_statistics()
 #' @export
-
 franchise_team_statistics <- function() {
   tryCatch({
-    stats <- nhl_api(
+    stats <- .nhl_api(
       path = 'franchise-team-totals',
       type = 'r'
     )$data
     stats$id <- NULL
     names(stats)[names(stats) == 'triCode'] <- 'teamTriCode'
-    names(stats) <- normalize_team_abbrev_cols(names(stats))
+    names(stats) <- .normalize_team_abbrev_cols(names(stats))
     stats[order(stats$franchiseId, stats$teamId, stats$gameTypeId), ]
   }, error = function(e) {
     message('Unable to create connection; please try again later.')
@@ -94,7 +92,6 @@ franchise_team_statistics <- function() {
 
 #' @rdname franchise_team_statistics
 #' @export
-
 franchise_team_stats <- function() {
   franchise_team_statistics()
 }
@@ -110,16 +107,15 @@ franchise_team_stats <- function() {
 #' # May take >5s, so skip.
 #' \donttest{franchise_season_stats <- franchise_season_statistics()}
 #' @export
-
 franchise_season_statistics <- function() {
   tryCatch({
-    stats <- nhl_api(
+    stats <- .nhl_api(
       path = 'franchise-season-results',
       type = 'r'
     )$data
     stats$id <- NULL
     names(stats)[names(stats) == 'triCode'] <- 'teamTriCode'
-    names(stats) <- normalize_team_abbrev_cols(names(stats))
+    names(stats) <- .normalize_team_abbrev_cols(names(stats))
     stats[order(stats$franchiseId, stats$seasonId, stats$gameTypeId), ]
   }, error = function(e) {
     message('Unable to create connection; please try again later.')
@@ -129,7 +125,6 @@ franchise_season_statistics <- function() {
 
 #' @rdname franchise_season_statistics
 #' @export
-
 franchise_season_stats <- function() {
   franchise_season_statistics()
 }
@@ -145,10 +140,9 @@ franchise_season_stats <- function() {
 #' # May take >5s, so skip.
 #' \donttest{franchise_vs_franchise <- franchise_versus_franchise()}
 #' @export
-
 franchise_versus_franchise <- function() {
   tryCatch({
-    versus    <- nhl_api(
+    versus    <- .nhl_api(
       path = 'all-time-record-vs-franchise',
       type = 'r'
     )$data
@@ -170,7 +164,6 @@ franchise_versus_franchise <- function() {
 
 #' @rdname franchise_versus_franchise
 #' @export
-
 franchise_vs_franchise <- function() {
   franchise_versus_franchise()
 }
@@ -185,10 +178,9 @@ franchise_vs_franchise <- function() {
 #' franchise_playoff_situational_results <- 
 #'   franchise_playoff_situational_results()
 #' @export
-
 franchise_playoff_situational_results <- function() {
   tryCatch({
-    results    <- nhl_api(
+    results    <- .nhl_api(
       path = 'series-situational-records',
       type = 'r'
     )$data

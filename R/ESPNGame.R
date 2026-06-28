@@ -1,3 +1,5 @@
+# ESPNGame Functions ---------------------------------------------------------
+
 #' Access the ESPN games for a season
 #'
 #' `espn_games()` pages ESPN's NHL event index for a season and returns one row
@@ -9,7 +11,6 @@
 #' @examples
 #' ESPN_games_20242025 <- espn_games(season = 20242025)
 #' @export
-
 espn_games <- function(season = season_now()) {
   tryCatch(
     expr = {
@@ -35,7 +36,7 @@ espn_games <- function(season = season_now()) {
       page       <- 1
       all_events <- list()
       repeat {
-        events <- espn_api(
+        events <- .espn_api(
           path  = 'events',
           query = list(
             lang   = 'en',
@@ -77,11 +78,10 @@ espn_games <- function(season = season_now()) {
 #' @examples
 #' ESPN_summary_SCF_20242025 <- espn_game_summary(game = 401777460)
 #' @export
-
 espn_game_summary <- function(game = 401777460) {
   tryCatch(
     expr = {
-      game  <- espn_api(
+      game  <- .espn_api(
         path  = sprintf('events/%s/competitions/%s', game, game),
         type  = 'c'
       )
@@ -142,11 +142,10 @@ espn_game_summary <- function(game = 401777460) {
 #' @examples
 #' ESPN_pbp_SCF_20242025 <- espn_play_by_play(game = 401777460)
 #' @export
-
 espn_play_by_play <- function(game = 401777460) {
   tryCatch(
     expr = {
-      plays <- espn_api(
+      plays <- .espn_api(
         path  = sprintf('events/%s/competitions/%s/plays', game, game),
         query = list(lang = 'en', region = 'us', limit = 1000),
         type  = 'c'
@@ -156,7 +155,7 @@ espn_play_by_play <- function(game = 401777460) {
       names(plays)[names(plays) == 'coordinate.y'] <- 'yCoord'
       old_names <- names(plays)
       keep_ref <- grepl('(^\\$ref$|\\.\\$ref$)', old_names)
-      new_names <- dot_to_camel(old_names)
+      new_names <- .dot_to_camel(old_names)
       names(plays) <- ifelse(keep_ref, old_names, new_names)
       names(plays)[names(plays) == 'periodNumber'] <- 'period'
       plays
@@ -170,7 +169,6 @@ espn_play_by_play <- function(game = 401777460) {
 
 #' @rdname espn_play_by_play
 #' @export
-
 espn_pbp <- function(game = 401777460) {
   espn_play_by_play(game)
 }
@@ -187,17 +185,16 @@ espn_pbp <- function(game = 401777460) {
 #' @examples
 #' ESPN_odds_SCF_20242025 <- espn_game_odds(game = 401777460)
 #' @export
-
 espn_game_odds <- function(game = 401777460) {
   tryCatch(
     expr = {
-      odds <- espn_api(
+      odds <- .espn_api(
         path  = sprintf('events/%s/competitions/%s/odds', game, game),
         type  = 'c'
       )$items
       old_names <- names(odds)
       keep_ref <- grepl('(^\\$ref$|\\.\\$ref$)', old_names)
-      new_names <- dot_to_camel(old_names)
+      new_names <- .dot_to_camel(old_names)
       names(odds) <- ifelse(keep_ref, old_names, new_names)
       odds
     },

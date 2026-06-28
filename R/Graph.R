@@ -1,6 +1,8 @@
+# Graph Functions ---------------------------------------------------------
+
 #' Draw a circle on the rink
 #'
-#' `draw_rink_circle()` draws a circle on the rink.
+#' `.draw_rink_circle()` draws a circle on the rink.
 #'
 #' @param x numeric x coordinate of the circle center
 #' @param y numeric y coordinate of the circle center
@@ -10,15 +12,14 @@
 #' @param lwd numeric line width
 #' @returns `NULL`
 #' @keywords internal
-
-draw_rink_circle <- function(x, y, r, n = 200, col = 'black', lwd = 1) {
+.draw_rink_circle <- function(x, y, r, n = 200, col = 'black', lwd = 1) {
   theta <- seq(0, 2 * pi, length.out = n)
   graphics::lines(x + r * cos(theta), y + r * sin(theta), col = col, lwd = lwd)
 }
 
 #' Draw an arc on the rink
 #'
-#' `draw_rink_arc()` draws an arc on the rink.
+#' `.draw_rink_arc()` draws an arc on the rink.
 #'
 #' @param cx numeric x coordinate of the circle center
 #' @param cy numeric y coordinate of the circle center
@@ -30,8 +31,7 @@ draw_rink_circle <- function(x, y, r, n = 200, col = 'black', lwd = 1) {
 #' @param lwd numeric line width
 #' @returns `NULL`
 #' @keywords internal
-
-draw_rink_arc <- function(
+.draw_rink_arc <- function(
   cx, cy, r, theta1, theta2, n = 100, col = 'black', lwd = 1
 ) {
   theta <- seq(theta1, theta2, length.out = n)
@@ -51,7 +51,6 @@ draw_rink_arc <- function(
 #' @examples
 #' draw_NHL_rink()
 #' @export
-
 draw_NHL_rink <- function() {
   old_par <- graphics::par(
     xaxs = 'r',
@@ -118,23 +117,23 @@ draw_NHL_rink <- function() {
     -goal_line,  y_goal_bottom, -goal_line,  y_goal_top,
     col = goal_line_col, lwd = line_lwd
   )
-  draw_rink_circle(
+  .draw_rink_circle(
     0, 0, circle_r,
     col = faceoff_center_col, lwd = line_lwd
   )
-  draw_rink_circle(
+  .draw_rink_circle(
     off_x,  off_y, circle_r,
     col = faceoff_other_col, lwd = line_lwd
   )
-  draw_rink_circle(
+  .draw_rink_circle(
     off_x, -off_y, circle_r,
     col = faceoff_other_col, lwd = line_lwd
   )
-  draw_rink_circle(
+  .draw_rink_circle(
     -off_x,  off_y, circle_r,
     col = faceoff_other_col, lwd = line_lwd
   )
-  draw_rink_circle(
+  .draw_rink_circle(
     -off_x, -off_y, circle_r,
     col = faceoff_other_col, lwd = line_lwd
   )
@@ -168,19 +167,19 @@ draw_NHL_rink <- function() {
     x_max, -straight_side_y, x_max,  straight_side_y,
     col = board_col, lwd = line_lwd
   )
-  draw_rink_arc(
+  .draw_rink_arc(
     cx_right, cy_top, corner_r, theta1 = pi / 2, theta2 = 0,
     col = board_col, lwd = line_lwd
   )
-  draw_rink_arc(
+  .draw_rink_arc(
     cx_left, cy_top, corner_r, theta1 = pi / 2, theta2 = pi,
     col = board_col, lwd = line_lwd
   )
-  draw_rink_arc(
+  .draw_rink_arc(
     cx_left, cy_bot, corner_r, theta1 = pi, theta2 = 3 * pi / 2,
     col = board_col, lwd = line_lwd
   )
-  draw_rink_arc(
+  .draw_rink_arc(
     cx_right, cy_bot, corner_r, theta1 = 3 * pi / 2, theta2 = 2 * pi,
     col = board_col, lwd = line_lwd
   )

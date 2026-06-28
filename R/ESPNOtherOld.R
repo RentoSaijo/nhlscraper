@@ -1,4 +1,4 @@
-# ----- Deprecated Functions ----- #
+# Deprecated Functions ---------------------------------------------------------
 
 #' Access the real-time ESPN injury reports
 #' 
@@ -6,7 +6,6 @@
 #' 
 #' @returns nested data.frame with one row per team (outer) and player (inner)
 #' @export
-
 get_espn_injuries <- function() {
   .Deprecated(
     new     = 'espn_injuries()',
@@ -24,7 +23,6 @@ get_espn_injuries <- function() {
 #' `get_espn_transactions()` is defunct. Use [espn_transactions()] instead.
 #' 
 #' @export
-
 get_espn_transactions <- function() {
   .Defunct(
     new     = 'espn_transactions()',
@@ -41,7 +39,6 @@ get_espn_transactions <- function() {
 #' `get_espn_futures()` is defunct. Use [espn_futures()] instead.
 #' 
 #' @export
-
 get_espn_futures <- function() {
   .Defunct(
     new     = 'espn_futures()',

@@ -7,10 +7,15 @@
 ^cran-comments\.md$
 ^LICENSE\.md$
 ^CRAN-SUBMISSION$
+^.*[.]Rcheck$
+^.*[.]tar[.]gz$
 ^Demo\.R$
 ^Test\.R$
 ^data-raw$
+^inst/extdata/xgboost/models$
 ^figure$
 ^figure/
 ^index\.md$
 ^other/
+^src/.*[.]o$
+^src/.*[.]so$

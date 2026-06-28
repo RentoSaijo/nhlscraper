@@ -1,3 +1,5 @@
+# Other Functions ---------------------------------------------------------
+
 #' Access the glossary
 #'
 #' `glossary()` returns NHL glossary terms with one row per term and normalized
@@ -7,10 +9,9 @@
 #' @examples
 #' glossary <- glossary()
 #' @export
-
 glossary <- function() {
   tryCatch({
-    terms <- nhl_api(
+    terms <- .nhl_api(
       path = 'en/glossary',
       type = 's'
     )$data
@@ -32,10 +33,9 @@ glossary <- function() {
 #' @examples
 #' all_countries <- countries()
 #' @export
-
 countries <- function() {
   tryCatch({
-    countries <- nhl_api(
+    countries <- .nhl_api(
       path = 'en/country',
       type = 's'
     )$data
@@ -59,18 +59,17 @@ countries <- function() {
 #' @examples
 #' Cranbrook_Schools <- location(48304)
 #' @export
-
 location <- function(zip = 10001) {
   tryCatch(
     expr = {
-      location <- nhl_api(
+      location <- .nhl_api(
         path = sprintf('v1/postal-lookup/%s', zip),
         type = 'w'
       )
       location[0, ]
       names(location)[names(location) == 'country'] <- 'countryCode'
-      names(location) <- normalize_locale_names(names(location))
-      names(location) <- normalize_team_abbrev_cols(names(location))
+      names(location) <- .normalize_locale_names(names(location))
+      names(location) <- .normalize_team_abbrev_cols(names(location))
       location
     },
     error = function(e) {
@@ -90,10 +89,9 @@ location <- function(zip = 10001) {
 #' @examples
 #' all_streams <- streams()
 #' @export
-
 streams <- function() {
   tryCatch({
-    nhl_api(
+    .nhl_api(
       path = 'v1/where-to-watch',
       type = 'w'
     )
@@ -114,11 +112,10 @@ streams <- function() {
 #' @examples
 #' tv_schedule_Halloween_2025 <- tv_schedule(date = '2025-10-31')
 #' @export
-
 tv_schedule <- function(date = 'now') {
   tryCatch(
     expr = {
-      nhl_api(
+      .nhl_api(
         path = sprintf('v1/network/tv-schedule/%s', date),
         type = 'w'
       )$broadcasts

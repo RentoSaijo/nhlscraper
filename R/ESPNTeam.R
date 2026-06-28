@@ -1,3 +1,5 @@
+# ESPNTeam Functions ---------------------------------------------------------
+
 #' Access all the ESPN teams
 #'
 #' `espn_teams()` pages ESPN's team index and returns one row per team
@@ -7,13 +9,12 @@
 #' @examples
 #' all_ESPN_teams <- espn_teams()
 #' @export
-
 espn_teams <- function() {
   tryCatch({
     page <- 1
     all_teams <- list()
     repeat {
-      teams <- espn_api(
+      teams <- .espn_api(
         path  = 'teams',
         query = list(limit = 1000, page = page),
         type  = 'c'
@@ -44,7 +45,6 @@ espn_teams <- function() {
 #' @examples
 #' ESPN_summary_Boston_Bruins <- espn_team_summary(team = 1)
 #' @export
-
 espn_team_summary <- function(team = 1) {
   get_or_na <- function(x, ...) {
     tryCatch({
@@ -61,7 +61,7 @@ espn_team_summary <- function(team = 1) {
       if (is.na(team)) {
         stop('Invalid team.')
       }
-      team <- espn_api(
+      team <- .espn_api(
         path = sprintf('teams/%s', team),
         type = 'c'
       )

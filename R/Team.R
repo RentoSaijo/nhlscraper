@@ -1,3 +1,5 @@
+# Team Functions ---------------------------------------------------------
+
 #' Access all the teams
 #'
 #' `teams()` returns the stats API team catalog with one row per franchise-era
@@ -7,10 +9,9 @@
 #' @examples
 #' all_teams <- teams()
 #' @export
-
 teams <- function() {
   tryCatch({
-    teams <- nhl_api(
+    teams <- .nhl_api(
       path = 'en/team',
       type = 's'
     )$data
@@ -31,21 +32,20 @@ teams <- function() {
 #' `team_seasons()` returns the seasons and game type IDs available for a team
 #' in the public club-stats API.
 #'
-#' @param team integer ID (e.g., 21), character full name (e.g., 'Colorado 
-#' Avalanche'), OR three-letter code (e.g., 'COL'); see [teams()] for 
-#' reference; ID is preferable as there now exists duplicate three-letter codes 
+#' @param team integer ID (e.g., 21), character full name (e.g., 'Colorado
+#' Avalanche'), OR three-letter code (e.g., 'COL'); see [teams()] for
+#' reference; ID is preferable as there now exists duplicate three-letter codes
 #' (i.e., 'UTA' for 'Utah Hockey Club' and 'Utah Mammoth')
 #'
 #' @returns data.frame with one row per season
 #' @examples
 #' COL_seasons <- team_seasons(team = 21)
 #' @export
-
 team_seasons <- function(team = 1) {
   tryCatch(
     expr = {
-      seasons <- nhl_api(
-        path = sprintf('v1/club-stats-season/%s', to_team_tri_code(team)),
+      seasons <- .nhl_api(
+        path = sprintf('v1/club-stats-season/%s', .coerce_team_tri_code(team)),
         type = 'w'
       )
       names(seasons)[names(seasons) == 'season'] <- 'seasonId'
@@ -69,10 +69,9 @@ team_seasons <- function(team = 1) {
 #' @examples
 #' team_report_configs <- team_report_configurations()
 #' @export
-
 team_report_configurations <- function() {
   tryCatch({
-    nhl_api(
+    .nhl_api(
       path = 'en/config',
       type = 's'
     )$teamReportData
@@ -84,12 +83,11 @@ team_report_configurations <- function() {
 
 #' @rdname team_report_configurations
 #' @export
-
 team_report_configs <- function() {
   team_report_configurations()
 }
 
-#' Access various reports for a season, game type, and category for all 
+#' Access various reports for a season, game type, and category for all
 #' the teams by season
 #'
 #' `team_season_report()` returns a season-level team report for a selected
@@ -97,40 +95,39 @@ team_report_configs <- function() {
 #' category.
 #'
 #' @inheritParams roster_statistics
-#' @param category character (e.g., 'leadingtrailing'); see 
+#' @param category character (e.g., 'leadingtrailing'); see
 #' [team_report_configurations()] for reference
 #'
 #' @returns data.frame with one row per team
 #' @examples
 #' situational_team_season_report_playoffs_20212022 <- team_season_report(
-#'   season    = 20212022, 
-#'   game_type = 3, 
+#'   season    = 20212022,
+#'   game_type = 3,
 #'   category  = 'leadingtrailing'
 #' )
 #' @export
-
 team_season_report <- function(
-  season    = season_now(), 
-  game_type = game_type_now(), 
+  season    = season_now(),
+  game_type = game_type_now(),
   category  = 'summary'
 ) {
   tryCatch(
     expr = {
-      report <- nhl_api(
+      report <- .nhl_api(
         path  = sprintf('en/team/%s', category),
         query = list(
           limit       = -1,
           isAggregate = FALSE,
           isGame      = FALSE,
           cayenneExp  = sprintf(
-            'seasonId = %s and gameTypeId = %s', 
+            'seasonId = %s and gameTypeId = %s',
             season,
             game_type
           )
         ),
         type  = 's'
       )$data
-      names(report) <- normalize_team_abbrev_cols(names(report))
+      names(report) <- .normalize_team_abbrev_cols(names(report))
       report[order(report$teamId), ]
     },
     error = function(e) {
@@ -140,7 +137,7 @@ team_season_report <- function(
   )
 }
 
-#' Access various reports for a season, game type, and category for all 
+#' Access various reports for a season, game type, and category for all
 #' the teams by game
 #'
 #' `team_game_report()` returns the game-level version of a selected team stats
@@ -152,34 +149,33 @@ team_season_report <- function(
 #' @returns data.frame with one row per game per team
 #' @examples
 #' situational_team_game_report_playoffs_20212022 <- team_game_report(
-#'   season    = 20212022, 
-#'   game_type = 3, 
+#'   season    = 20212022,
+#'   game_type = 3,
 #'   category  = 'leadingtrailing'
 #' )
 #' @export
-
 team_game_report <- function(
-  season    = season_now(), 
-  game_type = game_type_now(), 
+  season    = season_now(),
+  game_type = game_type_now(),
   category  = 'summary'
 ) {
   tryCatch(
     expr = {
-      report <- nhl_api(
+      report <- .nhl_api(
         path  = sprintf('en/team/%s', category),
         query = list(
           limit       = -1,
           isAggregate = FALSE,
           isGame      = TRUE,
           cayenneExp  = sprintf(
-            'seasonId = %s and gameTypeId = %s', 
+            'seasonId = %s and gameTypeId = %s',
             season,
             game_type
           )
         ),
         type  = 's'
       )$data
-      names(report) <- normalize_team_abbrev_cols(names(report))
+      names(report) <- .normalize_team_abbrev_cols(names(report))
       report[order(report$teamId, report$gameId), ]
     },
     error = function(e) {
@@ -200,16 +196,15 @@ team_game_report <- function(
 #' # May take >5s, so skip.
 #' \donttest{team_season_statistics <- team_season_statistics()}
 #' @export
-
 team_season_statistics <- function() {
   tryCatch({
-    stats <- nhl_api(
+    stats <- .nhl_api(
       path = 'team-stats',
       type = 'r'
     )$data
     stats <- stats[order(
-      stats$`id.db:TEAMID`, 
-      stats$`id.db:SEASON`, 
+      stats$`id.db:TEAMID`,
+      stats$`id.db:SEASON`,
       stats$`id.db:GAMETYPE`
     ), ]
     names(stats)[names(stats) == 'id.db:TEAMID']   <- 'teamId'
@@ -224,7 +219,6 @@ team_season_statistics <- function() {
 
 #' @rdname team_season_statistics
 #' @export
-
 team_season_stats <- function() {
   team_season_statistics()
 }
@@ -236,9 +230,9 @@ team_season_stats <- function() {
 #' birth, and handedness fields when available.
 #'
 #' @inheritParams team_seasons
-#' @param season integer in YYYYYYYY (e.g., 20242025); see [seasons()] for 
+#' @param season integer in YYYYYYYY (e.g., 20242025); see [seasons()] for
 #' reference
-#' @param position character of 'f'/'forwards', 'd'/'defensemen', or 
+#' @param position character of 'f'/'forwards', 'd'/'defensemen', or
 #' 'g'/'goalies'
 #'
 #' @returns data.frame with one row per player
@@ -249,7 +243,6 @@ team_season_stats <- function() {
 #'   position = 'D'
 #' )
 #' @export
-
 roster <- function(
   team     = 1,
   season   = 'current',
@@ -263,13 +256,13 @@ roster <- function(
         d = 'defensemen',
         g = 'goalies'
       )
-      players <- nhl_api(
-        path = sprintf('v1/roster/%s/%s', to_team_tri_code(team), season),
+      players <- .nhl_api(
+        path = sprintf('v1/roster/%s/%s', .coerce_team_tri_code(team), season),
         type = 'w'
       )[[position]]
       names(players)[names(players) == 'id'] <- 'playerId'
-      names(players) <- normalize_locale_names(names(players))
-      names(players) <- scope_person_name_cols(names(players), 'player')
+      names(players) <- .normalize_locale_names(names(players))
+      names(players) <- .scope_person_name_cols(names(players), 'player')
       players
     },
     error = function(e) {
@@ -286,9 +279,9 @@ roster <- function(
 #' columns with normalized player name fields.
 #'
 #' @inheritParams roster
-#' @param game_type integer in 1:3 (where 1 = pre-season, 2 = regular season, 3 
-#' = playoff/post-season) OR character of 'pre', 'regular', or 
-#' playoff'/'post'; see [seasons()] for reference; most functions will NOT 
+#' @param game_type integer in 1:3 (where 1 = pre-season, 2 = regular season, 3
+#' = playoff/post-season) OR character of 'pre', 'regular', or
+#' playoff'/'post'; see [seasons()] for reference; most functions will NOT
 #' support pre-season
 #' @param position character of 's'/'skaters' or 'g'/'goalies'
 #'
@@ -301,7 +294,6 @@ roster <- function(
 #'   position  = 'G'
 #' )
 #' @export
-
 roster_statistics <- function(
   team      = 1,
   season    = 'now',
@@ -315,17 +307,17 @@ roster_statistics <- function(
         s = 'skaters',
         g = 'goalies'
       )
-      players <- nhl_api(
+      players <- .nhl_api(
         path = sprintf(
-          'v1/club-stats/%s/%s/%s', 
-          to_team_tri_code(team), 
-          season, 
-          to_game_type_id(game_type)
+          'v1/club-stats/%s/%s/%s',
+          .coerce_team_tri_code(team),
+          season,
+          .to_game_type_id(game_type)
         ),
         type = 'w'
       )[[position]]
-      names(players) <- normalize_locale_names(names(players))
-      names(players) <- scope_person_name_cols(names(players), 'player')
+      names(players) <- .normalize_locale_names(names(players))
+      names(players) <- .scope_person_name_cols(names(players), 'player')
       players
     },
     error = function(e) {
@@ -337,7 +329,6 @@ roster_statistics <- function(
 
 #' @rdname roster_statistics
 #' @export
-
 roster_stats <- function(
   team      = 1,
   season    = 'now',
@@ -362,7 +353,6 @@ roster_stats <- function(
 #'   position = 'F'
 #' )
 #' @export
-
 team_prospects <- function(team = 1, position = 'forwards') {
   tryCatch(
     expr = {
@@ -372,13 +362,13 @@ team_prospects <- function(team = 1, position = 'forwards') {
         d = 'defensemen',
         g = 'goalies'
       )
-      players <- nhl_api(
-        path = sprintf('v1/prospects/%s', to_team_tri_code(team)),
+      players <- .nhl_api(
+        path = sprintf('v1/prospects/%s', .coerce_team_tri_code(team)),
         type = 'w'
       )[[position]]
       names(players)[names(players) == 'id'] <- 'playerId'
-      names(players) <- normalize_locale_names(names(players))
-      names(players) <- scope_person_name_cols(names(players), 'player')
+      names(players) <- .normalize_locale_names(names(players))
+      names(players) <- .scope_person_name_cols(names(players), 'player')
       players
     },
     error = function(e) {
@@ -399,18 +389,17 @@ team_prospects <- function(team = 1, position = 'forwards') {
 #' @returns data.frame with one row per game
 #' @examples
 #' COL_schedule_20252026 <- team_season_schedule(
-#'   team   = 21, 
+#'   team   = 21,
 #'   season = 20252026
 #' )
 #' @export
-
 team_season_schedule <- function(team = 1, season = 'now') {
   tryCatch(
     expr = {
-      games <- nhl_api(
+      games <- .nhl_api(
         path = sprintf(
-          'v1/club-schedule-season/%s/%s', 
-          to_team_tri_code(team), 
+          'v1/club-schedule-season/%s/%s',
+          .coerce_team_tri_code(team),
           season
         ),
         type = 'w'
@@ -418,8 +407,8 @@ team_season_schedule <- function(team = 1, season = 'now') {
       names(games)[names(games) == 'id']       <- 'gameId'
       names(games)[names(games) == 'season']   <- 'seasonId'
       names(games)[names(games) == 'gameType'] <- 'gameTypeId'
-      names(games) <- normalize_locale_names(names(games))
-      names(games) <- normalize_team_abbrev_cols(names(games))
+      names(games) <- .normalize_locale_names(names(games))
+      names(games) <- .normalize_team_abbrev_cols(names(games))
       games
     },
     error = function(e) {
@@ -435,24 +424,23 @@ team_season_schedule <- function(team = 1, season = 'now') {
 #' [team_season_schedule()], restricted to the requested `YYYY-MM` month.
 #'
 #' @inheritParams team_seasons
-#' @param month character in 'YYYY-MM' (e.g., '2025-01'); see [seasons()] 
+#' @param month character in 'YYYY-MM' (e.g., '2025-01'); see [seasons()]
 #' for reference
 #'
 #' @returns data.frame with one row per game
 #' @examples
 #' COL_schedule_December_2025 <- team_month_schedule(
-#'   team  = 21, 
+#'   team  = 21,
 #'   month = '2025-12'
 #' )
 #' @export
-
 team_month_schedule <- function(team = 1, month = 'now') {
   tryCatch(
     expr = {
-      games <- nhl_api(
+      games <- .nhl_api(
         path = sprintf(
-          'v1/club-schedule/%s/month/%s', 
-          to_team_tri_code(team), 
+          'v1/club-schedule/%s/month/%s',
+          .coerce_team_tri_code(team),
           month
         ),
         type = 'w'
@@ -460,8 +448,8 @@ team_month_schedule <- function(team = 1, month = 'now') {
       names(games)[names(games) == 'id']       <- 'gameId'
       names(games)[names(games) == 'season']   <- 'seasonId'
       names(games)[names(games) == 'gameType'] <- 'gameTypeId'
-      names(games) <- normalize_locale_names(names(games))
-      names(games) <- normalize_team_abbrev_cols(names(games))
+      names(games) <- .normalize_locale_names(names(games))
+      names(games) <- .normalize_team_abbrev_cols(names(games))
       games
     },
     error = function(e) {
@@ -487,14 +475,13 @@ team_month_schedule <- function(team = 1, month = 'now') {
 #'   date = '2025-10-06'
 #' )
 #' @export
-
 team_week_schedule <- function(team = 1, date = 'now') {
   tryCatch(
     expr = {
-      games <- nhl_api(
+      games <- .nhl_api(
         path = sprintf(
-          'v1/club-schedule/%s/week/%s', 
-          to_team_tri_code(team), 
+          'v1/club-schedule/%s/week/%s',
+          .coerce_team_tri_code(team),
           date
         ),
         type = 'w'
@@ -502,8 +489,8 @@ team_week_schedule <- function(team = 1, date = 'now') {
       names(games)[names(games) == 'id']       <- 'gameId'
       names(games)[names(games) == 'season']   <- 'seasonId'
       names(games)[names(games) == 'gameType'] <- 'gameTypeId'
-      names(games) <- normalize_locale_names(names(games))
-      names(games) <- normalize_team_abbrev_cols(names(games))
+      names(games) <- .normalize_locale_names(names(games))
+      names(games) <- .normalize_team_abbrev_cols(names(games))
       games
     },
     error = function(e) {
@@ -522,10 +509,9 @@ team_week_schedule <- function(team = 1, date = 'now') {
 #' @examples
 #' all_team_logos <- team_logos()
 #' @export
-
 team_logos <- function() {
   tryCatch({
-    logos <- nhl_api(
+    logos <- .nhl_api(
       path = 'logo',
       type = 'r'
     )$data

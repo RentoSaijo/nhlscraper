@@ -1,3 +1,5 @@
+# Manager Functions ---------------------------------------------------------
+
 #' Access all the general managers
 #'
 #' `general_managers()` returns the records-site general-manager registry with
@@ -7,10 +9,9 @@
 #' @examples
 #' all_GMs <- general_managers()
 #' @export
-
 general_managers <- function() {
   tryCatch({
-    gms <- nhl_api(
+    gms <- .nhl_api(
       path = 'general-manager',
       type = 'r'
     )$data
@@ -27,7 +28,6 @@ general_managers <- function() {
 
 #' @rdname general_managers
 #' @export
-
 gms <- function() {
   general_managers()
 }

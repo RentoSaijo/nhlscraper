@@ -1,5 +1,7 @@
-test_that("franchise_versus_franchise() returns non-empty data.frame", {
-  skip_if_offline()
+# Tests ---------------------------------------------------------
+
+testthat::test_that('franchise_versus_franchise() returns non-empty data.frame', {
+  testthat::skip_if_offline()
   test <- franchise_versus_franchise()
-  expect_true(is.data.frame(test) && nrow(test) > 0)
+  testthat::expect_true(is.data.frame(test) && nrow(test) > 0)
 })

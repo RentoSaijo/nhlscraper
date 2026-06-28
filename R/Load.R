@@ -1,4 +1,4 @@
-# ----- Packaged Data ----- #
+# Packaged Data ---------------------------------------------------------
 
 #' Access all contracts from packaged internal data
 #'
@@ -11,7 +11,6 @@
 #' @examples
 #' \donttest{all_contracts <- contracts()}
 #' @export
-
 contracts <- function() {
   tryCatch(
     expr = {
@@ -199,7 +198,7 @@ contracts <- function() {
   )
 }
 
-# ----- Remote Parquet Loaders ----- #
+# Remote Parquet Loaders ---------------------------------------------------------
 
 #' Build a Hugging Face NHL_DB parquet URL
 #'
@@ -209,7 +208,6 @@ contracts <- function() {
 #' @param path character path inside the NHL_DB repository
 #' @returns character scalar URL
 #' @keywords internal
-
 .nhldb_url <- function(path) {
   paste0(
     'https://huggingface.co/datasets/RentoSaijo/NHL_DB/resolve/main/',
@@ -227,7 +225,6 @@ contracts <- function() {
 #' @param method optional `utils::download.file()` method
 #' @returns data.frame
 #' @keywords internal
-
 .read_remote_parquet <- function(path, timeout = NULL, method = NULL) {
   if (!is.null(timeout)) {
     old_timeout <- getOption('timeout')
@@ -257,7 +254,6 @@ contracts <- function() {
 #' @param play_by_plays data.frame containing `situationCode`
 #' @returns data.frame
 #' @keywords internal
-
 .pad_public_situation_code <- function(play_by_plays) {
   if (!('situationCode' %in% names(play_by_plays))) {
     return(play_by_plays)
@@ -285,7 +281,6 @@ contracts <- function() {
 #' # May take >5s, so skip.
 #' \donttest{gc_pbps_raw_20212022 <- gc_play_by_plays_raw(season = 20212022)}
 #' @export
-
 gc_play_by_plays_raw <- function(season = 20242025) {
   tryCatch(
     expr = {
@@ -303,7 +298,6 @@ gc_play_by_plays_raw <- function(season = 20242025) {
 
 #' @rdname gc_play_by_plays_raw
 #' @export
-
 gc_pbps_raw <- function(season = 20242025) {
   gc_play_by_plays_raw(season)
 }
@@ -319,7 +313,6 @@ gc_pbps_raw <- function(season = 20242025) {
 #' # May take >5s, so skip.
 #' \donttest{gc_pbps_20212022 <- gc_play_by_plays(season = 20212022)}
 #' @export
-
 gc_play_by_plays <- function(season = 20242025) {
   tryCatch(
     expr = {
@@ -338,7 +331,6 @@ gc_play_by_plays <- function(season = 20242025) {
 
 #' @rdname gc_play_by_plays
 #' @export
-
 gc_pbps <- function(season = 20242025) {
   gc_play_by_plays(season)
 }
@@ -355,7 +347,6 @@ gc_pbps <- function(season = 20242025) {
 #' # May take >5s, so skip.
 #' \donttest{wsc_pbps_raw_20212022 <- wsc_play_by_plays_raw(season = 20212022)}
 #' @export
-
 wsc_play_by_plays_raw <- function(season = 20242025) {
   tryCatch(
     expr = {
@@ -373,7 +364,6 @@ wsc_play_by_plays_raw <- function(season = 20242025) {
 
 #' @rdname wsc_play_by_plays_raw
 #' @export
-
 wsc_pbps_raw <- function(season = 20242025) {
   wsc_play_by_plays_raw(season)
 }
@@ -390,7 +380,6 @@ wsc_pbps_raw <- function(season = 20242025) {
 #' # May take >5s, so skip.
 #' \donttest{wsc_pbps_20212022 <- wsc_play_by_plays(season = 20212022)}
 #' @export
-
 wsc_play_by_plays <- function(season = 20242025) {
   tryCatch(
     expr = {
@@ -409,7 +398,6 @@ wsc_play_by_plays <- function(season = 20242025) {
 
 #' @rdname wsc_play_by_plays
 #' @export
-
 wsc_pbps <- function(season = 20242025) {
   wsc_play_by_plays(season)
 }
@@ -426,7 +414,6 @@ wsc_pbps <- function(season = 20242025) {
 #' # May take >5s, so skip.
 #' \donttest{shift_charts_20212022 <- shift_charts(season = 20212022)}
 #' @export
-
 shift_charts <- function(season = 20242025) {
   tryCatch(
     expr = {
@@ -455,7 +442,6 @@ shift_charts <- function(season = 20242025) {
 #' # May take >5s, so skip.
 #' \donttest{shift_chart_summaries_20212022 <- shift_chart_summaries(season = 20212022)}
 #' @export
-
 shift_chart_summaries <- function(season = 20242025) {
   tryCatch(
     expr = {
@@ -482,7 +468,6 @@ shift_chart_summaries <- function(season = 20242025) {
 #' # May take >5s, so skip.
 #' \donttest{replays_20252026 <- replays(season = 20252026)}
 #' @export
-
 replays <- function(season = 20242025) {
   tryCatch(
     expr = {
