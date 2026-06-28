@@ -155,8 +155,8 @@ older marathon drafts do not distort the later-round pool.</p>
 <span><span class="va">draft_tbl</span><span class="op">[[</span><span class="st">'bigSkater'</span><span class="op">]</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="va">draft_tbl</span><span class="op">[[</span><span class="st">'height'</span><span class="op">]</span><span class="op">]</span> <span class="op">&gt;=</span> <span class="fl">74</span> <span class="op">&amp;</span></span>
 <span>  <span class="va">draft_tbl</span><span class="op">[[</span><span class="st">'weight'</span><span class="op">]</span><span class="op">]</span> <span class="op">&gt;=</span> <span class="fl">205</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">draft_tbl</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] 8313</span></span></code></pre></div>
-<p>That gives us 8313 drafted skaters. The sample is broad enough to
+<span><span class="co">#&gt; [1] 8357</span></span></code></pre></div>
+<p>That gives us 8357 drafted skaters. The sample is broad enough to
 study eras, but narrow enough that “later round” means roughly the same
 thing across modern draft history.</p>
 </div>
@@ -302,11 +302,11 @@ skaters should be bigger than later-round skaters in most eras.</p>
 <tr class="even">
 <td align="left">2020-present</td>
 <td align="left">Rounds 2-7</td>
-<td align="right">1132</td>
-<td align="right">73.018</td>
-<td align="right">186.003</td>
-<td align="right">0.418</td>
-<td align="right">0.119</td>
+<td align="right">1176</td>
+<td align="right">73.038</td>
+<td align="right">186.145</td>
+<td align="right">0.419</td>
+<td align="right">0.120</td>
 </tr>
 </tbody>
 </table>
@@ -467,8 +467,8 @@ pounds.</caption>
 <tr class="even">
 <td align="left">2020-present</td>
 <td align="left">Rounds 2-7</td>
-<td align="right">0.119</td>
-<td align="right">1132</td>
+<td align="right">0.120</td>
+<td align="right">1176</td>
 </tr>
 </tbody>
 </table>
@@ -611,18 +611,18 @@ split the sample by position family before jumping to conclusions.</p>
 <tr class="odd">
 <td align="left">2020-present</td>
 <td align="left">Defense</td>
-<td align="right">73.899</td>
-<td align="right">190.899</td>
+<td align="right">73.907</td>
+<td align="right">191.004</td>
 <td align="right">0.177</td>
-<td align="right">486</td>
+<td align="right">504</td>
 </tr>
 <tr class="even">
 <td align="left">2020-present</td>
 <td align="left">Forward</td>
-<td align="right">72.556</td>
-<td align="right">184.070</td>
-<td align="right">0.088</td>
-<td align="right">863</td>
+<td align="right">72.575</td>
+<td align="right">184.156</td>
+<td align="right">0.089</td>
+<td align="right">889</td>
 </tr>
 </tbody>
 </table>
@@ -675,51 +675,51 @@ controlling for position and broad era.</p>
 <tbody>
 <tr class="odd">
 <td align="left">(Intercept)</td>
-<td align="right">73.1963</td>
-<td align="right">0.0602</td>
-<td align="right">1215.2632</td>
+<td align="right">73.1966</td>
+<td align="right">0.0603</td>
+<td align="right">1213.5937</td>
 <td align="right">0.0000</td>
 </tr>
 <tr class="even">
 <td align="left">era1990-1999</td>
 <td align="right">0.8028</td>
-<td align="right">0.0715</td>
-<td align="right">11.2331</td>
+<td align="right">0.0716</td>
+<td align="right">11.2095</td>
 <td align="right">0.0000</td>
 </tr>
 <tr class="odd">
 <td align="left">era2000-2009</td>
-<td align="right">0.6636</td>
-<td align="right">0.0686</td>
-<td align="right">9.6779</td>
+<td align="right">0.6635</td>
+<td align="right">0.0687</td>
+<td align="right">9.6574</td>
 <td align="right">0.0000</td>
 </tr>
 <tr class="even">
 <td align="left">era2010-2019</td>
 <td align="right">0.0303</td>
-<td align="right">0.0691</td>
-<td align="right">0.4387</td>
-<td align="right">0.6609</td>
+<td align="right">0.0692</td>
+<td align="right">0.4378</td>
+<td align="right">0.6615</td>
 </tr>
 <tr class="odd">
 <td align="left">era2020-present</td>
-<td align="right">0.4592</td>
-<td align="right">0.0750</td>
-<td align="right">6.1261</td>
+<td align="right">0.4767</td>
+<td align="right">0.0745</td>
+<td align="right">6.3988</td>
 <td align="right">0.0000</td>
 </tr>
 <tr class="even">
 <td align="left">I(roundNumber == 1)TRUE</td>
-<td align="right">0.4839</td>
-<td align="right">0.0609</td>
-<td align="right">7.9484</td>
+<td align="right">0.4803</td>
+<td align="right">0.0610</td>
+<td align="right">7.8775</td>
 <td align="right">0.0000</td>
 </tr>
 <tr class="odd">
 <td align="left">positionBucketForward</td>
-<td align="right">-1.0838</td>
+<td align="right">-1.0834</td>
 <td align="right">0.0452</td>
-<td align="right">-23.9664</td>
+<td align="right">-23.9756</td>
 <td align="right">0.0000</td>
 </tr>
 </tbody>

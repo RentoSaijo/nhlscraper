@@ -55,9 +55,9 @@
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.7.0" id="nhlscraper-070">nhlscraper 0.7.0<a class="anchor" aria-label="anchor" href="#nhlscraper-070"></a></h2>
 <ul><li>
-<code><a href="../reference/calculate_expected_goals.html">calculate_expected_goals()</a></code> now ships and scores against the completed rolling XGBoost xG model bundle from the companion NHLxG project.
-<ul><li>The scorer now routes each shot by target-season vintage and six game-state partitions, with bundled boosters and frozen preprocessing artifacts for <code>2013-14</code> through the <code>2026-27</code> deployment vintage.</li>
-<li>The previous package scorer artifacts have been removed.</li>
+<code><a href="../reference/calculate_expected_goals.html">calculate_expected_goals()</a></code> now scores against the completed rolling XGBoost xG model assets from the companion <a href="https://huggingface.co/datasets/RentoSaijo/NHLxG" class="external-link">NHLxG</a> project.
+<ul><li>The package ships the small frozen preprocessing bundle and downloads needed versioned boosters into the user’s R cache on first use.</li>
+<li>The scorer now routes each shot by target-season vintage and six game-state partitions for <code>2013-14</code> through the <code>2026-27</code> deployment vintage.</li>
 </ul></li>
 <li>Removed minimum-dependency package language now that runtime scoring relies on external modeling packages.</li>
 <li>Standardized all <code>R</code> code.</li>

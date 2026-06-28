@@ -3,13 +3,15 @@
 ## nhlscraper 0.7.0
 
 - [`calculate_expected_goals()`](https://rentosaijo.github.io/nhlscraper/reference/calculate_expected_goals.md)
-  now ships and scores against the completed rolling XGBoost xG model
-  bundle from the companion NHLxG project.
+  now scores against the completed rolling XGBoost xG model assets from
+  the companion
+  [NHLxG](https://huggingface.co/datasets/RentoSaijo/NHLxG) project.
+  - The package ships the small frozen preprocessing bundle and
+    downloads needed versioned boosters into the user’s R cache on first
+    use.
   - The scorer now routes each shot by target-season vintage and six
-    game-state partitions, with bundled boosters and frozen
-    preprocessing artifacts for `2013-14` through the `2026-27`
-    deployment vintage.
-  - The previous package scorer artifacts have been removed.
+    game-state partitions for `2013-14` through the `2026-27` deployment
+    vintage.
 - Removed minimum-dependency package language now that runtime scoring
   relies on external modeling packages.
 - Standardized all `R` code.

@@ -36,7 +36,7 @@ data.frame with one row per game
 
 ``` r
 COL_schedule_December_2025 <- team_month_schedule(
-  team  = 21, 
+  team  = 21,
   month = '2025-12'
 )
 ```

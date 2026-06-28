@@ -6,15 +6,15 @@ Expected goals, or xG, is the estimated probability that a shot becomes
 a goal. In `nhlscraper`,
 [`calculate_expected_goals()`](https://rentosaijo.github.io/nhlscraper/reference/calculate_expected_goals.md)
 adds one column, `xG`, to a current-schema play-by-play table. Non-shot
-rows receive `NA`; shot-attempt rows receive probabilities from bundled
-XGBoost models.
+rows receive `NA`; shot-attempt rows receive probabilities from
+versioned XGBoost boosters that are cached locally on first use.
 
-The package does **not** train models during package use. It ships
-frozen model bundles that were trained outside the package and then
-stored with the runtime preprocessing contract. That contract is just as
-important as the boosters: numeric medians, categorical levels,
-dummy-column maps, and final feature order all have to match training
-exactly.
+The package does **not** train models during package use. It ships the
+frozen runtime preprocessing contract and downloads the matching trained
+boosters from the companion NHLxG model store when they are first
+needed. That contract is just as important as the boosters: numeric
+medians, categorical levels, dummy-column maps, and final feature order
+all have to match training exactly.
 
 ## Basic Use
 
@@ -66,9 +66,9 @@ value.](expected-goals-model_files/figure-html/routing-plot-1.png)
 Runtime routing from play-by-play row to xG value.
 
 Historical games use the target-season vintage when one exists. Seasons
-before the bundled range use the earliest available vintage. Seasons
-beyond the bundled range use the latest deployment vintage. That
-behavior keeps scoring possible for old and future rows while preserving
+before the supported range use the earliest available vintage. Seasons
+beyond the model range use the latest deployment vintage. That behavior
+keeps scoring possible for old and future rows while preserving
 rolling-model logic where exact vintages exist.
 
 ## Feature Families
@@ -90,7 +90,7 @@ game was in.
 | Shift timing | seconds elapsed/remaining in shift for on-ice players |
 | Shootout counters | attempt order for one-on-one partitions |
 
-Feature families used by the bundled xG models. {.table}
+Feature families used by the xG models. {.table}
 
 Not every partition uses every feature in the same way, and not every
 row has every upstream field. The preprocessing bundle is responsible
@@ -106,7 +106,7 @@ trains on the season it is being evaluated against.
 
 | target_vintage | training_window | note |
 |:---|:---|:---|
-| 2013-14 | Earliest bundled historical window | Uses the earliest supported vintage behavior. |
+| 2013-14 | Earliest supported historical window | Uses the earliest supported vintage behavior. |
 | 2018-19 | 2015-16, 2016-17, 2017-18 | Example completed rolling vintage. |
 | 2023-24 | 2020-21, 2021-22, 2022-23 | Example modern completed rolling vintage. |
 | 2026-27 deployment | 2023-24, 2024-25, 2025-26 | Latest deployment model used for future/default scoring. |
@@ -186,6 +186,6 @@ comparative:
 is intentionally simple at the user level and more careful under the
 hood. Give it a current-schema play-by-play, and it routes each shot
 through a rolling season vintage, a game-state partition, a frozen
-preprocessing recipe, and a bundled XGBoost booster. The returned `xG`
+preprocessing recipe, and a cached XGBoost booster. The returned `xG`
 column is therefore easy to use, but it is not a black box stapled onto
 raw NHL data.

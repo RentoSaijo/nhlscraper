@@ -44,8 +44,8 @@ data.frame with one row per game per team
 
 ``` r
 situational_team_game_report_playoffs_20212022 <- team_game_report(
-  season    = 20212022, 
-  game_type = 3, 
+  season    = 20212022,
+  game_type = 3,
   category  = 'leadingtrailing'
 )
 ```

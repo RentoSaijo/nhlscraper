@@ -98,13 +98,13 @@ becomes a goal. In <code>nhlscraper</code>,
 <code><a href="../reference/calculate_expected_goals.html">calculate_expected_goals()</a></code> adds one column,
 <code>xG</code>, to a current-schema play-by-play table. Non-shot rows
 receive <code>NA</code>; shot-attempt rows receive probabilities from
-bundled XGBoost models.</p>
+versioned XGBoost boosters that are cached locally on first use.</p>
 <p>The package does <strong>not</strong> train models during package
-use. It ships frozen model bundles that were trained outside the package
-and then stored with the runtime preprocessing contract. That contract
-is just as important as the boosters: numeric medians, categorical
-levels, dummy-column maps, and final feature order all have to match
-training exactly.</p>
+use. It ships the frozen runtime preprocessing contract and downloads
+the matching trained boosters from the companion NHLxG model store when
+they are first needed. That contract is just as important as the
+boosters: numeric medians, categorical levels, dummy-column maps, and
+final feature order all have to match training exactly.</p>
 </div>
 <div class="section level2">
 <h2 id="basic-use">Basic Use<a class="anchor" aria-label="anchor" href="#basic-use"></a>
@@ -191,8 +191,8 @@ Runtime routing from play-by-play row to xG value.
 </p>
 </div>
 <p>Historical games use the target-season vintage when one exists.
-Seasons before the bundled range use the earliest available vintage.
-Seasons beyond the bundled range use the latest deployment vintage. That
+Seasons before the supported range use the earliest available vintage.
+Seasons beyond the model range use the latest deployment vintage. That
 behavior keeps scoring possible for old and future rows while preserving
 rolling-model logic where exact vintages exist.</p>
 </div>
@@ -204,7 +204,7 @@ The model frame includes information about where the shot came from,
 what happened just before it, who took it, who was in net, and what
 state the game was in.</p>
 <table class="table">
-<caption>Feature families used by the bundled xG models.</caption>
+<caption>Feature families used by the xG models.</caption>
 <colgroup>
 <col width="35%">
 <col width="64%">
@@ -272,9 +272,9 @@ model never trains on the season it is being evaluated against.</p>
 <table class="table">
 <caption>Examples of rolling training windows.</caption>
 <colgroup>
-<col width="17%">
-<col width="31%">
-<col width="51%">
+<col width="16%">
+<col width="32%">
+<col width="50%">
 </colgroup>
 <thead><tr class="header">
 <th align="left">target_vintage</th>
@@ -284,7 +284,7 @@ model never trains on the season it is being evaluated against.</p>
 <tbody>
 <tr class="odd">
 <td align="left">2013-14</td>
-<td align="left">Earliest bundled historical window</td>
+<td align="left">Earliest supported historical window</td>
 <td align="left">Uses the earliest supported vintage behavior.</td>
 </tr>
 <tr class="even">
@@ -526,7 +526,7 @@ comparative:</p>
 <p><code><a href="../reference/calculate_expected_goals.html">calculate_expected_goals()</a></code> is intentionally simple at
 the user level and more careful under the hood. Give it a current-schema
 play-by-play, and it routes each shot through a rolling season vintage,
-a game-state partition, a frozen preprocessing recipe, and a bundled
+a game-state partition, a frozen preprocessing recipe, and a cached
 XGBoost booster. The returned <code>xG</code> column is therefore easy
 to use, but it is not a black box stapled onto raw NHL data.</p>
 </div>

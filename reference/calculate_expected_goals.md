@@ -1,10 +1,12 @@
 # Calculate the expected goals for all the shots in (a) play-by-plays
 
 `calculate_expected_goals()` scores shot events with `nhlscraper`'s
-built-in rolling XGBoost expected-goals models. Each shot is routed to
-the matching season vintage and one of six game-state partitions: `sd`
-(5v5), `ev` (other even strength), `pp` (power play), `sh`
-(short-handed), `en` (empty net against), and `ps` (penalty shot;
+rolling XGBoost expected-goals models. The package ships the small
+preprocessing bundle and downloads needed boosters from the companion
+NHLxG model store into a local user cache on first use. Each shot is
+routed to the matching season vintage and one of six game-state
+partitions: `sd` (5v5), `ev` (other even strength), `pp` (power play),
+`sh` (short-handed), `en` (empty net against), and `ps` (penalty shot;
 trained on penalty-shot and shootout-style rows). The legacy `model`
 argument is accepted for backward compatibility but ignored.
 
