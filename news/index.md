@@ -2,6 +2,8 @@
 
 ## nhlscraper 0.7.0
 
+CRAN release: 2026-06-28
+
 - [`calculate_expected_goals()`](https://rentosaijo.github.io/nhlscraper/reference/calculate_expected_goals.md)
   now scores against the completed rolling XGBoost xG model assets from
   the companion
