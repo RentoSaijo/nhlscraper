@@ -1,3 +1,5 @@
+# nhlscraper 0.7.0.9000 (development version)
+
 # nhlscraper 0.7.0
 - `calculate_expected_goals()` now scores against the completed rolling XGBoost xG model assets from the companion [NHLxG](https://huggingface.co/datasets/RentoSaijo/NHLxG) project.
   - The package ships the small frozen preprocessing bundle and downloads needed versioned boosters into the user's R cache on first use.
