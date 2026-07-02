@@ -2156,31 +2156,46 @@ calculate_shift_times_by_situation <- function(game = 2023030417, season = NULL)
   n                       <- nrow(play_by_play)
   play_by_play$xCoordNorm <- NA_real_
   play_by_play$yCoordNorm <- NA_real_
-  has_side                <- 'homeTeamDefendingSide' %in% names(play_by_play)
   for (g in unique(play_by_play$gameId)) {
     idx <- which(play_by_play$gameId == g)
-    if (has_side) {
-      side          <- play_by_play$homeTeamDefendingSide[idx][!is.na(play_by_play$homeTeamDefendingSide[idx])][1L]
+    side <- if ('homeTeamDefendingSide' %in% names(play_by_play)) {
+      play_by_play$homeTeamDefendingSide[idx][!is.na(play_by_play$homeTeamDefendingSide[idx])][1L]
+    } else {
+      NA_character_
+    }
+    if (!is.na(side)) {
       home_def_left <- side == 'left'
     } else {
-      d_idx         <- idx[
-        play_by_play$isHome[idx] & 
-          play_by_play$zoneCode[idx] == 'D' &
-          play_by_play$periodNumber[idx] == 1L & 
+      type_desc_key <- if ('eventTypeDescKey' %in% names(play_by_play)) {
+        as.character(play_by_play$eventTypeDescKey[idx])
+      } else {
+        rep(NA_character_, length(idx))
+      }
+      infer_idx <- idx[
+        play_by_play$isHome[idx] %in% TRUE &
+          play_by_play$zoneCode[idx] %in% c('O', 'D') &
+          play_by_play$periodNumber[idx] == 1L &
           !is.na(play_by_play$xCoord[idx])
       ]
-      o_idx         <- idx[
-        play_by_play$isHome[idx] & 
-          play_by_play$zoneCode[idx] == 'O' &
-          play_by_play$periodNumber[idx] == 1L & 
-          !is.na(play_by_play$xCoord[idx])
+      not_blocked <- is.na(type_desc_key) | type_desc_key != 'blocked-shot'
+      infer_idx_no_blocks <- infer_idx[
+        not_blocked[match(infer_idx, idx)]
       ]
+      if (length(infer_idx_no_blocks)) {
+        infer_idx <- infer_idx_no_blocks
+      }
+      d_idx <- infer_idx[play_by_play$zoneCode[infer_idx] == 'D']
+      o_idx <- infer_idx[play_by_play$zoneCode[infer_idx] == 'O']
       home_def_left <- if (length(d_idx)) {
         mean(play_by_play$xCoord[d_idx] < 0) >= 0.5
-      } else {
+      } else if (length(o_idx)) {
         mean(play_by_play$xCoord[o_idx] > 0) >= 0.5
+      } else {
+        FALSE
       }
-      play_by_play$homeTeamDefendingSide      <- NA_character_
+      if (!'homeTeamDefendingSide' %in% names(play_by_play)) {
+        play_by_play$homeTeamDefendingSide <- NA_character_
+      }
       play_by_play$homeTeamDefendingSide[idx] <- ifelse(home_def_left, 'left', 'right')
     }
     home_att_pos_p1 <- home_def_left
@@ -2193,7 +2208,33 @@ calculate_shift_times_by_situation <- function(game = 2023030417, season = NULL)
   insert <- c('homeTeamDefendingSide', 'zoneCode', 'xCoord', 'yCoord', 'xCoordNorm', 'yCoordNorm')
   keep   <- setdiff(names(play_by_play), insert)
   after  <- match('strengthState', keep)
-  play_by_play[, c(keep[seq_len(after)], insert, keep[(after + 1L):length(keep)])]
+  tail   <- if (after < length(keep)) keep[(after + 1L):length(keep)] else character()
+  play_by_play[, c(keep[seq_len(after)], insert, tail)]
+}
+
+#' Normalize blocked-shot zone code
+#'
+#' `.normalize_blocked_shot_zone_code()` assigns blocked-shot `zoneCode` from
+#' the normalized x-coordinate of the recorded block location. This keeps the
+#' zone perspective aligned with the event-owning/shooting team without assuming
+#' every blocked shot was blocked by the defending team.
+#'
+#' @inheritParams .strip_game_id
+#' @returns data.frame with blocked-shot `zoneCode` normalized from `xCoordNorm`
+#' @noRd
+.normalize_blocked_shot_zone_code <- function(play_by_play) {
+  required <- c('eventTypeDescKey', 'zoneCode', 'xCoordNorm')
+  if (!all(required %in% names(play_by_play))) {
+    return(play_by_play)
+  }
+  x_coord_norm <- suppressWarnings(as.numeric(play_by_play$xCoordNorm))
+  is_blocked <- play_by_play$eventTypeDescKey == 'blocked-shot' &
+    !is.na(x_coord_norm)
+  is_blocked[is.na(is_blocked)] <- FALSE
+  play_by_play$zoneCode[is_blocked & x_coord_norm >= 25] <- 'O'
+  play_by_play$zoneCode[is_blocked & x_coord_norm <= -25] <- 'D'
+  play_by_play$zoneCode[is_blocked & x_coord_norm > -25 & x_coord_norm < 25] <- 'N'
+  play_by_play
 }
 
 #' Calculate the Euclidean distance from the attacking net for all the events (plays) in a play-by-play

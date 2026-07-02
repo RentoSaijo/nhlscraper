@@ -2089,13 +2089,6 @@ game_rosters <- function(game = 2023030417) {
       !is.na(plays$scoringPlayerId)
     plays$shootingPlayerId[goal_idx] <- plays$scoringPlayerId[goal_idx]
   }
-  idx <- plays$typeDescKey == 'blocked-shot' &
-    plays$zoneCode %in% c('O', 'D')
-  plays$zoneCode[idx] <- ifelse(
-    plays$zoneCode[idx] == 'O',
-    'D',
-    'O'
-  )
   plays$timeRemaining <- NULL
   plays
 }
@@ -2120,13 +2113,6 @@ game_rosters <- function(game = 2023030417) {
       !is.na(plays$scoringPlayerId)
     plays$shootingPlayerId[goal_idx] <- plays$scoringPlayerId[goal_idx]
   }
-  idx <- plays$typeDescKey == 'blocked-shot' &
-    plays$zoneCode %in% c('O', 'D')
-  plays$zoneCode[idx] <- ifelse(
-    plays$zoneCode[idx] == 'O',
-    'D',
-    'O'
-  )
   plays$goalModifier     <- NULL
   plays$strength         <- NULL
   plays$strengthCode     <- NULL
@@ -2164,6 +2150,7 @@ game_rosters <- function(game = 2023030417) {
     .flag_is_home() |>
     .strip_situation_code() |>
     .normalize_coordinates() |>
+    .normalize_blocked_shot_zone_code() |>
     .calculate_distance() |>
     .calculate_angle() |>
     .apply_shot_context() |>
@@ -2240,8 +2227,11 @@ gc_pbp_raw <- function(game = 2023030417) {
 #' `homeGoaliePlayerId`, `awayGoaliePlayerId`, `homeSkater1PlayerId`, and any
 #' additional overflow skater slots required by the game. HTML report skater and
 #' goalie IDs are returned whenever they can be matched back to a supported row,
-#' even when the raw `situationCode` is stale. Use [add_shift_times()] with
-#' [shift_chart()] (or [shift_charts()]) to add on-ice shift timing columns.
+#' even when the raw `situationCode` is stale. For `blocked-shot` rows, `xCoord`,
+#' `yCoord`, `xCoordNorm`, `yCoordNorm`, `distance`, and `angle` describe the
+#' recorded block location, not the original shot-release location. Use
+#' [add_shift_times()] with [shift_chart()] (or [shift_charts()]) to add on-ice
+#' shift timing columns.
 #'
 #' @inheritParams gc_summary
 #'
@@ -2364,8 +2354,11 @@ wsc_pbp_raw <- function(game = 2023030417) {
 #' the same HTML-report-derived on-ice player ID columns added to the GC output,
 #' including dynamically expanded overflow skater slots when needed. HTML report
 #' skater and goalie IDs are returned whenever they can be matched back to a
-#' supported row, even when the raw `situationCode` is stale. Use [add_shift_times()]
-#' with [shift_chart()] (or [shift_charts()]) to add on-ice shift timing columns.
+#' supported row, even when the raw `situationCode` is stale. For `blocked-shot`
+#' rows, `xCoord`, `yCoord`, `xCoordNorm`, `yCoordNorm`, `distance`, and `angle`
+#' describe the recorded block location, not the original shot-release location.
+#' Use [add_shift_times()] with [shift_chart()] (or [shift_charts()]) to add
+#' on-ice shift timing columns.
 #'
 #' @inheritParams gc_summary
 #'

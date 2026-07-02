@@ -25,8 +25,11 @@ cleaned, public-facing play-by-play schema, including canonical names such as
 \code{homeGoaliePlayerId}, \code{awayGoaliePlayerId}, \code{homeSkater1PlayerId}, and any
 additional overflow skater slots required by the game. HTML report skater and
 goalie IDs are returned whenever they can be matched back to a supported row,
-even when the raw \code{situationCode} is stale. Use \code{\link[=add_shift_times]{add_shift_times()}} with
-\code{\link[=shift_chart]{shift_chart()}} (or \code{\link[=shift_charts]{shift_charts()}}) to add on-ice shift timing columns.
+even when the raw \code{situationCode} is stale. For \code{blocked-shot} rows, \code{xCoord},
+\code{yCoord}, \code{xCoordNorm}, \code{yCoordNorm}, \code{distance}, and \code{angle} describe the
+recorded block location, not the original shot-release location. Use
+\code{\link[=add_shift_times]{add_shift_times()}} with \code{\link[=shift_chart]{shift_chart()}} (or \code{\link[=shift_charts]{shift_charts()}}) to add on-ice
+shift timing columns.
 }
 \examples{
 # May take >5s, so skip.

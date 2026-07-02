@@ -1,4 +1,9 @@
 # nhlscraper 0.7.0.9000 (development version)
+- `gc_play_by_play()` and `wsc_play_by_play()` now assign blocked-shot `zoneCode`
+  from the normalized block location, so teammate blocks no longer get blindly
+  flipped to the wrong zone. Blocked-shot coordinates and derived distance/angle
+  continue to describe the recorded block location, not the shot-release
+  location.
 
 # nhlscraper 0.7.0
 - `calculate_expected_goals()` now scores against the completed rolling XGBoost xG model assets from the companion [NHLxG](https://huggingface.co/datasets/RentoSaijo/NHLxG) project.

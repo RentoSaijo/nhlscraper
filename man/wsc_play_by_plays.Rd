@@ -19,7 +19,9 @@ data.frame with one row per event (play) per game
 \description{
 \code{wsc_play_by_plays()} downloads the cleaned season-level World Showcase
 parquet snapshot and pads \code{situationCode} to the four-character public
-format.
+format. For \code{blocked-shot} rows, \code{xCoord}, \code{yCoord}, \code{xCoordNorm},
+\code{yCoordNorm}, \code{distance}, and \code{angle} describe the recorded block location,
+not the original shot-release location.
 }
 \examples{
 # May take >5s, so skip.

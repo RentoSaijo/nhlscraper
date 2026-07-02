@@ -18,7 +18,10 @@ data.frame with one row per event (play) per game
 }
 \description{
 \code{gc_play_by_plays()} downloads the cleaned season-level GameCenter parquet
-snapshot and pads \code{situationCode} to the four-character public format.
+snapshot and pads \code{situationCode} to the four-character public format. For
+\code{blocked-shot} rows, \code{xCoord}, \code{yCoord}, \code{xCoordNorm}, \code{yCoordNorm},
+\code{distance}, and \code{angle} describe the recorded block location, not the
+original shot-release location.
 }
 \examples{
 # May take >5s, so skip.

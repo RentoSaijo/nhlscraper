@@ -303,17 +303,131 @@ testthat::test_that('wsc_play_by_play() returns the public schema with utc and n
 })
 
 # Run pbp schema tests.
+testthat::test_that('cleaned play-by-play normalizes blocked-shot zones from block location', {
+  game_id <- 2010020001L
+  gc_raw <- data.frame(
+    eventId = 1:5,
+    timeInPeriod = c('00:10', '00:20', '00:30', '00:40', '00:50'),
+    timeRemaining = c('19:50', '19:40', '19:30', '19:20', '19:10'),
+    situationCode = rep('1551', 5L),
+    homeTeamDefendingSide = rep('left', 5L),
+    typeCode = c(502L, 506L, 506L, 508L, 508L),
+    typeDescKey = c(
+      'faceoff',
+      'shot-on-goal',
+      'shot-on-goal',
+      'blocked-shot',
+      'blocked-shot'
+    ),
+    sortOrder = 1:5,
+    periodDescriptor.number = rep(1L, 5L),
+    periodDescriptor.periodType = rep('REG', 5L),
+    periodDescriptor.maxRegulationPeriods = rep(3L, 5L),
+    details.eventOwnerTeamId = c(10L, 10L, 20L, 10L, 10L),
+    details.winningPlayerId = c(11L, rep(NA_integer_, 4L)),
+    details.losingPlayerId = c(21L, rep(NA_integer_, 4L)),
+    details.xCoord = c(0, 70, -70, 64, 79),
+    details.yCoord = c(0, 5, -5, 8, -2),
+    details.zoneCode = c('N', 'O', 'O', 'D', 'O'),
+    details.shootingPlayerId = c(NA_integer_, 101L, 201L, 102L, 103L),
+    details.blockingPlayerId = c(rep(NA_integer_, 3L), 202L, 104L),
+    details.goalieInNetId = c(NA_integer_, 30L, 40L, NA_integer_, NA_integer_),
+    details.awaySOG = c(0L, 0L, 1L, 1L, 1L),
+    details.homeSOG = c(0L, 1L, 1L, 1L, 1L),
+    details.awayScore = rep(0L, 5L),
+    details.homeScore = rep(0L, 5L),
+    stringsAsFactors = FALSE
+  )
+  wsc_raw <- data.frame(
+    id = 1001:1005,
+    eventId = gc_raw$eventId,
+    period = rep(1L, 5L),
+    timeInPeriod = gc_raw$timeInPeriod,
+    secondsRemaining = c(1190L, 1180L, 1170L, 1160L, 1150L),
+    situationCode = gc_raw$situationCode,
+    typeCode = gc_raw$typeCode,
+    typeDescKey = gc_raw$typeDescKey,
+    homeTeamDefendingSide = gc_raw$homeTeamDefendingSide,
+    sortOrder = gc_raw$sortOrder,
+    utc = rep('2010-10-07T00:00:10Z', 5L),
+    eventOwnerTeamId = gc_raw$details.eventOwnerTeamId,
+    losingPlayerId = gc_raw$details.losingPlayerId,
+    winningPlayerId = gc_raw$details.winningPlayerId,
+    xCoord = gc_raw$details.xCoord,
+    yCoord = gc_raw$details.yCoord,
+    zoneCode = gc_raw$details.zoneCode,
+    shootingPlayerId = gc_raw$details.shootingPlayerId,
+    blockingPlayerId = gc_raw$details.blockingPlayerId,
+    goalieInNetId = gc_raw$details.goalieInNetId,
+    awaySOG = gc_raw$details.awaySOG,
+    homeSOG = gc_raw$details.homeSOG,
+    awayScore = gc_raw$details.awayScore,
+    homeScore = gc_raw$details.homeScore,
+    stringsAsFactors = FALSE
+  )
+  pbp_meta <- list(
+    rosterSpots = data.frame(),
+    homeTeam = list(id = 10L, abbrev = 'HOM'),
+    awayTeam = list(id = 20L, abbrev = 'AWY')
+  )
+  gc_out <- .clean_public_pbp_plays(
+    plays = .prepare_gc_public_pbp_plays(gc_raw, game_id),
+    game = game_id,
+    pbp_meta = pbp_meta,
+    html_rows = data.frame(),
+    source = 'gc'
+  )
+  wsc_out <- .clean_public_pbp_plays(
+    plays = .prepare_wsc_public_pbp_plays(wsc_raw, game_id),
+    game = game_id,
+    pbp_meta = pbp_meta,
+    html_rows = data.frame(),
+    source = 'wsc'
+  )
+  gc_blocked <- gc_out[gc_out$eventTypeDescKey == 'blocked-shot', ]
+  wsc_blocked <- wsc_out[wsc_out$eventTypeDescKey == 'blocked-shot', ]
+  testthat::expect_equal(gc_blocked$zoneCode, c('O', 'O'))
+  testthat::expect_equal(wsc_blocked$zoneCode, gc_blocked$zoneCode)
+  testthat::expect_equal(gc_blocked$xCoordNorm, c(64, 79))
+  testthat::expect_equal(wsc_blocked$xCoordNorm, gc_blocked$xCoordNorm)
+  testthat::expect_equal(gc_blocked$xCoord, c(64, 79))
+})
+
+# Run pbp schema tests.
+testthat::test_that('coordinate inference ignores blocked shots when other zone rows exist', {
+  pbp <- data.frame(
+    gameId = rep(1L, 2L),
+    eventId = 1:2,
+    periodNumber = c(1L, 1L),
+    isHome = c(TRUE, TRUE),
+    eventTypeDescKey = c('blocked-shot', 'shot-on-goal'),
+    zoneCode = c('O', 'O'),
+    xCoord = c(-80, 70),
+    yCoord = c(0, 0),
+    strengthState = c('even-strength', 'even-strength'),
+    stringsAsFactors = FALSE
+  )
+  out <- .normalize_coordinates(pbp)
+  testthat::expect_equal(out$homeTeamDefendingSide, c('left', 'left'))
+  testthat::expect_equal(out$xCoordNorm[out$eventTypeDescKey == 'shot-on-goal'], 70)
+})
+
+# Run pbp schema tests.
 testthat::test_that('raw play-by-play helpers return flattened raw source rows', {
   gc_raw <- data.frame(
     eventId = 1:2,
     sortOrder = 1:2,
     periodDescriptor.number = c(1L, 1L),
+    typeDescKey = c('blocked-shot', 'shot-on-goal'),
+    details.zoneCode = c('O', 'O'),
     stringsAsFactors = FALSE
   )
   wsc_raw <- data.frame(
     id = c(10L, 11L),
     eventId = 1:2,
     sortOrder = 1:2,
+    typeDescKey = c('blocked-shot', 'shot-on-goal'),
+    zoneCode = c('O', 'O'),
     stringsAsFactors = FALSE
   )
   testthat::local_mocked_bindings(
@@ -334,9 +448,11 @@ testthat::test_that('raw play-by-play helpers return flattened raw source rows',
   testthat::expect_equal(names(gc_out)[1], 'gameId')
   testthat::expect_equal(gc_out$gameId, rep(2010020001L, 2L))
   testthat::expect_true('periodDescriptor.number' %in% names(gc_out))
+  testthat::expect_equal(gc_out$details.zoneCode[gc_out$typeDescKey == 'blocked-shot'], 'O')
   testthat::expect_equal(names(wsc_out)[1], 'gameId')
   testthat::expect_equal(wsc_out$gameId, rep(2010020001L, 2L))
   testthat::expect_false('id' %in% names(wsc_out))
+  testthat::expect_equal(wsc_out$zoneCode[wsc_out$typeDescKey == 'blocked-shot'], 'O')
 })
 
 # Run pbp schema tests.
