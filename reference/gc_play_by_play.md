@@ -10,7 +10,10 @@ HTML-report-derived on-ice player ID columns such as
 `homeGoaliePlayerId`, `awayGoaliePlayerId`, `homeSkater1PlayerId`, and
 any additional overflow skater slots required by the game. HTML report
 skater and goalie IDs are returned whenever they can be matched back to
-a supported row, even when the raw `situationCode` is stale. Use
+a supported row, even when the raw `situationCode` is stale. For
+`blocked-shot` rows, `xCoord`, `yCoord`, `xCoordNorm`, `yCoordNorm`,
+`distance`, and `angle` describe the recorded block location, not the
+original shot-release location. Use
 [`add_shift_times()`](https://rentosaijo.github.io/nhlscraper/reference/add_shift_times.md)
 with
 [`shift_chart()`](https://rentosaijo.github.io/nhlscraper/reference/shift_chart.md)

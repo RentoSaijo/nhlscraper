@@ -189,8 +189,8 @@ public schema.</p>
 <caption>Conservative repairs made before public output is
 finalized.</caption>
 <colgroup>
-<col width="31%">
-<col width="68%">
+<col width="26%">
+<col width="73%">
 </colgroup>
 <thead><tr class="header">
 <th align="left">issue</th>
@@ -209,8 +209,8 @@ is known.</td>
 </tr>
 <tr class="odd">
 <td align="left">Blocked-shot zone perspective</td>
-<td align="left">Normalize blocked shots to the shooting-team
-perspective.</td>
+<td align="left">Assign blocked-shot zone from the shooting-team
+perspective at the recorded block location.</td>
 </tr>
 <tr class="even">
 <td align="left">Impossible period-boundary order</td>
@@ -228,6 +228,14 @@ stable schemas.</td>
 directly, the package derives it. When something would require a hockey
 assumption that cannot be verified from the public sources, the package
 leaves the public state alone.</p>
+<p>For blocked shots, the NHL feeds record <code>xCoord</code> and
+<code>yCoord</code> at the block location rather than the original
+shot-release location. The normalized coordinates,
+<code>distance</code>, and <code>angle</code> keep that block-location
+meaning. The cleaned <code>zoneCode</code> is assigned from
+<code>xCoordNorm</code> so it describes where the block occurred from
+the shooting team’s perspective, including rows where a teammate blocks
+the attempted shot.</p>
 </div>
 <div class="section level2">
 <h2 id="situationcode-means-state-not-identity">

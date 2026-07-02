@@ -2,6 +2,14 @@
 
 ## nhlscraper 0.7.0.9000 (development version)
 
+- [`gc_play_by_play()`](https://rentosaijo.github.io/nhlscraper/reference/gc_play_by_play.md)
+  and
+  [`wsc_play_by_play()`](https://rentosaijo.github.io/nhlscraper/reference/wsc_play_by_play.md)
+  now assign blocked-shot `zoneCode` from the normalized block location,
+  so teammate blocks no longer get blindly flipped to the wrong zone.
+  Blocked-shot coordinates and derived distance/angle continue to
+  describe the recorded block location, not the shot-release location.
+
 ## nhlscraper 0.7.0
 
 CRAN release: 2026-06-28

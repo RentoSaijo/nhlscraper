@@ -72,7 +72,7 @@ public schema.
 |:---|:---|
 | Source-specific column names | Rename to stable public names such as periodNumber and eventTypeDescKey. |
 | Goal row without shootingPlayerId | Use scoringPlayerId as shootingPlayerId when the scorer is known. |
-| Blocked-shot zone perspective | Normalize blocked shots to the shooting-team perspective. |
+| Blocked-shot zone perspective | Assign blocked-shot zone from the shooting-team perspective at the recorded block location. |
 | Impossible period-boundary order | Drop or repair only the small set of rows that violate clock boundaries. |
 | Missing public output columns | Allocate typed NA columns so GC and WSC outputs keep stable schemas. |
 
@@ -82,6 +82,13 @@ The design goal is auditability. When something can be derived directly,
 the package derives it. When something would require a hockey assumption
 that cannot be verified from the public sources, the package leaves the
 public state alone.
+
+For blocked shots, the NHL feeds record `xCoord` and `yCoord` at the
+block location rather than the original shot-release location. The
+normalized coordinates, `distance`, and `angle` keep that block-location
+meaning. The cleaned `zoneCode` is assigned from `xCoordNorm` so it
+describes where the block occurred from the shooting team’s perspective,
+including rows where a teammate blocks the attempted shot.
 
 ## `situationCode` Means State, Not Identity
 

@@ -2,7 +2,9 @@
 
 `wsc_play_by_plays()` downloads the cleaned season-level World Showcase
 parquet snapshot and pads `situationCode` to the four-character public
-format.
+format. For `blocked-shot` rows, `xCoord`, `yCoord`, `xCoordNorm`,
+`yCoordNorm`, `distance`, and `angle` describe the recorded block
+location, not the original shot-release location.
 
 ## Usage
 

@@ -7,8 +7,11 @@ secondsElapsedInGame while omitting GC-only clip fields. It also includes
 the same HTML-report-derived on-ice player ID columns added to the GC output,
 including dynamically expanded overflow skater slots when needed. HTML report
 skater and goalie IDs are returned whenever they can be matched back to a
-supported row, even when the raw situationCode is stale. Use add_shift_times()
-with shift_chart() (or shift_charts()) to add on-ice shift timing columns."><meta property="og:description" content="wsc_play_by_play() retrieves the World Showcase (WSC) play-by-play for a
+supported row, even when the raw situationCode is stale. For blocked-shot
+rows, xCoord, yCoord, xCoordNorm, yCoordNorm, distance, and angle
+describe the recorded block location, not the original shot-release location.
+Use add_shift_times() with shift_chart() (or shift_charts()) to add
+on-ice shift timing columns."><meta property="og:description" content="wsc_play_by_play() retrieves the World Showcase (WSC) play-by-play for a
 game as a data.frame where each row represents an event. The returned
 schema follows the same cleaned public-facing naming as gc_play_by_play(),
 including servedByPlayerId, goalieInNetId, and utc immediately after
@@ -16,8 +19,11 @@ secondsElapsedInGame while omitting GC-only clip fields. It also includes
 the same HTML-report-derived on-ice player ID columns added to the GC output,
 including dynamically expanded overflow skater slots when needed. HTML report
 skater and goalie IDs are returned whenever they can be matched back to a
-supported row, even when the raw situationCode is stale. Use add_shift_times()
-with shift_chart() (or shift_charts()) to add on-ice shift timing columns."><meta property="og:image" content="https://rentosaijo.github.io/nhlscraper/logo.png"></head><body>
+supported row, even when the raw situationCode is stale. For blocked-shot
+rows, xCoord, yCoord, xCoordNorm, yCoordNorm, distance, and angle
+describe the recorded block location, not the original shot-release location.
+Use add_shift_times() with shift_chart() (or shift_charts()) to add
+on-ice shift timing columns."><meta property="og:image" content="https://rentosaijo.github.io/nhlscraper/logo.png"></head><body>
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
 
 
@@ -80,8 +86,11 @@ including <code>servedByPlayerId</code>, <code>goalieInNetId</code>, and <code>u
 the same HTML-report-derived on-ice player ID columns added to the GC output,
 including dynamically expanded overflow skater slots when needed. HTML report
 skater and goalie IDs are returned whenever they can be matched back to a
-supported row, even when the raw <code>situationCode</code> is stale. Use <code><a href="add_shift_times.html">add_shift_times()</a></code>
-with <code><a href="shift_chart.html">shift_chart()</a></code> (or <code><a href="shift_charts.html">shift_charts()</a></code>) to add on-ice shift timing columns.</p>
+supported row, even when the raw <code>situationCode</code> is stale. For <code>blocked-shot</code>
+rows, <code>xCoord</code>, <code>yCoord</code>, <code>xCoordNorm</code>, <code>yCoordNorm</code>, <code>distance</code>, and <code>angle</code>
+describe the recorded block location, not the original shot-release location.
+Use <code><a href="add_shift_times.html">add_shift_times()</a></code> with <code><a href="shift_chart.html">shift_chart()</a></code> (or <code><a href="shift_charts.html">shift_charts()</a></code>) to add
+on-ice shift timing columns.</p>
     </div>
 
     <div class="section level2">
