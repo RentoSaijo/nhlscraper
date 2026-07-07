@@ -1,7 +1,7 @@
-# nhlscraper: Scrape, clean, and visualize NHL data
+# nhlscraper: Scraper for National Hockey League Data on R
 
-`nhlscraper` is an R package to scrape, clean, and visualize NHL data
-via the NHL and ESPN APIs. It primarily wraps 125+
+`nhlscraper` is an R package to scrape and clean NHL data via the NHL
+and ESPN APIs. It primarily wraps 125+
 [endpoints](https://github.com/RentoSaijo/nhlscraper/wiki) from
 high-level multi-season summaries and award winners to low-level
 decisecond replays and bookmakers' odds, making them significantly more
@@ -72,9 +72,12 @@ Useful links:
 **Maintainer**: Rento Saijo <rentosaijo0527@gmail.com>
 ([ORCID](https://orcid.org/0009-0008-4919-7349)) \[copyright holder\]
 
-Other contributors:
+Authors:
 
-- Lars Skytte <lars.sunesen.skytte@gmail.com> \[contributor\]
+- Rento Saijo <rentosaijo0527@gmail.com>
+  ([ORCID](https://orcid.org/0009-0008-4919-7349)) \[copyright holder\]
+
+- Lars Skytte <lars.sunesen.skytte@gmail.com>
 
 - Jack Pallotta <jackjpallotta@gmail.com>
-  ([ORCID](https://orcid.org/0009-0004-0744-6977)) \[contributor\]
+  ([ORCID](https://orcid.org/0009-0004-0744-6977))

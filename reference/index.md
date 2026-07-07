@@ -6,7 +6,7 @@ Package overview and help
 
 - [`nhlscraper`](https://rentosaijo.github.io/nhlscraper/reference/nhlscraper.md)
   [`nhlscraper-package`](https://rentosaijo.github.io/nhlscraper/reference/nhlscraper.md)
-  : nhlscraper: Scrape, clean, and visualize NHL data
+  : nhlscraper: Scraper for National Hockey League Data on R
 
 ## High-level
 
