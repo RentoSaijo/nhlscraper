@@ -4,9 +4,9 @@
 \name{nhlscraper}
 \alias{nhlscraper}
 \alias{nhlscraper-package}
-\title{nhlscraper: Scrape, clean, and visualize NHL data}
+\title{nhlscraper: Scraper for National Hockey League Data on R}
 \description{
-\code{nhlscraper} is an R package to scrape, clean, and visualize NHL data via
+\code{nhlscraper} is an R package to scrape and clean NHL data via
 the NHL and ESPN APIs. It primarily wraps 125+
 \href{https://github.com/RentoSaijo/nhlscraper/wiki}{endpoints} from high-level
 multi-season summaries and award winners to low-level decisecond replays and
@@ -78,10 +78,11 @@ Useful links:
 \author{
 \strong{Maintainer}: Rento Saijo \email{rentosaijo0527@gmail.com} (\href{https://orcid.org/0009-0008-4919-7349}{ORCID}) [copyright holder]
 
-Other contributors:
+Authors:
 \itemize{
-  \item Lars Skytte \email{lars.sunesen.skytte@gmail.com} [contributor]
-  \item Jack Pallotta \email{jackjpallotta@gmail.com} (\href{https://orcid.org/0009-0004-0744-6977}{ORCID}) [contributor]
+  \item Rento Saijo \email{rentosaijo0527@gmail.com} (\href{https://orcid.org/0009-0008-4919-7349}{ORCID}) [copyright holder]
+  \item Lars Skytte \email{lars.sunesen.skytte@gmail.com}
+  \item Jack Pallotta \email{jackjpallotta@gmail.com} (\href{https://orcid.org/0009-0004-0744-6977}{ORCID})
 }
 
 }
