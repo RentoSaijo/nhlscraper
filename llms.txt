@@ -412,8 +412,8 @@ Functions to access data about the games
   : Access the World Showcase (WSC) summary for a game
 - [`boxscore()`](https://rentosaijo.github.io/nhlscraper/reference/boxscore.md)
   : Access the boxscore for a game, team, and position
-- [`game_rosters()`](https://rentosaijo.github.io/nhlscraper/reference/game_rosters.md)
-  : Access the rosters for a game
+- [`game_roster()`](https://rentosaijo.github.io/nhlscraper/reference/game_roster.md)
+  : Access the roster for a game
 - [`gc_play_by_play()`](https://rentosaijo.github.io/nhlscraper/reference/gc_play_by_play.md)
   [`gc_pbp()`](https://rentosaijo.github.io/nhlscraper/reference/gc_play_by_play.md)
   : Access the GameCenter (GC) play-by-play for a game
@@ -449,11 +449,13 @@ Functions to help analyze the play-by-play data
 
 ### Load
 
-Functions to load pre-scraped contracts and full season play-by-plays &
-shift charts
+Functions to load pre-scraped contracts, rosters, play-by-plays, shift
+charts, and replays
 
 - [`contracts()`](https://rentosaijo.github.io/nhlscraper/reference/contracts.md)
   : Access all contracts from packaged internal data
+- [`game_rosters()`](https://rentosaijo.github.io/nhlscraper/reference/game_rosters.md)
+  : Access the game rosters for a season
 - [`gc_play_by_plays()`](https://rentosaijo.github.io/nhlscraper/reference/gc_play_by_plays.md)
   [`gc_pbps()`](https://rentosaijo.github.io/nhlscraper/reference/gc_play_by_plays.md)
   : Access the GameCenter (GC) play-by-plays for a season

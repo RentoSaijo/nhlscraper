@@ -55,6 +55,8 @@
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.7.0.9000" id="nhlscraper-0709000-development-version">nhlscraper 0.7.0.9000 (development version)<a class="anchor" aria-label="anchor" href="#nhlscraper-0709000-development-version"></a></h2>
 <ul><li>
+<code><a href="../reference/game_roster.html">game_roster()</a></code> returns the dressed players for one game with <code>gameId</code> as its leading column, while <code><a href="../reference/game_rosters.html">game_rosters()</a></code> loads the corresponding season-level roster snapshot from NHL_DB.</li>
+<li>
 <code><a href="../reference/gc_play_by_play.html">gc_play_by_play()</a></code> and <code><a href="../reference/wsc_play_by_play.html">wsc_play_by_play()</a></code> now assign blocked-shot <code>zoneCode</code> from the normalized block location, so teammate blocks no longer get blindly flipped to the wrong zone. Blocked-shot coordinates and derived distance/angle continue to describe the recorded block location, not the shot-release location.</li>
 </ul></div>
     <div class="section level2">
@@ -560,7 +562,7 @@
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.1.</p>
 </div>
 
     </footer></div>

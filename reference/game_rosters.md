@@ -1,29 +1,29 @@
-# Access the rosters for a game
+# Access the game rosters for a season
 
-`game_rosters()` returns the roster spots from a GameCenter play-by-play
-payload with one row per dressed player, including team ID, sweater
-number, position, and normalized player name fields.
+`game_rosters()` downloads the stored season-level GameCenter roster
+parquet snapshot with one row per dressed player per game.
 
 ## Usage
 
 ``` r
-game_rosters(game = 2023030417)
+game_rosters(season = 20242025)
 ```
 
 ## Arguments
 
-- game:
+- season:
 
-  integer ID (e.g., 2025020275); see
-  [`games()`](https://rentosaijo.github.io/nhlscraper/reference/games.md)
+  integer in YYYYYYYY (e.g., 20242025); see
+  [`seasons()`](https://rentosaijo.github.io/nhlscraper/reference/seasons.md)
   for reference
 
 ## Value
 
-data.frame with one row per player
+data.frame with one row per player per game
 
 ## Examples
 
 ``` r
-rosters_Martin_Necas_legacy_game <- game_rosters(game = 2025020275)
+# May take >5s, so skip.
+game_rosters_20212022 <- game_rosters(season = 20212022)
 ```

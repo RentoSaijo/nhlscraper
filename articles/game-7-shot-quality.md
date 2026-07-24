@@ -10,7 +10,7 @@ finishing; the third period was the real separator.
 This article uses
 [`gc_summary()`](https://rentosaijo.github.io/nhlscraper/reference/gc_summary.md),
 [`gc_play_by_play()`](https://rentosaijo.github.io/nhlscraper/reference/gc_play_by_play.md),
-[`game_rosters()`](https://rentosaijo.github.io/nhlscraper/reference/game_rosters.md),
+[`game_roster()`](https://rentosaijo.github.io/nhlscraper/reference/game_roster.md),
 and
 [`calculate_expected_goals()`](https://rentosaijo.github.io/nhlscraper/reference/calculate_expected_goals.md)
 to ask:
@@ -58,7 +58,7 @@ if (!xg_model_available) {
   pbp_xg[['xG']] <- NA_real_
   pbp_xg[['xG']][shot_mask] <- pmin(pmax(fallback_xg[shot_mask], 0.005), 0.65)
 }
-rosters <- nhlscraper::game_rosters(game_id)
+rosters <- nhlscraper::game_roster(game_id)
 
 # Build team labels.
 home_id <- game_summary[['homeTeam']][['id']]

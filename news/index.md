@@ -2,6 +2,11 @@
 
 ## nhlscraper 0.7.0.9000 (development version)
 
+- [`game_roster()`](https://rentosaijo.github.io/nhlscraper/reference/game_roster.md)
+  returns the dressed players for one game with `gameId` as its leading
+  column, while
+  [`game_rosters()`](https://rentosaijo.github.io/nhlscraper/reference/game_rosters.md)
+  loads the corresponding season-level roster snapshot from NHL_DB.
 - [`gc_play_by_play()`](https://rentosaijo.github.io/nhlscraper/reference/gc_play_by_play.md)
   and
   [`wsc_play_by_play()`](https://rentosaijo.github.io/nhlscraper/reference/wsc_play_by_play.md)
