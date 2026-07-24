@@ -269,6 +269,32 @@ contracts <- function() {
   play_by_plays
 }
 
+#' Access the game rosters for a season
+#'
+#' `game_rosters()` downloads the stored season-level GameCenter roster parquet
+#' snapshot with one row per dressed player per game.
+#'
+#' @inheritParams roster
+#' @returns data.frame with one row per player per game
+#' @examples
+#' # May take >5s, so skip.
+#' \donttest{game_rosters_20212022 <- game_rosters(season = 20212022)}
+#' @export
+game_rosters <- function(season = 20242025) {
+  tryCatch(
+    expr = {
+      .read_remote_parquet(sprintf(
+        'data/game/rosters/NHL_ROSTERS_%s.parquet',
+        season
+      ))
+    },
+    error = function(e) {
+      message('Invalid argument(s); refer to help file.')
+      data.frame()
+    }
+  )
+}
+
 #' Access the raw GameCenter (GC) play-by-plays for a season
 #' 
 #' `gc_play_by_plays_raw()` downloads the stored season-level GameCenter

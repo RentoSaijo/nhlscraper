@@ -181,27 +181,35 @@ boxscore <- function(
   )
 }
 
-#' Access the rosters for a game
+#' Access the roster for a game
 #'
-#' `game_rosters()` returns the roster spots from a GameCenter play-by-play
-#' payload with one row per dressed player, including team ID, sweater number,
-#' position, and normalized player name fields.
+#' `game_roster()` returns the roster spots from a GameCenter play-by-play
+#' payload with one row per dressed player. The result includes game, team, and
+#' player IDs alongside sweater number, position, headshot, and normalized
+#' player name fields.
 #'
 #' @inheritParams gc_summary
 #'
 #' @returns data.frame with one row per player
 #' @examples
-#' rosters_Martin_Necas_legacy_game <- game_rosters(game = 2025020275)
+#' roster_Martin_Necas_legacy_game <- game_roster(game = 2025020275)
 #' @export
-game_rosters <- function(game = 2023030417) {
+game_roster <- function(game = 2023030417) {
   tryCatch(
     expr = {
+      game <- as.integer(game)
       rosters <- .nhl_api(
         path = sprintf('v1/gamecenter/%s/play-by-play', game),
         type = 'w'
       )$rosterSpots
       names(rosters) <- .normalize_locale_names(names(rosters))
       names(rosters) <- .scope_person_name_cols(names(rosters), 'player')
+      rosters$gameId <- game
+      rosters <- rosters[
+        ,
+        c('gameId', setdiff(names(rosters), 'gameId')),
+        drop = FALSE
+      ]
       rosters <- rosters[order(rosters$sweaterNumber), ]
       rosters[order(rosters$teamId), ]
     },

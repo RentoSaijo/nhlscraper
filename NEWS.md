@@ -1,4 +1,7 @@
 # nhlscraper 0.7.0.9000 (development version)
+- `game_roster()` returns the dressed players for one game with `gameId` as its
+  leading column, while `game_rosters()` loads the corresponding season-level
+  roster snapshot from NHL_DB.
 - `gc_play_by_play()` and `wsc_play_by_play()` now assign blocked-shot `zoneCode`
   from the normalized block location, so teammate blocks no longer get blindly
   flipped to the wrong zone. Blocked-shot coordinates and derived distance/angle

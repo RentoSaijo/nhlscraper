@@ -573,7 +573,7 @@ calculate_shift_times_by_situation <- function(game = 2023030417, season = NULL)
       ))
       return(data.frame())
     }
-    roster <- tryCatch(game_rosters(game = game), error = function(e) NULL)
+    roster <- tryCatch(game_roster(game = game), error = function(e) NULL)
     .calculate_shift_times_by_situation_data(
       play_by_play = gc_play_by_play(game = game),
       shift_chart  = shift_chart(game = game),

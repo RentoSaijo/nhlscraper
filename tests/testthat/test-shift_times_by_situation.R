@@ -33,7 +33,7 @@ testthat::test_that('calculate_shift_times_by_situation() splits exact strengths
   testthat::local_mocked_bindings(
     gc_play_by_play = function(game) play_by_play,
     shift_chart = function(game) shift_data,
-    game_rosters = function(game) roster_data,
+    game_roster = function(game) roster_data,
     teams = function() {
       data.frame(
         teamId = c(10L, 20L),

@@ -249,7 +249,7 @@ reference:
       - gc_summary
       - wsc_summary
       - boxscore
-      - game_rosters
+      - game_roster
       - gc_play_by_play
       - gc_play_by_play_raw
       - wsc_play_by_play
@@ -271,9 +271,10 @@ reference:
       
   - subtitle: "Load"
     desc: >
-      Functions to load pre-scraped contracts and full season play-by-plays & shift charts
+      Functions to load pre-scraped contracts, rosters, play-by-plays, shift charts, and replays
     contents:
       - contracts
+      - game_rosters
       - gc_play_by_plays
       - gc_play_by_plays_raw
       - wsc_play_by_plays
