@@ -585,6 +585,298 @@ calculate_shift_times_by_situation <- function(game = 2023030417, season = NULL)
   })
 }
 
+#' Calculate the shared shift chart for a game
+#'
+#' `shared_shift_chart()` computes, from the game's shift chart, every interval during which 
+#' all of the given players were on the ice simultaneously. The players may be teammates or opponents; 
+#' for opponents, the result is their head-to-head matchup time. Each player's shifts are first merged 
+#' into disjoint intervals, so duplicated or overlapping shift rows cannot double-count time. 
+#' For regular-season games, the shootout (period 5) is excluded automatically, as shootout attempts 
+#' are not shared ice time; for playoff games, period 5 and beyond are legitimate overtime periods and 
+#' are kept.
+#'
+#' @param game integer ID (e.g., 2023030417); see [games()] for reference
+#' @param players integer vector of two or more player IDs (e.g., c(8478402, 8477934)); see [players()] for reference
+#' @param minimum_duration numeric threshold in seconds; only shared intervals with `duration > minimum_duration` are returned (default 0, i.e. every genuine overlap; set to e.g. 1 to drop 1-second line-change blips)
+#' @returns data.frame with one row per shared shift, where X in `teamIdX` and `playerIdX` indexes the players in the order provided
+#' @examples
+#' \donttest{
+#' shared_MCD_DRAI <- shared_shift_chart(
+#'   game    = 2023030417,
+#'   players = c(8478402, 8477934)
+#' )
+#' }
+#' @export
+shared_shift_chart <- function(
+    game = 2023030417,
+    players = c(8478402, 8477934),
+    minimum_duration = 0
+) {
+  tryCatch({
+    game             <- as.integer(game)
+    players          <- .validate_shared_players(players)
+    minimum_duration <- suppressWarnings(as.numeric(minimum_duration))
+    if (
+      length(game) != 1L || is.na(game) || game <= 0L ||
+      is.null(players) ||
+      length(minimum_duration) != 1L || is.na(minimum_duration) ||
+      minimum_duration < 0
+    ) {
+      message(paste(
+        'Invalid argument(s); refer to help file.',
+        '\nProvided game:',
+        paste(game, collapse = ', '),
+        '\nProvided players:',
+        paste(players, collapse = ', '),
+        '\nProvided minimum_duration:',
+        paste(minimum_duration, collapse = ', ')
+      ))
+      return(data.frame())
+    }
+    shifts <- shift_chart(game = game)
+    if (!nrow(shifts)) {
+      message(
+        'No shift data returned for game ', game,
+        '; the game may not exist or may not have been played yet.'
+      )
+      return(data.frame())
+    }
+    absent <- setdiff(players, unique(shifts$playerId))
+    if (length(absent)) {
+      message(
+        'Player(s) ', paste(absent, collapse = ', '),
+        ' have no shifts in game ', game, '.'
+      )
+      return(.empty_shared_shift_chart(length(players)))
+    }
+    out <- .compute_shared_shift_chart(shifts, players, minimum_duration)
+    if (!nrow(out)) {
+      message(
+        'All players appeared in game ', game,
+        ' but shared no on-ice intervals (minimum_duration = ',
+        minimum_duration, ').'
+      )
+    }
+    out
+  }, error = function(e) {
+    message('Invalid argument(s); refer to help file.')
+    data.frame()
+  })
+}
+
+#' Calculate the shared shift chart time-on-ice summary for a game
+#'
+#' `shared_shift_chart_summary()` summarizes [shared_shift_chart()] into one row per period: 
+#' the number of shared shifts and the total shared time on ice, alongside each player's identifying 
+#' information from [shift_chart_summary()]. Rows are returned for every non-excluded period in which 
+#' all players logged ice time, including periods with 0 shared seconds; 
+#' the shootout period of regular-season games is excluded to stay consistent with 
+#' [shared_shift_chart()]. Note that `evTimeOnIce`, `ppTimeOnIce`, and `shTimeOnIce` 
+#' are not included, as strength states cannot be derived from shift charts alone; 
+#' see [calculate_shift_times_by_situation()] for situation-specific splits.
+#'
+#' @inheritParams shared_shift_chart
+#' @returns data.frame with one row per period, where X in `teamIdX`, `playerIdX`, etc. indexes the players in the order provided
+#' @examples
+#' \donttest{
+#' shared_summary_MCD_DRAI <- shared_shift_chart_summary(
+#'   game    = 2023030417,
+#'   players = c(8478402, 8477934)
+#' )
+#' }
+#' @export
+shared_shift_chart_summary <- function(
+    game = 2023030417,
+    players = c(8478402, 8477934),
+    minimum_duration = 0
+) {
+  tryCatch({
+    game             <- as.integer(game)
+    players          <- .validate_shared_players(players)
+    minimum_duration <- suppressWarnings(as.numeric(minimum_duration))
+    if (
+      length(game) != 1L || is.na(game) || game <= 0L ||
+      is.null(players) ||
+      length(minimum_duration) != 1L || is.na(minimum_duration) ||
+      minimum_duration < 0
+    ) {
+      message(paste(
+        'Invalid argument(s); refer to help file.',
+        '\nProvided game:',
+        paste(game, collapse = ', '),
+        '\nProvided players:',
+        paste(players, collapse = ', '),
+        '\nProvided minimum_duration:',
+        paste(minimum_duration, collapse = ', ')
+      ))
+      return(data.frame())
+    }
+    shifts <- shift_chart(game = game)
+    if (!nrow(shifts)) {
+      message(
+        'No shift data returned for game ', game,
+        '; the game may not exist or may not have been played yet.'
+      )
+      return(data.frame())
+    }
+    summaries <- shift_chart_summary(game = game)
+    if (!nrow(summaries)) {
+      message('No shift summary data returned for game ', game, '.')
+      return(data.frame())
+    }
+    absent <- setdiff(players, unique(shifts$playerId))
+    if (length(absent)) {
+      message(
+        'Player(s) ', paste(absent, collapse = ', '),
+        ' have no shifts in game ', game, '.'
+      )
+      return(data.frame())
+    }
+    .compute_shared_shift_chart_summary(
+      shifts,
+      summaries,
+      players,
+      minimum_duration
+    )
+  }, error = function(e) {
+    message('Invalid argument(s); refer to help file.')
+    data.frame()
+  })
+}
+
+#' Calculate the shared shift charts for a season
+#'
+#' `shared_shift_charts()` computes, from the stored season-level shift-chart parquet snapshot, 
+#' every interval during which all of the given players were on the ice simultaneously, 
+#' across all games of the season. The season data is downloaded once via [shift_charts()] 
+#' and all computation is local; games in which any player has no shifts contribute no rows. 
+#' The shootout period of regular-season games is excluded automatically per game.
+#'
+#' @param season integer in YYYYYYYY (e.g., 20242025); see [seasons()] for reference
+#' @inheritParams shared_shift_chart
+#' @returns data.frame with one row per shared shift, where X in `teamIdX` and `playerIdX` indexes the players in the order provided
+#' @examples
+#' \donttest{
+#' shared_MCD_DRAI_20242025 <- shared_shift_charts(
+#'   season  = 20242025,
+#'   players = c(8478402, 8477934)
+#' )
+#' }
+#' @export
+shared_shift_charts <- function(
+    season = 20242025,
+    players = c(8478402, 8477934),
+    minimum_duration = 0
+) {
+  tryCatch({
+    players          <- .validate_shared_players(players)
+    minimum_duration <- suppressWarnings(as.numeric(minimum_duration))
+    if (
+      is.null(players) ||
+      length(minimum_duration) != 1L || is.na(minimum_duration) ||
+      minimum_duration < 0
+    ) {
+      message(paste(
+        'Invalid argument(s); refer to help file.',
+        '\nProvided players:',
+        paste(players, collapse = ', '),
+        '\nProvided minimum_duration:',
+        paste(minimum_duration, collapse = ', ')
+      ))
+      return(data.frame())
+    }
+    shifts <- shift_charts(season = season)
+    if (!nrow(shifts)) {
+      message('No shift data returned for season ', season, '.')
+      return(data.frame())
+    }
+    out <- .compute_shared_shift_chart(shifts, players, minimum_duration)
+    if (!nrow(out)) {
+      message(
+        'No shared shifts found for the provided players in season ',
+        season, '.'
+      )
+    }
+    out
+  }, error = function(e) {
+    message('Invalid argument(s); refer to help file.')
+    data.frame()
+  })
+}
+
+#' Calculate the shared shift chart time-on-ice summaries for a season
+#'
+#' `shared_shift_chart_summaries()` summarizes [shared_shift_charts()] into one row per game per period: 
+#' the number of shared shifts and the total shared time on ice, alongside each player's identifying 
+#' information from [shift_chart_summaries()]. Both season snapshots are downloaded once and all 
+#' computation is local. Rows are returned for every non-excluded period in which all players logged 
+#' ice time, including periods and games with 0 shared seconds; games in which any player did not log 
+#' ice time contribute no rows. The shootout period of regular-season games is excluded automatically 
+#' per game. Note that `evTimeOnIce`, `ppTimeOnIce`, and `shTimeOnIce` are not included, 
+#' as strength states cannot be derived from shift charts alone; see [calculate_shift_times_by_situation()] 
+#' for situation-specific splits.
+#'
+#' @inheritParams shared_shift_charts
+#' @returns data.frame with one row per game per period, where X in `teamIdX`, `playerIdX`, etc. indexes the players in the order provided
+#' @examples
+#' \donttest{
+#' shared_summaries_MCD_DRAI_20242025 <- shared_shift_chart_summaries(
+#'   season  = 20242025,
+#'   players = c(8478402, 8477934)
+#' )
+#' }
+#' @export
+shared_shift_chart_summaries <- function(
+    season = 20242025,
+    players = c(8478402, 8477934),
+    minimum_duration = 0
+) {
+  tryCatch({
+    players          <- .validate_shared_players(players)
+    minimum_duration <- suppressWarnings(as.numeric(minimum_duration))
+    if (
+      is.null(players) ||
+      length(minimum_duration) != 1L || is.na(minimum_duration) ||
+      minimum_duration < 0
+    ) {
+      message(paste(
+        'Invalid argument(s); refer to help file.',
+        '\nProvided players:',
+        paste(players, collapse = ', '),
+        '\nProvided minimum_duration:',
+        paste(minimum_duration, collapse = ', ')
+      ))
+      return(data.frame())
+    }
+    shifts <- shift_charts(season = season)
+    if (!nrow(shifts)) {
+      message('No shift data returned for season ', season, '.')
+      return(data.frame())
+    }
+    summaries <- shift_chart_summaries(season = season)
+    if (!nrow(summaries)) {
+      message('No shift summary data returned for season ', season, '.')
+      return(data.frame())
+    }
+    out <- .compute_shared_shift_chart_summary(
+      shifts,
+      summaries,
+      players,
+      minimum_duration
+    )
+    if (!nrow(out)) {
+      message(
+        'The provided players never logged ice time in the same game in',
+        ' season ', season, '.'
+      )
+    }
+    out
+  }, error = function(e) {
+    message('Invalid argument(s); refer to help file.')
+    data.frame()
+  })
+}
+
 # Internal Helpers ---------------------------------------------------------
 
 #' Calculate shift times by situation from supplied data
@@ -2600,4 +2892,396 @@ calculate_shift_times_by_situation <- function(game = 2023030417, season = NULL)
   }
   .require_public_pbp_columns(play_by_play, 'periodNumber', 'add_shift_times')
   add_shift_times(play_by_play, shift_data)
+}
+
+#' Extract the game type from a game ID
+#'
+#' `.shared_game_type()` returns the game type code encoded in digits 5-6 of an NHL game ID (YYYYTTGGGGG): 1 = preseason, 2 = regular season, 3 = playoffs.
+#'
+#' @param game integer game ID
+#' @returns integer game type code
+#' @keywords internal
+.shared_game_type <- function(game) {
+  as.integer(substr(formatC(as.integer(game), width = 10L, flag = '0'), 5L, 6L))
+}
+
+#' Determine the periods to exclude from shared-shift computation
+#'
+#' `.shared_excluded_periods()` returns period 5 for shootout-eligible games, since their period 5 is the shootout: players take individual penalty shots and are not on the ice simultaneously, so overlapping shootout shift rows must not count as shared ice time. Eligibility is resolved by [.public_pbp_is_shootout_eligible()], so regular-season games and the 2019-20 Return-to-Play round-robin games (which carry playoff IDs but used regular-season overtime rules) are covered. For all other playoff games, period 5 and beyond are legitimate overtime periods and nothing is excluded.
+#'
+#' @param game integer game ID
+#' @returns integer vector of period numbers to exclude, or NULL
+#' @keywords internal
+.shared_excluded_periods <- function(game) {
+  game <- as.integer(game)
+  if (isTRUE(.public_pbp_is_shootout_eligible(game, .shared_game_type(game)))) {
+    5L
+  } else {
+    NULL
+  }
+}
+
+#' Build the column names of a shared shift chart
+#'
+#' `.shared_shift_chart_columns()` returns the output column names for a shared shift chart over `n` players, with each player's identifying columns grouped together (teamId1, playerId1, teamId2, playerId2, ...).
+#'
+#' @param n integer number of players
+#' @returns character vector of column names
+#' @keywords internal
+.shared_shift_chart_columns <- function(n) {
+  c(
+    'gameId',
+    as.vector(rbind(
+      paste0('teamId', seq_len(n)),
+      paste0('playerId', seq_len(n))
+    )),
+    'shiftNumber',
+    'periodNumber',
+    'startTime',
+    'endTime',
+    'startSecondsElapsedInPeriod',
+    'endSecondsElapsedInPeriod',
+    'startSecondsElapsedInGame',
+    'endSecondsElapsedInGame',
+    'duration'
+  )
+}
+
+#' Build an empty shared shift chart
+#'
+#' `.empty_shared_shift_chart()` returns a 0-row data.frame with the shared shift chart schema for `n` players.
+#'
+#' @param n integer number of players
+#' @returns data.frame with 0 rows
+#' @keywords internal
+.empty_shared_shift_chart <- function(n) {
+  out <- data.frame(gameId = integer(), stringsAsFactors = FALSE)
+  for (i in seq_len(n)) {
+    out[[paste0('teamId', i)]]   <- integer()
+    out[[paste0('playerId', i)]] <- integer()
+  }
+  out$shiftNumber                 <- integer()
+  out$periodNumber                <- integer()
+  out$startTime                   <- character()
+  out$endTime                     <- character()
+  out$startSecondsElapsedInPeriod <- integer()
+  out$endSecondsElapsedInPeriod   <- integer()
+  out$startSecondsElapsedInGame   <- integer()
+  out$endSecondsElapsedInGame     <- integer()
+  out$duration                    <- integer()
+  out
+}
+
+#' Merge one player's shifts into disjoint intervals
+#'
+#' `.merge_shared_player_intervals()` drops zero/negative-length or NA shifts and merges overlapping or duplicated shift rows within each period, so a player's ice time becomes a set of disjoint intervals on game-elapsed seconds. The per-period offset (game seconds minus period seconds) is carried so period-relative times can be reconstructed later, which stays correct in overtime where periods are not 1200 seconds.
+#'
+#' @param shifts data.frame of one player's shifts in one game
+#' @returns data.frame with columns `start`, `end`, `periodNumber`, and `periodOffset`
+#' @keywords internal
+.merge_shared_player_intervals <- function(shifts) {
+  shifts <- shifts[
+    !is.na(shifts$startSecondsElapsedInGame) &
+      !is.na(shifts$endSecondsElapsedInGame) &
+      shifts$endSecondsElapsedInGame > shifts$startSecondsElapsedInGame,
+    ,
+    drop = FALSE
+  ]
+  if (!nrow(shifts)) {
+    return(data.frame(
+      start        = integer(),
+      end          = integer(),
+      periodNumber = integer(),
+      periodOffset = integer()
+    ))
+  }
+  shifts <- shifts[order(shifts$startSecondsElapsedInGame), , drop = FALSE]
+  start  <- as.integer(shifts$startSecondsElapsedInGame)
+  end    <- as.integer(shifts$endSecondsElapsedInGame)
+  period <- as.integer(shifts$periodNumber)
+  offset <- as.integer(
+    shifts$startSecondsElapsedInGame - shifts$startSecondsElapsedInPeriod
+  )
+  merged_start  <- start[1]
+  merged_end    <- end[1]
+  merged_period <- period[1]
+  merged_offset <- offset[1]
+  if (nrow(shifts) > 1L) {
+    for (k in 2:nrow(shifts)) {
+      last <- length(merged_end)
+      if (period[k] == merged_period[last] && start[k] <= merged_end[last]) {
+        merged_end[last] <- max(merged_end[last], end[k])
+      } else {
+        merged_start  <- c(merged_start,  start[k])
+        merged_end    <- c(merged_end,    end[k])
+        merged_period <- c(merged_period, period[k])
+        merged_offset <- c(merged_offset, offset[k])
+      }
+    }
+  }
+  data.frame(
+    start        = merged_start,
+    end          = merged_end,
+    periodNumber = merged_period,
+    periodOffset = merged_offset
+  )
+}
+
+#' Intersect two sets of disjoint, sorted intervals
+#'
+#' `.intersect_shared_intervals()` computes the overlap of two interval sets with a two-pointer sweep in O(nrow(a) + nrow(b)). Because periods occupy disjoint ranges of game-elapsed seconds and shifts never span periods, two overlapping intervals always lie in the same period, so period metadata is safely carried from `a`.
+#'
+#' @param a,b data.frames as returned by [.merge_shared_player_intervals()]
+#' @returns data.frame in the same format
+#' @keywords internal
+.intersect_shared_intervals <- function(a, b) {
+  n_a <- nrow(a)
+  n_b <- nrow(b)
+  if (!n_a || !n_b) {
+    return(a[0, , drop = FALSE])
+  }
+  i <- 1L
+  j <- 1L
+  starts  <- ends <- offsets <- integer(n_a + n_b)
+  periods <- integer(n_a + n_b)
+  n_out   <- 0L
+  while (i <= n_a && j <= n_b) {
+    s <- max(a$start[i], b$start[j])
+    e <- min(a$end[i],   b$end[j])
+    if (s < e) {
+      n_out          <- n_out + 1L
+      starts[n_out]  <- s
+      ends[n_out]    <- e
+      periods[n_out] <- a$periodNumber[i]
+      offsets[n_out] <- a$periodOffset[i]
+    }
+    if (a$end[i] < b$end[j]) {
+      i <- i + 1L
+    } else {
+      j <- j + 1L
+    }
+  }
+  data.frame(
+    start        = starts[seq_len(n_out)],
+    end          = ends[seq_len(n_out)],
+    periodNumber = periods[seq_len(n_out)],
+    periodOffset = offsets[seq_len(n_out)]
+  )
+}
+
+#' Compute a shared shift chart from shift data
+#'
+#' `.compute_shared_shift_chart()` computes, for each game in `shifts`, the intervals during which all `players` were on the ice simultaneously. Each player's shifts are first merged into disjoint intervals (so duplicated or overlapping rows cannot double-count time); the players' interval sets are then intersected pairwise with a shrinking accumulator. The shootout period of shootout-eligible games is excluded automatically per game via [.shared_excluded_periods()]. Only intervals strictly longer than `minimum_duration` seconds are kept. Games in which any player has no valid shifts contribute no rows.
+#'
+#' @param shifts data.frame as returned by [shift_chart()] or [shift_charts()]
+#' @param players integer vector of two or more unique player IDs
+#' @param minimum_duration numeric; keep intervals with `duration > minimum_duration`
+#' @returns data.frame with one row per shared shift
+#' @keywords internal
+.compute_shared_shift_chart <- function(shifts, players, minimum_duration) {
+  if (!('periodNumber' %in% names(shifts)) && 'period' %in% names(shifts)) {
+    shifts$periodNumber <- shifts$period
+  }
+  .require_shift_chart_columns(
+    shifts,
+    c(
+      'gameId', 'teamId', 'playerId', 'periodNumber',
+      'startSecondsElapsedInPeriod',
+      'startSecondsElapsedInGame', 'endSecondsElapsedInGame'
+    ),
+    'shared_shift_chart'
+  )
+  n <- length(players)
+  shifts <- shifts[shifts$playerId %in% players, , drop = FALSE]
+  if (!nrow(shifts)) {
+    return(.empty_shared_shift_chart(n))
+  }
+  games  <- split(shifts, shifts$gameId)
+  pieces <- lapply(games, function(game_shifts) {
+    game_id  <- as.integer(game_shifts$gameId[1])
+    excluded <- .shared_excluded_periods(game_id)
+    if (!is.null(excluded)) {
+      game_shifts <- game_shifts[
+        !game_shifts$periodNumber %in% excluded, ,
+        drop = FALSE
+      ]
+    }
+    per_player <- lapply(players, function(p) {
+      .merge_shared_player_intervals(
+        game_shifts[game_shifts$playerId == p, , drop = FALSE]
+      )
+    })
+    if (any(vapply(per_player, nrow, integer(1)) == 0L)) {
+      return(NULL)
+    }
+    shared <- Reduce(.intersect_shared_intervals, per_player)
+    shared <- shared[
+      (shared$end - shared$start) > minimum_duration, ,
+      drop = FALSE
+    ]
+    if (!nrow(shared)) {
+      return(NULL)
+    }
+    shared       <- shared[order(shared$start), , drop = FALSE]
+    start_period <- shared$start - shared$periodOffset
+    end_period   <- shared$end - shared$periodOffset
+    team_ids     <- vapply(
+      players,
+      function(p) {
+        as.integer(game_shifts$teamId[game_shifts$playerId == p][1])
+      },
+      integer(1)
+    )
+    out <- data.frame(gameId = rep(game_id, nrow(shared)))
+    for (i in seq_len(n)) {
+      out[[paste0('teamId', i)]]   <- team_ids[i]
+      out[[paste0('playerId', i)]] <- players[i]
+    }
+    out$shiftNumber  <- seq_len(nrow(shared))
+    out$periodNumber <- shared$periodNumber
+    out$startTime    <- sprintf(
+      '%02d:%02d', start_period %/% 60L, start_period %% 60L
+    )
+    out$endTime      <- sprintf(
+      '%02d:%02d', end_period %/% 60L, end_period %% 60L
+    )
+    out$startSecondsElapsedInPeriod <- start_period
+    out$endSecondsElapsedInPeriod   <- end_period
+    out$startSecondsElapsedInGame   <- shared$start
+    out$endSecondsElapsedInGame     <- shared$end
+    out$duration                    <- shared$end - shared$start
+    out
+  })
+  pieces <- pieces[!vapply(pieces, is.null, logical(1))]
+  if (!length(pieces)) {
+    return(.empty_shared_shift_chart(n))
+  }
+  out <- do.call(rbind, pieces)
+  out <- out[order(out$gameId, out$shiftNumber), , drop = FALSE]
+  rownames(out) <- NULL
+  out[, .shared_shift_chart_columns(n), drop = FALSE]
+}
+
+#' Compute a shared shift chart summary from shift data
+#'
+#' `.compute_shared_shift_chart_summary()` summarizes [.compute_shared_shift_chart()] into one row per game per period: the number of shared shifts and the total shared time on ice, alongside each player's identifying information taken from the shift summaries with each player's columns grouped together. Rows are produced for every non-excluded period in which all `players` logged ice time, including periods with 0 shared seconds; the shootout period of shootout-eligible games is excluded to stay consistent with the chart. Games in which any player did not log ice time contribute no rows. `evTimeOnIce`, `ppTimeOnIce`, and `shTimeOnIce` are not included, as strength states cannot be derived from shift charts alone.
+#'
+#' @param shifts data.frame as returned by [shift_chart()] or [shift_charts()]
+#' @param summaries data.frame as returned by [shift_chart_summary()] or [shift_chart_summaries()]
+#' @param players integer vector of two or more unique player IDs
+#' @param minimum_duration numeric; count intervals with `duration > minimum_duration`
+#' @returns data.frame with one row per game per period
+#' @keywords internal
+.compute_shared_shift_chart_summary <- function(
+    shifts,
+    summaries,
+    players,
+    minimum_duration
+) {
+  n <- length(players)
+  info_columns <- c(
+    'teamId',
+    'teamTriCode',
+    'playerId',
+    'playerFirstName',
+    'playerLastName',
+    'sweaterNumber',
+    'positionCode'
+  )
+  empty_summary <- function() {
+    out <- data.frame(gameId = integer(), stringsAsFactors = FALSE)
+    for (i in seq_len(n)) {
+      for (column in info_columns) {
+        out[[paste0(column, i)]] <- if (
+          column %in% c('teamTriCode', 'playerFirstName', 'playerLastName',
+                        'positionCode')
+        ) {
+          character()
+        } else {
+          integer()
+        }
+      }
+    }
+    out$periodNumber <- integer()
+    out$shifts       <- integer()
+    out$timeOnIce    <- integer()
+    out
+  }
+  summaries <- summaries[summaries$playerId %in% players, , drop = FALSE]
+  if (!nrow(summaries)) {
+    return(empty_summary())
+  }
+  shared <- .compute_shared_shift_chart(shifts, players, minimum_duration)
+  games  <- split(summaries, summaries$gameId)
+  pieces <- lapply(games, function(game_summaries) {
+    game_id  <- as.integer(game_summaries$gameId[1])
+    excluded <- .shared_excluded_periods(game_id)
+    if (!is.null(excluded)) {
+      game_summaries <- game_summaries[
+        !game_summaries$periodNumber %in% excluded, ,
+        drop = FALSE
+      ]
+    }
+    player_periods <- lapply(players, function(p) {
+      unique(game_summaries$periodNumber[game_summaries$playerId == p])
+    })
+    if (any(vapply(player_periods, length, integer(1)) == 0L)) {
+      return(NULL)
+    }
+    periods <- sort(Reduce(intersect, player_periods))
+    if (!length(periods)) {
+      return(NULL)
+    }
+    game_shared <- shared[shared$gameId == game_id, , drop = FALSE]
+    out <- data.frame(gameId = rep(game_id, length(periods)))
+    for (i in seq_len(n)) {
+      rows <- game_summaries[game_summaries$playerId == players[i], ,
+                             drop = FALSE]
+      for (column in info_columns) {
+        out[[paste0(column, i)]] <- rows[[column]][1]
+      }
+    }
+    out$periodNumber <- as.integer(periods)
+    out$shifts       <- vapply(
+      periods,
+      function(period) {
+        sum(game_shared$periodNumber == period)
+      },
+      integer(1)
+    )
+    out$timeOnIce    <- vapply(
+      periods,
+      function(period) {
+        as.integer(
+          sum(game_shared$duration[game_shared$periodNumber == period])
+        )
+      },
+      integer(1)
+    )
+    out
+  })
+  pieces <- pieces[!vapply(pieces, is.null, logical(1))]
+  if (!length(pieces)) {
+    return(empty_summary())
+  }
+  out <- do.call(rbind, pieces)
+  out <- out[order(out$gameId, out$periodNumber), , drop = FALSE]
+  rownames(out) <- NULL
+  out
+}
+
+#' Validate the players argument for shared shift functions
+#'
+#' `.validate_shared_players()` coerces `players` to unique integer IDs and returns `NULL` when fewer than two valid IDs remain.
+#'
+#' @param players integer vector of player IDs
+#' @returns integer vector, or NULL if invalid
+#' @keywords internal
+.validate_shared_players <- function(players) {
+  players <- suppressWarnings(as.integer(players))
+  players <- unique(players[!is.na(players) & players > 0L])
+  if (length(players) < 2L) {
+    return(NULL)
+  }
+  players
 }
